@@ -56,13 +56,9 @@ public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
         //error even when the underlying stream is fully consumed , the object tree is already complete
         Iterator childElements = documentElement.getChildElements();
         int count = 0;
-        try {
-            while (childElements.hasNext()) {
-                childElements.next();
-                count++;
-            }
-        } catch (Exception e) {
-            fail("The object tree needs to be built and traversing the children is to be a success!");
+        while (childElements.hasNext()) {
+            childElements.next();
+            count++;
         }
 
         assertEquals("Number of elements need to be 2", count, 2);

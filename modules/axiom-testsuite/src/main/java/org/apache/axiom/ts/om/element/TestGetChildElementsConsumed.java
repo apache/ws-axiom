@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -60,9 +61,9 @@ public class TestGetChildElementsConsumed extends AxiomTestCase {
             while (childElements.hasNext()) {
                 childElements.next();
             }
-            fail("The stream should've been consumed by now!");
-        } catch (Exception e) {
-            //if we are here without failing, then we are successful
+            fail("Expected NodeUnavailableException");
+        } catch (NodeUnavailableException ex) {
+            // Expected
         }
         
         documentElement.close(false);

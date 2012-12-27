@@ -35,6 +35,7 @@ import org.apache.axiom.ts.AxiomTestCase;
  * exception if the part of the tree has already been consumed using
  * {@link OMContainer#getXMLStreamReaderWithoutCaching()}.
  */
+// TODO: in this scenario we should trigger a NodeUnavailableException as well; fix this with AXIOM-288
 public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
     public TestSerializeAndConsumeConsumed(OMMetaFactory metaFactory) {
         super(metaFactory);
