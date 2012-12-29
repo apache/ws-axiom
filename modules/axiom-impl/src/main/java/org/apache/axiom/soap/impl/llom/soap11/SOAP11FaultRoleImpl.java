@@ -57,8 +57,6 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
-        this.registerContentHandler(writer);
-
         OMSerializerUtil.serializeStartpart(this,
                                             SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
                                             writer);

@@ -66,8 +66,6 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-        this.registerContentHandler(writer);
-
         // Special syntax
         OMSerializerUtil.serializeStartpart(this,
                                             SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME,

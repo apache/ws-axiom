@@ -156,8 +156,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-        this.registerContentHandler(writer);
-        
         // this is a special case. This fault element may contain its children in any order. But spec mandates a specific order
         // the overriding of the method will facilitate that. Not sure this is the best method to do this :(
         build();

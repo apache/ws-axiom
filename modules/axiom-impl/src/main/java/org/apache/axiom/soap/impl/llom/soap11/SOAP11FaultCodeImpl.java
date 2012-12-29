@@ -75,8 +75,6 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-        this.registerContentHandler(writer);
-
         OMSerializerUtil.serializeStartpart(this,
                                             SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME,
                                             writer);

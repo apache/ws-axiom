@@ -29,7 +29,9 @@ import org.xml.sax.SAXException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-/** Class StreamWriterToContentHandlerConverter */
+/**
+ * @deprecated This is an internal implementation class that is no longer used.
+ */
 public class StreamWriterToContentHandlerConverter implements ContentHandler {
     /** Field log */
     private static final Log log = LogFactory.getLog(StreamWriterToContentHandlerConverter.class);

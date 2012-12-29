@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -61,17 +60,6 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
-
         if (!cache) {
             //No caching
             if (this.firstChild != null) {
@@ -79,14 +67,7 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
                 firstChild.internalSerialize(writer, false);
                 OMSerializerUtil.serializeEndpart(writer);
             } else if (state == INCOMPLETE) {
-                if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, writer);
-                } else {
-                    OMSerializerUtil.serializeStartpart(this, writer);
-                    builder.setCache(cache);
-                    builder.next();
-                    OMSerializerUtil.serializeEndpart(writer);
-                }
+                OMSerializerUtil.serializeByPullStream(this, writer);
             } else {
                 OMSerializerUtil.serializeNormal(this, writer, cache);
             }

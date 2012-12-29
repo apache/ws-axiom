@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -149,18 +148,6 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 
     public void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER; // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder
-                    .registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
-                            writer));
-        }
-
         // this is a special case. This fault element may contain its children
         // in any order. But spec mandates a specific order
         // the overriding of the method will facilitate that. Not sure this is

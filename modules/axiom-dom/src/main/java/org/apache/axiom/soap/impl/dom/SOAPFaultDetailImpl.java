@@ -24,14 +24,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
@@ -55,21 +52,5 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
 
     public Iterator getAllDetailEntries() {
         return this.getChildren();
-    }
-
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
-
-        super.internalSerialize(writer, cache);
     }
 }

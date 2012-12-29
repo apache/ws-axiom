@@ -115,15 +115,21 @@ public interface OMXMLParserWrapper {
      * Returns the type of the builder. Can be either {@link OMConstants#PUSH_TYPE_BUILDER}
      * or {@link OMConstants#PULL_TYPE_BUILDER}.
      *
-     * @return Returns short.
+     * @return the type of the builder
+     * 
+     * @deprecated This method is no longer used.
      */
     short getBuilderType();
 
     /**
      * Registers an external content handler. Especially useful for push type builders. Throws an
-     * unsupportedOperationException if such handler registration is not supported.
-     *
+     * {@link UnsupportedOperationException} if such handler registration is not supported.
+     * 
      * @param obj
+     *            the external content handler
+     * 
+     * @deprecated This method is no longer used; implementations will always throw
+     *             {@link UnsupportedOperationException}.
      */
     void registerExternalContentHandler(Object obj);
 
