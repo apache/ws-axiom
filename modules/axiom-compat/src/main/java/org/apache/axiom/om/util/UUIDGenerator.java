@@ -27,12 +27,14 @@ import java.util.Date;
 import java.util.Random;
 
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.util.UIDGenerator;
 
 /**
- * @deprecated Please use one of the specialized methods in the
- *             {@link org.apache.axiom.util.UIDGenerator} class. In contrast to what its name
- *             suggests, the {@link #getUUID()} method doesn't return a UUID. It also doesn't return
- *             a valid URN with uuid NID. See AXIS2-4527 for more information.
+ * @deprecated Please use one of the specialized methods in the {@link UIDGenerator} class. In
+ *             contrast to what its name suggests, the {@link #getUUID()} method doesn't return a
+ *             UUID. It doesn't return a valid URN with uuid NID either. See <a
+ *             href="https://issues.apache.org/jira/browse/AXIS2-4527">AXIS2-4527</a> for more
+ *             information.
  */
 public class UUIDGenerator {
     /** This class will give UUIDs for axis2. */

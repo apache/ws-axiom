@@ -19,6 +19,11 @@
 
 package org.apache.axiom.om.impl.exception;
 
+import org.apache.axiom.om.impl.llom.util.XMLComparator;
+
+/**
+ * @deprecated This exception is only used by {@link XMLComparator} which is deprecated.
+ */
 public class XMLComparisonException extends Exception {
     private static final long serialVersionUID = -7918497983548520994L;
 

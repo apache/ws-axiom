@@ -20,14 +20,10 @@
 package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
@@ -37,44 +33,17 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
-    private XMLStreamWriter writer;
-    private File tempFile;
-
-    protected void setUp() throws Exception {
-        tempFile = File.createTempFile("temp", "xml");
-//        writer =
-//                XMLOutputFactory.newInstance().
-//                        createXMLStreamWriter(new FileOutputStream(tempFile));
-
-
-    }
-
-    public void testRawSerializer() throws Exception {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-        //serializer.setNamespacePrefixStack(new Stack());
-        serializer.serialize(reader, writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
-
-    }
-
     public void testElementPullStream1() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         serializer.serialize(env.getXMLStreamReaderWithoutCaching(), writer);
         writer.flush();
@@ -88,7 +57,7 @@ public class OMSerializerTest extends AbstractTestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
@@ -122,7 +91,7 @@ public class OMSerializerTest extends AbstractTestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         SOAPBody body = env.getBody();
@@ -133,173 +102,6 @@ public class OMSerializerTest extends AbstractTestCase {
 
         String outputString = new String(byteArrayOutputStream.toByteArray());
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
-    }
-    
-    /**
-     * Scenario:
-     *    A) Builder reads a soap message.
-     *    B) The payload of the message is created by a customer builder
-     *    C) The resulting OM is serialized (pulled) prior to completion of the intial read.
-     *    D) The payload of the message should not be expanded into OM.
-     *    
-     *    Expansion of the message results in both a time and space penalty.
-     * @throws Exception
-     */
-    public void testElementPullStreamAndOMExpansion() throws Exception {
-        // Create a reader sourced from a message containing an interesting payload
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/OMElementTest.xml"));
-        
-        // Create a builder connected to the reader
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
-        
-        // Create a custom builder to store the sub trees as a byte array instead of a full tree
-        ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
-        
-        // Register the custom builder on the builder so that they body payload is stored as bytes
-        builder.registerCustomBuilderForPayload(customBuilder);
-        
-        
-        // Create an output stream
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-
-        // Now use StreamingOMSerializer to write the input stream to the output stream
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
-        SOAPBody body = env.getBody();
-        OMSourcedElement omse = (OMSourcedElement) body.getFirstElement();
-        
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(env.getXMLStreamReaderWithoutCaching(),
-                             writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString != null && !"".equals(outputString) && outputString.length() > 1);
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString.contains("axis2:input"));
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString.contains("This is some text"));
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString.contains("Some Other Text"));
-        
-        assertTrue("Expectation is that an OMSourcedElement was created for the payload", 
-                omse != null);
-        assertTrue("Expectation is that the OMSourcedElement was not expanded by serialization ", 
-                !omse.isExpanded());
-    }
-    
-    /**
-     * Scenario:
-     *    A) Builder reads a soap message.
-     *    B) The payload of the message is created by a customer builder
-     *    C) The resulting OM is serialized (pulled) prior to completion of the intial read.
-     *    D) The payload of the message should not be expanded into OM.
-     *    
-     *    Expansion of the message results in both a time and space penalty.
-     * @throws Exception
-     */
-    public void testElementPullStreamAndOMExpansion2() throws Exception {
-        // Create a reader sourced from a message containing an interesting payload
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
-        
-        // Create a builder connected to the reader
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
-        
-        // Create a custom builder to store the sub trees as a byte array instead of a full tree
-        ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
-        
-        // Register the custom builder on the builder so that they body payload is stored as bytes
-        builder.registerCustomBuilderForPayload(customBuilder);
-        
-        
-        // Create an output stream
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-
-        // Now use StreamingOMSerializer to write the input stream to the output stream
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
-        SOAPBody body = env.getBody();
-        OMSourcedElement omse = (OMSourcedElement) body.getFirstElement();
-        
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(env.getXMLStreamReaderWithoutCaching(),
-                             writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString != null && !"".equals(outputString) && outputString.length() > 1);
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString.contains("Hello World"));
-        
-        assertTrue("Expectation is that an OMSourcedElement was created for the payload", 
-                omse != null);
-        assertTrue("Expectation is that the OMSourcedElement was not expanded by serialization ", 
-                !omse.isExpanded());
-    }
-    
-    /**
-     * Scenario:
-     *    A) Builder reads a soap message.
-     *    B) The payload of the message is created by a customer builder
-     *    C) The resulting OM is serialized (pulled) prior to completion of the intial read.
-     *    D) The payload of the message should not be expanded into OM.
-     *    
-     *    Expansion of the message results in both a time and space penalty.
-     * @throws Exception
-     */
-    public void testElementPullStreamAndOMExpansion3() throws Exception {
-        // Create a reader sourced from a message containing an interesting payload
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/noprettyprint.xml"));
-        
-        // Create a builder connected to the reader
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
-        
-        // Create a custom builder to store the sub trees as a byte array instead of a full tree
-        ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
-        
-        // Register the custom builder on the builder so that they body payload is stored as bytes
-        builder.registerCustomBuilderForPayload(customBuilder);
-        
-        
-        // Create an output stream
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-
-        // Now use StreamingOMSerializer to write the input stream to the output stream
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
-        SOAPBody body = env.getBody();
-        OMSourcedElement omse = (OMSourcedElement) body.getFirstElement();
-        
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(env.getXMLStreamReaderWithoutCaching(),
-                             writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString != null && !"".equals(outputString) && outputString.length() > 1);
-        int indexHelloWorld = outputString.indexOf("Hello World");
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                indexHelloWorld > 0);
-        int indexHelloWorld2 = outputString.indexOf("Hello World", indexHelloWorld+1);
-        assertTrue("Expected output was incorrect.  Received:" + outputString,
-                indexHelloWorld2 < 0);
-
-        assertTrue("Expectation is that an OMSourcedElement was created for the payload", 
-                omse != null);
-        assertTrue("Expectation is that the OMSourcedElement was not expanded by serialization ", 
-                !omse.isExpanded());
-    }
-
-    public void testDefaultNsSerialization() throws Exception {
-        StAXOMBuilder builder = new StAXOMBuilder(getTestResource("defaultNamespace2.xml"));
-        String xml = builder.getDocumentElement().toString();
-        assertEquals("There shouldn't be any xmlns=\"\"", -1, xml.indexOf("xmlns=\"\""));
     }
     
     public void testXSITypePullStream() throws Exception {
@@ -321,7 +123,7 @@ public class OMSerializerTest extends AbstractTestCase {
         
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         // Serializing the body should cause the usr prefix to be pulled down from the
         // envelope and written in the message.
@@ -363,9 +165,5 @@ public class OMSerializerTest extends AbstractTestCase {
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
         assertTrue(outputString.indexOf(USR_DEF) > 0);
         assertTrue(outputString.indexOf(USR_URI) > 0);
-    }
-
-    protected void tearDown() throws Exception {
-        tempFile.delete();
     }
 }

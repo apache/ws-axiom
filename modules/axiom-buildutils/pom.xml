@@ -21,9 +21,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom-parent</artifactId>
+        <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
-        <relativePath>../axiom-parent/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>axiom-buildutils</artifactId>
     <name>Axiom Build Utilities</name>
@@ -72,6 +72,13 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
             </plugin>
         </plugins>
     </build>

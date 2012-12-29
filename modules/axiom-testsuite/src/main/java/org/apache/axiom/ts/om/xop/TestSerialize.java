@@ -16,32 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.attachments;
-
-import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.MIMEResource;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.om.impl.MIMEOutputUtils;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.soap.SOAPModelBuilder;
+package org.apache.axiom.ts.om.xop;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.StringWriter;
 
-public class AttachmentsTest extends AbstractTestCase {
-    public void testWritingBinaryAttachments() throws Exception {
+import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.MIMEResource;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.ts.AxiomTestCase;
+
+public class TestSerialize extends AxiomTestCase {
+    public TestSerialize(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
         MIMEResource testMessage = TestConstants.MTOM_MESSAGE;
 
         // Read in message: SOAPPart and 2 image attachments
-        InputStream inStream = getTestResource(testMessage.getName());
+        InputStream inStream = AbstractTestCase.getTestResource(testMessage.getName());
         Attachments attachments = new Attachments(inStream, testMessage.getContentType());
         
         attachments.getRootPartInputStream();
@@ -58,7 +61,7 @@ public class AttachmentsTest extends AbstractTestCase {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(baos, oof);
         
         OMXMLParserWrapper builder =
-            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments);
+            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments);
         OMElement om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -73,7 +76,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.TRUE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments);
+            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments);
         om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -95,7 +98,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.FALSE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments2);
+            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -112,7 +115,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.TRUE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments2);
+            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -122,36 +125,5 @@ public class AttachmentsTest extends AbstractTestCase {
         // writing base64 compliant code.
         assertTrue(outBase64ToBase64.indexOf("base64") != -1);
         assertTrue(outBase64ToBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
-    }
-    
-    public void testSWAWriteWithIncomingOrder() throws Exception {
-
-        // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = getTestResource(TestConstants.SWA_MESSAGE.getName());
-        Attachments attachments = new Attachments(inStream, TestConstants.SWA_MESSAGE.getContentType());
-
-        // Get the contentIDs to force the reading
-        String[] contentIDs = attachments.getAllContentIDs();
-        
-        // Get the root
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments.getRootPartInputStream(), "UTF-8");
-        OMElement root = builder.getDocumentElement();
-        StringWriter xmlWriter = new StringWriter();
-        root.serialize(xmlWriter);
-        
-        // Serialize the message using the legacy behavior (order by content id)
-        OMOutputFormat format = new OMOutputFormat();
-        format.setCharSetEncoding("utf-8");
-        format.setDoingSWA(true);
-        
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
-        MIMEOutputUtils.writeSOAPWithAttachmentsMessage(xmlWriter, baos, attachments, format);
-        
-        String text = baos.toString();
-        // Assert that AAttachment occurs before BAttachment since
-        // that is the natural ordering of the content ids.
-        assertTrue(text.indexOf("BAttachment") < text.indexOf("AAttachment"));
-        
     }
 }

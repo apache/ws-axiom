@@ -27,8 +27,6 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Class OMXMLBuilderFactory
- * 
  * @deprecated This class is deprecated because it is located in the wrong package and JAR
  *             (it is implementation independent but belongs to LLOM). Please use
  *             {@link org.apache.axiom.om.OMXMLBuilderFactory} instead.

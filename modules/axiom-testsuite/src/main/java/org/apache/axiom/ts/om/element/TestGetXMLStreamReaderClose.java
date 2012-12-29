@@ -16,49 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.om.element;
 
-package org.apache.axiom.om;
-
-import junit.framework.TestCase;
-
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 
-public class OMWrapperTest extends TestCase {
+/**
+ * Tests the behavior of {@link XMLStreamReader#close()} on the {@link XMLStreamReader} returned by
+ * {@link OMContainer#getXMLStreamReader(boolean)} on an {@link OMElement}. Regression test for <a
+ * href="https://issues.apache.org/jira/browse/AXIOM-2">AXIOM-2</a>.
+ */
+public class TestGetXMLStreamReaderClose extends AxiomTestCase {
+    private final boolean cache;
+    
+    public TestGetXMLStreamReaderClose(OMMetaFactory metaFactory, boolean cache) {
+        super(metaFactory);
+        this.cache = cache;
+        addTestProperty("cache", String.valueOf(cache));
+    }
 
-    public void testSingleElementWrapper() throws Exception {
-        String xml = "<root>" +
-                "<wrap1>" +
-                "<wrap3>" +
-                "<wrap2>" +
-                "IncludedText" +
-                "</wrap2>" +
-                "</wrap3>" +
-                "</wrap1>" +
-                "</root>";
-
-        XMLStreamReader xmlStreamReader =
-                StAXUtils.createXMLStreamReader(new StringReader(xml));
-        StAXOMBuilder b = new StAXOMBuilder(xmlStreamReader);
-
-        OMElement documentElement = b.getDocumentElement();
-        OMElement wrap2Element =
-                documentElement.getFirstElement().
-                        getFirstElement().
-                        getFirstElement();
-
-        OMElement elt = OMAbstractFactory.getOMFactory().createOMElement(
-                "testName", "urn:testNs", "ns1"
-        );
-
-        elt.addChild(wrap2Element);
-
-
-        XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
+    protected void runTest() throws Throwable {
+        OMXMLParserWrapper b = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                new StringReader("<test>test</test>"));
+        
+        OMElement element = b.getDocumentElement();
+        
+        XMLStreamReader reader = element.getXMLStreamReader(cache);
         
         // Make sure the reader is an OMStAXWrapper
         if (reader instanceof OMXMLStreamReaderEx) {
@@ -67,29 +59,23 @@ public class OMWrapperTest extends TestCase {
             wrapper.releaseParserOnClose(true);
         }
         
-        int count = 0;
         while (reader.hasNext()) {
             reader.next();
-            count ++;
         }
 
-        // 4 events are produced: START_DOCUMENT, START_ELEMENT, END_ELEMENT and END_DOCUMENT
-        assertEquals(4, count);
-        
-        
         // Make sure that the wrapper can be closed without failing
         reader.close();
         reader.close();  // This should be a noop since the parser is closed.
         
         // Closing the parser should also close the parser on the builder (since they are the same)
-        assertTrue(b.isClosed());
+        assertTrue(((StAXOMBuilder)b).isClosed());
         b.close(); // This should be a noop since the parser is closed
         
         // Calling getProperty after a close should return null, not an exception
         assertTrue(reader.getProperty("dummyProperty") == null);
         
         // Calling builder.getReaderProperty should return null, not an exception
-        assertTrue(b.getReaderProperty("dummyProperty") == null);
+        assertTrue(((StAXOMBuilder)b).getReaderProperty("dummyProperty") == null);
     }
 
 

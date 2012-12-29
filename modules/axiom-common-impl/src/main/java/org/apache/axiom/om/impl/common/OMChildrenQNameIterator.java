@@ -69,29 +69,4 @@ public class OMChildrenQNameIterator extends OMFilterIterator {
             return false;
         }
     }
-
-    /**
-     * Prior versions of the OMChildrenQNameIterator used the following
-     * logic to check equality.  This algorithm is incorrect; however some customers
-     * have dependency on this behavior.  This method is retained (but deprecated) to allow
-     * them an opportunity to use the old algorithm.
-     * 
-     * @param searchQName
-     * @param currentQName
-     * @return true using legacy equality match
-     * @deprecated
-     */
-    public static boolean isEquals_Legacy(QName searchQName, QName currentQName) {
-        
-        // if the given localname is null, whatever value this.qname has, its a match. But can one give a QName without a localName ??
-        String localPart = searchQName.getLocalPart();
-        boolean localNameMatch =(localPart == null) || (localPart.equals("")) ||
-            ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
-        String namespaceURI = searchQName.getNamespaceURI();
-        boolean namespaceURIMatch = (namespaceURI.equals(""))||
-            ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
-        return localNameMatch && namespaceURIMatch;
-    }
-    
-    
 }

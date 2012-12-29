@@ -66,12 +66,9 @@ public class NoNamespaceSerializerTest extends TestCase {
     private XMLStreamWriter writer;
 
     // private OMXMLParserWrapper builder;
-    // private File tempFile;
 
     private OMXMLParserWrapper builderOne;
     private OMXMLParserWrapper builderTwo;
-    // private File tempFile;
-
 
     protected void setUp() throws Exception {
         readerOne = StAXUtils.createXMLStreamReader(

@@ -36,6 +36,9 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
+/**
+ * @deprecated Class containing only deprecated utility methods.
+ */
 public class TextHelper {
     /**
      * @deprecated

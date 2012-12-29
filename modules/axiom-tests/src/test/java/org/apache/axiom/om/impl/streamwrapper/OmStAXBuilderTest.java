@@ -24,31 +24,21 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
-
-import java.io.File;
-import java.io.FileOutputStream;
+import org.apache.commons.io.output.NullOutputStream;
 
 public class OmStAXBuilderTest extends AbstractTestCase {
     private OMXMLParserWrapper builder;
-    private File tempFile;
 
     protected void setUp() throws Exception {
         builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
                 TestConstants.SOAP_SOAPMESSAGE), null);
-        tempFile = File.createTempFile("temp", "xml");
     }
 
     public void testStaxBuilder() throws Exception {
         SOAPEnvelope envelope = (SOAPEnvelope) builder.getDocumentElement();
         assertNotNull(envelope);
-        envelope.serialize(new FileOutputStream(tempFile));
+        envelope.serialize(new NullOutputStream());
 
 
     }
-
-    protected void tearDown() throws Exception {
-        tempFile.delete();
-    }
-
-
 }

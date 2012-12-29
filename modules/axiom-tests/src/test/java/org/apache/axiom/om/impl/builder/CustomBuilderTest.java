@@ -23,11 +23,11 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
 import org.apache.axiom.om.util.CopyUtils;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -36,7 +36,6 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -53,9 +52,8 @@ public class CustomBuilderTest extends AbstractTestCase {
     
     
     public void testHeaderCustomBuilder() throws Exception{
-        XMLStreamReader parser =
-                StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
+        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         builder.registerCustomBuilder(new QName("http://schemas.xmlsoap.org/ws/2004/03/addressing","To"), 3, new
                                       ByteArrayCustomBuilder("utf-8"));
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
@@ -137,8 +135,7 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     protected SOAPEnvelope createEnvelope(InputStream in) throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
+        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(in, null);
         builder.registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
         return (SOAPEnvelope) builder.getDocumentElement();
     }

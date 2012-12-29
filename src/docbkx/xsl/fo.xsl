@@ -21,12 +21,6 @@
                 xmlns:fo="http://www.w3.org/1999/XSL/Format"
                 version="1.0">
     <xsl:import href="urn:docbkx:stylesheet"/>
-    <xsl:include href="common.xsl"/>
-    
-    <xsl:param name="img.src.path">src/docbkx/images/</xsl:param>
-    
-    <xsl:param name="admon.graphics.extension">.svg</xsl:param>
-    <xsl:param name="admon.graphics.path"><xsl:value-of select="$img.src.path"/></xsl:param>
 
     <xsl:attribute-set name="monospace.verbatim.properties">
         <xsl:attribute name="font-size">

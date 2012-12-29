@@ -33,6 +33,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.commons.io.output.NullOutputStream;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -43,12 +44,10 @@ public class ElementSerializerTest extends AbstractTestCase {
     private XMLStreamReader reader;
     private XMLStreamWriter writer;
     private OMXMLParserWrapper builder;
-    private File tempFile;
 
     protected void setUp() throws Exception {
         reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-        tempFile = File.createTempFile("temp", "xml");
-        writer = StAXUtils.createXMLStreamWriter(new FileOutputStream(tempFile),
+        writer = StAXUtils.createXMLStreamWriter(new NullOutputStream(),
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builder =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(reader);
@@ -122,6 +121,5 @@ public class ElementSerializerTest extends AbstractTestCase {
 
     protected void tearDown() throws Exception {
         reader.close();
-        tempFile.delete();
     }
 }

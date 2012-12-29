@@ -19,13 +19,13 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom-parent</artifactId>
+        <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
-        <relativePath>../axiom-parent/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
     <artifactId>axiom-c14n</artifactId>
     <name>Axiom C14N</name>
     <packaging>bundle</packaging>
@@ -68,6 +68,13 @@
                         <_removeheaders>Private-Package</_removeheaders>
                         <Export-Package>*;-noimport:=true</Export-Package>
                     </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
                 </configuration>
             </plugin>
         </plugins>

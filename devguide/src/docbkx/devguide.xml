@@ -868,7 +868,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         Check that the <literal>apache-release</literal> profile can be executed properly.
                         To do this, issue the following command:
                     </para>
-                    <screen>mvn clean install -Papache-release -Dmaven.test.skip=true</screen>
+                    <screen>mvn clean install -Papache-release -DskipTests=true</screen>
                     <para>
                         You may also execute a dry run of the release process:
                     </para>
@@ -877,6 +877,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         After this, you need to clean up using the following command:
                     </para>
                     <screen>mvn release:clean</screen>
+                </listitem>
+                <listitem>
+                    <para>
+                        Check that the Maven site can be generated and deployed successfully, and that it has
+                        the expected content.
+                    </para>
                 </listitem>
                 <listitem>
                     <para>
@@ -893,24 +899,6 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         (Since the Axiom project doesn't use branches and produces releases directly from the trunk,
                         there should only be a single mirrored release).
                     </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Preview and validate the changes that will be done by the release plugin
-                        to the POM files. In order to do this, execute the following command:
-                    </para>
-                    <screen>mvn release:prepare -DdryRun=true -Dmaven.test.skip=true</screen>
-                    <para>
-                        Next, compare the <filename>pom.xml.tag</filename> files to the corresponding
-                        <filename>pom.xml</filename> files:
-                    </para>
-                    <screen>for pom in $(find . -name "pom.xml"); do diff $pom $pom.tag; done</screen>
-                    <para>
-                        The differences should be limited to <sgmltag class="element">version</sgmltag>
-                        and <sgmltag class="element">scm</sgmltag> tags. If necessary, change the
-                        original POM files to avoid spurious changes. After that, clean up using:
-                    </para>
-                    <screen>mvn release:clean</screen>
                 </listitem>
             </itemizedlist>
         </section>
@@ -955,6 +943,16 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
   </server>
   ...
 </servers>]]></screen>
+                </listitem>
+                <listitem>
+                    <para>
+                        The build is configured to use <literal>wagon-ssh-external</literal> to deploy the Maven site
+                        to your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
+                        On Unix systems this will work out of the box if you have SSH installed, a public key installed
+                        on <literal>people.apache.org</literal> and your user name is the same on your local system and
+                        <literal>people.apache.org</literal>. If this is not the case, some additional configuration will be
+                        required, as described in <ulink url="http://maven.apache.org/plugins/maven-deploy-plugin/examples/deploy-ssh-external.html"/>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </section>
@@ -1013,9 +1011,26 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Generate and deploy the Maven site on a public Web server. You may use
-                        <literal>people.apache.org</literal> for this.
+                        Generate and deploy the Maven site to your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
+                        If you have all the necessary configurations for <literal>wagon-ssh-external</literal> in place, and your local user name matches
+                        your Apache ID, then a single command should be enough to do that:
                     </para>
+                    <screen>mvn site-deploy</screen>
+                    <para>
+                        Execute this command in a fresh checkout of the tag for the release or use the existing checkout created
+                        by maven-release-plugin. If your local user name is not the same as your Apache ID, then set <literal>user.name</literal>
+                        to your Apache ID.
+                    </para>
+                    <para>
+                        Note that before deploying the site you should remove any previously generated Axiom site from
+                        your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
+                    </para>
+                    <important>
+                        <para>
+                            When generating the site, please use a recent JDK version, because some older versions
+                            generate broken links.
+                        </para>
+                    </important>
                 </step>
                 <step>
                     <para>
@@ -1085,24 +1100,18 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                 </step>
                 <step>
                     <para>
-                        Check out the release tag from Subversion and generate the Maven site.
-                        Also check out the existing site:
+                        Log in to <literal>people.apache.org</literal> and check out the current Maven site:
                     </para>
 <screen>svn co https://svn.apache.org/repos/asf/webservices\
 /axiom/site axiom-site</screen>
                     <para>
                         The existing site needs to be overwritten with the site generated for the new
-                        release. This can be done easily using the <filename>etc/syncsite.py</filename> script
+                        release (which should already be in your <literal>public_html</literal> directory).
+                        This can be done easily using the <filename>etc/syncsite.py</filename> script
                         (requires Python 2.6). It will copy the files and execute any necessary Subversion
                         commands to add new files and to delete files that no longer exist. After executing the
                         script, commit the changes to Subversion.
                     </para>
-                    <important>
-                        <para>
-                            When generating the site, please use a recent JDK version, because some older versions
-                            generate broken links.
-                        </para>
-                    </important>
                 </step>
                 <step>
                     <para>

@@ -22,7 +22,7 @@ package org.apache.axiom.om.impl;
 import org.apache.axiom.util.stax.DummyLocation;
 
 /**
- * @deprecated use {@link DummyLocation#INSTANCE} instead
+ * @deprecated Use {@link DummyLocation#INSTANCE} instead.
  */
 public class EmptyOMLocation extends DummyLocation {
 }

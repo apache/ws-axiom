@@ -21,9 +21,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom-parent</artifactId>
+        <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
-        <relativePath>../axiom-parent/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>axiom-compat</artifactId>
     <name>Axiom Compatibility Classes</name>
@@ -53,7 +53,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
-        	<optional>true</optional>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -67,5 +67,21 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
