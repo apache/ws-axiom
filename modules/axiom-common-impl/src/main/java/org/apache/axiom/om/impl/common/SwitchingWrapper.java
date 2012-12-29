@@ -239,24 +239,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getNamespaceURI()
      */
     public String getNamespaceURI() {
-        String returnStr;
         if (parser != null && currentEvent != END_DOCUMENT) {
-            returnStr = parser.getNamespaceURI();
+            return parser.getNamespaceURI();
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                OMNamespace ns = ((OMElement) lastNode).getNamespace();
-                if (ns == null) {
-                    returnStr = null;
-                } else {
-                    String namespaceURI = ns.getNamespaceURI();
-                    returnStr = namespaceURI.length() == 0 ? null : namespaceURI;
-                }
+                return ((OMElement)lastNode).getNamespaceURI();
             } else {
                 throw new IllegalStateException();
             }
         }
-        return returnStr;
     }
 
     /**
