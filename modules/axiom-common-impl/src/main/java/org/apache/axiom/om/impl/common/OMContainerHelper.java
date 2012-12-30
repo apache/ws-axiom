@@ -141,6 +141,9 @@ public final class OMContainerHelper {
     }
     
     public static void build(IContainer container) {
+        if (container.getState() == IContainer.DISCARDED) {
+            throw new NodeUnavailableException();
+        }
         OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null && builder.isCompleted()) {
             log.debug("Builder is already complete.");

@@ -166,10 +166,12 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddChildDiscarded(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithSameParent(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithSameParent(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestBuildDiscarded(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement(metaFactory));
