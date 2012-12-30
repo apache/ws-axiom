@@ -204,13 +204,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                OMNamespace ns = ((OMElement) lastNode).getNamespace();
-                if (ns == null) {
-                    return null;
-                } else {
-                    String prefix = ns.getPrefix();
-                    return prefix.length() == 0 ? null : prefix; 
-                }
+                return ((OMElement)lastNode).getPrefix();
             } else {
                 throw new IllegalStateException();
             }
