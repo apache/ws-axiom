@@ -26,19 +26,22 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests OMSourcedElement getReader support
  */
-public class TestSerializeToXMLWriterFromReader extends OMSourcedElementTest {
+public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
     public TestSerializeToXMLWriterFromReader(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 

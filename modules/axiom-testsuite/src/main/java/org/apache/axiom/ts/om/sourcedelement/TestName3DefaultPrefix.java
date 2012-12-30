@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
@@ -34,7 +35,7 @@ import org.apache.axiom.om.util.StAXUtils;
  * Serialization: Serialize and cache Tests attempt to rename namespace and localpart, which is
  * not allowed
  */
-public class TestName3DefaultPrefix extends OMSourcedElementTest {
+public class TestName3DefaultPrefix extends AxiomTestCase {
     public TestName3DefaultPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -46,7 +47,7 @@ public class TestName3DefaultPrefix extends OMSourcedElementTest {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                f.createOMElement(new TestDataSource(testDocument), "DUMMYNAME", ns);
+                f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 

@@ -22,12 +22,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Make sure that the incomplete setting of an OMSE is not 
  * propogated to the root
  **/
-public class TestComplete extends OMSourcedElementTest {
+public class TestComplete extends AxiomTestCase {
     public TestComplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -37,7 +38,7 @@ public class TestComplete extends OMSourcedElementTest {
         OMFactory f = metaFactory.getOMFactory();
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMElement child = f.createOMElement(new TestDataSource(testDocument), "library", ns);
+        OMElement child = f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         
         // Trigger expansion of the child OMSE
@@ -56,7 +57,7 @@ public class TestComplete extends OMSourcedElementTest {
         
         // Now repeat the test, but this time trigger the 
         // partial parsing of the child after adding it to the root.
-        child = f.createOMElement(new TestDataSource(testDocument), "library", ns);
+        child = f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         root = f.createOMElement("root", rootNS);
         
         root.addChild(child);

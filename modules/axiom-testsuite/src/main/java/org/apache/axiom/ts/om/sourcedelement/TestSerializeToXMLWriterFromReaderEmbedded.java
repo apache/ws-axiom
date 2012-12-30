@@ -24,21 +24,30 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests OMSourcedElement processing when the getReader() of the parent is accessed.
  */
-public class TestSerializeToXMLWriterFromReaderEmbedded extends OMSourcedElementTest {
+public class TestSerializeToXMLWriterFromReaderEmbedded extends AxiomTestCase {
     public TestSerializeToXMLWriterFromReaderEmbedded(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMFactory f = metaFactory.getOMFactory();
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(f);
+        OMElement root = f.createOMElement("root", f.createOMNamespace("http://sampleroot", "rootPrefix"));
+        root.addChild(element);
+        
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 

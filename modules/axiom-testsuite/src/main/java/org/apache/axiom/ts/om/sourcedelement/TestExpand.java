@@ -25,16 +25,19 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Make sure the expanded OMSourcedElement behaves like a normal OMElement.
  */
-public class TestExpand extends OMSourcedElementTest {
+public class TestExpand extends AxiomTestCase {
     public TestExpand(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         element.getAllDeclaredNamespaces();
         assertEquals("Expanded namespace count error", 1,
                      countItems(element.getAllDeclaredNamespaces()));

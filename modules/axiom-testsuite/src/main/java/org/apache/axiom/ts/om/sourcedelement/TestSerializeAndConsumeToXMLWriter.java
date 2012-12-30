@@ -23,24 +23,27 @@ import java.io.StringWriter;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 /**
  * Test serialization of OMSourcedElementImpl to an XMLWriter
  */
-public class TestSerializeAndConsumeToXMLWriter extends OMSourcedElementTest {
+public class TestSerializeAndConsumeToXMLWriter extends AxiomTestCase {
     public TestSerializeAndConsumeToXMLWriter(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serializeAndConsume(writer);
         xmlwriter.flush();
-        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(testDocument, writer.toString()), true);
+        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(TestDocument.DOCUMENT1.getContent(), writer.toString()), true);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 }

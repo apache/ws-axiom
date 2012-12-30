@@ -26,8 +26,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.CharArrayDataSource;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends OMSourcedElementTest {
+public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends AxiomTestCase {
     public TestSerializeModifiedOMSEWithNonDestructiveDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }

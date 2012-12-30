@@ -21,21 +21,24 @@ package org.apache.axiom.ts.om.sourcedelement;
 import java.io.ByteArrayOutputStream;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.ts.AxiomTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 /**
  * Test serialization of OMSourcedElementImpl to a Stream
  */
-public class TestSerializeAndConsumeToStream extends OMSourcedElementTest {
+public class TestSerializeAndConsumeToStream extends AxiomTestCase {
     public TestSerializeAndConsumeToStream(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         element.serializeAndConsume(bos);
-        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(testDocument,
+        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(TestDocument.DOCUMENT1.getContent(),
                      new String(bos.toByteArray())), true);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }

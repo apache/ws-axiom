@@ -19,18 +19,21 @@
 package org.apache.axiom.ts.om.sourcedelement;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestSetDataSourceOnAlreadyExpandedElement extends OMSourcedElementTest {
+public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
     public TestSetDataSourceOnAlreadyExpandedElement(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         // Make sure the OMSourcedElement is expanded
         element.getFirstOMChild();
         assertTrue(element.isExpanded());
         // Now set a new data source
-        element.setDataSource(new TestDataSource(testDocument2));
+        element.setDataSource(new TestDataSource(TestDocument.DOCUMENT2.getContent()));
         assertFalse(element.isExpanded());
         // getNextOMSibling should not expand the element
         assertNull(element.getNextOMSibling());

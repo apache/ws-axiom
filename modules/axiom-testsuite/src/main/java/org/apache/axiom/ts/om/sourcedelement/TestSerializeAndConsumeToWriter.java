@@ -21,22 +21,25 @@ package org.apache.axiom.ts.om.sourcedelement;
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.ts.AxiomTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 /**
  * Test serialization of OMSourcedElementImpl to a Writer
  */
-public class TestSerializeAndConsumeToWriter extends OMSourcedElementTest {
+public class TestSerializeAndConsumeToWriter extends AxiomTestCase {
     public TestSerializeAndConsumeToWriter(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
         String result = writer.toString();
-        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(testDocument, result), true);
+        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(TestDocument.DOCUMENT1.getContent(), result), true);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 }

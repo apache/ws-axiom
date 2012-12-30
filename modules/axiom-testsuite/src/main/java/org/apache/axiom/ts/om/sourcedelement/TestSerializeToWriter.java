@@ -21,28 +21,31 @@ package org.apache.axiom.ts.om.sourcedelement;
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.ts.AxiomTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 /**
  * Test serialization of OMSourcedElementImpl to a Writer
  */
-public class TestSerializeToWriter extends OMSourcedElementTest {
+public class TestSerializeToWriter extends AxiomTestCase {
     public TestSerializeToWriter(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
         StringWriter writer = new StringWriter();
         element.serialize(writer);
         String result = writer.toString();
-        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(testDocument, result), true);
+        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(TestDocument.DOCUMENT1.getContent(), result), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
         element.serialize(writer);
         result = writer.toString();
-        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(testDocument, result), true);
+        XMLAssert.assertXMLIdentical("Serialized text error", XMLUnit.compareXML(TestDocument.DOCUMENT1.getContent(), result), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
 }

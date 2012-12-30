@@ -27,13 +27,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
  * serialization Document: testDocument (which uses the default namespace) Type of
  * Serialization: Serialize and cache Prefix test
  */
-public class TestName1DefaultPrefix extends OMSourcedElementTest {
+public class TestName1DefaultPrefix extends AxiomTestCase {
     public TestName1DefaultPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -46,7 +47,7 @@ public class TestName1DefaultPrefix extends OMSourcedElementTest {
         OMNamespace ns =
                 f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
         OMElement element =
-                f.createOMElement(new TestDataSource(testDocument), "library", ns);
+                f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
