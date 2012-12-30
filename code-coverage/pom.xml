@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom</artifactId>
+        <version>1.2.15-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>code-coverage</artifactId>
+    <name>Code Coverage Report</name>
+    <packaging>pom</packaging>
+    <dependencies>
+        <!--
+          For each project that should appear in the coverage report, add the following dependencies:
+            * The main artifact if it is not shaded, or the original (unshaded) artifact.
+            * The sources JAR.
+          
+          For each project that contributes code coverage, add a dependency to the jacoco.exec file
+          (i.e. classifier=jacoco and type=exec).
+        -->
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-api</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-api</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-common-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-common-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-common-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>original</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <version>${project.version}</version>
+            <classifier>original</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-jaxb</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-jaxb</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-jaxb</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-tests</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-integration</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-osgi-tests</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-samples</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-jacoco-exec</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco/exec</outputDirectory>
+                            <includeClassifiers>jacoco</includeClassifiers>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-sources</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco/sources</outputDirectory>
+                            <includeClassifiers>sources</includeClassifiers>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-classes</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco/classes</outputDirectory>
+                            <includeTypes>jar</includeTypes>
+                            <excludeClassifiers>sources</excludeClassifiers>
+                            <excludeTransitive>true</excludeTransitive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <taskdef name="report" classname="org.jacoco.ant.ReportTask"/>
+                                <report>
+                                    <executiondata>
+                                        <fileset dir="${project.build.directory}/jacoco/exec"/>
+                                    </executiondata>
+                                    <structure name="Coverage Report">
+                                        <classfiles>
+                                            <fileset dir="${project.build.directory}/jacoco/classes"/>
+                                        </classfiles>
+                                        <sourcefiles>
+                                            <fileset dir="${project.build.directory}/jacoco/sources"/>
+                                        </sourcefiles>
+                                    </structure>
+                                    <html destdir="${project.reporting.outputDirectory}" />
+                                </report>
+                            </target>
+                        </configuration>
+                    </execution>  
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>org.jacoco.ant</artifactId>
+                        <version>${jacoco.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

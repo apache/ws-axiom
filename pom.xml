@@ -399,6 +399,7 @@
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
         <shade.plugin.version>1.6</shade.plugin.version>
+        <jacoco.version>0.6.1.201212231917</jacoco.version>
     </properties>
     <build>
         <extensions>
@@ -450,7 +451,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.1</version>
+                    <version>2.6</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
@@ -553,6 +554,46 @@
                     <attach>true</attach>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Anonymize the session ID (by default it contains the name of the host executing the build) -->
+                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}</sessionId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- Note that the execution will not fail if the file to be attached is not present.
+                             Therefore it is safe to execute this for all projects. -->
+                        <id>attach-jacoco-exec</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/jacoco.exec</file>
+                                    <classifier>jacoco</classifier>
+                                    <type>exec</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -649,5 +690,6 @@
         <module>userguide</module>
         <module>apidocs</module>
         <module>distribution</module>
+        <module>code-coverage</module>
     </modules>
 </project>
