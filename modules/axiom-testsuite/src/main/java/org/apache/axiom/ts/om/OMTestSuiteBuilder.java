@@ -461,7 +461,14 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToWriter(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriter(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterEmbedded(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory));
+            for (int expand = 0; expand <= 2; expand++) {
+                for (int count = 1; count <= 2; count++) {
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, false, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, true, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, false, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, true, expand, count));
+                }
+            }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReaderEmbedded(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));

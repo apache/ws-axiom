@@ -19,49 +19,89 @@
 package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringWriter;
-import java.util.Iterator;
 
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
 
 /**
- * Tests OMSourcedElement getReader support
+ * Tests {@link OMSourcedElement#getXMLStreamReader(boolean)}.
  */
 public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
-    public TestSerializeToXMLWriterFromReader(OMMetaFactory metaFactory) {
+    private final boolean destructive;
+    private final boolean cache;
+    private final int expand;
+    private final int count;
+    
+    /**
+     * Constructor.
+     * 
+     * @param metaFactory
+     *            the meta factory for the implementation to be tested
+     * @param destructive
+     *            determines if the {@link OMDataSource} is destructive or not
+     * @param cache
+     *            the argument to be passed to {@link OMSourcedElement#getXMLStreamReader(boolean)}
+     * @param expand
+     *            determines if and how the sourced element should be expanded before calling
+     *            {@link OMSourcedElement#getXMLStreamReader(boolean)}: 0 = don't expand; 1 =
+     *            expand; 2 = expand and build
+     * @param count
+     *            the number of times {@link OMSourcedElement#getXMLStreamReader(boolean)} will be
+     *            called; the only meaningful values are 1 and 2
+     */
+    public TestSerializeToXMLWriterFromReader(OMMetaFactory metaFactory, boolean destructive, boolean cache, int expand, int count) {
         super(metaFactory);
+        this.destructive = destructive;
+        this.cache = cache;
+        this.expand = expand;
+        this.count = count;
+        addTestProperty("destructive", String.valueOf(destructive));
+        addTestProperty("cache", String.valueOf(cache));
+        addTestProperty("expand", String.valueOf(expand));
+        addTestProperty("count", String.valueOf(count));
     }
 
     protected void runTest() throws Throwable {
-        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), false);
-        StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
-
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
-                metaFactory.getOMFactory(), element.getXMLStreamReader());
-        OMDocument omDocument = builder.getDocument();
-        Iterator it = omDocument.getChildren();
-        while (it.hasNext()) {
-            OMNode omNode = (OMNode) it.next();
-            // TODO: quick fix required because OMChildrenIterator#next() no longer builds the node
-            omNode.getNextOMSibling();
-            omNode.serializeAndConsume(xmlwriter);
+        OMFactory factory = metaFactory.getOMFactory();
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, destructive);
+        if (expand != 0) {
+            element.getFirstOMChild();
         }
-
-        xmlwriter.flush();
-        String result = writer.toString();
-
-        // We can't test for equivalence because the underlying OMSourceElement is 
-        // changed as it is serialized.  So I am testing for an internal value.
-        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
-        assertFalse("Element expansion when serializing", element.isExpanded());
+        if (expand == 2) {
+            element.build();
+        }
+        for (int iteration=0; iteration<count; iteration++) {
+            boolean expectException = iteration != 0 && expand != 2 && !cache && (destructive || expand == 1);
+            StringWriter writer = new StringWriter();
+            try {
+                OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(factory, element.getXMLStreamReader(cache));
+                builder.getDocument().serialize(writer);
+                if (expectException) {
+                    fail("Expected exception");
+                }
+            } catch (Exception ex) {
+                if (!expectException) {
+                    throw ex;
+                } else {
+                    continue;
+                }
+            }
+            XMLAssert.assertXMLEqual(TestDocument.DOCUMENT1.getContent(), writer.toString());
+            // If the underlying OMDataSource is non destructive, the expansion status should not have been
+            // changed by the call to getXMLStreamReader. If it is destructive and caching is enabled, then
+            // the sourced element should be expanded.
+            if (expand != 0 || (destructive && cache)) {
+                assertTrue(element.isExpanded());
+                assertEquals(expand == 2 || (expand == 1 && cache) || (expand == 0 && destructive && cache), element.isComplete());
+            } else {
+                assertFalse(element.isExpanded());
+            }
+        }
     }
 }
