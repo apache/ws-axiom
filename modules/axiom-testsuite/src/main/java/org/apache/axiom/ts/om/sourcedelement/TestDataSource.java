@@ -18,83 +18,39 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.StringReader;
-import java.io.Writer;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
-class TestDataSource implements OMDataSource {
-    // The data source is a ByteArrayInputStream so that we can verify that the datasource 
-    // is only accessed once.  Currently there is no way to identify a destructive vs. non-destructive OMDataSource.
-    private final ByteArrayInputStream data;
+class TestDataSource extends AbstractPullOMDataSource {
+    private final String data;
+    private final boolean destructive;
+    private boolean destroyed;
 
     TestDataSource(String data) {
-        this.data = new ByteArrayInputStream(data.getBytes());
-        this.data.mark(0);
+        this(data, true);
+    }
+    
+    TestDataSource(String data, boolean destructive) {
+        this.data = data;
+        this.destructive = destructive;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMDataSource#serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
-     */
-    public void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        try {
-            output.write(getBytes());
-        } catch (IOException e) {
-            throw new XMLStreamException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMDataSource#serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
-     */
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        try {
-            writer.write(getString());
-        } catch (IOException e) {
-            throw new XMLStreamException(e);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMDataSource#serialize(javax.xml.stream.XMLStreamWriter)
-     */
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(getReader(), xmlWriter);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMDataSource#getReader()
-     */
     public XMLStreamReader getReader() throws XMLStreamException {
-        return StAXUtils.createXMLStreamReader(new StringReader(getString()));
-    }
-
-    private byte[] getBytes() throws XMLStreamException {
-        try {
-            // The data from the data source should only be accessed once
-            //data.reset();
-            byte[] rc = new byte[data.available()];
-            data.read(rc);
-            return rc;
-        } catch (IOException io) {
-            throw new XMLStreamException(io);
+        if (destroyed) {
+            throw new IllegalStateException("The OMDataSource has already been consumed");
         }
+        if (destructive) {
+            destroyed = true;
+        }
+        return StAXUtils.createXMLStreamReader(new StringReader(data));
     }
 
-    private String getString() throws XMLStreamException {
-        String text = new String(getBytes());
-        return text;
+    public boolean isDestructiveRead() {
+        return destructive;
     }
 }

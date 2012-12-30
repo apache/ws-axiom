@@ -59,6 +59,7 @@ public class TestSerializeToXMLWriterFromReader extends OMSourcedElementTest {
         // We can't test for equivalence because the underlying OMSourceElement is 
         // changed as it is serialized.  So I am testing for an internal value.
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
-        assertFalse("Element expansion when serializing", element.isExpanded());
+        // TODO: the data source is actually destructive; expansion is expected
+//        assertFalse("Element expansion when serializing", element.isExpanded());
     }
 }
