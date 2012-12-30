@@ -465,10 +465,14 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterEmbedded(metaFactory));
             for (int expand = 0; expand <= 2; expand++) {
                 for (int count = 1; count <= 2; count++) {
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, false, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, true, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, false, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, true, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, false, false, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, false, true, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, true, false, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, true, true, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, false, false, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, false, true, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, true, false, expand, count));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, true, true, expand, count));
                 }
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReaderEmbedded(metaFactory));

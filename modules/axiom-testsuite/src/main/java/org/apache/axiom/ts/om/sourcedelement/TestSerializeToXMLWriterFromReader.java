@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 import java.io.StringWriter;
 
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
@@ -34,6 +35,7 @@ import org.custommonkey.xmlunit.XMLAssert;
  */
 public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
     private final boolean destructive;
+    private final boolean orphan;
     private final boolean cache;
     private final int expand;
     private final int count;
@@ -45,6 +47,9 @@ public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
      *            the meta factory for the implementation to be tested
      * @param destructive
      *            determines if the {@link OMDataSource} is destructive or not
+     * @param orphan
+     *            determines if the test is to be executed on an {@link OMSourcedElement} that has a
+     *            parent or not
      * @param cache
      *            the argument to be passed to {@link OMSourcedElement#getXMLStreamReader(boolean)}
      * @param expand
@@ -55,13 +60,15 @@ public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
      *            the number of times {@link OMSourcedElement#getXMLStreamReader(boolean)} will be
      *            called; the only meaningful values are 1 and 2
      */
-    public TestSerializeToXMLWriterFromReader(OMMetaFactory metaFactory, boolean destructive, boolean cache, int expand, int count) {
+    public TestSerializeToXMLWriterFromReader(OMMetaFactory metaFactory, boolean destructive, boolean orphan, boolean cache, int expand, int count) {
         super(metaFactory);
         this.destructive = destructive;
+        this.orphan = orphan;
         this.cache = cache;
         this.expand = expand;
         this.count = count;
         addTestProperty("destructive", String.valueOf(destructive));
+        addTestProperty("orphan", String.valueOf(orphan));
         addTestProperty("cache", String.valueOf(cache));
         addTestProperty("expand", String.valueOf(expand));
         addTestProperty("count", String.valueOf(count));
@@ -69,7 +76,16 @@ public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
+        OMElement parent;
+        if (orphan) {
+            parent = null;
+        } else {
+            parent = factory.createOMElement("parent", null);
+        }
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, destructive);
+        if (parent != null) {
+            parent.addChild(element);
+        }
         if (expand != 0) {
             element.getFirstOMChild();
         }
@@ -101,6 +117,10 @@ public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
                 assertEquals(expand == 2 || (expand == 1 && cache) || (expand == 0 && destructive && cache), element.isComplete());
             } else {
                 assertFalse(element.isExpanded());
+            }
+            if (parent != null) {
+                // Operations on the OMSourcedElement should have no impact on the parent
+                assertTrue(parent.isComplete());
             }
         }
     }
