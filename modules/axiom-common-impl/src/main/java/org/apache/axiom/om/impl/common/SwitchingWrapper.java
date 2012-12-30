@@ -182,13 +182,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         // Note - for OMSourcedElements, temporarily set caching
         // to get the initial navigator nodes
         boolean resetCache = false;
-        if (startNode instanceof OMSourcedElement && 
-                !cache && builder != null) {
-            if (!builder.isCache()) {
-                resetCache = true;
+        try {
+            if (startNode instanceof OMSourcedElement && 
+                    !cache && builder != null) {
+                if (!builder.isCache()) {
+                    resetCache = true;
+                }
+                builder.setCache(true); // bootstrap the navigator
+                
             }
-            builder.setCache(true); // bootstrap the navigator
-        }
+        } catch(Throwable t) {}
         
         currentNode = navigator.getNext();
         updateNextNode(!cache);
