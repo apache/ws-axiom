@@ -35,7 +35,7 @@ public class TestSerializeToStream extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), true);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         element.serialize(bos);
         String newText = new String(bos.toByteArray());

@@ -35,7 +35,7 @@ public class TestSerializeAndConsumeToWriter extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), true);
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
         String result = writer.toString();

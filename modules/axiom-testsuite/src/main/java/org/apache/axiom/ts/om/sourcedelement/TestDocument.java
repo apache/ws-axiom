@@ -74,8 +74,8 @@ final class TestDocument {
         return content;
     }
     
-    OMSourcedElement createOMSourcedElement(OMFactory factory) {
+    OMSourcedElement createOMSourcedElement(OMFactory factory, boolean destructive) {
         OMNamespace ns = factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
-        return factory.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), qname.getLocalPart(), ns);
+        return factory.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent(), destructive), qname.getLocalPart(), ns);
     }
 }

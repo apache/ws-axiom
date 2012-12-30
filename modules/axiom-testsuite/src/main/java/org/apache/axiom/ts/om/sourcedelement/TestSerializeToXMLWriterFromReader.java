@@ -41,7 +41,7 @@ public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory());
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), false);
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
@@ -62,7 +62,6 @@ public class TestSerializeToXMLWriterFromReader extends AxiomTestCase {
         // We can't test for equivalence because the underlying OMSourceElement is 
         // changed as it is serialized.  So I am testing for an internal value.
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
-        // TODO: the data source is actually destructive; expansion is expected
-//        assertFalse("Element expansion when serializing", element.isExpanded());
+        assertFalse("Element expansion when serializing", element.isExpanded());
     }
 }

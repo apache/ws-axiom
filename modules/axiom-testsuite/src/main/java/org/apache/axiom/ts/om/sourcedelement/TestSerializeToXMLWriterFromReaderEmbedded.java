@@ -44,7 +44,7 @@ public class TestSerializeToXMLWriterFromReaderEmbedded extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
-        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(f);
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(f, true);
         OMElement root = f.createOMElement("root", f.createOMNamespace("http://sampleroot", "rootPrefix"));
         root.addChild(element);
         
