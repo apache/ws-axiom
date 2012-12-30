@@ -465,7 +465,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>1.5</version>
+                    <version>1.7</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
@@ -526,6 +526,26 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>initialize</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                if (project.packaging == 'pom' || project.properties['skipTests'] == 'true') {
+                                    project.properties['skipJacoco'] = 'true'
+                                }
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <inherited>true</inherited>
@@ -564,6 +584,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipJacoco}</skip>
                             <!-- Anonymize the session ID (by default it contains the name of the host executing the build) -->
                             <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}</sessionId>
                         </configuration>
@@ -575,14 +596,13 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Note that the execution will not fail if the file to be attached is not present.
-                             Therefore it is safe to execute this for all projects. -->
                         <id>attach-jacoco-exec</id>
                         <phase>test</phase>
                         <goals>
                             <goal>attach-artifact</goal>
                         </goals>
                         <configuration>
+                            <skipAttach>${skipJacoco}</skipAttach>
                             <artifacts>
                                 <artifact>
                                     <file>${project.build.directory}/jacoco.exec</file>
