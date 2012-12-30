@@ -1422,8 +1422,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public OMDataSource getDataSource() {
         if (getEventType() != XMLStreamReader.START_ELEMENT ||
-                !(state == this.NAVIGABLE || 
-                  state == this.SWITCH_AT_NEXT)) {
+                !(state == NAVIGABLE || 
+                  state == SWITCH_AT_NEXT)) {
             return null;
         }
         OMDataSource ds = null;
