@@ -270,6 +270,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCommentEvent(metaFactory, bf, true));
             addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCommentEvent(metaFactory, bf, false));
         }
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetDataHandlerFromElement(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetDataHandlerFromElement(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetElementText(metaFactory));
         for (int i=0; i<builderFactories.length; i++) {
             BuilderFactory bf = builderFactories[i];
