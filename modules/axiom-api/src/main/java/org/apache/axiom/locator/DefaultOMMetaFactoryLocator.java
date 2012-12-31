@@ -68,13 +68,17 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
 
         // Now discover the available implementations by looking for the axiom.xml descriptor.
         log.debug("Starting class path based discovery");
+        Enumeration e;
         try {
-            Enumeration e = classLoader.getResources(ImplementationFactory.DESCRIPTOR_RESOURCE);
+            e = classLoader.getResources(ImplementationFactory.DESCRIPTOR_RESOURCE);
+        } catch (IOException ex) {
+            log.error("Failed to look up " + ImplementationFactory.DESCRIPTOR_RESOURCE + " from class loader", ex);
+            e = null;
+        }
+        if (e != null) {
             while (e.hasMoreElements()) {
                 implementations.addAll(ImplementationFactory.parseDescriptor(loader, (URL)e.nextElement()));
             }
-        } catch (IOException ex) {
-            // Ignore and continue
         }
         
         loadImplementations(implementations);
