@@ -425,6 +425,10 @@
                         </includes>
                         <systemProperties>
                             <property>
+                                <name>java.io.tmpdir</name>
+                                <value>${project.build.directory}/tmp</value>
+                            </property>
+                            <property>
                                 <name>java.awt.headless</name>
                                 <value>true</value>
                             </property>
@@ -537,6 +541,12 @@
                         </goals>
                         <configuration>
                             <source>
+                                import java.io.File
+                                
+                                <!-- Create the temporary directory specified in the surefire configuration -->
+                                new File(project.build.directory, 'tmp').mkdirs()
+                                
+                                <!-- Skip Jacoco if necessary -->
                                 if (project.packaging == 'pom' || project.properties['skipTests'] == 'true') {
                                     project.properties['skipJacoco'] = 'true'
                                 }
