@@ -80,6 +80,6 @@ class DOMUtil {
     
     public static DOMException newDOMException(short code) {
         throw new DOMException(code, DOMMessageFormatter.formatMessage(
-                DOMMessageFormatter.DOM_DOMAIN, code, null));
+                code, null));
     }
 }
