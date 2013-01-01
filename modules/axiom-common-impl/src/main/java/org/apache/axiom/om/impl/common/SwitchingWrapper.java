@@ -438,6 +438,11 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
     
+    private OMAttribute getAttribute(int index) {
+        loadAttributes();
+        return attributes[index];
+    }
+    
     private void loadNamespaces() {
         if (namespaceCount == -1) {
             namespaceCount = 0;
@@ -468,6 +473,11 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
     
+    private OMNamespace getNamespace(int index) {
+        loadNamespaces();
+        return namespaces[index];
+    }
+    
     private void addNamespace(OMNamespace ns) {
         // TODO: verify if this check is actually still necessary
         // Axiom internally creates an OMNamespace instance for the "xml" prefix, even
@@ -489,28 +499,29 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getNamespaceURI
      */
     public String getNamespaceURI(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getNamespaceURI(i);
+            String uri = parser.getNamespaceURI(i);
+
+            /*
+              The following line is necessary to overcome an issue where the empty
+              namespace URI returning null rather than the empty string. Our resolution
+              is to return "" if the return is actually null
+
+              Note that this is not the case for  getNamespaceURI(prefix) method
+              where the contract clearly specifies that the return may be null
+
+            */
+            if (uri == null) {
+                uri = "";
+            }
+            return uri;
         } else {
             if (isStartElement() || isEndElement()) {
-                loadNamespaces();
-                returnString = namespaces[i].getNamespaceURI();
+                return getNamespace(i).getNamespaceURI();
+            } else {
+                throw new IllegalStateException();
             }
         }
-
-        /*
-          The following line is necessary to overcome an issue where the empty
-          namespace URI returning null rather than the empty string. Our resolution
-          is to return "" if the return is actually null
-
-          Note that this is not the case for  getNamespaceURI(prefix) method
-          where the contract clearly specifies that the return may be null
-
-        */
-        if (returnString == null) returnString = "";
-
-        return returnString;
     }
 
     /**
@@ -519,17 +530,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getNamespacePrefix
      */
     public String getNamespacePrefix(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getNamespacePrefix(i);
+            return parser.getNamespacePrefix(i);
         } else {
             if (isStartElement() || isEndElement()) {
-                loadNamespaces();
-                String prefix = namespaces[i].getPrefix();
-                returnString = prefix.length() == 0 ? null : prefix; 
+                String prefix = getNamespace(i).getPrefix();
+                return prefix.length() == 0 ? null : prefix; 
+            } else {
+                throw new IllegalStateException();
             }
         }
-        return returnString;
     }
 
     /**
@@ -575,19 +585,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getAttributeValue
      */
     public String getAttributeValue(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getAttributeValue(i);
+            return parser.getAttributeValue(i);
         } else {
             if (isStartElement()) {
-                loadAttributes();
-                returnString = attributes[i].getAttributeValue();
+                return getAttribute(i).getAttributeValue();
             } else {
                 throw new IllegalStateException(
                         "attribute type accessed in illegal event!");
             }
         }
-        return returnString;
     }
 
     /**
@@ -596,19 +603,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getAttributeType
      */
     public String getAttributeType(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getAttributeType(i);
+            return parser.getAttributeType(i);
         } else {
             if (isStartElement()) {
-                loadAttributes();
-                returnString = attributes[i].getAttributeType();
+                return getAttribute(i).getAttributeType();
             } else {
                 throw new IllegalStateException(
                         "attribute type accessed in illegal event!");
             }
         }
-        return returnString;
     }
 
     /**
@@ -617,25 +621,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getAttributePrefix
      */
     public String getAttributePrefix(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getAttributePrefix(i);
+            return parser.getAttributePrefix(i);
         } else {
             if (isStartElement()) {
-                loadAttributes();
-                OMAttribute attrib = attributes[i];
-                if (attrib != null) {
-                    OMNamespace nameSpace = attrib.getNamespace();
-                    if (nameSpace != null) {
-                        returnString = nameSpace.getPrefix();
-                    }
-                }
+                return getAttribute(i).getPrefix();
             } else {
                 throw new IllegalStateException(
                         "attribute prefix accessed in illegal event!");
             }
         }
-        return returnString;
     }
 
     /**
@@ -644,19 +639,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getAttributeLocalName
      */
     public String getAttributeLocalName(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getAttributeLocalName(i);
+            return parser.getAttributeLocalName(i);
         } else {
             if (isStartElement()) {
-                loadAttributes();
-                returnString = attributes[i].getLocalName();
+                return getAttribute(i).getLocalName();
             } else {
                 throw new IllegalStateException(
                         "attribute localName accessed in illegal event!");
             }
         }
-        return returnString;
     }
 
     /**
@@ -665,25 +657,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getAttributeNamespace
      */
     public String getAttributeNamespace(int i) {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getAttributeNamespace(i);
+            return parser.getAttributeNamespace(i);
         } else {
             if (isStartElement()) {
-                loadAttributes();
-                OMAttribute attrib = attributes[i];
-                if (attrib != null) {
-                    OMNamespace nameSpace = attrib.getNamespace();
-                    if (nameSpace != null) {
-                        returnString = nameSpace.getNamespaceURI();
-                    }
-                }
+                return getAttribute(i).getNamespaceURI();
             } else {
                 throw new IllegalStateException(
                         "attribute nameSpace accessed in illegal event!");
             }
         }
-        return returnString;
     }
 
     /**
@@ -692,19 +675,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getAttributeName
      */
     public QName getAttributeName(int i) {
-        QName returnQName = null;
         if (parser != null) {
-            returnQName = parser.getAttributeName(i);
+            return parser.getAttributeName(i);
         } else {
             if (isStartElement()) {
-                loadAttributes();
-                returnQName = attributes[i].getQName();
+                return getAttribute(i).getQName();
             } else {
                 throw new IllegalStateException(
                         "attribute count accessed in illegal event!");
             }
         }
-        return returnQName;
     }
 
     /**
