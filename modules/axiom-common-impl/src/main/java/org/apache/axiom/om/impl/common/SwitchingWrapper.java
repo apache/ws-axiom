@@ -102,8 +102,19 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Field NAVIGABLE */
     private static final short NAVIGABLE = 0;
     private static final short SWITCH_AT_NEXT = 1;
+    
+    /**
+     * Indicates that the last event before the final {@link XMLStreamConstants#END_DOCUMENT} event
+     * has been generated. The next event will be {@link XMLStreamConstants#END_DOCUMENT} and state
+     * will transition to {@link #DOCUMENT_COMPLETE}.
+     */
     private static final short COMPLETED = 2;
+    
     private static final short SWITCHED = 3;
+    
+    /**
+     * Indicates that the final {@link XMLStreamConstants#END_DOCUMENT} event has been generated.
+     */
     private static final short DOCUMENT_COMPLETE = 4;
 
     /** Field state */
@@ -1031,12 +1042,15 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 }
             }
         } else {
-            if (state == SWITCHED && currentEvent == END_ELEMENT && depth == 0 && rootNode instanceof OMElement) {
+            assert state == SWITCHED;
+            if (depth == 0 && rootNode instanceof OMElement) {
+                // If rootNode is an OMElement and depth == 0, then currentEvent can only be END_ELEMENT
+                // (because we don't generate any other events at depth 0)
+                assert currentEvent == END_ELEMENT;
                 state = COMPLETED;
+            } else if (currentEvent == END_DOCUMENT) {
+                state = DOCUMENT_COMPLETE;
             }
-            state = (currentEvent == END_DOCUMENT)
-                    ? DOCUMENT_COMPLETE
-                    : state;
         }
     }
 
