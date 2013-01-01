@@ -1349,16 +1349,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         Map nsMap = new LinkedHashMap();
         while (context != null && !(context instanceof OMDocument)) {
             OMElement element = (OMElement) context;
-            Iterator i = element.getAllDeclaredNamespaces();
-            while (i != null && i.hasNext()) {
-                addNamespaceToMap((OMNamespace) i.next(), nsMap);
+            for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                addNamespaceToMap((OMNamespace) it.next(), nsMap);
             }
             if (element.getNamespace() != null) {
                 addNamespaceToMap(element.getNamespace(), nsMap);
             }
-            for (Iterator iter = element.getAllAttributes();
-                 iter != null && iter.hasNext();) {
-                OMAttribute attr = (OMAttribute) iter.next();
+            for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
+                OMAttribute attr = (OMAttribute) it.next();
                 if (attr.getNamespace() != null) {
                     addNamespaceToMap(attr.getNamespace(), nsMap);
                 }
