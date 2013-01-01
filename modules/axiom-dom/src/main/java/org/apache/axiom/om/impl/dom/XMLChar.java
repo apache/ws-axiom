@@ -40,50 +40,26 @@ public class XMLChar {
     /** Character flags. */
     private static final byte[] CHARS = new byte[1 << 16];
 
-    /** Valid character mask. */
-    public static final int MASK_VALID = 0x01;
-
     /** Space character mask. */
-    public static final int MASK_SPACE = 0x02;
+    private static final int MASK_SPACE = 0x02;
 
     /** Name start character mask. */
-    public static final int MASK_NAME_START = 0x04;
+    private static final int MASK_NAME_START = 0x04;
 
     /** Name character mask. */
-    public static final int MASK_NAME = 0x08;
-
-    /** Pubid character mask. */
-    public static final int MASK_PUBID = 0x10;
-
-    /**
-     * Content character mask. Special characters are those that can be considered the start of
-     * markup, such as '&lt;' and '&amp;'. The various newline characters are considered special as
-     * well. All other valid XML characters can be considered content.
-     * <p/>
-     * This is an optimization for the inner loop of character scanning.
-     */
-    public static final int MASK_CONTENT = 0x20;
+    private static final int MASK_NAME = 0x08;
 
     /** NCName start character mask. */
-    public static final int MASK_NCNAME_START = 0x40;
+    private static final int MASK_NCNAME_START = 0x40;
 
     /** NCName character mask. */
-    public static final int MASK_NCNAME = 0x80;
+    private static final int MASK_NCNAME = 0x80;
 
     //
     // Static initialization
     //
 
     static {
-
-        //
-        // [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] |
-        //              [#xE000-#xFFFD] | [#x10000-#x10FFFF]
-        //
-
-        int charRange[] = {
-                0x0009, 0x000A, 0x000D, 0x000D, 0x0020, 0xD7FF, 0xE000, 0xFFFD,
-        };
 
         //
         // [3] S ::= (#x20 | #x9 | #xD | #xA)+
@@ -108,19 +84,6 @@ public class XMLChar {
 
         int nameStartChar[] = {
                 0x003A, 0x005F, // ':' and '_'
-        };
-
-        //
-        // [13] PubidChar ::= #x20 | 0xD | 0xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
-        //
-
-        int pubidChar[] = {
-                0x000A, 0x000D, 0x0020, 0x0021, 0x0023, 0x0024, 0x0025, 0x003D,
-                0x005F
-        };
-
-        int pubidRange[] = {
-                0x0027, 0x003B, 0x003F, 0x005A, 0x0061, 0x007A
         };
 
         //
@@ -238,28 +201,8 @@ public class XMLChar {
         };
 
         //
-        // SpecialChar ::= '<', '&', '\n', '\r', ']'
-        //
-
-        int specialChar[] = {
-                '<', '&', '\n', '\r', ']',
-        };
-
-        //
         // Initialize
         //
-
-        // set valid characters
-        for (int i = 0; i < charRange.length; i += 2) {
-            for (int j = charRange[i]; j <= charRange[i + 1]; j++) {
-                CHARS[j] |= MASK_VALID | MASK_CONTENT;
-            }
-        }
-
-        // remove special characters
-        for (int i = 0; i < specialChar.length; i++) {
-            CHARS[specialChar[i]] = (byte) (CHARS[specialChar[i]] & ~MASK_CONTENT);
-        }
 
         // set space characters
         for (int i = 0; i < spaceChar.length; i++) {
@@ -311,120 +254,7 @@ public class XMLChar {
         // remove ':' from allowable MASK_NCNAME_START and MASK_NCNAME chars
         CHARS[':'] &= ~(MASK_NCNAME_START | MASK_NCNAME);
 
-        // set Pubid characters
-        for (int i = 0; i < pubidChar.length; i++) {
-            CHARS[pubidChar[i]] |= MASK_PUBID;
-        }
-        for (int i = 0; i < pubidRange.length; i += 2) {
-            for (int j = pubidRange[i]; j <= pubidRange[i + 1]; j++) {
-                CHARS[j] |= MASK_PUBID;
-            }
-        }
-
     } // <clinit>()
-
-    //
-    // Public static methods
-    //
-
-    /**
-     * Returns true if the specified character is a supplemental character.
-     *
-     * @param c The character to check.
-     */
-    public static boolean isSupplemental(int c) {
-        return (c >= 0x10000 && c <= 0x10FFFF);
-    }
-
-    /**
-     * Returns true the supplemental character corresponding to the given surrogates.
-     *
-     * @param h The high surrogate.
-     * @param l The low surrogate.
-     */
-    public static int supplemental(char h, char l) {
-        return (h - 0xD800) * 0x400 + (l - 0xDC00) + 0x10000;
-    }
-
-    /**
-     * Returns the high surrogate of a supplemental character
-     *
-     * @param c The supplemental character to "split".
-     */
-    public static char highSurrogate(int c) {
-        return (char) (((c - 0x00010000) >> 10) + 0xD800);
-    }
-
-    /**
-     * Returns the low surrogate of a supplemental character
-     *
-     * @param c The supplemental character to "split".
-     */
-    public static char lowSurrogate(int c) {
-        return (char) (((c - 0x00010000) & 0x3FF) + 0xDC00);
-    }
-
-    /**
-     * Returns whether the given character is a high surrogate
-     *
-     * @param c The character to check.
-     */
-    public static boolean isHighSurrogate(int c) {
-        return (0xD800 <= c && c <= 0xDBFF);
-    }
-
-    /**
-     * Returns whether the given character is a low surrogate
-     *
-     * @param c The character to check.
-     */
-    public static boolean isLowSurrogate(int c) {
-        return (0xDC00 <= c && c <= 0xDFFF);
-    }
-
-
-    /**
-     * Returns true if the specified character is valid. This method also checks the surrogate
-     * character range from 0x10000 to 0x10FFFF.
-     * <p/>
-     * If the program chooses to apply the mask directly to the <code>CHARS</code> array, then they
-     * are responsible for checking the surrogate character range.
-     *
-     * @param c The character to check.
-     */
-    public static boolean isValid(int c) {
-        return (c < 0x10000 && (CHARS[c] & MASK_VALID) != 0) ||
-                (0x10000 <= c && c <= 0x10FFFF);
-    } // isValid(int):boolean
-
-    /**
-     * Returns true if the specified character is invalid.
-     *
-     * @param c The character to check.
-     */
-    public static boolean isInvalid(int c) {
-        return !isValid(c);
-    } // isInvalid(int):boolean
-
-    /**
-     * Returns true if the specified character can be considered content.
-     *
-     * @param c The character to check.
-     */
-    public static boolean isContent(int c) {
-        return (c < 0x10000 && (CHARS[c] & MASK_CONTENT) != 0) ||
-                (0x10000 <= c && c <= 0x10FFFF);
-    } // isContent(int):boolean
-
-    /**
-     * Returns true if the specified character can be considered markup. Markup characters include
-     * '&lt;', '&amp;', and '%'.
-     *
-     * @param c The character to check.
-     */
-    public static boolean isMarkup(int c) {
-        return c == '<' || c == '&' || c == '%';
-    } // isMarkup(int):boolean
 
     /**
      * Returns true if the specified character is a space character as defined by production [3] in
@@ -487,16 +317,6 @@ public class XMLChar {
         return c < 0x10000 && (CHARS[c] & MASK_NCNAME) != 0;
     } // isNCName(int):boolean
 
-    /**
-     * Returns true if the specified character is a valid Pubid character as defined by production
-     * [13] in the XML 1.0 specification.
-     *
-     * @param c The character to check.
-     */
-    public static boolean isPubid(int c) {
-        return c < 0x10000 && (CHARS[c] & MASK_PUBID) != 0;
-    } // isPubid(int):boolean
-
     /*
      * [5] Name ::= (Letter | '_' | ':') (NameChar)*
      */
@@ -548,82 +368,4 @@ public class XMLChar {
         }
         return true;
     } // isValidNCName(String):boolean
-
-    /*
-     * [7] Nmtoken ::= (NameChar)+
-     */
-    /**
-     * Check to see if a string is a valid Nmtoken according to [7]
-     * in the XML 1.0 Recommendation
-     *
-     * @param nmtoken string to check
-     * @return true if nmtoken is a valid Nmtoken
-     */
-    public static boolean isValidNmtoken(String nmtoken) {
-        if (nmtoken.length() == 0)
-            return false;
-        for (int i = 0; i < nmtoken.length(); i++) {
-            char ch = nmtoken.charAt(i);
-            if (! isName(ch)) {
-                return false;
-            }
-        }
-        return true;
-    } // isValidName(String):boolean
-
-    // encodings
-
-    /**
-     * Returns true if the encoding name is a valid IANA encoding. This method does not verify that
-     * there is a decoder available for this encoding, only that the characters are valid for an
-     * IANA encoding name.
-     *
-     * @param ianaEncoding The IANA encoding name.
-     */
-    public static boolean isValidIANAEncoding(String ianaEncoding) {
-        if (ianaEncoding != null) {
-            int length = ianaEncoding.length();
-            if (length > 0) {
-                char c = ianaEncoding.charAt(0);
-                if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
-                    for (int i = 1; i < length; i++) {
-                        c = ianaEncoding.charAt(i);
-                        if ((c < 'A' || c > 'Z') && (c < 'a' || c > 'z') &&
-                                (c < '0' || c > '9') && c != '.' && c != '_' &&
-                                c != '-') {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
-        }
-        return false;
-    } // isValidIANAEncoding(String):boolean
-
-    /**
-     * Returns true if the encoding name is a valid Java encoding. This method does not verify that
-     * there is a decoder available for this encoding, only that the characters are valid for an
-     * Java encoding name.
-     *
-     * @param javaEncoding The Java encoding name.
-     */
-    public static boolean isValidJavaEncoding(String javaEncoding) {
-        if (javaEncoding != null) {
-            int length = javaEncoding.length();
-            if (length > 0) {
-                for (int i = 1; i < length; i++) {
-                    char c = javaEncoding.charAt(i);
-                    if ((c < 'A' || c > 'Z') && (c < 'a' || c > 'z') &&
-                            (c < '0' || c > '9') && c != '.' && c != '_' &&
-                            c != '-') {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    } // isValidIANAEncoding(String):boolean
-
 } // class XMLChar

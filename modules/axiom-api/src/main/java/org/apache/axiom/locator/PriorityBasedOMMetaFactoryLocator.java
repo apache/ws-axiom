@@ -44,7 +44,7 @@ class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
                 String name = feature.getName();
                 int priority = feature.getPriority();
                 Integer highestPriority = (Integer)priorityMap.get(name);
-                if (highestPriority == null || priority > ((Integer)highestPriority).intValue()) {
+                if (highestPriority == null || priority > highestPriority.intValue()) {
                     priorityMap.put(name, Integer.valueOf(priority));
                     factories.put(name, implementation.getMetaFactory());
                 }

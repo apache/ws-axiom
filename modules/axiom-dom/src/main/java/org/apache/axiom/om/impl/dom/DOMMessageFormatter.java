@@ -26,21 +26,7 @@ import java.util.ResourceBundle;
 
 /** Used to format DOM error messages, using the system locale. */
 public class DOMMessageFormatter {
-    public static final String DOM_DOMAIN = "http://www.w3.org/dom/DOMTR";
-
-    public static final String XML_DOMAIN =
-            "http://www.w3.org/TR/1998/REC-xml-19980210";
-
-    public static final String SERIALIZER_DOMAIN =
-            "http://apache.org/xml/serializer";
-
-    private static ResourceBundle domResourceBundle = null;
-
-    private static ResourceBundle xmlResourceBundle = null;
-
-    private static ResourceBundle serResourceBundle = null;
-
-    private static Locale locale = null;
+    private static final ResourceBundle resourceBundle;
 
     public static final String LEVEL3_NOT_SUPPORTED =
             "DOM Level 3 operations are not supported";
@@ -69,31 +55,22 @@ public class DOMMessageFormatter {
         "TYPE_MISMATCH_ERR",
     };
 
-    DOMMessageFormatter() {
-        locale = Locale.getDefault();
+    static {
+        resourceBundle = PropertyResourceBundle.getBundle(
+                "org.apache.axiom.om.impl.dom.msg.DOMMessages", Locale.getDefault());
     }
 
     /**
      * Formats a message with the specified arguments using the given locale information.
-     *
-     * @param domain    domain from which error string is to come.
      * @param key       The message key.
      * @param arguments The message replacement text arguments. The order of the arguments must
      *                  match that of the placeholders in the actual message.
+     *
      * @return Returns the formatted message.
      * @throws MissingResourceException Thrown if the message with the specified key cannot be
      *                                  found.
      */
-    public static String formatMessage(String domain, String key,
-                                       Object[] arguments) throws MissingResourceException {
-        ResourceBundle resourceBundle = getResourceBundle(domain);
-        if (resourceBundle == null) {
-            init();
-            resourceBundle = getResourceBundle(domain);
-            if (resourceBundle == null)
-                throw new MissingResourceException("Unknown domain" + domain,
-                                                   null, key);
-        }
+    public static String formatMessage(String key, Object[] arguments) throws MissingResourceException {
         // format message
         String msg;
         try {
@@ -130,48 +107,7 @@ public class DOMMessageFormatter {
         return msg;
     }
 
-    public static String formatMessage(String domain, int exceptionId,
-                                       Object[] arguments) throws MissingResourceException {
-        return formatMessage(domain, exceptionKeys[exceptionId-1], arguments);
-    }
-    
-    static ResourceBundle getResourceBundle(String domain) {
-        if (domain == DOM_DOMAIN || domain.equals(DOM_DOMAIN))
-            return domResourceBundle;
-        else if (domain == XML_DOMAIN || domain.equals(XML_DOMAIN))
-            return xmlResourceBundle;
-        else if (domain == SERIALIZER_DOMAIN
-                || domain.equals(SERIALIZER_DOMAIN))
-            return serResourceBundle;
-        return null;
-    }
-
-    /** Initializes Message Formatter. */
-    public static void init() {
-        if (locale != null) {
-            domResourceBundle = PropertyResourceBundle.getBundle(
-                    "org.apache.axiom.om.impl.dom.msg.DOMMessages", locale);
-            serResourceBundle = PropertyResourceBundle.getBundle(
-                    "org.apache.axiom.om.impl.dom.msg.XMLSerializerMessages",
-                    locale);
-            xmlResourceBundle = PropertyResourceBundle.getBundle(
-                    "org.apache.axiom.om.impl.dom.msg.XMLMessages", locale);
-        } else {
-            domResourceBundle = PropertyResourceBundle
-                    .getBundle("org.apache.axiom.om.impl.dom.msg.DOMMessages");
-            serResourceBundle = PropertyResourceBundle
-                    .getBundle("org.apache.axiom.om.impl.dom.msg.XMLSerializerMessages");
-            xmlResourceBundle = PropertyResourceBundle
-                    .getBundle("org.apache.axiom.om.impl.dom.msg.XMLMessages");
-        }
-    }
-
-    /**
-     * Sets Locale to be used by the formatter.
-     *
-     * @param dlocale
-     */
-    public static void setLocale(Locale dlocale) {
-        locale = dlocale;
+    public static String formatMessage(int exceptionId, Object[] arguments) throws MissingResourceException {
+        return formatMessage(exceptionKeys[exceptionId-1], arguments);
     }
 }

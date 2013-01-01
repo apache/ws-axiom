@@ -180,19 +180,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         // initiate the next and current nodes
         // Note - navigator is written in such a way that it first
         // returns the starting node at the first call to it
-        // Note - for OMSourcedElements, temporarily set caching
-        // to get the initial navigator nodes
-        boolean resetCache = false;
-        try {
-            if (startNode instanceof OMSourcedElement && 
-                    !cache && builder != null) {
-                if (!builder.isCache()) {
-                    resetCache = true;
-                }
-                builder.setCache(true); // bootstrap the navigator
-                
-            }
-        } catch(Throwable t) {}
         
         currentNode = navigator.getNext();
         updateNextNode(!cache);
@@ -206,10 +193,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             currentEvent = START_DOCUMENT;
         }
-        
-        if (resetCache) {
-            builder.setCache(cache); 
-        }
     }
 
     /**
@@ -222,13 +205,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                OMNamespace ns = ((OMElement) lastNode).getNamespace();
-                if (ns == null) {
-                    return null;
-                } else {
-                    String prefix = ns.getPrefix();
-                    return prefix.length() == 0 ? null : prefix; 
-                }
+                return ((OMElement)lastNode).getPrefix();
             } else {
                 throw new IllegalStateException();
             }
@@ -245,13 +222,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                OMNamespace ns = ((OMElement) lastNode).getNamespace();
-                if (ns == null) {
-                    return null;
-                } else {
-                    String namespaceURI = ns.getNamespaceURI();
-                    return namespaceURI.length() == 0 ? null : namespaceURI;
-                }
+                return ((OMElement)lastNode).getNamespaceURI();
             } else {
                 throw new IllegalStateException();
             }
@@ -1446,8 +1417,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public OMDataSource getDataSource() {
         if (getEventType() != XMLStreamReader.START_ELEMENT ||
-                !(state == this.NAVIGABLE || 
-                  state == this.SWITCH_AT_NEXT)) {
+                !(state == NAVIGABLE || 
+                  state == SWITCH_AT_NEXT)) {
             return null;
         }
         OMDataSource ds = null;

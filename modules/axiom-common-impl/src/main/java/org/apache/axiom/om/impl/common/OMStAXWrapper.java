@@ -48,19 +48,6 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
     private XOPEncodingStreamReader xopEncoder;
     
     /**
-     * When constructing the OMStaxWrapper, the creator must produce the builder (an instance of the
-     * OMXMLparserWrapper of the input) and the Element Node to start parsing. The wrapper will
-     * parse(proceed) until the end of the given element. Hence care should be taken to pass the
-     * root element if the entire document is needed.
-     *
-     * @param builder
-     * @param startNode
-     */
-    public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode) {
-        this(builder, startNode, false, false);
-    }
-
-    /**
      * Constructor OMStAXWrapper.
      *
      * @param builder

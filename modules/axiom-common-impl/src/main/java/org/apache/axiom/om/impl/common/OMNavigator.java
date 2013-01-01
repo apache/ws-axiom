@@ -44,7 +44,7 @@ public class OMNavigator {
     // root, the traversal is terminated
 
     /** Field root */
-    private OMSerializable root;
+    private OMContainer root;
 
     /** Field backtracked */
     private boolean backtracked;
@@ -61,30 +61,17 @@ public class OMNavigator {
     // be considered as an interior node or a leaf node.
     private boolean isDataSourceALeaf = false;
 
-    /** Constructor OMNavigator. */
-    public OMNavigator() {
-    }
-
     /**
      * Constructor OMNavigator.
      *
      * @param node
      */
-    public OMNavigator(OMSerializable node) {
-        init(node);
-    }
-
-    /**
-     * Method init.
-     *
-     * @param node
-     */
-    public void init(OMSerializable node) {
+    public OMNavigator(OMContainer node) {
         next = node;
         root = node;
         backtracked = false;
     }
-    
+
     /**
      * Indicate if an OMSourcedElement with a OMDataSource
      * should be considered as an interior element node or as
@@ -194,7 +181,8 @@ public class OMNavigator {
      * @return first child or null
      */
     private OMNode _getFirstChild(OMContainer node) {
-        if (isOMSourcedElement(node)) {
+        // TODO: We have a problem if the tree has parts constructed by different builders; this is related to AXIOM-201 and AXIOM-431
+        if (node.getBuilder() != root.getBuilder()) {
             OMNode first = node.getFirstOMChild();
             OMNode sibling = first;
             while (sibling != null) {

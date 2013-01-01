@@ -27,13 +27,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after
  * serialization Document: testDocument3 (which uses unqualified names) Type of Serialization:
  * Serialize and cache Tests attempt to rename namespace and localpart, which is not allowed
  */
-public class TestName3Unqualified extends OMSourcedElementTest {
+public class TestName3Unqualified extends AxiomTestCase {
     public TestName3Unqualified(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -45,7 +46,7 @@ public class TestName3Unqualified extends OMSourcedElementTest {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                f.createOMElement(new TestDataSource(testDocument3), "DUMMYNAME", ns);
+                f.createOMElement(new TestDataSource(TestDocument.DOCUMENT3.getContent()), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 

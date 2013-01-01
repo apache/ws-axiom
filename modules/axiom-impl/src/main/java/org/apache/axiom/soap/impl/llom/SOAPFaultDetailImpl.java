@@ -29,8 +29,6 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
@@ -60,13 +58,6 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
 
     public Iterator getAllDetailEntries() {
         return this.getChildren();
-    }
-
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException {
-        this.registerContentHandler(writer);
-
-        super.internalSerialize(writer, cache);
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

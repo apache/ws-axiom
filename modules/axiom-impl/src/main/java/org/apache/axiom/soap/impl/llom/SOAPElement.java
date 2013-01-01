@@ -24,11 +24,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-
-import javax.xml.stream.XMLStreamWriter;
 
 public abstract class SOAPElement extends OMElementImpl {
 
@@ -81,25 +78,4 @@ public abstract class SOAPElement extends OMElementImpl {
             checkParent((OMElement) element);
         }
     }
-
-    /**
-     * Utility method to register a content handler for 
-     * push type builders.
-     * @param writer
-     * @return PULL_TYPE_BUILDER or PUSH_TYPE_BUILDER
-     */
-    protected short registerContentHandler(XMLStreamWriter writer) {
-        //  select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
-        return builderType;
-    }
-
 }

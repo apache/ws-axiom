@@ -23,12 +23,16 @@ import javax.xml.XMLConstants;
 
 /** Interface OMConstants */
 public interface OMConstants {
-
-    // OMBuilder constants
-    /** Field PUSH_TYPE_BUILDER */
+    /**
+     * @deprecated This constant is used as return value of
+     *             {@link OMXMLParserWrapper#getBuilderType()} which is deprecated.
+     */
     short PUSH_TYPE_BUILDER = 0;
 
-    /** Field PULL_TYPE_BUILDER */
+    /**
+     * @deprecated This constant is used as return value of
+     *             {@link OMXMLParserWrapper#getBuilderType()} which is deprecated.
+     */
     short PULL_TYPE_BUILDER = 1;
 
     /**

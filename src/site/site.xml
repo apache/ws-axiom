@@ -52,6 +52,7 @@
             <item name="Javadocs" href="/apidocs/index.html"/>
             <item name="FAQ" href="faq.html"/>
             <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
+            <item name="Code Coverage" href="code-coverage/index.html"/>
         </menu>
         <menu name="Apache">
             <item name="License" href="http://www.apache.org/licenses/"/>
