@@ -38,15 +38,13 @@ public class AttachmentCacheMonitorTest extends AbstractTestCase {
             acm.setTimeout(10); 
 
 
-            File aFile = new File("A");
-            aFile.createNewFile();
+            File aFile = File.createTempFile("fileA", ".tmp");
             String aFileName = aFile.getCanonicalPath();
             acm.register(aFileName);
 
             Thread.sleep(INTERVAL);
 
-            File bFile = new File("B");
-            bFile.createNewFile();
+            File bFile = File.createTempFile("fileB", ".tmp");
             String bFileName = bFile.getCanonicalPath();
             acm.register(bFileName);
 
@@ -66,8 +64,7 @@ public class AttachmentCacheMonitorTest extends AbstractTestCase {
 
             Thread.sleep(INTERVAL);
 
-            File cFile = new File("C");
-            cFile.createNewFile();
+            File cFile = File.createTempFile("fileC", ".tmp");
             String cFileName = cFile.getCanonicalPath();
             acm.register(cFileName);
             acm.access(bFileName);
