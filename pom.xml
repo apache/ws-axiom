@@ -379,7 +379,7 @@
                         <artifactId>stax-api</artifactId>
                     </exclusion>
                 </exclusions>
-        </dependency>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <properties>
