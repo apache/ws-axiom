@@ -39,9 +39,8 @@ public class DialectTestSuite extends TestSuite {
         
         File targetDir = new File("target");
         
-        // On Java 1.6, also add the StAX implementation from the JRE
-        // The check is not very clean but it should be enough for a unit test...
-        if (System.getProperty("java.version").startsWith("1.6")) {
+        // On Java 1.6 and above, also add the StAX implementation from the JRE
+        if (!System.getProperty("java.version").startsWith("1.5")) {
             builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), null));
         }
         
