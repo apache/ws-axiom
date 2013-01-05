@@ -25,31 +25,30 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-final class Woodstox4InputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
-    private final boolean wstx276;
-    
-    public Woodstox4InputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect, boolean wstx276) {
-        super(parent, dialect);
-        this.wstx276 = wstx276;
+import org.apache.axiom.util.stax.wrapper.XMLInputFactoryWrapper;
+
+final class CloseShieldXMLInputFactoryWrapper extends XMLInputFactoryWrapper {
+    public CloseShieldXMLInputFactoryWrapper(XMLInputFactory parent) {
+        super(parent);
     }
 
     public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding) throws XMLStreamException {
-        return super.createXMLStreamReader(wstx276 ? new CloseShieldInputStream(stream) : stream, encoding);
+        return super.createXMLStreamReader(new CloseShieldInputStream(stream), encoding);
     }
 
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
-        return super.createXMLStreamReader(wstx276 ? new CloseShieldInputStream(stream) : stream);
+        return super.createXMLStreamReader(new CloseShieldInputStream(stream));
     }
 
     public XMLStreamReader createXMLStreamReader(Reader reader) throws XMLStreamException {
-        return super.createXMLStreamReader(wstx276 ? new CloseShieldReader(reader) : reader);
+        return super.createXMLStreamReader(new CloseShieldReader(reader));
     }
 
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream) throws XMLStreamException {
-        return super.createXMLStreamReader(systemId, wstx276 ? new CloseShieldInputStream(stream) : stream);
+        return super.createXMLStreamReader(systemId, new CloseShieldInputStream(stream));
     }
 
     public XMLStreamReader createXMLStreamReader(String systemId, Reader reader) throws XMLStreamException {
-        return super.createXMLStreamReader(systemId, wstx276 ? new CloseShieldReader(reader) : reader);
+        return super.createXMLStreamReader(systemId, new CloseShieldReader(reader));
     }
 }

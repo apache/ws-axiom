@@ -19,6 +19,7 @@
 
 package org.apache.axiom.util.stax.dialect;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
 class XLXP1StreamReaderWrapper extends XLXPStreamReaderWrapper {
@@ -30,5 +31,15 @@ class XLXP1StreamReaderWrapper extends XLXPStreamReaderWrapper {
         // Under some circumstances, some versions of XLXP return an empty string instead of null
         String encoding = super.getEncoding();
         return encoding == null || encoding.length() == 0 ? null : encoding;
+    }
+
+    public String getNamespaceURI(String prefix) {
+        // XLXP may return "" instead of null
+        String uri = super.getNamespaceURI(prefix);
+        return uri == null || uri.length() == 0 ? null : uri;
+    }
+
+    public NamespaceContext getNamespaceContext() {
+        return new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext());
     }
 }

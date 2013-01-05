@@ -83,7 +83,8 @@ class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWr
     }
 
     public String getNamespaceURI(String prefix) {
-        return namespaceContext.getNamespaceURI(prefix);
+        String uri = namespaceContext.getNamespaceURI(prefix);
+        return uri.length() == 0 ? null : uri;
     }
 
     public XMLStreamReader getParent() {

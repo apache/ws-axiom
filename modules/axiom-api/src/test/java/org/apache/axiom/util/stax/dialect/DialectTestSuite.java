@@ -42,18 +42,25 @@ public class DialectTestSuite extends TestSuite {
         // On Java 1.6 and above, also add the StAX implementation from the JRE
         if (!System.getProperty("java.version").startsWith("1.5")) {
             Properties props = new Properties();
-            props.setProperty("javax.xml.stream.XMLInputFactory", "com.sun.xml.internal.stream.XMLInputFactoryImpl");
-            props.setProperty("javax.xml.stream.XMLOutputFactory", "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
+            if (System.getProperty("java.vendor").startsWith("IBM")) {
+                // Necessary for IBM Java 1.6. Note that IBM Java 1.7 also supports
+                // the com.sun.xml.internal.stream.* factories.
+                props.setProperty("javax.xml.stream.XMLInputFactory", "com.ibm.xml.xlxp.api.stax.XMLInputFactoryImpl");
+                props.setProperty("javax.xml.stream.XMLOutputFactory", "com.ibm.xml.xlxp.api.stax.XMLOutputFactoryImpl");
+            } else {
+                props.setProperty("javax.xml.stream.XMLInputFactory", "com.sun.xml.internal.stream.XMLInputFactoryImpl");
+                props.setProperty("javax.xml.stream.XMLOutputFactory", "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
+            }
             builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), props));
-            // SJSXP doesn't report whitespace in prolog
+            // Neither SJSXP nor XLXP report whitespace in prolog
             builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
         }
         
         addParsersFromDirectory(builder, new File("parsers"));
         addParsersFromDirectory(builder, new File(targetDir, "parsers"));
         
-        // SJSXP doesn't report whitespace in prolog
-        builder.exclude(TestGetTextInProlog.class, "(implementation=sjsxp-1.0.1.jar)");
+        // SJSXP and XLXP don't report whitespace in prolog
+        builder.exclude(TestGetTextInProlog.class, "(|(implementation=sjsxp-1.0.1.jar)(implementation=com.ibm.ws.prereq.xlxp.jar))");
         
         return builder.build();
     }
