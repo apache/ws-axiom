@@ -274,16 +274,22 @@ public class StAXDialectDetector {
         // Try Sun's implementation found in JREs
         cls = loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
         if (cls != null) {
-            // Check if the implementation has the bug fixed here:
-            // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
-            boolean isUnsafeStreamResult;
-            try {
-                cls.getDeclaredField("fStreamResult");
-                isUnsafeStreamResult = true;
-            } catch (NoSuchFieldException ex) {
-                isUnsafeStreamResult = false;
+            // Some JREs (such as IBM Java 1.7) include com.sun.xml.internal.stream.XMLOutputFactoryImpl
+            // for compatibility (in which case it extends the XMLOutputFactory implementation from
+            // another StAX implementation, e.g. XLXP). Detect this situation by checking the superclass.
+            Class superClass = cls.getSuperclass();
+            if (superClass == XMLOutputFactory.class || superClass.getName().startsWith("com.sun.")) {
+                // Check if the implementation has the bug fixed here:
+                // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
+                boolean isUnsafeStreamResult;
+                try {
+                    cls.getDeclaredField("fStreamResult");
+                    isUnsafeStreamResult = true;
+                } catch (NoSuchFieldException ex) {
+                    isUnsafeStreamResult = false;
+                }
+                return new SJSXPDialect(isUnsafeStreamResult);
             }
-            return new SJSXPDialect(isUnsafeStreamResult);
         }
         
         // Try IBM's XL XP-J
