@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.CharBuffer;
 
-public class CloseShieldReader extends Reader {
+final class CloseShieldReader extends Reader {
     private final Reader parent;
 
     public CloseShieldReader(Reader parent) {

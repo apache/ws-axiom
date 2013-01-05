@@ -25,7 +25,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class Woodstox4InputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
+final class Woodstox4InputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
     private final boolean wstx276;
     
     public Woodstox4InputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect, boolean wstx276) {
