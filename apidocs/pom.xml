@@ -123,6 +123,12 @@
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
                     <breakiterator>true</breakiterator>
+                    <!-- The notimestamp and windowtitle parameters are chosen to minimize the  -->
+                    <notimestamp>true</notimestamp>
+                    <windowtitle>Apache Axiom</windowtitle>
+                    <bottom>Copyright &#169; {organizationName}. All Rights Reserved.</bottom>
+                    <!-- doctitle only appears in the summary and we should include the version there -->
+                    <doctitle>Apache Axiom ${project.version}</doctitle>
                 </configuration>
             </plugin>
             <plugin>
