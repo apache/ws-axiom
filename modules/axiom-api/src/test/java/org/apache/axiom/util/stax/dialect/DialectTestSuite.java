@@ -45,6 +45,8 @@ public class DialectTestSuite extends TestSuite {
             props.setProperty("javax.xml.stream.XMLInputFactory", "com.sun.xml.internal.stream.XMLInputFactoryImpl");
             props.setProperty("javax.xml.stream.XMLOutputFactory", "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
             builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), props));
+            // SJSXP doesn't report whitespace in prolog
+            builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
         }
         
         addParsersFromDirectory(builder, new File("parsers"));
