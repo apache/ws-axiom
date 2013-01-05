@@ -41,7 +41,10 @@ public class DialectTestSuite extends TestSuite {
         
         // On Java 1.6 and above, also add the StAX implementation from the JRE
         if (!System.getProperty("java.version").startsWith("1.5")) {
-            builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), null));
+            Properties props = new Properties();
+            props.setProperty("javax.xml.stream.XMLInputFactory", "com.sun.xml.internal.stream.XMLInputFactoryImpl");
+            props.setProperty("javax.xml.stream.XMLOutputFactory", "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
+            builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), props));
         }
         
         addParsersFromDirectory(builder, new File("parsers"));
