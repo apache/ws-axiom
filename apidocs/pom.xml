@@ -123,7 +123,8 @@
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
                     <breakiterator>true</breakiterator>
-                    <!-- The notimestamp and windowtitle parameters are chosen to minimize the  -->
+                    <!-- The notimestamp, windowtitle and bottom parameters are chosen to minimize the number
+                         of changes between releases (to avoid mass changes when committing the site for a new release) -->
                     <notimestamp>true</notimestamp>
                     <windowtitle>Apache Axiom</windowtitle>
                     <bottom>Copyright &#169; {organizationName}. All Rights Reserved.</bottom>
