@@ -49,7 +49,7 @@ public class TestRootPartStreaming extends AxiomTestCase {
         
         // Programmatically create the message
         OMElement orgRoot = factory.createOMElement("root", null);
-        for (int i=0; i<1000; i++) {
+        for (int i=0; i<10000; i++) {
             factory.createOMElement("child", null, orgRoot).setText("Some text content");
         }
         
