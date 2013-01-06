@@ -981,11 +981,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         attributeCount = -1;
         namespaceCount = -1;
         currentNode = nextNode;
-        try {
-            updateNextNode(!cache);
-        } catch (Exception e) {
-            throw new XMLStreamException(e);
-        }
+        updateNextNode(!cache);
     }
 
     /** Method updateNextNode. */
