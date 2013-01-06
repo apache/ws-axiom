@@ -507,7 +507,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler(metaFactory));
-        addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory));
+        addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.xop.XOPRoundtripTest(metaFactory));
         Method[] methods = AXIOMXPathTestCase.class.getMethods();
         for (int i=0; i<methods.length; i++) {

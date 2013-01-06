@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.om.xop;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
@@ -36,8 +35,12 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSerialize extends AxiomTestCase {
-    public TestSerialize(OMMetaFactory metaFactory) {
+    private final boolean base64;
+    
+    public TestSerialize(OMMetaFactory metaFactory, boolean base64) {
         super(metaFactory);
+        this.base64 = base64;
+        addTestProperty("base64", String.valueOf(base64));
     }
 
     protected void runTest() throws Throwable {
@@ -47,14 +50,14 @@ public class TestSerialize extends AxiomTestCase {
         InputStream inStream = AbstractTestCase.getTestResource(testMessage.getName());
         Attachments attachments = new Attachments(inStream, testMessage.getContentType());
         
-        attachments.getRootPartInputStream();
-
-        String[] contentIDs = attachments.getAllContentIDs();
-        
         OMOutputFormat oof = new OMOutputFormat();
         oof.setDoOptimize(true);
         oof.setMimeBoundary(testMessage.getBoundary());
         oof.setRootContentId(testMessage.getStart());
+        if (base64) {
+            oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
+                    Boolean.TRUE);
+        }
         
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -65,65 +68,15 @@ public class TestSerialize extends AxiomTestCase {
         OMElement om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
-        String outNormal = baos.toString();
+        String out = baos.toString();
         
-        assertTrue(outNormal.indexOf("base64") == -1);
-        
-        // Now do it again but use base64 content-type-encoding for 
-        // binary attachments
-        baos = new ByteArrayOutputStream();
-        oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
-                        Boolean.TRUE);
-        writer = new MTOMXMLStreamWriter(baos, oof);
-        builder = 
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments);
-        om = builder.getDocumentElement();
-        om.serialize(writer);
-        om.close(false);
-        String outBase64 = baos.toString();
-        
-        
-        // Do a quick check to see if the data is base64 and is
-        // writing base64 compliant code.
-        assertTrue(outBase64.indexOf("base64") != -1);
-        assertTrue(outBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
-        
-        // Now read the data back in
-        InputStream is = new ByteArrayInputStream(outBase64.getBytes());
-        Attachments attachments2 = new Attachments(is, testMessage.getContentType());
-        
-        // Now write it back out with binary...
-        baos = new ByteArrayOutputStream();
-        oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
-                        Boolean.FALSE);
-        writer = new MTOMXMLStreamWriter(baos, oof);
-        builder = 
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments2);
-        om = builder.getDocumentElement();
-        om.serialize(writer);
-        om.close(false);
-        String outBase64ToNormal = baos.toString();
-        
-        assertTrue(outBase64ToNormal.indexOf("base64") == -1);
-        
-        // Now do it again but use base64 content-type-encoding for 
-        // binary attachments
-        is = new ByteArrayInputStream(outBase64.getBytes());
-        attachments2 = new Attachments(is, testMessage.getContentType());
-        baos = new ByteArrayOutputStream();
-        oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
-                        Boolean.TRUE);
-        writer = new MTOMXMLStreamWriter(baos, oof);
-        builder = 
-            OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments2);
-        om = builder.getDocumentElement();
-        om.serialize(writer);
-        om.close(false);
-        String outBase64ToBase64 = baos.toString();
-        
-        // Do a quick check to see if the data is base64 and is
-        // writing base64 compliant code.
-        assertTrue(outBase64ToBase64.indexOf("base64") != -1);
-        assertTrue(outBase64ToBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
+        if (base64) {
+            // Do a quick check to see if the data is base64 and is
+            // writing base64 compliant code.
+            assertTrue(out.indexOf("base64") != -1);
+            assertTrue(out.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
+        } else {
+            assertTrue(out.indexOf("base64") == -1);
+        }
     }
 }
