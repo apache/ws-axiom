@@ -176,6 +176,9 @@ public interface OMDataSource {
      * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
      * the data source also implements {@link OMDataSourceExt} and
      * {@link OMDataSourceExt#isDestructiveRead()} returns <code>false</code>.
+     * <p>
+     * {@link OMSourcedElement} implementations are expected to call {@link XMLStreamReader#close()}
+     * on the returned reader as soon as the element is completely built.
      * 
      * @return element parser
      * @throws XMLStreamException
