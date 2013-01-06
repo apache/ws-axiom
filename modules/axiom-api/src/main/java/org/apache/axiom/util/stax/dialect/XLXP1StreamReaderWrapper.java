@@ -22,9 +22,19 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DTDReader;
+
 class XLXP1StreamReaderWrapper extends XLXPStreamReaderWrapper {
     public XLXP1StreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
+    }
+
+    public Object getProperty(String name) {
+        if (DTDReader.PROPERTY.equals(name)) {
+            return new XLXP1DTDReaderImpl(getParent());
+        } else {
+            return super.getProperty(name);
+        }
     }
 
     public String getEncoding() {
