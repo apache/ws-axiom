@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -40,23 +43,30 @@ public final class StAXImplementation {
         return name;
     }
 
-    public XMLInputFactory newXMLInputFactory() {
-        String className = props == null ? null : props.getProperty(XMLInputFactory.class.getName());
-        XMLInputFactory factory;
+    private Object newFactory(Class type) {
+        String className = props == null ? null : props.getProperty(type.getName());
         if (className == null) {
-            ClassLoader savedClassLoader = Thread.currentThread().getContextClassLoader();
-            Thread.currentThread().setContextClassLoader(classLoader);
+            // We do the lookup ourselves instead of using the StAX API. This allows
+            // us to completely ignore the system properties. The Axiom build allows
+            // to use system properties to specify the StAX implementation to be used
+            // by unit tests, but this must not interfere with the dialect tests.
             try {
-                factory = XMLInputFactory.newInstance();
-            } finally {
-                Thread.currentThread().setContextClassLoader(savedClassLoader);
-            }
-        } else {
-            try {
-                factory = (XMLInputFactory)classLoader.loadClass(className).newInstance();
-            } catch (Exception ex) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        classLoader.getResourceAsStream("META-INF/services/" + type.getName()), "UTF-8"));
+                try {
+                    className = in.readLine();
+                } finally {
+                    in.close();
+                }
+            } catch (IOException ex) {
                 throw new FactoryConfigurationError(ex);
             }
+        }
+        Object factory;
+        try {
+            factory = classLoader.loadClass(className).newInstance();
+        } catch (Exception ex) {
+            throw new FactoryConfigurationError(ex);
         }
         // Check that the parser has actually been loaded from the expected class loader.
         // If the parser has been loaded from the JRE, then comparing the class loaders
@@ -69,6 +79,10 @@ public final class StAXImplementation {
         return factory;
     }
     
+    public XMLInputFactory newXMLInputFactory() {
+        return (XMLInputFactory)newFactory(XMLInputFactory.class);
+    }
+    
     public XMLInputFactory newNormalizedXMLInputFactory() {
         XMLInputFactory factory = newXMLInputFactory();
         if (dialect == null) {
@@ -78,29 +92,7 @@ public final class StAXImplementation {
     }
 
     public XMLOutputFactory newXMLOutputFactory() {
-        String className = props == null ? null : props.getProperty(XMLOutputFactory.class.getName());
-        XMLOutputFactory factory;
-        if (className == null) {
-            ClassLoader savedClassLoader = Thread.currentThread().getContextClassLoader();
-            Thread.currentThread().setContextClassLoader(classLoader);
-            try {
-                factory = XMLOutputFactory.newInstance();
-            } finally {
-                Thread.currentThread().setContextClassLoader(savedClassLoader);
-            }
-        } else {
-            try {
-                factory = (XMLOutputFactory)classLoader.loadClass(className).newInstance();
-            } catch (Exception ex) {
-                throw new FactoryConfigurationError(ex);
-            }
-        }
-        if (classLoader != ClassLoader.getSystemClassLoader()
-                && factory.getClass().getClassLoader() != classLoader) {
-            throw new FactoryConfigurationError("Wrong factory: got " + factory.getClass().getName()
-                    + " loaded from " + factory.getClass().getClassLoader());
-        }
-        return factory;
+        return (XMLOutputFactory)newFactory(XMLOutputFactory.class);
     }
     
     public XMLOutputFactory newNormalizedXMLOutputFactory() {
