@@ -25,6 +25,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class CloseTestXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
     private final CloseTestDataSource ds;
+    private boolean closed;
     
     CloseTestXMLStreamReaderWrapper(CloseTestDataSource ds, XMLStreamReader parent) {
         super(parent);
@@ -34,5 +35,13 @@ class CloseTestXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
     public void close() throws XMLStreamException {
         super.close();
         ds.readerClosed(this);
+        closed = true;
+    }
+
+    public int next() throws XMLStreamException {
+        if (closed) {
+            throw new IllegalStateException();
+        }
+        return super.next();
     }
 }

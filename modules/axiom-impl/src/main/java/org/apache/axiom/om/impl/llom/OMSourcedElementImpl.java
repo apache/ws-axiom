@@ -93,8 +93,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     
     private static final Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.getName() + ".forceExpand");
     
-    private XMLStreamReader readerFromDS = null;  // Reader from DataSource
-
     private static OMNamespace getOMNamespace(QName qName) {
         return qName.getNamespaceURI().length() == 0 ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
@@ -251,6 +249,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 }
             } else {
                 // Get the XMLStreamReader
+                XMLStreamReader readerFromDS;
                 try {
                     readerFromDS = dataSource.getReader();  
                 } catch (XMLStreamException ex) {
@@ -276,10 +275,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 // Set the builder for this element. Note that the StAXOMBuilder constructor will also
                 // update the namespace of the element, so we don't need to do that here.
                 isExpanded = true;
-                super.setBuilder(new StAXOMBuilder(getOMFactory(), 
-                                                   readerFromDS, 
-                                                   this, 
-                                                   characterEncoding));
+                StAXOMBuilder builder = new StAXOMBuilder(getOMFactory(), readerFromDS, this, characterEncoding);
+                builder.setAutoClose(true);
+                builder.releaseParserOnClose(true);
+                super.setBuilder(builder);
                 setComplete(false);
             }
         }
@@ -1029,29 +1028,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * expansion process. Thus calls to setCompete should stop here and not propogate up to the
      * parent (which may have a different builder or no builder).
      */
-    public void setComplete(boolean value) {
-        state = value ? COMPLETE : INCOMPLETE;
-        if (value == true) {
-            if (readerFromDS != null) {
-                try {
-                    readerFromDS.close();
-                } catch (XMLStreamException e) {
-                }
-                readerFromDS = null;
+    public void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
+        if (complete && dataSource != null) {
+            if (dataSource instanceof OMDataSourceExt) {
+                ((OMDataSourceExt)dataSource).close();
             }
-            if (dataSource != null) {
-                if (dataSource instanceof OMDataSourceExt) {
-                    ((OMDataSourceExt)dataSource).close();
-                }
-                dataSource = null;
-            }
-        }
-        if (value == true && readerFromDS != null) {
-            try {
-                readerFromDS.close();
-            } catch (XMLStreamException e) {
-            }
-            readerFromDS = null;
+            dataSource = null;
         }
     }
     
