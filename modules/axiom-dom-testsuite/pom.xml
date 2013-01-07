@@ -94,7 +94,7 @@
                 <configuration>
                     <!-- This is necessary to execute the tests with the IBM JRE: we need to endorse the particular Xerces version
                          we want to use because the JRE already contains Xerces. -->
-                    <argLine>${argLine} -Xbootclasspath/p:${project.build.directory}/endorsed/xml-apis.jar${path.separator}${project.build.directory}/endorsed/xercesImpl.jar</argLine>
+                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${project.build.directory}/endorsed/xml-apis.jar${path.separator}${project.build.directory}/endorsed/xercesImpl.jar</argLine>
                 </configuration>
             </plugin>
             <plugin>

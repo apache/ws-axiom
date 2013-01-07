@@ -54,6 +54,12 @@
         </dependency>
     </dependencies>
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -85,6 +91,25 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-agent-for-jboss</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>jacoco.jbossArgLine</propertyName>
+                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:jboss</sessionId>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>${skipJacoco}</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
