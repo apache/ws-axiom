@@ -55,8 +55,8 @@ public class DialectTest {
      */
     @Test
     public void testStAXDialectDetector() throws Exception {
-        assertFalse(StAXDialectDetector.getDialect(XMLInputFactory.newFactory()).getName().equals("Unknown"));
-        assertFalse(StAXDialectDetector.getDialect(XMLOutputFactory.newFactory()).getName().equals("Unknown"));
+        assertFalse(StAXDialectDetector.getDialect(XMLInputFactory.newInstance()).getName().equals("Unknown"));
+        assertFalse(StAXDialectDetector.getDialect(XMLOutputFactory.newInstance()).getName().equals("Unknown"));
     }
     
     /**
