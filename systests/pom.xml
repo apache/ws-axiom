@@ -46,6 +46,7 @@
         </plugins>
     </build>
     <modules>
+        <module>jboss-tests</module>
         <module>osgi-tests</module>
     </modules>
 </project>

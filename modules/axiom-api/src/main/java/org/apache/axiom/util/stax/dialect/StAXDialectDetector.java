@@ -62,6 +62,9 @@ public class StAXDialectDetector {
     private static final Attributes.Name BUNDLE_VERSION =
             new Attributes.Name("Bundle-Version");
 
+    private static final JBossFactoryUnwrapper jbossXMLInputFactoryUnwrapper = JBossFactoryUnwrapper.create(XMLInputFactory.class);
+    private static final JBossFactoryUnwrapper jbossXMLOutputFactoryUnwrapper = JBossFactoryUnwrapper.create(XMLOutputFactory.class);
+    
     /**
      * Map that stores detected dialects by location. The location is the URL corresponding to the
      * root folder of the classpath entry from which the StAX implementation is loaded. Note that
@@ -119,7 +122,7 @@ public class StAXDialectDetector {
      * @see StAXDialect#normalize(XMLInputFactory)
      */
     public static XMLInputFactory normalize(XMLInputFactory factory) {
-        return getDialect(factory.getClass()).normalize(factory);
+        return getDialect(factory).normalize(factory);
     }
     
     /**
@@ -131,11 +134,16 @@ public class StAXDialectDetector {
      * @see StAXDialect#normalize(XMLOutputFactory)
      */
     public static XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return getDialect(factory.getClass()).normalize(factory);
+        return getDialect(factory).normalize(factory);
     }
     
     /**
      * Detect the dialect of a given StAX implementation.
+     * <p>
+     * Note that to detect the StAX dialect of a given {@link XMLInputFactory} or
+     * {@link XMLOutputFactory} instance, it is generally preferable to use
+     * {@link #getDialect(XMLInputFactory)} or {@link #getDialect(XMLOutputFactory)} instead of this
+     * method.
      * 
      * @param implementationClass
      *            any class that is part of the StAX implementation; typically this should be a
@@ -154,6 +162,34 @@ public class StAXDialectDetector {
         return getDialect(implementationClass.getClassLoader(), rootUrl);
     }
 
+    /**
+     * Detect the StAX dialect of a given {@link XMLInputFactory} instance.
+     * 
+     * @param factory
+     *            the factory instance
+     * @return the detected dialect
+     */
+    public static StAXDialect getDialect(XMLInputFactory factory) {
+        if (jbossXMLInputFactoryUnwrapper != null) {
+            factory = (XMLInputFactory)jbossXMLInputFactoryUnwrapper.unwrap(factory);
+        }
+        return getDialect(factory.getClass());
+    }
+    
+    /**
+     * Detect the StAX dialect of a given {@link XMLOutputFactory} instance.
+     * 
+     * @param factory
+     *            the factory instance
+     * @return the detected dialect
+     */
+    public static StAXDialect getDialect(XMLOutputFactory factory) {
+        if (jbossXMLOutputFactoryUnwrapper != null) {
+            factory = (XMLOutputFactory)jbossXMLOutputFactoryUnwrapper.unwrap(factory);
+        }
+        return getDialect(factory.getClass());
+    }
+    
     private static StAXDialect getDialect(ClassLoader classLoader, URL rootUrl) {
         StAXDialect dialect = (StAXDialect)dialectByUrl.get(rootUrl);
         if (dialect != null) {

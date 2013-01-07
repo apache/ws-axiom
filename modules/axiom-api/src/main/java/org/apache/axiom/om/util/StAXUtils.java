@@ -447,7 +447,7 @@ public class StAXUtils {
                             factory.setProperty((String)entry.getKey(), entry.getValue());
                         }
                     }
-                    StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
+                    StAXDialect dialect = StAXDialectDetector.getDialect(factory);
                     if (configuration != null) {
                         factory = configuration.configure(factory, dialect);
                     }
@@ -572,7 +572,7 @@ public class StAXUtils {
                             factory.setProperty((String)entry.getKey(), entry.getValue());
                         }
                     }
-                    StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
+                    StAXDialect dialect = StAXDialectDetector.getDialect(factory);
                     if (configuration != null) {
                         factory = configuration.configure(factory, dialect);
                     }
