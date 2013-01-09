@@ -72,7 +72,22 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack</id>
+                        <!-- Copy the dependencies that will be included in the WAR deployed
+                             to JBoss. This is necessary because Arquillian's Maven dependency
+                             resolution doesn't work correctly if some of the dependencies are
+                             snapshots from the current reactor. -->
+                        <id>copy-deps</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeArtifactIds>axiom-api,axiom-impl,woodstox-core-asl,stax2-api</includeArtifactIds>
+                            <outputDirectory>${project.build.directory}/deps</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-jboss</id>
                         <phase>process-test-classes</phase>
                         <goals>
                             <goal>unpack</goal>

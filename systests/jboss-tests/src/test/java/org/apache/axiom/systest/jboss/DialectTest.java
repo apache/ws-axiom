@@ -21,6 +21,7 @@ package org.apache.axiom.systest.jboss;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.io.File;
 import java.io.StringReader;
 
 import javax.xml.stream.XMLInputFactory;
@@ -34,8 +35,6 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -44,8 +43,7 @@ public class DialectTest {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "dialect-test.war")
-                .addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class).loadMetadataFromPom("pom.xml").goOffline()
-                        .artifact("org.apache.ws.commons.axiom:axiom-impl").resolveAsFiles());
+                .addAsLibraries(new File("target/deps").listFiles());
     }
     
     /**
