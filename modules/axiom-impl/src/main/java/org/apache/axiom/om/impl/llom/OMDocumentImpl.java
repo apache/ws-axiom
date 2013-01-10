@@ -149,10 +149,20 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
     }
 
     public void addChild(OMNode omNode, boolean fromBuilder) {
-        if (!fromBuilder && omNode instanceof OMElement && getOMDocumentElement() != null) {
-            throw new OMException("Document element already exists");
-        }
         OMContainerHelper.addChild(this, omNode, fromBuilder);
+    }
+
+    public final void checkChild(OMNode child) {
+        if (child instanceof OMElement) {
+            if (getOMDocumentElement() != null) {
+                throw new OMException("Document element already exists");
+            } else {
+                checkDocumentElement((OMElement)child);
+            }
+        }
+    }
+
+    protected void checkDocumentElement(OMElement element) {
     }
 
     /**

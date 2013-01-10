@@ -112,6 +112,7 @@ public final class OMContainerHelper {
                 // We don't need to detach and re-add it.
                 return;
             }
+            container.checkChild(omNode);
         }
         if (child.getParent() != null) {
             child.detach();
@@ -163,17 +164,17 @@ public final class OMContainerHelper {
     
     public static void buildNext(IParentNode that) {
         OMXMLParserWrapper builder = that.getBuilder();
-        if (builder != null) {
-            if (((StAXOMBuilder)builder).isClosed()) {
-                throw new OMException("The builder has already been closed");
-            } else if (!builder.isCompleted()) {
-                builder.next();
-            } else {
-                // If the builder is suddenly complete, but the completion status of the node
-                // doesn't change, then this means that we built the wrong nodes
-                throw new IllegalStateException("Builder is already complete");
-            }         
-        }
+        if (builder == null) {
+            throw new IllegalStateException("The node has no builder");
+        } else if (((StAXOMBuilder)builder).isClosed()) {
+            throw new OMException("The builder has already been closed");
+        } else if (!builder.isCompleted()) {
+            builder.next();
+        } else {
+            // If the builder is suddenly complete, but the completion status of the node
+            // doesn't change, then this means that we built the wrong nodes
+            throw new IllegalStateException("Builder is already complete");
+        }         
     }
     
     public static OMNode getFirstOMChild(IParentNode that) {

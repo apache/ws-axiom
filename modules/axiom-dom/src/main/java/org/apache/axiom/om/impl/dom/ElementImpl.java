@@ -1236,4 +1236,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         ParentNode parent = parentNode();
         return parent == null || parent instanceof Document ? null : parent.lookupNamespaceURI(specifiedPrefix);
     }
+
+    public final void checkChild(OMNode child) {
+    }
 }

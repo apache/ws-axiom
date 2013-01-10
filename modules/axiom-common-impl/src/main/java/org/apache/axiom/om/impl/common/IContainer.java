@@ -18,10 +18,21 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 
 public interface IContainer extends OMContainerEx, IParentNode {
+    /**
+     * Check if the node can be added as a child of this container.
+     * 
+     * @param child
+     *            the child that will be added
+     * @throws OMException
+     *             if the node is not allowed as a child of the container
+     */
+    void checkChild(OMNode child);
+    
     /**
      * forcefully set the first element in this parent element
      * @param omNode

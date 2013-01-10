@@ -844,6 +844,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.addChild(omNode, fromBuilder);
     }
 
+    public void checkChild(OMNode child) {
+        super.checkChild(child);
+    }
+
     public Iterator getChildrenWithName(QName elementQName) {
         forceExpand();
         return super.getChildrenWithName(elementQName);

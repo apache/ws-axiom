@@ -132,6 +132,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, conformanceFiles[i]));
         }

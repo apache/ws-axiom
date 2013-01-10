@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
 public interface SOAPFactory extends OMFactory {
 
@@ -31,6 +32,12 @@ public interface SOAPFactory extends OMFactory {
     SOAPVersion getSOAPVersion();
 
     SOAPMessage createSOAPMessage();
+
+    /**
+     * @deprecated This method only exists for compatibility with Spring-WS and should not be used
+     *             by application code.
+     */
+    SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
 
     /**
      * Create a SOAP envelope. The returned element will have the namespace URI specified by the
