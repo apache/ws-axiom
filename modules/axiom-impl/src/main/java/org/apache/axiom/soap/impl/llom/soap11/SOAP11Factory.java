@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -50,10 +51,19 @@ import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 /**
  */
 public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactoryEx {
+    /**
+     * For internal use only.
+     * 
+     * @param metaFactory
+     */
     public SOAP11Factory(OMLinkedListMetaFactory metaFactory) {
         super(metaFactory);
     }
 
+    /**
+     * @deprecated Use {@link OMAbstractFactory#getSOAP11Factory()} to get an instance of this
+     *             class.
+     */
     public SOAP11Factory() {
     }
 

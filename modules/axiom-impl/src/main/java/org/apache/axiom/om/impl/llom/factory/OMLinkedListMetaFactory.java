@@ -51,4 +51,16 @@ public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
     public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
         return new SOAPMessageImpl(builder, null);
     }
+
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+    
+    public boolean equals(Object obj) {
+        // All instances of this class are considered equal. This is only required
+        // to support legacy code that instantiates OMFactory implementations directly
+        // (in which case the OMMetaFactory implementation is not guaranteed to be
+        // a singleton). May be removed in Axiom 1.3.
+        return obj != null && obj.getClass() == getClass();
+    }
 }

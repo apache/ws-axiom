@@ -99,7 +99,7 @@ public final class OMContainerHelper {
         } else {
             // Careful here: if the child was created by another Axiom implementation, it doesn't
             // necessarily implement OMNodeEx
-            if (omNode.getOMFactory().getMetaFactory() == container.getOMFactory().getMetaFactory()) {
+            if (omNode.getOMFactory().getMetaFactory().equals(container.getOMFactory().getMetaFactory())) {
                 child = (OMNodeEx)omNode;
             } else {
                 child = (OMNodeEx)((OMFactoryEx)container.getOMFactory()).importNode(omNode);
