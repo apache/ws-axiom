@@ -19,16 +19,37 @@
 
 package org.apache.axiom.util.stax.dialect;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
+
+import org.apache.axiom.ext.stax.DTDReader;
 
 class XLXP1StreamReaderWrapper extends XLXPStreamReaderWrapper {
     public XLXP1StreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
 
+    public Object getProperty(String name) {
+        if (DTDReader.PROPERTY.equals(name)) {
+            return new XLXP1DTDReaderImpl(getParent());
+        } else {
+            return super.getProperty(name);
+        }
+    }
+
     public String getEncoding() {
         // Under some circumstances, some versions of XLXP return an empty string instead of null
         String encoding = super.getEncoding();
         return encoding == null || encoding.length() == 0 ? null : encoding;
+    }
+
+    public String getNamespaceURI(String prefix) {
+        // XLXP may return "" instead of null
+        String uri = super.getNamespaceURI(prefix);
+        return uri == null || uri.length() == 0 ? null : uri;
+    }
+
+    public NamespaceContext getNamespaceContext() {
+        return new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext());
     }
 }

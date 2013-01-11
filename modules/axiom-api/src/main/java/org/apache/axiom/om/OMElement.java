@@ -233,12 +233,15 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * The iterator returned by this method supports {@link Iterator#remove()} and that method can
      * be used to remove a namespace declaration from this element.
      * 
-     * @return An iterator over the {@link OMNamespace} items declared on this element. Note that
-     *         the iterator may be invalidated by a call to {@link #declareNamespace(OMNamespace)},
-     *         {@link #declareNamespace(String, String)}, {@link #declareDefaultNamespace(String)}
-     *         or any other method that modifies the namespace declarations of this element.
+     * @return An iterator over the {@link OMNamespace} items declared on this element. If the
+     *         element has no namespace declarations, an empty iterator is returned.
+     *         <p>
+     *         Note that the returned iterator may be invalidated by a call to
+     *         {@link #declareNamespace(OMNamespace)}, {@link #declareNamespace(String, String)},
+     *         {@link #declareDefaultNamespace(String)} or any other method that modifies the
+     *         namespace declarations of this element.
      */
-    Iterator getAllDeclaredNamespaces() throws OMException;
+    Iterator getAllDeclaredNamespaces();
 
     /**
      * Get an iterator that returns all namespaces in scope for this element. This method may be
@@ -288,12 +291,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     
     /**
      * Returns a list of OMAttributes.
-     * <p/>
-     * <p>Note that the iterator returned by this function will be invalidated by any
-     * <tt>addAttribute</tt> call. </p>
-     *
-     * @return Returns an {@link Iterator} of {@link OMAttribute} items associated with the
-     *         element.
+     * <p>
+     * Note that the iterator returned by this function will be invalidated by any
+     * <tt>addAttribute</tt> call.
+     * 
+     * @return An iterator over the {@link OMAttribute} items associated with the element. If the
+     *         element has no attributes, an empty iterator is returned.
      * @see #getAttribute
      * @see #addAttribute(OMAttribute)
      * @see #addAttribute(String, String, OMNamespace)

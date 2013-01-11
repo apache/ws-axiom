@@ -94,6 +94,12 @@ public class StAXOMBuilder extends StAXBuilder {
     // on an OMElement is interned.
     private boolean namespaceURIInterning = false;
     
+    /**
+     * Specifies whether the builder/parser should be automatically closed when the
+     * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
+     */
+    private boolean autoClose;
+    
     private int lookAheadToken = -1;
     
     /**
@@ -273,7 +279,8 @@ public class StAXOMBuilder extends StAXBuilder {
                 }
                 
                 if (target == null && !done) {
-                    // We get here if the document has been discarded (using getDocumentElement(true)) and
+                    // We get here if the document has been discarded (by getDocumentElement(true)
+                    // or because the builder is linked to an OMSourcedElement) and
                     // we just processed the END_ELEMENT event for the root element. In this case, we consume
                     // the remaining events until we reach the end of the document. This serves several purposes:
                     //  * It allows us to detect documents that have an epilog that is not well formed.
@@ -282,6 +289,8 @@ public class StAXOMBuilder extends StAXBuilder {
                     //    last END_ELEMENT. This improves performance because Woodstox by default interns
                     //    all symbols; if the symbol table can be recycled, then this reduces the number of
                     //    calls to String#intern().
+                    //  * If autoClose is set, the parser will be closed so that even more resources
+                    //    can be released.
                     while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
                         // Just loop
                     }
@@ -652,6 +661,15 @@ public class StAXOMBuilder extends StAXBuilder {
     }
     
     /**
+     * For internal use only.
+     * 
+     * @param autoClose
+     */
+    public void setAutoClose(boolean autoClose) {
+        this.autoClose = autoClose;
+    }
+
+    /**
      * Pushes the virtual parser ahead one token.
      * If a look ahead token was calculated it is returned.
      * @return next token
@@ -689,6 +707,9 @@ public class StAXOMBuilder extends StAXBuilder {
                 case XMLStreamConstants.END_DOCUMENT:
                     if (elementLevel != 0) {
                         throw new OMException("Unexpected END_DOCUMENT event");
+                    }
+                    if (autoClose) {
+                        close();
                     }
                     break;
             }

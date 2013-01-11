@@ -49,6 +49,9 @@ public interface OMContainer extends OMSerializable {
 
     /**
      * Adds the given node as the last child of this container.
+     * <p>
+     * The method may throw an {@link OMException} if the node is not allowed at this position of
+     * the document.
      * 
      * @param omNode
      *            the node to be added to this container

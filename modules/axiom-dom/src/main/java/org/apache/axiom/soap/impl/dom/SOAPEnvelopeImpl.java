@@ -90,7 +90,8 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
      * 
      * @param child
      */
-    private void checkChild(OMNode child) {
+    // TODO: this should be integrated into the checkChild API
+    private void internalCheckChild(OMNode child) {
         if ((child instanceof OMElement)
                 && !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
             throw new SOAPProcessingException(
@@ -103,7 +104,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
         // node types when appending to SOAP 1.1 envelope.
         if (getVersion() instanceof SOAP12Version) {
-            checkChild(child);
+            internalCheckChild(child);
         }
 
         if (child instanceof SOAPHeader) {

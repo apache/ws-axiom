@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom.factory;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -57,10 +58,18 @@ import javax.xml.namespace.QName;
 public class OMLinkedListImplFactory implements OMFactoryEx {
     private final OMLinkedListMetaFactory metaFactory;
     
-    public OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {
+    /**
+     * For internal use only.
+     * 
+     * @param metaFactory
+     */
+    protected OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
     }
     
+    /**
+     * @deprecated Use {@link OMAbstractFactory#getOMFactory()} to get an instance of this class.
+     */
     public OMLinkedListImplFactory() {
         this(new OMLinkedListMetaFactory());
     }

@@ -132,6 +132,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, conformanceFiles[i]));
         }
@@ -433,6 +434,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, false));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneUnknownName(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloseOnComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder(metaFactory));
@@ -506,7 +508,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler(metaFactory));
-        addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory));
+        addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.xop.XOPRoundtripTest(metaFactory));
         Method[] methods = AXIOMXPathTestCase.class.getMethods();
         for (int i=0; i<methods.length; i++) {

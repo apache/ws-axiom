@@ -61,7 +61,7 @@ class XLXP1Dialect extends AbstractStAXDialect {
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
         XMLStreamWriter wrapper = new XLXPStreamWriterWrapper(writer);
-        // Early versions of XLXP the scope of the prefix bindings defined by setPrefix
+        // In early versions of XLXP the scope of the prefix bindings defined by setPrefix
         // is incorrect
         if (isSetPrefixBroken) {
             wrapper = new NamespaceContextCorrectingXMLStreamWriterWrapper(wrapper);
@@ -70,7 +70,7 @@ class XLXP1Dialect extends AbstractStAXDialect {
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
-        return new XLXPInputFactoryWrapper(factory, this);
+        return new CloseShieldXMLInputFactoryWrapper(new XLXPInputFactoryWrapper(factory, this));
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {

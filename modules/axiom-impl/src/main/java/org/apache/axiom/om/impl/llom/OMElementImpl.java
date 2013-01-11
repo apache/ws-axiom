@@ -225,6 +225,9 @@ public class OMElementImpl extends OMNodeImpl
         OMContainerHelper.addChild(this, omNode, fromBuilder);
     }
 
+    public void checkChild(OMNode child) {
+    }
+
     /**
      * Searches for children with a given QName and returns an iterator to traverse through the
      * OMNodes. This QName can contain any combination of prefix, localname and URI.

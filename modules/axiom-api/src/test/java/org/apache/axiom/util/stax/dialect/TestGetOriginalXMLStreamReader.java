@@ -34,6 +34,8 @@ public class TestGetOriginalXMLStreamReader extends DialectTestCase {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
         XMLStreamReader originalReader = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
-        assertSame(staxImpl.getClassLoader(), originalReader.getClass().getClassLoader());
+        ClassLoader cl = originalReader.getClass().getClassLoader();
+        // cl == null covers the case where the StAX implementation is included in the JRE
+        assertTrue(cl == null || cl == staxImpl.getClassLoader());
     }
 }

@@ -20,11 +20,18 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 
 public interface SOAPMessage extends OMDocument {
 
     SOAPEnvelope getSOAPEnvelope() throws SOAPProcessingException;
 
-    void setSOAPEnvelope(SOAPEnvelope envelope) throws SOAPProcessingException;
-
+    /**
+     * Sets the SOAP envelope for this message. This method has the same effect as
+     * {@link OMDocument#setOMDocumentElement(OMElement)}.
+     * 
+     * @param envelope
+     *            the envelope to be set as the root element for this message
+     */
+    void setSOAPEnvelope(SOAPEnvelope envelope);
 }

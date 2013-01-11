@@ -21,7 +21,7 @@ package org.apache.axiom.util.stax.dialect;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CloseShieldInputStream extends InputStream {
+final class CloseShieldInputStream extends InputStream {
     private final InputStream parent;
 
     public CloseShieldInputStream(InputStream parent) {

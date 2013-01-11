@@ -201,6 +201,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.message.TestCloneIncomplete(metaFactory, spec, false));
         addTest(new org.apache.axiom.ts.soap.message.TestGetCharsetEncodingWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.message.TestGetOMFactoryWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.message.TestSetOMDocumentElement(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.message.TestSetOMDocumentElementNonSOAPEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, false));
     }

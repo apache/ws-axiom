@@ -71,7 +71,11 @@ class Woodstox4Dialect extends AbstractStAXDialect {
         // Woodstox 3 used to report whitespace in prolog, but this is no longer the case by default
         // in Woodstox 4. The following property changes that behavior.
         factory.setProperty("org.codehaus.stax2.reportPrologWhitespace", Boolean.TRUE);
-        return new Woodstox4InputFactoryWrapper(factory, this, wstx276);
+        factory = new NormalizingXMLInputFactoryWrapper(factory, this);
+        if (wstx276) {
+            factory = new CloseShieldXMLInputFactoryWrapper(factory);
+        }
+        return factory;
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {

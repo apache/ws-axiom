@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
@@ -124,5 +125,8 @@ public class DocumentFragmentImpl extends RootNode implements
 
     public final String lookupNamespaceURI(String specifiedPrefix) {
         return null;
+    }
+
+    public final void checkChild(OMNode child) {
     }
 }

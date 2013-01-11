@@ -40,6 +40,9 @@ public interface OMDocument extends OMContainer {
      * the new document element will be appended as the last child. If the document already has a
      * document element, then it will be replaced by the new one and the position of the other
      * children relative to the document element is preserved.
+     * <p>
+     * Some models (such as SOAP) may throw an exception if the specified element is not allowed as
+     * a root element.
      * 
      * @param documentElement
      *            the new document element; must not be <code>null</code>

@@ -1,0 +1,9 @@
+<?xml version='1.0'?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+    <env:Header>
+        <p:myHeader xmlns:p="urn:test">value</p:myHeader>
+    </env:Header>
+    <env:Body>
+        <p:echo xmlns:p="urn:test">hi!</p:echo>
+    </env:Body>
+</env:Envelope>

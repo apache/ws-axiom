@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -627,5 +628,18 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         Element documentElement = getDocumentElement();
         return documentElement == null ? null
                 : documentElement.lookupNamespaceURI(specifiedPrefix);
+    }
+    
+    public final void checkChild(OMNode child) {
+        if (child instanceof OMElement) {
+            if (getOMDocumentElement() != null) {
+                throw new OMException("Document element already exists");
+            } else {
+                checkDocumentElement((OMElement)child);
+            }
+        }
+    }
+
+    protected void checkDocumentElement(OMElement element) {
     }
 }

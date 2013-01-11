@@ -62,6 +62,9 @@ public class StAXDialectDetector {
     private static final Attributes.Name BUNDLE_VERSION =
             new Attributes.Name("Bundle-Version");
 
+    private static final JBossFactoryUnwrapper jbossXMLInputFactoryUnwrapper = JBossFactoryUnwrapper.create(XMLInputFactory.class);
+    private static final JBossFactoryUnwrapper jbossXMLOutputFactoryUnwrapper = JBossFactoryUnwrapper.create(XMLOutputFactory.class);
+    
     /**
      * Map that stores detected dialects by location. The location is the URL corresponding to the
      * root folder of the classpath entry from which the StAX implementation is loaded. Note that
@@ -119,7 +122,7 @@ public class StAXDialectDetector {
      * @see StAXDialect#normalize(XMLInputFactory)
      */
     public static XMLInputFactory normalize(XMLInputFactory factory) {
-        return getDialect(factory.getClass()).normalize(factory);
+        return getDialect(factory).normalize(factory);
     }
     
     /**
@@ -131,11 +134,16 @@ public class StAXDialectDetector {
      * @see StAXDialect#normalize(XMLOutputFactory)
      */
     public static XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return getDialect(factory.getClass()).normalize(factory);
+        return getDialect(factory).normalize(factory);
     }
     
     /**
      * Detect the dialect of a given StAX implementation.
+     * <p>
+     * Note that to detect the StAX dialect of a given {@link XMLInputFactory} or
+     * {@link XMLOutputFactory} instance, it is generally preferable to use
+     * {@link #getDialect(XMLInputFactory)} or {@link #getDialect(XMLOutputFactory)} instead of this
+     * method.
      * 
      * @param implementationClass
      *            any class that is part of the StAX implementation; typically this should be a
@@ -154,6 +162,34 @@ public class StAXDialectDetector {
         return getDialect(implementationClass.getClassLoader(), rootUrl);
     }
 
+    /**
+     * Detect the StAX dialect of a given {@link XMLInputFactory} instance.
+     * 
+     * @param factory
+     *            the factory instance
+     * @return the detected dialect
+     */
+    public static StAXDialect getDialect(XMLInputFactory factory) {
+        if (jbossXMLInputFactoryUnwrapper != null) {
+            factory = (XMLInputFactory)jbossXMLInputFactoryUnwrapper.unwrap(factory);
+        }
+        return getDialect(factory.getClass());
+    }
+    
+    /**
+     * Detect the StAX dialect of a given {@link XMLOutputFactory} instance.
+     * 
+     * @param factory
+     *            the factory instance
+     * @return the detected dialect
+     */
+    public static StAXDialect getDialect(XMLOutputFactory factory) {
+        if (jbossXMLOutputFactoryUnwrapper != null) {
+            factory = (XMLOutputFactory)jbossXMLOutputFactoryUnwrapper.unwrap(factory);
+        }
+        return getDialect(factory.getClass());
+    }
+    
     private static StAXDialect getDialect(ClassLoader classLoader, URL rootUrl) {
         StAXDialect dialect = (StAXDialect)dialectByUrl.get(rootUrl);
         if (dialect != null) {
@@ -274,16 +310,22 @@ public class StAXDialectDetector {
         // Try Sun's implementation found in JREs
         cls = loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
         if (cls != null) {
-            // Check if the implementation has the bug fixed here:
-            // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
-            boolean isUnsafeStreamResult;
-            try {
-                cls.getDeclaredField("fStreamResult");
-                isUnsafeStreamResult = true;
-            } catch (NoSuchFieldException ex) {
-                isUnsafeStreamResult = false;
+            // Some JREs (such as IBM Java 1.7) include com.sun.xml.internal.stream.XMLOutputFactoryImpl
+            // for compatibility (in which case it extends the XMLOutputFactory implementation from
+            // another StAX implementation, e.g. XLXP). Detect this situation by checking the superclass.
+            Class superClass = cls.getSuperclass();
+            if (superClass == XMLOutputFactory.class || superClass.getName().startsWith("com.sun.")) {
+                // Check if the implementation has the bug fixed here:
+                // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
+                boolean isUnsafeStreamResult;
+                try {
+                    cls.getDeclaredField("fStreamResult");
+                    isUnsafeStreamResult = true;
+                } catch (NoSuchFieldException ex) {
+                    isUnsafeStreamResult = false;
+                }
+                return new SJSXPDialect(isUnsafeStreamResult);
             }
-            return new SJSXPDialect(isUnsafeStreamResult);
         }
         
         // Try IBM's XL XP-J

@@ -153,7 +153,15 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-osgi-tests</artifactId>
+            <artifactId>jboss-tests</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>osgi-tests</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
             <type>exec</type>

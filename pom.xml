@@ -379,7 +379,7 @@
                         <artifactId>stax-api</artifactId>
                     </exclusion>
                 </exclusions>
-        </dependency>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <properties>
@@ -423,6 +423,7 @@
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
+                        <argLine>${jacoco.surefireArgLine}</argLine>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
@@ -516,6 +517,10 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <requireJavaVersion>
+                                    <!-- We require Java 6 for the build, but we enforce Java 5 compatibility using Animal Sniffer -->
+                                    <version>1.6.0</version>
+                                </requireJavaVersion>
                                 <requireNoRepositories>
                                     <message>The POM must not include repository definitions since non Apache repositories threaten the build stability.</message>
                                     <banRepositories>true</banRepositories>
@@ -560,9 +565,31 @@
                 <version>2.3.2</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.3</source>
+                    <source>1.4</source>
                     <target>1.5</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <!-- Note: 1.9 contains a call to a Java 7 specific method (java.nio.CharBuffer.subSequence(II)Ljava/nio/CharBuffer;)
+                           that is triggered when an undefined reference is found. This breaks error reporting on Java 6. -->
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <signature>
+                                <groupId>org.codehaus.mojo.signature</groupId>
+                                <artifactId>java15</artifactId>
+                                <version>1.0</version>
+                            </signature>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <!-- This serves two purposes:
@@ -590,16 +617,20 @@
                 <version>${jacoco.version}</version>
                 <executions>
                     <execution>
+                        <id>prepare-agent-for-surefire</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipJacoco}</skip>
+                            <propertyName>jacoco.surefireArgLine</propertyName>
                             <!-- Anonymize the session ID (by default it contains the name of the host executing the build) -->
-                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}</sessionId>
+                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:surefire</sessionId>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <skip>${skipJacoco}</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -712,10 +743,10 @@
         <module>modules/axiom-jaxb</module>
         <module>modules/axiom-c14n</module>
         <module>modules/axiom-tests</module>
-        <module>modules/axiom-osgi-tests</module>
         <module>modules/axiom-integration</module>
         <module>modules/axiom-all</module>
         <module>modules/axiom-samples</module>
+        <module>systests</module>
         <module>devguide</module>
         <module>userguide</module>
         <module>apidocs</module>
