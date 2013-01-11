@@ -922,9 +922,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 updateLastNode();
                 break;
             case SWITCHED:
-                if (parser.hasNext()) {
-                    currentEvent = parser.next();
-                }
+                currentEvent = parser.next();
                 updateCompleteStatus();
                 break;
             default:
