@@ -169,6 +169,14 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>spring-ws-tests</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-samples</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
