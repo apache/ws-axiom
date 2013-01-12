@@ -907,13 +907,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                                                  e);
                 }
 
-                // We should throw an END_DOCUMENT
-                if ((currentEvent == START_DOCUMENT)
-                        && (currentEvent == parser.getEventType())) {
-                    currentEvent = parser.next();
-                } else {
-                    currentEvent = parser.getEventType();
-                }
+                currentEvent = parser.getEventType();
                 updateCompleteStatus();
                 break;
             case NAVIGABLE:
