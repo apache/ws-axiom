@@ -46,7 +46,6 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -138,14 +137,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Field elementStack */
     private Stack nodeStack = null;
 
-    // holder for the current node. Needs this to generate events from the
-    // current node
-
-    /** Field currentNode */
-    private OMSerializable currentNode = null;
-
-    // needs this to refer to the last known node
-
     /** Field lastNode */
     private OMSerializable lastNode = null;
 
@@ -179,21 +170,18 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         this.cache = cache;
         this.preserveNamespaceContext = preserveNamespaceContext;
 
-        // initiate the next and current nodes
-        // Note - navigator is written in such a way that it first
-        // returns the starting node at the first call to it
-        
-        currentNode = navigator.getNext();
         if (startNode instanceof OMDocument) {
-            currentEvent = -1;
-            try {
-                next();
-            } catch (XMLStreamException ex) {
-                throw new OMException(ex);
-            }
-        } else {
-            currentEvent = START_DOCUMENT;
+            // Bootstrap the navigator: is written in such a way that it first
+            // returns the starting node at the first call to it.
+            // If the start node is an OMElement, then this will occur that the
+            // first call to next().
+            lastNode = navigator.getNext();
+            // Initialize some other state
+            nodeStack = new Stack();
+            nodeStack.push(startNode);
+            isFirst = false;
         }
+        currentEvent = START_DOCUMENT;
     }
 
     /**
@@ -888,19 +876,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 currentEvent = END_DOCUMENT;
                 break;
             case NAVIGABLE:
-                // keeps the next event. The parser actually keeps one step ahead to
-                // detect the end of navigation. (at the end of the stream the navigator
-                // returns a null
-                OMSerializable nextNode;
-
                 if (navigator.isNavigable()) {
-                    nextNode = navigator.getNext();
+                    lastNode = navigator.getNext();
                 } else if (navigator.isCompleted()) {
-                    nextNode = null;
+                    lastNode = null;
                 } else if (cache) {
                     builder.next();
                     navigator.step();
-                    nextNode = navigator.getNext();
+                    lastNode = navigator.getNext();
                 } else {
                     // reset caching (the default is ON so it was not needed in the
                     // earlier case!
@@ -915,16 +898,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                                                      e);
                     }
 
-                    currentEvent = parser.getEventType();
+                    currentEvent = parser.next();
                     updateCompleteStatus();
                     break;
                 }
-                currentEvent = generateEvents(currentNode);
+                currentEvent = generateEvents(lastNode);
                 updateCompleteStatus();
-                lastNode = currentNode;
                 attributeCount = -1;
                 namespaceCount = -1;
-                currentNode = nextNode;
                 break;
             case SWITCHED:
                 currentEvent = parser.next();
@@ -980,7 +961,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             depth--;
         }
         if (state == NAVIGABLE) {
-            if (rootNode == currentNode) {
+            if (rootNode == lastNode) {
                 if (isFirst) {
                     isFirst = false;
                 } else if (currentEvent == END_DOCUMENT) {
