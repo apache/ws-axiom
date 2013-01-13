@@ -1268,12 +1268,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns int.
      */
     private int generateEvents(OMSerializable node) {
-        if (node == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Node is null...returning END_DOCUMENT");
-            }
-            return END_DOCUMENT;
-        }
         if (node instanceof OMDocument) {
             return generateContainerEvents((OMDocument)node, true);
         } else {
