@@ -192,7 +192,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         // returns the starting node at the first call to it
         
         currentNode = navigator.getNext();
-        updateNextNode(!cache);
+        updateNextNode();
         if (startNode instanceof OMDocument) {
             currentEvent = -1;
             try {
@@ -973,15 +973,15 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         attributeCount = -1;
         namespaceCount = -1;
         currentNode = nextNode;
-        updateNextNode(!cache);
+        updateNextNode();
     }
 
     /** Method updateNextNode. */
-    private void updateNextNode(boolean switchingAllowed) {
+    private void updateNextNode() {
         if (navigator.isNavigable()) {
             nextNode = navigator.getNext();
         } else {
-            if (!switchingAllowed) {
+            if (cache) {
                 if (navigator.isCompleted() || builder == null || builder.isCompleted()) {
                     nextNode = null;
                     if (log.isDebugEnabled()) {

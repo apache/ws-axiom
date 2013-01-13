@@ -234,11 +234,7 @@ public class OMNavigator {
      * @return Returns boolean.
      */
     public boolean isNavigable() {
-        if (end) {
-            return false;
-        } else {
-            return !(next == null);
-        }
+        return !end && next != null;
     }
 
     /**
