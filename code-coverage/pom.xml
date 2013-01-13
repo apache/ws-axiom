@@ -80,7 +80,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>${project.version}</version>
-            <classifier>original</classifier>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -100,7 +99,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
-            <classifier>original</classifier>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

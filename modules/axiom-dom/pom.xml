@@ -144,31 +144,6 @@
                                     <include>${project.groupId}:axiom-common-impl</include>
                                 </includes>
                             </artifactSet>
-                            <relocations>
-                                <!-- We try to preserve as much as possible the class names from previous releases in
-                                     order to support old code and code that is tightly coupled to the DOOM implementation
-                                     (such as the SAAJ implementation in Axis2). -->
-                                <relocation>
-                                    <pattern>org.apache.axiom.om.impl.common.OMNamespaceImpl</pattern>
-                                    <shadedPattern>org.apache.axiom.om.impl.dom.NamespaceImpl</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.axiom.om.impl.common.OMNavigator</pattern>
-                                    <shadedPattern>org.apache.axiom.om.impl.dom.DOMNavigator</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.axiom.om.impl.common.OMStAXWrapper</pattern>
-                                    <shadedPattern>org.apache.axiom.om.impl.dom.DOMStAXWrapper</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.axiom.om.impl.common</pattern>
-                                    <shadedPattern>org.apache.axiom.om.impl.dom</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.axiom.soap.impl.common</pattern>
-                                    <shadedPattern>org.apache.axiom.soap.impl.dom</shadedPattern>
-                                </relocation>
-                            </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />
                             </transformers>
@@ -182,27 +157,6 @@
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-original-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/original-${project.build.finalName}.jar</file>
-                                    <classifier>original</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <!-- Attach a JAR with the test classes so that we can reuse them in other modules
                  (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->
