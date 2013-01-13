@@ -101,7 +101,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
 
     /** Field NAVIGABLE */
     private static final short NAVIGABLE = 0;
-    private static final short SWITCH_AT_NEXT = 1;
     
     /**
      * Indicates that the last event before the final {@link XMLStreamConstants#END_DOCUMENT} event
@@ -138,13 +137,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     
     /** Field elementStack */
     private Stack nodeStack = null;
-
-    // keeps the next event. The parser actually keeps one step ahead to
-    // detect the end of navigation. (at the end of the stream the navigator
-    // returns a null
-
-    /** Field nextNode */
-    private OMSerializable nextNode = null;
 
     // holder for the current node. Needs this to generate events from the
     // current node
@@ -889,7 +881,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public int next() throws XMLStreamException {
         if (state == NAVIGABLE) {
-            updateNextNode();
         }
         switch (state) {
             case DOCUMENT_COMPLETE:
@@ -898,24 +889,44 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 state = DOCUMENT_COMPLETE;
                 currentEvent = END_DOCUMENT;
                 break;
-            case SWITCH_AT_NEXT:
-                state = SWITCHED;
-
-                // load the parser
-                try {
-                    setParser((XMLStreamReader) builder.getParser());
-                } catch (Exception e) {
-                    throw new XMLStreamException("problem accessing the parser. " + e.getMessage(),
-                                                 e);
-                }
-
-                currentEvent = parser.getEventType();
-                updateCompleteStatus();
-                break;
             case NAVIGABLE:
+                // keeps the next event. The parser actually keeps one step ahead to
+                // detect the end of navigation. (at the end of the stream the navigator
+                // returns a null
+                OMSerializable nextNode;
+
+                if (navigator.isNavigable()) {
+                    nextNode = navigator.getNext();
+                } else if (navigator.isCompleted()) {
+                    nextNode = null;
+                } else if (cache) {
+                    builder.next();
+                    navigator.step();
+                    nextNode = navigator.getNext();
+                } else {
+                    // reset caching (the default is ON so it was not needed in the
+                    // earlier case!
+                    builder.setCache(false);
+                    state = SWITCHED;
+
+                    // load the parser
+                    try {
+                        setParser((XMLStreamReader) builder.getParser());
+                    } catch (Exception e) {
+                        throw new XMLStreamException("problem accessing the parser. " + e.getMessage(),
+                                                     e);
+                    }
+
+                    currentEvent = parser.getEventType();
+                    updateCompleteStatus();
+                    break;
+                }
                 currentEvent = generateEvents(currentNode);
                 updateCompleteStatus();
-                updateLastNode();
+                lastNode = currentNode;
+                attributeCount = -1;
+                namespaceCount = -1;
+                currentNode = nextNode;
                 break;
             case SWITCHED:
                 currentEvent = parser.next();
@@ -961,38 +972,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             }
         }
         return null;
-    }
-
-    /**
-     * This is a very important method. It keeps the navigator one step ahead and pushes it one
-     * event ahead. If the nextNode is null then navigable is set to false. At the same time the
-     * parser and builder are set up for the upcoming event generation.
-     *
-     * @throws XMLStreamException
-     */
-    private void updateLastNode() throws XMLStreamException {
-        lastNode = currentNode;
-        attributeCount = -1;
-        namespaceCount = -1;
-        currentNode = nextNode;
-    }
-
-    /** Method updateNextNode. */
-    private void updateNextNode() {
-        if (navigator.isNavigable()) {
-            nextNode = navigator.getNext();
-        } else if (navigator.isCompleted()) {
-            nextNode = null;
-        } else if (cache) {
-            builder.next();
-            navigator.step();
-            nextNode = navigator.getNext();
-        } else {
-            // reset caching (the default is ON so it was not needed in the
-            // earlier case!
-            builder.setCache(false);
-            state = SWITCH_AT_NEXT;
-        }
     }
 
     /** Method updateCompleteStatus. */
@@ -1365,8 +1344,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public OMDataSource getDataSource() {
         if (getEventType() != XMLStreamReader.START_ELEMENT ||
-                !(state == NAVIGABLE || 
-                  state == SWITCH_AT_NEXT)) {
+                state != NAVIGABLE) {
             return null;
         }
         OMDataSource ds = null;
