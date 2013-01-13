@@ -982,13 +982,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             nextNode = navigator.getNext();
         } else {
             if (cache) {
-                if (navigator.isCompleted() || builder == null || builder.isCompleted()) {
+                if (navigator.isCompleted()) {
                     nextNode = null;
-                    if (log.isDebugEnabled()) {
-                        if (builder == null || builder.isCompleted()) {
-                            log.debug("Builder is complete.  Next node is set to null.");
-                        }
-                    }
                 } else {
                     builder.next();
                     navigator.step();
@@ -1003,9 +998,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 } else {
                     // reset caching (the default is ON so it was not needed in the
                     // earlier case!
-                    if (builder != null) {
-                        builder.setCache(false);
-                    }
+                    builder.setCache(false);
                     state = SWITCH_AT_NEXT;
                 }
             }
