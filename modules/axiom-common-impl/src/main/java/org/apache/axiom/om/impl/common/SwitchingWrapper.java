@@ -1268,28 +1268,20 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns int.
      */
     private int generateEvents(OMSerializable node) {
-        if (node instanceof OMDocument) {
-            return generateContainerEvents((OMDocument)node, true);
-        } else {
-            int nodeType = ((OMNode)node).getType();
-            if (nodeType == OMNode.ELEMENT_NODE) {
-                return generateContainerEvents((OMElement)node, false);
-            } else {
-                return nodeType;
+        if (node instanceof OMContainer) {
+            OMContainer container = (OMContainer)node;
+            if (nodeStack == null) {
+                nodeStack = new Stack();
             }
-        }
-    }
-
-    private int generateContainerEvents(OMContainer container, boolean isDocument) {
-        if (nodeStack == null) {
-            nodeStack = new Stack();
-        }
-        if (!nodeStack.isEmpty() && nodeStack.peek().equals(container)) {
-            nodeStack.pop();
-            return isDocument ? END_DOCUMENT : END_ELEMENT;
+            if (!nodeStack.isEmpty() && nodeStack.peek().equals(container)) {
+                nodeStack.pop();
+                return container instanceof OMDocument ? END_DOCUMENT : END_ELEMENT;
+            } else {
+                nodeStack.push(container);
+                return container instanceof OMDocument ? START_DOCUMENT : START_ELEMENT;
+            }
         } else {
-            nodeStack.push(container);
-            return isDocument ? START_DOCUMENT : START_ELEMENT;
+            return ((OMNode)node).getType();
         }
     }
 
