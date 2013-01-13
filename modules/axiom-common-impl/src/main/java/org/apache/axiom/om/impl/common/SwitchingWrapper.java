@@ -981,28 +981,17 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private void updateNextNode() {
         if (navigator.isNavigable()) {
             nextNode = navigator.getNext();
+        } else if (navigator.isCompleted()) {
+            nextNode = null;
+        } else if (cache) {
+            builder.next();
+            navigator.step();
+            nextNode = navigator.getNext();
         } else {
-            if (cache) {
-                if (navigator.isCompleted()) {
-                    nextNode = null;
-                } else {
-                    builder.next();
-                    navigator.step();
-                    nextNode = navigator.getNext();
-                }
-            } else {
-                //at this point check whether the navigator is done
-                //if the navigator is done then we are fine and can directly
-                // jump to the complete state ?
-                if (navigator.isCompleted()) {
-                    nextNode = null;
-                } else {
-                    // reset caching (the default is ON so it was not needed in the
-                    // earlier case!
-                    builder.setCache(false);
-                    state = SWITCH_AT_NEXT;
-                }
-            }
+            // reset caching (the default is ON so it was not needed in the
+            // earlier case!
+            builder.setCache(false);
+            state = SWITCH_AT_NEXT;
         }
     }
 
