@@ -192,7 +192,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         // returns the starting node at the first call to it
         
         currentNode = navigator.getNext();
-        updateNextNode();
         if (startNode instanceof OMDocument) {
             currentEvent = -1;
             try {
@@ -889,6 +888,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @throws XMLStreamException
      */
     public int next() throws XMLStreamException {
+        if (state == NAVIGABLE) {
+            updateNextNode();
+        }
         switch (state) {
             case DOCUMENT_COMPLETE:
                 throw new NoSuchElementException("End of the document reached");
@@ -973,7 +975,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         attributeCount = -1;
         namespaceCount = -1;
         currentNode = nextNode;
-        updateNextNode();
     }
 
     /** Method updateNextNode. */
