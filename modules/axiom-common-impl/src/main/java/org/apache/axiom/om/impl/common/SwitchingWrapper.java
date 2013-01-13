@@ -90,9 +90,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Field rootNode */
     private OMContainer rootNode;
 
-    /** Field isFirst */
-    private boolean isFirst = true;
-
     // Navigable means the output should be taken from the navigator.
     // As soon as the navigator returns a null navigable will be reset
     // to false and the subsequent events will be taken from the builder
@@ -134,9 +131,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private final boolean preserveNamespaceContext;
     
-    /** Field elementStack */
-    private Stack nodeStack = null;
-
     /** Field lastNode */
     private OMSerializable lastNode = null;
 
@@ -176,10 +170,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             // If the start node is an OMElement, then this will occur that the
             // first call to next().
             lastNode = navigator.getNext();
-            // Initialize some other state
-            nodeStack = new Stack();
-            nodeStack.push(startNode);
-            isFirst = false;
         }
         currentEvent = START_DOCUMENT;
     }
@@ -961,10 +951,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             depth--;
         }
         if (state == NAVIGABLE) {
-            if (rootNode == lastNode) {
-                if (isFirst) {
-                    isFirst = false;
-                } else if (currentEvent == END_DOCUMENT) {
+            if (rootNode == lastNode && navigator.visited()) {
+                if (currentEvent == END_DOCUMENT) {
                     state = DOCUMENT_COMPLETE;
                 } else {
                     state = COMPLETED;
@@ -1218,14 +1206,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private int generateEvents(OMSerializable node) {
         if (node instanceof OMContainer) {
             OMContainer container = (OMContainer)node;
-            if (nodeStack == null) {
-                nodeStack = new Stack();
-            }
-            if (!nodeStack.isEmpty() && nodeStack.peek().equals(container)) {
-                nodeStack.pop();
+            if (navigator.visited()) {
                 return container instanceof OMDocument ? END_DOCUMENT : END_ELEMENT;
             } else {
-                nodeStack.push(container);
                 return container instanceof OMDocument ? START_DOCUMENT : START_ELEMENT;
             }
         } else {
