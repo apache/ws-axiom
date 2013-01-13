@@ -880,8 +880,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @throws XMLStreamException
      */
     public int next() throws XMLStreamException {
-        if (state == NAVIGABLE) {
-        }
         switch (state) {
             case DOCUMENT_COMPLETE:
                 throw new NoSuchElementException("End of the document reached");
