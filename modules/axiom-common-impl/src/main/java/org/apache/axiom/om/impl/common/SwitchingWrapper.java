@@ -959,8 +959,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return first child or null
      */
     private OMNode _getFirstChild(OMContainer node) {
-        // TODO: We have a problem if the tree has parts constructed by different builders; this is related to AXIOM-201 and AXIOM-431
-        if (node.getBuilder() != _root.getBuilder()) {
+        if (cache) {
+            return node.getFirstOMChild();
+        } else if (node.getBuilder() != _root.getBuilder()) {
+            // TODO: We have a problem if the tree has parts constructed by different builders; this is related to AXIOM-201 and AXIOM-431
             OMNode first = node.getFirstOMChild();
             OMNode sibling = first;
             while (sibling != null) {
@@ -977,7 +979,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return next sibling or null
      */
     private OMNode getNextSibling(OMNode node) {
-        if (isOMSourcedElement(node)) {
+        if (cache || isOMSourcedElement(node)) {
             return node.getNextOMSibling();
         } else {
             return ((OMNodeEx) node).getNextOMSiblingIfAvailable();
@@ -991,16 +993,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private boolean visited() {
         return _visited;
-    }
-
-    /**
-     * This is a very special method. This allows the navigator to step once it has reached the
-     * existing OM. At this point the isNavigable method will return false but the isComplete method
-     * may return false which means that the navigating the given element is not complete and the
-     * navigator cannot proceed.
-     */
-    private void step() {
-        updateNextNode();
     }
 
     /**
@@ -1028,10 +1020,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 break;
             case NAVIGABLE:
                 if (isNavigable()) {
-                    lastNode = getNext();
-                } else if (cache) {
-                    builder.next();
-                    step();
                     lastNode = getNext();
                 } else {
                     // reset caching (the default is ON so it was not needed in the
