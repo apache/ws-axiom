@@ -142,16 +142,6 @@
                                     <include>${project.groupId}:axiom-common-impl</include>
                                 </includes>
                             </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.apache.axiom.om.impl.common</pattern>
-                                    <shadedPattern>org.apache.axiom.om.impl.llom</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.axiom.soap.impl.common</pattern>
-                                    <shadedPattern>org.apache.axiom.soap.impl.llom</shadedPattern>
-                                </relocation>
-                            </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />
                             </transformers>
@@ -165,27 +155,6 @@
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-original-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/original-${project.build.finalName}.jar</file>
-                                    <classifier>original</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <!-- Attach a JAR with the test classes so that we can reuse them in other modules
                  (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->

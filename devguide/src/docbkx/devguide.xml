@@ -170,7 +170,41 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     </chapter>
     
     <chapter>
-        <title>OSGi integration</title>
+        <title>OSGi integration and separation between API and implementation</title>
+        <section>
+            <title>Introduction</title>
+            <para>
+                This chapter addresses two related architectural questions:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        OSGi support was originally introduced in Axiom 1.2.9, but the implementation had
+                        a couple of flaws. This chapter discusses the rationale behind the new OSGi
+                        support introduced in Axiom 1.2.13.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Axiom is designed as a set of abstract APIs for which two implementations are
+                        provided: LLOM and DOOM. It is important to make a clear distinction between what
+                        is part of the public API and what should be considered implementation classes that
+                        must not be used by application code directly. This also implies that Axiom must
+                        provide the necessary APIs to allow application code to access all features without
+                        the need to access implementation classes directly. This chapter in particular
+                        discusses the question how application code can request factories that support DOM
+                        without the need to refer directly to DOOM.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                These two questions are closely related because OSGi allows to enforce the distinction
+                between public API and implementation classes by carefully selecting the packages
+                exported by the different bundles: only classes belonging to the public API
+                should be exported, while implementation classes should be private to the bundles
+                containing them. This in turn has implications for the packaging of these artifacts.
+            </para>
+        </section>
         <section>
             <title>Requirements</title>
             <formalpara id="osgi-req-no-separate-bundles">
@@ -195,6 +229,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     doesn't need to be rewritten.
                 </para>
             </formalpara>
+            <note>
+                <para>
+                    This requirement was already satisfied by the OSGi support introduced in Axiom 1.2.9.
+                    It therefore also ensures that the transition to the new OSGi support in Axiom 1.2.13
+                    is transparent for applications that already use Axiom in an OSGi container.
+                </para>
+            </note>
             <formalpara id="osgi-req-same-impl-selection">
                 <title>Requirement 3</title>
                 <para>
@@ -205,19 +246,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     a system property is not meaningful.
                 </para>
             </formalpara>
-            <note>
-                <para>
-                    This is currently not the case. In a non OSGi environment, recent versions of Axiom
-                    use JDK 1.3 service discovery to locate the default implementation and fall back to
-                    LLOM if none is found. DOOM will never be selected as the default implementation.
-                    On the other hand, the current OSGi integration will select any Axiom implementation
-                    as default implementation, but gives priority to LLOM.
-                </para>
-            </note>
             <formalpara id="osgi-ref-impl-not-exported">
                 <title>Requirement 4</title>
                 <para>
-                    The bundles for the LLOM and DOOM implementations MUST NOT export any packages.
+                    Only classes belonging to the public API should be exported by the OSGi bundles.
+                    Implementation classes should not be exported. In particular,
+                    the bundles for the LLOM and DOOM implementations MUST NOT export any packages.
                     This is required to keep a clean separation between the public API and implementation
                     specific classes and to make sure that the implementations can be modified without the
                     risk of breaking existing code.
@@ -234,29 +268,30 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     they should be used in scope <literal>runtime</literal>.
                 </para>
                 <para>
-                    Although this requirement is easy to implement for the Axiom project, there are
-                    currently a couple of issues in the downstreams project that need to be addressed
-                    to make this work:
+                    Although this requirement is easy to implement for the Axiom project, it requires
+                    changes to downstreams project to make this actually work:
                 </para>
                 <itemizedlist>
                     <listitem>
                         <para>
                             As explained in <ulink url="https://issues.apache.org/jira/browse/AXIS2-4902">AXIS2-4902</ulink>,
-                            there are many places in Axis2 that still refer directly to Axiom implementation classes.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            The <literal>axis2-saaj</literal> module is tightly coupled to <literal>axiom-dom</literal>.
-                            Making this work will probably require using <literal>maven-shade-plugin</literal> to
-                            include (a relocated copy of) the DOOM classes into <literal>axis2-saaj</literal>.
+                            there used to be many places in Axis2 that still referred directly to Axiom implementation classes.
+                            The same was true for Rampart and Sandesha2. This has now been fixed and all three projects
+                            use <literal>axiom-impl</literal> and <literal>axiom-dom</literal> as dependencies in scope
+                            <literal>runtime</literal>.
                         </para>
                     </listitem>
                     <listitem>
                         <para>
                             Abdera extends the LLOM implementation. Probably, some <literal>maven-shade-plugin</literal>
-                            magic will be required here as well to create Abdera OSGi bundles that work properly with
+                            magic will be required here to create Abdera OSGi bundles that work properly with
                             the Axiom bundles.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            For Spring Web Services this issue is addressed by
+                            <ulink url="https://jira.springsource.org/browse/SWS-822">SWS-822</ulink>.
                         </para>
                     </listitem>
                 </itemizedlist>
@@ -515,8 +550,9 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <note>
                 <para>
                     DOOM is generally not considered suitable as a default implementation because it doesn't
-                    implement the complete Axiom API (e.g. it doesn't support <classname>OMSourcedElement</classname>)
-                    and because the factory classes are not stateless.
+                    implement the complete Axiom API (e.g. it doesn't support <classname>OMSourcedElement</classname>).
+                    In addition, in earlier versions of Axiom, the factory classes for DOOM were not stateless
+                    (see <ulink url="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</ulink>).
                 </para>
             </note>
             <para>
@@ -601,6 +637,119 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 implementation) will be defined in an XML descriptor with resource name <filename>META-INF/axiom.xml</filename>.
                 The format of that descriptor must take into account that a single JAR may contain several
                 Axiom implementations (e.g. if the JAR is an uber-JAR repackaged from the standard Axiom JARs).
+            </para>
+        </section>
+        <section>
+            <title>Common implementation classes</title>
+            <para>
+                Obviously the LLOM and DOOM implementations share some amount of common code. Historically,
+                implementation classes reusable between LLOM and DOOM were placed in <literal>axiom-api</literal>.
+                This however tends to blur the distinction between the public API and implementation classes.
+                Starting with Axiom 1.2.13 such classes are placed into a separate module called
+                <literal>axiom-common-impl</literal>. However, <literal>axiom-common-impl</literal> cannot simply
+                be a dependency of <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
+                The reason is that in an OSGi environment, the <literal>axiom-common-impl</literal> bundle
+                would have to export these shared classes, which is in contradiction with <xref linkend="osgi-ref-impl-not-exported"/>.
+                Therefore the code from <literal>axiom-common-impl</literal> needs to be packaged into
+                <literal>axiom-impl</literal> and <literal>axiom-dom</literal> by the build process so that
+                the <literal>axiom-common-impl</literal> artifact is not required at runtime.
+                <xref linkend="osgi-req-no-separate-bundles"/> forbids using embedded JARs to achieve this.
+                Instead <literal>maven-shade-plugin</literal> is used to include the classes
+                from <literal>axiom-common-impl</literal> into <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
+                (and to modify the POMs to remove the dependencies on <literal>axiom-common-impl</literal>).
+            </para>
+            <para>
+                This raises the question whether <literal>maven-shade-plugin</literal> should be configured to
+                simply copy the classes or to relocate them (i.e. to change their package names). There are a couple
+                of arguments in favor of relocating them:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        According to <xref linkend="osgi-req-no-separate-bundles"/>, the Axiom artifacts should be
+                        usable both as normal JARs and as OSGi bundles. Obviously the expectation is that from the
+                        point of view of application code, they should work in the same in OSGi and non OSGi environments.
+                        Relocation is required if one wants to strictly satisfy this requirement even if different versions
+                        of <literal>axiom-impl</literal> and <literal>axiom-dom</literal> are mixed.
+                        Since the container creates separate class loaders for the <literal>axiom-impl</literal> and <literal>axiom-dom</literal> bundles,
+                        it is always possible to do that in an OSGi environment: even if the shared classes
+                        included in <literal>axiom-impl</literal> and <literal>axiom-dom</literal> are
+                        not relocated, but have the same names, this will not result in conflicts.
+                        The situation is different in a non OSGi environment where the classes in <literal>axiom-impl</literal>
+                        and <literal>axiom-dom</literal> are loaded by the same class loader. If the shared classes
+                        are not relocated, then there may be a conflict if the versions don't match.
+                    </para>
+                    <para>
+                        However, in practice it is unlikely that there are valid use case where one would use
+                        <literal>axiom-impl</literal> and <literal>axiom-dom</literal> artifacts from different Axiom versions.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Relocation allows to preserve compatibility when duplicate code from
+                        <literal>axiom-impl</literal> and <literal>axiom-dom</literal> is merged and moved
+                        to <literal>axiom-common-impl</literal>. The <classname>OMNamespaceImpl</classname>,
+                        <classname>OMNavigator</classname> and <classname>OMStAXWrapper</classname> classes
+                        from <literal>axiom-impl</literal> and the <classname>NamespaceImpl</classname>,
+                        <classname>DOMNavigator</classname> and <classname>DOMStAXWrapper</classname>
+                        classes from <literal>axiom-dom</literal> that existed in earlier versions of Axiom
+                        are examples of this. The classes in <literal>axiom-dom</literal> were almost identical
+                        to the corresponding classes in <literal>axiom-impl</literal>. These classes have been
+                        merged and moved to <literal>axiom-common-impl</literal>. Relocation then allows them
+                        to retain their original name (including the original package name) in the
+                        <literal>axiom-impl</literal> and <literal>axiom-dom</literal> artifacts.
+                    </para>
+                    <para>
+                        However, this is only a concern if one wants to preserve compatibility with existing
+                        code that directly uses these implementation specific classes (which is something that is
+                        strongly discouraged). One example where this was relevant was the SAAJ implementation
+                        in Axis2 which used to be very strongly coupled to the DOOM implementation. This however
+                        has been fixed now.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                Using relocation also has some serious disadvantages:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Stack traces may contain class names that don't match class names in the Axiom source
+                        code, making debugging harder.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Axiom now uses JaCoCo to produce code coverage reports. However these reports are
+                        incomplete if relocation is used. This doesn't affect test cases executed in
+                        the <literal>axiom-impl</literal> and <literal>axiom-dom</literal> modules
+                        (because they are executed with the original classes), but tests in separate modules
+                        (such as integration tests). There are actually two issues:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                For the relocated classes, JaCoCo is unable to find the corresponding source code.
+                                This means that the reported code coverage is inaccurate for classes in
+                                <literal>axiom-common-impl</literal>.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                Relocation not only modifies the classes in <literal>axiom-common-impl</literal>, but
+                                also the classes in <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
+                                that use them. JaCoCo <ulink url="https://github.com/jacoco/jacoco/issues/51">detects this</ulink>
+                                and excludes the data from the coverage analysis. This means that the
+                                reported code coverage will also be inaccurate for classes in
+                                <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
+            </itemizedlist>
+            <para>
+                In Axiom 1.2.14 relocation was used, but this has been changed in Axiom 1.2.15 because the disadvantages
+                outweigh the advantages.
             </para>
         </section>
     </chapter>
