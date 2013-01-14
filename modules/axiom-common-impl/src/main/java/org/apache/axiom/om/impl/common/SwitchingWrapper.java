@@ -83,8 +83,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private DataHandlerReader dataHandlerReader;
     
-    private boolean _isClosed = false;              // Indicate if parser is closed
-    private boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
+    private boolean isClosed = false;              // Indicate if parser is closed
+    private boolean releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
     /** Field rootNode */
     private OMContainer rootNode;
@@ -815,9 +815,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                         parser.close();
                     }
                 } finally {
-                    _isClosed = true;
+                    isClosed = true;
                     // Release the parser so that it can be GC'd or reused.
-                    if (_releaseParserOnClose) {
+                    if (releaseParserOnClose) {
                         setParser(null);
                     }
                 }
@@ -1273,7 +1273,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (builder != null && builder instanceof StAXBuilder) {
            return ((StAXBuilder) builder).isClosed();
         } else {
-            return _isClosed;
+            return isClosed;
         }
     }
     
@@ -1295,7 +1295,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             if (isClosed() && value) {
                 setParser(null);
             }
-            _releaseParserOnClose = value;
+            releaseParserOnClose = value;
         }
         
     }
