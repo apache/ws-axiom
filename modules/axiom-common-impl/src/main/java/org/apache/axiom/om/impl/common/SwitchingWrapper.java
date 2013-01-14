@@ -103,7 +103,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private DataHandlerReader dataHandlerReader;
     
     private boolean isClosed = false;              // Indicate if parser is closed
-    private boolean releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
     /**
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
@@ -832,9 +831,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 } finally {
                     isClosed = true;
                     // Release the parser so that it can be GC'd or reused.
-                    if (releaseParserOnClose) {
-                        setParser(null);
-                    }
+                    setParser(null);
                 }
             }
         }
@@ -1370,29 +1367,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             return isClosed;
         }
-    }
-    
-    /**
-     * Indicate if the parser resource should be release when closed.
-     * @param value boolean
-     */
-    public void releaseParserOnClose(boolean value) {
-        // if there is a StAXBuilder, it owns the parser 
-        // and controls the releaseOnClose status
-        if (builder != null && builder instanceof StAXBuilder) {
-            ((StAXBuilder) builder).releaseParserOnClose(value);
-            if (isClosed() && value) {
-                setParser(null);
-            }
-            return;
-        } else {
-            // Release parser if already closed
-            if (isClosed() && value) {
-                setParser(null);
-            }
-            releaseParserOnClose = value;
-        }
-        
     }
     
     /**

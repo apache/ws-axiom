@@ -56,7 +56,6 @@ public class TestGetXMLStreamReaderClose extends AxiomTestCase {
         if (reader instanceof OMXMLStreamReaderEx) {
             OMXMLStreamReaderEx wrapper = (OMXMLStreamReaderEx) reader;
             assertTrue(!wrapper.isClosed());
-            wrapper.releaseParserOnClose(true);
         }
         
         while (reader.hasNext()) {

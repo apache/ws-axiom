@@ -80,7 +80,6 @@ public class CopyUtils {
                                      XMLStreamWriter writer)
     throws XMLStreamException {
         StAXOMBuilder builder = new StAXOMBuilder(reader);
-        builder.releaseParserOnClose(true);
         try {
             OMDocument omDocument = builder.getDocument();
             Iterator it = omDocument.getChildren();

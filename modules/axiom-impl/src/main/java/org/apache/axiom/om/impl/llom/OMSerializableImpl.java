@@ -66,7 +66,6 @@ public abstract class OMSerializableImpl implements OMSerializable {
         // If this is a StAXBuilder, close it.
         if (builder instanceof StAXBuilder &&
             !((StAXBuilder) builder).isClosed()) {
-            ((StAXBuilder) builder).releaseParserOnClose(true);
             ((StAXBuilder) builder).close();
         }
     }

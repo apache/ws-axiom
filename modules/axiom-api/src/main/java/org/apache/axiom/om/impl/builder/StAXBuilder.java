@@ -87,7 +87,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected String charEncoding = null;
     
     protected boolean _isClosed = false;              // Indicate if parser is closed
-    protected boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
     // Fields for Custom Builder implementation
     protected CustomBuilder customBuilderForPayload = null;
@@ -696,10 +695,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } finally {
             _isClosed = true;
             done = true;
-            // Release the parser so that it can be GC'd or reused.
-            if (_releaseParserOnClose) {
-                parser = null;
-            }
+            // Release the parser so that it can be GC'd or reused. This is important because the
+            // object model keeps a reference to the builder even after the builder is complete.
+            parser = null;
         }
     }
 
@@ -737,16 +735,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
     
     /**
-     * Indicate if the parser resource should be release when closed.
-     * @param value boolean
+     * @deprecated As of Axiom 1.2.15, the builder always releases the parser.
      */
     public void releaseParserOnClose(boolean value) {
-        
-        // Release parser if already closed
-        if (isClosed() && value) {
-            parser = null;
-        }
-        _releaseParserOnClose = value;
-        
     }
 }

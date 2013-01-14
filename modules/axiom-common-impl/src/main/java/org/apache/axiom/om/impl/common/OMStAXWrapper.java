@@ -114,10 +114,6 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
         return streamSwitch.isClosed();
     }
 
-    public void releaseParserOnClose(boolean value) {
-        streamSwitch.releaseParserOnClose(value);
-    }
-
     public OMDataSource getDataSource() {
         return streamSwitch.getDataSource();
     }

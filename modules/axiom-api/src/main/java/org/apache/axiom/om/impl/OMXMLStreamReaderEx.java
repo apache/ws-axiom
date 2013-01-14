@@ -45,6 +45,4 @@ public interface OMXMLStreamReaderEx extends OMXMLStreamReader {
     // *** Methods that potentially could be promoted to OMXMLStreamReader ***
     
     boolean isClosed();
-    
-    void releaseParserOnClose(boolean value);
 }

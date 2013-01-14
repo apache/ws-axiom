@@ -149,7 +149,6 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     private static void reader2writer(XMLStreamReader reader, 
                                      XMLStreamWriter writer) throws XMLStreamException {
         StAXOMBuilder builder = new StAXOMBuilder(reader);
-        builder.releaseParserOnClose(true);
         try {
             OMDocument omDocument = builder.getDocument();
             Iterator it = omDocument.getChildren();

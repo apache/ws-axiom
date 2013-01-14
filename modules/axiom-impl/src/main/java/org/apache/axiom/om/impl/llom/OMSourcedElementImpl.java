@@ -277,7 +277,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 isExpanded = true;
                 StAXOMBuilder builder = new StAXOMBuilder(getOMFactory(), readerFromDS, this, characterEncoding);
                 builder.setAutoClose(true);
-                builder.releaseParserOnClose(true);
                 super.setBuilder(builder);
                 setComplete(false);
             }

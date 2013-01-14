@@ -27,10 +27,6 @@ public class StreamSwitch extends StreamReaderDelegate {
         return ((SwitchingWrapper)getParent()).isClosed();
     }
 
-    public void releaseParserOnClose(boolean value) {
-        ((SwitchingWrapper)getParent()).releaseParserOnClose(value);
-    }
-
     public OMDataSource getDataSource() {
         return ((SwitchingWrapper)getParent()).getDataSource();
     }

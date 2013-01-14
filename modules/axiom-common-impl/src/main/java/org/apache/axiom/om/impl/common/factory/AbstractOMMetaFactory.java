@@ -87,22 +87,12 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
         }
     }
     
-    private static OMXMLParserWrapper internalCreateStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        StAXOMBuilder builder = new StAXOMBuilder(omFactory, parser);
-        // StAXOMBuilder defaults to the "legacy" behavior, which is to keep a reference to the
-        // parser after the builder has been closed. Since releasing this reference is a good idea
-        // we default to releaseParserOnClose=true for builders created through the OMMetaFactory
-        // API.
-        builder.releaseParserOnClose(true);
-        return builder;
-    }
-
     public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        return internalCreateStAXOMBuilder(omFactory, getXMLStreamReader(parser));
+        return new StAXOMBuilder(omFactory, getXMLStreamReader(parser));
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
-        return internalCreateStAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
+        return new StAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
     }
     
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
@@ -133,29 +123,20 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
             OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         XOPAwareStAXOMBuilder builder = new XOPAwareStAXOMBuilder(omFactory, createXMLStreamReader(
                 configuration, rootPart), mimePartProvider);
-        builder.releaseParserOnClose(true);
-        return builder;
-    }
-
-    private SOAPModelBuilder internalCreateStAXSOAPModelBuilder(XMLStreamReader parser) {
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(this, parser);
-        builder.releaseParserOnClose(true);
         return builder;
     }
 
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
-        return internalCreateStAXSOAPModelBuilder(getXMLStreamReader(parser));
+        return new StAXSOAPModelBuilder(this, getXMLStreamReader(parser));
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
-        return internalCreateStAXSOAPModelBuilder(createXMLStreamReader(configuration, is));
+        return new StAXSOAPModelBuilder(this, createXMLStreamReader(configuration, is));
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
-        MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(soapFactory, createXMLStreamReader(
+        return new MTOMStAXSOAPModelBuilder(soapFactory, createXMLStreamReader(
                 configuration, rootPart), mimePartProvider);
-        builder.releaseParserOnClose(true);
-        return builder;
     }
 }
