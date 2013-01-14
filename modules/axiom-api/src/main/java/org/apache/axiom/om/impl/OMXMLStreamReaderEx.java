@@ -41,8 +41,4 @@ public interface OMXMLStreamReaderEx extends OMXMLStreamReader {
      * @return OMDataSource if available
      */
     OMDataSource getDataSource();
-    
-    // *** Methods that potentially could be promoted to OMXMLStreamReader ***
-    
-    boolean isClosed();
 }

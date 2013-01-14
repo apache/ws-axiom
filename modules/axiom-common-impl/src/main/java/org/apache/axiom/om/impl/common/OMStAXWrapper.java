@@ -107,13 +107,6 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
         }
     }
     
-    // TODO: need to check which of these delegate methods are really necessary;
-    //       some of them should also be defined properly by an interface
-    
-    public boolean isClosed() {
-        return streamSwitch.isClosed();
-    }
-
     public OMDataSource getDataSource() {
         return streamSwitch.getDataSource();
     }

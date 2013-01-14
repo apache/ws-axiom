@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -51,12 +50,6 @@ public class TestGetXMLStreamReaderClose extends AxiomTestCase {
         OMElement element = b.getDocumentElement();
         
         XMLStreamReader reader = element.getXMLStreamReader(cache);
-        
-        // Make sure the reader is an OMStAXWrapper
-        if (reader instanceof OMXMLStreamReaderEx) {
-            OMXMLStreamReaderEx wrapper = (OMXMLStreamReaderEx) reader;
-            assertTrue(!wrapper.isClosed());
-        }
         
         while (reader.hasNext()) {
             reader.next();

@@ -1358,7 +1358,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /**
      * @return if parser is closed
      */
-    public boolean isClosed() {
+    private boolean isClosed() {
         
         // If there is a builder, the builder owns the parser
         // and knows the isClosed status

@@ -23,10 +23,6 @@ import javax.xml.stream.util.StreamReaderDelegate;
 import org.apache.axiom.om.OMDataSource;
 
 public class StreamSwitch extends StreamReaderDelegate {
-    public boolean isClosed() {
-        return ((SwitchingWrapper)getParent()).isClosed();
-    }
-
     public OMDataSource getDataSource() {
         return ((SwitchingWrapper)getParent()).getDataSource();
     }
