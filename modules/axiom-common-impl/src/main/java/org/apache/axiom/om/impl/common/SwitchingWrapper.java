@@ -72,26 +72,29 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Field node */
     private OMSerializable _node;
 
-    /** Field visited */
-    private boolean _visited;
+    /**
+     * If the current node is an {@link OMContainer}, then this flag indicates whether the current
+     * event is the start event ({@link XMLStreamConstants#START_DOCUMENT} or
+     * {@link XMLStreamConstants#START_ELEMENT}) or the end event
+     * ({@link XMLStreamConstants#END_DOCUMENT} or {@link XMLStreamConstants#END_ELEMENT}) for that
+     * node. In the latter case, we have already visited the node before, hence the name of the
+     * attribute.
+     */
+    private boolean visited;
 
     /** Field next */
     private OMSerializable _next;
-
-    // root is the starting element. Once the navigator comes back to the
-    // root, the traversal is terminated
-
-    /** Field root */
-    private OMContainer _root;
 
     /** Field backtracked */
     private boolean _backtracked;
 
     // flags that tell the status of the navigator
 
-    // Indicates if an OMSourcedElement with an OMDataSource should
-    // be considered as an interior node or a leaf node.
-    private boolean _isDataSourceALeaf = false;
+    /**
+     * Indicates if an OMSourcedElement with an OMDataSource should
+     * be considered as an interior node or a leaf node.
+     */
+    private boolean isDataSourceALeaf;
 
     /** Field builder */
     private OMXMLParserWrapper builder;
@@ -108,8 +111,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private boolean isClosed = false;              // Indicate if parser is closed
     private boolean releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
-    /** Field rootNode */
-    private OMContainer rootNode;
+    /**
+     * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
+     */
+    private final OMContainer rootNode;
 
     // Navigable means the output should be taken from the navigator.
     // As soon as the navigator returns a null navigable will be reset
@@ -179,7 +184,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                             boolean cache, boolean preserveNamespaceContext) {
 
         _next = startNode;
-        _root = startNode;
         _backtracked = false;
         this.builder = builder;
         this.rootNode = startNode;
@@ -874,16 +878,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     }
 
     /**
-     * Indicate if an OMSourcedElement with a OMDataSource
-     * should be considered as an interior element node or as
-     * a leaf.  
-     * @param value boolean
-     */
-    private void setDataSourceIsLeaf(boolean value) {
-        _isDataSourceALeaf = value;
-    }
-
-    /**
      * Get the next information item.
      * 
      * @return the next information item in the sequence of preorder traversal. Note however that a
@@ -892,7 +886,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private OMSerializable getNext() {
         _node = _next;
-        _visited = _backtracked;
+        visited = _backtracked;
         _backtracked = false;
         updateNextNode();
         return _node;
@@ -900,7 +894,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     
     /** Private method to encapsulate the searching logic. */
     private void updateNextNode() {
-        if (!isLeaf(_node) && !_visited) {
+        if (!isLeaf(_node) && !visited) {
             OMNode firstChild = _getFirstChild((OMContainer) _node);
             if (firstChild != null) {
                 _next = firstChild;
@@ -935,7 +929,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private boolean isLeaf(OMSerializable n) {
         if (n instanceof OMContainer) {
-            return this._isDataSourceALeaf && isOMSourcedElement(n) && n != _root;
+            return this.isDataSourceALeaf && isOMSourcedElement(n) && n != rootNode;
         } else {
             return true;
         }
@@ -961,7 +955,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private OMNode _getFirstChild(OMContainer node) {
         if (cache) {
             return node.getFirstOMChild();
-        } else if (node.getBuilder() != _root.getBuilder()) {
+        } else if (node.getBuilder() != rootNode.getBuilder()) {
             // TODO: We have a problem if the tree has parts constructed by different builders; this is related to AXIOM-201 and AXIOM-431
             OMNode first = node.getFirstOMChild();
             OMNode sibling = first;
@@ -984,15 +978,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             return ((OMNodeEx) node).getNextOMSiblingIfAvailable();
         }
-    }
-
-    /**
-     * Method visited.
-     *
-     * @return Returns boolean.
-     */
-    private boolean visited() {
-        return _visited;
     }
 
     /**
@@ -1021,6 +1006,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             case NAVIGABLE:
                 if (isNavigable()) {
                     lastNode = getNext();
+                    currentEvent = generateEvents(lastNode);
+                    attributeCount = -1;
+                    namespaceCount = -1;
                 } else {
                     // reset caching (the default is ON so it was not needed in the
                     // earlier case!
@@ -1036,13 +1024,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     }
 
                     currentEvent = parser.next();
-                    updateCompleteStatus();
-                    break;
                 }
-                currentEvent = generateEvents(lastNode);
                 updateCompleteStatus();
-                attributeCount = -1;
-                namespaceCount = -1;
                 break;
             case SWITCHED:
                 currentEvent = parser.next();
@@ -1098,7 +1081,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             depth--;
         }
         if (state == NAVIGABLE) {
-            if (rootNode == lastNode && visited()) {
+            if (rootNode == lastNode && visited) {
                 if (currentEvent == END_DOCUMENT) {
                     state = DOCUMENT_COMPLETE;
                 } else {
@@ -1353,7 +1336,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private int generateEvents(OMSerializable node) {
         if (node instanceof OMContainer) {
             OMContainer container = (OMContainer)node;
-            if (visited()) {
+            if (visited) {
                 return container instanceof OMDocument ? END_DOCUMENT : END_ELEMENT;
             } else {
                 return container instanceof OMDocument ? START_DOCUMENT : START_ELEMENT;
@@ -1483,6 +1466,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @param value boolean
      */
     public void enableDataSourceEvents(boolean value) {
-        setDataSourceIsLeaf(value);
+        isDataSourceALeaf = value;
     }
 }
