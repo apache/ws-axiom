@@ -44,7 +44,7 @@ import org.apache.commons.logging.LogFactory;
 class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     
-    private final SwitchingWrapper switchingWrapper;
+    private final StreamSwitch streamSwitch = new StreamSwitch();
     private XOPEncodingStreamReader xopEncoder;
     
     /**
@@ -57,8 +57,8 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
                          boolean cache, boolean preserveNamespaceContext) {
-        switchingWrapper = new SwitchingWrapper(builder, startNode, cache, preserveNamespaceContext);
-        setParent(switchingWrapper);
+        streamSwitch.setParent(new SwitchingWrapper(builder, startNode, cache, preserveNamespaceContext));
+        setParent(streamSwitch);
     }
 
     public boolean isInlineMTOM() {
@@ -72,14 +72,14 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
         if (value) {
             if (xopEncoder != null) {
                 xopEncoder = null;
-                setParent(switchingWrapper);
+                setParent(streamSwitch);
             }
         } else {
             if (xopEncoder == null) {
                 // Since the intention is to support an efficient way to pass binary content to a
                 // consumer that is not aware of our data handler extension (see AXIOM-202), we
                 // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
-                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, ContentIDGenerator.DEFAULT,
+                xopEncoder = new XOPEncodingStreamReader(streamSwitch, ContentIDGenerator.DEFAULT,
                         OptimizationPolicy.ALL);
                 setParent(xopEncoder);
             }
@@ -111,18 +111,18 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
     //       some of them should also be defined properly by an interface
     
     public boolean isClosed() {
-        return switchingWrapper.isClosed();
+        return streamSwitch.isClosed();
     }
 
     public void releaseParserOnClose(boolean value) {
-        switchingWrapper.releaseParserOnClose(value);
+        streamSwitch.releaseParserOnClose(value);
     }
 
     public OMDataSource getDataSource() {
-        return switchingWrapper.getDataSource();
+        return streamSwitch.getDataSource();
     }
     
     public void enableDataSourceEvents(boolean value) {
-        switchingWrapper.enableDataSourceEvents(value);
+        streamSwitch.enableDataSourceEvents(value);
     }
 }
