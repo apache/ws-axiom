@@ -881,21 +881,17 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 node = null;
             }
         } else {
-            if (node instanceof OMDocument) {
-                node = null;
+            OMNode nextNode = (OMNode)node;
+            OMContainer parent = nextNode.getParent();
+            OMNode nextSibling = getNextSibling(nextNode);
+            if (nextSibling != null) {
+                node = nextSibling;
+                visited = false;
+            } else if (parent.isComplete()) {
+                node = parent;
+                visited = true;
             } else {
-                OMNode nextNode = (OMNode)node;
-                OMContainer parent = nextNode.getParent();
-                OMNode nextSibling = getNextSibling(nextNode);
-                if (nextSibling != null) {
-                    node = nextSibling;
-                    visited = false;
-                } else if ((parent != null) && parent.isComplete()) {
-                    node = parent;
-                    visited = true;
-                } else {
-                    node = null;
-                }
+                node = null;
             }
         }
     }
