@@ -89,12 +89,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
 
     // flags that tell the status of the navigator
 
-    /** Field end */
-    private boolean _end = false;
-
-    /** Field start */
-    private boolean _start = true;
-    
     // Indicates if an OMSourcedElement with an OMDataSource should
     // be considered as an interior node or a leaf node.
     private boolean _isDataSourceALeaf = false;
@@ -897,22 +891,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      *         is passed it returns the same item in the next encounter as well.
      */
     private OMSerializable getNext() {
-        if (_next == null) {
-            return null;
-        }
         _node = _next;
         _visited = _backtracked;
         _backtracked = false;
         updateNextNode();
-
-        // set the starting and ending flags
-        if (_root.equals(_node)) {
-            if (!_start) {
-                _end = true;
-            } else {
-                _start = false;
-            }
-        }
         return _node;
     }
     
@@ -1017,10 +999,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * navigator cannot proceed.
      */
     private void step() {
-        if (!_end) {
-            _next = _node;
-            updateNextNode();
-        }
+        _next = _node;
+        updateNextNode();
     }
 
     /**
@@ -1029,18 +1009,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns boolean.
      */
     private boolean isNavigable() {
-        return !_end && _next != null;
+        return _next != null;
     }
 
-    /**
-     * Returns the completed status.
-     *
-     * @return Returns boolean.
-     */
-    private boolean isCompleted() {
-        return _end;
-    }
-    
     /**
      * Method next.
      *
@@ -1058,8 +1029,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             case NAVIGABLE:
                 if (isNavigable()) {
                     lastNode = getNext();
-                } else if (isCompleted()) {
-                    lastNode = null;
                 } else if (cache) {
                     builder.next();
                     step();
