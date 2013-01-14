@@ -900,20 +900,21 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     
     /** Private method to encapsulate the searching logic. */
     private void updateNextNode() {
-        if (!isLeaf(_next) && !_visited) {
-            OMNode firstChild = _getFirstChild((OMContainer) _next);
+        if (!isLeaf(_node) && !_visited) {
+            OMNode firstChild = _getFirstChild((OMContainer) _node);
             if (firstChild != null) {
                 _next = firstChild;
-            } else if (_next.isComplete()) {
+            } else if (_node.isComplete()) {
+                _next = _node;
                 _backtracked = true;
             } else {
                 _next = null;
             }
         } else {
-            if (_next instanceof OMDocument) {
+            if (_node instanceof OMDocument) {
                 _next = null;
             } else {
-                OMNode nextNode = (OMNode)_next;
+                OMNode nextNode = (OMNode)_node;
                 OMContainer parent = nextNode.getParent();
                 OMNode nextSibling = getNextSibling(nextNode);
                 if (nextSibling != null) {
@@ -999,7 +1000,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * navigator cannot proceed.
      */
     private void step() {
-        _next = _node;
         updateNextNode();
     }
 
