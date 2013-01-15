@@ -106,6 +106,9 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
