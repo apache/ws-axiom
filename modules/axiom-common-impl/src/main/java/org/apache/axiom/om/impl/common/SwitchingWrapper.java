@@ -97,8 +97,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * if the parser doesn't support this extension.
      */
     private DataHandlerReader dataHandlerReader;
-    
-    private boolean isClosed = false;              // Indicate if parser is closed
 
     /**
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
@@ -821,24 +819,21 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @throws XMLStreamException
      */
     public void close() throws XMLStreamException {
-
-        // If there is a builder, it controls its parser
-        if (builder != null && builder instanceof StAXBuilder) {
-            StAXBuilder staxBuilder = (StAXBuilder) builder;
-            staxBuilder.close();
-            setParser(null);
-        } else {
-            if (parser != null) {
-                try {
-                    if (!isClosed()) {
-                        parser.close();
-                    }
-                } finally {
-                    isClosed = true;
-                    // Release the parser so that it can be GC'd or reused.
-                    setParser(null);
+        try {
+            // If there is a builder, it controls its parser
+            if (builder != null && builder instanceof StAXBuilder) {
+                StAXBuilder staxBuilder = (StAXBuilder) builder;
+                staxBuilder.close();
+                setParser(null);
+            } else {
+                if (parser != null) {
+                    parser.close();
                 }
             }
+        } finally {
+            // Note that as a side effect of this instruction, the SwitchingWrapper instance
+            // will become unreachable and the parser can be GC'd or reused.
+            streamSwitch.setParent(ClosedReader.INSTANCE);
         }
     }
 
@@ -1360,20 +1355,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return if parser is closed
-     */
-    private boolean isClosed() {
-        
-        // If there is a builder, the builder owns the parser
-        // and knows the isClosed status
-        if (builder != null && builder instanceof StAXBuilder) {
-           return ((StAXBuilder) builder).isClosed();
-        } else {
-            return isClosed;
-        }
-    }
-    
     /**
      * @return OMDataSource associated with the current node or Null
      */
