@@ -18,16 +18,29 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.om.OMDataSource;
 
-public class StreamSwitch extends StreamReaderDelegate {
-    public OMDataSource getDataSource() {
-        return ((SwitchingWrapper)getParent()).getDataSource();
+final class StreamSwitch extends StreamReaderDelegate {
+    /**
+     * Indicates if an OMSourcedElement with an OMDataSource should
+     * be considered as an interior node or a leaf node.
+     */
+    private boolean isDataSourceALeaf;
+
+    OMDataSource getDataSource() {
+        XMLStreamReader parent = getParent();
+        // Only SwitchingWrapper can produce OMDataSource "events"
+        return parent instanceof SwitchingWrapper ? ((SwitchingWrapper)getParent()).getDataSource() : null;
     }
     
-    public void enableDataSourceEvents(boolean value) {
-        ((SwitchingWrapper)getParent()).enableDataSourceEvents(value);
+    void enableDataSourceEvents(boolean value) {
+        isDataSourceALeaf = true;
+    }
+
+    boolean isDataSourceALeaf() {
+        return isDataSourceALeaf;
     }
 }

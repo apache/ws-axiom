@@ -69,6 +69,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
     
+    private final StreamSwitch streamSwitch;
+    
     /**
      * The current node, corresponding to the current event.
      */
@@ -83,12 +85,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * attribute.
      */
     private boolean visited;
-
-    /**
-     * Indicates if an OMSourcedElement with an OMDataSource should
-     * be considered as an interior node or a leaf node.
-     */
-    private boolean isDataSourceALeaf;
 
     /** Field builder */
     private OMXMLParserWrapper builder;
@@ -165,14 +161,15 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /**
      * Constructor.
      *
+     * @param streamSwitch
      * @param builder
      * @param startNode
      * @param cache
      * @param preserveNamespaceContext
      */
-    public SwitchingWrapper(OMXMLParserWrapper builder, OMContainer startNode,
+    public SwitchingWrapper(StreamSwitch streamSwitch, OMXMLParserWrapper builder, OMContainer startNode,
                             boolean cache, boolean preserveNamespaceContext) {
-
+        this.streamSwitch = streamSwitch;
         this.builder = builder;
         this.rootNode = startNode;
         this.cache = cache;
@@ -907,7 +904,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private boolean isLeaf(OMSerializable n) {
         if (n instanceof OMContainer) {
-            return this.isDataSourceALeaf && isOMSourcedElement(n) && n != rootNode;
+            return streamSwitch.isDataSourceALeaf() && isOMSourcedElement(n) && n != rootNode;
         } else {
             return true;
         }
@@ -1403,15 +1400,5 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             }
         }
         return ds;
-    }
-    
-    /**
-     * Enable if an OMSourcedElement with an OMDataSource should be treated as a
-     * leaf node.  Disable (the default) if the OMDataSource should be parsed and
-     * converted into events.
-     * @param value boolean
-     */
-    public void enableDataSourceEvents(boolean value) {
-        isDataSourceALeaf = value;
     }
 }

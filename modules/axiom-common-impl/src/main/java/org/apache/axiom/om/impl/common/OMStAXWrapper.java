@@ -57,7 +57,7 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
                          boolean cache, boolean preserveNamespaceContext) {
-        streamSwitch.setParent(new SwitchingWrapper(builder, startNode, cache, preserveNamespaceContext));
+        streamSwitch.setParent(new SwitchingWrapper(streamSwitch, builder, startNode, cache, preserveNamespaceContext));
         setParent(streamSwitch);
     }
 
