@@ -264,6 +264,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
+                // START quick & dirty hack
+                if (node instanceof OMSourcedElement) {
+                    // TODO: Need to force expansion to solve an issue in Axis2 where the returned QName is incorrect.
+                    //       Note that in previous versions of SwitchingWrapper, the sourced element was always expanded
+                    //       at this point (because SwitchingWrapper was looking 2 nodes ahead).
+                    ((OMElement)node).getFirstOMChild();
+                }
+                // END quick & dirty hack
                 return ((OMElement)node).getQName();
             } else {
                 throw new IllegalStateException();
