@@ -28,7 +28,6 @@ import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
@@ -38,9 +37,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);
         builder.exclude(TestInsertSiblingBeforeOnChild.class);
-        
-        // AXIOM-201
-        builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         // TODO: this is not supported yet
         builder.exclude(TestGetXMLStreamReaderWithIncompleteDescendant.class, "(cache=false)");
