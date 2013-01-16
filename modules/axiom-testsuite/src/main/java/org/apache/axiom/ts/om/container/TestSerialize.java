@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
+import org.apache.axiom.ts.strategy.serialization.XML;
 import org.apache.commons.io.IOUtils;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -35,15 +37,15 @@ import org.xml.sax.InputSource;
 
 public class TestSerialize extends ConformanceTestCase {
     private final OMContainerFactory containerFactory;
-    private final SerializationMethod serializationMethod;
+    private final SerializationStrategy serializationStrategy;
     
     public TestSerialize(OMMetaFactory metaFactory, ConformanceTestFile file,
-            OMContainerFactory containerFactory, SerializationMethod serializationMethod) {
+            OMContainerFactory containerFactory, SerializationStrategy serializationStrategy) {
         super(metaFactory, file);
         this.containerFactory = containerFactory;
-        this.serializationMethod = serializationMethod;
+        this.serializationStrategy = serializationStrategy;
         containerFactory.addTestProperties(this);
-        serializationMethod.addTestProperties(this);
+        serializationStrategy.addTestProperties(this);
     }
 
     protected void runTest() throws Throwable {
@@ -54,21 +56,22 @@ public class TestSerialize extends ConformanceTestCase {
             // We need to clone the InputSource objects so that we can dump their contents
             // if the test fails
             InputSource control[] = duplicateInputSource(containerFactory.getControl(file.getAsStream()));
-            InputSource actual[] = duplicateInputSource(serializationMethod.serialize(container));
+            XML actual = serializationStrategy.serialize(container);
             try {
                 // Configure the InputSources such that external entities can be resolved
                 String systemId = new URL(file.getUrl(), "dummy.xml").toString();
                 control[0].setSystemId(systemId);
-                actual[0].setSystemId(systemId);
-                XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actual[0]), true);
+                InputSource actualIS = actual.getInputSource();
+                actualIS.setSystemId(systemId);
+                XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actualIS), true);
             } catch (Throwable ex) {
                 System.out.println("Control:");
                 dumpInputSource(control[1]);
                 System.out.println("Actual:");
-                dumpInputSource(actual[1]);
+                actual.dump(System.out);
                 throw ex;
             }
-            if (serializationMethod.isCaching()) {
+            if (serializationStrategy.isCaching()) {
                 assertTrue(container.isComplete());
             } else {
                 // TODO: need to investigate why assertConsumed is not working here

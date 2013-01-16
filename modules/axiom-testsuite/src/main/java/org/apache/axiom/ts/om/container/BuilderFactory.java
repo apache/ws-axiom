@@ -28,13 +28,14 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.strategy.Strategy;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 /**
  * Defines a strategy to create an {@link OMXMLParserWrapper} from a given test file.
  */
-public interface BuilderFactory {
+public interface BuilderFactory extends Strategy {
     /**
      * Creates an {@link OMXMLParserWrapper} directly from the given {@link InputSource}, i.e. let
      * instantiate an appropriate parser.
@@ -103,8 +104,6 @@ public interface BuilderFactory {
     };
     
     void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
-    
-    void addTestProperties(AxiomTestCase testCase);
     
     OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
 }

@@ -28,13 +28,16 @@ import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 import org.apache.axiom.ts.om.container.BuilderFactory;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
-import org.apache.axiom.ts.om.container.SerializationMethod;
-import org.apache.axiom.ts.om.container.SerializeToOutputStream;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
 import org.apache.axiom.ts.om.factory.CreateOMElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
+import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
+import org.apache.axiom.ts.strategy.serialization.SerializeFromXMLStreamReader;
+import org.apache.axiom.ts.strategy.serialization.SerializeToOutputStream;
+import org.apache.axiom.ts.strategy.serialization.SerializeToWriter;
+import org.apache.axiom.ts.strategy.serialization.SerializeToXMLStreamWriter;
 
 public class OMTestSuiteBuilder extends TestSuiteBuilder {
     private static final BuilderFactory[] builderFactories = {
@@ -47,9 +50,15 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         new OMElementFactory(false),
         new OMElementFactory(true) };
     
-    private static final SerializationMethod[] serializationMethods = {
+    private static final SerializationStrategy[] serializationStrategies = {
         new SerializeToOutputStream(true),
-        new SerializeToOutputStream(false) };
+        new SerializeToOutputStream(false),
+        new SerializeToWriter(true),
+        new SerializeToWriter(false),
+        new SerializeToXMLStreamWriter(true),
+        new SerializeToXMLStreamWriter(false),
+        new SerializeFromXMLStreamReader(true),
+        new SerializeFromXMLStreamReader(false) };
     
     private static final QName[] qnames = {
         new QName("root"),
@@ -119,8 +128,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 // On a document containing entity references, serialization tests will only work correctly if
                 // the entire document is serialized (so that the DTD is available)
                 if (!file.hasEntityReferences() || cf == OMContainerFactory.DOCUMENT) {
-                    for (int k=0; k<serializationMethods.length; k++) {
-                        addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, containerFactories[j], serializationMethods[k]));
+                    for (int k=0; k<serializationStrategies.length; k++) {
+                        addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, containerFactories[j], serializationStrategies[k]));
                     }
                     // The SAXSource returned by getSAXSource is not able to reconstruct the internal subset.
                     // Skip test documents that have a DTD with an internal subset.
@@ -461,27 +470,20 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToStream(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToWriter(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriter(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriterEmbedded(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToStream(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToWriter(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriter(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterEmbedded(metaFactory));
-            for (int expand = 0; expand <= 2; expand++) {
-                for (int count = 1; count <= 2; count++) {
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, false, false, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, false, true, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, true, false, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, false, true, true, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, false, false, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, false, true, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, true, false, expand, count));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory, true, true, true, expand, count));
+            for (int i = 0; i < serializationStrategies.length; i++) {
+                SerializationStrategy serializationStrategy = serializationStrategies[i];
+                for (int expand = 0; expand <= 2; expand++) {
+                    for (int count = 1; count <= 2; count++) {
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, serializationStrategy, false, false, expand, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, serializationStrategy, false, true, expand, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, serializationStrategy, true, false, expand, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, serializationStrategy, true, true, expand, count));
+                    }
                 }
             }
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriterEmbedded(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterEmbedded(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReaderEmbedded(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));

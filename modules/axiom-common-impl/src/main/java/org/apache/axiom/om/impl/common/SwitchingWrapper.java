@@ -901,7 +901,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private boolean isLeaf(OMSerializable n) {
         if (n instanceof OMContainer) {
-            return streamSwitch.isDataSourceALeaf() && isOMSourcedElement(n) && n != rootNode;
+            return streamSwitch.isDataSourceALeaf() && isOMSourcedElement(n) && !((OMSourcedElement)n).isExpanded() && n != rootNode;
         } else {
             return true;
         }
@@ -1384,17 +1384,24 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         OMDataSource ds = null;
         if (node != null &&
             node instanceof OMSourcedElement) {
-            try {
-                ds = ((OMSourcedElement) node).getDataSource();
-            } catch (UnsupportedOperationException e) {
-                // Some implementations throw an UnsupportedOperationException.
-                ds =null;
-            }
-            if (log.isDebugEnabled()) {
-                if (ds != null) {
-                    log.debug("OMSourcedElement exposed an OMDataSource." + ds);
-                } else {
-                    log.debug("OMSourcedElement does not have a OMDataSource.");
+            OMSourcedElement element = (OMSourcedElement)node;
+            if (element.isExpanded()) {
+                // If the element is expanded, then we can't return the OMDataSource because the
+                // expanded element may already have been modified
+                ds = null;
+            } else {
+                try {
+                    ds = element.getDataSource();
+                } catch (UnsupportedOperationException e) {
+                    // Some implementations throw an UnsupportedOperationException.
+                    ds =null;
+                }
+                if (log.isDebugEnabled()) {
+                    if (ds != null) {
+                        log.debug("OMSourcedElement exposed an OMDataSource." + ds);
+                    } else {
+                        log.debug("OMSourcedElement does not have a OMDataSource.");
+                    }
                 }
             }
         }

@@ -16,34 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.container;
+package org.apache.axiom.ts.strategy.serialization;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.xml.sax.InputSource;
 
-public class SerializeToOutputStream implements SerializationMethod {
+/**
+ * Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer)} or
+ * {@link OMContainer#serializeAndConsume(Writer)}.
+ */
+public class SerializeToWriter implements SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToOutputStream(boolean cache) {
+    public SerializeToWriter(boolean cache) {
         this.cache = cache;
     }
 
     public void addTestProperties(AxiomTestCase testCase) {
-        testCase.addTestProperty("method", cache ? "serialize" : "serializeAndConsume");
+        testCase.addTestProperty("serializationStrategy", "Writer");
+        testCase.addTestProperty("cache", String.valueOf(cache));
     }
 
-    public InputSource serialize(OMContainer container) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    public XML serialize(OMContainer container) throws Exception {
+        StringWriter sw = new StringWriter();
         if (cache) {
-            container.serialize(baos);
+            container.serialize(sw);
         } else {
-            container.serializeAndConsume(baos);
+            container.serializeAndConsume(sw);
         }
-        return new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+        return new XMLAsString(sw.toString());
     }
 
     public boolean isCaching() {

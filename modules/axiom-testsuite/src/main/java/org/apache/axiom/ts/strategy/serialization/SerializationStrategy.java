@@ -16,14 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.container;
+package org.apache.axiom.ts.strategy.serialization;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.ts.AxiomTestCase;
-import org.xml.sax.InputSource;
+import org.apache.axiom.ts.strategy.Strategy;
 
-public interface SerializationMethod {
-    void addTestProperties(AxiomTestCase testCase);
-    InputSource serialize(OMContainer container) throws Exception;
+/**
+ * Defines a strategy to serialize an {@link OMContainer} instance to XML.
+ */
+public interface SerializationStrategy extends Strategy {
+    /**
+     * Serialize the given {@link OMContainer}.
+     * 
+     * @param container
+     *            the container to serialize to XML
+     * @return the serialized XML
+     * @throws Exception
+     */
+    XML serialize(OMContainer container) throws Exception;
+
+    /**
+     * Determine if this serialization strategy consumes the content of the {@link OMContainer}.
+     * 
+     * @return <code>true</code> if the strategy preserves the content, <code>false</code> if it
+     *         consumes the content
+     */
     boolean isCaching();
 }
