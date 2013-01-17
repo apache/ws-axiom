@@ -59,8 +59,9 @@ public final class OMContainerHelper {
         // The om tree was built by hand and is already complete
         OMXMLStreamReader reader;
         boolean done = container.isComplete();
+        // TODO: review & clean up
         if ((builder == null) && done) {
-            reader = new OMStAXWrapper(null, container, false, configuration.isPreserveNamespaceContext());
+            reader = new OMStAXWrapper(null, container, cache, configuration.isPreserveNamespaceContext());
         } else {
             if ((builder == null) && !cache) {
                 throw new UnsupportedOperationException(
