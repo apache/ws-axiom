@@ -62,10 +62,14 @@ public class OSGiManifestResourceTransformer implements ResourceTransformer {
             Attributes shadedAttributes = shadedManifest.getMainAttributes();
             Set shadedImportPackages = new LinkedHashSet(Arrays.asList(
                     shadedAttributes.getValue("Import-Package").split(",")));
-            shadedImportPackages.removeAll(Arrays.asList(
-                    includedAttributes.getValue("Export-Package").split(",")));
-            shadedImportPackages.addAll(Arrays.asList(
-                    includedAttributes.getValue("Import-Package").split(",")));
+            String exportPackage = includedAttributes.getValue("Export-Package");
+            if (exportPackage != null) {
+                shadedImportPackages.removeAll(Arrays.asList(exportPackage.split(",")));
+            }
+            String importPackage = includedAttributes.getValue("Import-Package");
+            if (importPackage != null) {
+                shadedImportPackages.addAll(Arrays.asList(importPackage.split(",")));
+            }
             shadedAttributes.putValue("Import-Package",
                     StringUtils.join(shadedImportPackages.iterator(), ","));
         }

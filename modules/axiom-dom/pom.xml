@@ -147,6 +147,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />
                             </transformers>
+                            <createSourcesJar>true</createSourcesJar>
                         </configuration>
                     </execution>
                 </executions>
