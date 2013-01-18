@@ -40,7 +40,7 @@ final class IncludeWrapper extends XMLStreamReaderWrapper {
     public int next() throws XMLStreamException {
         if (depth == 0) {
             // We get here if the underlying XMLStreamReader is on the last END_ELEMENT event
-            // TODO: this needs testing! the unit test should validate that the reader is closed
+            // TODO: also do this if the reader is prematurely closed
             getParent().close();
             streamSwitch.setParent(nextTarget);
             return nextTarget.next();
