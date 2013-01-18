@@ -45,6 +45,7 @@ public class SerializeFromXMLStreamReader implements SerializationStrategy {
         StringWriter sw = new StringWriter();
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(container.getOMFactory(), container.getXMLStreamReader(cache));
         builder.getDocument().serialize(sw);
+        builder.close();
         return new XMLAsString(sw.toString());
     }
 

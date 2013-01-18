@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -545,7 +546,12 @@ public class OMSerializerUtil {
     public static void serializeByPullStream
             (OMElement
                     element, XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        new StreamingOMSerializer().serialize(element.getXMLStreamReader(cache), writer);
+        XMLStreamReader reader = element.getXMLStreamReader(cache);
+        try {
+            new StreamingOMSerializer().serialize(reader, writer);
+        } finally {
+            reader.close();
+        }
     }
 
     public static void serializeChildren(OMContainer container, XMLStreamWriter writer,

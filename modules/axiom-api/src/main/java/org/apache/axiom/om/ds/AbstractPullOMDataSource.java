@@ -39,6 +39,11 @@ public abstract class AbstractPullOMDataSource extends AbstractOMDataSource {
 
     public final void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(getReader(), xmlWriter);
+        XMLStreamReader reader = getReader();
+        try {
+            serializer.serialize(reader, xmlWriter);
+        } finally {
+            reader.close();
+        }
     }
 }

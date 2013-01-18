@@ -85,6 +85,7 @@ public class TestSerialize extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, destructive);
+        TestDataSource ds = (TestDataSource)element.getDataSource();
         OMElement parent;
         if (orphan) {
             parent = null;
@@ -131,5 +132,6 @@ public class TestSerialize extends AxiomTestCase {
                 assertTrue(parent.isComplete());
             }
         }
+        assertFalse(ds.hasUnclosedReaders());
     }
 }

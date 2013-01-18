@@ -19,6 +19,8 @@
 package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringReader;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -29,6 +31,7 @@ import org.apache.axiom.om.util.StAXUtils;
 class TestDataSource extends AbstractPullOMDataSource {
     private final String data;
     private final boolean destructive;
+    private final Set unclosedReaders = new HashSet();
     private boolean destroyed;
 
     TestDataSource(String data) {
@@ -47,10 +50,21 @@ class TestDataSource extends AbstractPullOMDataSource {
         if (destructive) {
             destroyed = true;
         }
-        return StAXUtils.createXMLStreamReader(new StringReader(data));
+        CloseTestXMLStreamReaderWrapper reader = new CloseTestXMLStreamReaderWrapper(this,
+                StAXUtils.createXMLStreamReader(new StringReader(data)));
+        unclosedReaders.add(reader);
+        return reader;
     }
 
     public boolean isDestructiveRead() {
         return destructive;
+    }
+
+    boolean hasUnclosedReaders() {
+        return !unclosedReaders.isEmpty();
+    }
+    
+    void readerClosed(CloseTestXMLStreamReaderWrapper reader) {
+        unclosedReaders.remove(reader);
     }
 }
