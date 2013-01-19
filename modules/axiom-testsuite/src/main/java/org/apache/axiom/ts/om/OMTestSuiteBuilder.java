@@ -421,8 +421,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.namespace.TestObjectEquals(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestObjectEqualsWithDifferentPrefixes(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestObjectEqualsWithDifferentURIs(metaFactory));
-        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));
-        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true, true));
+        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true, false));
+        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false, true));
+        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false, false));
         addTest(new org.apache.axiom.ts.om.node.TestDetachAfterBuilderClose(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetachFirstChild(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.node.TestDetachFirstChild(metaFactory, false));

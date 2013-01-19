@@ -141,14 +141,12 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
         if (previousSibling == null) {
             parent.setFirstChild(nextSibling);
         } else {
-            ((OMNodeEx) getPreviousOMSibling()).setNextOMSibling(nextSibling);
+            previousSibling.setNextOMSibling(nextSibling);
         }
-        if (nextSibling != null) {
-            nextSibling.setPreviousOMSibling(getPreviousOMSibling());
-        }
-
-        if ((parent instanceof OMElementImpl) && ((OMElementImpl) parent).lastChild == this) {
-            ((OMElementImpl) parent).lastChild = getPreviousOMSibling();
+        if (nextSibling == null) {
+            parent.setLastChild(previousSibling);
+        } else {
+            nextSibling.setPreviousOMSibling(previousSibling);
         }
 
         this.previousSibling = null;

@@ -18,33 +18,49 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import java.io.StringReader;
+
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of {@link OMNode#detach()}.
  */
 public class TestDetach extends AxiomTestCase {
+    private final boolean document;
     private final boolean build;
     
-    public TestDetach(OMMetaFactory metaFactory, boolean build) {
+    public TestDetach(OMMetaFactory metaFactory, boolean document, boolean build) {
         super(metaFactory);
+        this.document = document;
         this.build = build;
+        addTestProperty("document", Boolean.toString(document));
         addTestProperty("build", Boolean.toString(build));
     }
 
     protected void runTest() throws Throwable {
-        OMElement root = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<root><a/><b/><c/></root>");
+        OMFactory factory = metaFactory.getOMFactory();
+        OMContainer root;
+        if (document) {
+            root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
+                    "<!--a--><b/><!--c-->")).getDocument();
+        } else {
+            root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
+                    "<root><!--a--><b/><!--c--></root>")).getDocumentElement();
+        }
         if (build) {
             root.build();
         } else {
             assertFalse(root.isComplete());
         }
-        OMElement a = (OMElement)root.getFirstOMChild();
-        assertEquals("a", a.getLocalName());
+        OMComment a = (OMComment)root.getFirstOMChild();
+        assertEquals("a", a.getValue());
         OMElement b = (OMElement)a.getNextOMSibling();
         assertEquals("b", b.getLocalName());
         OMNode returnValue = b.detach();
@@ -52,8 +68,8 @@ public class TestDetach extends AxiomTestCase {
         assertNull(b.getParent());
         assertNull(b.getPreviousOMSibling());
         assertNull(b.getNextOMSibling());
-        OMElement c = (OMElement)a.getNextOMSibling();
-        assertEquals("c", c.getLocalName());
+        OMComment c = (OMComment)a.getNextOMSibling();
+        assertEquals("c", c.getValue());
         assertSame(c, a.getNextOMSibling());
         assertSame(a, c.getPreviousOMSibling());
         root.close(false);
