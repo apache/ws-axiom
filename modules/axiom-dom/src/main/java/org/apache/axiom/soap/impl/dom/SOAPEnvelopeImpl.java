@@ -53,8 +53,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         OMConstants {
 
-    private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
-
     public SOAPEnvelopeImpl(ParentNode parentNode, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
