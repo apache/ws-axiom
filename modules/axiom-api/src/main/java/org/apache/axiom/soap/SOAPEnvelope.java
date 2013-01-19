@@ -26,15 +26,13 @@ import org.apache.axiom.om.OMNamespace;
 /** Interface SOAPEnvelope */
 public interface SOAPEnvelope extends OMElement {
     /**
-     * Returns the <CODE>SOAPHeader</CODE> object for this <CODE> SOAPEnvelope</CODE> object. <P>
-     * This SOAPHeader will just be a container for all the headers in the <CODE>OMMessage</CODE>
-     * </P>
-     *
-     * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there is none
-     * @throws org.apache.axiom.om.OMException
-     *          if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
+     * Returns the {@link SOAPHeader} object for this envelope. This method takes advantage of the
+     * fact that the {@link SOAPHeader} must be the first child element (if it exists) to avoid
+     * building the {@link SOAPBody} if it is still incomplete.
+     * 
+     * @return the {@link SOAPHeader} object or <code>null</code> if there is none
      */
-    SOAPHeader getHeader() throws OMException;
+    SOAPHeader getHeader();
 
     /**
      * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>

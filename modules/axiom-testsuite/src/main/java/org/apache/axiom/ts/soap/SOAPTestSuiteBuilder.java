@@ -123,6 +123,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeader(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParserNoHeader(metaFactory, spec));
         for (int i=0; i<generalQNames.length; i++) {
             QName qname = generalQNames[i];
             addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, spec, qname));

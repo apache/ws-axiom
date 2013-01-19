@@ -78,15 +78,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
         return ((SOAPFactory)factory).getSOAPVersion();
     }
 
-    /**
-     * Returns the <CODE>SOAPHeader</CODE> object for this <CODE> SOAPEnvelope</CODE> object. <P>
-     * This SOAPHeader will just be a container for all the headers in the <CODE>OMMessage</CODE>
-     * </P>
-     *
-     * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there is none
-     * @throws OMException if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
-     */
-    public SOAPHeader getHeader() throws OMException {
+    public SOAPHeader getHeader() {
         // The soap header is the first element in the envelope.
         OMElement e = getFirstElement();
         if (e instanceof SOAPHeader) {
