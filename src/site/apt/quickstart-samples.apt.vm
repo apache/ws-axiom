@@ -104,10 +104,10 @@ Loading local chunks from a large XML document
 
 Processing MTOM messages
 
-  This sample shows how to process MTOM messages with Axiom. The code actually sends a request to a Web service
-  with the following JAX-WS service endpoint interface:
+  This sample shows how to process MTOM messages with Axiom. The code actually sends a request to
+  the following JAX-WS service:
 
-%{snippet|id=iface|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMService.java}
+%{snippet|id=class|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMService.java}
 
   It then extracts the binary content from the response and writes it to a given <<<OutputStream>>>:
 

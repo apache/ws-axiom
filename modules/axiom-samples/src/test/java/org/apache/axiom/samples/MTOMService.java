@@ -19,18 +19,21 @@
 package org.apache.axiom.samples;
 
 import javax.activation.DataHandler;
+import javax.activation.URLDataSource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.soap.MTOM;
 
-// START SNIPPET: iface
+// START SNIPPET: class
 @WebService(targetNamespace="urn:test")
 @MTOM
-public interface MTOMService {
+public class MTOMService {
     @WebMethod
     @WebResult(name="content")
-    DataHandler retrieveContent(@WebParam(name="fileId") String fileId);
+    public DataHandler retrieveContent(@WebParam(name="fileId") String fileId) {
+        return new DataHandler(new URLDataSource(MTOMService.class.getResource("test.txt")));
+    }
 }
-// END SNIPPET: iface
+// END SNIPPET: class
