@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.container;
+package org.apache.axiom.ts.strategy;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.strategy.Strategy;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -41,6 +40,10 @@ public interface BuilderFactory extends Strategy {
      * instantiate an appropriate parser.
      */
     BuilderFactory PARSER = new BuilderFactory() {
+        public boolean isDeferredParsing() {
+            return true;
+        }
+
         public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
         }
 
@@ -59,6 +62,10 @@ public interface BuilderFactory extends Strategy {
      * tree to Axiom.
      */
     BuilderFactory DOM = new BuilderFactory() {
+        public boolean isDeferredParsing() {
+            return true;
+        }
+
         public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
             // DOM gives access to the parsed replacement value (via the Entity interface), but Axiom
             // stores the unparsed replacement value. Therefore OMEntityReference#getReplacementText()
@@ -83,6 +90,10 @@ public interface BuilderFactory extends Strategy {
      * Creates an {@link OMXMLParserWrapper} by passing a {@link SAXSource} to Axiom.
      */
     BuilderFactory SAX = new BuilderFactory() {
+        public boolean isDeferredParsing() {
+            return false;
+        }
+
         public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
             // SAX doesn't provide this information
             comparator.setCompareCharacterEncodingScheme(false);
@@ -102,6 +113,15 @@ public interface BuilderFactory extends Strategy {
             return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source, false);
         }
     };
+    
+    /**
+     * Determines if the builder created by this strategy supports deferred parsing.
+     * 
+     * @return <code>true</code> if the builder supports deferred parsing, <code>false</code> if the
+     *         builder doesn't support deferred parsing and will build the document all in once
+     *         (this is the case for SAX only)
+     */
+    boolean isDeferredParsing();
     
     void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
     

@@ -23,28 +23,65 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.strategy.BuilderFactory;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.xml.sax.InputSource;
 
 /**
- * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()}.
+ * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement()} and
+ * {@link OMXMLParserWrapper#getDocumentElement(boolean)}.
  */
 public class TestGetDocumentElement extends AxiomTestCase {
-    public TestGetDocumentElement(OMMetaFactory metaFactory) {
+    private final BuilderFactory builderFactory;
+    private final Boolean discardDocument;
+    
+    public TestGetDocumentElement(OMMetaFactory metaFactory, BuilderFactory builderFactory, Boolean discardDocument) {
         super(metaFactory);
+        this.builderFactory = builderFactory;
+        this.discardDocument = discardDocument;
+        builderFactory.addTestProperties(this);
+        addTestProperty("discardDocument", String.valueOf(discardDocument));
     }
 
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                new StringReader("<!--comment1--><root/><!--comment2-->"));
-        OMElement element = builder.getDocumentElement();
+        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory,
+                new InputSource(new StringReader("<!--comment1--><root/><!--comment2-->")));
+        OMElement element;
+        if (discardDocument == null) {
+            element = builder.getDocumentElement();
+        } else {
+            element = builder.getDocumentElement(discardDocument.booleanValue());
+        }
         assertNotNull("Document element can not be null", element);
         assertEquals("Name of the document element is wrong", "root", element.getLocalName());
-        // The getDocumentElement doesn't detach the document element from the document:
-        assertSame(builder.getDocument(), element.getParent());
-        assertSame(builder.getDocument().getOMDocumentElement(), element);
-        assertTrue(element.getPreviousOMSibling() instanceof OMComment);
-        assertTrue(element.getNextOMSibling() instanceof OMComment);
+        if (Boolean.TRUE.equals(discardDocument)) {
+            if (builderFactory.isDeferredParsing()) {
+                assertFalse(element.isComplete());
+            }
+            assertNull(element.getParent());
+            // Note: we can't test getNextOMSibling here because this would build the element
+            assertNull(element.getPreviousOMSibling());
+            OMElement newParent = element.getOMFactory().createOMElement("newParent", null);
+            newParent.addChild(element);
+            if (builderFactory.isDeferredParsing()) {
+                assertFalse(element.isComplete());
+                assertFalse(builder.isCompleted());
+            }
+            XMLAssert.assertXMLEqual("<newParent><root/></newParent>", newParent.toString());
+            assertTrue(element.isComplete());
+            // Since we discarded the document, the nodes in the epilog will not be accessible.
+            // Therefore we expect that when the document element changes its completion status,
+            // the builder will consume the epilog and change its completion status as well.
+            // This gives the underlying parser a chance to release some resources.
+            assertTrue(builder.isCompleted());
+        } else {
+            // The getDocumentElement doesn't detach the document element from the document:
+            assertSame(builder.getDocument(), element.getParent());
+            assertSame(builder.getDocument().getOMDocumentElement(), element);
+            assertTrue(element.getPreviousOMSibling() instanceof OMComment);
+            assertTrue(element.getNextOMSibling() instanceof OMComment);
+        }
     }
 }

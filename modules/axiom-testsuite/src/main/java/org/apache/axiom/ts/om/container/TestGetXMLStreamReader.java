@@ -29,6 +29,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.strategy.BuilderFactory;
 import org.xml.sax.InputSource;
 
 /**

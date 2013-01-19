@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
-import org.apache.axiom.ts.om.container.BuilderFactory;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
@@ -33,6 +32,7 @@ import org.apache.axiom.ts.om.factory.CreateOMElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
+import org.apache.axiom.ts.strategy.BuilderFactory;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.apache.axiom.ts.strategy.serialization.SerializeFromXMLStreamReader;
@@ -113,8 +113,12 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderIncorrectState(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing2(metaFactory));
-        addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
-        addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
+        for (int i=0; i<builderFactories.length; i++) {
+            BuilderFactory bf = builderFactories[i];
+            addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory, bf, null));
+            addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory, bf, Boolean.FALSE));
+            addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory, bf, Boolean.TRUE));
+        }
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocumentIllFormedEpilog(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithIllFormedDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestInvalidXML(metaFactory));
