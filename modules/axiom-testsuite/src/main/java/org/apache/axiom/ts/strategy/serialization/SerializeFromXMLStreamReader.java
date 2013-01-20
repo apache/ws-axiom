@@ -49,6 +49,10 @@ public class SerializeFromXMLStreamReader implements SerializationStrategy {
         return new XMLAsString(sw.toString());
     }
 
+    public boolean isPush() {
+        return false;
+    }
+
     public boolean isCaching() {
         return cache;
     }

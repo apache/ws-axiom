@@ -18,32 +18,41 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import java.io.StringReader;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.QNameAwareOMDataSource;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 
-public class PushOMDataSource extends AbstractPushOMDataSource implements QNameAwareOMDataSource {
+class PushOMDataSource extends AbstractPushOMDataSource {
+    private final OMFactory factory;
+    private final String data;
+    private final boolean destructive;
+    private boolean destroyed;
+    
+    PushOMDataSource(OMFactory factory, String data, boolean destructive) {
+        this.factory = factory;
+        this.data = data;
+        this.destructive = destructive;
+    }
+
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-        writer.writeStartElement("p", "root", "urn:test");
-        writer.writeEmptyElement("p", "child", "urn:test");
-        writer.writeEndElement();
+        if (destroyed) {
+            throw new IllegalStateException("The OMDataSource has already been consumed");
+        }
+        if (destructive) {
+            destroyed = true;
+        }
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(data));
+        builder.getDocumentElement().serializeAndConsume(writer);
+        builder.close();
     }
 
     public boolean isDestructiveWrite() {
-        return false;
-    }
-
-    public String getLocalName() {
-        return "root";
-    }
-
-    public String getNamespaceURI() {
-        return "urn:test";
-    }
-
-    public String getPrefix() {
-        return "p";
+        return destructive;
     }
 }

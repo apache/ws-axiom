@@ -44,7 +44,7 @@ public class TestSetLocalName extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(
-                new TestDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
+                new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
                 "root", factory.createOMNamespace("urn:test", "p"));
         if (expand) {
             element.getFirstOMChild();

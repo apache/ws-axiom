@@ -20,7 +20,10 @@ package org.apache.axiom.ts.strategy;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.ds.AbstractPullOMDataSource;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.junit.Assert;
 
 /**
@@ -41,12 +44,12 @@ public interface ExpansionStrategy extends Strategy {
             Assert.assertFalse(element.isExpanded());
         }
 
-        public boolean isConsumedAfterSerializationWithoutCaching(boolean destructiveDS) {
-            return destructiveDS;
+        public boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return !(pushDS && !serializationStrategy.isPush()) && destructiveDS && !serializationStrategy.isCaching();
         }
 
-        public boolean isExpandedAfterSerialization(boolean destructiveDS, boolean cache) {
-            return destructiveDS && cache;
+        public boolean isExpandedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return pushDS && !serializationStrategy.isPush() || destructiveDS && serializationStrategy.isCaching();
         }
     };
     
@@ -64,11 +67,11 @@ public interface ExpansionStrategy extends Strategy {
             Assert.assertFalse(element.isComplete());
         }
 
-        public boolean isConsumedAfterSerializationWithoutCaching(boolean destructiveDS) {
-            return true;
+        public boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
+            return !serializationStrategy.isCaching();
         }
 
-        public boolean isExpandedAfterSerialization(boolean destructiveDS, boolean cache) {
+        public boolean isExpandedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
             return true;
         }
     };
@@ -88,11 +91,11 @@ public interface ExpansionStrategy extends Strategy {
             Assert.assertTrue(element.isComplete());
         }
 
-        public boolean isConsumedAfterSerializationWithoutCaching(boolean destructiveDS) {
+        public boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
             return false;
         }
 
-        public boolean isExpandedAfterSerialization(boolean destructiveDS, boolean cache) {
+        public boolean isExpandedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
             return true;
         }
     };
@@ -105,28 +108,39 @@ public interface ExpansionStrategy extends Strategy {
     void apply(OMSourcedElement element);
     
     /**
-     * Determines if serializing the {@link OMSourcedElement} (with caching turned off) after
-     * applying this expansion strategy will consume it. If the element is consumed, it cannot be
-     * serialized twice.
+     * Determines if serializing the {@link OMSourcedElement} after applying this expansion strategy
+     * will consume it. If the element is consumed, it cannot be serialized twice.
      * 
+     * @param pushDS
+     *            specifies whether the {@link OMDataSource} of the {@link OMSourcedElement} extends
+     *            {@link AbstractPullOMDataSource} (<code>false</code>) or
+     *            {@link AbstractPushOMDataSource} (<code>true</code>)
      * @param destructiveDS
      *            specifies whether the {@link OMDataSource} of the {@link OMSourcedElement} is
      *            destructive
+     * @param serializationStrategy
+     *            the serialization strategy
+     * 
      * @return <code>true</code> if serializing the {@link OMSourcedElement} will consume it,
      *         <code>false</code> if the {@link OMSourcedElement} can be serialized multiple times
      */
-    boolean isConsumedAfterSerializationWithoutCaching(boolean destructiveDS);
+    boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy);
     
     /**
      * Determines if the {@link OMSourcedElement} to which this expansion strategy has been applied
      * will be expanded after serialization.
      * 
+     * @param pushDS
+     *            specifies whether the {@link OMDataSource} of the {@link OMSourcedElement} extends
+     *            {@link AbstractPullOMDataSource} (<code>false</code>) or
+     *            {@link AbstractPushOMDataSource} (<code>true</code>)
      * @param destructiveDS
      *            specifies whether the {@link OMDataSource} of the {@link OMSourcedElement} is
      *            destructive
-     * @param cache
-     *            specifies whether caching is enabled during serialization
+     * @param serializationStrategy
+     *            the serialization strategy
+     * 
      * @return the expected value of {@link OMSourcedElement#isExpanded()} after serialization
      */
-    boolean isExpandedAfterSerialization(boolean destructiveDS, boolean cache);
+    boolean isExpandedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy);
 }

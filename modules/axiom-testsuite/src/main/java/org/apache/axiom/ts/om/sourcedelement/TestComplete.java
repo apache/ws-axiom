@@ -38,7 +38,7 @@ public class TestComplete extends AxiomTestCase {
         OMFactory f = metaFactory.getOMFactory();
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMElement child = f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+        OMElement child = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         
         // Trigger expansion of the child OMSE
@@ -57,7 +57,7 @@ public class TestComplete extends AxiomTestCase {
         
         // Now repeat the test, but this time trigger the 
         // partial parsing of the child after adding it to the root.
-        child = f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+        child = f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         root = f.createOMElement("root", rootNS);
         
         root.addChild(child);

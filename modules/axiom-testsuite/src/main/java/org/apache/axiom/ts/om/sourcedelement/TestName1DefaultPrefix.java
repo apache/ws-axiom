@@ -47,7 +47,7 @@ public class TestName1DefaultPrefix extends AxiomTestCase {
         OMNamespace ns =
                 f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
         OMElement element =
-                f.createOMElement(new TestDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
+                f.createOMElement(new PullOMDataSource(TestDocument.DOCUMENT1.getContent()), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 

@@ -43,7 +43,7 @@ public abstract class OMSourcedElementVariant {
             public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
                 // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
                 OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
-                return factory.createOMElement(new TestDataSource(orgElement.toString()));
+                return factory.createOMElement(new PullOMDataSource(orgElement.toString()));
             }
         },
         new OMSourcedElementVariant("lossy-prefix", false, false, true) {
@@ -86,7 +86,7 @@ public abstract class OMSourcedElementVariant {
             public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
                 // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
                 OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
-                return factory.createOMElement(new TestDataSource(orgElement.toString()),
+                return factory.createOMElement(new PullOMDataSource(orgElement.toString()),
                         qname.getLocalPart(), factory.createOMNamespace(qname.getNamespaceURI(), null));
             }
         }

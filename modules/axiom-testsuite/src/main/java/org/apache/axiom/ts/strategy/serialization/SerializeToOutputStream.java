@@ -50,6 +50,10 @@ public class SerializeToOutputStream implements SerializationStrategy {
         return new XMLAsByteArray(baos.toByteArray());
     }
 
+    public boolean isPush() {
+        return true;
+    }
+
     public boolean isCaching() {
         return cache;
     }

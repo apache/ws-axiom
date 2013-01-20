@@ -28,17 +28,17 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
-class TestDataSource extends AbstractPullOMDataSource {
+class PullOMDataSource extends AbstractPullOMDataSource {
     private final String data;
     private final boolean destructive;
     private final Set unclosedReaders = new HashSet();
     private boolean destroyed;
 
-    TestDataSource(String data) {
+    PullOMDataSource(String data) {
         this(data, true);
     }
     
-    TestDataSource(String data, boolean destructive) {
+    PullOMDataSource(String data, boolean destructive) {
         this.data = data;
         this.destructive = destructive;
     }

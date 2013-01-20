@@ -50,6 +50,10 @@ public class SerializeToWriter implements SerializationStrategy {
         return new XMLAsString(sw.toString());
     }
 
+    public boolean isPush() {
+        return true;
+    }
+
     public boolean isCaching() {
         return cache;
     }

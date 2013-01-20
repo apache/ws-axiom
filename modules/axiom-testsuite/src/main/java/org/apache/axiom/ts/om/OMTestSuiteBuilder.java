@@ -464,8 +464,6 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetReaderException(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetXMLStreamReaderWithPushOMDataSource(metaFactory, true));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetXMLStreamReaderWithPushOMDataSource(metaFactory, false));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestInputStreamDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));
@@ -485,12 +483,20 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 for (int j = 0; j < expansionStrategies.length; j++) {
                     ExpansionStrategy es = expansionStrategies[j];
                     for (int count = 1; count <= 2; count++) {
-                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, es, ss, false, count));
-                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, es, ss, true, count));
-                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, es, ss, false, count));
-                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, es, ss, false, count));
-                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, es, ss, true, count));
-                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, es, ss, false, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, false, es, ss, false, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, false, es, ss, true, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, true, es, ss, false, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, false, es, ss, false, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, false, es, ss, true, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, true, es, ss, false, count));
+                        if (es != ExpansionStrategy.PARTIAL) {
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, false, es, ss, false, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, false, es, ss, true, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, true, es, ss, false, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, false, es, ss, false, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, false, es, ss, true, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, true, es, ss, false, count));
+                        }
                     }
                 }
             }

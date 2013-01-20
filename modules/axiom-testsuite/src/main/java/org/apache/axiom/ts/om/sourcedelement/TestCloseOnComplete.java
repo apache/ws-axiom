@@ -37,7 +37,7 @@ public class TestCloseOnComplete extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        TestDataSource ds = new TestDataSource("<root><a/></root>");
+        PullOMDataSource ds = new PullOMDataSource("<root><a/></root>");
         OMSourcedElement element = metaFactory.getOMFactory().createOMElement(ds);
         OMNode child = element.getFirstOMChild();
         assertFalse(element.isComplete());

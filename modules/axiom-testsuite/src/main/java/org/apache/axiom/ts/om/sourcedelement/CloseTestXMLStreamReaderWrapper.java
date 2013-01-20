@@ -24,10 +24,10 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class CloseTestXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
-    private final TestDataSource ds;
+    private final PullOMDataSource ds;
     private boolean closed;
     
-    CloseTestXMLStreamReaderWrapper(TestDataSource ds, XMLStreamReader parent) {
+    CloseTestXMLStreamReaderWrapper(PullOMDataSource ds, XMLStreamReader parent) {
         super(parent);
         this.ds = ds;
     }

@@ -36,6 +36,14 @@ public interface SerializationStrategy extends Strategy {
     XML serialize(OMContainer container) throws Exception;
 
     /**
+     * Determine if this serialization strategy works in pull or push mode.
+     * 
+     * @return <code>true</code> if the serialization is driven by Axiom, <code>false</code> if the
+     *         serialization is driven by the application code
+     */
+    boolean isPush();
+    
+    /**
      * Determine if this serialization strategy consumes the content of the {@link OMContainer}.
      * 
      * @return <code>true</code> if the strategy preserves the content, <code>false</code> if it

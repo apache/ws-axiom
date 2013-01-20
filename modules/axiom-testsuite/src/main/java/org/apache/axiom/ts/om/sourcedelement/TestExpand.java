@@ -37,7 +37,7 @@ public class TestExpand extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), true);
+        OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(metaFactory.getOMFactory(), false, true);
         element.getAllDeclaredNamespaces();
         assertEquals("Expanded namespace count error", 1,
                      countItems(element.getAllDeclaredNamespaces()));
