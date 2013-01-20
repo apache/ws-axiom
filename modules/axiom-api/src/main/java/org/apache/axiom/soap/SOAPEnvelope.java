@@ -35,6 +35,15 @@ public interface SOAPEnvelope extends OMElement {
     SOAPHeader getHeader();
 
     /**
+     * Returns the existing {@link SOAPHeader} object for this envelope or creates a new one if
+     * there is none. Similarly to {@link #getHeader()}, this method avoids building the
+     * {@link SOAPBody}.
+     * 
+     * @return the existing or newly created {@link SOAPHeader} object for this envelope
+     */
+    SOAPHeader getOrCreateHeader();
+    
+    /**
      * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
      * object. <P> This SOAPBody will just be a container for all the BodyElements in the
      * <CODE>OMMessage</CODE> </P>

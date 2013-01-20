@@ -63,8 +63,14 @@ public interface SOAPFactory extends OMFactory {
     SOAPEnvelope createSOAPEnvelope(OMNamespace ns); 
 
     /**
+     * Create a {@link SOAPHeader} as a child of the given {@link SOAPEnvelope}.
+     * <p>
+     * Note that for most use cases, it is preferable to use
+     * {@link SOAPEnvelope#getOrCreateHeader()} instead of this method.
+     * 
      * @param envelope
-     * @return Returns SOAPHeader.
+     *            the parent of the {@link SOAPHeader}
+     * @return the newly created {@link SOAPHeader}
      */
     SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException;
 

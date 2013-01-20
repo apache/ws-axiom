@@ -88,6 +88,11 @@ public class SOAPEnvelopeImpl extends SOAPElement
         return null;
     }
 
+    public SOAPHeader getOrCreateHeader() {
+        SOAPHeader header = getHeader();
+        return header != null ? header : ((SOAPFactory)factory).createSOAPHeader(this);
+    }
+
     /**
      * Check that a node is allowed as a child of a SOAP envelope.
      * 
