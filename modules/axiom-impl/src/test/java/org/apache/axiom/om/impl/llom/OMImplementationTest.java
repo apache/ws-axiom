@@ -50,6 +50,13 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
+
+        // TODO: getSAXSource doesn't honor the cache flag yet
+        builder.exclude(org.apache.axiom.ts.om.container.TestSerialize.class, "(&(serializationStrategy=SAXSource)(cache=false))");
+        builder.exclude(org.apache.axiom.ts.om.sourcedelement.TestSerialize.class, "(&(serializationStrategy=SAXSource)(cache=false))");
+        
+        // TODO: the SAXSource returned by getSAXSource always expands OMSourcedElements
+        builder.exclude(org.apache.axiom.ts.om.sourcedelement.TestSerialize.class, "(&(serializationStrategy=SAXSource)(destructive=false))");
         
         return builder.build();
     }

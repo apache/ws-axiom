@@ -26,13 +26,12 @@ import java.net.URL;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.apache.axiom.ts.strategy.serialization.XML;
 import org.apache.commons.io.IOUtils;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestSerialize extends ConformanceTestCase {
@@ -63,7 +62,7 @@ public class TestSerialize extends ConformanceTestCase {
                 control[0].setSystemId(systemId);
                 InputSource actualIS = actual.getInputSource();
                 actualIS.setSystemId(systemId);
-                XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actualIS), true);
+                XMLAssertEx.assertXMLIdentical(control[0], actualIS, false);
             } catch (Throwable ex) {
                 System.out.println("Control:");
                 dumpInputSource(control[1]);

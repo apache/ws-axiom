@@ -35,6 +35,7 @@ import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 import org.apache.axiom.ts.strategy.BuilderFactory;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
+import org.apache.axiom.ts.strategy.serialization.SerializeFromSAXSource;
 import org.apache.axiom.ts.strategy.serialization.SerializeFromXMLStreamReader;
 import org.apache.axiom.ts.strategy.serialization.SerializeToOutputStream;
 import org.apache.axiom.ts.strategy.serialization.SerializeToWriter;
@@ -59,7 +60,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         new SerializeToXMLStreamWriter(true),
         new SerializeToXMLStreamWriter(false),
         new SerializeFromXMLStreamReader(true),
-        new SerializeFromXMLStreamReader(false) };
+        new SerializeFromXMLStreamReader(false),
+        new SerializeFromSAXSource(true),
+        new SerializeFromSAXSource(false) };
     
     private static final ExpansionStrategy[] expansionStrategies = {
         ExpansionStrategy.DONT_EXPAND,
@@ -140,13 +143,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 // the entire document is serialized (so that the DTD is available)
                 if (!file.hasEntityReferences() || cf == OMContainerFactory.DOCUMENT) {
                     for (int k=0; k<serializationStrategies.length; k++) {
-                        addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, containerFactories[j], serializationStrategies[k]));
-                    }
-                    // The SAXSource returned by getSAXSource is not able to reconstruct the internal subset.
-                    // Skip test documents that have a DTD with an internal subset.
-                    if (!file.hasInternalSubset()) {
-                        addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, file, cf, true));
-                        addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, file, cf, false));
+                        SerializationStrategy ss = serializationStrategies[k];
+                        if (ss.supportsInternalSubset() || !file.hasInternalSubset()) {
+                            addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, containerFactories[j], ss));
+                        }
                     }
                 }
             }

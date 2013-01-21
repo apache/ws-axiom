@@ -61,4 +61,8 @@ public class SerializeToXMLStreamWriter implements SerializationStrategy {
     public boolean isCaching() {
         return cache;
     }
+
+    public boolean supportsInternalSubset() {
+        return true;
+    }
 }

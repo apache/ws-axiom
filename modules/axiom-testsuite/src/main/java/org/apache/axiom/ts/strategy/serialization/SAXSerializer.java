@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.container;
+package org.apache.axiom.ts.strategy.serialization;
 
 import org.apache.xml.serializer.ToXMLStream;
 import org.xml.sax.SAXException;
 
-public class SAXSerializer extends ToXMLStream {
+final class SAXSerializer extends ToXMLStream {
     public void skippedEntity(String name) throws SAXException {
         // The Xalan serializer ignores skippedEntity events; output them as entity references
         entityReference(name);

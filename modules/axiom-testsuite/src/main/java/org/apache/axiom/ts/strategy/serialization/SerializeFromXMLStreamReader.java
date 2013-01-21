@@ -56,4 +56,8 @@ public class SerializeFromXMLStreamReader implements SerializationStrategy {
     public boolean isCaching() {
         return cache;
     }
+
+    public boolean supportsInternalSubset() {
+        return true;
+    }
 }

@@ -50,4 +50,13 @@ public interface SerializationStrategy extends Strategy {
      *         consumes the content
      */
     boolean isCaching();
+    
+    /**
+     * Determine if this serialization strategy is able to correctly serialize the internal subset
+     * of a DOCTYPE declaration.
+     * 
+     * @return <code>true</code> if this strategy correctly serializes the internal subset of a DTD,
+     *         <code>false</code> otherwise
+     */
+    boolean supportsInternalSubset();
 }

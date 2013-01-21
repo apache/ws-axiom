@@ -57,4 +57,8 @@ public class SerializeToOutputStream implements SerializationStrategy {
     public boolean isCaching() {
         return cache;
     }
+
+    public boolean supportsInternalSubset() {
+        return true;
+    }
 }

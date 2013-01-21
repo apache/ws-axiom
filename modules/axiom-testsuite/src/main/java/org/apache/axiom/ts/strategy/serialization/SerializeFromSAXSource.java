@@ -16,39 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.container;
+package org.apache.axiom.ts.strategy.serialization;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.net.URL;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
-import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.XMLReader;
-import org.xml.sax.InputSource;
 
-public class TestGetSAXSource extends ConformanceTestCase {
-    private final OMContainerFactory containerFactory;
+/**
+ * Serializes an {@link OMContainer} by processing the result of
+ * {@link OMContainer#getSAXSource(boolean)}.
+ */
+public class SerializeFromSAXSource implements SerializationStrategy {
     private final boolean cache;
     
-    public TestGetSAXSource(OMMetaFactory metaFactory, ConformanceTestFile file, OMContainerFactory containerFactory, boolean cache) {
-        super(metaFactory, file);
-        this.containerFactory = containerFactory;
+    public SerializeFromSAXSource(boolean cache) {
         this.cache = cache;
-        containerFactory.addTestProperties(this);
-        addTestProperty("cache", Boolean.toString(cache));
     }
 
-    protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
-                TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString()));
-        SAXSource source = containerFactory.getContainer(builder).getSAXSource(cache);
+    public void addTestProperties(AxiomTestCase testCase) {
+        testCase.addTestProperty("serializationStrategy", "SAXSource");
+        testCase.addTestProperty("cache", String.valueOf(cache));
+    }
+
+    public XML serialize(OMContainer container) throws Exception {
+        SAXSource source = container.getSAXSource(cache);
         XMLReader xmlReader = source.getXMLReader();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         SAXSerializer serializer = new SAXSerializer();
@@ -59,12 +55,18 @@ public class TestGetSAXSource extends ConformanceTestCase {
         xmlReader.setContentHandler(serializer);
         xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", serializer);
         xmlReader.parse(source.getInputSource());
-        InputSource control = containerFactory.getControl(file.getAsStream());
-        InputSource test = new InputSource(new ByteArrayInputStream(out.toByteArray()));
-        // Configure the InputSources such that external entities can be resolved
-        String systemId = new URL(file.getUrl(), "dummy.xml").toString();
-        control.setSystemId(systemId);
-        test.setSystemId(systemId);
-        XMLAssertEx.assertXMLIdentical(control, test, false);
+        return new XMLAsByteArray(out.toByteArray());
+    }
+
+    public boolean isPush() {
+        return true;
+    }
+
+    public boolean isCaching() {
+        return cache;
+    }
+
+    public boolean supportsInternalSubset() {
+        return false;
     }
 }
