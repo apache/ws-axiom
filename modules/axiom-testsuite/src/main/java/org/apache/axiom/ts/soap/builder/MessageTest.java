@@ -18,49 +18,35 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 public class MessageTest extends AxiomTestCase {
     private final String file;
+    private final SerializationStrategy serializationStrategy;
 
-    public MessageTest(OMMetaFactory metaFactory, String file) {
+    public MessageTest(OMMetaFactory metaFactory, String file, SerializationStrategy serializationStrategy) {
         super(metaFactory);
         this.file = file;
+        this.serializationStrategy = serializationStrategy;
         addTestProperty("file", file);
+        serializationStrategy.addTestProperties(this);
     }
 
     protected void runTest() throws Throwable {
         SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 AbstractTestCase.getTestResource(file), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document expected;
-        InputStream in = AbstractTestCase.getTestResource(file);
-        try {
-            expected = db.parse(in);
-        } finally {
-            in.close();
-        }
-        Document actual = db.newDocument();
-        // TODO: need to use getSAXSource (instead of toString) because of AXIOM-430
-        TransformerFactory.newInstance().newTransformer().transform(soapEnvelope.getSAXSource(true), new DOMResult(actual));
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(expected, actual), true);
+        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
+                new InputSource(AbstractTestCase.getTestResource(file)),
+                serializationStrategy.serialize(soapEnvelope).getInputSource()), true);
         soapEnvelope.close(false);
     }
 }

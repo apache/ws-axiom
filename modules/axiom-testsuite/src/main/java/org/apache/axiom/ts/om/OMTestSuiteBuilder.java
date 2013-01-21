@@ -34,6 +34,7 @@ import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 import org.apache.axiom.ts.strategy.BuilderFactory;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
+import org.apache.axiom.ts.strategy.Strategies;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.apache.axiom.ts.strategy.serialization.SerializeFromSAXSource;
 import org.apache.axiom.ts.strategy.serialization.SerializeFromXMLStreamReader;
@@ -51,18 +52,6 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         OMContainerFactory.DOCUMENT,
         new OMElementFactory(false),
         new OMElementFactory(true) };
-    
-    private static final SerializationStrategy[] serializationStrategies = {
-        new SerializeToOutputStream(true),
-        new SerializeToOutputStream(false),
-        new SerializeToWriter(true),
-        new SerializeToWriter(false),
-        new SerializeToXMLStreamWriter(true),
-        new SerializeToXMLStreamWriter(false),
-        new SerializeFromXMLStreamReader(true),
-        new SerializeFromXMLStreamReader(false),
-        new SerializeFromSAXSource(true),
-        new SerializeFromSAXSource(false) };
     
     private static final ExpansionStrategy[] expansionStrategies = {
         ExpansionStrategy.DONT_EXPAND,
@@ -85,6 +74,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
     
     protected void addTests() {
         ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
+        SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));

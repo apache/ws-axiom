@@ -23,10 +23,15 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.builder.MessageTest;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true, true);
+        
+        // TODO: AXIOM-430
+        builder.exclude(MessageTest.class, "(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))");
+        
         return builder.build();
     }
 }

@@ -27,6 +27,8 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.ts.strategy.Strategies;
+import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",
@@ -213,11 +215,14 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     protected void addTests() {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);
+        SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         for (int i=0; i<badSOAPFiles.length; i++) {
             addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFiles[i]));
         }
         for (int i=0; i<goodSOAPFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i]));
+            for (int j=0; j<serializationStrategies.length; j++) {
+                addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i], serializationStrategies[j]));
+            }
         }
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "sample1.xml"));
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soapmessage.xml"));
