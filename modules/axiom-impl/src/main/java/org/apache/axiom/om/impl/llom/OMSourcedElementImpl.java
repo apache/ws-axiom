@@ -35,8 +35,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -239,7 +239,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 }
             }
 
-            if (isPushDataSource()) {
+            if (OMDataSourceUtil.isPushDataSource(dataSource)) {
                 // Set this before we start expanding; otherwise this would result in an infinite recursion
                 isExpanded = true;
                 try {
@@ -283,10 +283,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    private boolean isPushDataSource() {
-        return dataSource instanceof AbstractPushOMDataSource;
-    }
-
     /**
      * Validates that the actual name of the element obtained from StAX matches the information
      * specified when the sourced element was constructed or retrieved through the
@@ -474,7 +470,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isExpanded) {
             return super.getXMLStreamReader(cache, configuration);
         } else {
-            if ((cache && isDestructiveRead()) || isPushDataSource()) {
+            if ((cache && OMDataSourceUtil.isDestructiveRead(dataSource)) || OMDataSourceUtil.isPushDataSource(dataSource)) {
                 forceExpand();
                 return super.getXMLStreamReader(true, configuration);
             } else {
@@ -624,22 +620,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    private boolean isDestructiveWrite() {
-        if (dataSource instanceof OMDataSourceExt) {
-            return ((OMDataSourceExt) dataSource).isDestructiveWrite();
-        } else {
-            return true;
-        }
-    }
-    
-    private boolean isDestructiveRead() {
-        if (dataSource instanceof OMDataSourceExt) {
-            return ((OMDataSourceExt) dataSource).isDestructiveRead();
-        } else {
-            return false;
-        }
-    }
-
     public QName resolveQName(String qname) {
         forceExpand();
         return super.resolveQName(qname);
@@ -730,7 +710,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isExpanded()) {
             super.internalSerialize(writer, cache);
         } else if (cache) {
-            if (isDestructiveWrite()) {
+            if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
                 forceExpand();
                 super.internalSerialize(writer, true);
             } else {
@@ -759,7 +739,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if (isExpanded) {
             super.serialize(output, format);
-        } else if (isDestructiveWrite()) {
+        } else if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
             forceExpand();
             super.serialize(output, format);
         } else {
@@ -770,7 +750,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         if (isExpanded) {
             super.serialize(writer, format);
-        } else if (isDestructiveWrite()) {
+        } else if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
             forceExpand();
             super.serialize(writer, format);
         } else {
@@ -932,7 +912,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public String toString() {
         if (isExpanded) {
             return super.toString();
-        } else if (isDestructiveWrite()) {
+        } else if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
             forceExpand();
             return super.toString();
         } else {

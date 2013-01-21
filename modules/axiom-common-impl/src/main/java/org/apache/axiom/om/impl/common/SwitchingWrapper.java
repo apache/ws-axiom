@@ -41,7 +41,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -53,7 +52,6 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
@@ -972,8 +970,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     OMSourcedElement element = (OMSourcedElement)node;
                     if (!element.isExpanded()) {
                         OMDataSource ds = element.getDataSource();
-                        if (ds != null && !(ds instanceof AbstractPushOMDataSource)
-                                && (!cache || !(ds instanceof OMDataSourceExt && ((OMDataSourceExt)ds).isDestructiveRead()))) {
+                        if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
+                                || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
                             XMLStreamReader reader = ds.getReader();
                             while (reader.next() != START_ELEMENT) {
                                 // Just loop
