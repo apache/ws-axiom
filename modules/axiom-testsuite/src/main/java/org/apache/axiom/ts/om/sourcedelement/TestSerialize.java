@@ -20,14 +20,15 @@ package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringReader;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.strategy.ElementContext;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.apache.axiom.ts.strategy.serialization.XML;
@@ -41,7 +42,7 @@ import org.xml.sax.InputSource;
 public class TestSerialize extends AxiomTestCase {
     private final boolean push;
     private final boolean destructive;
-    private final boolean orphan;
+    private final ElementContext elementContext;
     private final ExpansionStrategy expansionStrategy;
     private final SerializationStrategy serializationStrategy;
     private final boolean serializeParent;
@@ -58,9 +59,9 @@ public class TestSerialize extends AxiomTestCase {
      *            {@link AbstractPushOMDataSource} (<code>true</code>)
      * @param destructive
      *            specifies if the {@link OMDataSource} is destructive or not
-     * @param orphan
-     *            specifies if the test is to be executed on an {@link OMSourcedElement} that has a
-     *            parent or not
+     * @param elementContext
+     *            specifies if an how the {@link OMSourcedElement} is to be placed inside an
+     *            {@link OMContainer}
      * @param serializationStrategy
      *            the serialization strategy to test
      * @param serializeParent
@@ -71,19 +72,19 @@ public class TestSerialize extends AxiomTestCase {
      *            meaningful values are 1 and 2
      */
     public TestSerialize(OMMetaFactory metaFactory, boolean push, boolean destructive,
-            boolean orphan, ExpansionStrategy expansionStrategy,
+            ElementContext elementContext, ExpansionStrategy expansionStrategy,
             SerializationStrategy serializationStrategy, boolean serializeParent, int count) {
         super(metaFactory);
         this.push = push;
         this.destructive = destructive;
-        this.orphan = orphan;
+        this.elementContext = elementContext;
         this.expansionStrategy = expansionStrategy;
         this.serializationStrategy = serializationStrategy;
         this.serializeParent = serializeParent;
         this.count = count;
         addTestProperty("push", String.valueOf(push));
         addTestProperty("destructive", String.valueOf(destructive));
-        addTestProperty("orphan", String.valueOf(orphan));
+        elementContext.addTestProperties(this);
         expansionStrategy.addTestProperties(this);
         serializationStrategy.addTestProperties(this);
         addTestProperty("serializeParent", String.valueOf(serializeParent));
@@ -94,23 +95,12 @@ public class TestSerialize extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = TestDocument.DOCUMENT1.createOMSourcedElement(factory, push, destructive);
         OMDataSource ds = element.getDataSource();
-        OMElement parent;
-        if (orphan) {
-            parent = null;
-        } else {
-            parent = factory.createOMElement("parent", null);
-            parent.addChild(element);
-        }
+        OMContainer parent = elementContext.wrap(element);
+        boolean parentComplete = parent != null && parent.isComplete();
         expansionStrategy.apply(element);
         boolean consuming = expansionStrategy.isConsumedAfterSerialization(push, destructive, serializationStrategy);
-        String expectedXML = TestDocument.DOCUMENT1.getContent();
-        if (serializeParent) {
-            OMElement expected = factory.createOMElement("parent", null);
-            expected.addChild(OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(expectedXML)).getDocumentElement());
-            expectedXML = expected.toString();
-        }
         for (int iteration=0; iteration<count; iteration++) {
-            boolean expectException = iteration != 0 && consuming;
+            boolean expectException = iteration != 0 && (consuming || serializeParent && !serializationStrategy.isCaching() && !parentComplete);
             XML result;
             try {
                 result = serializationStrategy.serialize(serializeParent ? parent : element);
@@ -124,19 +114,23 @@ public class TestSerialize extends AxiomTestCase {
                     continue;
                 }
             }
-            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(new InputSource(new StringReader(expectedXML)), result.getInputSource()), true);
+            InputSource expectedXML = new InputSource(new StringReader(TestDocument.DOCUMENT1.getContent()));
+            if (serializeParent) {
+                expectedXML = elementContext.getControl(expectedXML);
+            }
+            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(expectedXML, result.getInputSource()), true);
             // If the underlying OMDataSource is non destructive, the expansion status should not have been
             // changed during serialization. If it is destructive and caching is enabled, then
             // the sourced element should be expanded.
             if (expansionStrategy.isExpandedAfterSerialization(push, destructive, serializationStrategy)) {
                 assertTrue(element.isExpanded());
-                assertEquals(!consuming, element.isComplete());
+                assertEquals("OMSourcedElement completion status", !consuming, element.isComplete());
             } else {
                 assertFalse(element.isExpanded());
             }
-            if (parent != null) {
+            if (parent != null && !serializeParent) {
                 // Operations on the OMSourcedElement should have no impact on the parent
-                assertTrue(parent.isComplete());
+                assertEquals("Parent completion status", parentComplete, parent.isComplete());
             }
         }
         if (ds instanceof PullOMDataSource) {

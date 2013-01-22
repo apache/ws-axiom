@@ -38,9 +38,19 @@ public final class Strategies {
         new SerializeFromSAXSource(true),
         new SerializeFromSAXSource(false) };
     
+    private static final ElementContext[] elementContexts = {
+        ElementContext.ORPHAN,
+        ElementContext.ELEMENT,
+        ElementContext.INCOMPLETE_ELEMENT,
+    };
+    
     private Strategies() {}
     
     public static SerializationStrategy[] getSerializationStrategies() {
         return (SerializationStrategy[])serializationStrategies.clone();
+    }
+    
+    public static ElementContext[] getElementContexts() {
+        return (ElementContext[])elementContexts.clone();
     }
 }
