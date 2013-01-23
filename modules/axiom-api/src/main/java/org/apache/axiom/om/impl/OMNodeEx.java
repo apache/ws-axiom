@@ -52,20 +52,6 @@ public interface OMNodeEx extends OMNode {
             throws XMLStreamException;
 
     /**
-     * @deprecated This method will be removed in a future version of Axiom. It is only here to
-     *             maintain backward compatibility with projects using this method despite the fact
-     *             that it is marked as internal.
-     */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException;
-
-    /**
-     * @deprecated This method will be removed in a future version of Axiom. It is only here to
-     *             maintain backward compatibility with projects using this method despite the fact
-     *             that it is marked as internal.
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException;
-    
-    /**
      * Get the next sibling if it is available. The sibling is available if it is complete or
      * if the builder has started building the node. In the latter case,
      * {@link OMNode#isComplete()} may return <code>false</code> when called on the sibling. 

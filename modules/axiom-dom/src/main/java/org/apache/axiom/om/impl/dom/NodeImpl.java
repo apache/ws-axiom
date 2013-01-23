@@ -831,14 +831,6 @@ public abstract class NodeImpl implements Node {
         }
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, false);
-    }
-    
     // This method is actually defined by OMNodeEx, but OMNodeEx is only implemented
     // by certain subclasses (for the reason, see AXIOM-385).
     public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;

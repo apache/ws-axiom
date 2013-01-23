@@ -298,18 +298,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
-    /** Serializes the document with the XML declaration. */
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        internalSerialize(writer, false);
-    }
-
-
-    /** Serializes the document with cache. */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-    
     public XMLStreamReader getXMLStreamReader() {
         return getXMLStreamReader(true);
     }

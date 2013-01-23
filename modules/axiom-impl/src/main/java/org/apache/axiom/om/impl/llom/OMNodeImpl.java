@@ -19,9 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -251,14 +248,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
         }
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, false);
-    }
-    
     public OMInformationItem clone(OMCloneOptions options) {
         return clone(options, null);
     }
