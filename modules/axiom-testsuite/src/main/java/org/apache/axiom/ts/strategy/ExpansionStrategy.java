@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.strategy;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
@@ -27,21 +28,25 @@ import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.junit.Assert;
 
 /**
- * Defines if and how an {@link OMSourcedElement} is to be expanded during the execution of a test
- * case.
+ * Defines if and how an {@link OMContainer} is to be built or expanded during the execution of a
+ * test case.
  */
 public interface ExpansionStrategy extends Strategy {
     /**
-     * Don't expand the {@link OMSourcedElement}.
+     * Don't build the {@link OMContainer}.
      */
     ExpansionStrategy DONT_EXPAND = new ExpansionStrategy() {
         public void addTestProperties(AxiomTestCase testCase) {
             testCase.addTestProperty("expand", "no");
         }
 
-        public void apply(OMSourcedElement element) {
-            // Do nothing, but check that the element isn't expanded already
-            Assert.assertFalse(element.isExpanded());
+        public void apply(OMContainer container) {
+            if (container instanceof OMSourcedElement) {
+                // Do nothing, but check that the element isn't expanded already
+                Assert.assertFalse(((OMSourcedElement)container).isExpanded());
+            } else {
+                Assert.assertFalse(container.isComplete());
+            }
         }
 
         public boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
@@ -54,17 +59,19 @@ public interface ExpansionStrategy extends Strategy {
     };
     
     /**
-     * Partially expand the {@link OMSourcedElement}.
+     * Partially build the {@link OMContainer}.
      */
     ExpansionStrategy PARTIAL = new ExpansionStrategy() {
         public void addTestProperties(AxiomTestCase testCase) {
             testCase.addTestProperty("expand", "partially");
         }
         
-        public void apply(OMSourcedElement element) {
-            element.getFirstOMChild();
-            Assert.assertTrue(element.isExpanded());
-            Assert.assertFalse(element.isComplete());
+        public void apply(OMContainer container) {
+            container.getFirstOMChild();
+            if (container instanceof OMSourcedElement) {
+                Assert.assertTrue(((OMSourcedElement)container).isExpanded());
+            }
+            Assert.assertFalse(container.isComplete());
         }
 
         public boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
@@ -77,18 +84,20 @@ public interface ExpansionStrategy extends Strategy {
     };
 
     /**
-     * Fully expand the {@link OMSourcedElement}.
+     * Fully build the {@link OMContainer}.
      */
     ExpansionStrategy FULL = new ExpansionStrategy() {
         public void addTestProperties(AxiomTestCase testCase) {
             testCase.addTestProperty("expand", "fully");
         }
         
-        public void apply(OMSourcedElement element) {
-            element.getFirstOMChild();
-            element.build();
-            Assert.assertTrue(element.isExpanded());
-            Assert.assertTrue(element.isComplete());
+        public void apply(OMContainer container) {
+            container.getFirstOMChild();
+            container.build();
+            if (container instanceof OMSourcedElement) {
+                Assert.assertTrue(((OMSourcedElement)container).isExpanded());
+            }
+            Assert.assertTrue(container.isComplete());
         }
 
         public boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy) {
@@ -101,11 +110,11 @@ public interface ExpansionStrategy extends Strategy {
     };
 
     /**
-     * Apply the expansion strategy to the given {@link OMSourcedElement}.
+     * Apply the expansion strategy to the given {@link OMContainer}.
      * 
      * @param element
      */
-    void apply(OMSourcedElement element);
+    void apply(OMContainer container);
     
     /**
      * Determines if serializing the {@link OMSourcedElement} after applying this expansion strategy

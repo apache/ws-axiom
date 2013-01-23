@@ -27,6 +27,7 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.Strategies;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 
@@ -216,13 +217,12 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);
         SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
+        ExpansionStrategy[] expansionStrategies = Strategies.getExpansionStrategies();
         for (int i=0; i<badSOAPFiles.length; i++) {
             addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFiles[i]));
         }
         for (int i=0; i<goodSOAPFiles.length; i++) {
-            for (int j=0; j<serializationStrategies.length; j++) {
-                addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i], serializationStrategies[j]));
-            }
+            addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i]));
         }
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "sample1.xml"));
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soapmessage.xml"));
@@ -232,6 +232,13 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "reallyReallyBigMessage.xml"));
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "emtyBodymessage.xml"));
         addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soap11fault.xml")); 
+        for (int i=0; i<goodSOAPFiles.length; i++) {
+            for (int j=0; j<expansionStrategies.length; j++) {
+                for (int k=0; k<serializationStrategies.length; k++) {
+                    addTest(new org.apache.axiom.ts.soap.envelope.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategies[j], serializationStrategies[k]));
+                }
+            }
+        }
         addTest(new org.apache.axiom.ts.soap11.builder.TestBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));

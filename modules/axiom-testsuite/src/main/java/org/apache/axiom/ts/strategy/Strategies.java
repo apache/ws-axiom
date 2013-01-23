@@ -44,6 +44,12 @@ public final class Strategies {
         ElementContext.INCOMPLETE_ELEMENT,
     };
     
+    private static final ExpansionStrategy[] expansionStrategies = {
+        ExpansionStrategy.DONT_EXPAND,
+        ExpansionStrategy.PARTIAL,
+        ExpansionStrategy.FULL
+    };
+    
     private Strategies() {}
     
     public static SerializationStrategy[] getSerializationStrategies() {
@@ -52,5 +58,9 @@ public final class Strategies {
     
     public static ElementContext[] getElementContexts() {
         return (ElementContext[])elementContexts.clone();
+    }
+    
+    public static ExpansionStrategy[] getExpansionStrategies() {
+        return (ExpansionStrategy[])expansionStrategies.clone();
     }
 }

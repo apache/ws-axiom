@@ -24,7 +24,7 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.body.TestHasFaultAfterReplace;
-import org.apache.axiom.ts.soap.builder.MessageTest;
+import org.apache.axiom.ts.soap.envelope.TestSerialize;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
@@ -52,7 +52,7 @@ public class SOAPImplementationTest extends TestCase {
         builder.exclude(TestSetValueFromQNameWithExistingValue.class);
         
         // TODO: AXIOM-430
-        builder.exclude(MessageTest.class, "(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))");
+        builder.exclude(TestSerialize.class, "(&(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
         
         return builder.build();
     }

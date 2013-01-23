@@ -54,12 +54,6 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         new OMElementFactory(false),
         new OMElementFactory(true) };
     
-    private static final ExpansionStrategy[] expansionStrategies = {
-        ExpansionStrategy.DONT_EXPAND,
-        ExpansionStrategy.PARTIAL,
-        ExpansionStrategy.FULL
-    };
-    
     private static final QName[] qnames = {
         new QName("root"),
         new QName("urn:test", "root", "p"),
@@ -77,6 +71,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
         SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         ElementContext[] elementContexts = Strategies.getElementContexts();
+        ExpansionStrategy[] expansionStrategies = Strategies.getExpansionStrategies();
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
