@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import java.util.Iterator;
+
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -28,6 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -202,14 +205,12 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         if (cache || state == COMPLETE || builder == null) {
             OMSerializerUtil.serializeStartpart(this, writer);
             //serialize children
-            SOAPHeader header = getHeader();
-            if ((header != null) && (header.getFirstOMChild() != null)) {
-                ((SOAPHeaderImpl) header).internalSerialize(writer, cache);
-            }
-            SOAPBody body = getBody();
-            //REVIEW: getBody has statements to return null..Can it be null in any case?
-            if (body != null) {
-                ((SOAPBodyImpl) body).internalSerialize(writer, cache);
+            for (Iterator it = getChildren(); it.hasNext(); ) {
+            	OMNodeEx child = (OMNodeEx)it.next();
+            	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
+            	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
+            		child.internalSerialize(writer, cache);
+            	}
             }
             OMSerializerUtil.serializeEndpart(writer);
         } else {
