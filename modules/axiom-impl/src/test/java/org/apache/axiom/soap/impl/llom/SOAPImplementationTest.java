@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.envelope.TestSerialize;
+import org.apache.axiom.ts.soap.fault.TestChildOrder;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -34,6 +35,7 @@ public class SOAPImplementationTest extends TestCase {
         
         // TODO: AXIOM-392
         builder.exclude(TestSerialize.class, "(&(file=*fault*)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
+        builder.exclude(TestChildOrder.class, "(|(serializationStrategy=XMLStreamReader)(serializationStrategy=SAXSource))");
         
         return builder.build();
     }

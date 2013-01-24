@@ -80,6 +80,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     private void addTests(SOAPSpec spec) {
+        SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
@@ -152,6 +153,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetMetaFactory(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetNamespace(metaFactory, spec));
+        for (int i=0; i<serializationStrategies.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec, serializationStrategies[i]));
+        }
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCode(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetDetail(metaFactory, spec));
