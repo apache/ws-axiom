@@ -27,6 +27,7 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.Strategies;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
@@ -58,6 +59,13 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         new QName("urn:test", "Fault", "p"),
         new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
         new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX) };
+    
+    private static final SOAPFaultChild[] soapFaultChildren = {
+        SOAPFaultChild.CODE,
+        SOAPFaultChild.REASON,
+        SOAPFaultChild.ROLE,
+        SOAPFaultChild.DETAIL,
+    };
     
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
@@ -146,8 +154,10 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         }
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFault(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultDetail(metaFactory, spec));
+        for (int i=0; i<soapFaultChildren.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultChild(metaFactory, spec, soapFaultChildren[i]));
+        }
+        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithParent(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestFactoryIsSingleton(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, spec));

@@ -133,6 +133,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultCodeImpl((ParentNode)parent, null, builder, this, false);
     }
 
+    public SOAPFaultCode createSOAPFaultCode() {
+        return new SOAP12FaultCodeImpl(null, getNamespace(), null, this, true);
+    }
+
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
             throws SOAPProcessingException {
         return new SOAP12FaultValueImpl(parent, this);
@@ -186,6 +190,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultReasonImpl((ParentNode)parent, null, builder, this, false);
     }
 
+    public SOAPFaultReason createSOAPFaultReason() {
+        return new SOAP12FaultReasonImpl(null, getNamespace(), null, this, true);
+    }
+
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
             throws SOAPProcessingException {
         return new SOAP12FaultTextImpl(parent, this);
@@ -214,6 +222,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultRoleImpl((ParentNode)parent, null, builder, this, false);
     }
 
+    public SOAPFaultRole createSOAPFaultRole() {
+        return new SOAP12FaultRoleImpl(null, getNamespace(), null, this, true);
+    }
+
     public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) throws SOAPProcessingException {
         return new SOAP12FaultDetailImpl(parent, this);
     }
@@ -223,7 +235,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultDetailImpl((ParentNode)parent, null, builder, this, false);
     }
 
-    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
+    public SOAPFaultDetail createSOAPFaultDetail() {
         return new SOAP12FaultDetailImpl(null, getNamespace(), null, this, true);
     }
 

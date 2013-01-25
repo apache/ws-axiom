@@ -19,17 +19,22 @@
 package org.apache.axiom.ts.soap.factory;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestCreateSOAPFaultDetail extends SOAPTestCase {
-    public TestCreateSOAPFaultDetail(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestCreateSOAPFaultWithParent extends SOAPTestCase {
+    public TestCreateSOAPFaultWithParent(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultDetail detail = soapFactory.createSOAPFaultDetail();
-        assertEquals(spec.getFaultDetailQName(), detail.getQName());
+        SOAPBody body = soapFactory.getDefaultEnvelope().getBody();
+        SOAPFault fault = soapFactory.createSOAPFault(body, new Exception("Testing soap fault"));
+        assertTrue("SOAP body has no SOAP fault", body.hasFault());
+        assertSame("SOAP body has no SOAP fault", fault, body.getFault());
+        assertTrue("Programatically created SOAPFault should have done = true",
+                fault.isComplete());
     }
 }

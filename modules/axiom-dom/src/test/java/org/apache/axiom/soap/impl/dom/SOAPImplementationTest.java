@@ -54,10 +54,10 @@ public class SOAPImplementationTest extends TestCase {
         
         // TODO: AXIOM-430
         builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
-        builder.exclude(TestChildOrder.class);
         
         // TODO: AXIOM-392
         builder.exclude(TestSerialize.class, "(&(file=*fault*)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
+        builder.exclude(TestChildOrder.class, "(|(serializationStrategy=XMLStreamReader)(serializationStrategy=SAXSource))");
         
         return builder.build();
     }

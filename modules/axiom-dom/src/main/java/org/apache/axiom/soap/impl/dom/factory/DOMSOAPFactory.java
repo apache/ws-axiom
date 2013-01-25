@@ -31,7 +31,6 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
@@ -100,10 +99,6 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         throw new UnsupportedOperationException("TODO");
     }
 
-    public SOAPFaultCode createSOAPFaultCode() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
     public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
         throw new UnsupportedOperationException("TODO");
     }
@@ -112,19 +107,11 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         throw new UnsupportedOperationException("TODO");
     }
 
-    public SOAPFaultReason createSOAPFaultReason() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
     public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
         throw new UnsupportedOperationException("TODO");
     }
 
     public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException {
         throw new UnsupportedOperationException("TODO");
     }
 
