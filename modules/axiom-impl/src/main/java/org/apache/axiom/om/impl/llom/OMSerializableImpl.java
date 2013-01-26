@@ -25,20 +25,19 @@ import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.ISerializable;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class OMSerializableImpl implements OMSerializable {
+public abstract class OMSerializableImpl implements ISerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
     
     protected OMFactory factory;
@@ -72,14 +71,6 @@ public abstract class OMSerializableImpl implements OMSerializable {
     
     public abstract void setComplete(boolean state);
 
-    /**
-     * Serializes the node.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
-
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         serialize(xmlWriter, true);
     }
@@ -93,7 +84,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
         MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(writer, cache);
+        internalSerialize(new StAXSerializer(writer), cache);
         writer.flush();
     }
 
@@ -136,7 +127,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
-            internalSerialize(writer, true);
+            internalSerialize(new StAXSerializer(writer), true);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
@@ -149,7 +140,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
                 new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         try {
-            internalSerialize(writer, true);
+            internalSerialize(new StAXSerializer(writer), true);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
@@ -161,7 +152,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
-            internalSerialize(writer, false);
+            internalSerialize(new StAXSerializer(writer), false);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
@@ -175,7 +166,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
                 new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         try {
-            internalSerialize(writer, false);
+            internalSerialize(new StAXSerializer(writer), false);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {

@@ -38,6 +38,7 @@ import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -705,25 +706,25 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getType();
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(StAXSerializer serializer, boolean cache)
             throws XMLStreamException {
         if (isExpanded()) {
-            super.internalSerialize(writer, cache);
+            super.internalSerialize(serializer, cache);
         } else if (cache) {
             if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
                 forceExpand();
-                super.internalSerialize(writer, true);
+                super.internalSerialize(serializer, true);
             } else {
-                dataSource.serialize(writer);
+                dataSource.serialize(serializer.getWriter());
             }
         } else {
-            dataSource.serialize(writer); 
+            dataSource.serialize(serializer.getWriter()); 
         }
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         // The contract is to serialize with caching
-        internalSerialize(xmlWriter, true);
+        internalSerialize(new StAXSerializer(xmlWriter), true);
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {
@@ -760,7 +761,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
             throws XMLStreamException {
-        internalSerialize(xmlWriter, false);
+        internalSerialize(new StAXSerializer(xmlWriter), false);
     }
 
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {

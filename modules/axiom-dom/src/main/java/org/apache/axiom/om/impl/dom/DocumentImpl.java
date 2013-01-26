@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -54,7 +55,6 @@ import org.w3c.dom.Text;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -103,8 +103,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         return null;
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        internalSerialize(writer, cache, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+        internalSerialize(serializer, cache, !((MTOMXMLStreamWriter)serializer.getWriter()).isIgnoreXMLDeclaration());
     }
 
     // /
@@ -404,13 +404,13 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer, false);
+        internalSerialize(new StAXSerializer(writer), false);
         writer.flush();
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer, true);
+        internalSerialize(new StAXSerializer(writer), true);
         writer.flush();
     }
 
@@ -569,9 +569,9 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         setXMLVersion(version);
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache,
+    protected void internalSerialize(StAXSerializer serializer, boolean cache,
             boolean includeXMLDeclaration) throws XMLStreamException {
-        OMDocumentHelper.internalSerialize(this, writer, cache, includeXMLDeclaration);
+        OMDocumentHelper.internalSerialize(this, serializer, cache, includeXMLDeclaration);
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {

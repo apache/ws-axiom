@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -370,17 +371,17 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         return this.contentID;
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
 
         if (!this.isBinary) {
-            writeOutput(writer);
+            writeOutput(serializer.getWriter());
         } else {
             try {
                 if (dataHandlerObject instanceof DataHandlerProvider) {
-                    XMLStreamWriterUtils.writeDataHandler(writer, (DataHandlerProvider)dataHandlerObject,
+                    XMLStreamWriterUtils.writeDataHandler(serializer.getWriter(), (DataHandlerProvider)dataHandlerObject,
                             contentID, optimize);
                 } else {
-                    XMLStreamWriterUtils.writeDataHandler(writer, (DataHandler)getDataHandler(),
+                    XMLStreamWriterUtils.writeDataHandler(serializer.getWriter(), (DataHandler)getDataHandler(),
                             contentID, optimize);
                 }
             } catch (IOException ex) {

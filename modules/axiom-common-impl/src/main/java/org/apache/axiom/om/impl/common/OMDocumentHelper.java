@@ -21,12 +21,10 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -35,10 +33,10 @@ import org.apache.axiom.om.impl.util.OMSerializerUtil;
 public class OMDocumentHelper {
     private OMDocumentHelper() {}
     
-    public static void internalSerialize(OMDocument document, XMLStreamWriter writer2,
+    public static void internalSerialize(OMDocument document, StAXSerializer serializer,
             boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
         
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
             //encoding matches, if not use char encoding of OMOutput
@@ -58,7 +56,7 @@ public class OMDocumentHelper {
         }
 
         if (cache || document.isComplete() || document.getBuilder() == null) {
-            OMSerializerUtil.serializeChildren(document, writer, cache);
+            serializer.serializeChildren(document, cache);
         } else {
             StreamingOMSerializer streamingOMSerializer = new StreamingOMSerializer();
             XMLStreamReader reader = document.getXMLStreamReaderWithoutCaching();

@@ -26,9 +26,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -40,7 +40,6 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -123,17 +122,17 @@ public abstract class SOAPFaultImpl extends SOAPElement
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(StAXSerializer serializer, boolean cache)
             throws XMLStreamException {
-        OMSerializerUtil.serializeStartpart(this, writer);
+        serializer.serializeStartpart(this);
         for (Iterator it = getChildren(); it.hasNext(); ) {
-            OMNodeEx child = (OMNodeEx)it.next();
+            OMNodeImpl child = (OMNodeImpl)it.next();
             // TODO: AXIOM-392
             if (!((child instanceof SOAPFaultRole || child instanceof SOAPFaultNode) && ((OMElement)child).getText().length() == 0)) {
-                child.internalSerialize(writer, true);
+                child.internalSerialize(serializer, true);
             }
         }
-        OMSerializerUtil.serializeEndpart(writer);
+        serializer.serializeEndpart();
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

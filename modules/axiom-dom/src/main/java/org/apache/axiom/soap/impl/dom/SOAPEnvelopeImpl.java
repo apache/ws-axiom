@@ -31,6 +31,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -189,10 +191,10 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    public void internalSerialize(XMLStreamWriter writer2, boolean cache)
+    public void internalSerialize(StAXSerializer serializer, boolean cache)
             throws XMLStreamException {
 
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
         if (!writer.isIgnoreXMLDeclaration()) {
             String charSetEncoding = writer.getCharSetEncoding();
             String xmlVersion = writer.getXmlVersion();
@@ -203,18 +205,18 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                             : xmlVersion);
         }
         if (cache || state == COMPLETE || builder == null) {
-            OMSerializerUtil.serializeStartpart(this, writer);
+            serializer.serializeStartpart(this);
             //serialize children
             for (Iterator it = getChildren(); it.hasNext(); ) {
-            	OMNodeEx child = (OMNodeEx)it.next();
+            	NodeImpl child = (NodeImpl)it.next();
             	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
             	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
-            		child.internalSerialize(writer, cache);
+            		child.internalSerialize(serializer, cache);
             	}
             }
-            OMSerializerUtil.serializeEndpart(writer);
+            serializer.serializeEndpart();
         } else {
-            OMSerializerUtil.serializeByPullStream(this, writer, cache);
+            serializer.serializeByPullStream(this, cache);
         }
     }
 

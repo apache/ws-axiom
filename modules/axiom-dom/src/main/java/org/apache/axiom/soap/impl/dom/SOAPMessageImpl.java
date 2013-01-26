@@ -23,15 +23,15 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
@@ -58,9 +58,9 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
         }
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache,
+    protected void internalSerialize(StAXSerializer serializer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
-        ((OMNodeEx)getOwnerDocument().getDocumentElement()).internalSerialize(writer, cache);
+        ((NodeImpl)getOwnerDocument().getDocumentElement()).internalSerialize(serializer, cache);
     }
 
     protected DocumentImpl createClone(OMCloneOptions options) {

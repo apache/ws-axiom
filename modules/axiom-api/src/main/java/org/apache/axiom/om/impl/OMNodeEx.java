@@ -21,10 +21,6 @@ package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSerializable;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
@@ -38,18 +34,6 @@ public interface OMNodeEx extends OMNode {
     public void setParent(OMContainer element);
 
     public void setComplete(boolean state);
-
-    /**
-     * Serializes the node. Note that this is an internal method that MUST NOT be used outside of
-     * Axiom. Please use {@link OMSerializable#serialize(XMLStreamWriter, boolean)} instead.
-     *
-     * @param writer
-     * @param cache indicates if caching should be enabled
-     * @throws javax.xml.stream.XMLStreamException
-     *
-     */
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException;
 
     /**
      * Get the next sibling if it is available. The sibling is available if it is complete or

@@ -24,9 +24,9 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcessingInstruction {
     protected String target;
@@ -50,8 +50,8 @@ public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcess
         return OMNode.PI_NODE;
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        writer.writeProcessingInstruction(this.target + " ", this.value);
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+        serializer.getWriter().writeProcessingInstruction(this.target + " ", this.value);
     }
 
     /**

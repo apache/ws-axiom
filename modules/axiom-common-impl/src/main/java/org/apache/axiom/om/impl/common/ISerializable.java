@@ -18,8 +18,18 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.impl.OMNodeEx;
+import javax.xml.stream.XMLStreamException;
 
-public interface IChildNode extends OMNodeEx, ISerializable {
-    IParentNode getIParentNode();
+import org.apache.axiom.om.OMSerializable;
+
+public interface ISerializable extends OMSerializable {
+    /**
+     * Serializes the node.
+     *
+     * @param serializer
+     * @param cache indicates if caching should be enabled
+     * @throws XMLStreamException
+     *
+     */
+    void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException;
 }

@@ -16,17 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om.impl.util;
+package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.commons.logging.Log;
@@ -39,136 +36,43 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class OMSerializerUtil {
-    private static final Log log = LogFactory.getLog(OMSerializerUtil.class);
+public class StAXSerializer {
+    private static final Log log = LogFactory.getLog(StAXSerializer.class);
     private static boolean ADV_DEBUG_ENABLED = true;
     
     static long nsCounter = 0;
     
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
     private static final String XSI_LOCAL_NAME = "type";
+    
+    private final XMLStreamWriter writer;
+    
+    public StAXSerializer(XMLStreamWriter writer) {
+        this.writer = writer;
+    }
+
+    public XMLStreamWriter getWriter() {
+        return writer;
+    }
+
     /**
      * Method serializeEndpart.
      *
-     * @param writer
      * @throws javax.xml.stream.XMLStreamException
-     * @deprecated This is an internal method that is no longer used.
+     *
      */
-    public static void serializeEndpart(XMLStreamWriter writer)
-            throws XMLStreamException {
+    public void serializeEndpart() throws XMLStreamException {
         writer.writeEndElement();
-    }
-
-    /**
-     * Method serializeAttribute.
-     *
-     * @param attr
-     * @param writer
-     * @throws XMLStreamException
-     * @deprecated use serializeStartpart instead
-     */
-    public static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)
-            throws XMLStreamException {
-
-        // first check whether the attribute is associated with a namespace
-        OMNamespace ns = attr.getNamespace();
-        String prefix = null;
-        String namespaceName = null;
-        if (ns != null) {
-
-            // add the prefix if it's availble
-            prefix = ns.getPrefix();
-            namespaceName = ns.getNamespaceURI();
-            if (prefix != null) {
-                writer.writeAttribute(prefix, namespaceName,
-                                      attr.getLocalName(), attr.getAttributeValue());
-            } else {
-                writer.writeAttribute(namespaceName, attr.getLocalName(),
-                                      attr.getAttributeValue());
-            }
-        } else {
-            String localName = attr.getLocalName();
-            String attributeValue = attr.getAttributeValue();
-            writer.writeAttribute(localName, attributeValue);
-        }
-    }
-
-    /**
-     * Method serializeNamespace.
-     *
-     * @param namespace
-     * @param writer
-     * @throws XMLStreamException
-     * @deprecated Use serializeStartpart instead
-     */
-    public static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
-            throws XMLStreamException {
-        if (namespace == null) {
-            return;
-        }
-        String uri = namespace.getNamespaceURI();
-        String prefix = namespace.getPrefix();
-
-        if (uri != null && !"".equals(uri)) {
-            String prefixFromWriter = writer.getPrefix(uri);
-
-            // Handling Default Namespaces First
-            // Case 1 :
-            //        here we are trying define a default namespace. But has this been defined in the current context.
-            //        yes, there can be a default namespace, but it may have a different URI. If its a different URI
-            //        then explicitly define the default namespace here.
-            // Case 2 :
-            //        The passed in namespace is a default ns, but there is a non-default ns declared
-            //        in the current scope.
-            if (("".equals(prefix) && "".equals(prefixFromWriter) &&
-                    !uri.equals(writer.getNamespaceContext().getNamespaceURI(""))) ||
-                    (prefix != null && "".equals(prefix) &&
-                            (prefixFromWriter == null || !prefix.equals(prefixFromWriter)))) {
-                // this has not been declared earlier
-                writer.writeDefaultNamespace(uri);
-                writer.setDefaultNamespace(uri);
-            } else {
-                prefix = prefix == null ? getNextNSPrefix(writer) : prefix;
-                if (prefix != null && !prefix.equals(prefixFromWriter) &&
-                        !checkForPrefixInTheCurrentContext(writer, uri, prefix)) {
-                    writer.writeNamespace(prefix, uri);
-                    writer.setPrefix(prefix, uri);
-                }
-            }
-        } else {
-            // now the nsURI passed is "" or null. Meaning we gonna work with defaultNS.
-            // check whether there is a defaultNS already declared. If yes, is it the same as this ?
-            String currentDefaultNSURI = writer.getNamespaceContext().getNamespaceURI("");
-            if ((currentDefaultNSURI != null && !currentDefaultNSURI.equals(uri)) ||
-                    uri != null && !uri.equals(currentDefaultNSURI)) {
-                // this has not been declared earlier
-                writer.writeDefaultNamespace(uri);
-                writer.setDefaultNamespace(uri);
-            }
-        }
-    }
-
-    /**
-     * @deprecated This method was used to work around a StAX conformance issue in early versions
-     * of the XL XP-J parser. This is now handled by
-     * {@link org.apache.axiom.util.stax.dialect.StAXDialect}, and this method always returns
-     * <code>false</code>.
-     */
-    public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
-        return false;
     }
 
     /**
      * Method serializeStartpart. Serialize the start tag of an element.
      *
      * @param element
-     * @param writer
      * @throws XMLStreamException
-     * @deprecated This is an internal method that is no longer used.
      */
-    public static void serializeStartpart(OMElement element,
-                                          XMLStreamWriter writer) throws XMLStreamException {
-        serializeStartpart(element, element.getLocalName(), writer);
+    public void serializeStartpart(OMElement element) throws XMLStreamException {
+        serializeStartpart(element, element.getLocalName());
     }
 
     /**
@@ -176,12 +80,9 @@ public class OMSerializerUtil {
      *
      * @param element
      * @param localName (in some cases, the caller wants to force a different localName)
-     * @param writer
      * @throws XMLStreamException
-     * @deprecated This is an internal method that is no longer used.
      */
-    public static void serializeStartpart(OMElement element, String localName,
-                                          XMLStreamWriter writer)
+    public void serializeStartpart(OMElement element, String localName)
             throws XMLStreamException {
 
         // Note: To serialize the start tag, we must follow the order dictated by the JSR-173 (StAX) specification.
@@ -213,7 +114,7 @@ public class OMSerializerUtil {
 
         if (eNamespace != null) {
             if (ePrefix == null) {
-                if (!isAssociated("", eNamespace, writer)) {
+                if (!isAssociated("", eNamespace)) {
                     if (writePrefixList == null) {
                         writePrefixList = new ArrayList();
                         writeNSList = new ArrayList();
@@ -229,7 +130,7 @@ public class OMSerializerUtil {
                  * If XMLStreamWriter.writeStartElement(prefix,localName,namespaceURI) associates
                  * the prefix with the namespace .. 
                  */
-                if (!isAssociated(ePrefix, eNamespace, writer)) {
+                if (!isAssociated(ePrefix, eNamespace)) {
                     if (writePrefixList == null) {
                         writePrefixList = new ArrayList();
                         writeNSList = new ArrayList();
@@ -260,7 +161,7 @@ public class OMSerializerUtil {
             namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
 
 
-            String newPrefix = generateSetPrefix(prefix, namespace, writer, false);
+            String newPrefix = generateSetPrefix(prefix, namespace, false);
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
@@ -276,7 +177,7 @@ public class OMSerializerUtil {
 
         // Generate setPrefix for the element
         // Get the prefix and namespace of the element.  "" and null are identical.
-        String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer, false);
+        String newPrefix = generateSetPrefix(ePrefix, eNamespace, false);
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
@@ -311,7 +212,7 @@ public class OMSerializerUtil {
                 prefix = (writerPrefix != null) ?
                         writerPrefix : getNextNSPrefix();
             }
-            newPrefix = generateSetPrefix(prefix, namespace, writer, true);
+            newPrefix = generateSetPrefix(prefix, namespace, true);
             // If the prefix is not associated with a namespace yet, remember it so that we can
             // write out a namespace declaration
             if (newPrefix != null) {
@@ -359,7 +260,6 @@ public class OMSerializerUtil {
 
                             newPrefix = generateSetPrefix(refPrefix, 
                                     refNamespace, 
-                                    writer, 
                                     true);
                             // If the prefix is not associated with a namespace yet, remember it so that we can
                             // write out a namespace declaration
@@ -456,103 +356,7 @@ public class OMSerializerUtil {
         }
     }
 
-    /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    private static boolean checkForPrefixInTheCurrentContext(XMLStreamWriter writer,
-                                                             String nameSpaceName, String prefix)
-            throws XMLStreamException {
-        Iterator prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
-        while (prefixesIter.hasNext()) {
-            String prefix_w = (String) prefixesIter.next();
-            if (prefix_w.equals(prefix)) {
-                // if found do not declare the ns
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * serializeNamespaces
-     *
-     * @param element
-     * @param writer
-     * @throws XMLStreamException
-     * @deprecated Use serializeStartpart instead
-     */
-    public static void serializeNamespaces
-            (OMElement
-                    element,
-             XMLStreamWriter writer) throws XMLStreamException {
-        Iterator namespaces = element.getAllDeclaredNamespaces();
-        if (namespaces != null) {
-            while (namespaces.hasNext()) {
-                serializeNamespace((OMNamespace) namespaces.next(), writer);
-            }
-        }
-    }
-
-    /**
-     * Serialize attributes
-     *
-     * @param element
-     * @param writer
-     * @throws XMLStreamException
-     * @deprecated Consider using serializeStartpart instead
-     */
-    public static void serializeAttributes
-            (OMElement
-                    element,
-             XMLStreamWriter writer) throws XMLStreamException {
-        Iterator attributes = element.getAllAttributes();
-        if (attributes != null && attributes.hasNext()) {
-            while (attributes.hasNext()) {
-                serializeAttribute((OMAttribute) attributes.next(),
-                                   writer);
-            }
-        }
-    }
-
-    /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    public static void serializeNormal
-            (OMElement
-                    element, XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException {
-
-        if (cache) {
-            element.build();
-        }
-
-        serializeStartpart(element, writer);
-        OMNode firstChild = element.getFirstOMChild();
-        if (firstChild != null) {
-            if (cache) {
-                (firstChild).serialize(writer);
-            } else {
-                (firstChild).serializeAndConsume(writer);
-            }
-        }
-        serializeEndpart(writer);
-    }
-
-    /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    public static void serializeByPullStream
-            (OMElement
-                    element, XMLStreamWriter writer) throws XMLStreamException {
-        serializeByPullStream(element, writer, false);
-    }
-
-    /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    public static void serializeByPullStream
-            (OMElement
-                    element, XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+    public void serializeByPullStream(OMElement element, boolean cache) throws XMLStreamException {
         XMLStreamReader reader = element.getXMLStreamReader(cache);
         try {
             new StreamingOMSerializer().serialize(reader, writer);
@@ -561,29 +365,25 @@ public class OMSerializerUtil {
         }
     }
 
-    /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    public static void serializeChildren(OMContainer container, XMLStreamWriter writer,
-            boolean cache) throws XMLStreamException {
+    public void serializeChildren(OMContainer container, boolean cache) throws XMLStreamException {
         if (cache) {
-            OMNode child = container.getFirstOMChild();
+            IChildNode child = (IChildNode)container.getFirstOMChild();
             while (child != null) {
-                child.serialize(writer, true);
-                child = child.getNextOMSibling();
+                child.internalSerialize(this, true);
+                child = (IChildNode)child.getNextOMSibling();
             }
         } else {
-            OMNode child = (OMNodeEx)container.getFirstOMChild();
+            IChildNode child = (IChildNode)container.getFirstOMChild();
             while (child != null) {
                 if ((!(child instanceof OMElement)) || child.isComplete() ||
                         ((OMElement)child).getBuilder() == null) {
-                    child.serialize(writer, false);
+                    child.internalSerialize(this, false);
                 } else {
                     OMElement element = (OMElement) child;
                     element.getBuilder().setCache(false);
-                    serializeByPullStream(element, writer, cache);
+                    serializeByPullStream(element, cache);
                 }
-                child = ((OMNodeEx)child).getNextOMSiblingIfAvailable();
+                child = (IChildNode)child.getNextOMSiblingIfAvailable();
             }
         }
     }
@@ -630,33 +430,19 @@ public class OMSerializerUtil {
     }
 
     /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    public static String getNextNSPrefix(XMLStreamWriter writer) {
-        String prefix = getNextNSPrefix();
-        while (writer.getNamespaceContext().getNamespaceURI(prefix) != null) {
-            prefix = getNextNSPrefix();
-        }
-
-        return prefix;
-    }
-
-    /**
      * Generate setPrefix/setDefaultNamespace if the prefix is not associated
      *
      * @param prefix
      * @param namespace
-     * @param writer
      * @param attr
      * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
-    public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer,
-                                           boolean attr) throws XMLStreamException {
+    public String generateSetPrefix(String prefix, String namespace, boolean attr) throws XMLStreamException {
         prefix = (prefix == null) ? "" : prefix;
         
         
         // If the prefix and namespace are already associated, no generation is needed
-        if (isAssociated(prefix, namespace, writer)) {
+        if (isAssociated(prefix, namespace)) {
             return null;
         }
         
@@ -688,11 +474,9 @@ public class OMSerializerUtil {
     /**
      * @param prefix 
      * @param namespace
-     * @param writer
      * @return true if the prefix is associated with the namespace in the current context
      */
-    public static boolean isAssociated(String prefix, String namespace, XMLStreamWriter writer) 
-        throws XMLStreamException {
+    public boolean isAssociated(String prefix, String namespace) throws XMLStreamException {
         
         // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that
         // we never write a declaration for the xml namespace. See AXIOM-37 for a discussion

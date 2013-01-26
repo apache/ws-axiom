@@ -19,11 +19,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 
@@ -41,8 +41,8 @@ public class EntityReferenceImpl extends LeafNode implements OMEntityReference, 
         return OMNode.ENTITY_REFERENCE_NODE;
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        writer.writeEntityRef(name);
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+        serializer.getWriter().writeEntityRef(name);
     }
 
     public String getName() {

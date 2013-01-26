@@ -24,9 +24,9 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.StAXSerializer;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class OMCommentImpl extends OMLeafNode implements OMComment {
     protected String value;
@@ -47,8 +47,8 @@ public class OMCommentImpl extends OMLeafNode implements OMComment {
         return OMNode.COMMENT_NODE;
     }
 
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        writer.writeComment(this.value);
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+        serializer.getWriter().writeComment(this.value);
     }
 
     /**
