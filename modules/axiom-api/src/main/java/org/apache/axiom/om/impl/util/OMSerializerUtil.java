@@ -454,6 +454,9 @@ public class OMSerializerUtil {
         }
     }
 
+    /**
+     * @deprecated This is an internal method that is no longer used.
+     */
     private static boolean checkForPrefixInTheCurrentContext(XMLStreamWriter writer,
                                                              String nameSpaceName, String prefix)
             throws XMLStreamException {
@@ -510,11 +513,7 @@ public class OMSerializerUtil {
     }
 
     /**
-     * Method serializeNormal.
-     *
-     * @param writer
-     * @param cache
-     * @throws XMLStreamException
+     * @deprecated This is an internal method that is no longer used.
      */
     public static void serializeNormal
             (OMElement
@@ -537,6 +536,9 @@ public class OMSerializerUtil {
         serializeEndpart(writer);
     }
 
+    /**
+     * @deprecated This is an internal method that is no longer used.
+     */
     public static void serializeByPullStream
             (OMElement
                     element, XMLStreamWriter writer) throws XMLStreamException {
@@ -619,6 +621,9 @@ public class OMSerializerUtil {
         return prefix;
     }
 
+    /**
+     * @deprecated This is an internal method that is no longer used.
+     */
     public static String getNextNSPrefix(XMLStreamWriter writer) {
         String prefix = getNextNSPrefix();
         while (writer.getNamespaceContext().getNamespaceURI(prefix) != null) {
