@@ -164,7 +164,11 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.factory.TestGetMetaFactory(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetNamespace(metaFactory, spec));
         for (int i=0; i<serializationStrategies.length; i++) {
-            addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec, serializationStrategies[i]));
+            SerializationStrategy ss = serializationStrategies[i];
+            addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
+                    new SOAPFaultChild[] { SOAPFaultChild.REASON, SOAPFaultChild.CODE }, ss));
+            addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
+                    new SOAPFaultChild[] { SOAPFaultChild.CODE, SOAPFaultChild.REASON, SOAPFaultChild.DETAIL, SOAPFaultChild.REASON }, ss));
         }
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCode(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));

@@ -174,7 +174,7 @@ public class OMElementHelper {
                 }
                 // isAfter indicates if the new child should be inserted after the current child
                 boolean isAfter = false;
-                for (int i=0; i<pos-1; i++) {
+                for (int i=0; i<pos; i++) {
                     if (sequence[i].isInstance(child)) {
                         isAfter = true;
                         break;

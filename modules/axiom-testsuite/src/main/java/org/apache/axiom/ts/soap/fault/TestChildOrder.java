@@ -18,7 +18,12 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
-import javax.xml.namespace.QName;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -27,10 +32,11 @@ import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 
 /**
  * Tests that the children added using methods such as {@link SOAPFault#setCode(SOAPFaultCode)} and
@@ -40,31 +46,51 @@ import org.w3c.dom.NodeList;
  * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-392">AXIOM-392</a>.
  */
 public class TestChildOrder extends SOAPTestCase {
+    private final SOAPFaultChild[] inputOrder;
     private final SerializationStrategy serializationStrategy;
 
-    public TestChildOrder(OMMetaFactory metaFactory, SOAPSpec spec, SerializationStrategy serializationStrategy) {
+    public TestChildOrder(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild[] inputOrder, SerializationStrategy serializationStrategy) {
         super(metaFactory, spec);
+        this.inputOrder = inputOrder;
         this.serializationStrategy = serializationStrategy;
+        StringBuilder buffer = new StringBuilder();
+        for (int i=0; i<inputOrder.length; i++) {
+            if (i>0) {
+                buffer.append(',');
+            }
+            buffer.append(inputOrder[i].getType().getSimpleName());
+        }
+        addTestProperty("inputOrder", buffer.toString());
         serializationStrategy.addTestProperties(this);
     }
 
     protected void runTest() throws Throwable {
         SOAPFault fault = soapFactory.createSOAPFault();
-        // Add fault code and reason in the "wrong" order
-        SOAPFaultReason reason = soapFactory.createSOAPFaultReason(); 
-        reason.setText("Invalid credentials"); 
-        fault.setReason(reason); 
-        SOAPFaultCode code = soapFactory.createSOAPFaultCode(); 
-        code.setText(new QName(soapFactory.getNamespace().getNamespaceURI(), "Client")); 
-        fault.setCode(code);
+        // Add the elements in the specified order.
+        for (int i=0; i<inputOrder.length; i++) {
+            SOAPFaultChild type = inputOrder[i];
+            type.set(fault, type.create(soapFactory));
+        }
+        // Calculate the order in which we expect to see the children. Note that a given type
+        // may be added multiple times. Therefore we need to use a Set.
+        SortedSet outputOrder = new TreeSet(new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((SOAPFaultChild)o1).getOrder() - ((SOAPFaultChild)o2).getOrder();
+            }
+        });
+        outputOrder.addAll(Arrays.asList(inputOrder));
+        // Check the result using the given serialization strategy
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
-        // Check the result using the given serialization strategy
         Document document = dbf.newDocumentBuilder().parse(serializationStrategy.serialize(fault).getInputSource());
         Element domFault = document.getDocumentElement();
-        NodeList children = domFault.getChildNodes();
-        assertEquals(2, children.getLength());
-        assertEquals(spec.getFaultCodeQName().getLocalPart(), children.item(0).getLocalName());
-        assertEquals(spec.getFaultReasonQName().getLocalPart(), children.item(1).getLocalName());
+        Node child = domFault.getFirstChild();
+        for (Iterator it = outputOrder.iterator(); it.hasNext(); ) {
+            SOAPFaultChild type = (SOAPFaultChild)it.next();
+            assertNotNull(child);
+            assertEquals(type.getQName(spec).getLocalPart(), child.getLocalName());
+            child = child.getNextSibling();
+        }
+        assertNull(child);
     }
 }
