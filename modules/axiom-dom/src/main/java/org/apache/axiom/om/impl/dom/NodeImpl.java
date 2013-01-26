@@ -634,6 +634,9 @@ public abstract class NodeImpl implements Node {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
+        if (sibling.getParent() != null) {
+            sibling.detach();
+        }
         ((OMNodeEx) sibling).setParent((OMContainer)parentNode);
         if (sibling instanceof NodeImpl) {
             NodeImpl domSibling = (NodeImpl) sibling;
@@ -661,6 +664,9 @@ public abstract class NodeImpl implements Node {
             throw new OMException("Parent can not be null");
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
+        }
+        if (sibling.getParent() != null) {
+            sibling.detach();
         }
         if (sibling instanceof NodeImpl) {
             // ChildNode domSibling = (ChildNode)sibling;

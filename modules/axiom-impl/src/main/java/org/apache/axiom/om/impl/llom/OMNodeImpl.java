@@ -164,6 +164,9 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
+        if (sibling.getParent() != null) {
+            sibling.detach();
+        }
         ((OMNodeEx) sibling).setParent(parent);
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
@@ -192,6 +195,9 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
             throw new OMException("Parent can not be null");
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
+        }
+        if (sibling.getParent() != null) {
+            sibling.detach();
         }
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;

@@ -421,10 +421,12 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnSelf(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterSameParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBefore(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeSameParent(metaFactory));
         if (supportsOMSourcedElement) {
             for (int i=0; i<OMSourcedElementVariant.INSTANCES.length; i++) {
                 OMSourcedElementVariant variant = OMSourcedElementVariant.INSTANCES[i];
