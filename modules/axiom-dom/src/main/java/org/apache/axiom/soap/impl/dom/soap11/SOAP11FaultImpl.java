@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -37,10 +38,9 @@ import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 public class SOAP11FaultImpl extends SOAPFaultImpl {
+    private static final Class[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
+            SOAPFaultRole.class, SOAPFaultDetail.class };
 
     public SOAP11FaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
             throws SOAPProcessingException {
@@ -74,7 +74,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Code. " +
                             "But received some other implementation");
         }
-        super.setCode(soapFaultCode);
+        OMElementHelper.insertChild(this, sequence, 0, soapFaultCode);
     }
 
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
@@ -83,7 +83,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Reason. " +
                             "But received some other implementation");
         }
-        super.setReason(reason);
+        OMElementHelper.insertChild(this, sequence, 1, reason);
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
@@ -96,7 +96,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Role. " +
                             "But received some other implementation");
         }
-        super.setRole(role);
+        OMElementHelper.insertChild(this, sequence, 2, role);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -113,13 +113,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Detail. " +
                             "But received some other implementation");
         }
-        super.setDetail(detail);
-    }
-
-    protected void serializeFaultNode(
-            XMLStreamWriter writer)
-            throws XMLStreamException {
-
+        OMElementHelper.insertChild(this, sequence, 3, detail);
     }
 
     public SOAPFaultRole getRole() {

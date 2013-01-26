@@ -153,4 +153,42 @@ public class OMElementHelper {
         }
         that.detach();
     }
+    
+    public static void insertChild(OMElement parent, Class[] sequence, int pos, OMNode newChild) {
+        if (!sequence[pos].isInstance(newChild)) {
+            throw new IllegalArgumentException();
+        }
+        OMNode child = parent.getFirstOMChild();
+        while (child != null) {
+            if (child instanceof OMElement) {
+                if (child == newChild) {
+                    // The new child is already a child of the element and it is at
+                    // the right position
+                    return;
+                }
+                if (sequence[pos].isInstance(child)) {
+                    // Replace the existing child
+                    child.insertSiblingAfter(newChild);
+                    child.detach();
+                    return;
+                }
+                // isAfter indicates if the new child should be inserted after the current child
+                boolean isAfter = false;
+                for (int i=0; i<pos-1; i++) {
+                    if (sequence[i].isInstance(child)) {
+                        isAfter = true;
+                        break;
+                    }
+                }
+                if (!isAfter) {
+                    // We found the right position to insert the new child
+                    child.insertSiblingBefore(newChild);
+                    return;
+                }
+            }
+            child = child.getNextOMSibling();
+        }
+        // Else, add the new child at the end
+        parent.addChild(newChild);
+    }
 }

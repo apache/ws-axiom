@@ -27,21 +27,14 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -82,29 +75,6 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 
     // --------------- Getters and Settors --------------------------- //
 
-    public void setCode(SOAPFaultCode soapFaultCode)
-            throws SOAPProcessingException {
-        setNewElement(getCode(), soapFaultCode);
-    }
-
-    public void setReason(SOAPFaultReason reason)
-            throws SOAPProcessingException {
-        setNewElement(getReason(), reason);
-    }
-
-    public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
-        setNewElement(getNode(), node);
-    }
-
-    public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
-        setNewElement(getRole(), role);
-    }
-
-    public void setDetail(SOAPFaultDetail detail)
-            throws SOAPProcessingException {
-        setNewElement(getDetail(), detail);
-    }
-
     /** If exception detailElement is not there we will return null */
     public Exception getException() throws OMException {
         SOAPFaultDetail detail = getDetail();
@@ -135,51 +105,4 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
                                                     null, null, this.factory, true);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
-
-    protected void setNewElement(OMElement myElement, OMElement newElement) {
-        if (myElement != null) {
-            myElement.discard();
-        }
-        if (newElement != null && newElement.getParent() != null) {
-            newElement.discard();
-        }
-        this.addChild(newElement);
-    }
-
-    public void internalSerialize(XMLStreamWriter writer,
-                                     boolean cache) throws XMLStreamException {
-        // this is a special case. This fault element may contain its children
-        // in any order. But spec mandates a specific order
-        // the overriding of the method will facilitate that. Not sure this is
-        // the best method to do this :(
-        build();
-
-        OMSerializerUtil.serializeStartpart(this, writer);
-        SOAPFaultCode faultCode = getCode();
-        if (faultCode != null) {
-            (faultCode).serialize(writer);
-        }
-        SOAPFaultReason faultReason = getReason();
-        if (faultReason != null) {
-            (faultReason).serialize(writer);
-        }
-
-        serializeFaultNode(writer);
-
-        SOAPFaultRole faultRole = getRole();
-        if (faultRole != null) {
-            (faultRole).serialize(writer);
-        }
-
-        SOAPFaultDetail faultDetail = getDetail();
-        if (faultDetail != null) {
-            (faultDetail).serialize(writer);
-        }
-
-        OMSerializerUtil.serializeEndpart(writer);
-    }
-
-    protected abstract void serializeFaultNode(
-            XMLStreamWriter writer)
-            throws XMLStreamException;
 }

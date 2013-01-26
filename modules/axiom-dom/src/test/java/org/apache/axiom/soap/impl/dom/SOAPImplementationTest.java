@@ -26,7 +26,6 @@ import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.body.TestHasFaultAfterReplace;
 import org.apache.axiom.ts.soap.envelope.TestSerialize;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
-import org.apache.axiom.ts.soap.fault.TestChildOrder;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
 import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
@@ -55,9 +54,8 @@ public class SOAPImplementationTest extends TestCase {
         // TODO: AXIOM-430
         builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
         
-        // TODO: AXIOM-392
-        builder.exclude(TestSerialize.class, "(&(file=*fault*)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
-        builder.exclude(TestChildOrder.class, "(|(serializationStrategy=XMLStreamReader)(serializationStrategy=SAXSource))");
+        // TODO
+        builder.exclude(TestSerialize.class, "(&(file=*/faultstring-with-comment.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
         
         return builder.build();
     }

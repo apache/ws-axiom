@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -33,11 +34,10 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultImpl;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-
 public class SOAP12FaultImpl extends SOAPFaultImpl {
+    private static final Class[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
+            SOAPFaultNode.class, SOAPFaultRole.class, SOAPFaultDetail.class };
+    
     public SOAP12FaultImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }
@@ -73,7 +73,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultCodeImpl, got " + soapFaultCode.getClass());
         }
-        super.setCode(soapFaultCode);
+        OMElementHelper.insertChild(this, sequence, 0, soapFaultCode);
     }
 
 
@@ -82,7 +82,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultReasonImpl, got " + reason.getClass());
         }
-        super.setReason(reason);
+        OMElementHelper.insertChild(this, sequence, 1, reason);
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
@@ -90,7 +90,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultNodeImpl, got " + node.getClass());
         }
-        super.setNode(node);
+        OMElementHelper.insertChild(this, sequence, 2, node);
     }
 
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
@@ -98,7 +98,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultRoleImpl, got " + role.getClass());
         }
-        super.setRole(role);
+        OMElementHelper.insertChild(this, sequence, 3, role);
     }
 
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
@@ -106,23 +106,13 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultDetailImpl, got " + detail.getClass());
         }
-        super.setDetail(detail);
+        OMElementHelper.insertChild(this, sequence, 4, detail);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12BodyImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP12BodyImpl, got " + parent.getClass());
-        }
-    }
-
-    protected void serializeFaultNode(
-            XMLStreamWriter writer)
-            throws XMLStreamException {
-        SOAPFaultNode faultNode = getNode();
-        if (faultNode != null && faultNode.getText() != null
-                && !"".equals(faultNode.getText())) {
-            ((SOAP12FaultNodeImpl) faultNode).internalSerialize(writer, true);
         }
     }
 
