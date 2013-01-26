@@ -41,7 +41,7 @@ import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
-import org.apache.axiom.om.impl.common.OMElementImplUtil;
+import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -507,7 +507,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public NamespaceContext getNamespaceContext(boolean detached) {
-        return OMElementImplUtil.getNamespaceContext(this, detached);
+        return OMElementHelper.getNamespaceContext(this, detached);
     }
 
     /**
@@ -766,11 +766,11 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public String getText() {
-        return OMElementImplUtil.getText(this);
+        return OMElementHelper.getText(this);
     }
 
     public Reader getTextAsStream(boolean cache) {
-        return OMElementImplUtil.getTextAsStream(this, cache);
+        return OMElementHelper.getTextAsStream(this, cache);
     }
 
     public QName getTextAsQName() {
@@ -779,7 +779,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void writeTextTo(Writer out, boolean cache) throws IOException {
-        OMElementImplUtil.writeTextTo(this, out, cache);
+        OMElementHelper.writeTextTo(this, out, cache);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -918,7 +918,7 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public void discard() throws OMException {
-        OMElementImplUtil.discard(this);
+        OMElementHelper.discard(this);
     }
 
     public QName resolveQName(String qname) {

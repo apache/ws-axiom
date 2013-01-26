@@ -45,8 +45,8 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMElement} interface.
  */
-public class OMElementImplUtil {
-    private OMElementImplUtil() {}
+public class OMElementHelper {
+    private OMElementHelper() {}
     
     public static NamespaceContext getNamespaceContext(OMElement element, boolean detached) {
         if (detached) {

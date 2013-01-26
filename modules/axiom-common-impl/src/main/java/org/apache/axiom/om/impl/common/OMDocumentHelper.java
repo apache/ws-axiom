@@ -32,8 +32,8 @@ import org.apache.axiom.om.impl.util.OMSerializerUtil;
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMDocument} interface.
  */
-public class OMDocumentImplUtil {
-    private OMDocumentImplUtil() {}
+public class OMDocumentHelper {
+    private OMDocumentHelper() {}
     
     public static void internalSerialize(OMDocument document, XMLStreamWriter writer2,
             boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {

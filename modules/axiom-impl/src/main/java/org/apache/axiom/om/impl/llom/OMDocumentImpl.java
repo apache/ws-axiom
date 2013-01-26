@@ -35,7 +35,7 @@ import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
-import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
+import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 
@@ -295,7 +295,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
-        OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
+        OMDocumentHelper.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
     public XMLStreamReader getXMLStreamReader() {

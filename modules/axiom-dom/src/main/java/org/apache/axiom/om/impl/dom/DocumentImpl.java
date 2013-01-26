@@ -33,7 +33,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
-import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
+import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -571,7 +571,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
             boolean includeXMLDeclaration) throws XMLStreamException {
-        OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
+        OMDocumentHelper.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
