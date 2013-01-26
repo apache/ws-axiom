@@ -23,14 +23,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements
         SOAPFaultRole {
@@ -56,29 +52,5 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
 
     public String getRoleValue() {
         return this.getText();
-    }
-
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException {
-        if (!cache) {
-            //No caching
-            if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, writer);
-                firstChild.internalSerialize(writer, false);
-                OMSerializerUtil.serializeEndpart(writer);
-            } else if (state == INCOMPLETE) {
-                OMSerializerUtil.serializeByPullStream(this, writer);
-            } else {
-                OMSerializerUtil.serializeNormal(this, writer, cache);
-            }
-            // do not serialise the siblings
-
-
-        } else {
-            //Cached
-            OMSerializerUtil.serializeNormal(this, writer, cache);
-
-            // do not serialise the siblings
-        }
     }
 }

@@ -25,16 +25,12 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
     public SOAP11FaultReasonImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
@@ -59,17 +55,6 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
                             "parent. But received some other implementation");
         }
-    }
-
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException {
-
-        OMSerializerUtil.serializeStartpart(this,
-                                            SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME,
-                                            writer);
-
-        writer.writeCharacters(this.getText());
-        writer.writeEndElement();
     }
 
     public String getLocalName() {

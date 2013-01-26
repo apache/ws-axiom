@@ -21,15 +21,10 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
 
@@ -53,17 +48,4 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
                     "Expecting SOAP11FaultImpl, got " + parent.getClass());
         }
     }
-
-    public void internalSerialize(XMLStreamWriter writer, boolean cache)
-            throws XMLStreamException {
-
-        OMSerializerUtil.serializeStartpart(this,
-                                            SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
-                                            writer);
-
-        writer.writeCharacters(this.getText());
-        writer.writeEndElement();
-    }
-
-
 }

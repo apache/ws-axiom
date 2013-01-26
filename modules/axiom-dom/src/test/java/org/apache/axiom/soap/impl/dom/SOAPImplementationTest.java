@@ -54,9 +54,6 @@ public class SOAPImplementationTest extends TestCase {
         // TODO: AXIOM-430
         builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
         
-        // TODO
-        builder.exclude(TestSerialize.class, "(&(file=*/faultstring-with-comment.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter))(|(cache=true)(expand=fully)))");
-        
         return builder.build();
     }
 }
