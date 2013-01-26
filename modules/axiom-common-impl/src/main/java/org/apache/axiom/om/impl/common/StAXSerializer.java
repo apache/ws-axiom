@@ -40,7 +40,7 @@ public class StAXSerializer {
     private static final Log log = LogFactory.getLog(StAXSerializer.class);
     private static boolean ADV_DEBUG_ENABLED = true;
     
-    static long nsCounter = 0;
+    private static long nsCounter = 0;
     
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
     private static final String XSI_LOCAL_NAME = "type";
@@ -72,18 +72,6 @@ public class StAXSerializer {
      * @throws XMLStreamException
      */
     public void serializeStartpart(OMElement element) throws XMLStreamException {
-        serializeStartpart(element, element.getLocalName());
-    }
-
-    /**
-     * Method serializeStartpart. Serialize the start tag of an element.
-     *
-     * @param element
-     * @param localName (in some cases, the caller wants to force a different localName)
-     * @throws XMLStreamException
-     */
-    public void serializeStartpart(OMElement element, String localName)
-            throws XMLStreamException {
 
         // Note: To serialize the start tag, we must follow the order dictated by the JSR-173 (StAX) specification.
         // Please keep this code in sync with the code in StreamingOMSerializer.serializeElement
@@ -124,7 +112,7 @@ public class StAXSerializer {
                         writeNSList.add(eNamespace);
                     }
                 }
-                writer.writeStartElement("", localName, eNamespace);
+                writer.writeStartElement("", element.getLocalName(), eNamespace);
             } else {
                 /*
                  * If XMLStreamWriter.writeStartElement(prefix,localName,namespaceURI) associates
@@ -141,10 +129,10 @@ public class StAXSerializer {
                     }
                 }
                 
-                writer.writeStartElement(ePrefix, localName, eNamespace);
+                writer.writeStartElement(ePrefix, element.getLocalName(), eNamespace);
             }
         } else {
-            writer.writeStartElement(localName);
+            writer.writeStartElement(element.getLocalName());
         }
 
         // Generate setPrefix for the namespace declarations
@@ -392,7 +380,7 @@ public class StAXSerializer {
      * Get the next prefix name
      * @return next prefix name
      */
-    public static String getNextNSPrefix() {
+    private static String getNextNSPrefix() {
         
         String prefix = "axis2ns" + ++nsCounter % Long.MAX_VALUE;
         
@@ -437,7 +425,7 @@ public class StAXSerializer {
      * @param attr
      * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
-    public String generateSetPrefix(String prefix, String namespace, boolean attr) throws XMLStreamException {
+    private String generateSetPrefix(String prefix, String namespace, boolean attr) throws XMLStreamException {
         prefix = (prefix == null) ? "" : prefix;
         
         
@@ -476,7 +464,7 @@ public class StAXSerializer {
      * @param namespace
      * @return true if the prefix is associated with the namespace in the current context
      */
-    public boolean isAssociated(String prefix, String namespace) throws XMLStreamException {
+    private boolean isAssociated(String prefix, String namespace) throws XMLStreamException {
         
         // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that
         // we never write a declaration for the xml namespace. See AXIOM-37 for a discussion
