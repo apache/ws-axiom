@@ -22,7 +22,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -41,10 +40,5 @@ public class TestCreateOMAttributeNullPrefixNoNamespace extends AxiomTestCase {
         OMNamespace ns = factory.createOMNamespace("", null);
         OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
         assertNull(attr.getNamespace());
-        
-        // An OMAttribute is neither an OMNode nor an OMContainer. For the latter this is in
-        // contrast to DOM where an Attr node is a parent node (containing Text and EntityReference
-        // nodes).
-        assertFalse(attr instanceof OMSerializable);
     }
 }

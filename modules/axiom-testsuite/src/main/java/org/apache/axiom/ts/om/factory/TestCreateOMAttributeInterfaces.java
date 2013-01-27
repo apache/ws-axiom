@@ -18,29 +18,32 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.w3c.dom.Attr;
+import org.w3c.dom.EntityReference;
+import org.w3c.dom.Text;
 
 /**
- * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception
- * if the specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix
- * for an empty namespace.
+ * Tests that the {@link OMAttribute} instances created by
+ * {@link OMFactory#createOMAttribute(String, OMNamespace, String)} only implement the expected
+ * interfaces. An {@link OMAttribute} is neither an {@link OMNode} nor an {@link OMContainer}. For
+ * the latter this is in contrast to DOM where an {@link Attr} node is a parent node (containing
+ * {@link Text} and {@link EntityReference} nodes).
  */
-public class TestCreateOMAttributeWithInvalidNamespace extends AxiomTestCase {
-    public TestCreateOMAttributeWithInvalidNamespace(OMMetaFactory metaFactory) {
+public class TestCreateOMAttributeInterfaces extends AxiomTestCase {
+    public TestCreateOMAttributeInterfaces(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMNamespace ns = factory.createOMNamespace("", "p");
-        try {
-            factory.createOMAttribute("attr", ns, "value");
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException ex) {
-            // Expected
-        }
+        OMNamespace ns = factory.createOMNamespace("urn:test", "p");
+        OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
+        assertFalse(attr instanceof OMSerializable);
     }
 }
