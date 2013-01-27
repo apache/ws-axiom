@@ -104,6 +104,12 @@ public class OMAttributeImpl implements OMAttribute {
         return this.qName;
     }
 
+    public boolean hasName(QName name) {
+        return name.getLocalPart().equals(localName)
+                && (namespace == null && name.getNamespaceURI().length() == 0
+                 || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
+    }
+
     // -------- Getters and Setters
 
     /**

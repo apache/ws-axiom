@@ -800,6 +800,12 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         return qName;
     }
 
+    public boolean hasName(QName name) {
+        return name.getLocalPart().equals(localName)
+                && (namespace == null && name.getNamespaceURI().length() == 0
+                 || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
+    }
+
     public String getText() {
         return OMElementHelper.getText(this);
     }

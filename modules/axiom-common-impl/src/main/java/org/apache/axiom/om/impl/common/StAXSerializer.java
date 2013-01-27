@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -38,8 +39,7 @@ import java.util.Iterator;
 public class StAXSerializer {
     private static final Log log = LogFactory.getLog(StAXSerializer.class);
     
-    private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
-    private static final String XSI_LOCAL_NAME = "type";
+    private static final QName XSI_TYPE = new QName("http://www.w3.org/2001/XMLSchema-instance", "type");
     
     private final XMLStreamWriter writer;
     private final ArrayList writePrefixList = new ArrayList();
@@ -139,11 +139,7 @@ public class StAXSerializer {
         attrs = element.getAllAttributes();
         while (attrs.hasNext()) {
             OMAttribute attr = (OMAttribute) attrs.next();
-            String namespace = attr.getNamespaceURI();
-            String local = attr.getLocalName();
-
-            if (XSI_URI.equals(namespace) &&
-                    XSI_LOCAL_NAME.equals(local)) {
+            if (attr.hasName(XSI_TYPE)) {
                 String value = attr.getAttributeValue();
                 if (log.isDebugEnabled()) {
                     log.debug("The value of xsi:type is " + value);

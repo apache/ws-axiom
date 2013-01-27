@@ -609,6 +609,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
+    public boolean hasName(QName name) {
+        return super.hasName(name);
+    }
+
     public String toStringWithConsume() throws XMLStreamException {
         if (isExpanded()) {
             return super.toStringWithConsume();

@@ -82,6 +82,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestGetPrefixWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestHasNameWithNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestHasNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestSetLocalName(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithInputStream(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithReader(metaFactory));
@@ -299,6 +301,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithoutCachingPartiallyBuilt(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithoutCachingPartiallyBuiltModified(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithPreserveNamespaceContext(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestHasNameWithNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestHasNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttribute(metaFactory));
@@ -439,6 +443,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                     addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespace(metaFactory, variant, qname));
                     addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetPrefix(metaFactory, variant, qname));
                     addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceURI(metaFactory, variant, qname));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestHasName(metaFactory, variant, qname));
                 }
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));

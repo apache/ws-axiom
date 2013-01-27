@@ -278,6 +278,12 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     }
 
+    public boolean hasName(QName name) {
+        return name.getLocalPart().equals(localName)
+                && (namespace == null && name.getNamespaceURI().length() == 0
+                 || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
+    }
+
     public String getAttributeValue() {
         return getValue();
     }

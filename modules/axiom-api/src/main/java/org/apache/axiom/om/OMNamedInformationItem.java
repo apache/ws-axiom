@@ -55,6 +55,9 @@ public interface OMNamedInformationItem extends OMInformationItem {
 
     /**
      * Get the QName of this information item.
+     * <p>
+     * Note that if you simply need to check if the information item has a given QName, then you
+     * should use {@link #hasName(QName)} instead of this method.
      * 
      * @return the {@link QName} for the information item
      */
@@ -79,4 +82,21 @@ public interface OMNamedInformationItem extends OMInformationItem {
      *         item has no namespace
      */
     String getNamespaceURI();
+    
+    /**
+     * Determine if this information item has the given name. Note that only the namespace URI and
+     * local part will be compared, the prefix is ignored.
+     * <p>
+     * The result of the expression <code>node.hasName(name)</code> is the same as
+     * <code>node.getQName().equals(name)</code>. However, the former expression is generally more
+     * efficient than the latter because it avoids the creation of the {@link QName} object. In
+     * addition, for an {@link OMSourcedElement} it avoids the expansion of the element if the
+     * prefix is unknown.
+     * 
+     * @param name
+     *            the QName to compare with the QName of this information item
+     * @return <code>true</code> if the information item has the given name, <code>false</code>
+     *         otherwise
+     */
+    boolean hasName(QName name);
 }

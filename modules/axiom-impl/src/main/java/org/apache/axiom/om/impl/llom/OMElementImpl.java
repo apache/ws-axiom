@@ -884,6 +884,16 @@ public class OMElementImpl extends OMNodeImpl
         }
         return qName;
     }
+    
+    public boolean hasName(QName name) {
+        if (name.getLocalPart().equals(getLocalName())) {
+            OMNamespace ns = getNamespace();
+            return ns == null && name.getNamespaceURI().length() == 0
+                    || ns != null && name.getNamespaceURI().equals(ns.getNamespaceURI());
+        } else {
+            return false;
+        }
+    }
 
     public String toStringWithConsume() throws XMLStreamException {
         StringWriter writer = new StringWriter();
