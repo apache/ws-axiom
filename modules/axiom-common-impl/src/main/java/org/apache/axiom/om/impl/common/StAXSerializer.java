@@ -46,6 +46,9 @@ public class StAXSerializer {
     private static final String XSI_LOCAL_NAME = "type";
     
     private final XMLStreamWriter writer;
+    private final ArrayList writePrefixList = new ArrayList();
+    private final ArrayList writeNSList = new ArrayList();
+
     
     public StAXSerializer(XMLStreamWriter writer) {
         this.writer = writer;
@@ -86,9 +89,6 @@ public class StAXSerializer {
         // ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
         // ... generate writeAttribute for each attribute
 
-        ArrayList writePrefixList = null;
-        ArrayList writeNSList = null;
-
         // Get the namespace and prefix of the element
         OMNamespace eOMNamespace = element.getNamespace();
         String ePrefix = null;
@@ -103,10 +103,6 @@ public class StAXSerializer {
         if (eNamespace != null) {
             if (ePrefix == null) {
                 if (!isAssociated("", eNamespace)) {
-                    if (writePrefixList == null) {
-                        writePrefixList = new ArrayList();
-                        writeNSList = new ArrayList();
-                    }
                     if (! writePrefixList.contains("")) {
                         writePrefixList.add("");
                         writeNSList.add(eNamespace);
@@ -119,10 +115,6 @@ public class StAXSerializer {
                  * the prefix with the namespace .. 
                  */
                 if (!isAssociated(ePrefix, eNamespace)) {
-                    if (writePrefixList == null) {
-                        writePrefixList = new ArrayList();
-                        writeNSList = new ArrayList();
-                    }
                     if (! writePrefixList.contains(ePrefix)) {
                         writePrefixList.add(ePrefix);
                         writeNSList.add(eNamespace);
@@ -152,10 +144,6 @@ public class StAXSerializer {
             String newPrefix = generateSetPrefix(prefix, namespace, false);
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
-                if (writePrefixList == null) {
-                    writePrefixList = new ArrayList();
-                    writeNSList = new ArrayList();
-                }
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
                     writeNSList.add(namespace);
@@ -168,10 +156,6 @@ public class StAXSerializer {
         String newPrefix = generateSetPrefix(ePrefix, eNamespace, false);
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
-            if (writePrefixList == null) {
-                writePrefixList = new ArrayList();
-                writeNSList = new ArrayList();
-            }
             if (!writePrefixList.contains(newPrefix)) {
                 writePrefixList.add(newPrefix);
                 writeNSList.add(eNamespace);
@@ -204,10 +188,6 @@ public class StAXSerializer {
             // If the prefix is not associated with a namespace yet, remember it so that we can
             // write out a namespace declaration
             if (newPrefix != null) {
-                if (writePrefixList == null) {
-                    writePrefixList = new ArrayList();
-                    writeNSList = new ArrayList();
-                }
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
                     writeNSList.add(namespace);
@@ -254,10 +234,6 @@ public class StAXSerializer {
                             if (newPrefix != null) {
                                 if (log.isDebugEnabled()) {
                                     log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
-                                }
-                                if (writePrefixList == null) {
-                                    writePrefixList = new ArrayList();
-                                    writeNSList = new ArrayList();
                                 }
                                 if (!writePrefixList.contains(newPrefix)) {
                                     writePrefixList.add(newPrefix);
@@ -342,6 +318,9 @@ public class StAXSerializer {
                                       attr.getAttributeValue());
             }
         }
+        
+        writePrefixList.clear();
+        writeNSList.clear();
     }
 
     public void serializeByPullStream(OMElement element, boolean cache) throws XMLStreamException {
