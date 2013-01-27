@@ -90,23 +90,14 @@ public class StAXSerializer {
         // ... generate writeAttribute for each attribute
 
         // Get the namespace and prefix of the element
-        OMNamespace eOMNamespace = element.getNamespace();
-        String ePrefix = null;
-        String eNamespace = null;
-        if (eOMNamespace != null) {
-            ePrefix = eOMNamespace.getPrefix();
-            eNamespace = eOMNamespace.getNamespaceURI();
-        }
-        ePrefix = (ePrefix != null && ePrefix.length() == 0) ? null : ePrefix;
-        eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
+        String ePrefix = element.getPrefix();
+        String eNamespace = element.getNamespaceURI();
 
         if (eNamespace != null) {
             if (ePrefix == null) {
                 if (!isAssociated("", eNamespace)) {
-                    if (! writePrefixList.contains("")) {
-                        writePrefixList.add("");
-                        writeNSList.add(eNamespace);
-                    }
+                    writePrefixList.add("");
+                    writeNSList.add(eNamespace);
                 }
                 writer.writeStartElement("", element.getLocalName(), eNamespace);
             } else {
@@ -115,10 +106,8 @@ public class StAXSerializer {
                  * the prefix with the namespace .. 
                  */
                 if (!isAssociated(ePrefix, eNamespace)) {
-                    if (! writePrefixList.contains(ePrefix)) {
-                        writePrefixList.add(ePrefix);
-                        writeNSList.add(eNamespace);
-                    }
+                    writePrefixList.add(ePrefix);
+                    writeNSList.add(eNamespace);
                 }
                 
                 writer.writeStartElement(ePrefix, element.getLocalName(), eNamespace);
@@ -129,52 +118,24 @@ public class StAXSerializer {
 
         // Generate setPrefix for the namespace declarations
         Iterator it = element.getAllDeclaredNamespaces();
-        while (it != null && it.hasNext()) {
+        while (it.hasNext()) {
             OMNamespace omNamespace = (OMNamespace) it.next();
-            String prefix = null;
-            String namespace = null;
-            if (omNamespace != null) {
-                prefix = omNamespace.getPrefix();
-                namespace = omNamespace.getNamespaceURI();
-            }
-            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
-            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
-
-
-            String newPrefix = generateSetPrefix(prefix, namespace, false);
-            // If this is a new association, remember it so that it can written out later
-            if (newPrefix != null) {
-                if (!writePrefixList.contains(newPrefix)) {
-                    writePrefixList.add(newPrefix);
-                    writeNSList.add(namespace);
-                }
-            }
+            String prefix = omNamespace.getPrefix();
+            String namespace = omNamespace.getNamespaceURI();
+            generateSetPrefix(prefix.length() == 0 ? null : prefix,
+                              namespace.length() == 0 ? null : namespace, false);
         }
 
         // Generate setPrefix for the element
         // Get the prefix and namespace of the element.  "" and null are identical.
-        String newPrefix = generateSetPrefix(ePrefix, eNamespace, false);
-        // If this is a new association, remember it so that it can written out later
-        if (newPrefix != null) {
-            if (!writePrefixList.contains(newPrefix)) {
-                writePrefixList.add(newPrefix);
-                writeNSList.add(eNamespace);
-            }
-        }
+        generateSetPrefix(ePrefix, eNamespace, false);
 
         // Now Generate setPrefix for each attribute
         Iterator attrs = element.getAllAttributes();
-        while (attrs != null && attrs.hasNext()) {
+        while (attrs.hasNext()) {
             OMAttribute attr = (OMAttribute) attrs.next();
-            OMNamespace omNamespace = attr.getNamespace();
-            String prefix = null;
-            String namespace = null;
-            if (omNamespace != null) {
-                prefix = omNamespace.getPrefix();
-                namespace = omNamespace.getNamespaceURI();
-            }
-            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
-            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            String prefix = attr.getPrefix();
+            String namespace = attr.getNamespaceURI();
 
             // Default prefix referencing is not allowed on an attribute
             if (prefix == null && namespace != null) {
@@ -184,32 +145,16 @@ public class StAXSerializer {
                 prefix = (writerPrefix != null) ?
                         writerPrefix : getNextNSPrefix();
             }
-            newPrefix = generateSetPrefix(prefix, namespace, true);
-            // If the prefix is not associated with a namespace yet, remember it so that we can
-            // write out a namespace declaration
-            if (newPrefix != null) {
-                if (!writePrefixList.contains(newPrefix)) {
-                    writePrefixList.add(newPrefix);
-                    writeNSList.add(namespace);
-                }
-            }
+            generateSetPrefix(prefix, namespace, true);
         }
         
         // Now Generate setPrefix for each prefix referenced in an xsi:type
         // For example xsi:type="p:dataType"
         // The following code will make sure that setPrefix is called for "p".
         attrs = element.getAllAttributes();
-        while (attrs != null && attrs.hasNext()) {
+        while (attrs.hasNext()) {
             OMAttribute attr = (OMAttribute) attrs.next();
-            OMNamespace omNamespace = attr.getNamespace();
-            String prefix = null;
-            String namespace = null;
-            if (omNamespace != null) {
-                prefix = omNamespace.getPrefix();
-                namespace = omNamespace.getNamespaceURI();
-            }
-            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
-            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            String namespace = attr.getNamespaceURI();
             String local = attr.getLocalName();
 
             if (XSI_URI.equals(namespace) &&
@@ -218,29 +163,13 @@ public class StAXSerializer {
                 if (log.isDebugEnabled()) {
                     log.debug("The value of xsi:type is " + value);
                 }
-                if (value != null) {
-                    value = value.trim();
-                    if (value.indexOf(":") > 0) {
-                        String refPrefix = value.substring(0, value.indexOf(":"));
-                        OMNamespace omNS = element.findNamespaceURI(refPrefix);
-                        String refNamespace = (omNS == null) ? null : omNS.getNamespaceURI();
-                        if (refNamespace != null && refNamespace.length() > 0) {
-
-                            newPrefix = generateSetPrefix(refPrefix, 
-                                    refNamespace, 
-                                    true);
-                            // If the prefix is not associated with a namespace yet, remember it so that we can
-                            // write out a namespace declaration
-                            if (newPrefix != null) {
-                                if (log.isDebugEnabled()) {
-                                    log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
-                                }
-                                if (!writePrefixList.contains(newPrefix)) {
-                                    writePrefixList.add(newPrefix);
-                                    writeNSList.add(refNamespace);
-                                }
-                            }
-                        }
+                value = value.trim();
+                if (value.indexOf(":") > 0) {
+                    String refPrefix = value.substring(0, value.indexOf(":"));
+                    OMNamespace omNS = element.findNamespaceURI(refPrefix);
+                    String refNamespace = (omNS == null) ? null : omNS.getNamespaceURI();
+                    if (refNamespace != null && refNamespace.length() > 0) {
+                        generateSetPrefix(refPrefix, refNamespace, true);
                     }
                 }
             }
@@ -248,35 +177,22 @@ public class StAXSerializer {
 
         // Now write out the list of namespace declarations in this list that we constructed
         // while doing the "set" processing.
-        if (writePrefixList != null) {
-            for (int i = 0; i < writePrefixList.size(); i++) {
-                String prefix = (String) writePrefixList.get(i);
-                String namespace = (String) writeNSList.get(i);
-                if (prefix != null) {
-                    if (namespace == null) {
-                        writer.writeNamespace(prefix, "");
-                    } else {
-                        writer.writeNamespace(prefix, namespace);
-                    }
-                } else {
-                    writer.writeDefaultNamespace(namespace);
-                }
+        for (int i = 0; i < writePrefixList.size(); i++) {
+            String prefix = (String) writePrefixList.get(i);
+            String namespace = (String) writeNSList.get(i);
+            if (prefix != null) {
+                writer.writeNamespace(prefix, namespace == null ? "" : namespace);
+            } else {
+                writer.writeDefaultNamespace(namespace);
             }
         }
 
         // Now write the attributes
         attrs = element.getAllAttributes();
-        while (attrs != null && attrs.hasNext()) {
+        while (attrs.hasNext()) {
             OMAttribute attr = (OMAttribute) attrs.next();
-            OMNamespace omNamespace = attr.getNamespace();
-            String prefix = null;
-            String namespace = null;
-            if (omNamespace != null) {
-                prefix = omNamespace.getPrefix();
-                namespace = omNamespace.getNamespaceURI();
-            }
-            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
-            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            String prefix = attr.getPrefix();
+            String namespace = attr.getNamespaceURI();
 
             if (prefix == null && namespace != null) {
                 // Default namespaces are not allowed on an attribute reference.
@@ -404,23 +320,23 @@ public class StAXSerializer {
      * @param attr
      * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
-    private String generateSetPrefix(String prefix, String namespace, boolean attr) throws XMLStreamException {
+    private void generateSetPrefix(String prefix, String namespace, boolean attr) throws XMLStreamException {
         prefix = (prefix == null) ? "" : prefix;
         
         
         // If the prefix and namespace are already associated, no generation is needed
         if (isAssociated(prefix, namespace)) {
-            return null;
+            return;
         }
         
         // Attributes without a prefix always are associated with the unqualified namespace
         // according to the schema specification.  No generation is needed.
         if (prefix.length() == 0 && namespace == null && attr) {
-            return null;
+            return;
         }
         
         // Generate setPrefix/setDefaultNamespace if the prefix is not associated.
-        String newPrefix = null;
+        String newPrefix;
         if (namespace != null) {
             // Qualified Namespace
             if (prefix.length() == 0) {
@@ -436,7 +352,11 @@ public class StAXSerializer {
             writer.setDefaultNamespace("");
             newPrefix = "";
         }
-        return newPrefix;
+        // If this is a new association, remember it so that it can written out later
+        if (!writePrefixList.contains(newPrefix)) {
+            writePrefixList.add(newPrefix);
+            writeNSList.add(namespace);
+        }
     }
     /**
      * @param prefix 
