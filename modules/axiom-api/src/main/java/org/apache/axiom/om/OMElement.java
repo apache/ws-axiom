@@ -371,6 +371,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * @return Returns the added attribute.
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed attribute with an empty namespace name
+     *             or an unprefixed attribute with a namespace
      */
     OMAttribute addAttribute(String localName, String value, OMNamespace ns);
 

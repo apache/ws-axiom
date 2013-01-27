@@ -71,11 +71,15 @@ public class OMAttributeImpl implements OMAttribute {
         if (localName == null || localName.trim().length() == 0)
             throw new IllegalArgumentException("Local name may not be null or empty");
         
-        if (ns != null && ns.getNamespaceURI().length() == 0) {
-            if (ns.getPrefix().length() > 0) {
-                throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
-            } else {
-                ns = null;
+        if (ns != null) {
+            if (ns.getNamespaceURI().length() == 0) {
+                if (ns.getPrefix().length() > 0) {
+                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+                } else {
+                    ns = null;
+                }
+            } else if (ns.getPrefix().length() == 0) {
+                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
 

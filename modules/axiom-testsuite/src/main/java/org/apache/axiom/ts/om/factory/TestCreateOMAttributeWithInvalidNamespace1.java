@@ -16,27 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.factory;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestAddAttributeWithInvalidNamespace extends AxiomTestCase {
-    public TestAddAttributeWithInvalidNamespace(OMMetaFactory metaFactory) {
+/**
+ * Tests that {@link OMFactory#createOMAttribute(String, OMNamespace, String)} throws an exception
+ * if the specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix
+ * for an empty namespace.
+ */
+public class TestCreateOMAttributeWithInvalidNamespace1 extends AxiomTestCase {
+    public TestCreateOMAttributeWithInvalidNamespace1(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("", "p");
         try {
-            element.addAttribute("attr", "value", ns);
+            factory.createOMAttribute("attr", ns, "value");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             // Expected

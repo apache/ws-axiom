@@ -84,11 +84,15 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
         this(ownerDocument, factory);
-        if (ns != null && ns.getNamespaceURI().length() == 0) {
-            if (ns.getPrefix().length() > 0) {
-                throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
-            } else {
-                ns = null;
+        if (ns != null) {
+            if (ns.getNamespaceURI().length() == 0) {
+                if (ns.getPrefix().length() > 0) {
+                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+                } else {
+                    ns = null;
+                }
+            } else if (ns.getPrefix().length() == 0) {
+                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
         this.localName = localName;

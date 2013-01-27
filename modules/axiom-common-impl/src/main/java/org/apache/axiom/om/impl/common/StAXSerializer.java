@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,9 +37,6 @@ import java.util.Iterator;
 
 public class StAXSerializer {
     private static final Log log = LogFactory.getLog(StAXSerializer.class);
-    private static boolean ADV_DEBUG_ENABLED = true;
-    
-    private static long nsCounter = 0;
     
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
     private static final String XSI_LOCAL_NAME = "type";
@@ -134,18 +130,7 @@ public class StAXSerializer {
         Iterator attrs = element.getAllAttributes();
         while (attrs.hasNext()) {
             OMAttribute attr = (OMAttribute) attrs.next();
-            String prefix = attr.getPrefix();
-            String namespace = attr.getNamespaceURI();
-
-            // Default prefix referencing is not allowed on an attribute
-            if (prefix == null && namespace != null) {
-                String writerPrefix = writer.getPrefix(namespace);
-                writerPrefix =
-                        (writerPrefix != null && writerPrefix.length() == 0) ? null : writerPrefix;
-                prefix = (writerPrefix != null) ?
-                        writerPrefix : getNextNSPrefix();
-            }
-            generateSetPrefix(prefix, namespace, true);
+            generateSetPrefix(attr.getPrefix(), attr.getNamespaceURI(), true);
         }
         
         // Now Generate setPrefix for each prefix referenced in an xsi:type
@@ -194,24 +179,7 @@ public class StAXSerializer {
             String prefix = attr.getPrefix();
             String namespace = attr.getNamespaceURI();
 
-            if (prefix == null && namespace != null) {
-                // Default namespaces are not allowed on an attribute reference.
-                // Earlier in this code, a unique prefix was added for this case...now obtain and use it
-                prefix = writer.getPrefix(namespace);
-                //XMLStreamWriter doesn't allow for getPrefix to know whether you're asking for the prefix
-                //for an attribute or an element. So if the namespace matches the default namespace getPrefix will return
-                //the empty string, as if it were an element, in all cases (even for attributes, and even if
-                //there was a prefix specifically set up for this), which is not the desired behavior.
-                //Since the interface is base java, we can't fix it where we need to (by adding an attr boolean to
-                //XMLStreamWriter.getPrefix), so we hack it in here...
-                if (prefix == null || "".equals(prefix)) {
-                    for (int i = 0; i < writePrefixList.size(); i++) {
-                        if (namespace.equals((String) writeNSList.get(i))) {
-                            prefix = (String) writePrefixList.get(i);
-                        }
-                    }
-                }
-            } else if (namespace != null) {
+            if (namespace != null) {
                 // Use the writer's prefix if it is different, but if the writers
                 // prefix is empty then do not replace because attributes do not
                 // default to the default namespace like elements do.
@@ -269,47 +237,6 @@ public class StAXSerializer {
                 child = (IChildNode)child.getNextOMSiblingIfAvailable();
             }
         }
-    }
-
-    /**
-     * Get the next prefix name
-     * @return next prefix name
-     */
-    private static String getNextNSPrefix() {
-        
-        String prefix = "axis2ns" + ++nsCounter % Long.MAX_VALUE;
-        
-        /**
-         * Calling getNextNSPrefix is "a last gasp" approach
-         * for obtaining a prefix.  In almost all cases, the
-         * OM element should be provided a prefix by the source parser
-         * or programatically by the user.  We only get to this
-         * spot if one was not supplied.
-         * 
-         * The debug information is two-fold.  
-         * (1) It helps users determine at what point in the code this default
-         * prefix is getting built.  This will help them identify
-         * where to change their code if they don't want a default
-         * prefix.
-         * 
-         * (2) It identifies this place in the code as suspect.
-         * Do we really want to keep generating new prefixes (?).
-         * This could result in lots of symbol table entries for the
-         * subsequent parser that reads this data.  This could hamper
-         * extremely long run usages.
-         * This could be a point where we want a plugin so that users can
-         * decide their own strategy.  Examples from other products
-         * include generating a prefix number from the namespace
-         * string.
-         * 
-         */
-        if (log.isDebugEnabled()) {
-            log.debug("Obtained next prefix:" + prefix);
-            if (ADV_DEBUG_ENABLED && log.isTraceEnabled()) {
-                log.trace(CommonUtils.callStackToString());
-            }
-        }
-        return prefix;
     }
 
     /**

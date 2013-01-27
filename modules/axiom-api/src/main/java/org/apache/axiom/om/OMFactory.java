@@ -313,6 +313,7 @@ public interface OMFactory {
      * @return the newly created attribute
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed attribute with an empty namespace name
+     *             or an unprefixed attribute with a namespace
      */
     OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,
