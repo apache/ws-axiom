@@ -231,13 +231,10 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
      * @throws XMLStreamException
      */
     private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
-        int type = getType();
-        if (type == TEXT_NODE || type == SPACE_NODE) {
-            writer.writeCharacters(this.getText());
-        } else if (type == CDATA_SECTION_NODE) {
+        if (getType() == OMNode.CDATA_SECTION_NODE) {
             writer.writeCData(this.getText());
-        } else if (type == ENTITY_REFERENCE_NODE) {
-            writer.writeEntityRef(this.getText());
+        } else {
+            writer.writeCharacters(this.getText());
         }
     }
 

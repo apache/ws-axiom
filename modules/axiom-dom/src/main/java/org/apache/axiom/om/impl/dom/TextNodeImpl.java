@@ -242,13 +242,10 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @throws XMLStreamException
      */
     private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
-        int type = getType();
-        if (type == OMNode.TEXT_NODE || type == SPACE_NODE) {
-            writer.writeCharacters(this.getText());
-        } else if (type == OMNode.CDATA_SECTION_NODE) {
+        if (getType() == OMNode.CDATA_SECTION_NODE) {
             writer.writeCData(this.getText());
-        } else if (type == OMNode.ENTITY_REFERENCE_NODE) {
-            writer.writeEntityRef(this.getText());
+        } else {
+            writer.writeCharacters(this.getText());
         }
     }
 
