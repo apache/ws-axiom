@@ -16,22 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.serializer;
 
-import javax.xml.stream.XMLStreamException;
+public class OutputException extends Exception {
+    private static final long serialVersionUID = 7173617216602466028L;
 
-import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
-
-public interface ISerializable extends OMSerializable {
-    /**
-     * Serializes the node.
-     *
-     * @param serializer
-     * @param cache indicates if caching should be enabled
-     * @throws XMLStreamException
-     * @throws OutputException 
-     */
-    void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException;
+    public OutputException(Throwable cause) {
+        super(cause);
+    }
 }

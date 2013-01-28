@@ -36,7 +36,8 @@ import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.OMNodeHelper;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -890,7 +891,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public void internalSerialize(StAXSerializer serializer,
-                                     boolean cache) throws XMLStreamException {
+                                     boolean cache) throws XMLStreamException, OutputException {
 
         if (cache || state == COMPLETE || (this.builder == null)) {
             serializer.serializeStartpart(this);

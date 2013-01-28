@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
 import javax.xml.stream.XMLStreamException;

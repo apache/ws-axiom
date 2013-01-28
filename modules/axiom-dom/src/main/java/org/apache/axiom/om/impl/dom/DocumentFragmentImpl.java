@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 

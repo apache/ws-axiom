@@ -26,11 +26,13 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
@@ -745,7 +747,11 @@ public abstract class NodeImpl implements Node {
         MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(new StAXSerializer(writer), cache);
+        try {
+            internalSerialize(new StAXSerializer((OMSerializable)this, writer), cache);
+        } catch (OutputException ex) {
+            throw (XMLStreamException)ex.getCause();
+        }
         writer.flush();
     }
 
@@ -790,7 +796,11 @@ public abstract class NodeImpl implements Node {
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
-            internalSerialize(new StAXSerializer(writer), true);
+            try {
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), true);
+            } catch (OutputException ex) {
+                throw (XMLStreamException)ex.getCause();
+            }
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
@@ -804,7 +814,11 @@ public abstract class NodeImpl implements Node {
                 .createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         try {
-            internalSerialize(new StAXSerializer(writer), true);
+            try {
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), true);
+            } catch (OutputException ex) {
+                throw (XMLStreamException)ex.getCause();
+            }
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
@@ -816,7 +830,11 @@ public abstract class NodeImpl implements Node {
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
-            internalSerialize(new StAXSerializer(writer), false);
+            try {
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), false);
+            } catch (OutputException ex) {
+                throw (XMLStreamException)ex.getCause();
+            }
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
@@ -831,7 +849,11 @@ public abstract class NodeImpl implements Node {
         try {
             writer.setOutputFormat(format);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            internalSerialize(new StAXSerializer(writer), false);
+            try {
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), false);
+            } catch (OutputException ex) {
+                throw (XMLStreamException)ex.getCause();
+            }
             writer.flush();
         } finally {
             writer.close();
@@ -840,7 +862,7 @@ public abstract class NodeImpl implements Node {
 
     // This method is actually defined by ISerializable, but ISerializable is only implemented
     // by certain subclasses (for the reason, see AXIOM-385).
-    public abstract void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException;
+    public abstract void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException;
     
     public final OMInformationItem clone(OMCloneOptions options) {
         return (OMInformationItem)clone(options, null, true, true);

@@ -38,7 +38,8 @@ import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -711,7 +712,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void internalSerialize(StAXSerializer serializer, boolean cache)
-            throws XMLStreamException {
+            throws XMLStreamException, OutputException {
         if (isExpanded()) {
             super.internalSerialize(serializer, cache);
         } else if (cache) {
@@ -728,7 +729,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         // The contract is to serialize with caching
-        internalSerialize(new StAXSerializer(xmlWriter), true);
+        try {
+            internalSerialize(new StAXSerializer(this, xmlWriter), true);
+        } catch (OutputException ex) {
+            throw (XMLStreamException)ex.getCause();
+        }
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {
@@ -765,7 +770,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
             throws XMLStreamException {
-        internalSerialize(new StAXSerializer(xmlWriter), false);
+        try {
+            internalSerialize(new StAXSerializer(this, xmlWriter), false);
+        } catch (OutputException ex) {
+            throw (XMLStreamException)ex.getCause();
+        }
     }
 
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {

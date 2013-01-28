@@ -35,7 +35,8 @@ import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -103,7 +104,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         return null;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException {
         internalSerialize(serializer, cache, !((MTOMXMLStreamWriter)serializer.getWriter()).isIgnoreXMLDeclaration());
     }
 
@@ -404,13 +405,21 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(new StAXSerializer(writer), false);
+        try {
+            internalSerialize(new StAXSerializer(this, writer), false);
+        } catch (OutputException ex) {
+            throw (XMLStreamException)ex.getCause();
+        }
         writer.flush();
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(new StAXSerializer(writer), true);
+        try {
+            internalSerialize(new StAXSerializer(this, writer), true);
+        } catch (OutputException ex) {
+            throw (XMLStreamException)ex.getCause();
+        }
         writer.flush();
     }
 
@@ -570,7 +579,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     }
 
     protected void internalSerialize(StAXSerializer serializer, boolean cache,
-            boolean includeXMLDeclaration) throws XMLStreamException {
+            boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
         OMDocumentHelper.internalSerialize(this, serializer, cache, includeXMLDeclaration);
     }
 

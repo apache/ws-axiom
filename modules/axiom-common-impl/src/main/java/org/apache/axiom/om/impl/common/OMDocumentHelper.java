@@ -24,6 +24,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 /**
@@ -34,7 +36,7 @@ public class OMDocumentHelper {
     private OMDocumentHelper() {}
     
     public static void internalSerialize(OMDocument document, StAXSerializer serializer,
-            boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+            boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
         
         MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
         if (includeXMLDeclaration) {

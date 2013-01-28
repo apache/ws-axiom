@@ -26,7 +26,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.soap.SOAPBody;
@@ -123,7 +124,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
     }
 
     public void internalSerialize(StAXSerializer serializer, boolean cache)
-            throws XMLStreamException {
+            throws XMLStreamException, OutputException {
         serializer.serializeStartpart(this);
         for (Iterator it = getChildren(); it.hasNext(); ) {
             OMNodeImpl child = (OMNodeImpl)it.next();

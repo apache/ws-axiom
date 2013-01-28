@@ -30,7 +30,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -38,7 +39,6 @@ import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 
 public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
@@ -224,20 +224,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         return nodeType;
     }
 
-    /**
-     * Writes the relevant output.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
-        if (getType() == OMNode.CDATA_SECTION_NODE) {
-            writer.writeCData(this.getText());
-        } else {
-            writer.writeCharacters(this.getText());
-        }
-    }
-
     /** Returns the value. */
     public String getText() throws OMException {
         if (charArray != null || this.value != null) {
@@ -368,10 +354,10 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         return this.contentID;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException {
 
         if (!this.isBinary) {
-            writeOutput(serializer.getWriter());
+            serializer.writeText(getType(), getText());
         } else {
             try {
                 if (dataHandlerObject instanceof DataHandlerProvider) {

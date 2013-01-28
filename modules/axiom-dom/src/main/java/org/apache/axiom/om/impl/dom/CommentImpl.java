@@ -22,7 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Node;
 

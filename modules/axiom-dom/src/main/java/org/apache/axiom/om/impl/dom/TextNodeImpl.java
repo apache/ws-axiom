@@ -28,7 +28,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -39,7 +40,6 @@ import org.w3c.dom.Text;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 
 public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText {
@@ -235,20 +235,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         }
     }
 
-    /**
-     * Writes the relevant output.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
-        if (getType() == OMNode.CDATA_SECTION_NODE) {
-            writer.writeCData(this.getText());
-        } else {
-            writer.writeCharacters(this.getText());
-        }
-    }
-
     public String getText() {
         if (this.charArray != null || this.textValue != null) {
             return getTextFromProperPlace();
@@ -357,9 +343,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public void internalSerialize(StAXSerializer serializer, boolean cache)
-            throws XMLStreamException {
+            throws XMLStreamException, OutputException {
         if (!this.isBinary) {
-            writeOutput(serializer.getWriter());
+            serializer.writeText(getType(), getText());
         } else {
             try {
                 if (dataHandlerObject instanceof DataHandlerProvider) {

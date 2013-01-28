@@ -36,7 +36,8 @@ import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 
@@ -289,12 +290,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
         this.xmlEncoding = encoding;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException {
         internalSerialize(serializer, cache, !((MTOMXMLStreamWriter)serializer.getWriter()).isIgnoreXMLDeclaration());
     }
 
     protected void internalSerialize(StAXSerializer serializer, boolean cache,
-                                     boolean includeXMLDeclaration) throws XMLStreamException {
+                                     boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
         OMDocumentHelper.internalSerialize(this, serializer, cache, includeXMLDeclaration);
     }
 

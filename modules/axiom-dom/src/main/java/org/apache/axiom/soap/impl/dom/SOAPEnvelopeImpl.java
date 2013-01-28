@@ -30,11 +30,10 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -52,7 +51,6 @@ import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         OMConstants {
@@ -192,7 +190,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     public void internalSerialize(StAXSerializer serializer, boolean cache)
-            throws XMLStreamException {
+            throws XMLStreamException, OutputException {
 
         MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
         if (!writer.isIgnoreXMLDeclaration()) {

@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 
 public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReference {
     private final String name;

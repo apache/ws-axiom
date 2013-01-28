@@ -24,7 +24,8 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -61,7 +62,7 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
     }
 
     protected void internalSerialize(StAXSerializer serializer, boolean cache,
-                                     boolean includeXMLDeclaration) throws XMLStreamException {
+                                     boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
         ((OMNodeImpl)getOMDocumentElement()).internalSerialize(serializer, cache);
     }
 

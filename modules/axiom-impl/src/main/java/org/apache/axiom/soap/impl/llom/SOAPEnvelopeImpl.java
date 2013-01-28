@@ -34,7 +34,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.common.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
@@ -50,7 +51,6 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /** Class SOAPEnvelopeImpl */
 public class SOAPEnvelopeImpl extends SOAPElement
@@ -193,7 +193,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     public void internalSerialize(StAXSerializer serializer, boolean cache)
-            throws XMLStreamException {
+            throws XMLStreamException, OutputException {
         MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
         if (!writer.isIgnoreXMLDeclaration()) {
             String charSetEncoding = writer.getCharSetEncoding();
