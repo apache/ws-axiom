@@ -20,13 +20,11 @@
 package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -35,7 +33,7 @@ import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 public class OMDocumentHelper {
     private OMDocumentHelper() {}
     
-    public static void internalSerialize(OMDocument document, StAXSerializer serializer,
+    public static void internalSerialize(IDocument document, StAXSerializer serializer,
             boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
         
         MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
@@ -57,14 +55,6 @@ public class OMDocumentHelper {
             }
         }
 
-        if (cache || document.isComplete() || document.getBuilder() == null) {
-            serializer.serializeChildren(document, cache);
-        } else {
-            StreamingOMSerializer streamingOMSerializer = new StreamingOMSerializer();
-            XMLStreamReader reader = document.getXMLStreamReaderWithoutCaching();
-            while (reader.getEventType() != XMLStreamReader.END_DOCUMENT) {
-                streamingOMSerializer.serialize(reader, writer);
-            }
-        }
+        serializer.serializeChildren(document, cache);
     }
 }

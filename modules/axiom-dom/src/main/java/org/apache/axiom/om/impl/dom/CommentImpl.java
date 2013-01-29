@@ -22,11 +22,10 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Node;
-
-import javax.xml.stream.XMLStreamException;
 
 public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     public CommentImpl(String value, OMFactory factory) {
@@ -53,8 +52,8 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
         return OMNode.COMMENT_NODE;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
-        serializer.getWriter().writeComment(this.textValue);
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
+        serializer.writeComment(this.textValue);
     }
 
     LeafNode createClone() {

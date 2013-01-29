@@ -41,7 +41,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: this is not supported yet
         builder.exclude(TestGetXMLStreamReaderWithIncompleteDescendant.class, "(cache=false)");
         builder.exclude(org.apache.axiom.ts.om.sourcedelement.TestSerialize.class, "(&(expand=partially)(serializationStrategy=XMLStreamReader)(cache=false)(serializeParent=true))");
-        builder.exclude(org.apache.axiom.ts.om.sourcedelement.TestSerialize.class, "(&(expand=partially)(container=element)(complete=false)(cache=false)(serializeParent=true))");
         
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document

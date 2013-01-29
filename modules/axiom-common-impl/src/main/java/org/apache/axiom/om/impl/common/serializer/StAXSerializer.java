@@ -18,16 +18,25 @@
  */
 package org.apache.axiom.om.impl.common.serializer;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import java.io.IOException;
+
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.IChildNode;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -37,24 +46,24 @@ public class StAXSerializer extends Serializer {
     private static final Log log = LogFactory.getLog(StAXSerializer.class);
     
     private final XMLStreamWriter writer;
+    private final DataHandlerWriter dataHandlerWriter;
     
     public StAXSerializer(OMSerializable contextNode, XMLStreamWriter writer) {
         super(contextNode);
         this.writer = writer;
+        dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
     }
 
     public XMLStreamWriter getWriter() {
         return writer;
     }
 
-    /**
-     * Method serializeEndpart.
-     *
-     * @throws javax.xml.stream.XMLStreamException
-     *
-     */
-    public void serializeEndpart() throws XMLStreamException {
-        writer.writeEndElement();
+    public void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException {
+        try {
+            XMLStreamWriterUtils.writeDTD(writer, rootName, publicId, systemId, internalSubset);
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
     }
 
     protected void writeStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
@@ -85,16 +94,14 @@ public class StAXSerializer extends Serializer {
         }
     }
 
-    public void serializeByPullStream(OMElement element, boolean cache) throws XMLStreamException {
-        XMLStreamReader reader = element.getXMLStreamReader(cache);
-        try {
-            new StreamingOMSerializer().serialize(reader, writer);
-        } finally {
-            reader.close();
+    public void serializeChildren(IContainer container, boolean cache) throws XMLStreamException, OutputException {
+        if (container.getState() == IContainer.DISCARDED) {
+            StAXBuilder builder = (StAXBuilder)container.getBuilder();
+            if (builder != null) {
+                builder.debugDiscarded(container);
+            }
+            throw new NodeUnavailableException();
         }
-    }
-
-    public void serializeChildren(OMContainer container, boolean cache) throws XMLStreamException, OutputException {
         if (cache) {
             IChildNode child = (IChildNode)container.getFirstOMChild();
             while (child != null) {
@@ -102,17 +109,49 @@ public class StAXSerializer extends Serializer {
                 child = (IChildNode)child.getNextOMSibling();
             }
         } else {
-            IChildNode child = (IChildNode)container.getFirstOMChild();
+            // First, recursively serialize all child nodes that have already been created
+            IChildNode child = (IChildNode)container.getFirstOMChildIfAvailable();
             while (child != null) {
-                if ((!(child instanceof OMElement)) || child.isComplete() ||
-                        ((OMElement)child).getBuilder() == null) {
-                    child.internalSerialize(this, false);
-                } else {
-                    OMElement element = (OMElement) child;
-                    element.getBuilder().setCache(false);
-                    serializeByPullStream(element, cache);
-                }
+                child.internalSerialize(this, cache);
                 child = (IChildNode)child.getNextOMSiblingIfAvailable();
+            }
+            // Next, if the container is incomplete, disable caching (temporarily)
+            // and serialize the nodes that have not been built yet by copying the
+            // events from the underlying XMLStreamReader.
+            if (!container.isComplete() && container.getBuilder() != null) {
+                StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
+                builder.setCache(false);
+                XMLStreamReader reader = (XMLStreamReader)builder.disableCaching();
+                DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
+                int depth = 0;
+                loop: while (true) {
+                    // We use the next() method on the builder instead of the XMLStreamReader
+                    // because this takes care of lookahead and autoClose.
+                    int event = builder.next();
+                    switch (event) {
+                        case XMLStreamReader.START_ELEMENT:
+                            depth++;
+                            break;
+                        case XMLStreamReader.END_ELEMENT:
+                            if (depth == 0) {
+                                break loop;
+                            } else {
+                                depth--;
+                            }
+                            break;
+                        case XMLStreamReader.END_DOCUMENT:
+                            if (depth != 0) {
+                                // If we get here, then we have seen a START_ELEMENT event without
+                                // a matching END_ELEMENT
+                                throw new IllegalStateException();
+                            }
+                            break loop;
+                    }
+                    // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
+                    // the container. This is the responsibility of the caller.
+                    copyEvent(reader, dataHandlerReader);
+                }
+                builder.reenableCaching(container);
             }
         }
     }
@@ -210,6 +249,14 @@ public class StAXSerializer extends Serializer {
         }
     }
 
+    public void writeEndElement() throws OutputException {
+        try {
+            writer.writeEndElement();
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
     public void writeText(int type, String data) throws OutputException {
         try {
             if (type == OMNode.CDATA_SECTION_NODE) {
@@ -217,6 +264,52 @@ public class StAXSerializer extends Serializer {
             } else {
                 writer.writeCharacters(data);
             }
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeComment(String data) throws OutputException {
+        try {
+            writer.writeComment(data);
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeProcessingInstruction(String target, String data) throws OutputException {
+        try {
+            writer.writeProcessingInstruction(target, data);
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeEntityRef(String name) throws OutputException {
+        try {
+            writer.writeEntityRef(name);
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException {
+        try {
+            dataHandlerWriter.writeDataHandler(dataHandler, contentID, optimize);
+        } catch (IOException ex) {
+            // An OutputException thrown by StAXSerializer must always wrap an XMLStreamException!
+            throw new OutputException(new XMLStreamException("Error while reading data handler", ex));
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws OutputException {
+        try {
+            dataHandlerWriter.writeDataHandler(dataHandlerProvider, contentID, optimize);
+        } catch (IOException ex) {
+            // An OutputException thrown by StAXSerializer must always wrap an XMLStreamException!
+            throw new OutputException(new XMLStreamException("Error while reading data handler", ex));
         } catch (XMLStreamException ex) {
             throw new OutputException(ex);
         }

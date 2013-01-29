@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamException;
 
 public class OMCachingTest extends AbstractTestCase {
     /** This will first serialize the element without caching. Then it tries to serialize again . */
-    public void testCachingOne() {
+    public void testCachingOne() throws Exception {
 
         OMElement documentElement = null;
         try {
@@ -38,7 +38,7 @@ public class OMCachingTest extends AbstractTestCase {
         try {
             String envelopeString = documentElement.toStringWithConsume();
             fail("Parser should fail as its already being accessed without caching");
-        } catch (XMLStreamException e) {
+        } catch (NodeUnavailableException e) {
             assertTrue(true);
         }
 

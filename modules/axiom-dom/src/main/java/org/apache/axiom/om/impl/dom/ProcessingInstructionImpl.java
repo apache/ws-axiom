@@ -19,12 +19,11 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -81,8 +80,8 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         return value;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
-        serializer.getWriter().writeProcessingInstruction(target + " ", value);
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
+        serializer.writeProcessingInstruction(target + " ", value);
     }
 
     LeafNode createClone() {

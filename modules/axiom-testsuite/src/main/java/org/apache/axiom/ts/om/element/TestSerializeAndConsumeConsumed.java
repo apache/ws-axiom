@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -61,11 +61,9 @@ public class TestSerializeAndConsumeConsumed extends AxiomTestCase {
         try {
             XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(System.out);
             documentElement.serializeAndConsume(writer);
-            fail("Stream should be consumed by now");
-        } catch (XMLStreamException e) {
+            fail("Expected NodeUnavailableException");
+        } catch (NodeUnavailableException e) {
             //wea re cool
-        } catch (Exception e) {
-            fail("This should throw an XMLStreamException");
         }
         
         documentElement.close(false);

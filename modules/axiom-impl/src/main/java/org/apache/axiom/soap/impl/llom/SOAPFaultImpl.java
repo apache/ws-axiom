@@ -130,10 +130,10 @@ public abstract class SOAPFaultImpl extends SOAPElement
             OMNodeImpl child = (OMNodeImpl)it.next();
             // TODO: AXIOM-392
             if (!((child instanceof SOAPFaultRole || child instanceof SOAPFaultNode) && ((OMElement)child).getText().length() == 0)) {
-                child.internalSerialize(serializer, true);
+                child.internalSerialize(serializer, cache);
             }
         }
-        serializer.serializeEndpart();
+        serializer.writeEndElement();
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

@@ -34,11 +34,9 @@ import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
-import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
@@ -354,22 +352,14 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         return this.contentID;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException {
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
 
         if (!this.isBinary) {
             serializer.writeText(getType(), getText());
+        } else if (dataHandlerObject instanceof DataHandlerProvider) {
+            serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, contentID, optimize);
         } else {
-            try {
-                if (dataHandlerObject instanceof DataHandlerProvider) {
-                    XMLStreamWriterUtils.writeDataHandler(serializer.getWriter(), (DataHandlerProvider)dataHandlerObject,
-                            contentID, optimize);
-                } else {
-                    XMLStreamWriterUtils.writeDataHandler(serializer.getWriter(), (DataHandler)getDataHandler(),
-                            contentID, optimize);
-                }
-            } catch (IOException ex) {
-                throw new OMException("Error reading data handler", ex);
-            }
+            serializer.writeDataHandler((DataHandler)getDataHandler(), contentID, optimize);
         }
     }
 

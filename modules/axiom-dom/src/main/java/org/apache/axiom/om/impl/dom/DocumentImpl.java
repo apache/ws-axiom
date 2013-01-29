@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -31,7 +30,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IDocument;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -62,7 +61,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends RootNode implements Document, OMDocument, IContainer {
+public class DocumentImpl extends RootNode implements Document, IDocument {
     protected OMXMLParserWrapper builder;
 
     protected int state;

@@ -100,8 +100,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected DataHandlerReader dataHandlerReader;
     
     /**
-     * Element level is the depth of the element. 
-     * The root element (i.e. envelope) is defined as 1.
+     * Tracks the depth of the node identified by {@link #target}. By definition, the level of the
+     * root element is defined as 1. Note that if caching is disabled, then this depth may be
+     * different from the actual depth reached by the underlying parser.
      */
     protected int elementLevel = 0;
     
@@ -312,47 +313,37 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 //            throw new OMException();
 //        }
         try {
-
-            if (container instanceof OMDocument) {
-                if (container != document) {
-                    throw new OMException("Called discard for a document that is not being built by this builder");
+            int skipDepth = 0;
+            loop: while (true) {
+                switch (parserNext()) {
+                    case XMLStreamReader.START_ELEMENT:
+                        skipDepth++;
+                        break;
+                    case XMLStreamReader.END_ELEMENT:
+                        if (skipDepth > 0) {
+                            skipDepth--;
+                        } else {
+                            discarded(target);
+                            boolean found = container == target;
+                            target = (OMContainerEx)((OMElement)target).getParent();
+                            elementLevel--;
+                            if (found) {
+                                break loop;
+                            }
+                        }
+                        break;
+                    case XMLStreamReader.END_DOCUMENT:
+                        if (skipDepth != 0 || elementLevel != 0) {
+                            throw new OMException("Unexpected END_DOCUMENT");
+                        }
+                        if (target != document) {
+                            throw new OMException("Called discard for an element that is not being built by this builder");
+                        }
+                        discarded(target);
+                        target = null;
+                        done = true;
+                        break loop;
                 }
-                while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                    // Just loop
-                }
-            } else {
-                // Calculate the depth of the element to be discarded. This determines how many
-                // END_ELEMENT events we need to consume.
-                int targetDepth = elementLevel-1;
-                OMContainerEx current = target;
-                while (current != container) {
-                    if (current instanceof OMElement) {
-                        targetDepth--;
-                        current = (OMContainerEx)((OMElement)current).getParent();
-                    } else {
-                        throw new OMException("Called discard for an element that is not being built by this builder");
-                    }
-                }
-                while (elementLevel > targetDepth) {
-                    parserNext();
-                }
-            }
-
-            // Mark nodes as discarded
-            OMContainerEx current = target;
-            while (true) {
-                discarded(current);
-                if (current == container) {
-                    break;
-                }
-                current = (OMContainerEx)((OMElement)current).getParent();
-            }
-            
-            if (container instanceof OMDocument) {
-                target = null;
-                done = true;
-            } else {
-                target = (OMContainerEx)((OMElement)container).getParent();
             }
         } catch (XMLStreamException e) {
             throw new OMException(e);
@@ -548,6 +539,52 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             throw new IllegalStateException(
                     "cache must be switched off to access the parser");
         }
+    }
+
+    /**
+     * For internal use only.
+     */
+    public XMLStreamReader disableCaching() {
+        cache = false;
+        return parser;
+    }
+    
+    /**
+     * For internal use only.
+     */
+    // This method expects that the parser is currently positioned on the
+    // end event corresponding to the container passed as parameter
+    public void reenableCaching(OMContainer container) throws XMLStreamException {
+        OMContainerEx current = target;
+        while (true) {
+            discarded(current);
+            if (elementLevel == 0) {
+                if (current != container || current != document) {
+                    throw new IllegalStateException();
+                }
+                break;
+            }
+            elementLevel--;
+            if (current == container) {
+                break;
+            }
+            current = (OMContainerEx)((OMElement)current).getParent();
+        }
+        // Note that at this point current == container
+        if (container == document) {
+            target = null;
+            done = true;
+        } else if (elementLevel == 0 && document == null) {
+            // Consume the remaining event; for the rationale, see StAXOMBuilder#next()
+            while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                // Just loop
+            }
+            target = null;
+            done = true;
+        } else {
+            target = (OMContainerEx)((OMElement)container).getParent();
+        }
+        cache = true;
     }
 
     /**

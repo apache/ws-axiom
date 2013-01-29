@@ -203,20 +203,16 @@ public class SOAPEnvelopeImpl extends SOAPElement
                             : charSetEncoding,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
         }
-        if (cache || state == COMPLETE || builder == null) {
-            serializer.serializeStartpart(this);
-            //serialize children
-            for (Iterator it = getChildren(); it.hasNext(); ) {
-            	OMNodeImpl child = (OMNodeImpl)it.next();
-            	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
-            	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
-            		child.internalSerialize(serializer, cache);
-            	}
-            }
-            serializer.serializeEndpart();
-        } else {
-            serializer.serializeByPullStream(this, cache);
+        serializer.serializeStartpart(this);
+        //serialize children
+        for (Iterator it = getChildren(); it.hasNext(); ) {
+        	OMNodeImpl child = (OMNodeImpl)it.next();
+        	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
+        	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
+        		child.internalSerialize(serializer, cache);
+        	}
         }
+        serializer.writeEndElement();
         if (!cache) {
             // let's try to close the builder/parser here since we are now done with the
             // non-caching code block serializing the top-level SOAPEnvelope element

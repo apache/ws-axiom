@@ -202,20 +202,16 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION
                             : xmlVersion);
         }
-        if (cache || state == COMPLETE || builder == null) {
-            serializer.serializeStartpart(this);
-            //serialize children
-            for (Iterator it = getChildren(); it.hasNext(); ) {
-            	NodeImpl child = (NodeImpl)it.next();
-            	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
-            	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
-            		child.internalSerialize(serializer, cache);
-            	}
-            }
-            serializer.serializeEndpart();
-        } else {
-            serializer.serializeByPullStream(this, cache);
+        serializer.serializeStartpart(this);
+        //serialize children
+        for (Iterator it = getChildren(); it.hasNext(); ) {
+        	NodeImpl child = (NodeImpl)it.next();
+        	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
+        	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
+        		child.internalSerialize(serializer, cache);
+        	}
         }
+        serializer.writeEndElement();
     }
 
     public boolean hasFault() {      

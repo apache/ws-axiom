@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.common.serializer;
 
+import javax.activation.DataHandler;
+
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.xml.sax.ContentHandler;
@@ -44,6 +47,12 @@ public class SAXSerializer extends Serializer {
         
     }
 
+    public void writeDTD(String rootName, String publicId, String systemId, String internalSubset)
+            throws OutputException {
+        // TODO Auto-generated method stub
+        
+    }
+
     protected void writeStartElement(String prefix, String namespaceURI, String localName)
             throws OutputException {
         // TODO Auto-generated method stub
@@ -57,6 +66,11 @@ public class SAXSerializer extends Serializer {
 
     protected void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws OutputException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void writeEndElement() throws OutputException {
         // TODO Auto-generated method stub
         
     }
@@ -83,5 +97,41 @@ public class SAXSerializer extends Serializer {
         } catch (SAXException ex) {
             throw new OutputException(ex);
         }
+    }
+
+    public void writeComment(String data) throws OutputException {
+        if (lexicalHandler != null) {
+            char[] ch = data.toCharArray();
+            try {
+                lexicalHandler.comment(ch, 0, ch.length);
+            } catch (SAXException ex) {
+                throw new OutputException(ex);
+            }
+        }
+    }
+
+    public void writeProcessingInstruction(String target, String data) throws OutputException {
+        try {
+            contentHandler.processingInstruction(target, data);
+        } catch (SAXException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeEntityRef(String name) throws OutputException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
+            throws OutputException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
+            boolean optimize) throws OutputException {
+        // TODO Auto-generated method stub
+        
     }
 }

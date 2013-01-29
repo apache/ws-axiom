@@ -16,22 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.llom;
+package org.apache.axiom.om.impl.common;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.axiom.om.OMDocument;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
-import org.apache.axiom.ts.soap.envelope.TestSerialize;
+public interface IDocument extends OMDocument, IContainer {
 
-public class SOAPImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true, true);
-        
-        // TODO: AXIOM-430
-        builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter)))");
-        
-        return builder.build();
-    }
 }

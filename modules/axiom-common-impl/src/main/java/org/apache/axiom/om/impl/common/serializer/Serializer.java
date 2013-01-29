@@ -21,9 +21,13 @@ package org.apache.axiom.om.impl.common.serializer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DTDReader;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -75,13 +79,25 @@ public abstract class Serializer {
         finishStartElement();
     }
     
-    public final void copyEvent(XMLStreamReader reader) throws XMLStreamException, OutputException {
+    public final void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws XMLStreamException, OutputException {
         int eventType = reader.getEventType();
         switch (eventType) {
+            case XMLStreamReader.DTD:
+                DTDReader dtdReader;
+                try {
+                    dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+                } catch (IllegalArgumentException ex) {
+                    dtdReader = null;
+                }
+                if (dtdReader == null) {
+                    throw new XMLStreamException("Cannot serialize the DTD because the XMLStreamReader doesn't support the DTDReader extension");
+                }
+                writeDTD(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
+                break;
             case XMLStreamReader.START_ELEMENT:
                 beginStartElement(normalize(reader.getPrefix()), normalize(reader.getNamespaceURI()), reader.getLocalName());
                 for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
-                    generateSetPrefix(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespacePrefix(i)), false);
+                    generateSetPrefix(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), false);
                 }
                 for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
                     processAttribute(
@@ -92,11 +108,36 @@ public abstract class Serializer {
                 }
                 finishStartElement();
                 break;
+            case XMLStreamReader.END_ELEMENT:
+                writeEndElement();
+                break;
             case XMLStreamReader.CHARACTERS:
+                if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
+                    if (dataHandlerReader.isDeferred()) {
+                        writeDataHandler(dataHandlerReader.getDataHandlerProvider(),
+                                dataHandlerReader.getContentID(), dataHandlerReader.isOptimized());
+                    } else {
+                        writeDataHandler(dataHandlerReader.getDataHandler(),
+                                dataHandlerReader.getContentID(), dataHandlerReader.isOptimized());
+                    }
+                    break;
+                }
+                // Fall through
             case XMLStreamReader.SPACE:
             case XMLStreamReader.CDATA:
                 writeText(eventType, reader.getText());
                 break;
+            case XMLStreamReader.PROCESSING_INSTRUCTION:
+                writeProcessingInstruction(reader.getPITarget(), reader.getPIData());
+                break;
+            case XMLStreamReader.COMMENT:
+                writeComment(reader.getText());
+                break;
+            case XMLStreamReader.ENTITY_REFERENCE:
+                writeEntityRef(reader.getLocalName());
+                break;
+            default:
+                throw new IllegalStateException();
         }
     }
     
@@ -165,11 +206,25 @@ public abstract class Serializer {
     
     protected abstract void setPrefix(String prefix, String namespaceURI) throws OutputException;
     
+    public abstract void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException;
+    
     protected abstract void writeStartElement(String prefix, String namespaceURI, String localName) throws OutputException;
     
     protected abstract void writeNamespace(String prefix, String namespaceURI) throws OutputException;
     
     protected abstract void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException;
     
+    public abstract void writeEndElement() throws OutputException;
+    
     public abstract void writeText(int type, String data) throws OutputException;
+    
+    public abstract void writeComment(String data) throws OutputException;
+
+    public abstract void writeProcessingInstruction(String target, String data) throws OutputException;
+    
+    public abstract void writeEntityRef(String name) throws OutputException;
+    
+    public abstract void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException;
+
+    public abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws OutputException;
 }

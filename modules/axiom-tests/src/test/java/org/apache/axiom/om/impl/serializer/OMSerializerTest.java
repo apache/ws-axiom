@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
@@ -33,8 +34,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
     public void testElementPullStream1() throws Exception {
@@ -70,20 +69,13 @@ public class OMSerializerTest extends AbstractTestCase {
         writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
-        StringWriter stringWriter = new StringWriter();
-
         //now we should not be able to serilaize anything ! this should throw
         //an error
         try {
             env.serializeAndConsume(writer);
-            fail();
-        } catch (UnsupportedOperationException e) {
-            e.printStackTrace(new PrintWriter(stringWriter, true));
-            assertTrue(stringWriter.toString()
-                                   .indexOf("The parser is already consumed!") > -1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Expecting an XMLStreamException, but got instead: " + e.getClass().getName() + ": " + e.getMessage());
+            fail("Expected NodeUnavailableException");
+        } catch (NodeUnavailableException ex) {
+            // Expected
         }
     }
 

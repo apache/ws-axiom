@@ -24,10 +24,8 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
-import org.apache.axiom.util.stax.XMLStreamWriterUtils;
-
-import javax.xml.stream.XMLStreamException;
 
 public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
     private final String rootName;
@@ -48,8 +46,8 @@ public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
         return OMNode.DTD_NODE;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
-        XMLStreamWriterUtils.writeDTD(serializer.getWriter(), rootName, publicId, systemId, internalSubset);
+    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
+        serializer.writeDTD(rootName, publicId, systemId, internalSubset);
     }
 
     public String getRootName() {

@@ -790,13 +790,9 @@ public class OMElementImpl extends OMNodeImpl
     public void internalSerialize(StAXSerializer serializer, boolean cache)
             throws XMLStreamException, OutputException {
 
-        if (cache || state == COMPLETE || (this.builder == null)) {
-            serializer.serializeStartpart(this);
-            serializer.serializeChildren(this, cache);
-            serializer.serializeEndpart();
-        } else {
-            serializer.serializeByPullStream(this, cache);
-        }
+        serializer.serializeStartpart(this);
+        serializer.serializeChildren(this, cache);
+        serializer.writeEndElement();
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

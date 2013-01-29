@@ -227,6 +227,7 @@ public class StAXOMBuilder extends StAXBuilder {
                
                 switch (token) {
                     case XMLStreamConstants.START_ELEMENT: {
+                        elementLevel++;
                         OMNode node = createNextOMElement();
                         // If the node was created by a custom builder, then it will be complete;
                         // in this case, the target doesn't change
@@ -242,6 +243,7 @@ public class StAXOMBuilder extends StAXBuilder {
                         createOMText(XMLStreamConstants.CDATA);
                         break;
                     case XMLStreamConstants.END_ELEMENT:
+                        elementLevel--;
                         endElement();
                         break;
                     case XMLStreamConstants.END_DOCUMENT:
@@ -697,21 +699,13 @@ public class StAXOMBuilder extends StAXBuilder {
                 parserException = ex;
                 throw ex;
             }
-            switch (event) {
-                case XMLStreamConstants.START_ELEMENT:
-                    elementLevel++;
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    elementLevel--;
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    if (elementLevel != 0) {
-                        throw new OMException("Unexpected END_DOCUMENT event");
-                    }
-                    if (autoClose) {
-                        close();
-                    }
-                    break;
+            if (event == XMLStreamConstants.END_DOCUMENT) {
+                if (cache && elementLevel != 0) {
+                    throw new OMException("Unexpected END_DOCUMENT event");
+                }
+                if (autoClose) {
+                    close();
+                }
             }
             return event;
         }

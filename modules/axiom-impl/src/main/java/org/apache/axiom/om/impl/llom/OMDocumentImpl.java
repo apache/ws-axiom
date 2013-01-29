@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IDocument;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -49,7 +49,7 @@ import javax.xml.transform.sax.SAXSource;
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
-public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IContainer {
+public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     protected OMXMLParserWrapper builder;
 
     protected int state;
