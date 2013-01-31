@@ -83,7 +83,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private List/*<Part>*/ otherParts = new LinkedList();
     private OMMultipartWriter multipartWriter;
     private OutputStream rootPartOutputStream;
-    private OMOutputFormat format = new OMOutputFormat();
+    private OMOutputFormat format;
     private final OptimizationPolicy optimizationPolicy;
     private final boolean preserveAttachments;
     
@@ -100,6 +100,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
+        format = new OMOutputFormat();
         optimizationPolicy = new OptimizationPolicyImpl(format);
         preserveAttachments = true;
     }
