@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
     private final String rootName;

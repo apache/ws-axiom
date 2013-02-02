@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.serializer.pull;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -54,6 +54,8 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;

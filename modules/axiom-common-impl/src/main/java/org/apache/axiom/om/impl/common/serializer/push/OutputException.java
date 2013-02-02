@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer;
+package org.apache.axiom.om.impl.common.serializer.push;
 
 public class OutputException extends Exception {
     private static final long serialVersionUID = 7173617216602466028L;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer;
+package org.apache.axiom.om.impl.common.serializer.push.sax;
 
 import javax.activation.DataHandler;
 
@@ -24,6 +24,8 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;

@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;

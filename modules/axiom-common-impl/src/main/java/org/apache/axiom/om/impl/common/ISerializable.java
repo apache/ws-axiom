@@ -21,8 +21,8 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 public interface ISerializable extends OMSerializable {
     /**

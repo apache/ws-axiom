@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer;
+package org.apache.axiom.om.impl.common.serializer.push.stax;
 
 import java.io.IOException;
 
@@ -26,6 +26,8 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

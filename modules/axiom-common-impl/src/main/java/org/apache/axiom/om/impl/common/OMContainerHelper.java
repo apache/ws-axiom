@@ -31,6 +31,7 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.serializer.pull.OMStAXWrapper;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

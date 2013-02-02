@@ -21,8 +21,8 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 /**
  * Utility class with default implementations for some of the methods defined by the

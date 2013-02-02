@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.serializer.pull;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
  * This class does intentionally does not implement XMLStreamReaderContainer because
  * it does not wrap a parser (it wraps an OM graph).
  */
-class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
+public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     
     private final StreamSwitch streamSwitch = new StreamSwitch();

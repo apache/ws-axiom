@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.serializer.pull;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;

@@ -31,8 +31,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 

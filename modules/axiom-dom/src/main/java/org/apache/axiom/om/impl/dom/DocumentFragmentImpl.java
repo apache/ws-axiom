@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
