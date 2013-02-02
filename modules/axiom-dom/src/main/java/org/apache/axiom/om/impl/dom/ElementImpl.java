@@ -38,7 +38,7 @@ import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -891,8 +891,8 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         }
     }
 
-    public void internalSerialize(StAXSerializer serializer,
-                                     OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException {
+    public void internalSerialize(Serializer serializer,
+                                     OMOutputFormat format, boolean cache) throws OutputException {
 
         serializer.serializeStartpart(this);
         serializer.serializeChildren(this, format, cache);

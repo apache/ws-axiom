@@ -32,6 +32,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
@@ -862,7 +863,7 @@ public abstract class NodeImpl implements Node {
 
     // This method is actually defined by ISerializable, but ISerializable is only implemented
     // by certain subclasses (for the reason, see AXIOM-385).
-    public abstract void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException;
+    public abstract void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException;
     
     public final OMInformationItem clone(OMCloneOptions options) {
         return (OMInformationItem)clone(options, null, true, true);

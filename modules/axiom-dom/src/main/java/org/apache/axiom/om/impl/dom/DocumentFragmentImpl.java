@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -70,7 +70,7 @@ public class DocumentFragmentImpl extends RootNode implements
         return "#document-fragment";
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }

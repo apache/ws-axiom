@@ -19,9 +19,9 @@
 package org.apache.axiom.om.impl.common.serializer;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.xml.sax.ContentHandler;
@@ -146,8 +146,8 @@ public class SAXSerializer extends Serializer {
         
     }
 
-    protected XMLStreamWriter getWriter() {
+    protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
         // TODO Auto-generated method stub
-        return null;
+        
     }
 }

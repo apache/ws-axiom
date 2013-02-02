@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -33,7 +33,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import javax.xml.stream.XMLStreamException;
 
 public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
@@ -60,8 +59,8 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
         }
     }
 
-    protected void internalSerialize(StAXSerializer serializer, OMOutputFormat format,
-                                     boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
+    protected void internalSerialize(Serializer serializer, OMOutputFormat format,
+                                     boolean cache, boolean includeXMLDeclaration) throws OutputException {
         ((NodeImpl)getOwnerDocument().getDocumentElement()).internalSerialize(serializer, format, cache);
     }
 

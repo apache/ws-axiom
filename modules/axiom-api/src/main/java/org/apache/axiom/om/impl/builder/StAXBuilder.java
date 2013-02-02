@@ -312,42 +312,38 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 //        if (element.isComplete() || !cache) {
 //            throw new OMException();
 //        }
-        try {
-            int skipDepth = 0;
-            loop: while (true) {
-                switch (parserNext()) {
-                    case XMLStreamReader.START_ELEMENT:
-                        skipDepth++;
-                        break;
-                    case XMLStreamReader.END_ELEMENT:
-                        if (skipDepth > 0) {
-                            skipDepth--;
-                        } else {
-                            discarded(target);
-                            boolean found = container == target;
-                            target = (OMContainerEx)((OMElement)target).getParent();
-                            elementLevel--;
-                            if (found) {
-                                break loop;
-                            }
-                        }
-                        break;
-                    case XMLStreamReader.END_DOCUMENT:
-                        if (skipDepth != 0 || elementLevel != 0) {
-                            throw new OMException("Unexpected END_DOCUMENT");
-                        }
-                        if (target != document) {
-                            throw new OMException("Called discard for an element that is not being built by this builder");
-                        }
+        int skipDepth = 0;
+        loop: while (true) {
+            switch (parserNext()) {
+                case XMLStreamReader.START_ELEMENT:
+                    skipDepth++;
+                    break;
+                case XMLStreamReader.END_ELEMENT:
+                    if (skipDepth > 0) {
+                        skipDepth--;
+                    } else {
                         discarded(target);
-                        target = null;
-                        done = true;
-                        break loop;
-                }
+                        boolean found = container == target;
+                        target = (OMContainerEx)((OMElement)target).getParent();
+                        elementLevel--;
+                        if (found) {
+                            break loop;
+                        }
+                    }
+                    break;
+                case XMLStreamReader.END_DOCUMENT:
+                    if (skipDepth != 0 || elementLevel != 0) {
+                        throw new OMException("Unexpected END_DOCUMENT");
+                    }
+                    if (target != document) {
+                        throw new OMException("Called discard for an element that is not being built by this builder");
+                    }
+                    discarded(target);
+                    target = null;
+                    done = true;
+                    break loop;
             }
-        } catch (XMLStreamException e) {
-            throw new OMException(e);
-        } 
+        }
     }
 
     /**
@@ -554,7 +550,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
-    public void reenableCaching(OMContainer container) throws XMLStreamException {
+    public void reenableCaching(OMContainer container) {
         OMContainerEx current = target;
         while (true) {
             discarded(current);
@@ -604,7 +600,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected abstract OMNode createOMElement() throws OMException;
 
-    abstract int parserNext() throws XMLStreamException;
+    abstract int parserNext();
     
     /**
      * Forwards the parser one step further, if parser is not completed yet. If this is called after

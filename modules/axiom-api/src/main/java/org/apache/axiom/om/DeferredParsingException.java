@@ -16,22 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om;
 
+/**
+ * Exception indicating that an operation could not be completed because it needed to read
+ * additional data from the underlying parser and that action failed. This is typically caused by
+ * malformed XML.
+ */
+public class DeferredParsingException extends OMException {
+    private static final long serialVersionUID = -4000648685202187908L;
 
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.Serializer;
-
-public interface ISerializable extends OMSerializable {
-    /**
-     * Serializes the node.
-     *
-     * @param serializer
-     * @param format
-     * @param cache indicates if caching should be enabled
-     * @throws OutputException 
-     */
-    void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException;
+    public DeferredParsingException(Throwable cause) {
+        super(cause);
+    }
 }

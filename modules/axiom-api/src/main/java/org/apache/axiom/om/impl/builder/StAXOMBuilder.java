@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.ext.stax.DTDReader;
+import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -186,123 +187,119 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     public int next() throws OMException {
-        try {
-            // We need a loop here because we may decide to skip an event
-            while (true) {
-                if (done) {
-                    throw new OMException();
-                }
-                createDocumentIfNecessary();
-                int token = parserNext();
-                if (!cache) {
-                    return token;
-                }
-               
-                // The current token should be the same as the 
-                // one just obtained.  This bit of code is used to 
-                // detect invalid parser state.
-                if (doTrace) {
-                    int currentParserToken = parser.getEventType();
-                    if (currentParserToken != token) {
-    
-    
-                        log.debug("WARNING: The current state of the parser is not equal to the " +
-                                  "state just received from the parser. The current state in the paser is " +
-                                  XMLEventUtils.getEventTypeString(currentParserToken) + " the state just received is " +
-                                  XMLEventUtils.getEventTypeString(token));
-    
-                        /*
-                          throw new OMException("The current token " + token + 
-                                         " does not match the current event " +
-                                         "reported by the parser token.  The parser did not update its state correctly.  " +
-                                         "The parser is " + parser);
-                         */
-                    }
-                }
-                
-                // Now log the current state of the parser
-                if (doTrace) {
-                    logParserState();
-                }
-               
-                switch (token) {
-                    case XMLStreamConstants.START_ELEMENT: {
-                        elementLevel++;
-                        OMNode node = createNextOMElement();
-                        // If the node was created by a custom builder, then it will be complete;
-                        // in this case, the target doesn't change
-                        if (!node.isComplete()) {
-                            target = (OMContainerEx)node;
-                        }
-                        break;
-                    }
-                    case XMLStreamConstants.CHARACTERS:
-                        createOMText(XMLStreamConstants.CHARACTERS);
-                        break;
-                    case XMLStreamConstants.CDATA:
-                        createOMText(XMLStreamConstants.CDATA);
-                        break;
-                    case XMLStreamConstants.END_ELEMENT:
-                        elementLevel--;
-                        endElement();
-                        break;
-                    case XMLStreamConstants.END_DOCUMENT:
-                        done = true;
-                        ((OMContainerEx) this.document).setComplete(true);
-                        target = null;
-                        break;
-                    case XMLStreamConstants.SPACE:
-                        try {
-                            OMNode node = createOMText(XMLStreamConstants.SPACE);
-                            if (node == null) {
-                                continue;
-                            }
-                        } catch (OMHierarchyException ex) {
-                            // The OM implementation doesn't allow text nodes at the current
-                            // position in the tree. Since it is only whitespace, we can safely
-                            // skip this event.
-                            continue;
-                        }
-                        break;
-                    case XMLStreamConstants.COMMENT:
-                        createComment();
-                        break;
-                    case XMLStreamConstants.DTD:
-                        createDTD();
-                        break;
-                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                        createPI();
-                        break;
-                    case XMLStreamConstants.ENTITY_REFERENCE:
-                        createEntityReference();
-                        break;
-                    default :
-                        throw new OMException();
-                }
-                
-                if (target == null && !done) {
-                    // We get here if the document has been discarded (by getDocumentElement(true)
-                    // or because the builder is linked to an OMSourcedElement) and
-                    // we just processed the END_ELEMENT event for the root element. In this case, we consume
-                    // the remaining events until we reach the end of the document. This serves several purposes:
-                    //  * It allows us to detect documents that have an epilog that is not well formed.
-                    //  * Many parsers will perform some cleanup when the end of the document is reached.
-                    //    For example, Woodstox will recycle the symbol table if the parser gets past the
-                    //    last END_ELEMENT. This improves performance because Woodstox by default interns
-                    //    all symbols; if the symbol table can be recycled, then this reduces the number of
-                    //    calls to String#intern().
-                    //  * If autoClose is set, the parser will be closed so that even more resources
-                    //    can be released.
-                    while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                        // Just loop
-                    }
-                    done = true;
-                }
-                
+        // We need a loop here because we may decide to skip an event
+        while (true) {
+            if (done) {
+                throw new OMException();
+            }
+            createDocumentIfNecessary();
+            int token = parserNext();
+            if (!cache) {
                 return token;
             }
-        } catch (XMLStreamException e) {
-            throw new OMException(e);
+           
+            // The current token should be the same as the 
+            // one just obtained.  This bit of code is used to 
+            // detect invalid parser state.
+            if (doTrace) {
+                int currentParserToken = parser.getEventType();
+                if (currentParserToken != token) {
+
+
+                    log.debug("WARNING: The current state of the parser is not equal to the " +
+                              "state just received from the parser. The current state in the paser is " +
+                              XMLEventUtils.getEventTypeString(currentParserToken) + " the state just received is " +
+                              XMLEventUtils.getEventTypeString(token));
+
+                    /*
+                      throw new OMException("The current token " + token + 
+                                     " does not match the current event " +
+                                     "reported by the parser token.  The parser did not update its state correctly.  " +
+                                     "The parser is " + parser);
+                     */
+                }
+            }
+            
+            // Now log the current state of the parser
+            if (doTrace) {
+                logParserState();
+            }
+           
+            switch (token) {
+                case XMLStreamConstants.START_ELEMENT: {
+                    elementLevel++;
+                    OMNode node = createNextOMElement();
+                    // If the node was created by a custom builder, then it will be complete;
+                    // in this case, the target doesn't change
+                    if (!node.isComplete()) {
+                        target = (OMContainerEx)node;
+                    }
+                    break;
+                }
+                case XMLStreamConstants.CHARACTERS:
+                    createOMText(XMLStreamConstants.CHARACTERS);
+                    break;
+                case XMLStreamConstants.CDATA:
+                    createOMText(XMLStreamConstants.CDATA);
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    elementLevel--;
+                    endElement();
+                    break;
+                case XMLStreamConstants.END_DOCUMENT:
+                    done = true;
+                    ((OMContainerEx) this.document).setComplete(true);
+                    target = null;
+                    break;
+                case XMLStreamConstants.SPACE:
+                    try {
+                        OMNode node = createOMText(XMLStreamConstants.SPACE);
+                        if (node == null) {
+                            continue;
+                        }
+                    } catch (OMHierarchyException ex) {
+                        // The OM implementation doesn't allow text nodes at the current
+                        // position in the tree. Since it is only whitespace, we can safely
+                        // skip this event.
+                        continue;
+                    }
+                    break;
+                case XMLStreamConstants.COMMENT:
+                    createComment();
+                    break;
+                case XMLStreamConstants.DTD:
+                    createDTD();
+                    break;
+                case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                    createPI();
+                    break;
+                case XMLStreamConstants.ENTITY_REFERENCE:
+                    createEntityReference();
+                    break;
+                default :
+                    throw new OMException();
+            }
+            
+            if (target == null && !done) {
+                // We get here if the document has been discarded (by getDocumentElement(true)
+                // or because the builder is linked to an OMSourcedElement) and
+                // we just processed the END_ELEMENT event for the root element. In this case, we consume
+                // the remaining events until we reach the end of the document. This serves several purposes:
+                //  * It allows us to detect documents that have an epilog that is not well formed.
+                //  * Many parsers will perform some cleanup when the end of the document is reached.
+                //    For example, Woodstox will recycle the symbol table if the parser gets past the
+                //    last END_ELEMENT. This improves performance because Woodstox by default interns
+                //    all symbols; if the symbol table can be recycled, then this reduces the number of
+                //    calls to String#intern().
+                //  * If autoClose is set, the parser will be closed so that even more resources
+                //    can be released.
+                while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                    // Just loop
+                }
+                done = true;
+            }
+            
+            return token;
         }
     }
     
@@ -675,39 +672,43 @@ public class StAXOMBuilder extends StAXBuilder {
      * Pushes the virtual parser ahead one token.
      * If a look ahead token was calculated it is returned.
      * @return next token
-     * @throws XMLStreamException
+     * @throws DeferredParsingException
      */
-    int parserNext() throws XMLStreamException {
+    int parserNext() {
         if (lookAheadToken >= 0) {
             int token = lookAheadToken;
             lookAheadToken = -1; // Reset
             return token;
         } else {
-            if (parserException != null) {
-                log.warn("Attempt to access a parser that has thrown a parse exception before; " +
-                		"rethrowing the original exception.");
-                if (parserException instanceof XMLStreamException) {
-                    throw (XMLStreamException)parserException;
-                } else {
-                    throw (RuntimeException)parserException;
-                }
-            }
-            int event;
             try {
-                event = parser.next();
+                if (parserException != null) {
+                    log.warn("Attempt to access a parser that has thrown a parse exception before; " +
+                    		"rethrowing the original exception.");
+                    if (parserException instanceof XMLStreamException) {
+                        throw (XMLStreamException)parserException;
+                    } else {
+                        throw (RuntimeException)parserException;
+                    }
+                }
+                int event;
+                try {
+                    event = parser.next();
+                } catch (XMLStreamException ex) {
+                    parserException = ex;
+                    throw ex;
+                }
+                if (event == XMLStreamConstants.END_DOCUMENT) {
+                    if (cache && elementLevel != 0) {
+                        throw new OMException("Unexpected END_DOCUMENT event");
+                    }
+                    if (autoClose) {
+                        close();
+                    }
+                }
+                return event;
             } catch (XMLStreamException ex) {
-                parserException = ex;
-                throw ex;
+                throw new DeferredParsingException(ex);
             }
-            if (event == XMLStreamConstants.END_DOCUMENT) {
-                if (cache && elementLevel != 0) {
-                    throw new OMException("Unexpected END_DOCUMENT event");
-                }
-                if (autoClose) {
-                    close();
-                }
-            }
-            return event;
         }
     }
     
@@ -716,24 +717,20 @@ public class StAXOMBuilder extends StAXBuilder {
      * @return true if successful
      */
     public boolean lookahead()  {
-        try {
-            while (true) {
-                if (lookAheadToken < 0) {
-                    lookAheadToken = parserNext();
-                }
-                if (lookAheadToken == XMLStreamConstants.START_ELEMENT) {
-                    return true;
-                } else if (lookAheadToken == XMLStreamConstants.END_ELEMENT ||
-                        lookAheadToken == XMLStreamConstants.START_DOCUMENT ||
-                        lookAheadToken == XMLStreamConstants.END_DOCUMENT) {
-                    next();
-                    return false;  // leaving scope...start element not found
-                } else {
-                    next();  // continue looking past whitespace etc.
-                }
+        while (true) {
+            if (lookAheadToken < 0) {
+                lookAheadToken = parserNext();
             }
-        } catch (XMLStreamException e) {
-            throw new OMException(e);
+            if (lookAheadToken == XMLStreamConstants.START_ELEMENT) {
+                return true;
+            } else if (lookAheadToken == XMLStreamConstants.END_ELEMENT ||
+                    lookAheadToken == XMLStreamConstants.START_DOCUMENT ||
+                    lookAheadToken == XMLStreamConstants.END_DOCUMENT) {
+                next();
+                return false;  // leaving scope...start element not found
+            } else {
+                next();  // continue looking past whitespace etc.
+            }
         }
     }
     

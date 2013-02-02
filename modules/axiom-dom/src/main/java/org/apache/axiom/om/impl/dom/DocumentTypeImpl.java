@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
@@ -51,7 +51,7 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
         return DOCUMENT_TYPE_NODE;
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeDTD(rootName, publicId, systemId, internalSubset);
     }
 

@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -103,7 +104,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         return null;
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
     }
 
@@ -577,8 +578,8 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         setXMLVersion(version);
     }
 
-    protected void internalSerialize(StAXSerializer serializer, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
+    protected void internalSerialize(Serializer serializer, OMOutputFormat format,
+            boolean cache, boolean includeXMLDeclaration) throws OutputException {
         OMDocumentHelper.internalSerialize(this, serializer, format, cache, includeXMLDeclaration);
     }
 

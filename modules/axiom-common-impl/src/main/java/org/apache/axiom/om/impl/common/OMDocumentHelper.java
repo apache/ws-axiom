@@ -19,12 +19,10 @@
 
 package org.apache.axiom.om.impl.common;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -33,8 +31,8 @@ import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 public class OMDocumentHelper {
     private OMDocumentHelper() {}
     
-    public static void internalSerialize(IDocument document, StAXSerializer serializer,
-            OMOutputFormat format, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
+    public static void internalSerialize(IDocument document, Serializer serializer,
+            OMOutputFormat format, boolean cache, boolean includeXMLDeclaration) throws OutputException {
         
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char

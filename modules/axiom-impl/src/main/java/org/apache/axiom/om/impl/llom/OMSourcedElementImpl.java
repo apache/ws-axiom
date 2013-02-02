@@ -39,6 +39,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -711,8 +712,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getType();
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache)
-            throws XMLStreamException, OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
+            throws OutputException {
         if (isExpanded()) {
             super.internalSerialize(serializer, format, cache);
         } else if (cache) {

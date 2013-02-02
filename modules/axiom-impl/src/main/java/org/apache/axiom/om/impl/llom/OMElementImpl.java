@@ -45,7 +45,7 @@ import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -788,8 +788,8 @@ public class OMElementImpl extends OMNodeImpl
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache)
-            throws XMLStreamException, OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
+            throws OutputException {
 
         serializer.serializeStartpart(this);
         serializer.serializeChildren(this, format, cache);

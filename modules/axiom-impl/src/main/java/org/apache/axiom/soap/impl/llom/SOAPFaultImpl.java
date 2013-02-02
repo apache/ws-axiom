@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.soap.SOAPBody;
@@ -41,7 +41,6 @@ import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -124,8 +123,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache)
-            throws XMLStreamException, OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
+            throws OutputException {
         serializer.serializeStartpart(this);
         for (Iterator it = getChildren(); it.hasNext(); ) {
             OMNodeImpl child = (OMNodeImpl)it.next();

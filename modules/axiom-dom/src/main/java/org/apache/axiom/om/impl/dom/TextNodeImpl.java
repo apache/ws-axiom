@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.w3c.dom.DOMException;
@@ -341,7 +341,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         }
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         if (!this.isBinary) {
             serializer.writeText(getType(), getText());
         } else if (dataHandlerObject instanceof DataHandlerProvider) {

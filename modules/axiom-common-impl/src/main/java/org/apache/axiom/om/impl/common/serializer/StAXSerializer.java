@@ -21,18 +21,11 @@ package org.apache.axiom.om.impl.common.serializer;
 import java.io.IOException;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
-import org.apache.axiom.om.NodeUnavailableException;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.IChildNode;
-import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 public class StAXSerializer extends Serializer {
@@ -55,8 +47,15 @@ public class StAXSerializer extends Serializer {
         dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
     }
 
-    protected XMLStreamWriter getWriter() {
-        return writer;
+    protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
+        try {
+            dataSource.serialize(writer);
+        } catch (XMLStreamException ex) {
+            // We cannot really differentiate between exceptions thrown by the XMLStreamWriter
+            // and exceptions thrown by the data source itself. We wrap all XMLStreamExceptions
+            // as OutputExceptions.
+            throw new OutputException(ex);
+        }
     }
 
     public void writeStartDocument(String version) throws OutputException {
@@ -108,68 +107,6 @@ public class StAXSerializer extends Serializer {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
         } catch (XMLStreamException ex) {
             throw new OutputException(ex);
-        }
-    }
-
-    public void serializeChildren(IContainer container, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException {
-        if (container.getState() == IContainer.DISCARDED) {
-            StAXBuilder builder = (StAXBuilder)container.getBuilder();
-            if (builder != null) {
-                builder.debugDiscarded(container);
-            }
-            throw new NodeUnavailableException();
-        }
-        if (cache) {
-            IChildNode child = (IChildNode)container.getFirstOMChild();
-            while (child != null) {
-                child.internalSerialize(this, format, true);
-                child = (IChildNode)child.getNextOMSibling();
-            }
-        } else {
-            // First, recursively serialize all child nodes that have already been created
-            IChildNode child = (IChildNode)container.getFirstOMChildIfAvailable();
-            while (child != null) {
-                child.internalSerialize(this, format, cache);
-                child = (IChildNode)child.getNextOMSiblingIfAvailable();
-            }
-            // Next, if the container is incomplete, disable caching (temporarily)
-            // and serialize the nodes that have not been built yet by copying the
-            // events from the underlying XMLStreamReader.
-            if (!container.isComplete() && container.getBuilder() != null) {
-                StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
-                builder.setCache(false);
-                XMLStreamReader reader = (XMLStreamReader)builder.disableCaching();
-                DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
-                int depth = 0;
-                loop: while (true) {
-                    // We use the next() method on the builder instead of the XMLStreamReader
-                    // because this takes care of lookahead and autoClose.
-                    int event = builder.next();
-                    switch (event) {
-                        case XMLStreamReader.START_ELEMENT:
-                            depth++;
-                            break;
-                        case XMLStreamReader.END_ELEMENT:
-                            if (depth == 0) {
-                                break loop;
-                            } else {
-                                depth--;
-                            }
-                            break;
-                        case XMLStreamReader.END_DOCUMENT:
-                            if (depth != 0) {
-                                // If we get here, then we have seen a START_ELEMENT event without
-                                // a matching END_ELEMENT
-                                throw new IllegalStateException();
-                            }
-                            break loop;
-                    }
-                    // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
-                    // the container. This is the responsibility of the caller.
-                    copyEvent(reader, dataHandlerReader);
-                }
-                builder.reenableCaching(container);
-            }
         }
     }
 

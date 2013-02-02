@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 
 public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcessingInstruction {
     protected String target;
@@ -50,7 +50,7 @@ public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcess
         return OMNode.PI_NODE;
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeProcessingInstruction(this.target + " ", this.value);
     }
 

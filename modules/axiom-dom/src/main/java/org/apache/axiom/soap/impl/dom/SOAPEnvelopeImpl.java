@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -50,7 +50,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         OMConstants {
@@ -189,8 +188,8 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache)
-            throws XMLStreamException, OutputException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
+            throws OutputException {
 
         if (!format.isIgnoreXMLDeclaration()) {
             String charSetEncoding = format.getCharSetEncoding();

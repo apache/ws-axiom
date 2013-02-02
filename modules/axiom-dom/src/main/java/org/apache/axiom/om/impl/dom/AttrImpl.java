@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
+import org.apache.axiom.om.impl.common.serializer.Serializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -38,7 +38,6 @@ import org.w3c.dom.TypeInfo;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
@@ -469,7 +468,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
-    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException {
+    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) {
         throw new UnsupportedOperationException();
     }
 
