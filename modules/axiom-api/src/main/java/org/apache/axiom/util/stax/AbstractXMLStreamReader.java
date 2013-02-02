@@ -51,7 +51,6 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
      * Returns the next tag.
      *
      * @return Returns int.
-     * @throws org.apache.axiom.om.impl.exception.OMStreamingException
      *
      * @throws XMLStreamException
      */
