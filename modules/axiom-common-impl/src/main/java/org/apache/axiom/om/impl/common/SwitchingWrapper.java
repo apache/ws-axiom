@@ -54,7 +54,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -1009,7 +1008,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 updateCompleteStatus();
                 break;
             default:
-                throw new OMStreamingException("unsuppported state!");
+                throw new IllegalStateException("unsuppported state!");
         }
         return currentEvent;
     }
