@@ -748,7 +748,7 @@ public abstract class NodeImpl implements Node {
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
-            internalSerialize(new StAXSerializer((OMSerializable)this, writer), cache);
+            internalSerialize(new StAXSerializer((OMSerializable)this, writer), writer.getOutputFormat(), cache);
         } catch (OutputException ex) {
             throw (XMLStreamException)ex.getCause();
         }
@@ -797,7 +797,7 @@ public abstract class NodeImpl implements Node {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
             try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), true);
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, true);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -815,7 +815,7 @@ public abstract class NodeImpl implements Node {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), true);
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, true);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -831,7 +831,7 @@ public abstract class NodeImpl implements Node {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
             try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), false);
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, false);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -850,7 +850,7 @@ public abstract class NodeImpl implements Node {
             writer.setOutputFormat(format);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), false);
+                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, false);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -862,7 +862,7 @@ public abstract class NodeImpl implements Node {
 
     // This method is actually defined by ISerializable, but ISerializable is only implemented
     // by certain subclasses (for the reason, see AXIOM-385).
-    public abstract void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException;
+    public abstract void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException;
     
     public final OMInformationItem clone(OMCloneOptions options) {
         return (OMInformationItem)clone(options, null, true, true);

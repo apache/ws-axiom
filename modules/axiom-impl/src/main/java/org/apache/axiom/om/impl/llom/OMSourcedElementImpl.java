@@ -711,26 +711,26 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getType();
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache)
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache)
             throws XMLStreamException, OutputException {
         if (isExpanded()) {
-            super.internalSerialize(serializer, cache);
+            super.internalSerialize(serializer, format, cache);
         } else if (cache) {
             if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
                 forceExpand();
-                super.internalSerialize(serializer, true);
+                super.internalSerialize(serializer, format, true);
             } else {
-                dataSource.serialize(serializer.getWriter());
+                serializer.serialize(dataSource);
             }
         } else {
-            dataSource.serialize(serializer.getWriter()); 
+            serializer.serialize(dataSource); 
         }
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         // The contract is to serialize with caching
         try {
-            internalSerialize(new StAXSerializer(this, xmlWriter), true);
+            internalSerialize(new StAXSerializer(this, xmlWriter), new OMOutputFormat(), true);
         } catch (OutputException ex) {
             throw (XMLStreamException)ex.getCause();
         }
@@ -771,7 +771,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
             throws XMLStreamException {
         try {
-            internalSerialize(new StAXSerializer(this, xmlWriter), false);
+            internalSerialize(new StAXSerializer(this, xmlWriter), new OMOutputFormat(), false);
         } catch (OutputException ex) {
             throw (XMLStreamException)ex.getCause();
         }

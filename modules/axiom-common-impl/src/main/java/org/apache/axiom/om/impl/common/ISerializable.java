@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
@@ -29,9 +30,10 @@ public interface ISerializable extends OMSerializable {
      * Serializes the node.
      *
      * @param serializer
+     * @param format
      * @param cache indicates if caching should be enabled
      * @throws XMLStreamException
      * @throws OutputException 
      */
-    void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException;
+    void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException;
 }

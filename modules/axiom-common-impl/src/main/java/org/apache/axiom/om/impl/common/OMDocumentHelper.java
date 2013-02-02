@@ -22,7 +22,7 @@ package org.apache.axiom.om.impl.common;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 
@@ -34,13 +34,12 @@ public class OMDocumentHelper {
     private OMDocumentHelper() {}
     
     public static void internalSerialize(IDocument document, StAXSerializer serializer,
-            boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
+            OMOutputFormat format, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
         
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
             //encoding matches, if not use char encoding of OMOutput
-            String encoding = writer.getCharSetEncoding();
+            String encoding = format.getCharSetEncoding();
             if (encoding == null || "".equals(encoding)) {
                 encoding = document.getCharsetEncoding();
             }
@@ -49,12 +48,12 @@ public class OMDocumentHelper {
                 version = "1.0";
             }
             if (encoding == null) {
-                writer.getXmlStreamWriter().writeStartDocument(version);
+                serializer.writeStartDocument(version);
             } else {
-                writer.getXmlStreamWriter().writeStartDocument(encoding, version);
+                serializer.writeStartDocument(encoding, version);
             }
         }
 
-        serializer.serializeChildren(document, cache);
+        serializer.serializeChildren(document, format, cache);
     }
 }

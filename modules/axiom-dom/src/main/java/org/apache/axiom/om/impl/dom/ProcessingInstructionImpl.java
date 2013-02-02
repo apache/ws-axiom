@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
@@ -80,7 +81,7 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         return value;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeProcessingInstruction(target + " ", value);
     }
 

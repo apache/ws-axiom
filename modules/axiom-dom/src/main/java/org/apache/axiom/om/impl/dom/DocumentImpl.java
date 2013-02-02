@@ -103,8 +103,8 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         return null;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException, OutputException {
-        internalSerialize(serializer, cache, !((MTOMXMLStreamWriter)serializer.getWriter()).isIgnoreXMLDeclaration());
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException {
+        internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
     }
 
     // /
@@ -405,7 +405,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         try {
-            internalSerialize(new StAXSerializer(this, writer), false);
+            internalSerialize(new StAXSerializer(this, writer), format, false);
         } catch (OutputException ex) {
             throw (XMLStreamException)ex.getCause();
         }
@@ -415,7 +415,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         try {
-            internalSerialize(new StAXSerializer(this, writer), true);
+            internalSerialize(new StAXSerializer(this, writer), format, true);
         } catch (OutputException ex) {
             throw (XMLStreamException)ex.getCause();
         }
@@ -577,9 +577,9 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         setXMLVersion(version);
     }
 
-    protected void internalSerialize(StAXSerializer serializer, boolean cache,
-            boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
-        OMDocumentHelper.internalSerialize(this, serializer, cache, includeXMLDeclaration);
+    protected void internalSerialize(StAXSerializer serializer, OMOutputFormat format,
+            boolean cache, boolean includeXMLDeclaration) throws XMLStreamException, OutputException {
+        OMDocumentHelper.internalSerialize(this, serializer, format, cache, includeXMLDeclaration);
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {

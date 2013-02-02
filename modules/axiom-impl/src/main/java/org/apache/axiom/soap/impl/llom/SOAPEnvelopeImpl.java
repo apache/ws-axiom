@@ -30,8 +30,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
@@ -192,13 +192,12 @@ public class SOAPEnvelopeImpl extends SOAPElement
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache)
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache)
             throws XMLStreamException, OutputException {
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter)serializer.getWriter();
-        if (!writer.isIgnoreXMLDeclaration()) {
-            String charSetEncoding = writer.getCharSetEncoding();
-            String xmlVersion = writer.getXmlVersion();
-            writer.getXmlStreamWriter().writeStartDocument(
+        if (!format.isIgnoreXMLDeclaration()) {
+            String charSetEncoding = format.getCharSetEncoding();
+            String xmlVersion = format.getXmlVersion();
+            serializer.writeStartDocument(
                     charSetEncoding == null ? OMConstants.DEFAULT_CHAR_SET_ENCODING
                             : charSetEncoding,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
@@ -209,7 +208,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
         	OMNodeImpl child = (OMNodeImpl)it.next();
         	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
         	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
-        		child.internalSerialize(serializer, cache);
+        		child.internalSerialize(serializer, format, cache);
         	}
         }
         serializer.writeEndElement();

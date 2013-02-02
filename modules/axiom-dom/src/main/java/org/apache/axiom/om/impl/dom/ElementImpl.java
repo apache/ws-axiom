@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.IParentNode;
@@ -891,10 +892,10 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public void internalSerialize(StAXSerializer serializer,
-                                     boolean cache) throws XMLStreamException, OutputException {
+                                     OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException {
 
         serializer.serializeStartpart(this);
-        serializer.serializeChildren(this, cache);
+        serializer.serializeChildren(this, format, cache);
         serializer.writeEndElement();
     }
 

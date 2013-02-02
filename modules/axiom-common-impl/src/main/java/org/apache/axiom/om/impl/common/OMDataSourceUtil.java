@@ -20,11 +20,16 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 
 public final class OMDataSourceUtil {
     private OMDataSourceUtil() {}
     
+    public static boolean isPullDataSource(OMDataSource dataSource) {
+        return dataSource instanceof AbstractPullOMDataSource;
+    }
+
     public static boolean isPushDataSource(OMDataSource dataSource) {
         return dataSource instanceof AbstractPushOMDataSource;
     }

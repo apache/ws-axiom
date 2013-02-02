@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
@@ -468,7 +469,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws XMLStreamException {
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws XMLStreamException {
         throw new UnsupportedOperationException();
     }
 

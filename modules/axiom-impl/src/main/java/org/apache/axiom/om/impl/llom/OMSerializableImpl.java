@@ -86,7 +86,7 @@ public abstract class OMSerializableImpl implements ISerializable {
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
-            internalSerialize(new StAXSerializer(this, writer), cache);
+            internalSerialize(new StAXSerializer(this, writer), writer.getOutputFormat(), cache);
         } catch (OutputException ex) {
             throw (XMLStreamException)ex.getCause();
         }
@@ -133,7 +133,7 @@ public abstract class OMSerializableImpl implements ISerializable {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), true);
+                internalSerialize(new StAXSerializer(this, writer), format, true);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -150,7 +150,7 @@ public abstract class OMSerializableImpl implements ISerializable {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), true);
+                internalSerialize(new StAXSerializer(this, writer), format, true);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -166,7 +166,7 @@ public abstract class OMSerializableImpl implements ISerializable {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), false);
+                internalSerialize(new StAXSerializer(this, writer), format, false);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
@@ -184,7 +184,7 @@ public abstract class OMSerializableImpl implements ISerializable {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), false);
+                internalSerialize(new StAXSerializer(this, writer), format, false);
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }

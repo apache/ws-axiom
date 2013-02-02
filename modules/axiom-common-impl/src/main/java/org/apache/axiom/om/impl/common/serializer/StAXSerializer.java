@@ -26,6 +26,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -54,8 +55,24 @@ public class StAXSerializer extends Serializer {
         dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
     }
 
-    public XMLStreamWriter getWriter() {
+    protected XMLStreamWriter getWriter() {
         return writer;
+    }
+
+    public void writeStartDocument(String version) throws OutputException {
+        try {
+            writer.writeStartDocument(version);
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
+    }
+
+    public void writeStartDocument(String encoding, String version) throws OutputException {
+        try {
+            writer.writeStartDocument(encoding, version);
+        } catch (XMLStreamException ex) {
+            throw new OutputException(ex);
+        }
     }
 
     public void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException {
@@ -94,7 +111,7 @@ public class StAXSerializer extends Serializer {
         }
     }
 
-    public void serializeChildren(IContainer container, boolean cache) throws XMLStreamException, OutputException {
+    public void serializeChildren(IContainer container, OMOutputFormat format, boolean cache) throws XMLStreamException, OutputException {
         if (container.getState() == IContainer.DISCARDED) {
             StAXBuilder builder = (StAXBuilder)container.getBuilder();
             if (builder != null) {
@@ -105,14 +122,14 @@ public class StAXSerializer extends Serializer {
         if (cache) {
             IChildNode child = (IChildNode)container.getFirstOMChild();
             while (child != null) {
-                child.internalSerialize(this, true);
+                child.internalSerialize(this, format, true);
                 child = (IChildNode)child.getNextOMSibling();
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
             IChildNode child = (IChildNode)container.getFirstOMChildIfAvailable();
             while (child != null) {
-                child.internalSerialize(this, cache);
+                child.internalSerialize(this, format, cache);
                 child = (IChildNode)child.getNextOMSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)

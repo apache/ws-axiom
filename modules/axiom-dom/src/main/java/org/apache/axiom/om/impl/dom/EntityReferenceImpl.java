@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 import org.w3c.dom.EntityReference;
@@ -40,7 +41,7 @@ public class EntityReferenceImpl extends LeafNode implements OMEntityReference, 
         return OMNode.ENTITY_REFERENCE_NODE;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeEntityRef(name);
     }
 

@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.OutputException;
 import org.apache.axiom.om.impl.common.serializer.StAXSerializer;
 
@@ -46,7 +47,7 @@ public class OMCommentImpl extends OMLeafNode implements OMComment {
         return OMNode.COMMENT_NODE;
     }
 
-    public void internalSerialize(StAXSerializer serializer, boolean cache) throws OutputException {
+    public void internalSerialize(StAXSerializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeComment(this.value);
     }
 

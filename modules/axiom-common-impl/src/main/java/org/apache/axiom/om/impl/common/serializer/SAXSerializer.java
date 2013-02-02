@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common.serializer;
 
 import javax.activation.DataHandler;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMNode;
@@ -43,6 +44,16 @@ public class SAXSerializer extends Serializer {
     }
 
     protected void setPrefix(String prefix, String namespaceURI) throws OutputException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void writeStartDocument(String version) throws OutputException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void writeStartDocument(String encoding, String version) throws OutputException {
         // TODO Auto-generated method stub
         
     }
@@ -133,5 +144,10 @@ public class SAXSerializer extends Serializer {
             boolean optimize) throws OutputException {
         // TODO Auto-generated method stub
         
+    }
+
+    protected XMLStreamWriter getWriter() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

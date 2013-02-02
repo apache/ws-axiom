@@ -24,16 +24,20 @@ import java.util.Iterator;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.om.impl.common.OMDataSourceUtil;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 public abstract class Serializer {
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
@@ -202,9 +206,39 @@ public abstract class Serializer {
         }
     }
     
+    public final void serialize(OMDataSource dataSource) throws XMLStreamException, OutputException {
+        // Note: if we can't determine the type (push/pull) of the OMDataSource, we
+        // default to push
+        if (OMDataSourceUtil.isPullDataSource(dataSource)) {
+            XMLStreamReader reader = dataSource.getReader();
+            DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
+            int depth = 0;
+            int eventType;
+            // Note: the loop is constructed in such a way that we skip both START_DOCUMENT and END_DOCUMENT
+            while ((eventType = reader.next()) != XMLStreamReader.END_DOCUMENT) {
+                if (eventType == XMLStreamReader.START_ELEMENT) {
+                    depth++;
+                }
+                if (depth > 0) {
+                    copyEvent(reader, dataHandlerReader);
+                }
+                if (eventType == XMLStreamReader.END_ELEMENT) {
+                    depth--;
+                }
+            }
+            reader.close();
+        } else {
+            dataSource.serialize(getWriter());
+        }
+    }
+    
     protected abstract boolean isAssociated(String prefix, String namespace) throws OutputException;
     
     protected abstract void setPrefix(String prefix, String namespaceURI) throws OutputException;
+    
+    public abstract void writeStartDocument(String version) throws OutputException;
+    
+    public abstract void writeStartDocument(String encoding, String version) throws OutputException;
     
     public abstract void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException;
     
@@ -227,4 +261,6 @@ public abstract class Serializer {
     public abstract void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException;
 
     public abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws OutputException;
+    
+    protected abstract XMLStreamWriter getWriter();
 }
