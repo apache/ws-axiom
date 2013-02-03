@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 
-public interface IContainer extends OMContainerEx, IParentNode {
+public interface IContainer extends OMContainerEx, IParentNode, ISerializable {
     /**
      * Check if the node can be added as a child of this container.
      * 

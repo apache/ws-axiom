@@ -16,17 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push;
+package org.apache.axiom.om.impl.common.serializer.push.sax;
+
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 /**
- * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data. This class
- * is abstract so that the type of the wrapped exception can be effectively restricted by defining
- * an appropriate subclass.
+ * Wraps a {@link SAXException} thrown by a {@link ContentHandler}.
  */
-public abstract class OutputException extends Exception {
-    private static final long serialVersionUID = 7173617216602466028L;
+public class SAXOutputException extends OutputException {
+    private static final long serialVersionUID = -4299745257772383270L;
 
-    public OutputException(Throwable cause) {
+    public SAXOutputException(SAXException cause) {
         super(cause);
     }
 }

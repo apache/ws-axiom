@@ -70,9 +70,9 @@ public abstract class Serializer {
     public final void serializeStartpart(OMElement element) throws OutputException {
         OMNamespace ns = element.getNamespace();
         if (ns == null) {
-            beginStartElement("", "", element.getLocalName());
+            internalBeginStartElement("", "", element.getLocalName());
         } else {
-            beginStartElement(ns.getPrefix(), ns.getNamespaceURI(), element.getLocalName());
+            internalBeginStartElement(ns.getPrefix(), ns.getNamespaceURI(), element.getLocalName());
         }
         for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
             ns = (OMNamespace)it.next();
@@ -87,7 +87,7 @@ public abstract class Serializer {
                 processAttribute(ns.getPrefix(), ns.getNamespaceURI(), attr.getLocalName(), attr.getAttributeValue());
             }
         }
-        finishStartElement();
+        internalFinishStartElement();
     }
     
     private void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws OutputException {
@@ -107,7 +107,7 @@ public abstract class Serializer {
                     writeDTD(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
                     break;
                 case XMLStreamReader.START_ELEMENT:
-                    beginStartElement(normalize(reader.getPrefix()), normalize(reader.getNamespaceURI()), reader.getLocalName());
+                    internalBeginStartElement(normalize(reader.getPrefix()), normalize(reader.getNamespaceURI()), reader.getLocalName());
                     for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
                         generateSetPrefix(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), false);
                     }
@@ -118,7 +118,7 @@ public abstract class Serializer {
                                 reader.getAttributeLocalName(i),
                                 reader.getAttributeValue(i));
                     }
-                    finishStartElement();
+                    internalFinishStartElement();
                     break;
                 case XMLStreamReader.END_ELEMENT:
                     writeEndElement();
@@ -160,8 +160,8 @@ public abstract class Serializer {
         return s == null ? "" : s;
     }
     
-    private void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
-        writeStartElement(prefix, namespaceURI, localName);
+    private void internalBeginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
+        beginStartElement(prefix, namespaceURI, localName);
         generateSetPrefix(prefix, namespaceURI, false);
     }
     
@@ -180,12 +180,13 @@ public abstract class Serializer {
         writeAttribute(prefix, namespaceURI, localName, value);
     }
     
-    private void finishStartElement() throws OutputException {
+    private void internalFinishStartElement() throws OutputException {
         for (int i = 0; i < writePrefixList.size(); i++) {
             writeNamespace((String)writePrefixList.get(i), (String)writeNSList.get(i));
         }
         writePrefixList.clear();
         writeNSList.clear();
+        finishStartElement();
     }
     
     /**
@@ -331,11 +332,27 @@ public abstract class Serializer {
     
     public abstract void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException;
     
-    protected abstract void writeStartElement(String prefix, String namespaceURI, String localName) throws OutputException;
+    /**
+     * Prepare to write an element start tag. A call to this method will be followed by zero or more
+     * calls to {@link #writeNamespace(String, String)} and
+     * {@link #writeAttribute(String, String, String, String)} and a single call to
+     * {@link #finishStartElement()}.
+     * 
+     * @param prefix
+     *            the prefix of the element; never <code>null</code>
+     * @param namespaceURI
+     *            the namespace URI of the element; never <code>null</code>
+     * @param localName
+     *            the local name of the element; never <code>null</code>
+     * @throws OutputException
+     */
+    protected abstract void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException;
     
     protected abstract void writeNamespace(String prefix, String namespaceURI) throws OutputException;
     
     protected abstract void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException;
+    
+    protected abstract void finishStartElement() throws OutputException;
     
     public abstract void writeEndElement() throws OutputException;
     

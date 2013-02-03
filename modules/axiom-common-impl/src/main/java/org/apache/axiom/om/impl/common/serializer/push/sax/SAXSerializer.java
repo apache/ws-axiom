@@ -26,13 +26,20 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.AttributesImpl;
 
 public class SAXSerializer extends Serializer {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
+    private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
+    private String elementURI;
+    private String elementLocalName;
+    private String elementQName;
+    private final AttributesImpl attributes = new AttributesImpl();
     
     public SAXSerializer(OMSerializable contextNode, ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         super(contextNode);
@@ -41,51 +48,66 @@ public class SAXSerializer extends Serializer {
     }
 
     protected boolean isAssociated(String prefix, String namespace) throws OutputException {
-        // TODO Auto-generated method stub
-        return false;
+        return nsContext.getNamespaceURI(prefix).equals(namespace);
     }
 
     protected void setPrefix(String prefix, String namespaceURI) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public void writeStartDocument(String version) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public void writeStartDocument(String encoding, String version) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public void writeDTD(String rootName, String publicId, String systemId, String internalSubset)
             throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
-    protected void writeStartElement(String prefix, String namespaceURI, String localName)
-            throws OutputException {
-        // TODO Auto-generated method stub
-        
+    protected void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
+        elementURI = namespaceURI;
+        elementLocalName = localName;
+        if (prefix.length() == 0) {
+            elementQName = localName;
+        } else {
+            elementQName = prefix + ":" + localName;
+        }
     }
 
     protected void writeNamespace(String prefix, String namespaceURI) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     protected void writeAttribute(String prefix, String namespaceURI, String localName, String value)
             throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    protected void finishStartElement() throws OutputException {
+        try {
+            contentHandler.startElement(elementURI, elementLocalName, elementQName, attributes);
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        }
+        elementURI = null;
+        elementLocalName = null;
+        elementQName = null;
+        attributes.clear();
     }
 
     public void writeEndElement() throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public void writeText(int type, String data) throws OutputException {
@@ -108,7 +130,7 @@ public class SAXSerializer extends Serializer {
                     contentHandler.ignorableWhitespace(ch, 0, ch.length);
             }
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new SAXOutputException(ex);
         }
     }
 
@@ -118,7 +140,7 @@ public class SAXSerializer extends Serializer {
             try {
                 lexicalHandler.comment(ch, 0, ch.length);
             } catch (SAXException ex) {
-                throw new OutputException(ex);
+                throw new SAXOutputException(ex);
             }
         }
     }
@@ -127,29 +149,29 @@ public class SAXSerializer extends Serializer {
         try {
             contentHandler.processingInstruction(target, data);
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new SAXOutputException(ex);
         }
     }
 
     public void writeEntityRef(String name) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
             throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
-        // TODO Auto-generated method stub
-        
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

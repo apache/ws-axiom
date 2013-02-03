@@ -16,17 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push;
+package org.apache.axiom.om.impl.common.serializer.push.stax;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 
 /**
- * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data. This class
- * is abstract so that the type of the wrapped exception can be effectively restricted by defining
- * an appropriate subclass.
+ * Wraps an {@link XMLStreamException} thrown by {@link XMLStreamWriter}.
  */
-public abstract class OutputException extends Exception {
-    private static final long serialVersionUID = 7173617216602466028L;
+public class StAXOutputException extends OutputException {
+    private static final long serialVersionUID = -8641924272865997771L;
 
-    public OutputException(Throwable cause) {
+    public StAXOutputException(XMLStreamException cause) {
         super(cause);
     }
 }

@@ -56,7 +56,7 @@ public class StAXSerializer extends Serializer {
             // We cannot really differentiate between exceptions thrown by the XMLStreamWriter
             // and exceptions thrown by the data source itself. We wrap all XMLStreamExceptions
             // as OutputExceptions.
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -64,7 +64,7 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeStartDocument(version);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -72,7 +72,7 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeStartDocument(encoding, version);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -80,15 +80,15 @@ public class StAXSerializer extends Serializer {
         try {
             XMLStreamWriterUtils.writeDTD(writer, rootName, publicId, systemId, internalSubset);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
-    protected void writeStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
+    protected void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
         try {
             writer.writeStartElement(prefix, localName, namespaceURI);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -100,7 +100,7 @@ public class StAXSerializer extends Serializer {
                 writer.writeDefaultNamespace(namespaceURI);
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -108,8 +108,12 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
+    }
+
+    protected void finishStartElement() throws OutputException {
+        // Nothing to do here
     }
 
     protected void setPrefix(String prefix, String namespaceURI) throws OutputException {
@@ -120,7 +124,7 @@ public class StAXSerializer extends Serializer {
                 writer.setPrefix(prefix, namespaceURI);
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -201,7 +205,7 @@ public class StAXSerializer extends Serializer {
                 return true;
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -209,7 +213,7 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeEndElement();
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -221,7 +225,7 @@ public class StAXSerializer extends Serializer {
                 writer.writeCharacters(data);
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -229,7 +233,7 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeComment(data);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -237,7 +241,7 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeProcessingInstruction(target, data);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -245,7 +249,7 @@ public class StAXSerializer extends Serializer {
         try {
             writer.writeEntityRef(name);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -253,10 +257,9 @@ public class StAXSerializer extends Serializer {
         try {
             dataHandlerWriter.writeDataHandler(dataHandler, contentID, optimize);
         } catch (IOException ex) {
-            // An OutputException thrown by StAXSerializer must always wrap an XMLStreamException!
-            throw new OutputException(new XMLStreamException("Error while reading data handler", ex));
+            throw new StAXOutputException(new XMLStreamException("Error while reading data handler", ex));
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 
@@ -264,10 +267,9 @@ public class StAXSerializer extends Serializer {
         try {
             dataHandlerWriter.writeDataHandler(dataHandlerProvider, contentID, optimize);
         } catch (IOException ex) {
-            // An OutputException thrown by StAXSerializer must always wrap an XMLStreamException!
-            throw new OutputException(new XMLStreamException("Error while reading data handler", ex));
+            throw new StAXOutputException(new XMLStreamException("Error while reading data handler", ex));
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StAXOutputException(ex);
         }
     }
 }
