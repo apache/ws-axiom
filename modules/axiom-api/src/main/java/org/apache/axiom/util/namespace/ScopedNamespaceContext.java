@@ -109,6 +109,50 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
         bindings = scopeIndexes[--scopes];
     }
     
+    /**
+     * Get the number of namespace bindings defined in this context, in all scopes. This number
+     * increases every time {@link #setPrefix(String, String)} is called. It decreases when
+     * {@link #endScope()} is called (unless no bindings have been added in the current scope).
+     * 
+     * @return the namespace binding count
+     */
+    public int getBindingsCount() {
+        return bindings;
+    }
+
+    /**
+     * Get the index of the first namespace binding defined in the current scope. Together with
+     * {@link #getBindingsCount()} this method can be used to iterate over the namespace bindings
+     * defined in the current scope.
+     * 
+     * @return the index of the first namespace binding defined in the current scope
+     */
+    public int getFirstBindingInCurrentScope() {
+        return scopes == 0 ? 0 : scopeIndexes[scopes-1];
+    }
+    
+    /**
+     * Get the prefix of the binding with the given index.
+     * 
+     * @param index
+     *            the index of the binding
+     * @return the prefix
+     */
+    public String getPrefix(int index) {
+        return prefixArray[index];
+    }
+    
+    /**
+     * Get the namespace URI of the binding with the given index.
+     * 
+     * @param index
+     *            the index of the binding
+     * @return the namespace URI
+     */
+    public String getNamespaceURI(int index) {
+        return uriArray[index];
+    }
+    
     protected String doGetNamespaceURI(String prefix) {
         for (int i=bindings-1; i>=0; i--) {
             if (prefix.equals(prefixArray[i])) {

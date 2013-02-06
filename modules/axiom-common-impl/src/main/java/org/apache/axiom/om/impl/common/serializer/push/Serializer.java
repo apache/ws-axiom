@@ -327,6 +327,24 @@ public abstract class Serializer {
      */
     protected abstract void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException;
     
+    /**
+     * Add the given namespace to the element. The implementation of this method must take the
+     * appropriate actions such that the following two conditions are satisfied:
+     * <ul>
+     * <li>A namespace declaration is written to the output.
+     * <li>The namespace binding defined by the parameters is visible in the namespace context of
+     * the {@link XMLStreamWriter} that {@link #serializePushOMDataSource(OMDataSource)} passes to
+     * {@link OMDataSource#serialize(XMLStreamWriter)} if an {@link OMDataSource} is serialized in
+     * the scope of the current element (and of course unless the namespace binding is hidden by a
+     * namespace defined on a nested element).
+     * </ul>
+     * 
+     * @param prefix
+     *            the namespace prefix; never <code>null</code>
+     * @param namespaceURI
+     *            the namespace URI; never <code>null</code>
+     * @throws OutputException
+     */
     protected abstract void addNamespace(String prefix, String namespaceURI) throws OutputException;
     
     protected abstract void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException;

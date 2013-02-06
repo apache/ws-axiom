@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push.sax;
 
+import java.util.Stack;
+
 import javax.activation.DataHandler;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -36,6 +38,8 @@ public class SAXSerializer extends Serializer {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
     private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
+    private int depth;
+    private Stack elementNameStack = new Stack();
     private String elementURI;
     private String elementLocalName;
     private String elementQName;
@@ -75,15 +79,20 @@ public class SAXSerializer extends Serializer {
         } else {
             elementQName = prefix + ":" + localName;
         }
+        nsContext.startScope();
     }
 
     protected void addNamespace(String prefix, String namespaceURI) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+        nsContext.setPrefix(prefix, namespaceURI);
+        try {
+            contentHandler.startPrefixMapping(prefix, namespaceURI);
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        }
+        // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
 
-    protected void addAttribute(String prefix, String namespaceURI, String localName, String value)
-            throws OutputException {
+    protected void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -94,6 +103,9 @@ public class SAXSerializer extends Serializer {
         } catch (SAXException ex) {
             throw new SAXOutputException(ex);
         }
+        elementNameStack.push(elementURI);
+        elementNameStack.push(elementLocalName);
+        elementNameStack.push(elementQName);
         elementURI = null;
         elementLocalName = null;
         elementQName = null;
@@ -101,8 +113,17 @@ public class SAXSerializer extends Serializer {
     }
 
     public void writeEndElement() throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+        try {
+            String elementQName = (String)elementNameStack.pop();
+            String elementLocalName = (String)elementNameStack.pop();
+            String elementURI = (String)elementNameStack.pop();
+            contentHandler.endElement(elementURI, elementLocalName, elementQName);
+            for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
+                contentHandler.endPrefixMapping(nsContext.getPrefix(i));
+            }
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        }
     }
 
     public void writeText(int type, String data) throws OutputException {
