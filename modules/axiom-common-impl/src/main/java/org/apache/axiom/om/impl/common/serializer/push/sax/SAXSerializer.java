@@ -51,11 +51,6 @@ public class SAXSerializer extends Serializer {
         return nsContext.getNamespaceURI(prefix).equals(namespace);
     }
 
-    protected void setPrefix(String prefix, String namespaceURI) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
     public void writeStartDocument(String version) throws OutputException {
         // TODO
         throw new UnsupportedOperationException();
@@ -82,12 +77,12 @@ public class SAXSerializer extends Serializer {
         }
     }
 
-    protected void writeNamespace(String prefix, String namespaceURI) throws OutputException {
+    protected void addNamespace(String prefix, String namespaceURI) throws OutputException {
         // TODO
         throw new UnsupportedOperationException();
     }
 
-    protected void writeAttribute(String prefix, String namespaceURI, String localName, String value)
+    protected void addAttribute(String prefix, String namespaceURI, String localName, String value)
             throws OutputException {
         // TODO
         throw new UnsupportedOperationException();

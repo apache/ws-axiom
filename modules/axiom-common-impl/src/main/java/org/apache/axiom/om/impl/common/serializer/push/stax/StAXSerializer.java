@@ -92,19 +92,21 @@ public class StAXSerializer extends Serializer {
         }
     }
 
-    protected void writeNamespace(String prefix, String namespaceURI) throws OutputException {
+    protected void addNamespace(String prefix, String namespaceURI) throws OutputException {
         try {
             if (prefix.length() != 0) {
                 writer.writeNamespace(prefix, namespaceURI);
+                writer.setPrefix(prefix, namespaceURI);
             } else {
                 writer.writeDefaultNamespace(namespaceURI);
+                writer.setDefaultNamespace(namespaceURI);
             }
         } catch (XMLStreamException ex) {
             throw new StAXOutputException(ex);
         }
     }
 
-    protected void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
+    protected void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
         } catch (XMLStreamException ex) {
@@ -114,18 +116,6 @@ public class StAXSerializer extends Serializer {
 
     protected void finishStartElement() throws OutputException {
         // Nothing to do here
-    }
-
-    protected void setPrefix(String prefix, String namespaceURI) throws OutputException {
-        try {
-            if (prefix.length() == 0) {
-                writer.setDefaultNamespace(namespaceURI);
-            } else {
-                writer.setPrefix(prefix, namespaceURI);
-            }
-        } catch (XMLStreamException ex) {
-            throw new StAXOutputException(ex);
-        }
     }
 
     /**

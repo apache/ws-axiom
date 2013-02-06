@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.activation.DataHandler;
@@ -51,9 +50,6 @@ public abstract class Serializer {
     private static final String XSI_LOCAL_NAME = "type";
     
     private final OMElement contextElement;
-    private final ArrayList writePrefixList = new ArrayList();
-    private final ArrayList writeNSList = new ArrayList();
-    
     public Serializer(OMSerializable contextNode) {
         if (contextNode instanceof OMNode) {
             OMContainer parent = ((OMNode)contextNode).getParent();
@@ -76,7 +72,7 @@ public abstract class Serializer {
         }
         for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
             ns = (OMNamespace)it.next();
-            generateSetPrefix(ns.getPrefix(), ns.getNamespaceURI(), false);
+            addNamespaceIfNecessary(ns.getPrefix(), ns.getNamespaceURI(), false);
         }
         for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = (OMAttribute)it.next();
@@ -87,7 +83,7 @@ public abstract class Serializer {
                 processAttribute(ns.getPrefix(), ns.getNamespaceURI(), attr.getLocalName(), attr.getAttributeValue());
             }
         }
-        internalFinishStartElement();
+        finishStartElement();
     }
     
     private void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws OutputException {
@@ -109,7 +105,7 @@ public abstract class Serializer {
                 case XMLStreamReader.START_ELEMENT:
                     internalBeginStartElement(normalize(reader.getPrefix()), normalize(reader.getNamespaceURI()), reader.getLocalName());
                     for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
-                        generateSetPrefix(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), false);
+                        addNamespaceIfNecessary(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), false);
                     }
                     for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
                         processAttribute(
@@ -118,7 +114,7 @@ public abstract class Serializer {
                                 reader.getAttributeLocalName(i),
                                 reader.getAttributeValue(i));
                     }
-                    internalFinishStartElement();
+                    finishStartElement();
                     break;
                 case XMLStreamReader.END_ELEMENT:
                     writeEndElement();
@@ -162,42 +158,32 @@ public abstract class Serializer {
     
     private void internalBeginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
         beginStartElement(prefix, namespaceURI, localName);
-        generateSetPrefix(prefix, namespaceURI, false);
+        addNamespaceIfNecessary(prefix, namespaceURI, false);
     }
     
     private void processAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
-        generateSetPrefix(prefix, namespaceURI, true);
+        addNamespaceIfNecessary(prefix, namespaceURI, true);
         if (contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
             String trimmedValue = value.trim();
             if (trimmedValue.indexOf(":") > 0) {
                 String refPrefix = trimmedValue.substring(0, trimmedValue.indexOf(":"));
                 OMNamespace ns = contextElement.findNamespaceURI(refPrefix);
                 if (ns != null) {
-                    generateSetPrefix(refPrefix, ns.getNamespaceURI(), true);
+                    addNamespaceIfNecessary(refPrefix, ns.getNamespaceURI(), true);
                 }
             }
         }
-        writeAttribute(prefix, namespaceURI, localName, value);
-    }
-    
-    private void internalFinishStartElement() throws OutputException {
-        for (int i = 0; i < writePrefixList.size(); i++) {
-            writeNamespace((String)writePrefixList.get(i), (String)writeNSList.get(i));
-        }
-        writePrefixList.clear();
-        writeNSList.clear();
-        finishStartElement();
+        addAttribute(prefix, namespaceURI, localName, value);
     }
     
     /**
-     * Generate setPrefix/setDefaultNamespace if the prefix is not associated
+     * Add a namespace declaration if the prefix is not associated.
      *
      * @param prefix the namespace prefix; must not be <code>null</code>
      * @param namespaceURI the namespace URI; must not be <code>null</code>
      * @param attr
-     * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
-    private void generateSetPrefix(String prefix, String namespaceURI, boolean attr) throws OutputException {
+    private void addNamespaceIfNecessary(String prefix, String namespaceURI, boolean attr) throws OutputException {
         // If the prefix and namespace are already associated, no generation is needed
         if (isAssociated(prefix, namespaceURI)) {
             return;
@@ -209,13 +195,8 @@ public abstract class Serializer {
             return;
         }
         
-        // Generate setPrefix/setDefaultNamespace if the prefix is not associated.
-        setPrefix(prefix, namespaceURI);
-        // If this is a new association, remember it so that it can written out later
-        if (!writePrefixList.contains(prefix)) {
-            writePrefixList.add(prefix);
-            writeNSList.add(namespaceURI);
-        }
+        // Add the namespace if the prefix is not associated.
+        addNamespace(prefix, namespaceURI);
     }
     
     public final void serializeChildren(IContainer container, OMOutputFormat format, boolean cache) throws OutputException {
@@ -324,8 +305,6 @@ public abstract class Serializer {
     
     protected abstract boolean isAssociated(String prefix, String namespace) throws OutputException;
     
-    protected abstract void setPrefix(String prefix, String namespaceURI) throws OutputException;
-    
     public abstract void writeStartDocument(String version) throws OutputException;
     
     public abstract void writeStartDocument(String encoding, String version) throws OutputException;
@@ -334,8 +313,8 @@ public abstract class Serializer {
     
     /**
      * Prepare to write an element start tag. A call to this method will be followed by zero or more
-     * calls to {@link #writeNamespace(String, String)} and
-     * {@link #writeAttribute(String, String, String, String)} and a single call to
+     * calls to {@link #addNamespace(String, String)} and
+     * {@link #addAttribute(String, String, String, String)} and a single call to
      * {@link #finishStartElement()}.
      * 
      * @param prefix
@@ -348,9 +327,9 @@ public abstract class Serializer {
      */
     protected abstract void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException;
     
-    protected abstract void writeNamespace(String prefix, String namespaceURI) throws OutputException;
+    protected abstract void addNamespace(String prefix, String namespaceURI) throws OutputException;
     
-    protected abstract void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException;
+    protected abstract void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException;
     
     protected abstract void finishStartElement() throws OutputException;
     
