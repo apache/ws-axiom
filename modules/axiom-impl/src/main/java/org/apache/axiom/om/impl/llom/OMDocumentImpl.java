@@ -38,8 +38,9 @@ import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.jaxp.OMSource;
+import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
@@ -328,7 +329,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     }
     
     public SAXSource getSAXSource(boolean cache) {
-        return new OMSource(this);
+        return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
     public void build() {

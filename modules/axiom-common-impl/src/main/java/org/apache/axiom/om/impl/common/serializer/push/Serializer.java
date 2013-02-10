@@ -78,9 +78,9 @@ public abstract class Serializer {
             OMAttribute attr = (OMAttribute)it.next();
             ns = attr.getNamespace();
             if (ns == null) {
-                processAttribute("", "", attr.getLocalName(), attr.getAttributeValue());
+                processAttribute("", "", attr.getLocalName(), attr.getAttributeType(), attr.getAttributeValue());
             } else {
-                processAttribute(ns.getPrefix(), ns.getNamespaceURI(), attr.getLocalName(), attr.getAttributeValue());
+                processAttribute(ns.getPrefix(), ns.getNamespaceURI(), attr.getLocalName(), attr.getAttributeType(), attr.getAttributeValue());
             }
         }
         finishStartElement();
@@ -112,6 +112,7 @@ public abstract class Serializer {
                                 normalize(reader.getAttributePrefix(i)),
                                 normalize(reader.getAttributeNamespace(i)),
                                 reader.getAttributeLocalName(i),
+                                reader.getAttributeType(i),
                                 reader.getAttributeValue(i));
                     }
                     finishStartElement();
@@ -161,7 +162,7 @@ public abstract class Serializer {
         addNamespaceIfNecessary(prefix, namespaceURI, false);
     }
     
-    private void processAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
+    private void processAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
         addNamespaceIfNecessary(prefix, namespaceURI, true);
         if (contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
             String trimmedValue = value.trim();
@@ -173,7 +174,7 @@ public abstract class Serializer {
                 }
             }
         }
-        addAttribute(prefix, namespaceURI, localName, value);
+        addAttribute(prefix, namespaceURI, localName, type, value);
     }
     
     /**
@@ -347,7 +348,22 @@ public abstract class Serializer {
      */
     protected abstract void addNamespace(String prefix, String namespaceURI) throws OutputException;
     
-    protected abstract void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException;
+    /**
+     * Add the given attribute to the element.
+     * 
+     * @param prefix
+     *            the namespace prefix of the attribute; never <code>null</code>
+     * @param namespaceURI
+     *            the namespace URI or the attribute; never <code>null</code>
+     * @param localName
+     *            the local name of the attribute; never <code>null</code>
+     * @param type
+     *            the attribute type (e.g. <tt>CDATA</tt>); never <code>null</code>
+     * @param value
+     *            the value of the attribute; never <code>null</code>
+     * @throws OutputException
+     */
+    protected abstract void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException;
     
     protected abstract void finishStartElement() throws OutputException;
     
@@ -379,4 +395,6 @@ public abstract class Serializer {
      *             if an error occurs while reading from the data source
      */
     protected abstract void serializePushOMDataSource(OMDataSource dataSource) throws OutputException;
+    
+    public abstract void writeEndDocument() throws OutputException;
 }

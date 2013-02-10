@@ -66,9 +66,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: this is not supported yet
         builder.exclude(TestGetXMLStreamReaderWithIncompleteDescendant.class, "(cache=false)");
         
-        // TODO: getSAXSource doesn't honor the cache flag yet
-        builder.exclude(TestSerialize.class, "(&(serializationStrategy=SAXSource)(cache=false))");
-        
         return builder.build();
     }
 }

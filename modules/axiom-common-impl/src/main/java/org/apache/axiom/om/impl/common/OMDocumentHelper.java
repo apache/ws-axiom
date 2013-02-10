@@ -53,5 +53,6 @@ public class OMDocumentHelper {
         }
 
         serializer.serializeChildren(document, format, cache);
+        serializer.writeEndDocument();
     }
 }

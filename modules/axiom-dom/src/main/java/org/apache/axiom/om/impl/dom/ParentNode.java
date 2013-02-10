@@ -35,12 +35,13 @@ import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
-import org.apache.axiom.om.impl.jaxp.OMSource;
+import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
@@ -538,7 +539,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
     }
 
     public SAXSource getSAXSource(boolean cache) {
-        return new OMSource((OMContainer)this);
+        return new SAXSource(new XMLReaderImpl((IContainer)this, cache), new InputSource());
     }
 
     void notifyChildComplete() {

@@ -47,7 +47,6 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
-import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -1017,8 +1016,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public SAXSource getSAXSource(boolean cache) {
-//        return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
-        return new OMSource(this);
+        return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
     
     public void removeChildren() {

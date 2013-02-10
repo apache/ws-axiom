@@ -30,7 +30,7 @@ public class SOAPImplementationTest extends TestCase {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true, true);
         
         // TODO: AXIOM-430
-        builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter)))");
+        builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter)(serializationStrategy=SAXSource)))");
         
         return builder.build();
     }

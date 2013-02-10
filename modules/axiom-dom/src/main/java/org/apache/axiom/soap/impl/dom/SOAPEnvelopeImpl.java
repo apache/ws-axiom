@@ -210,6 +210,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         	}
         }
         serializer.writeEndElement();
+        serializer.writeEndDocument();
     }
 
     public boolean hasFault() {      

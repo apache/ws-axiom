@@ -106,7 +106,7 @@ public class StAXSerializer extends Serializer {
         }
     }
 
-    protected void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
+    protected void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
         } catch (XMLStreamException ex) {
@@ -261,5 +261,9 @@ public class StAXSerializer extends Serializer {
         } catch (XMLStreamException ex) {
             throw new StAXOutputException(ex);
         }
+    }
+
+    public void writeEndDocument() throws OutputException {
+        // TODO: the original StAX serialization code newer called writeEndDocument; this is probably a mistake
     }
 }

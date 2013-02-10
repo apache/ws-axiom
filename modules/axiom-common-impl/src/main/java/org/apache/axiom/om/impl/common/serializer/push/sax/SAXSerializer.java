@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push.sax;
 
+import java.io.IOException;
 import java.util.Stack;
 
 import javax.activation.DataHandler;
@@ -28,6 +29,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -38,6 +40,8 @@ public class SAXSerializer extends Serializer {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
     private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
+    private boolean startDocumentWritten;
+    private boolean autoStartDocument;
     private int depth;
     private Stack elementNameStack = new Stack();
     private String elementURI;
@@ -55,31 +59,52 @@ public class SAXSerializer extends Serializer {
         return nsContext.getNamespaceURI(prefix).equals(namespace);
     }
 
+    private static String getQName(String prefix, String localName) {
+        if (prefix.length() == 0) {
+            return localName;
+        } else {
+            return prefix + ":" + localName;
+        }
+    }
+    
+    private void writeStartDocument() throws OutputException {
+        try {
+            contentHandler.startDocument();
+            startDocumentWritten = true;
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        }
+    }
+    
     public void writeStartDocument(String version) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+        writeStartDocument();
     }
 
     public void writeStartDocument(String encoding, String version) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+        writeStartDocument();
     }
 
-    public void writeDTD(String rootName, String publicId, String systemId, String internalSubset)
-            throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+    public void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException {
+        if (lexicalHandler != null) {
+            try {
+                lexicalHandler.startDTD(rootName, publicId, systemId);
+                lexicalHandler.endDTD();
+            } catch (SAXException ex) {
+                throw new SAXOutputException(ex);
+            }
+        }
     }
 
     protected void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
+        if (!startDocumentWritten) {
+            writeStartDocument();
+            autoStartDocument = true;
+        }
         elementURI = namespaceURI;
         elementLocalName = localName;
-        if (prefix.length() == 0) {
-            elementQName = localName;
-        } else {
-            elementQName = prefix + ":" + localName;
-        }
+        elementQName = getQName(prefix, localName);
         nsContext.startScope();
+        depth++;
     }
 
     protected void addNamespace(String prefix, String namespaceURI) throws OutputException {
@@ -92,9 +117,8 @@ public class SAXSerializer extends Serializer {
         // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
 
-    protected void addAttribute(String prefix, String namespaceURI, String localName, String value) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
+        attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
 
     protected void finishStartElement() throws OutputException {
@@ -120,6 +144,10 @@ public class SAXSerializer extends Serializer {
             contentHandler.endElement(elementURI, elementLocalName, elementQName);
             for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
                 contentHandler.endPrefixMapping(nsContext.getPrefix(i));
+            }
+            nsContext.endScope();
+            if (--depth == 0 && autoStartDocument) {
+                contentHandler.endDocument();
             }
         } catch (SAXException ex) {
             throw new SAXOutputException(ex);
@@ -170,14 +198,28 @@ public class SAXSerializer extends Serializer {
     }
 
     public void writeEntityRef(String name) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+        try {
+            contentHandler.skippedEntity(name);
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        }
     }
 
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
-            throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException {
+        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler));
+        try {
+            dataHandler.writeTo(out);
+            out.complete();
+        } catch (IOException ex) {
+            Throwable cause = ex.getCause();
+            SAXException saxException;
+            if (cause instanceof SAXException) {
+                saxException = (SAXException)ex.getCause();
+            } else {
+                saxException = new SAXException(ex);
+            }
+            throw new SAXOutputException(saxException);
+        }
     }
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
@@ -189,5 +231,13 @@ public class SAXSerializer extends Serializer {
     protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
         // TODO
         throw new UnsupportedOperationException();
+    }
+
+    public void writeEndDocument() throws OutputException {
+        try {
+            contentHandler.endDocument();
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        }
     }
 }

@@ -211,6 +211,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
         	}
         }
         serializer.writeEndElement();
+        serializer.writeEndDocument();
         if (!cache) {
             // let's try to close the builder/parser here since we are now done with the
             // non-caching code block serializing the top-level SOAPEnvelope element
