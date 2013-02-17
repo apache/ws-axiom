@@ -41,12 +41,11 @@ public class StAXSerializer extends Serializer {
     private static final Log log = LogFactory.getLog(StAXSerializer.class);
     
     private final XMLStreamWriter writer;
-    private final DataHandlerWriter dataHandlerWriter;
+    private DataHandlerWriter dataHandlerWriter;
     
     public StAXSerializer(OMSerializable contextNode, XMLStreamWriter writer) {
         super(contextNode);
         this.writer = writer;
-        dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
     }
 
     protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
@@ -243,9 +242,17 @@ public class StAXSerializer extends Serializer {
         }
     }
 
+    private DataHandlerWriter getDataHandlerWriter() {
+        // We only retrieve/create the DataHandlerWriter if necessary
+        if (dataHandlerWriter == null) {
+            dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
+        }
+        return dataHandlerWriter;
+    }
+
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException {
         try {
-            dataHandlerWriter.writeDataHandler(dataHandler, contentID, optimize);
+            getDataHandlerWriter().writeDataHandler(dataHandler, contentID, optimize);
         } catch (IOException ex) {
             throw new StAXOutputException(new XMLStreamException("Error while reading data handler", ex));
         } catch (XMLStreamException ex) {
@@ -255,7 +262,7 @@ public class StAXSerializer extends Serializer {
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws OutputException {
         try {
-            dataHandlerWriter.writeDataHandler(dataHandlerProvider, contentID, optimize);
+            getDataHandlerWriter().writeDataHandler(dataHandlerProvider, contentID, optimize);
         } catch (IOException ex) {
             throw new StAXOutputException(new XMLStreamException("Error while reading data handler", ex));
         } catch (XMLStreamException ex) {

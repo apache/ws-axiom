@@ -19,9 +19,10 @@
 package org.apache.axiom.om.impl.common.serializer.push.sax;
 
 import java.io.IOException;
-import java.util.Stack;
 
 import javax.activation.DataHandler;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMDataSource;
@@ -34,7 +35,6 @@ import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
-import org.xml.sax.helpers.AttributesImpl;
 
 public class SAXSerializer extends Serializer {
     private final ContentHandler contentHandler;
@@ -43,11 +43,7 @@ public class SAXSerializer extends Serializer {
     private boolean startDocumentWritten;
     private boolean autoStartDocument;
     private int depth;
-    private Stack elementNameStack = new Stack();
-    private String elementURI;
-    private String elementLocalName;
-    private String elementQName;
-    private final AttributesImpl attributes = new AttributesImpl();
+    private final SAXHelper helper = new SAXHelper();
     
     public SAXSerializer(OMSerializable contextNode, ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         super(contextNode);
@@ -59,14 +55,6 @@ public class SAXSerializer extends Serializer {
         return nsContext.getNamespaceURI(prefix).equals(namespace);
     }
 
-    private static String getQName(String prefix, String localName) {
-        if (prefix.length() == 0) {
-            return localName;
-        } else {
-            return prefix + ":" + localName;
-        }
-    }
-    
     private void writeStartDocument() throws OutputException {
         try {
             contentHandler.startDocument();
@@ -100,9 +88,7 @@ public class SAXSerializer extends Serializer {
             writeStartDocument();
             autoStartDocument = true;
         }
-        elementURI = namespaceURI;
-        elementLocalName = localName;
-        elementQName = getQName(prefix, localName);
+        helper.beginStartElement(prefix, namespaceURI, localName);
         nsContext.startScope();
         depth++;
     }
@@ -118,34 +104,20 @@ public class SAXSerializer extends Serializer {
     }
 
     protected void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
-        attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
+        helper.addAttribute(prefix, namespaceURI, localName, type, value);
     }
 
     protected void finishStartElement() throws OutputException {
         try {
-            contentHandler.startElement(elementURI, elementLocalName, elementQName, attributes);
+            helper.finishStartElement(contentHandler);
         } catch (SAXException ex) {
             throw new SAXOutputException(ex);
         }
-        elementNameStack.push(elementURI);
-        elementNameStack.push(elementLocalName);
-        elementNameStack.push(elementQName);
-        elementURI = null;
-        elementLocalName = null;
-        elementQName = null;
-        attributes.clear();
     }
 
     public void writeEndElement() throws OutputException {
         try {
-            String elementQName = (String)elementNameStack.pop();
-            String elementLocalName = (String)elementNameStack.pop();
-            String elementURI = (String)elementNameStack.pop();
-            contentHandler.endElement(elementURI, elementLocalName, elementQName);
-            for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
-                contentHandler.endPrefixMapping(nsContext.getPrefix(i));
-            }
-            nsContext.endScope();
+            helper.writeEndElement(contentHandler, nsContext);
             if (--depth == 0 && autoStartDocument) {
                 contentHandler.endDocument();
             }
@@ -214,7 +186,7 @@ public class SAXSerializer extends Serializer {
             Throwable cause = ex.getCause();
             SAXException saxException;
             if (cause instanceof SAXException) {
-                saxException = (SAXException)ex.getCause();
+                saxException = (SAXException)cause;
             } else {
                 saxException = new SAXException(ex);
             }
@@ -229,8 +201,22 @@ public class SAXSerializer extends Serializer {
     }
 
     protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
-        // TODO
-        throw new UnsupportedOperationException();
+        try {
+            XMLStreamWriter writer = new ContentHandlerXMLStreamWriter(helper, contentHandler, lexicalHandler, nsContext);
+            if (startDocumentWritten) {
+                dataSource.serialize(writer);
+            } else {
+                contentHandler.startDocument();
+                dataSource.serialize(writer);
+                contentHandler.endDocument();
+            }
+        } catch (SAXException ex) {
+            throw new SAXOutputException(ex);
+        } catch (SAXExceptionWrapper ex) {
+            throw new SAXOutputException((SAXException)ex.getCause());
+        } catch (XMLStreamException ex) {
+            throw new SAXOutputException(new SAXException(ex));
+        }
     }
 
     public void writeEndDocument() throws OutputException {
