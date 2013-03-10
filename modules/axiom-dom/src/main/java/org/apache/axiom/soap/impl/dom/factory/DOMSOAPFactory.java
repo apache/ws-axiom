@@ -41,7 +41,6 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
 
 public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactoryEx {
     public DOMSOAPFactory(OMDOMMetaFactory metaFactory) {
@@ -51,16 +50,12 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     public DOMSOAPFactory() {
     }
 
-    public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
+    public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
         return new SOAPMessageImpl(builder, this);
     }
 
-    public SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
+    public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
         return new SOAPEnvelopeImpl((ParentNode)message, null, builder, this, false);
-    }
-
-    public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
-        return new SOAP12FaultImpl(parent, this);
     }
 
     public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
@@ -87,7 +82,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         return defaultEnvelope;
     }
 
-    public SOAPMessage createSOAPMessage() {
+    public final SOAPMessage createSOAPMessage() {
         return new SOAPMessageImpl(this);
     }
 
