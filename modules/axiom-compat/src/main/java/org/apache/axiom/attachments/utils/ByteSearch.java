@@ -20,12 +20,15 @@
 package org.apache.axiom.attachments.utils;
 
 /**
- * ByteSearch
- *
- * Various byte array searching utilities.
- * This includes a "skip search", which is a 
- * an optimized search for finding a byte pattern in 
- * a large byte array.
+ * Various byte array searching utilities. This includes a "skip search", which is an optimized
+ * search for finding a byte pattern in a large byte array.
+ * 
+ * @deprecated This class was part of the MIME parser in Axiom versions before 1.2.13 and is no
+ *             longer used. It will be removed in Axiom 1.3. Please note that the code in this class
+ *             is known to have issues; see <a
+ *             href="https://issues.apache.org/jira/browse/AXIOM-449">AXIOM-449</a> and <a
+ *             href="https://issues.apache.org/jira/browse/AXIOM-450">AXIOM-450</a> for more
+ *             information.
  */
 public class ByteSearch {
 
