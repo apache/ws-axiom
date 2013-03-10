@@ -318,14 +318,9 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
         SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
-
-        SOAPFaultCode faultCode = createSOAPFaultCode(fault);
-
-        SOAPFaultReason reason = createSOAPFaultReason(fault);
-        //createSOAPFaultText(reason);
-
+        createSOAPFaultCode(fault);
+        createSOAPFaultReason(fault);
         createSOAPFaultDetail(fault);
-
         return defaultEnvelope;
     }
 
