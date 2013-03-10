@@ -27,10 +27,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
@@ -63,23 +60,6 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         createSOAPHeader(env);
         createSOAPBody(env);
         return env;
-    }
-
-    public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
-        SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
-
-        SOAPFaultCode faultCode = createSOAPFaultCode(fault);
-        createSOAPFaultValue(faultCode);
-
-        SOAPFaultReason reason = createSOAPFaultReason(fault);
-        createSOAPFaultText(reason);
-
-        createSOAPFaultNode(fault);
-        createSOAPFaultRole(fault);
-        createSOAPFaultDetail(fault);
-
-        return defaultEnvelope;
     }
 
     public final SOAPMessage createSOAPMessage() {

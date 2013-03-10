@@ -248,5 +248,18 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultImpl(this.getDefaultEnvelope().getBody(), this);
     }
 
+    public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
+        SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
+        SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
 
+        SOAPFaultCode faultCode = createSOAPFaultCode(fault);
+        createSOAPFaultValue(faultCode);
+
+        SOAPFaultReason reason = createSOAPFaultReason(fault);
+        createSOAPFaultText(reason);
+
+        createSOAPFaultDetail(fault);
+
+        return defaultEnvelope;
+    }
 }
