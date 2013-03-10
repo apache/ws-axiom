@@ -23,7 +23,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/** Utility class containing IO helper methods */
+/**
+ * Utility class containing I/O helper methods.
+ * 
+ * @deprecated This class is no longer used and will be removed in Axiom 1.3. You may want to use <a
+ *             href="http://commons.apache.org/proper/commons-io/">Commons IO</a> instead.
+ */
 public class IOUtils {
     private IOUtils() {
     }
