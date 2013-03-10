@@ -23,6 +23,10 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+/**
+ * Tests that {@link SOAPFault#getNode()} returns <code>null</code> (instead of throwing an
+ * {@link UnsupportedOperationException}) for SOAP 1.1 faults.
+ */
 public class TestGetNode extends SOAPTestCase {
     public TestGetNode(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP11);
@@ -30,13 +34,8 @@ public class TestGetNode extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        // TODO: LLOM returns null while DOM throws UnsupportedOperationException
-        try {
-            assertNull(
-                    "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
-                    soapFault.getNode());
-        } catch (UnsupportedOperationException ex) {
-            // This is also fine.
-        }
+        assertNull(
+                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
+                soapFault.getNode());
     }
 }

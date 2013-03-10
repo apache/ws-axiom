@@ -133,7 +133,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     }
 
     public SOAPFaultNode getNode() {
-        throw new UnsupportedOperationException("SOAP 1.1 has no Fault Node");
+        return null;
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,

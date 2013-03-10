@@ -64,6 +64,13 @@ public interface SOAPFault extends OMElement {
      */
     void setNode(SOAPFaultNode node) throws SOAPProcessingException;
 
+    /**
+     * Get the SOAP fault node. The fault node provides information about which SOAP node on the
+     * SOAP message path caused the fault to happen. This is only supported by SOAP 1.2.
+     * 
+     * @return the fault node or <code>null</code> if there is no fault node or if fault nodes are
+     *         not supported by the SOAP version
+     */
     SOAPFaultNode getNode();
 
     /**
