@@ -521,6 +521,10 @@
                     <artifactId>gmaven-plugin</artifactId>
                     <version>1.2</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.7</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
