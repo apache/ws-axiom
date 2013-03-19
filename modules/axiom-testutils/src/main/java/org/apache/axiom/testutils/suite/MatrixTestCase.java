@@ -23,20 +23,23 @@ import java.util.Hashtable;
 
 import junit.framework.TestCase;
 
-public abstract class TestCaseEx extends TestCase {
-    private final Dictionary/*<String,String>*/ properties = new Hashtable();
+/**
+ * A test case that can be executed multiple times with different parameters.
+ */
+public abstract class MatrixTestCase extends TestCase {
+    private final Dictionary/*<String,String>*/ parameters = new Hashtable();
 
-    public TestCaseEx() {
+    public MatrixTestCase() {
         setName(getClass().getName());
     }
     
-    public final void addTestProperty(String name, String value) {
+    public final void addTestParameter(String name, String value) {
         setName(getName() + " [" + name + "=" + value + "]");
-        properties.put(name, value);
+        parameters.put(name, value);
     }
     
-    public final Dictionary getTestProperties() {
-        return properties;
+    public final Dictionary getTestParameters() {
+        return parameters;
     }
 
     // Force subclasses to override the runTest method:

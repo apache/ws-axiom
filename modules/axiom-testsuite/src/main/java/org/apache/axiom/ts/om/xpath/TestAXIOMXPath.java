@@ -27,7 +27,7 @@ public class TestAXIOMXPath extends AxiomTestCase {
     public TestAXIOMXPath(OMMetaFactory metaFactory, String methodName) {
         super(metaFactory);
         test = new AXIOMXPathTestCase(methodName, metaFactory);
-        addTestProperty("test", methodName.substring(4));
+        addTestParameter("test", methodName.substring(4));
     }
 
     protected void runTest() throws Throwable {

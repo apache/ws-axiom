@@ -27,6 +27,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -34,7 +36,7 @@ import org.xml.sax.InputSource;
 /**
  * Defines a strategy to create an {@link OMXMLParserWrapper} from a given test file.
  */
-public interface BuilderFactory extends Strategy {
+public interface BuilderFactory extends Dimension {
     /**
      * Creates an {@link OMXMLParserWrapper} directly from the given {@link InputSource}, i.e. let
      * instantiate an appropriate parser.
@@ -47,8 +49,8 @@ public interface BuilderFactory extends Strategy {
         public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("source", "parser");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("source", "parser");
         }
 
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
@@ -73,8 +75,8 @@ public interface BuilderFactory extends Strategy {
             comparator.setCompareEntityReplacementValue(false);
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("source", "dom");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("source", "dom");
         }
 
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
@@ -100,8 +102,8 @@ public interface BuilderFactory extends Strategy {
             comparator.setCompareEncoding(false);
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("source", "sax");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("source", "sax");
         }
 
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {

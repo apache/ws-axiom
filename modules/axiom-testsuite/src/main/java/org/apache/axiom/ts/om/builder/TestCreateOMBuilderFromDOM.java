@@ -41,7 +41,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         super(metaFactory, file);
         this.expandEntityReferences = expandEntityReferences;
         if (expandEntityReferences != null) {
-            addTestProperty("expandEntityReferences", expandEntityReferences.toString());
+            addTestParameter("expandEntityReferences", expandEntityReferences.toString());
         }
     }
 

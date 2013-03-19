@@ -42,8 +42,8 @@ public class TestRemoveChildren extends AxiomTestCase {
         super(metaFactory);
         this.complete = complete;
         this.accessDocumentElement = accessDocumentElement;
-        addTestProperty("complete", Boolean.toString(complete));
-        addTestProperty("accessDocumentElement", Boolean.toString(complete));
+        addTestParameter("complete", Boolean.toString(complete));
+        addTestParameter("accessDocumentElement", Boolean.toString(complete));
     }
 
     protected void runTest() throws Throwable {

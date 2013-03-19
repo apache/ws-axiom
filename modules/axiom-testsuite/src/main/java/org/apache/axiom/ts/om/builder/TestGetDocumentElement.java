@@ -41,8 +41,8 @@ public class TestGetDocumentElement extends AxiomTestCase {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.discardDocument = discardDocument;
-        builderFactory.addTestProperties(this);
-        addTestProperty("discardDocument", String.valueOf(discardDocument));
+        builderFactory.addTestParameters(this);
+        addTestParameter("discardDocument", String.valueOf(discardDocument));
     }
 
     protected void runTest() throws Throwable {

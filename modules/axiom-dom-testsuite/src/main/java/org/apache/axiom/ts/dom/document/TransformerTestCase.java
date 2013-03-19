@@ -28,6 +28,6 @@ public abstract class TransformerTestCase extends DOMTestCase {
     public TransformerTestCase(DocumentBuilderFactory dbf, Class transformerFactoryClass) {
         super(dbf);
         this.transformerFactoryClass = transformerFactoryClass;
-        addTestProperty("transformerFactory", transformerFactoryClass.getName());
+        addTestParameter("transformerFactory", transformerFactoryClass.getName());
     }
 }

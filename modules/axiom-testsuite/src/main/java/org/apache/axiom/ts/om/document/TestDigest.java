@@ -33,7 +33,7 @@ public class TestDigest extends DigestTestCase {
             String algorithm, String expectedDigest) {
         super(metaFactory, algorithm, expectedDigest);
         this.file=file;
-        addTestProperty("file", file);
+        addTestParameter("file", file);
     }
 
     protected OMInformationItem createInformationItem() throws Exception {

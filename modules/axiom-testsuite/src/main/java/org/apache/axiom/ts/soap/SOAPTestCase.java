@@ -44,7 +44,7 @@ public abstract class SOAPTestCase extends AxiomTestCase {
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory);
         this.spec = spec;
-        addTestProperty("spec", spec.getName());
+        addTestParameter("spec", spec.getName());
     }
 
     protected void setUp() throws Exception {

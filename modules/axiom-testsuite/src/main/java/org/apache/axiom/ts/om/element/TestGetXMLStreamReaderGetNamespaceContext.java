@@ -32,7 +32,7 @@ public class TestGetXMLStreamReaderGetNamespaceContext extends AxiomTestCase {
     public TestGetXMLStreamReaderGetNamespaceContext(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestProperty("cache", Boolean.toString(cache));
+        addTestParameter("cache", Boolean.toString(cache));
     }
 
     protected void runTest() throws Throwable {

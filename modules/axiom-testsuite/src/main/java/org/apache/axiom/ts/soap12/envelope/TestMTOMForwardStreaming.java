@@ -51,7 +51,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
     
     public TestMTOMForwardStreaming(OMMetaFactory metaFactory, boolean buildSOAPPart) {
         super(metaFactory);
-        addTestProperty("buildSOAPPart", String.valueOf(buildSOAPPart));
+        addTestParameter("buildSOAPPart", String.valueOf(buildSOAPPart));
         this.buildSOAPPart = buildSOAPPart;
     }
 

@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
-import org.apache.axiom.testutils.suite.TestCaseEx;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 public abstract class OMSourcedElementVariant {
     public static final OMSourcedElementVariant[] INSTANCES = {
@@ -47,8 +47,8 @@ public abstract class OMSourcedElementVariant {
             }
         },
         new OMSourcedElementVariant("lossy-prefix", false, false, true) {
-            public void addTestProperties(TestCaseEx test) {
-                test.addTestProperty("method", "QName");
+            public void addTestProperties(MatrixTestCase test) {
+                test.addTestParameter("method", "QName");
             }
 
             public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
@@ -62,8 +62,8 @@ public abstract class OMSourcedElementVariant {
             }
         },
         new OMSourcedElementVariant("lossy-prefix", false, false, true) {
-            public void addTestProperties(TestCaseEx test) {
-                test.addTestProperty("method", "OMNamespace");
+            public void addTestProperties(MatrixTestCase test) {
+                test.addTestParameter("method", "OMNamespace");
             }
 
             public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
@@ -124,7 +124,7 @@ public abstract class OMSourcedElementVariant {
         return prefixRequiresExpansion && (namespaceURIRequiresExpansion || qname.getNamespaceURI().length() != 0);
     }
     
-    public void addTestProperties(TestCaseEx test) {
+    public void addTestProperties(MatrixTestCase test) {
         // Empty. May be overridden in subclasses.
     }
 

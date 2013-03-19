@@ -60,8 +60,8 @@ public class TestChildOrder extends SOAPTestCase {
             }
             buffer.append(inputOrder[i].getType().getSimpleName());
         }
-        addTestProperty("inputOrder", buffer.toString());
-        serializationStrategy.addTestProperties(this);
+        addTestParameter("inputOrder", buffer.toString());
+        serializationStrategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {

@@ -26,13 +26,13 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.Strategies;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 
-public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
+public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",
             "soap11/envelopeMissing.xml", "soap11/haederBodyWrongOrder.xml", "soap11/invalid-faultcode.xml", "soap11/invalid-faultstring.xml",
             "soap11/invalid-faultactor.xml", "soap11/processing-instruction.xml", "soap11/entity-reference.xml",

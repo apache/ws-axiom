@@ -24,7 +24,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.XMLReader;
 
 /**
@@ -38,9 +38,9 @@ public class SerializeFromSAXSource implements SerializationStrategy {
         this.cache = cache;
     }
 
-    public void addTestProperties(AxiomTestCase testCase) {
-        testCase.addTestProperty("serializationStrategy", "SAXSource");
-        testCase.addTestProperty("cache", String.valueOf(cache));
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("serializationStrategy", "SAXSource");
+        testCase.addTestParameter("cache", String.valueOf(cache));
     }
 
     public XML serialize(OMContainer container) throws Exception {

@@ -40,7 +40,7 @@ public class TestGetXMLStreamReaderClose extends AxiomTestCase {
     public TestGetXMLStreamReaderClose(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestProperty("cache", String.valueOf(cache));
+        addTestParameter("cache", String.valueOf(cache));
     }
 
     protected void runTest() throws Throwable {

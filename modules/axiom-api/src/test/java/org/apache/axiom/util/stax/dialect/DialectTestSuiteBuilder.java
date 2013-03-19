@@ -25,9 +25,9 @@ import java.util.List;
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
-import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
-public class DialectTestSuiteBuilder extends TestSuiteBuilder {
+public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final List/*<StAXImplementation>*/ implementations = new ArrayList();
     
     public void addImplementation(StAXImplementation implementation) {

@@ -25,17 +25,17 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.RootWhitespaceFilter;
-import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.strategy.Strategy;
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.InputSource;
 
 /**
  * Extracts an {@link OMContainer} instance from a test file.
  */
-public interface OMContainerFactory extends Strategy {
+public interface OMContainerFactory extends Dimension {
     OMContainerFactory DOCUMENT = new OMContainerFactory() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("container", "document");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("container", "document");
         }
 
         public InputSource getControl(InputStream testFileContent) {

@@ -40,7 +40,7 @@ public class TestCreateSOAPFaultChild extends SOAPTestCase {
     public TestCreateSOAPFaultChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
         super(metaFactory, spec);
         this.type = type;
-        type.addTestProperties(this);
+        type.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {

@@ -30,7 +30,8 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,10 +42,10 @@ import org.xml.sax.InputSource;
  * this interface wraps an {@link OMElement} in a container of a specific type ({@link OMDocument}
  * or {@link OMElement}) in a specific state.
  */
-public interface ElementContext extends Strategy {
+public interface ElementContext extends Dimension {
     ElementContext ORPHAN = new ElementContext() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("container", "none");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("container", "none");
         }
 
         public OMContainer wrap(OMElement element) {
@@ -60,9 +61,9 @@ public interface ElementContext extends Strategy {
      * The {@link OMElement} is a child of another (programmatically created) {@link OMElement}.
      */
     ElementContext ELEMENT = new ElementContext() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("container", "element");
-            testCase.addTestProperty("complete", "true");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("container", "element");
+            testCase.addTestParameter("complete", "true");
         }
 
         public OMContainer wrap(OMElement element) {
@@ -88,9 +89,9 @@ public interface ElementContext extends Strategy {
      * is incomplete.
      */
     ElementContext INCOMPLETE_ELEMENT = new ElementContext() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("container", "element");
-            testCase.addTestProperty("complete", "false");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("container", "element");
+            testCase.addTestParameter("complete", "false");
         }
         
         public OMContainer wrap(OMElement element) {

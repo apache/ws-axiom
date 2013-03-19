@@ -54,8 +54,8 @@ public class TestSerialization extends AxiomTestCase {
         this.parent = parent;
         this.children = children;
         this.expected = expected;
-        addTestProperty("parent", parent);
-        addTestProperty("children", children);
+        addTestParameter("parent", parent);
+        addTestParameter("children", children);
     }
     
     private static OMNamespace createNamespace(OMFactory factory, String type) {

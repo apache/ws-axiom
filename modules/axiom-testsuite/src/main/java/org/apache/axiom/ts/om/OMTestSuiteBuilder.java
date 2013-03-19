@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
-import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
@@ -43,7 +43,7 @@ import org.apache.axiom.ts.strategy.serialization.SerializeToOutputStream;
 import org.apache.axiom.ts.strategy.serialization.SerializeToWriter;
 import org.apache.axiom.ts.strategy.serialization.SerializeToXMLStreamWriter;
 
-public class OMTestSuiteBuilder extends TestSuiteBuilder {
+public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final BuilderFactory[] builderFactories = {
         BuilderFactory.PARSER,
         BuilderFactory.DOM,

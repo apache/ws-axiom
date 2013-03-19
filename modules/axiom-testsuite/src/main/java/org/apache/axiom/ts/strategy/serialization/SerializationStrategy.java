@@ -19,12 +19,12 @@
 package org.apache.axiom.ts.strategy.serialization;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.ts.strategy.Strategy;
+import org.apache.axiom.testutils.suite.Dimension;
 
 /**
  * Defines a strategy to serialize an {@link OMContainer} instance to XML.
  */
-public interface SerializationStrategy extends Strategy {
+public interface SerializationStrategy extends Dimension {
     /**
      * Serialize the given {@link OMContainer}.
      * 

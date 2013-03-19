@@ -37,7 +37,7 @@ public class TestRemoveChildren extends AxiomTestCase {
     public TestRemoveChildren(OMMetaFactory metaFactory, boolean complete) {
         super(metaFactory);
         this.complete = complete;
-        addTestProperty("complete", Boolean.toString(complete));
+        addTestParameter("complete", Boolean.toString(complete));
     }
 
     protected void runTest() throws Throwable {

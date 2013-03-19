@@ -32,7 +32,7 @@ public class BadInputTest extends AxiomTestCase {
     public BadInputTest(OMMetaFactory metaFactory, String file) {
         super(metaFactory);
         this.file = file;
-        addTestProperty("file", file);
+        addTestParameter("file", file);
     }
 
     protected void runTest() throws Throwable {

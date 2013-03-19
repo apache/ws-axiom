@@ -47,9 +47,9 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
             SOAPSpec spec, QName qname, boolean supportsOptimization) {
         super(metaFactory, spec);
         this.qname = qname;
-        addTestProperty("prefix", qname.getPrefix());
-        addTestProperty("uri", qname.getNamespaceURI());
-        addTestProperty("localName", qname.getLocalPart());
+        addTestParameter("prefix", qname.getPrefix());
+        addTestParameter("uri", qname.getNamespaceURI());
+        addTestParameter("localName", qname.getLocalPart());
         this.supportsOptimization = supportsOptimization;
     }
 

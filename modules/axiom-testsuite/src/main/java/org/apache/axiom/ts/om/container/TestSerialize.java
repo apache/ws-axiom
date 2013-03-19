@@ -43,8 +43,8 @@ public class TestSerialize extends ConformanceTestCase {
         super(metaFactory, file);
         this.containerFactory = containerFactory;
         this.serializationStrategy = serializationStrategy;
-        containerFactory.addTestProperties(this);
-        serializationStrategy.addTestProperties(this);
+        containerFactory.addTestParameters(this);
+        serializationStrategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {

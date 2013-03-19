@@ -36,7 +36,7 @@ public abstract class EventSpecificTestCase extends DialectTestCase {
     public EventSpecificTestCase(StAXImplementation staxImpl, int event) {
         super(staxImpl);
         this.event = event;
-        addTestProperty("event", XMLEventUtils.getEventTypeString(event));
+        addTestParameter("event", XMLEventUtils.getEventTypeString(event));
     }
 
     protected final void runTest() throws Throwable {

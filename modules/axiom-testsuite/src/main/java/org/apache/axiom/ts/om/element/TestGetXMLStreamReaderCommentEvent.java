@@ -37,8 +37,8 @@ public class TestGetXMLStreamReaderCommentEvent extends AxiomTestCase {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
-        builderFactory.addTestProperties(this);
-        addTestProperty("cache", Boolean.toString(cache));
+        builderFactory.addTestParameters(this);
+        addTestParameter("cache", Boolean.toString(cache));
     }
 
     protected void runTest() throws Throwable {

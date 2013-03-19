@@ -16,10 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy;
+package org.apache.axiom.testutils.suite;
 
-import org.apache.axiom.ts.AxiomTestCase;
-
-public interface Strategy {
-    void addTestProperties(AxiomTestCase testCase);
+public interface Dimension {
+    void addTestParameters(MatrixTestCase testCase);
 }

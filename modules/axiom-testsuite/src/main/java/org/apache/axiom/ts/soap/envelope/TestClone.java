@@ -27,7 +27,7 @@ public class TestClone extends CloneTestCase {
     public TestClone(OMMetaFactory metaFactory, SOAPSpec spec, String file) {
         super(metaFactory, spec);
         this.file = file;
-        addTestProperty("file", file);
+        addTestParameter("file", file);
     }
 
     protected void runTest() throws Throwable {

@@ -37,8 +37,8 @@ public class TestGetXMLStreamReaderGetElementTextFromParser extends AxiomTestCas
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
-        builderFactory.addTestProperties(this);
-        addTestProperty("cache", Boolean.toString(cache));
+        builderFactory.addTestParameters(this);
+        addTestParameter("cache", Boolean.toString(cache));
     }
 
     protected void runTest() throws Throwable {

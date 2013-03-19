@@ -40,7 +40,7 @@ public class TestGetEncodingFromDetection extends DialectTestCase {
         super(staxImpl);
         this.javaEncoding = javaEncoding;
         this.xmlEncodings = new HashSet(Arrays.asList(xmlEncodings));
-        addTestProperty("javaEncoding", javaEncoding);
+        addTestParameter("javaEncoding", javaEncoding);
     }
     
     public TestGetEncodingFromDetection(StAXImplementation staxImpl, String javaEncoding, String xmlEncoding) {

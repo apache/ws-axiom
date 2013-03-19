@@ -40,8 +40,8 @@ public class TestDetach extends AxiomTestCase {
         super(metaFactory);
         this.document = document;
         this.build = build;
-        addTestProperty("document", Boolean.toString(document));
-        addTestProperty("build", Boolean.toString(build));
+        addTestParameter("document", Boolean.toString(document));
+        addTestParameter("build", Boolean.toString(build));
     }
 
     protected void runTest() throws Throwable {

@@ -82,13 +82,13 @@ public class TestSerialize extends AxiomTestCase {
         this.serializationStrategy = serializationStrategy;
         this.serializeParent = serializeParent;
         this.count = count;
-        addTestProperty("push", String.valueOf(push));
-        addTestProperty("destructive", String.valueOf(destructive));
-        elementContext.addTestProperties(this);
-        expansionStrategy.addTestProperties(this);
-        serializationStrategy.addTestProperties(this);
-        addTestProperty("serializeParent", String.valueOf(serializeParent));
-        addTestProperty("count", String.valueOf(count));
+        addTestParameter("push", String.valueOf(push));
+        addTestParameter("destructive", String.valueOf(destructive));
+        elementContext.addTestParameters(this);
+        expansionStrategy.addTestParameters(this);
+        serializationStrategy.addTestParameters(this);
+        addTestParameter("serializeParent", String.valueOf(serializeParent));
+        addTestParameter("count", String.valueOf(count));
     }
 
     protected void runTest() throws Throwable {

@@ -35,7 +35,7 @@ public class TestCloneNodeWithAttributes extends DOMTestCase {
     public TestCloneNodeWithAttributes(DocumentBuilderFactory dbf, boolean deep) {
         super(dbf);
         this.deep = deep;
-        addTestProperty("deep", String.valueOf(deep));
+        addTestParameter("deep", String.valueOf(deep));
     }
 
     protected void runTest() throws Throwable {

@@ -36,8 +36,8 @@ public class TestSetAttributeNS extends DOMTestCase {
         super(dbf);
         this.qname = qname;
         this.value = value;
-        addTestProperty("ns", qname.getNamespaceURI());
-        addTestProperty("name", DOMUtils.getQualifiedName(qname));
+        addTestParameter("ns", qname.getNamespaceURI());
+        addTestParameter("name", DOMUtils.getQualifiedName(qname));
     }
 
     protected void runTest() throws Throwable {

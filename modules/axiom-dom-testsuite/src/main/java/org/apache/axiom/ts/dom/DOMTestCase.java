@@ -20,9 +20,9 @@ package org.apache.axiom.ts.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.suite.TestCaseEx;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public abstract class DOMTestCase extends TestCaseEx {
+public abstract class DOMTestCase extends MatrixTestCase {
     protected final DocumentBuilderFactory dbf;
 
     public DOMTestCase(DocumentBuilderFactory dbf) {

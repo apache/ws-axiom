@@ -30,7 +30,7 @@ public class MessageTest extends AxiomTestCase {
     public MessageTest(OMMetaFactory metaFactory, String file) {
         super(metaFactory);
         this.file = file;
-        addTestProperty("file", file);
+        addTestParameter("file", file);
     }
 
     protected void runTest() throws Throwable {

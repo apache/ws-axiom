@@ -27,18 +27,18 @@ import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.strategy.Strategy;
 
-public interface SOAPFaultChild extends Strategy {
+public interface SOAPFaultChild extends Dimension {
     SOAPFaultChild CODE = new SOAPFaultChild() {
         public Class getType() {
             return SOAPFaultCode.class;
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("type", "SOAPFaultCode");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("type", "SOAPFaultCode");
         }
 
         public QName getQName(SOAPSpec spec) {
@@ -67,8 +67,8 @@ public interface SOAPFaultChild extends Strategy {
             return SOAPFaultReason.class;
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("type", "SOAPFaultReason");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("type", "SOAPFaultReason");
         }
 
         public QName getQName(SOAPSpec spec) {
@@ -97,8 +97,8 @@ public interface SOAPFaultChild extends Strategy {
             return SOAPFaultRole.class;
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("type", "SOAPFaultRole");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("type", "SOAPFaultRole");
         }
 
         public QName getQName(SOAPSpec spec) {
@@ -127,8 +127,8 @@ public interface SOAPFaultChild extends Strategy {
             return SOAPFaultDetail.class;
         }
 
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("type", "SOAPFaultDetail");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("type", "SOAPFaultDetail");
         }
 
         public QName getQName(SOAPSpec spec) {

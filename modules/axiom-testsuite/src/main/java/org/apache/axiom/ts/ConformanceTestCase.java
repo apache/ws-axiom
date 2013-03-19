@@ -32,6 +32,6 @@ public abstract class ConformanceTestCase extends AxiomTestCase {
     public ConformanceTestCase(OMMetaFactory metaFactory, ConformanceTestFile file) {
         super(metaFactory);
         this.file = file;
-        addTestProperty("file", file.getShortName());
+        addTestParameter("file", file.getShortName());
     }
 }

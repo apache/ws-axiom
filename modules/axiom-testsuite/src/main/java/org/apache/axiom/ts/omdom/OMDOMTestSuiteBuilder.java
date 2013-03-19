@@ -19,7 +19,7 @@
 package org.apache.axiom.ts.omdom;
 
 import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
 /**
  * Builds a test suite for Axiom implementations that also implement DOM. Note that this test suite
@@ -27,7 +27,7 @@ import org.apache.axiom.testutils.suite.TestSuiteBuilder;
  * with a standard DOM implementation) should go to
  * {@link org.apache.axiom.ts.dom.DOMTestSuiteBuilder}.
  */
-public class OMDOMTestSuiteBuilder extends TestSuiteBuilder {
+public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final DOMMetaFactory metaFactory;
 
     public OMDOMTestSuiteBuilder(DOMMetaFactory metaFactory) {

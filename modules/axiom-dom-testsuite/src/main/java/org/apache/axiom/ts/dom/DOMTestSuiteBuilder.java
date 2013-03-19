@@ -23,9 +23,9 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
-import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
-public class DOMTestSuiteBuilder extends TestSuiteBuilder {
+public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final QName[] validAttrQNames = new QName[] {
         new QName("urn:ns2", "attr", "q"),
         new QName("", "attr", ""),

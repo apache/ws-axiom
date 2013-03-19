@@ -28,7 +28,13 @@ import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 
-public abstract class TestSuiteBuilder {
+/**
+ * Builds a matrix test suite. This is an abstract class. Subclasses are expected to implement the
+ * {@link #addTests()} method to generate a set of {@link MatrixTestCase} instances. For each type
+ * of {@link MatrixTextCase}, the {@link #addTests()} method should add instances for all allowed
+ * parameter values. The resulting set can then be filtered using LDAP filter expressions.
+ */
+public abstract class MatrixTestSuiteBuilder {
     private static class Exclude {
         private final Class testClass;
         private final Filter filter;
@@ -38,9 +44,9 @@ public abstract class TestSuiteBuilder {
             this.filter = filter;
         }
         
-        public boolean accept(TestCaseEx test) {
+        public boolean accept(MatrixTestCase test) {
             return (testClass == null || test.getClass().equals(testClass))
-                    && (filter == null || filter.match(test.getTestProperties()));
+                    && (filter == null || filter.match(test.getTestParameters()));
         }
     }
     
@@ -71,7 +77,7 @@ public abstract class TestSuiteBuilder {
         return suite;
     }
     
-    protected final void addTest(TestCaseEx test) {
+    protected final void addTest(MatrixTestCase test) {
         for (Iterator it = excludes.iterator(); it.hasNext(); ) {
             if (((Exclude)it.next()).accept(test)) {
                 return;

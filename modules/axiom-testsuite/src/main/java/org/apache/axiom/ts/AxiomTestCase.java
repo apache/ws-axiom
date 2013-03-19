@@ -25,11 +25,11 @@ import javax.xml.stream.XMLInputFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.testutils.suite.TestCaseEx;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.commons.io.output.NullOutputStream;
 
-public abstract class AxiomTestCase extends TestCaseEx {
+public abstract class AxiomTestCase extends MatrixTestCase {
     public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             // For the tests, preserve as much of the syntactic structure of the test documents

@@ -32,7 +32,7 @@ public class TestCloneNode extends DOMTestCase {
     public TestCloneNode(DocumentBuilderFactory dbf, ConformanceTestFile file) {
         super(dbf);
         this.file = file;
-        addTestProperty("file", file.getShortName());
+        addTestParameter("file", file.getShortName());
     }
 
     protected void runTest() throws Throwable {

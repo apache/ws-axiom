@@ -40,9 +40,9 @@ public class TestSerialize extends AxiomTestCase {
         this.file = file;
         this.expansionStrategy = expansionStrategy;
         this.serializationStrategy = serializationStrategy;
-        addTestProperty("file", file);
-        expansionStrategy.addTestProperties(this);
-        serializationStrategy.addTestProperties(this);
+        addTestParameter("file", file);
+        expansionStrategy.addTestParameters(this);
+        serializationStrategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {

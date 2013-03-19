@@ -30,7 +30,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.DocumentElementExtractor;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -42,9 +42,9 @@ public class OMElementFactory implements OMContainerFactory {
         this.detached = detached;
     }
 
-    public void addTestProperties(AxiomTestCase testCase) {
-        testCase.addTestProperty("container", "element");
-        testCase.addTestProperty("detached", Boolean.toString(detached));
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("container", "element");
+        testCase.addTestParameter("detached", Boolean.toString(detached));
     }
 
     public InputSource getControl(InputStream testFileContent) throws Exception {

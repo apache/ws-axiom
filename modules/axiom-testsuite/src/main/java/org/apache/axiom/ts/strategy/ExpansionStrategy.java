@@ -23,7 +23,8 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 import org.junit.Assert;
 
@@ -31,13 +32,13 @@ import org.junit.Assert;
  * Defines if and how an {@link OMContainer} is to be built or expanded during the execution of a
  * test case.
  */
-public interface ExpansionStrategy extends Strategy {
+public interface ExpansionStrategy extends Dimension {
     /**
      * Don't build the {@link OMContainer}.
      */
     ExpansionStrategy DONT_EXPAND = new ExpansionStrategy() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("expand", "no");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("expand", "no");
         }
 
         public void apply(OMContainer container) {
@@ -62,8 +63,8 @@ public interface ExpansionStrategy extends Strategy {
      * Partially build the {@link OMContainer}.
      */
     ExpansionStrategy PARTIAL = new ExpansionStrategy() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("expand", "partially");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("expand", "partially");
         }
         
         public void apply(OMContainer container) {
@@ -87,8 +88,8 @@ public interface ExpansionStrategy extends Strategy {
      * Fully build the {@link OMContainer}.
      */
     ExpansionStrategy FULL = new ExpansionStrategy() {
-        public void addTestProperties(AxiomTestCase testCase) {
-            testCase.addTestProperty("expand", "fully");
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("expand", "fully");
         }
         
         public void apply(OMContainer container) {

@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
  * Serializes an {@link OMContainer} using {@link OMContainer#serialize(XMLStreamWriter)} or
@@ -37,9 +37,9 @@ public class SerializeToXMLStreamWriter implements SerializationStrategy {
         this.cache = cache;
     }
 
-    public void addTestProperties(AxiomTestCase testCase) {
-        testCase.addTestProperty("serializationStrategy", "XMLStreamWriter");
-        testCase.addTestProperty("cache", String.valueOf(cache));
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("serializationStrategy", "XMLStreamWriter");
+        testCase.addTestParameter("cache", String.valueOf(cache));
     }
 
     public XML serialize(OMContainer container) throws Exception {

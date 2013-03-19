@@ -31,9 +31,9 @@ public class TestGetFaultNoFault extends SOAPTestCase {
     public TestGetFaultNoFault(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
         this.qname = qname;
-        addTestProperty("prefix", qname.getPrefix());
-        addTestProperty("uri", qname.getNamespaceURI());
-        addTestProperty("localName", qname.getLocalPart());
+        addTestParameter("prefix", qname.getPrefix());
+        addTestParameter("uri", qname.getNamespaceURI());
+        addTestParameter("localName", qname.getLocalPart());
     }
 
     protected void runTest() throws Throwable {

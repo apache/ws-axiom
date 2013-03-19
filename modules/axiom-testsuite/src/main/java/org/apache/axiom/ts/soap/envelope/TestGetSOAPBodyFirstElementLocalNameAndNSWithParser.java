@@ -44,8 +44,8 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
     public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
         this.qname = qname;
-        addTestProperty("prefix", qname.getPrefix());
-        addTestProperty("uri", qname.getNamespaceURI());
+        addTestParameter("prefix", qname.getPrefix());
+        addTestParameter("uri", qname.getNamespaceURI());
     }
 
     protected void runTest() throws Throwable {

@@ -36,7 +36,7 @@ public class TestGetNamespaceContext extends DialectTestCase {
     public TestGetNamespaceContext(StAXImplementation staxImpl, ConformanceTestFile testResource) {
         super(staxImpl);
         this.testResource = testResource;
-        addTestProperty("file", testResource.getShortName());
+        addTestParameter("file", testResource.getShortName());
     }
 
     // Copy & paste from XMLStreamReaderComparator
