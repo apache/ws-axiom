@@ -19,6 +19,8 @@
 package org.apache.axiom.ts.om.sourcedelement.push;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
@@ -26,42 +28,39 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
+import org.junit.Assert;
 
 /**
  * Tests that {@link DataHandlerWriter#writeDataHandler(DataHandler, String, boolean)} creates an
  * {@link OMText} backed by a {@link DataHandler}.
  */
-public class TestWriteDataHandler extends AxiomTestCase {
-    public TestWriteDataHandler(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
+    private final DataHandler dh = new DataHandler("test", "text/plain");
+    
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "writeDataHandler");
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        final DataHandler dh = new DataHandler("test", "text/plain");
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                writer.writeStartElement(null, "root", null);
-                try {
-                    XMLStreamWriterUtils.writeDataHandler(writer, dh, null, true);
-                } catch (IOException ex) {
-                    throw new XMLStreamException(ex);
-                }
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+    public Map getNamespaceContext() {
+        return Collections.EMPTY_MAP;
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        writer.writeStartElement(null, "root", null);
+        try {
+            XMLStreamWriterUtils.writeDataHandler(writer, dh, null, true);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
+        writer.writeEndElement();
+    }
+
+    public void validate(OMElement element, Map testContext) {
         OMText child = (OMText)element.getFirstOMChild();
-        assertTrue(child.isBinary());
-        assertSame(dh, child.getDataHandler());
+        Assert.assertTrue(child.isBinary());
+        Assert.assertSame(dh, child.getDataHandler());
     }
 }

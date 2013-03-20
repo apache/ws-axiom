@@ -18,39 +18,38 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.Assert;
 
-public class TestWriteCData extends AxiomTestCase {
-    public TestWriteCData(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class WriteCDataScenario implements PushOMDataSourceScenario {
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "writeCData");
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                writer.writeStartElement(null, "root", null);
-                writer.writeCData("content");
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+    public Map getNamespaceContext() {
+        return Collections.EMPTY_MAP;
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        writer.writeStartElement(null, "root", null);
+        writer.writeCData("content");
+        writer.writeEndElement();
+    }
+
+    public void validate(OMElement element, Map testContext) {
         OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMText);
+        Assert.assertTrue(child instanceof OMText);
         OMText text = (OMText)child;
-        assertEquals(OMNode.CDATA_SECTION_NODE, text.getType());
-        assertEquals("content", text.getText());
+        Assert.assertEquals(OMNode.CDATA_SECTION_NODE, text.getType());
+        Assert.assertEquals("content", text.getText());
     }
 }

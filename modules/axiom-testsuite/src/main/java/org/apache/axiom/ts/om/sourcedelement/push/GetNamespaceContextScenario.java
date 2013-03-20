@@ -18,43 +18,39 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#getNamespaceContext()} gives access to pre-existing namespace
  * bindings (defined by the ancestors of the {@link OMSourcedElement}).
  */
-public class TestGetNamespaceContext extends AxiomTestCase {
-    public TestGetNamespaceContext(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "getNamespaceContext");
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement parent = factory.createOMElement("parent", factory.createOMNamespace("urn:test", "p"));
-        final String[] resultHolder = new String[1];
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                resultHolder[0] = writer.getNamespaceContext().getNamespaceURI("p");
-                writer.writeStartElement(null, "root", null);
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
-        parent.addChild(element);
+    public Map getNamespaceContext() {
+        return Collections.singletonMap("p", "urn:test");
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        testContext.put("uri", writer.getNamespaceContext().getNamespaceURI("p"));
+        writer.writeStartElement(null, "root", null);
+        writer.writeEndElement();
+    }
+
+    public void validate(OMElement element, Map testContext) {
         // Expand element
         element.getFirstOMChild();
-        assertEquals("urn:test", resultHolder[0]);
+        Assert.assertEquals("urn:test", testContext.get("uri"));
     }
 }

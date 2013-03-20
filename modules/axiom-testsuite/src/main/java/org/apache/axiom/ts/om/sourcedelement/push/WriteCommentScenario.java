@@ -18,37 +18,36 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.Assert;
 
-public class TestWriteComment extends AxiomTestCase {
-    public TestWriteComment(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class WriteCommentScenario implements PushOMDataSourceScenario {
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "writeComment");
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                writer.writeStartElement(null, "root", null);
-                writer.writeComment("comment");
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+    public Map getNamespaceContext() {
+        return Collections.EMPTY_MAP;
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        writer.writeStartElement(null, "root", null);
+        writer.writeComment("comment");
+        writer.writeEndElement();
+    }
+
+    public void validate(OMElement element, Map testContext) {
         OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMComment);
-        assertEquals("comment", ((OMComment)child).getValue());
+        Assert.assertTrue(child instanceof OMComment);
+        Assert.assertEquals("comment", ((OMComment)child).getValue());
     }
 }

@@ -18,37 +18,36 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#writeAttribute(String, String)} creates the expected attribute.
  */
-public class TestWriteAttributeNoNamespace extends AxiomTestCase {
-    public TestWriteAttributeNoNamespace(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class WriteAttributeNoNamespaceScenario implements PushOMDataSourceScenario {
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "writeAttributeNoNamespace");
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                writer.writeStartElement("p", "root", "urn:test");
-                writer.writeAttribute("attr", "value");
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
-        assertEquals("value", element.getAttributeValue(new QName("attr")));
+    public Map getNamespaceContext() {
+        return Collections.EMPTY_MAP;
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        writer.writeStartElement("p", "root", "urn:test");
+        writer.writeAttribute("attr", "value");
+        writer.writeEndElement();
+    }
+
+    public void validate(OMElement element, Map testContext) {
+        Assert.assertEquals("value", element.getAttributeValue(new QName("attr")));
     }
 }

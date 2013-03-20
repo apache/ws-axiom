@@ -18,39 +18,38 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.Assert;
 
-public class TestWriteProcessingInstruction1 extends AxiomTestCase {
-    public TestWriteProcessingInstruction1(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScenario {
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "writeProcessingInstruction1");
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                writer.writeStartElement(null, "root", null);
-                writer.writeProcessingInstruction("target");
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+    public Map getNamespaceContext() {
+        return Collections.EMPTY_MAP;
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        writer.writeStartElement(null, "root", null);
+        writer.writeProcessingInstruction("target");
+        writer.writeEndElement();
+    }
+    
+    public void validate(OMElement element, Map testContext) {
         OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMProcessingInstruction);
+        Assert.assertTrue(child instanceof OMProcessingInstruction);
         OMProcessingInstruction pi = (OMProcessingInstruction)child;
-        assertEquals("target", pi.getTarget());
-        assertEquals("", pi.getValue());
+        Assert.assertEquals("target", pi.getTarget());
+        Assert.assertEquals("", pi.getValue());
     }
 }

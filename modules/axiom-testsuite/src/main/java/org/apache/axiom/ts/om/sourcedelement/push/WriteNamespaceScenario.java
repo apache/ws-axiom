@@ -18,60 +18,63 @@
  */
 package org.apache.axiom.ts.om.sourcedelement.push;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.junit.Assert;
 
 /**
  * Tests that {@link XMLStreamWriter#writeNamespace(String, String)} creates the expected namespace
  * declaration.
  */
-public class TestWriteNamespace extends AxiomTestCase {
+public class WriteNamespaceScenario implements PushOMDataSourceScenario {
     private final String prefix;
     private final String namespaceURI;
     
-    public TestWriteNamespace(OMMetaFactory metaFactory, String prefix, String namespaceURI) {
-        super(metaFactory);
+    public WriteNamespaceScenario(String prefix, String namespaceURI) {
         this.prefix = prefix;
         this.namespaceURI = namespaceURI;
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                writer.writeStartElement("_p_", "root", "urn:__test__");
-                writer.writeNamespace("_p_", "urn:test");
-                writer.writeNamespace(prefix, namespaceURI);
-                writer.writeEndElement();
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+    public void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("scenario", "writeNamespace");
+        testCase.addTestParameter("prefix", prefix);
+        testCase.addTestParameter("uri", namespaceURI);
+    }
+
+    public Map getNamespaceContext() {
+        return Collections.EMPTY_MAP;
+    }
+
+    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+        writer.writeStartElement("_p_", "root", "urn:__test__");
+        writer.writeNamespace("_p_", "urn:test");
+        writer.writeNamespace(prefix, namespaceURI);
+        writer.writeEndElement();
+    }
+
+    public void validate(OMElement element, Map testContext) {
         OMNamespace decl = null;
         Iterator it = element.getAllDeclaredNamespaces();
         while (it.hasNext()) {
             OMNamespace ns = (OMNamespace)it.next();
             if (!ns.getPrefix().equals("_p_")) {
                 if (decl != null) {
-                    fail("Found unexpected namespace declaration");
+                    Assert.fail("Found unexpected namespace declaration");
                 } else {
                     decl = ns;
                 }
             }
         }
-        assertNotNull(decl);
-        assertEquals(prefix, decl.getPrefix());
-        assertEquals(namespaceURI, decl.getNamespaceURI());
+        Assert.assertNotNull(decl);
+        Assert.assertEquals(prefix, decl.getPrefix());
+        Assert.assertEquals(namespaceURI, decl.getNamespaceURI());
     }
 }
