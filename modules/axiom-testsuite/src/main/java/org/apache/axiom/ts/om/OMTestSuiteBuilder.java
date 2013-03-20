@@ -38,11 +38,6 @@ import org.apache.axiom.ts.strategy.ElementContext;
 import org.apache.axiom.ts.strategy.ExpansionStrategy;
 import org.apache.axiom.ts.strategy.Strategies;
 import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
-import org.apache.axiom.ts.strategy.serialization.SerializeFromSAXSource;
-import org.apache.axiom.ts.strategy.serialization.SerializeFromXMLStreamReader;
-import org.apache.axiom.ts.strategy.serialization.SerializeToOutputStream;
-import org.apache.axiom.ts.strategy.serialization.SerializeToWriter;
-import org.apache.axiom.ts.strategy.serialization.SerializeToXMLStreamWriter;
 
 public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final BuilderFactory[] builderFactories = {
