@@ -456,6 +456,11 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNextOMSiblingIncomplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetReaderException(metaFactory));
+            for (int i=0; i<PushOMDataSourceScenario.INSTANCES.length; i++) {
+                PushOMDataSourceScenario scenario = PushOMDataSourceScenario.INSTANCES[i];
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(metaFactory, scenario, false));
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(metaFactory, scenario, true));
+            }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestInputStreamDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));

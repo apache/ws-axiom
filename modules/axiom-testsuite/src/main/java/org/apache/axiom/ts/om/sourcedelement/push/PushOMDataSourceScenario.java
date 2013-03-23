@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.sourcedelement.push;
 
 import java.util.Map;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -40,6 +41,7 @@ public interface PushOMDataSourceScenario extends Dimension {
             new WriteCommentScenario(),
             new WriteDataHandlerScenario(),
             new WriteDataHandlerProviderScenario(),
+            new WriteEmptyElementScenario(),
             new WriteEmptyElementAutoPrefixScenario(),
             new WriteNamespaceScenario("", ""),
             new WriteNamespaceScenario("", "urn:test"),
@@ -64,7 +66,7 @@ public interface PushOMDataSourceScenario extends Dimension {
      *            the {@link XMLStreamWriter}
      * @param testContext
      *            a map to store context information for the current test case execution; the same
-     *            object is passed to {@link #validate(OMElement, Map)}
+     *            object is passed to {@link #validate(OMElement, boolean, Map)}
      * @throws XMLStreamException
      */
     void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException;
@@ -75,9 +77,15 @@ public interface PushOMDataSourceScenario extends Dimension {
      * @param element
      *            the {@link OMElement} representing the XML data produced by
      *            {@link #serialize(XMLStreamWriter, Map)}
+     * @param dataHandlersPreserved
+     *            <code>true</code> if {@link DataHandler} objects written to the
+     *            {@link XMLStreamWriter} are expected to have been preserved as is;
+     *            <code>false</code> if they are expected to have been transformed to base64 encoded
+     *            character data
      * @param testContext
      *            a map to store context information for the current test case execution; the same
      *            object is passed to {@link #serialize(XMLStreamWriter, Map)}
+     * @throws Throwable
      */
-    void validate(OMElement element, Map testContext);
+    void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable;
 }

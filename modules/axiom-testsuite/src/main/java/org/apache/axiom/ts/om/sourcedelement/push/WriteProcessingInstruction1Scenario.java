@@ -45,7 +45,7 @@ public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScen
         writer.writeEndElement();
     }
     
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMProcessingInstruction);
         OMProcessingInstruction pi = (OMProcessingInstruction)child;

@@ -70,9 +70,11 @@ final class SAXHelper {
         String elementLocalName = (String)elementNameStack.pop();
         String elementURI = (String)elementNameStack.pop();
         contentHandler.endElement(elementURI, elementLocalName, elementQName);
-        for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
-            contentHandler.endPrefixMapping(nsContext.getPrefix(i));
+        if (nsContext != null) {
+            for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
+                contentHandler.endPrefixMapping(nsContext.getPrefix(i));
+            }
+            nsContext.endScope();
         }
-        nsContext.endScope();
     }
 }

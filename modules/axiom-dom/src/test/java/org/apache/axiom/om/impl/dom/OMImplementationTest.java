@@ -34,6 +34,7 @@ import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope1;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
+import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -65,6 +66,11 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: this is not supported yet
         builder.exclude(TestGetXMLStreamReaderWithIncompleteDescendant.class, "(cache=false)");
+        
+        // TODO: not yet working
+        builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(|(scenario=writeDataHandler)(scenario=writeDataHandlerProvider))");
+        // TODO: need to evaluate if the test case is correct
+        builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(&(scenario=getNamespaceContext)(serializeParent=false))");
         
         return builder.build();
     }

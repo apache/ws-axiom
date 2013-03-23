@@ -48,7 +48,7 @@ public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         // Expand element
         element.getFirstOMChild();
         Assert.assertEquals("urn:test", testContext.get("uri"));

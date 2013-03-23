@@ -47,7 +47,7 @@ public class WriteAttributeNoNamespaceScenario implements PushOMDataSourceScenar
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         Assert.assertEquals("value", element.getAttributeValue(new QName("attr")));
     }
 }

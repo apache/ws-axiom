@@ -24,31 +24,38 @@ import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 
 /**
- * Tests the expansion of an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
+ * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} correctly
+ * serializes an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
-public class TestPushOMDataSourceExpansion extends AxiomTestCase {
+public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     private final PushOMDataSourceScenario scenario;
+    private boolean serializeParent;
     
-    public TestPushOMDataSourceExpansion(OMMetaFactory metaFactory, PushOMDataSourceScenario scenario) {
+    public TestGetSAXSourceWithPushOMDataSource(OMMetaFactory metaFactory, PushOMDataSourceScenario scenario, boolean serializeParent) {
         super(metaFactory);
         this.scenario = scenario;
+        this.serializeParent = serializeParent;
         scenario.addTestParameters(this);
+        addTestParameter("serializeParent", Boolean.toString(serializeParent));
     }
 
     protected void runTest() throws Throwable {
         final Map testContext = new HashMap();
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
+        OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
             public void serialize(XMLStreamWriter writer) throws XMLStreamException {
                 scenario.serialize(writer, testContext);
             }
@@ -58,15 +65,23 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
             }
         });
         Iterator it = scenario.getNamespaceContext().entrySet().iterator();
+        OMElement parent;
         if (it.hasNext()) {
             Map.Entry binding = (Map.Entry)it.next();
-            OMElement parent = factory.createOMElement("parent", factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
+            parent = factory.createOMElement("parent", factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
             while (it.hasNext()) {
                 binding = (Map.Entry)it.next();
                 parent.declareNamespace(factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
             }
-            parent.addChild(element);
+        } else {
+            parent = factory.createOMElement("parent", null);
         }
-        scenario.validate(element, true, testContext);
+        parent.addChild(sourcedElement);
+        SAXSource saxSource = (serializeParent ? parent : sourcedElement).getSAXSource(true);
+        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, saxSource, false).getDocumentElement();
+        if (serializeParent) {
+            element = element.getFirstElement();
+        }
+        scenario.validate(element, false, testContext);
     }
 }

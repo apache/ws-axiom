@@ -49,7 +49,7 @@ public class WriteEmptyElementAutoPrefixScenario implements PushOMDataSourceScen
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         OMElement child = element.getFirstElement();
         Assert.assertEquals("p", child.getPrefix());
         Assert.assertEquals("urn:test", child.getNamespaceURI());

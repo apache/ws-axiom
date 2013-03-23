@@ -45,7 +45,7 @@ public class WriteCDataScenario implements PushOMDataSourceScenario {
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);
         OMText text = (OMText)child;

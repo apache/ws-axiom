@@ -29,12 +29,11 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
 
 /**
- * Tests that {@link XMLStreamWriter#writeStartElement(String, String, String)} creates the correct
- * {@link OMElement} if the element uses a default namespace declared on the parent.
+ * Scenario that uses {@link XMLStreamWriter#writeEmptyElement(String, String, String)}.
  */
-public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario implements PushOMDataSourceScenario {
+public class WriteEmptyElementScenario implements PushOMDataSourceScenario {
     public void addTestParameters(MatrixTestCase testCase) {
-        testCase.addTestParameter("scenario", "writeStartElementWithDefaultNamespaceDeclaredOnParent");
+        testCase.addTestParameter("scenario", "writeEmptyElement");
     }
 
     public Map getNamespaceContext() {
@@ -42,20 +41,16 @@ public class WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario imple
     }
 
     public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
-        writer.writeStartElement("", "root", "urn:test");
-        writer.writeDefaultNamespace("urn:test");
-        writer.setDefaultNamespace("urn:test");
-        writer.writeStartElement("", "child", "urn:test");
-        writer.writeCharacters("test");
-        writer.writeEndElement();
+        writer.writeStartElement(null, "root", null);
+        writer.writeNamespace("p", "urn:test");
+        writer.writeEmptyElement("p", "child", "urn:test");
         writer.writeEndElement();
     }
 
     public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         OMElement child = element.getFirstElement();
-        Assert.assertNull(child.getPrefix());
+        Assert.assertEquals("p", child.getPrefix());
         Assert.assertEquals("urn:test", child.getNamespaceURI());
         Assert.assertEquals("child", child.getLocalName());
-        Assert.assertFalse(child.getAllDeclaredNamespaces().hasNext());
     }
 }

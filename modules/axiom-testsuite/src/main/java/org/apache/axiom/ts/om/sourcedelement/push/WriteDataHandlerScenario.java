@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.junit.Assert;
@@ -58,9 +59,14 @@ public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         OMText child = (OMText)element.getFirstOMChild();
-        Assert.assertTrue(child.isBinary());
-        Assert.assertSame(dh, child.getDataHandler());
+        if (dataHandlersPreserved) {
+            Assert.assertTrue(child.isBinary());
+            Assert.assertSame(dh, child.getDataHandler());
+        } else {
+            child.setBinary(true);
+            IOTestUtils.compareStreams(dh.getInputStream(), ((DataHandler)child.getDataHandler()).getInputStream());
+        }
     }
 }

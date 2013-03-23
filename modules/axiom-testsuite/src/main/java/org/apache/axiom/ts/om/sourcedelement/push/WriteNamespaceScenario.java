@@ -60,7 +60,7 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
         OMNamespace decl = null;
         Iterator it = element.getAllDeclaredNamespaces();
         while (it.hasNext()) {

@@ -18,17 +18,22 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push.sax;
 
+import java.io.IOException;
+
+import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
-import org.xml.sax.helpers.AttributesImpl;
 
-final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
+final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandlerWriter {
     private final SAXHelper helper;
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
@@ -48,8 +53,6 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
      * {@link ContentHandler#endPrefixMapping(String)} events.
      */
     private final ScopedNamespaceContext outputNsContext = new ScopedNamespaceContext();
-    
-    private final AttributesImpl attributes = new AttributesImpl();
 
     ContentHandlerXMLStreamWriter(SAXHelper helper, ContentHandler contentHandler, LexicalHandler lexicalHandler,
             ScopedNamespaceContext nsContext) {
@@ -63,8 +66,29 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
         return s == null ? "" : s;
     }
     
+    private String internalGetPrefix(String namespaceURI) throws XMLStreamException {
+        String prefix = writerNsContext.getPrefix(namespaceURI);
+        if (prefix == null) {
+            throw new XMLStreamException("Unbound namespace URI '" + namespaceURI + "'");
+        } else {
+            return prefix;
+        }
+    }
+    
+    public Object getProperty(String name) throws IllegalArgumentException {
+        if (name.equals(DataHandlerWriter.PROPERTY)) {
+            return this;
+        } else {
+            return null;
+        }
+    }
+
     public NamespaceContext getNamespaceContext() {
         return writerNsContext;
+    }
+
+    public void setPrefix(String prefix, String uri) throws XMLStreamException {
+        writerNsContext.setPrefix(normalize(prefix), normalize(uri));
     }
 
     public void setDefaultNamespace(String uri) throws XMLStreamException {
@@ -82,6 +106,36 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
         outputNsContext.startScope();
     }
 
+    public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
+        writeStartElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
+    }
+
+    public void writeEmptyElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
+        finishStartElementIfNecessary();
+        helper.beginStartElement(normalize(prefix), normalize(namespaceURI), localName);
+        try {
+            helper.finishStartElement(contentHandler);
+            helper.writeEndElement(contentHandler, null);
+        } catch (SAXException ex) {
+            throw new SAXExceptionWrapper(ex);
+        }
+    }
+
+    public void writeEmptyElement(String namespaceURI, String localName) throws XMLStreamException {
+        writeEmptyElement(internalGetPrefix(namespaceURI), localName, namespaceURI);
+    }
+
+    public void writeNamespace(String prefix, String namespaceURI) throws XMLStreamException {
+        prefix = normalize(prefix);
+        namespaceURI = normalize(namespaceURI);
+        outputNsContext.setPrefix(prefix, namespaceURI);
+        try {
+            contentHandler.startPrefixMapping(prefix, namespaceURI);
+        } catch (SAXException ex) {
+            throw new SAXExceptionWrapper(ex);
+        }
+    }
+
     public void writeDefaultNamespace(String namespaceURI) throws XMLStreamException {
         namespaceURI = normalize(namespaceURI);
         outputNsContext.setPrefix("", namespaceURI);
@@ -94,6 +148,10 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
 
     public void writeAttribute(String prefix, String namespaceURI, String localName, String value) throws XMLStreamException {
         helper.addAttribute(normalize(prefix), normalize(namespaceURI), localName, "CDATA", value);
+    }
+
+    public void writeAttribute(String localName, String value) throws XMLStreamException {
+        helper.addAttribute("", "", localName, "CDATA", value);
     }
 
     private void finishStartElementIfNecessary() throws XMLStreamException {
@@ -126,28 +184,72 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
         }
     }
 
+    public void writeCData(String data) throws XMLStreamException {
+        finishStartElementIfNecessary();
+        try {
+            if (lexicalHandler != null) {
+                lexicalHandler.startCDATA();
+            }
+            char[] ch = data.toCharArray();
+            contentHandler.characters(ch, 0, ch.length);
+            if (lexicalHandler != null) {
+                lexicalHandler.endCDATA();
+            }
+        } catch (SAXException ex) {
+            throw new SAXExceptionWrapper(ex);
+        }
+    }
+
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
+            throws IOException, XMLStreamException {
+        finishStartElementIfNecessary();
+        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler));
+        dataHandler.writeTo(out);
+        out.complete();
+    }
+
+    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
+            boolean optimize) throws IOException, XMLStreamException {
+        writeDataHandler(dataHandlerProvider.getDataHandler(), contentID, optimize);
+    }
+
+    public void writeComment(String data) throws XMLStreamException {
+        finishStartElementIfNecessary();
+        if (lexicalHandler != null) {
+            try {
+                char[] ch = data.toCharArray();
+                lexicalHandler.comment(ch, 0, ch.length);
+            } catch (SAXException ex) {
+                throw new SAXExceptionWrapper(ex);
+            }
+        }
+    }
+
+    public void writeProcessingInstruction(String target) throws XMLStreamException {
+        finishStartElementIfNecessary();
+        try {
+            contentHandler.processingInstruction(target, "");
+        } catch (SAXException ex) {
+            throw new SAXExceptionWrapper(ex);
+        }
+    }
+
+    public void writeProcessingInstruction(String target, String data) throws XMLStreamException {
+        finishStartElementIfNecessary();
+        try {
+            contentHandler.processingInstruction(target, data);
+        } catch (SAXException ex) {
+            throw new SAXExceptionWrapper(ex);
+        }
+    }
+
     public void flush() throws XMLStreamException {
     }
 
     public void close() throws XMLStreamException {
     }
 
-    public Object getProperty(String name) throws IllegalArgumentException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
     public void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void setPrefix(String prefix, String uri) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeAttribute(String localName, String value) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -158,17 +260,7 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    public void writeCData(String data) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
     public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeComment(String data) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -183,38 +275,12 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    public void writeEmptyElement(String namespaceURI, String localName) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeEmptyElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
     public void writeEndDocument() throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
 
     public void writeEntityRef(String name) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeNamespace(String prefix, String namespaceURI) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeProcessingInstruction(String target) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeProcessingInstruction(String target, String data) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -235,11 +301,6 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeStartElement(String localName) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
