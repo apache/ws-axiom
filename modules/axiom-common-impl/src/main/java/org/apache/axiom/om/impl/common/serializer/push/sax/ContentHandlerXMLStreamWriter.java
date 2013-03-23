@@ -150,6 +150,10 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
         helper.addAttribute(normalize(prefix), normalize(namespaceURI), localName, "CDATA", value);
     }
 
+    public void writeAttribute(String namespaceURI, String localName, String value) throws XMLStreamException {
+        helper.addAttribute(internalGetPrefix(namespaceURI), normalize(namespaceURI), localName, "CDATA", value);
+    }
+
     public void writeAttribute(String localName, String value) throws XMLStreamException {
         helper.addAttribute("", "", localName, "CDATA", value);
     }
@@ -174,14 +178,18 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
         }
     }
 
-    public void writeCharacters(String text) throws XMLStreamException {
+    public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
         finishStartElementIfNecessary();
         try {
-            char[] ch = text.toCharArray();
-            contentHandler.characters(ch, 0, ch.length);
+            contentHandler.characters(text, start, len);
         } catch (SAXException ex) {
             throw new SAXExceptionWrapper(ex);
         }
+    }
+
+    public void writeCharacters(String text) throws XMLStreamException {
+        char[] ch = text.toCharArray();
+        writeCharacters(ch, 0, ch.length);
     }
 
     public void writeCData(String data) throws XMLStreamException {
@@ -243,6 +251,15 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
         }
     }
 
+    public void writeEntityRef(String name) throws XMLStreamException {
+        finishStartElementIfNecessary();
+        try {
+            contentHandler.skippedEntity(name);
+        } catch (SAXException ex) {
+            throw new SAXExceptionWrapper(ex);
+        }
+    }
+
     public void flush() throws XMLStreamException {
     }
 
@@ -250,17 +267,6 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
     }
 
     public void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeAttribute(String namespaceURI, String localName, String value)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeCharacters(char[] text, int start, int len) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -276,11 +282,6 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
     }
 
     public void writeEndDocument() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeEntityRef(String name) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

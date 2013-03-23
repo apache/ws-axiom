@@ -36,13 +36,16 @@ import org.apache.axiom.testutils.suite.Dimension;
 public interface PushOMDataSourceScenario extends Dimension {
     PushOMDataSourceScenario[] INSTANCES = {
             new GetNamespaceContextScenario(),
+            new WriteAttributeAutoPrefixScenario(),
             new WriteAttributeNoNamespaceScenario(),
             new WriteCDataScenario(),
+            new WriteCharactersCharArrayScenario(),
             new WriteCommentScenario(),
             new WriteDataHandlerScenario(),
             new WriteDataHandlerProviderScenario(),
             new WriteEmptyElementScenario(),
             new WriteEmptyElementAutoPrefixScenario(),
+            new WriteEntityRefScenario(),
             new WriteNamespaceScenario("", ""),
             new WriteNamespaceScenario("", "urn:test"),
             new WriteNamespaceScenario("p", "urn:test"),

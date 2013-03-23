@@ -381,6 +381,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public void skippedEntity(String name) throws SAXException {
+        factory.createOMEntityReference(target, name, null, true);
     }
 
     public void startEntity(String name) throws SAXException {
