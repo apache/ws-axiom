@@ -63,19 +63,19 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteStartDocument() {
-        // Do nothing
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument()");
     }
 
     protected void doWriteStartDocument(String encoding, String version) {
-        // Do nothing
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String, String)");
     }
 
     protected void doWriteStartDocument(String version) {
-        // Do nothing
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String)");
     }
 
     protected void doWriteEndDocument() {
-        // Do nothing
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEndDocument()");
     }
 
     protected void doWriteDTD(String dtd) throws XMLStreamException {

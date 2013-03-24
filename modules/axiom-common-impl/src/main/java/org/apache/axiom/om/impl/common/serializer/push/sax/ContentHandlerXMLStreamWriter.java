@@ -266,6 +266,22 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
     public void close() throws XMLStreamException {
     }
 
+    public void writeStartDocument() throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument()");
+    }
+
+    public void writeStartDocument(String version) throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String)");
+    }
+
+    public void writeStartDocument(String encoding, String version) throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartDocument(String, String)");
+    }
+
+    public void writeEndDocument() throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEndDocument()");
+    }
+
     public void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
@@ -277,26 +293,6 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
     }
 
     public void writeEmptyElement(String localName) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeEndDocument() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeStartDocument() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeStartDocument(String version) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeStartDocument(String encoding, String version) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

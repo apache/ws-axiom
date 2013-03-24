@@ -53,6 +53,7 @@ public interface PushOMDataSourceScenario extends Dimension {
             new WriteProcessingInstruction2Scenario(),
             new WriteStartElementAutoPrefixScenario(),
             new WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario(),
+            new WriteStartEndDocumentScenario(),
     };
     
     /**
