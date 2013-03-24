@@ -41,13 +41,13 @@ public class WriteAttributeNoNamespaceScenario implements PushOMDataSourceScenar
         return Collections.EMPTY_MAP;
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("p", "root", "urn:test");
         writer.writeAttribute("attr", "value");
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
+    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         Assert.assertEquals("value", element.getAttributeValue(new QName("attr")));
     }
 }

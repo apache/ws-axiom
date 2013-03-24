@@ -42,15 +42,14 @@ public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
         return Collections.singletonMap("p", "urn:test");
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
-        testContext.put("uri", writer.getNamespaceContext().getNamespaceURI("p"));
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
+        Assert.assertEquals("urn:test", writer.getNamespaceContext().getNamespaceURI("p"));
         writer.writeStartElement(null, "root", null);
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
-        // Expand element
+    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
+        // Just expand the element
         element.getFirstOMChild();
-        Assert.assertEquals("urn:test", testContext.get("uri"));
     }
 }

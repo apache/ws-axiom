@@ -67,28 +67,22 @@ public interface PushOMDataSourceScenario extends Dimension {
      * 
      * @param writer
      *            the {@link XMLStreamWriter}
-     * @param testContext
-     *            a map to store context information for the current test case execution; the same
-     *            object is passed to {@link #validate(OMElement, boolean, Map)}
      * @throws XMLStreamException
      */
-    void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException;
+    void serialize(XMLStreamWriter writer) throws XMLStreamException;
 
     /**
      * Validate the resulting OM tree.
      * 
      * @param element
      *            the {@link OMElement} representing the XML data produced by
-     *            {@link #serialize(XMLStreamWriter, Map)}
+     *            {@link #serialize(XMLStreamWriter)}
      * @param dataHandlersPreserved
      *            <code>true</code> if {@link DataHandler} objects written to the
      *            {@link XMLStreamWriter} are expected to have been preserved as is;
      *            <code>false</code> if they are expected to have been transformed to base64 encoded
      *            character data
-     * @param testContext
-     *            a map to store context information for the current test case execution; the same
-     *            object is passed to {@link #serialize(XMLStreamWriter, Map)}
      * @throws Throwable
      */
-    void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable;
+    void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable;
 }

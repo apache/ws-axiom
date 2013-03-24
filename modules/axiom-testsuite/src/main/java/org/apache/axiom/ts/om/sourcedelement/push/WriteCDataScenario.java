@@ -39,13 +39,13 @@ public class WriteCDataScenario implements PushOMDataSourceScenario {
         return Collections.EMPTY_MAP;
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         writer.writeCData("content");
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
+    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);
         OMText text = (OMText)child;

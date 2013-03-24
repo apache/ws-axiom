@@ -42,7 +42,7 @@ public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenari
         return Collections.EMPTY_MAP;
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         char[] ch = new char[6];
         "test".getChars(0, 4, ch, 0);
@@ -52,7 +52,7 @@ public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenari
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) {
+    public void validate(OMElement element, boolean dataHandlersPreserved) {
         OMNode child = element.getFirstOMChild();
         Assert.assertTrue(child instanceof OMText);
         Assert.assertEquals("test", ((OMText)child).getText());

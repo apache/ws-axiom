@@ -59,7 +59,7 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
         return Collections.EMPTY_MAP;
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         try {
             XMLStreamWriterUtils.writeDataHandler(writer, dhp, null, true);
@@ -69,7 +69,7 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
+    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMText child = (OMText)element.getFirstOMChild();
         if (dataHandlersPreserved) {
             Assert.assertTrue(child.isBinary());

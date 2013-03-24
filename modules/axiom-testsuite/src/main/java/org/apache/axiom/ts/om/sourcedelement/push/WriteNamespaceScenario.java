@@ -53,14 +53,14 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
         return Collections.EMPTY_MAP;
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("_p_", "root", "urn:__test__");
         writer.writeNamespace("_p_", "urn:test");
         writer.writeNamespace(prefix, namespaceURI);
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
+    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNamespace decl = null;
         Iterator it = element.getAllDeclaredNamespaces();
         while (it.hasNext()) {

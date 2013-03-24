@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -37,6 +36,23 @@ import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
  * Tests the expansion of an {@link OMSourcedElement} backed by an {@link AbstractPushOMDataSource}.
  */
 public class TestPushOMDataSourceExpansion extends AxiomTestCase {
+    class PushOMDataSource extends AbstractPushOMDataSource {
+        private boolean expanded;
+        
+        public void serialize(XMLStreamWriter writer) throws XMLStreamException {
+            scenario.serialize(writer);
+            expanded = true;
+        }
+        
+        public boolean isDestructiveWrite() {
+            return false;
+        }
+
+        boolean isExpanded() {
+            return expanded;
+        }
+    }
+    
     private final PushOMDataSourceScenario scenario;
     
     public TestPushOMDataSourceExpansion(OMMetaFactory metaFactory, PushOMDataSourceScenario scenario) {
@@ -46,17 +62,9 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        final Map testContext = new HashMap();
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new AbstractPushOMDataSource() {
-            public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                scenario.serialize(writer, testContext);
-            }
-            
-            public boolean isDestructiveWrite() {
-                return false;
-            }
-        });
+        PushOMDataSource ds = new PushOMDataSource();
+        OMElement element = factory.createOMElement(ds);
         Iterator it = scenario.getNamespaceContext().entrySet().iterator();
         if (it.hasNext()) {
             Map.Entry binding = (Map.Entry)it.next();
@@ -67,6 +75,7 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
             }
             parent.addChild(element);
         }
-        scenario.validate(element, true, testContext);
+        scenario.validate(element, true);
+        assertTrue("Invalid test case: validation didn't expand the OMSourcedElement", ds.isExpanded());
     }
 }

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -53,11 +52,10 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        final Map testContext = new HashMap();
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement sourcedElement = factory.createOMElement(new AbstractPushOMDataSource() {
             public void serialize(XMLStreamWriter writer) throws XMLStreamException {
-                scenario.serialize(writer, testContext);
+                scenario.serialize(writer);
             }
             
             public boolean isDestructiveWrite() {
@@ -82,6 +80,6 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
         if (serializeParent) {
             element = element.getFirstElement();
         }
-        scenario.validate(element, false, testContext);
+        scenario.validate(element, false);
     }
 }

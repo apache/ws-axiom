@@ -40,14 +40,14 @@ public class WriteEmptyElementScenario implements PushOMDataSourceScenario {
         return Collections.EMPTY_MAP;
     }
 
-    public void serialize(XMLStreamWriter writer, Map testContext) throws XMLStreamException {
+    public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(null, "root", null);
         writer.writeNamespace("p", "urn:test");
         writer.writeEmptyElement("p", "child", "urn:test");
         writer.writeEndElement();
     }
 
-    public void validate(OMElement element, boolean dataHandlersPreserved, Map testContext) throws Throwable {
+    public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMElement child = element.getFirstElement();
         Assert.assertEquals("p", child.getPrefix());
         Assert.assertEquals("urn:test", child.getNamespaceURI());
