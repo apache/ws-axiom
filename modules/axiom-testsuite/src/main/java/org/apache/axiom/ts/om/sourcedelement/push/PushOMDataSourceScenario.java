@@ -37,7 +37,7 @@ public interface PushOMDataSourceScenario extends Dimension {
     PushOMDataSourceScenario[] INSTANCES = {
             new GetNamespaceContextScenario(),
             new WriteAttributeAutoPrefixScenario(),
-            new WriteAttributeNoNamespaceScenario(),
+            new WriteAttributeNamespaceUnawareScenario(),
             new WriteCDataScenario(),
             new WriteCharactersCharArrayScenario(),
             new WriteCommentScenario(),
@@ -45,6 +45,7 @@ public interface PushOMDataSourceScenario extends Dimension {
             new WriteDataHandlerProviderScenario(),
             new WriteEmptyElementScenario(),
             new WriteEmptyElementAutoPrefixScenario(),
+            new WriteEmptyElementNamespaceUnawareScenario(),
             new WriteEntityRefScenario(),
             new WriteNamespaceScenario("", ""),
             new WriteNamespaceScenario("", "urn:test"),
@@ -52,6 +53,7 @@ public interface PushOMDataSourceScenario extends Dimension {
             new WriteProcessingInstruction1Scenario(),
             new WriteProcessingInstruction2Scenario(),
             new WriteStartElementAutoPrefixScenario(),
+            new WriteStartElementNamespaceUnawareScenario(),
             new WriteStartElementWithDefaultNamespaceDeclaredOnParentScenario(),
             new WriteStartEndDocumentScenario(),
     };

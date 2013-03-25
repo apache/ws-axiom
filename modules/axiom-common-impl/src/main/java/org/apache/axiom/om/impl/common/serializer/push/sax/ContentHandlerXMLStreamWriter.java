@@ -282,22 +282,20 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
         throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEndDocument()");
     }
 
+    public void writeStartElement(String localName) throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartElement(String)");
+    }
+
+    public void writeEmptyElement(String localName) throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEmptyElement(String)");
+    }
+
     public void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
 
     public void writeDTD(String dtd) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeEmptyElement(String localName) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public void writeStartElement(String localName) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

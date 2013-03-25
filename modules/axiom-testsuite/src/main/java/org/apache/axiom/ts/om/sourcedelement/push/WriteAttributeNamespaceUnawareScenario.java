@@ -32,7 +32,7 @@ import org.junit.Assert;
 /**
  * Tests that {@link XMLStreamWriter#writeAttribute(String, String)} creates the expected attribute.
  */
-public class WriteAttributeNoNamespaceScenario implements PushOMDataSourceScenario {
+public class WriteAttributeNamespaceUnawareScenario implements PushOMDataSourceScenario {
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("scenario", "writeAttributeNoNamespace");
     }
