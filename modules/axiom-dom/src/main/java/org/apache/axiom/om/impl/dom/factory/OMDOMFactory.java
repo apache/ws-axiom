@@ -153,7 +153,7 @@ public class OMDOMFactory implements OMFactoryEx {
                 throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
             }
             ns = null;
-        } else if (qname.getPrefix() != null) {
+        } else if (qname.getPrefix().length() != 0) {
             ns = new OMNamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());
         } else {
             ns = new OMNamespaceImpl(qname.getNamespaceURI(), null);

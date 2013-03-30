@@ -30,8 +30,6 @@ import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant;
 import org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements;
-import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
-import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope1;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
@@ -43,11 +41,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);
         builder.exclude(TestInsertSiblingBeforeOnChild.class);
-        
-        // TODO: DOOM's behavior differs from LLOM's behavior in this case
-        builder.exclude(TestCreateOMElementWithGeneratedPrefix.class, "(variant=QName*)");
-        builder.exclude(TestCreateOMElementWithNamespaceInScope1.class, "(variant=QName,OMContainer)");
-        builder.exclude(TestCreateOMElementWithNamespaceInScope1.class, "(variant=String,OMNamespace,OMContainer)");
         
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document
