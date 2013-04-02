@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy;
+package org.apache.axiom.ts.dimension;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -25,7 +25,7 @@ import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
+import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.junit.Assert;
 
 /**

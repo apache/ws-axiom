@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy;
+package org.apache.axiom.ts.dimension;
 
 import java.io.StringReader;
 import java.io.StringWriter;

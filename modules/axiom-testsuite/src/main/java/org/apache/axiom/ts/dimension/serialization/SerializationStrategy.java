@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.Dimension;

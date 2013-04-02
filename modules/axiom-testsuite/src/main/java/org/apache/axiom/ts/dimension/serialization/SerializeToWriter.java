@@ -16,42 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
-import java.io.ByteArrayOutputStream;
-
-import javax.xml.stream.XMLStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(XMLStreamWriter)} or
- * {@link OMContainer#serializeAndConsume(XMLStreamWriter)}.
+ * Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer)} or
+ * {@link OMContainer#serializeAndConsume(Writer)}.
  */
-public class SerializeToXMLStreamWriter implements SerializationStrategy {
+public class SerializeToWriter implements SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToXMLStreamWriter(boolean cache) {
+    public SerializeToWriter(boolean cache) {
         this.cache = cache;
     }
 
     public void addTestParameters(MatrixTestCase testCase) {
-        testCase.addTestParameter("serializationStrategy", "XMLStreamWriter");
+        testCase.addTestParameter("serializationStrategy", "Writer");
         testCase.addTestParameter("cache", String.valueOf(cache));
     }
 
     public XML serialize(OMContainer container) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(baos);
+        StringWriter sw = new StringWriter();
         if (cache) {
-            container.serialize(writer);
+            container.serialize(sw);
         } else {
-            container.serializeAndConsume(writer);
+            container.serializeAndConsume(sw);
         }
-        writer.close();
-        return new XMLAsByteArray(baos.toByteArray());
+        return new XMLAsString(sw.toString());
     }
 
     public boolean isPush() {

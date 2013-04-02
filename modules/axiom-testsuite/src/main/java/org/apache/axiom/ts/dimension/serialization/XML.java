@@ -16,25 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
+import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringReader;
+
+import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.InputSource;
 
-class XMLAsString implements XML {
-    private final String xml;
-
-    public XMLAsString(String xml) {
-        this.xml = xml;
-    }
-
-    public InputSource getInputSource() {
-        return new InputSource(new StringReader(xml));
-    }
-
-    public void dump(PrintStream out) {
-        out.println(xml);
-    }
+/**
+ * Encapsulates serialized XML data. In contrast to {@link InputSource} or {@link StreamSource} the
+ * data can be read multiple times.
+ */
+public interface XML {
+    /**
+     * Get an {@link InputSource} object for the XML data.
+     * 
+     * @return the XML data as an {@link InputSource} object
+     */
+    InputSource getInputSource();
+    
+    /**
+     * Dump the XML data to the given stream.
+     * 
+     * @param out
+     *            the stream to write the XML data to
+     * @throws IOException 
+     */
+    void dump(PrintStream out) throws IOException;
 }

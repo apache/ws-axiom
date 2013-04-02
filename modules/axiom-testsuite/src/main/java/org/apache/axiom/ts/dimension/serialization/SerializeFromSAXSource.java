@@ -16,38 +16,46 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.ByteArrayOutputStream;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.xml.sax.XMLReader;
 
 /**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer)} or
- * {@link OMContainer#serializeAndConsume(Writer)}.
+ * Serializes an {@link OMContainer} by processing the result of
+ * {@link OMContainer#getSAXSource(boolean)}.
  */
-public class SerializeToWriter implements SerializationStrategy {
+public class SerializeFromSAXSource implements SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToWriter(boolean cache) {
+    public SerializeFromSAXSource(boolean cache) {
         this.cache = cache;
     }
 
     public void addTestParameters(MatrixTestCase testCase) {
-        testCase.addTestParameter("serializationStrategy", "Writer");
+        testCase.addTestParameter("serializationStrategy", "SAXSource");
         testCase.addTestParameter("cache", String.valueOf(cache));
     }
 
     public XML serialize(OMContainer container) throws Exception {
-        StringWriter sw = new StringWriter();
-        if (cache) {
-            container.serialize(sw);
-        } else {
-            container.serializeAndConsume(sw);
-        }
-        return new XMLAsString(sw.toString());
+        SAXSource source = container.getSAXSource(cache);
+        XMLReader xmlReader = source.getXMLReader();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        SAXSerializer serializer = new SAXSerializer();
+        // A SAXSource has no way to tell its consumer about the encoding of the document.
+        // Just set it to UTF-8 to have a well defined encoding.
+        serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        serializer.setOutputStream(out);
+        xmlReader.setContentHandler(serializer);
+        xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", serializer);
+        xmlReader.parse(source.getInputSource());
+        return new XMLAsByteArray(out.toByteArray());
     }
 
     public boolean isPush() {
@@ -59,6 +67,6 @@ public class SerializeToWriter implements SerializationStrategy {
     }
 
     public boolean supportsInternalSubset() {
-        return true;
+        return false;
     }
 }

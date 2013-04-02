@@ -16,41 +16,42 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
-import java.io.StringWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} by processing the result of
- * {@link OMContainer#getXMLStreamReader(boolean)}.
+ * Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream)} or
+ * {@link OMContainer#serializeAndConsume(OutputStream)}.
  */
-public class SerializeFromXMLStreamReader implements SerializationStrategy {
+public class SerializeToOutputStream implements SerializationStrategy {
     private final boolean cache;
     
-    public SerializeFromXMLStreamReader(boolean cache) {
+    public SerializeToOutputStream(boolean cache) {
         this.cache = cache;
     }
 
     public void addTestParameters(MatrixTestCase testCase) {
-        testCase.addTestParameter("serializationStrategy", "XMLStreamReader");
+        testCase.addTestParameter("serializationStrategy", "OutputStream");
         testCase.addTestParameter("cache", String.valueOf(cache));
     }
 
     public XML serialize(OMContainer container) throws Exception {
-        StringWriter sw = new StringWriter();
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(container.getOMFactory(), container.getXMLStreamReader(cache));
-        builder.getDocument().serialize(sw);
-        builder.close();
-        return new XMLAsString(sw.toString());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        if (cache) {
+            container.serialize(baos);
+        } else {
+            container.serializeAndConsume(baos);
+        }
+        return new XMLAsByteArray(baos.toByteArray());
     }
 
     public boolean isPush() {
-        return false;
+        return true;
     }
 
     public boolean isCaching() {

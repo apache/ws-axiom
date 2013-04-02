@@ -16,42 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.io.StringWriter;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 /**
- * Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream)} or
- * {@link OMContainer#serializeAndConsume(OutputStream)}.
+ * Serializes an {@link OMContainer} by processing the result of
+ * {@link OMContainer#getXMLStreamReader(boolean)}.
  */
-public class SerializeToOutputStream implements SerializationStrategy {
+public class SerializeFromXMLStreamReader implements SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToOutputStream(boolean cache) {
+    public SerializeFromXMLStreamReader(boolean cache) {
         this.cache = cache;
     }
 
     public void addTestParameters(MatrixTestCase testCase) {
-        testCase.addTestParameter("serializationStrategy", "OutputStream");
+        testCase.addTestParameter("serializationStrategy", "XMLStreamReader");
         testCase.addTestParameter("cache", String.valueOf(cache));
     }
 
     public XML serialize(OMContainer container) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        if (cache) {
-            container.serialize(baos);
-        } else {
-            container.serializeAndConsume(baos);
-        }
-        return new XMLAsByteArray(baos.toByteArray());
+        StringWriter sw = new StringWriter();
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(container.getOMFactory(), container.getXMLStreamReader(cache));
+        builder.getDocument().serialize(sw);
+        builder.close();
+        return new XMLAsString(sw.toString());
     }
 
     public boolean isPush() {
-        return true;
+        return false;
     }
 
     public boolean isCaching() {

@@ -25,6 +25,11 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.dimension.BuilderFactory;
+import org.apache.axiom.ts.dimension.ElementContext;
+import org.apache.axiom.ts.dimension.ExpansionStrategy;
+import org.apache.axiom.ts.dimension.Strategies;
+import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
@@ -33,11 +38,6 @@ import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
-import org.apache.axiom.ts.strategy.BuilderFactory;
-import org.apache.axiom.ts.strategy.ElementContext;
-import org.apache.axiom.ts.strategy.ExpansionStrategy;
-import org.apache.axiom.ts.strategy.Strategies;
-import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 
 public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final BuilderFactory[] builderFactories = {

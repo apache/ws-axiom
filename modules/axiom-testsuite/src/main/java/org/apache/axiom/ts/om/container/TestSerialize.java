@@ -29,8 +29,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
-import org.apache.axiom.ts.strategy.serialization.XML;
+import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.dimension.serialization.XML;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.InputSource;
 

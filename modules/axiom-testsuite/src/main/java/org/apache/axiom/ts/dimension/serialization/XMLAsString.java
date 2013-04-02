@@ -16,14 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy.serialization;
+package org.apache.axiom.ts.dimension.serialization;
 
-import org.apache.xml.serializer.ToXMLStream;
-import org.xml.sax.SAXException;
+import java.io.PrintStream;
+import java.io.StringReader;
 
-final class SAXSerializer extends ToXMLStream {
-    public void skippedEntity(String name) throws SAXException {
-        // The Xalan serializer ignores skippedEntity events; output them as entity references
-        entityReference(name);
+import org.xml.sax.InputSource;
+
+class XMLAsString implements XML {
+    private final String xml;
+
+    public XMLAsString(String xml) {
+        this.xml = xml;
+    }
+
+    public InputSource getInputSource() {
+        return new InputSource(new StringReader(xml));
+    }
+
+    public void dump(PrintStream out) {
+        out.println(xml);
     }
 }

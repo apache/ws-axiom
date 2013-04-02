@@ -27,10 +27,10 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.dimension.ExpansionStrategy;
+import org.apache.axiom.ts.dimension.Strategies;
+import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
-import org.apache.axiom.ts.strategy.ExpansionStrategy;
-import org.apache.axiom.ts.strategy.Strategies;
-import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
 
 public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",

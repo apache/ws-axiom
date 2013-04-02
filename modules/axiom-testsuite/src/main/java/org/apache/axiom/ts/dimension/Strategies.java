@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.strategy;
+package org.apache.axiom.ts.dimension;
 
-import org.apache.axiom.ts.strategy.serialization.SerializationStrategy;
-import org.apache.axiom.ts.strategy.serialization.SerializeFromSAXSource;
-import org.apache.axiom.ts.strategy.serialization.SerializeFromXMLStreamReader;
-import org.apache.axiom.ts.strategy.serialization.SerializeToOutputStream;
-import org.apache.axiom.ts.strategy.serialization.SerializeToWriter;
-import org.apache.axiom.ts.strategy.serialization.SerializeToXMLStreamWriter;
+import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.dimension.serialization.SerializeFromSAXSource;
+import org.apache.axiom.ts.dimension.serialization.SerializeFromXMLStreamReader;
+import org.apache.axiom.ts.dimension.serialization.SerializeToOutputStream;
+import org.apache.axiom.ts.dimension.serialization.SerializeToWriter;
+import org.apache.axiom.ts.dimension.serialization.SerializeToXMLStreamWriter;
 
 public final class Strategies {
     private static final SerializationStrategy[] serializationStrategies = {
