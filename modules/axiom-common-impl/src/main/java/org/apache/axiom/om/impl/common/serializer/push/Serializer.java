@@ -50,8 +50,9 @@ public abstract class Serializer {
     private static final String XSI_LOCAL_NAME = "type";
     
     private final OMElement contextElement;
+    private final boolean namespaceRepairing;
     
-    public Serializer(OMSerializable contextNode) {
+    public Serializer(OMSerializable contextNode, boolean namespaceRepairing) {
         if (contextNode instanceof OMNode) {
             OMContainer parent = ((OMNode)contextNode).getParent();
             if (parent instanceof OMElement) {
@@ -62,6 +63,7 @@ public abstract class Serializer {
         } else {
             contextElement = null;
         }
+        this.namespaceRepairing = namespaceRepairing;
     }
 
     public final void serializeStartpart(OMElement element) throws OutputException {
@@ -73,7 +75,7 @@ public abstract class Serializer {
         }
         for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
             ns = (OMNamespace)it.next();
-            addNamespaceIfNecessary(ns.getPrefix(), ns.getNamespaceURI(), false);
+            mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
         }
         for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = (OMAttribute)it.next();
@@ -106,7 +108,7 @@ public abstract class Serializer {
                 case XMLStreamReader.START_ELEMENT:
                     internalBeginStartElement(normalize(reader.getPrefix()), normalize(reader.getNamespaceURI()), reader.getLocalName());
                     for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
-                        addNamespaceIfNecessary(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), false);
+                        mapNamespace(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), true, false);
                     }
                     for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
                         processAttribute(
@@ -160,18 +162,18 @@ public abstract class Serializer {
     
     private void internalBeginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
         beginStartElement(prefix, namespaceURI, localName);
-        addNamespaceIfNecessary(prefix, namespaceURI, false);
+        mapNamespace(prefix, namespaceURI, false, false);
     }
     
     private void processAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
-        addNamespaceIfNecessary(prefix, namespaceURI, true);
-        if (contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
+        mapNamespace(prefix, namespaceURI, false, true);
+        if (namespaceRepairing && contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
             String trimmedValue = value.trim();
             if (trimmedValue.indexOf(":") > 0) {
                 String refPrefix = trimmedValue.substring(0, trimmedValue.indexOf(":"));
                 OMNamespace ns = contextElement.findNamespaceURI(refPrefix);
                 if (ns != null) {
-                    addNamespaceIfNecessary(refPrefix, ns.getNamespaceURI(), true);
+                    mapNamespace(refPrefix, ns.getNamespaceURI(), false, true);
                 }
             }
         }
@@ -179,26 +181,41 @@ public abstract class Serializer {
     }
     
     /**
-     * Add a namespace declaration if the prefix is not associated.
-     *
-     * @param prefix the namespace prefix; must not be <code>null</code>
-     * @param namespaceURI the namespace URI; must not be <code>null</code>
+     * Method used internally to report usage of a given namespace binding. This method will
+     * generate a namespace declaration if required by the configured namespace repairing policy.
+     * 
+     * @param prefix
+     *            the namespace prefix; must not be <code>null</code>
+     * @param namespaceURI
+     *            the namespace URI; must not be <code>null</code>
+     * @param fromDecl
+     *            <code>true</code> if the namespace binding was defined by an explicit namespace
+     *            declaration, <code>false</code> if the namespace binding was used implicitly in
+     *            the name of an element or attribute
      * @param attr
      */
-    private void addNamespaceIfNecessary(String prefix, String namespaceURI, boolean attr) throws OutputException {
-        // If the prefix and namespace are already associated, no generation is needed
-        if (isAssociated(prefix, namespaceURI)) {
-            return;
+    private void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws OutputException {
+        if (namespaceRepairing) {
+            // If the prefix and namespace are already associated, no generation is needed
+            if (isAssociated(prefix, namespaceURI)) {
+                return;
+            }
+            
+            // Attributes without a prefix always are associated with the unqualified namespace
+            // according to the schema specification.  No generation is needed.
+            if (prefix.length() == 0 && namespaceURI.length() == 0 && attr) {
+                return;
+            }
+            
+            // Add the namespace if the prefix is not associated.
+            addNamespace(prefix, namespaceURI);
+        } else {
+            // If namespace repairing is disabled, only output namespace declarations that appear
+            // explicitly in the input
+            if (fromDecl) {
+                addNamespace(prefix, namespaceURI);
+            }
         }
-        
-        // Attributes without a prefix always are associated with the unqualified namespace
-        // according to the schema specification.  No generation is needed.
-        if (prefix.length() == 0 && namespaceURI.length() == 0 && attr) {
-            return;
-        }
-        
-        // Add the namespace if the prefix is not associated.
-        addNamespace(prefix, namespaceURI);
     }
     
     public final void serializeChildren(IContainer container, OMOutputFormat format, boolean cache) throws OutputException {

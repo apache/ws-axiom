@@ -404,6 +404,8 @@ public interface OMContainer extends OMSerializable {
      * In that case, to correctly interpret the attribute value, the SAX content handler must be
      * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
      * only at the child element.
+     * <p>
+     * No other form of namespace repairing is performed.
      * 
      * @param cache
      *            Indicates if caching should be enabled. If set to <code>false</code>, the returned

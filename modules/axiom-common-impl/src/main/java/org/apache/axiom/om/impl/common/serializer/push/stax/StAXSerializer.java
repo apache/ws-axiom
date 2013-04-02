@@ -44,7 +44,7 @@ public class StAXSerializer extends Serializer {
     private DataHandlerWriter dataHandlerWriter;
     
     public StAXSerializer(OMSerializable contextNode, XMLStreamWriter writer) {
-        super(contextNode);
+        super(contextNode, true);
         this.writer = writer;
     }
 

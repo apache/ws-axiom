@@ -46,7 +46,7 @@ public class SAXSerializer extends Serializer {
     private final SAXHelper helper = new SAXHelper();
     
     public SAXSerializer(OMSerializable contextNode, ContentHandler contentHandler, LexicalHandler lexicalHandler) {
-        super(contextNode);
+        super(contextNode, false);
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }
