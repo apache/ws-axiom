@@ -196,7 +196,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     public void close() throws XMLStreamException {
-        // Do nothing
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT call XMLStreamWriter#close()");
     }
 
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)

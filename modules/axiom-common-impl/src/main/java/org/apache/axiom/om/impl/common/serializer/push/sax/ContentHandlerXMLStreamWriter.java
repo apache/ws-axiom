@@ -264,6 +264,7 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
     }
 
     public void close() throws XMLStreamException {
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT call XMLStreamWriter#close()");
     }
 
     public void writeStartDocument() throws XMLStreamException {

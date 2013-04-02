@@ -147,6 +147,7 @@ public interface OMDataSource {
      * {@link XMLStreamWriter#writeCharacters(char[], int, int)} to write the base64 encoded data to
      * the stream.
      * </ul>
+     * <li>The implementation MUST NOT call {@link XMLStreamWriter#close()}.
      * </ul>
      * <p>
      * On the other hand, the caller of this method (typically an {@link OMSourcedElement} instance)
