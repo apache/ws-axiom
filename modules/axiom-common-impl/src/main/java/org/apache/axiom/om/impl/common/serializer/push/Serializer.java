@@ -50,6 +50,7 @@ public abstract class Serializer {
     private static final String XSI_LOCAL_NAME = "type";
     
     private final OMElement contextElement;
+    
     public Serializer(OMSerializable contextNode) {
         if (contextNode instanceof OMNode) {
             OMContainer parent = ((OMNode)contextNode).getParent();
