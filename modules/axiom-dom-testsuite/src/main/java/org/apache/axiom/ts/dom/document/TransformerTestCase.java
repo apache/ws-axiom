@@ -20,14 +20,15 @@ package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.dom.DOMTestCase;
 
 public abstract class TransformerTestCase extends DOMTestCase {
-    protected final Class transformerFactoryClass;
+    protected final XSLTImplementation xsltImplementation;
     
-    public TransformerTestCase(DocumentBuilderFactory dbf, Class transformerFactoryClass) {
+    public TransformerTestCase(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
         super(dbf);
-        this.transformerFactoryClass = transformerFactoryClass;
-        addTestParameter("transformerFactory", transformerFactoryClass.getName());
+        this.xsltImplementation = xsltImplementation;
+        xsltImplementation.addTestParameters(this);
     }
 }

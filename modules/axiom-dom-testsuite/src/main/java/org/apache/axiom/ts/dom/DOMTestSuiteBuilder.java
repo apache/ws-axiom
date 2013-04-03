@@ -24,6 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.testutils.suite.XSLTImplementation;
 
 public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final QName[] validAttrQNames = new QName[] {
@@ -88,10 +89,11 @@ public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
-        addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, org.apache.xalan.processor.TransformerFactoryImpl.class));
-        addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));
-        addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, org.apache.xalan.processor.TransformerFactoryImpl.class));
-        addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));
+        for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
+            XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
+            addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, xsltImplementation));
+            addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, xsltImplementation));
+        }
         addTest(new org.apache.axiom.ts.dom.document.TestValidator(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNode(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestLookupNamespaceURI(dbf));

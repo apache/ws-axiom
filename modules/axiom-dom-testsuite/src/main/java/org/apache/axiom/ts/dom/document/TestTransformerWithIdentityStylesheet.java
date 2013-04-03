@@ -21,10 +21,10 @@ package org.apache.axiom.ts.dom.document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
+import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
@@ -33,8 +33,8 @@ import org.w3c.dom.Element;
 // This test failed with Saxon 8.9 because NodeImpl#compareDocumentPosition
 // threw an UnsupportedOperationException instead of a DOMException.
 public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
-    public TestTransformerWithIdentityStylesheet(DocumentBuilderFactory dbf, Class transformerFactoryClass) {
-        super(dbf, transformerFactoryClass);
+    public TestTransformerWithIdentityStylesheet(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
+        super(dbf, xsltImplementation);
     }
 
     protected void runTest() throws Throwable {
@@ -51,7 +51,7 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         Document stylesheet
                 = builder.parse(TestTransformerWithIdentityStylesheet.class.getResourceAsStream("identity.xslt"));
         Document output = builder.newDocument();
-        Transformer transformer = ((TransformerFactory)transformerFactoryClass.newInstance()).newTransformer(new DOMSource(stylesheet));
+        Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(document), new DOMResult(output));
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, output), true);
     }

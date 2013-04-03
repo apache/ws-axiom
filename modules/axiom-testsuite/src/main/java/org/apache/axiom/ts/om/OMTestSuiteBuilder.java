@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
@@ -258,6 +259,11 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetPrefixWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
+        for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
+            XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
+            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation));
+            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransformOnFragment(metaFactory, xsltImplementation));
+        }
         addTest(new org.apache.axiom.ts.om.element.TestGetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQNameEmpty(metaFactory));

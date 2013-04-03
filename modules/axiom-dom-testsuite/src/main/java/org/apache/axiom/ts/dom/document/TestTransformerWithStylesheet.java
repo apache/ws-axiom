@@ -21,17 +21,17 @@ package org.apache.axiom.ts.dom.document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
+import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
 public class TestTransformerWithStylesheet extends TransformerTestCase {
-    public TestTransformerWithStylesheet(DocumentBuilderFactory dbf, Class transformerFactoryClass) {
-        super(dbf, transformerFactoryClass);
+    public TestTransformerWithStylesheet(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
+        super(dbf, xsltImplementation);
     }
 
     protected void runTest() throws Throwable {
@@ -41,7 +41,7 @@ public class TestTransformerWithStylesheet extends TransformerTestCase {
                 = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("stylesheet.xslt"));
         Document expected = builder.parse(TestTransformerWithStylesheet.class.getResourceAsStream("output.xml"));
         Document actual = builder.newDocument();
-        Transformer transformer = ((TransformerFactory)transformerFactoryClass.newInstance()).newTransformer(new DOMSource(stylesheet));
+        Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(input), new DOMResult(actual));
         boolean oldIgnoreWhitespace = XMLUnit.getIgnoreWhitespace();
         XMLUnit.setIgnoreWhitespace(true);
