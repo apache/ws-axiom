@@ -164,6 +164,11 @@
                                     <version>4.1.4</version>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.codehaus.woodstox</groupId>
+                                    <artifactId>woodstox-core-asl</artifactId>
+                                    <version>4.2.0</version>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>com.sun.xml.stream</groupId>
                                     <artifactId>sjsxp</artifactId>
                                     <version>1.0.1</version>
