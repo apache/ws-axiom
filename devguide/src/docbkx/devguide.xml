@@ -1252,7 +1252,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                         Log in to <literal>people.apache.org</literal> and check out the current Maven site:
                     </para>
 <screen>svn co https://svn.apache.org/repos/asf/webservices\
-/axiom/site axiom-site</screen>
+/website/axiom axiom-site</screen>
                     <para>
                         The existing site needs to be overwritten with the site generated for the new
                         release (which should already be in your <literal>public_html</literal> directory).
@@ -1260,18 +1260,8 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                         (requires Python 2.6). It will copy the files and execute any necessary Subversion
                         commands to add new files and to delete files that no longer exist. After executing the
                         script, commit the changes to Subversion.
-                    </para>
-                </step>
-                <step>
-                    <para>
-                        Log in to <literal>people.apache.org</literal> and update the site:
-                    </para>
-<screen>cd /www/ws.apache.org/axiom/
-umask 0002
-svn update</screen>
-                    <para>
-                        The umask setting makes sure that other members of the ws group will be able
-                        to update the site as well.
+                        The live site will be automatically updated by svnpubsub. This should not take longer
+                        than a few minutes.
                     </para>
                 </step>
             </procedure>
