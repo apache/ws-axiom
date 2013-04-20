@@ -172,9 +172,13 @@ final class PartImpl implements Part {
             case STATE_UNREAD:
                 checkParserState(parser.getState(), EntityState.T_BODY);
                 
+                InputStream in = parser.getDecodedInputStream();
+                if (log.isDebugEnabled()) {
+                    in = new DebugInputStream(in, log);
+                }
                 // The PartFactory will determine which Part implementation is most appropriate.
                 content = PartContentFactory.createPartContent(message.getLifecycleManager(),
-                                              parser.getDecodedInputStream(), 
+                                              in, 
                                               isRootPart, 
                                               message.getThreshold(),
                                               message.getAttachmentRepoDir(),
