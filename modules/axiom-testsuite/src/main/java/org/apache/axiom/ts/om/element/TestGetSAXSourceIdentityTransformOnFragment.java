@@ -21,33 +21,38 @@ package org.apache.axiom.ts.om.element;
 import java.io.InputStream;
 
 import javax.xml.transform.Transformer;
+import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.jaxp.OMResult;
-import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.xml.sax.ContentHandler;
 
 /**
- * Test that all namespace mappings in scope of the source element are available on the result.
+ * Tests that the {@link SAXSource} returned by {@link OMContainer#getSAXSource(boolean)} generates
+ * {@link ContentHandler#startPrefixMapping(String, String)} events for namespace mappings in scope
+ * on the source element.
  * This checks for an issue that may arise under the following circumstances:
  * <ol>
- *   <li>The source element, i.e. the element passed as argument to
- *   {@link OMSource#OMSource(OMElement)} is not the root element of the document.</li>
+ *   <li>The element on which {@link OMContainer#getSAXSource(boolean)} is called is not the root
+ *   element of the document.</li>
  *   <li>One of the ancestors declares a namespace mapping.</li>
  *   <li>The namespace mapping is not used in the name of the source element or any of its
  *   descendant elements or attributes (but may be used in the value of an attribute).</li>   
  * </ol>
  * Example:
  * <pre>&lt;root xmlns:ns="urn:ns">&lt;element attr="ns:someThing"/>&lt;root></pre>
- * In that case, when constructing an {@link OMSource} from the child element, the namespace
+ * In that case, when constructing an {@link SAXSource} from the child element, the namespace
  * mapping for the <tt>ns</tt> prefix should be visible to the consumer. Otherwise it would not
  * be able to interpret the attribute value correctly. This is relevant e.g. when validating
- * a part of a document against an XML schema (see SYNAPSE-501).
+ * a part of a document against an XML schema (see
+ * <a href="https://issues.apache.org/jira/browse/SYNAPSE-501">SYNAPSE-501</a>).
  */
 public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;

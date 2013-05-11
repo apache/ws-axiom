@@ -37,9 +37,9 @@ import org.xml.sax.ext.LexicalHandler;
  * <p>
  * Note that this class only supports {@link ContentHandler} and {@link LexicalHandler}.
  * {@link DTDHandler} and {@link DeclHandler} are not supported.
- * <p>
- * <b>NOTE: As of version 1.2.13, application code should use
- * {@link OMContainer#getSAXSource(boolean)} instead of instantiating this class directly.</b>
+ * 
+ * @deprecated As of version 1.2.13, application code should use
+ * {@link OMContainer#getSAXSource(boolean)} instead of this class.
  */
 public class OMSource extends SAXSource {
     public OMSource(OMElement element) {

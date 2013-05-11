@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.activation.DataHandler;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -39,6 +40,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.Attributes;
@@ -69,6 +71,12 @@ import org.xml.sax.ext.LexicalHandler;
  * In that case, to correctly interpret the attribute value, the SAX content handler must be
  * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
  * only at the child element.
+ * 
+ * @deprecated This class is used internally by {@link OMSource}. Starting with Axiom 1.2.13,
+ * application code should use {@link OMContainer#getSAXSource(boolean)} to serialize an OM tree to
+ * SAX. If there is a need to obtain an {@link XMLReader} instance, use
+ * {@link SAXSource#getXMLReader()} on the {@link SAXSource} returned by
+ * {@link OMContainer#getSAXSource(boolean)}.
  */
 public class OMXMLReader extends AbstractXMLReader {
     private final OMContainer root;
