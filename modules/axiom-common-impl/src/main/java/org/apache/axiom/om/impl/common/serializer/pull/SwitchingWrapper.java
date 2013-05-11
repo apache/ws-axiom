@@ -949,9 +949,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                         node = null;
                     }
                 } else {
-                    OMNode nextNode = (OMNode)node;
-                    OMContainer parent = nextNode.getParent();
-                    OMNode nextSibling = getNextSibling(nextNode);
+                    OMNode current = (OMNode)node;
+                    OMContainer parent = current.getParent();
+                    OMNode nextSibling = getNextSibling(current);
                     if (nextSibling != null) {
                         node = nextSibling;
                         visited = false;
