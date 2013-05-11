@@ -863,37 +863,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /** Private method to encapsulate the searching logic. */
-    private void nextNode() {
-        if (node == null) {
-            // We get here if rootNode is an element and the current event is START_DOCUMENT
-            node = rootNode;
-        } else if (!isLeaf(node) && !visited) {
-            OMNode firstChild = _getFirstChild((OMContainer) node);
-            if (firstChild != null) {
-                node = firstChild;
-                visited = false;
-            } else if (node.isComplete()) {
-                visited = true;
-            } else {
-                node = null;
-            }
-        } else {
-            OMNode nextNode = (OMNode)node;
-            OMContainer parent = nextNode.getParent();
-            OMNode nextSibling = getNextSibling(nextNode);
-            if (nextSibling != null) {
-                node = nextSibling;
-                visited = false;
-            } else if (parent.isComplete()) {
-                node = parent;
-                visited = true;
-            } else {
-                node = null;
-            }
-        }
-    }
-    
     /**
      * @param n OMNode
      * @return true if this OMNode should be considered a leaf node
@@ -966,7 +935,33 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 currentEvent = END_DOCUMENT;
                 break;
             case NAVIGABLE:
-                nextNode();
+                if (node == null) {
+                    // We get here if rootNode is an element and the current event is START_DOCUMENT
+                    node = rootNode;
+                } else if (!isLeaf(node) && !visited) {
+                    OMNode firstChild = _getFirstChild((OMContainer) node);
+                    if (firstChild != null) {
+                        node = firstChild;
+                        visited = false;
+                    } else if (node.isComplete()) {
+                        visited = true;
+                    } else {
+                        node = null;
+                    }
+                } else {
+                    OMNode nextNode = (OMNode)node;
+                    OMContainer parent = nextNode.getParent();
+                    OMNode nextSibling = getNextSibling(nextNode);
+                    if (nextSibling != null) {
+                        node = nextSibling;
+                        visited = false;
+                    } else if (parent.isComplete()) {
+                        node = parent;
+                        visited = true;
+                    } else {
+                        node = null;
+                    }
+                }
                 if (node instanceof OMSourcedElement) {
                     OMSourcedElement element = (OMSourcedElement)node;
                     if (!element.isExpanded()) {
