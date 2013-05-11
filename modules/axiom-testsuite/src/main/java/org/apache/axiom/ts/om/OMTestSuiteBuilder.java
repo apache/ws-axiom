@@ -261,8 +261,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
             XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
-            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation));
-            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransformOnFragment(metaFactory, xsltImplementation));
+            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation, true));
+            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation, false));
+            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransformOnFragment(metaFactory, xsltImplementation, true));
+            addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransformOnFragment(metaFactory, xsltImplementation, false));
         }
         addTest(new org.apache.axiom.ts.om.element.TestGetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQName(metaFactory));

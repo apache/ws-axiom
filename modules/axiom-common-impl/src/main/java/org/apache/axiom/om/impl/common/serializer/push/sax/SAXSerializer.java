@@ -45,8 +45,8 @@ public class SAXSerializer extends Serializer {
     private int depth;
     private final SAXHelper helper = new SAXHelper();
     
-    public SAXSerializer(OMSerializable contextNode, ContentHandler contentHandler, LexicalHandler lexicalHandler) {
-        super(contextNode, false);
+    public SAXSerializer(OMSerializable root, ContentHandler contentHandler, LexicalHandler lexicalHandler) {
+        super(root, false, true);
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }

@@ -51,11 +51,14 @@ import org.apache.axiom.ts.AxiomTestCase;
  */
 public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
+    private final boolean cache;
 
-    public TestGetSAXSourceIdentityTransformOnFragment(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation) {
+    public TestGetSAXSourceIdentityTransformOnFragment(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
+        this.cache = cache;
         xsltImplementation.addTestParameters(this);
+        addTestParameter("cache", String.valueOf(cache));
     }
 
     private InputStream getInput() {
@@ -67,9 +70,8 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
         
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement().getFirstElement();
-        OMSource omSource = new OMSource(element);
         OMResult omResult = new OMResult(factory);
-        transformer.transform(omSource, omResult);
+        transformer.transform(element.getSAXSource(cache), omResult);
         
         OMNamespace ns = omResult.getRootElement().findNamespaceURI("p");
         assertNotNull(ns);

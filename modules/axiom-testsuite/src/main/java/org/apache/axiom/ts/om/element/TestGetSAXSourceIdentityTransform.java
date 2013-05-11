@@ -33,17 +33,19 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.jaxp.OMResult;
-import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
+    private final boolean cache;
 
-    public TestGetSAXSourceIdentityTransform(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation) {
+    public TestGetSAXSourceIdentityTransform(OMMetaFactory metaFactory, XSLTImplementation xsltImplementation, boolean cache) {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
+        this.cache = cache;
         xsltImplementation.addTestParameters(this);
+        addTestParameter("cache", String.valueOf(cache));
     }
 
     private InputStream getInput() {
@@ -55,9 +57,8 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement();
-        OMSource omSource = new OMSource(element);
         OMResult omResult = new OMResult(factory);
-        transformer.transform(omSource, omResult);
+        transformer.transform(element.getSAXSource(cache), omResult);
         
         StreamSource streamSource = new StreamSource(getInput());
         StringWriter out = new StringWriter();

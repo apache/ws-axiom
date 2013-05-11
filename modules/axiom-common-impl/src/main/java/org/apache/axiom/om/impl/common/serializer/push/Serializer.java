@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
@@ -49,12 +51,28 @@ public abstract class Serializer {
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
     private static final String XSI_LOCAL_NAME = "type";
     
+    private final OMSerializable root;
     private final OMElement contextElement;
     private final boolean namespaceRepairing;
+    private final boolean preserveNamespaceContext;
     
-    public Serializer(OMSerializable contextNode, boolean namespaceRepairing) {
-        if (contextNode instanceof OMNode) {
-            OMContainer parent = ((OMNode)contextNode).getParent();
+    /**
+     * Constructor.
+     * 
+     * @param root
+     *            the root node of the object model subtree that is being serialized; this
+     *            information is used by the serializer in scenarios that require access to the
+     *            namespace context of the parent of the root node
+     * @param namespaceRepairing
+     *            indicates if the serializer should perform namespace repairing
+     * @param preserveNamespaceContext
+     *            indicates if the namespace context determined by the ancestors of the root node
+     *            should be strictly preserved in the output
+     */
+    public Serializer(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
+        this.root = root;
+        if (root instanceof OMNode) {
+            OMContainer parent = ((OMNode)root).getParent();
             if (parent instanceof OMElement) {
                 contextElement = (OMElement)parent; 
             } else {
@@ -64,6 +82,7 @@ public abstract class Serializer {
             contextElement = null;
         }
         this.namespaceRepairing = namespaceRepairing;
+        this.preserveNamespaceContext = preserveNamespaceContext;
     }
 
     public final void serializeStartpart(OMElement element) throws OutputException {
@@ -73,9 +92,30 @@ public abstract class Serializer {
         } else {
             internalBeginStartElement(ns.getPrefix(), ns.getNamespaceURI(), element.getLocalName());
         }
-        for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            ns = (OMNamespace)it.next();
-            mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+        if (preserveNamespaceContext && element == root) {
+            // Maintain a set of the prefixes we have already seen. This is required to take into
+            // account that a namespace mapping declared on an element can hide another one declared
+            // for the same prefix on an ancestor of the element.
+            Set/*<String>*/ seenPrefixes = new HashSet();
+            OMElement current = element;
+            while (true) {
+                for (Iterator it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                    ns = (OMNamespace)it.next();
+                    if (seenPrefixes.add(ns.getPrefix())) {
+                        mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+                    }
+                }
+                OMContainer parent = current.getParent();
+                if (!(parent instanceof OMElement)) {
+                    break;
+                }
+                current = (OMElement)parent;
+            }
+        } else {
+            for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                ns = (OMNamespace)it.next();
+                mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+            }
         }
         for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = (OMAttribute)it.next();
