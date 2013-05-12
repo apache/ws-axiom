@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
@@ -42,5 +44,27 @@ final class StreamSwitch extends StreamReaderDelegate {
 
     boolean isDataSourceALeaf() {
         return isDataSourceALeaf;
+    }
+
+    public int nextTag() throws XMLStreamException {
+        // The nextTag method is tricky because the delegate may need to switch
+        // to another delegate to locate the next tag. We allow the delegate to
+        // return -1 in this case.
+        int eventType = super.nextTag();
+        if (eventType == -1) {
+            eventType = next();
+            while ((eventType == XMLStreamConstants.CHARACTERS && isWhiteSpace()) // skip whitespace
+                    || (eventType == XMLStreamConstants.CDATA && isWhiteSpace()) // skip whitespace
+                    || eventType == XMLStreamConstants.SPACE
+                    || eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
+                    || eventType == XMLStreamConstants.COMMENT) {
+                eventType = next();
+            }
+            if (eventType != XMLStreamConstants.START_ELEMENT &&
+                    eventType != XMLStreamConstants.END_ELEMENT) {
+                throw new XMLStreamException("expected start or end tag", getLocation());
+            }
+        }
+        return eventType;
     }
 }

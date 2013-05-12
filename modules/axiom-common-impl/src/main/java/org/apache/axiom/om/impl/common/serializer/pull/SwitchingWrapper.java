@@ -54,6 +54,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
@@ -935,35 +936,37 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 currentEvent = END_DOCUMENT;
                 break;
             case NAVIGABLE:
+                OMSerializable nextNode;
                 if (node == null) {
                     // We get here if rootNode is an element and the current event is START_DOCUMENT
-                    node = rootNode;
+                    nextNode = rootNode;
                 } else if (!isLeaf(node) && !visited) {
                     OMNode firstChild = _getFirstChild((OMContainer) node);
                     if (firstChild != null) {
-                        node = firstChild;
+                        nextNode = firstChild;
                         visited = false;
                     } else if (node.isComplete()) {
+                        nextNode = node;
                         visited = true;
                     } else {
-                        node = null;
+                        nextNode = null;
                     }
                 } else {
                     OMNode current = (OMNode)node;
                     OMContainer parent = current.getParent();
                     OMNode nextSibling = getNextSibling(current);
                     if (nextSibling != null) {
-                        node = nextSibling;
+                        nextNode = nextSibling;
                         visited = false;
                     } else if (parent.isComplete()) {
-                        node = parent;
+                        nextNode = parent;
                         visited = true;
                     } else {
-                        node = null;
+                        nextNode = null;
                     }
                 }
-                if (node instanceof OMSourcedElement) {
-                    OMSourcedElement element = (OMSourcedElement)node;
+                if (nextNode instanceof OMSourcedElement) {
+                    OMSourcedElement element = (OMSourcedElement)nextNode;
                     if (!element.isExpanded()) {
                         OMDataSource ds = element.getDataSource();
                         if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
@@ -973,30 +976,41 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                                 // Just loop
                             }
                             streamSwitch.setParent(new IncludeWrapper(streamSwitch, this, reader));
+                            node = nextNode;
                             visited = true;
                             return START_ELEMENT;
                         }
                     }
                 }
-                if (node != null) {
+                if (nextNode != null) {
+                    node = nextNode;
                     currentEvent = generateEvents(node);
                     attributeCount = -1;
                     namespaceCount = -1;
                 } else {
-                    // reset caching (the default is ON so it was not needed in the
-                    // earlier case!
+                    // Disable caching
                     builder.setCache(false);
-                    state = SWITCHED;
-
-                    // load the parser
-                    try {
-                        setParser((XMLStreamReader) builder.getParser());
-                    } catch (Exception e) {
-                        throw new XMLStreamException("problem accessing the parser. " + e.getMessage(),
-                                                     e);
+                    OMContainer container;
+                    if (!(node instanceof OMContainer) || visited) {
+                        container = ((OMNode)node).getParent();
+                    } else {
+                        container = (OMContainer)node;
                     }
-
-                    currentEvent = parser.next();
+                    int depth = 1;
+                    // Find the root node for the builder
+                    while (container != rootNode && container instanceof OMElement) {
+                        OMElement element = (OMElement)container;
+                        if (element.getBuilder() != builder) {
+                            break;
+                        }
+                        container = element.getParent();
+                        depth++;
+                    }
+                    PullThroughWrapper wrapper = new PullThroughWrapper(streamSwitch, this, (StAXOMBuilder)builder, container, ((StAXOMBuilder)builder).disableCaching(), depth);
+                    streamSwitch.setParent(wrapper);
+                    node = container;
+                    visited = true;
+                    currentEvent = wrapper.next();
                 }
                 updateCompleteStatus();
                 break;
@@ -1008,6 +1022,11 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 throw new IllegalStateException("unsuppported state!");
         }
         return currentEvent;
+    }
+
+    public int nextTag() throws XMLStreamException {
+        // Let StreamSwitch handle this method
+        return -1;
     }
 
     /**

@@ -21,12 +21,21 @@ package org.apache.axiom.om.impl.common.serializer.pull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-final class IncludeWrapper extends AbstractWrapper {
-    IncludeWrapper(StreamSwitch streamSwitch, XMLStreamReader nextTarget, XMLStreamReader parent) {
-        super(streamSwitch, nextTarget, parent, 1);
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+
+final class PullThroughWrapper extends AbstractWrapper {
+    private final StAXOMBuilder builder;
+    private final OMContainer container;
+
+    PullThroughWrapper(StreamSwitch streamSwitch, XMLStreamReader nextTarget,
+            StAXOMBuilder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
+        super(streamSwitch, nextTarget, reader, startDepth);
+        this.builder = builder;
+        this.container = container;
     }
 
     void release() throws XMLStreamException {
-        getParent().close();
+        builder.reenableCaching(container);
     }
 }
