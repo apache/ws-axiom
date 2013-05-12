@@ -27,7 +27,6 @@ import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
@@ -38,10 +37,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);
         builder.exclude(TestInsertSiblingBeforeOnChild.class);
-        
-        // TODO: this is not supported yet
-        builder.exclude(TestGetXMLStreamReaderWithIncompleteDescendant.class, "(cache=false)");
-        builder.exclude(org.apache.axiom.ts.om.sourcedelement.TestSerialize.class, "(&(expand=partially)(serializationStrategy=XMLStreamReader)(cache=false)(serializeParent=true))");
         
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document

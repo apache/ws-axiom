@@ -28,7 +28,6 @@ import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant;
 import org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
@@ -56,9 +55,6 @@ public class OMImplementationTest extends TestCase {
         
         // TODO
         builder.exclude(TestSerializationWithTwoNonBuiltOMElements.class);
-        
-        // TODO: this is not supported yet
-        builder.exclude(TestGetXMLStreamReaderWithIncompleteDescendant.class, "(cache=false)");
         
         // TODO: not yet working
         builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(|(scenario=writeDataHandler)(scenario=writeDataHandlerProvider))");

@@ -64,10 +64,6 @@ public final class OMContainerHelper {
         if ((builder == null) && done) {
             reader = new OMStAXWrapper(null, container, cache, configuration.isPreserveNamespaceContext());
         } else {
-            if ((builder == null) && !cache) {
-                throw new UnsupportedOperationException(
-                "This element was not created in a manner to be switched");
-            }
             if (builder != null && builder.isCompleted() && !cache && !done) {
                 throw new UnsupportedOperationException(
                 "The parser is already consumed!");

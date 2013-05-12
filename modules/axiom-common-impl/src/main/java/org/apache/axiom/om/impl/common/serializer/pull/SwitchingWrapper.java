@@ -896,14 +896,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private OMNode _getFirstChild(OMContainer node) {
         if (cache) {
             return node.getFirstOMChild();
-        } else if (node.getBuilder() != rootNode.getBuilder()) {
-            // TODO: We have a problem if the tree has parts constructed by different builders; this is related to AXIOM-201 and AXIOM-431
-            OMNode first = node.getFirstOMChild();
-            OMNode sibling = first;
-            while (sibling != null) {
-                sibling = sibling.getNextOMSibling();
-            }
-            return first;
         } else {
             return ((IContainer)node).getFirstOMChildIfAvailable();
         }
@@ -958,7 +950,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     if (nextSibling != null) {
                         nextNode = nextSibling;
                         visited = false;
-                    } else if (parent.isComplete()) {
+                    } else if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
                         nextNode = parent;
                         visited = true;
                     } else {
@@ -994,17 +986,19 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     } else {
                         container = (OMContainer)node;
                     }
+                    StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
                     int depth = 1;
-                    // Find the root node for the builder
+                    // Find the root node for the builder (i.e. the topmost node having the same
+                    // builder as the current node)
                     while (container != rootNode && container instanceof OMElement) {
-                        OMElement element = (OMElement)container;
-                        if (element.getBuilder() != builder) {
+                        OMContainer parent = ((OMElement)container).getParent();
+                        if (parent.getBuilder() != builder) {
                             break;
                         }
-                        container = element.getParent();
+                        container = parent;
                         depth++;
                     }
-                    PullThroughWrapper wrapper = new PullThroughWrapper(streamSwitch, this, (StAXOMBuilder)builder, container, ((StAXOMBuilder)builder).disableCaching(), depth);
+                    PullThroughWrapper wrapper = new PullThroughWrapper(streamSwitch, this, builder, container, builder.disableCaching(), depth);
                     streamSwitch.setParent(wrapper);
                     node = container;
                     visited = true;
