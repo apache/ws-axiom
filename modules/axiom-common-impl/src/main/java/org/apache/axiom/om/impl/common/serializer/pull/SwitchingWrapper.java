@@ -182,10 +182,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         currentEvent = START_DOCUMENT;
     }
 
-    /**
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getPrefix()
-     */
     public String getPrefix() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getPrefix();
@@ -199,10 +195,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getNamespaceURI()
-     */
     public String getNamespaceURI() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceURI();
@@ -216,10 +208,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns boolean.
-     * @see javax.xml.stream.XMLStreamReader#hasName()
-     */
     public boolean hasName() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.hasName();
@@ -229,10 +217,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getLocalName()
-     */
     public String getLocalName() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getLocalName();
@@ -249,10 +233,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns QName.
-     * @see javax.xml.stream.XMLStreamReader#getName()
-     */
     public QName getName() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getName();
@@ -274,10 +254,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns int.
-     * @see javax.xml.stream.XMLStreamReader#getTextLength()
-     */
     public int getTextLength() {
         if (parser != null) {
             return parser.getTextLength();
@@ -286,10 +262,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns int.
-     * @see javax.xml.stream.XMLStreamReader#getTextStart()
-     */
     public int getTextStart() {
         if (parser != null) {
             return parser.getTextStart();
@@ -306,15 +278,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param sourceStart
-     * @param target
-     * @param targetStart
-     * @param length
-     * @return Returns int.
-     * @throws XMLStreamException
-     * @see javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int, int)
-     */
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         if (parser != null) {
@@ -327,10 +290,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns char[].
-     * @see javax.xml.stream.XMLStreamReader#getTextCharacters()
-     */
     public char[] getTextCharacters() {
         if (parser != null) {
             return parser.getTextCharacters();
@@ -339,10 +298,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getText()
-     */
     public String getText() {
         if (parser != null) {
             return parser.getText();
@@ -407,11 +362,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             }
         }
     }
-
-    /**
-     * @return Returns int.
-     * @see javax.xml.stream.XMLStreamReader#getEventType()
-     */
 
     // todo this should be improved
     public int getEventType() {
@@ -489,11 +439,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
     
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getNamespaceURI
-     */
     public String getNamespaceURI(int i) {
         if (parser != null) {
             String uri = parser.getNamespaceURI(i);
@@ -520,11 +465,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getNamespacePrefix
-     */
     public String getNamespacePrefix(int i) {
         if (parser != null) {
             return parser.getNamespacePrefix(i);
@@ -538,10 +478,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns int.
-     * @see javax.xml.stream.XMLStreamReader#getNamespaceCount()
-     */
     public int getNamespaceCount() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceCount();
@@ -555,11 +491,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns boolean.
-     * @see javax.xml.stream.XMLStreamReader#isAttributeSpecified
-     */
     public boolean isAttributeSpecified(int i) {
         if (parser != null) {
             return parser.isAttributeSpecified(i);
@@ -575,11 +506,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getAttributeValue
-     */
     public String getAttributeValue(int i) {
         if (parser != null) {
             return parser.getAttributeValue(i);
@@ -593,11 +519,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getAttributeType
-     */
     public String getAttributeType(int i) {
         if (parser != null) {
             return parser.getAttributeType(i);
@@ -611,11 +532,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getAttributePrefix
-     */
     public String getAttributePrefix(int i) {
         if (parser != null) {
             return parser.getAttributePrefix(i);
@@ -629,11 +545,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getAttributeLocalName
-     */
     public String getAttributeLocalName(int i) {
         if (parser != null) {
             return parser.getAttributeLocalName(i);
@@ -647,11 +558,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns String.
-     * @see javax.xml.stream.XMLStreamReader#getAttributeNamespace
-     */
     public String getAttributeNamespace(int i) {
         if (parser != null) {
             return parser.getAttributeNamespace(i);
@@ -665,11 +571,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @param i
-     * @return Returns QName.
-     * @see javax.xml.stream.XMLStreamReader#getAttributeName
-     */
     public QName getAttributeName(int i) {
         if (parser != null) {
             return parser.getAttributeName(i);
@@ -683,10 +584,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * @return Returns int.
-     * @see javax.xml.stream.XMLStreamReader#getAttributeCount
-     */
     public int getAttributeCount() {
         int returnCount = 0;
         if (parser != null) {
@@ -704,15 +601,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return returnCount;
     }
 
-    // todo
-
-    /**
-     * Method getAttributeValue.
-     *
-     * @param s
-     * @param s1
-     * @return Returns String.
-     */
     public String getAttributeValue(String s, String s1) {
         String returnString = null;
         if (parser != null) {
@@ -732,11 +620,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return returnString;
     }
 
-    /**
-     * Method isWhiteSpace.
-     *
-     * @return Returns boolean.
-     */
     public boolean isWhiteSpace() {
         if (parser != null) {
             return parser.isWhiteSpace();
@@ -745,11 +628,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method isCharacters.
-     *
-     * @return Returns boolean.
-     */
     public boolean isCharacters() {
         boolean b;
         if (parser != null) {
@@ -760,11 +638,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return b;
     }
 
-    /**
-     * Method isEndElement.
-     *
-     * @return Returns boolean.
-     */
     public boolean isEndElement() {
         boolean b;
         if (parser != null && currentEvent != END_DOCUMENT) {
@@ -775,11 +648,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return b;
     }
 
-    /**
-     * Method isStartElement.
-     *
-     * @return Returns boolean.
-     */
     public boolean isStartElement() {
         boolean b;
         if (parser != null) {
@@ -790,12 +658,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return b;
     }
 
-    /**
-     * Method getNamespaceURI.
-     *
-     * @param prefix
-     * @return Returns String.
-     */
     public String getNamespaceURI(String prefix) {
         String returnString = null;
         if (parser != null) {
@@ -813,11 +675,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return returnString;
     }
 
-    /**
-     * Method close.
-     *
-     * @throws XMLStreamException
-     */
     public void close() throws XMLStreamException {
         try {
             // If there is a builder, it controls its parser
@@ -837,21 +694,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method hasNext.
-     *
-     * @return Returns boolean.
-     * @throws XMLStreamException
-     */
     public boolean hasNext() throws XMLStreamException {
         return currentEvent != END_DOCUMENT;
     }
 
-    /**
-     * @return Returns String.
-     * @throws XMLStreamException
-     * @see javax.xml.stream.XMLStreamReader#getElementText()
-     */
     public String getElementText() throws XMLStreamException {
         if (parser != null) {
             String elementText = parser.getElementText();
@@ -911,12 +757,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method next.
-     *
-     * @return Returns int.
-     * @throws XMLStreamException
-     */
     public int next() throws XMLStreamException {
         switch (state) {
             case DOCUMENT_COMPLETE:
@@ -1015,13 +855,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return -1;
     }
 
-    /**
-     * Method getProperty.
-     *
-     * @param s
-     * @return Returns Object.
-     * @throws IllegalArgumentException
-     */
     public Object getProperty(String s) throws IllegalArgumentException {
         Object value = XMLStreamReaderUtils.processGetProperty(this, s);
         if (value != null) {
@@ -1051,7 +884,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return null;
     }
 
-    /** Method updateCompleteStatus. */
     private void updateCompleteStatus() {
         if (currentEvent == START_ELEMENT) {
             depth++;
@@ -1067,11 +899,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method getNamespaceContext.
-     *
-     * @return Returns NamespaceContext.
-     */
     public NamespaceContext getNamespaceContext() {
         if (parser != null) {
             return currentEvent == END_DOCUMENT ? new MapBasedNamespaceContext(Collections.EMPTY_MAP) : parser.getNamespaceContext();
@@ -1081,11 +908,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method getEncoding.
-     *
-     * @return Returns String.
-     */
     public String getEncoding() {
         if (parser != null) {
             return parser.getEncoding();
@@ -1102,38 +924,18 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method getVersion.
-     *
-     * @return Returns String.
-     */
     public String getVersion() {
         return "1.0"; // todo put the constant
     }
 
-    /**
-     * Method isStandalone.
-     *
-     * @return Returns boolean.
-     */
     public boolean isStandalone() {
         return true;
     }
 
-    /**
-     * Method standaloneSet.
-     *
-     * @return Returns boolean.
-     */
     public boolean standaloneSet() {
         return false;
     }
 
-    /**
-     * Method getCharacterEncodingScheme.
-     *
-     * @return Returns String.
-     */
     public String getCharacterEncodingScheme() {
         if (parser != null) {
             return parser.getCharacterEncodingScheme();
@@ -1150,11 +952,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method getPITarget.
-     *
-     * @return Returns String.
-     */
     public String getPITarget() {
         if (parser != null) {
             return parser.getPITarget();
@@ -1167,11 +964,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    /**
-     * Method getPIData.
-     *
-     * @return Returns String.
-     */
     public String getPIData() {
         if (parser != null) {
             return parser.getPIData();
@@ -1293,12 +1085,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      *
      */
 
-    /**
-     * Method generateEvents.
-     *
-     * @param node
-     * @return Returns int.
-     */
     private int generateEvents(OMSerializable node) {
         if (node instanceof OMContainer) {
             OMContainer container = (OMContainer)node;
