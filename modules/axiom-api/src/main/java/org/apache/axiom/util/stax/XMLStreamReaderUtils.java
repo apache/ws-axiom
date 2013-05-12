@@ -168,7 +168,7 @@ public class XMLStreamReaderUtils {
     
     /**
      * Helper method to implement {@link XMLStreamReader#getProperty(String)}. This method
-     * processed the properties defined by {@link DataHandlerReader#PROPERTY} and the legacy
+     * processes the properties defined by {@link DataHandlerReader#PROPERTY} and the legacy
      * extension mechanism (as described above). It can therefore be used to make a
      * {@link XMLStreamReader} implementation compatible with code that expects it to implement this
      * legacy extension.
