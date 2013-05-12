@@ -699,13 +699,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     }
 
     public String getElementText() throws XMLStreamException {
-        if (parser != null) {
-            String elementText = parser.getElementText();
-            currentEvent = END_ELEMENT;
-            return elementText;
-        } else {
-            return super.getElementText();
-        }
+        // Let StreamSwitch handle this method
+        return null;
     }
 
     /**

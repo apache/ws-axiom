@@ -19,9 +19,11 @@
 package org.apache.axiom.ts.om.element.sr;
 
 import java.io.StringReader;
+import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -32,13 +34,24 @@ import org.xml.sax.InputSource;
 public class TestGetElementTextFromParser extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
+    private final int build;
     
-    public TestGetElementTextFromParser(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
+    /**
+     * Constructor.
+     * 
+     * @param metaFactory
+     * @param builderFactory
+     * @param cache
+     * @param build the number of descendants that should be built before calling {@link OMContainer#getXMLStreamReader(boolean)}
+     */
+    public TestGetElementTextFromParser(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache, int build) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
+        this.build = build;
         builderFactory.addTestParameters(this);
         addTestParameter("cache", Boolean.toString(cache));
+        addTestParameter("build", String.valueOf(build));
     }
 
     protected void runTest() throws Throwable {
@@ -48,6 +61,14 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
         OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(
                 new StringReader("<a><b>AB<!--comment text-->CD</b></a>")));
         OMElement element = builder.getDocumentElement();
+        
+        // Build a certain number of descendants. This is used to test scenarios where the XMLStreamReader
+        // needs to switch to pull through mode in the middle of the element from which we attempt to
+        // get the text.
+        Iterator it = element.getDescendants(true);
+        for (int i=0; i<build; i++) {
+            it.next();
+        }
         
         XMLStreamReader reader = element.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());

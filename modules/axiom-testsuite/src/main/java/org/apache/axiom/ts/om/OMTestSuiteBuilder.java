@@ -350,8 +350,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementText(metaFactory));
         for (int i=0; i<builderFactories.length; i++) {
             BuilderFactory bf = builderFactories[i];
-            addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser(metaFactory, bf, true));
-            addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser(metaFactory, bf, false));
+            addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser(metaFactory, bf, true, 0));
+            for (int build=0; build<6; build++) {
+                addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser(metaFactory, bf, false, build));
+            }
         }
         addTest(new org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext(metaFactory, false));
