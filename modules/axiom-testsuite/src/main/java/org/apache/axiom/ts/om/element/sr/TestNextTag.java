@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.element.sr;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestGetXMLStreamReaderNextTag extends AxiomTestCase {
-    public TestGetXMLStreamReaderNextTag(OMMetaFactory metaFactory) {
+public class TestNextTag extends AxiomTestCase {
+    public TestNextTag(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 

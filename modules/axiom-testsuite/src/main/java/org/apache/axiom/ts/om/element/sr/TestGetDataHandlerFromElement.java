@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.element.sr;
 
 import java.io.StringReader;
 
@@ -39,10 +39,10 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * Tests {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)} on an
  * {@link XMLStreamReader} returned by {@link OMElement#getXMLStreamReader(boolean)}.
  */
-public class TestGetXMLStreamReaderGetDataHandlerFromElement extends AxiomTestCase {
+public class TestGetDataHandlerFromElement extends AxiomTestCase {
     private final boolean cache;
     
-    public TestGetXMLStreamReaderGetDataHandlerFromElement(OMMetaFactory metaFactory, boolean cache) {
+    public TestGetDataHandlerFromElement(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
         addTestParameter("cache", String.valueOf(cache));

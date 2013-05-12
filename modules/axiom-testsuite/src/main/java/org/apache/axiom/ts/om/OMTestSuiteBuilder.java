@@ -278,24 +278,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithMixedOMTextChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderClose(metaFactory, true));
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderClose(metaFactory, false));
-        for (int i=0; i<builderFactories.length; i++) {
-            BuilderFactory bf = builderFactories[i];
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCommentEvent(metaFactory, bf, true));
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCommentEvent(metaFactory, bf, false));
-        }
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetDataHandlerFromElement(metaFactory, true));
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetDataHandlerFromElement(metaFactory, false));
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetElementText(metaFactory));
-        for (int i=0; i<builderFactories.length; i++) {
-            BuilderFactory bf = builderFactories[i];
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetElementTextFromParser(metaFactory, bf, true));
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetElementTextFromParser(metaFactory, bf, false));
-        }
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetNamespaceContext(metaFactory, true));
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetNamespaceContext(metaFactory, false));
-        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderNextTag(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithCaching(metaFactory));
@@ -356,6 +338,24 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestClose(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestClose(metaFactory, false));
+        for (int i=0; i<builderFactories.length; i++) {
+            BuilderFactory bf = builderFactories[i];
+            addTest(new org.apache.axiom.ts.om.element.sr.TestCommentEvent(metaFactory, bf, true));
+            addTest(new org.apache.axiom.ts.om.element.sr.TestCommentEvent(metaFactory, bf, false));
+        }
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetDataHandlerFromElement(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetDataHandlerFromElement(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementText(metaFactory));
+        for (int i=0; i<builderFactories.length; i++) {
+            BuilderFactory bf = builderFactories[i];
+            addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser(metaFactory, bf, true));
+            addTest(new org.apache.axiom.ts.om.element.sr.TestGetElementTextFromParser(metaFactory, bf, false));
+        }
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestNextTag(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeGeneratedPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeInterfaces(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeNullPrefixNoNamespace(metaFactory));

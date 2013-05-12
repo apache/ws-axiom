@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.element.sr;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
@@ -26,10 +26,10 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestGetXMLStreamReaderGetNamespaceContext extends AxiomTestCase {
+public class TestGetNamespaceContext extends AxiomTestCase {
     private final boolean cache;
     
-    public TestGetXMLStreamReaderGetNamespaceContext(OMMetaFactory metaFactory, boolean cache) {
+    public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
         addTestParameter("cache", Boolean.toString(cache));

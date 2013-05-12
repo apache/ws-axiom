@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.element.sr;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -34,10 +34,10 @@ import java.io.StringReader;
  * {@link OMContainer#getXMLStreamReader(boolean)} on an {@link OMElement}. Regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-2">AXIOM-2</a>.
  */
-public class TestGetXMLStreamReaderClose extends AxiomTestCase {
+public class TestClose extends AxiomTestCase {
     private final boolean cache;
     
-    public TestGetXMLStreamReaderClose(OMMetaFactory metaFactory, boolean cache) {
+    public TestClose(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
         addTestParameter("cache", String.valueOf(cache));
