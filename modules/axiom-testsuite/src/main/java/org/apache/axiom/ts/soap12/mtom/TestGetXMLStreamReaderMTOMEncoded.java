@@ -38,8 +38,12 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     private final static QName XOP_INCLUDE = 
             new QName("http://www.w3.org/2004/08/xop/include", "Include");
 
-    public TestGetXMLStreamReaderMTOMEncoded(OMMetaFactory metaFactory) {
+    private final boolean cache;
+    
+    public TestGetXMLStreamReaderMTOMEncoded(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
+        this.cache = cache;
+        addTestParameter("cache", String.valueOf(cache));
     }
 
     protected void runTest() throws Throwable {
@@ -47,12 +51,9 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_2.getContentType());
         OMElement root = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getDocumentElement();
         
-        // Build tree
-        root.build();
-        
         // Use tree as input to XMLStreamReader
         // Issue XOP:Include events for optimized MTOM text nodes
-        XOPEncodedStream xopEncodedStream = XOPUtils.getXOPEncodedStream(root.getXMLStreamReader());
+        XOPEncodedStream xopEncodedStream = XOPUtils.getXOPEncodedStream(root.getXMLStreamReader(cache));
         XMLStreamReader xmlStreamReader = xopEncodedStream.getReader();
         
         DataHandler dh = null;

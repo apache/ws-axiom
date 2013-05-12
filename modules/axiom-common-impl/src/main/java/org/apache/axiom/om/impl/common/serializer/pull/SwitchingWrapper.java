@@ -95,12 +95,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private XMLStreamReader parser;
     
     /**
-     * The {@link DataHandlerReader} extension of the underlying parser, or <code>null</code>
-     * if the parser doesn't support this extension.
-     */
-    private DataHandlerReader dataHandlerReader;
-
-    /**
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
      */
     private final OMContainer rootNode;
@@ -980,96 +974,48 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
 
     public boolean isBinary() {
-        if (parser != null) {
-            if (dataHandlerReader != null) {
-                return dataHandlerReader.isBinary();
-            } else {
-                return false;
-            }
+        if (node instanceof OMText) {
+            return ((OMText)node).isBinary();
         } else {
-            if (node instanceof OMText) {
-                return ((OMText)node).isBinary();
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
     public boolean isOptimized() {
-        if (parser != null) {
-            if (dataHandlerReader != null) {
-                return dataHandlerReader.isOptimized();
-            } else {
-                throw new IllegalStateException();
-            }
+        if (node instanceof OMText) {
+            return ((OMText)node).isOptimized();
         } else {
-            if (node instanceof OMText) {
-                return ((OMText)node).isOptimized();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     public boolean isDeferred() {
-        if (parser != null) {
-            if (dataHandlerReader != null) {
-                return dataHandlerReader.isDeferred();
-            } else {
-                throw new IllegalStateException();
-            }
+        if (node instanceof OMText) {
+            // TODO: we should support deferred building of the DataHandler
+            return false;
         } else {
-            if (node instanceof OMText) {
-                // TODO: we should support deferred building of the DataHandler
-                return false;
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     public String getContentID() {
-        if (parser != null) {
-            if (dataHandlerReader != null) {
-                return dataHandlerReader.getContentID();
-            } else {
-                throw new IllegalStateException();
-            }
+        if (node instanceof OMText) {
+            return ((OMText)node).getContentID();
         } else {
-            if (node instanceof OMText) {
-                return ((OMText)node).getContentID();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     public DataHandler getDataHandler() throws XMLStreamException {
-        if (parser != null) {
-            if (dataHandlerReader != null) {
-                return dataHandlerReader.getDataHandler();
-            } else {
-                throw new IllegalStateException();
-            }
+        if (node instanceof OMText) {
+            return (DataHandler)((OMText)node).getDataHandler();
         } else {
-            if (node instanceof OMText) {
-                return (DataHandler)((OMText)node).getDataHandler();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     public DataHandlerProvider getDataHandlerProvider() {
-        if (parser != null) {
-            if (dataHandlerReader != null) {
-                return dataHandlerReader.getDataHandlerProvider();
-            } else {
-                throw new IllegalStateException();
-            }
-        } else {
-            throw new IllegalStateException();
-        }
+        throw new IllegalStateException();
     }
 
     /*
@@ -1101,8 +1047,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
 
     private void setParser(XMLStreamReader parser) {
         this.parser = parser;
-        dataHandlerReader =
-                parser == null ? null : XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
 
     private Map getAllNamespaces(OMSerializable contextNode) {

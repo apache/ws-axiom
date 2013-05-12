@@ -18,19 +18,35 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
-final class StreamSwitch extends StreamReaderDelegate {
+final class StreamSwitch extends StreamReaderDelegate implements DataHandlerReader {
     /**
      * Indicates if an OMSourcedElement with an OMDataSource should
      * be considered as an interior node or a leaf node.
      */
     private boolean isDataSourceALeaf;
+
+    /**
+     * The {@link DataHandlerReader} extension of the underlying parser, or <code>null</code>
+     * if the parser doesn't support this extension.
+     */
+    private DataHandlerReader dataHandlerReader;
+
+    public void setParent(XMLStreamReader reader) {
+        super.setParent(reader);
+        dataHandlerReader =
+                reader == null ? null : XMLStreamReaderUtils.getDataHandlerReader(reader);
+    }
 
     OMDataSource getDataSource() {
         XMLStreamReader parent = getParent();
@@ -105,6 +121,63 @@ final class StreamSwitch extends StreamReaderDelegate {
             }
             return content.toString();
             ///////////////////////////////////////////////////////////////
+        }
+    }
+
+    public Object getProperty(String name) {
+        Object value = XMLStreamReaderUtils.processGetProperty(this, name);
+        if (value != null) {
+            return value;
+        } else {
+            return super.getProperty(name);
+        }
+    }
+
+    public boolean isBinary() {
+        if (dataHandlerReader != null) {
+            return dataHandlerReader.isBinary();
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isOptimized() {
+        if (dataHandlerReader != null) {
+            return dataHandlerReader.isOptimized();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean isDeferred() {
+        if (dataHandlerReader != null) {
+            return dataHandlerReader.isDeferred();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getContentID() {
+        if (dataHandlerReader != null) {
+            return dataHandlerReader.getContentID();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public DataHandler getDataHandler() throws XMLStreamException {
+        if (dataHandlerReader != null) {
+            return dataHandlerReader.getDataHandler();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public DataHandlerProvider getDataHandlerProvider() {
+        if (dataHandlerReader != null) {
+            return dataHandlerReader.getDataHandlerProvider();
+        } else {
+            throw new IllegalStateException();
         }
     }
 }
