@@ -20,7 +20,6 @@ package org.apache.axiom.ts.om.element;
 
 import java.util.Iterator;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
