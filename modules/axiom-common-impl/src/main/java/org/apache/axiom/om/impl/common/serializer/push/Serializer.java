@@ -284,7 +284,6 @@ public abstract class Serializer {
             // events from the underlying XMLStreamReader.
             if (!container.isComplete() && container.getBuilder() != null) {
                 StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
-                builder.setCache(false);
                 XMLStreamReader reader = (XMLStreamReader)builder.disableCaching();
                 DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
                 int depth = 0;

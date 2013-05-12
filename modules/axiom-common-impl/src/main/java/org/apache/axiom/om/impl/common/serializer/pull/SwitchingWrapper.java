@@ -988,8 +988,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     attributeCount = -1;
                     namespaceCount = -1;
                 } else {
-                    // Disable caching
-                    builder.setCache(false);
                     OMContainer container;
                     if (!(node instanceof OMContainer) || visited) {
                         container = ((OMNode)node).getParent();
