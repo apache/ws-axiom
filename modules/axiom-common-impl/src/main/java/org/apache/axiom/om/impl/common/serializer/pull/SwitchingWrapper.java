@@ -120,8 +120,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private static final short COMPLETED = 2;
     
-    private static final short SWITCHED = 3;
-    
     /**
      * Indicates that the final {@link XMLStreamConstants#END_DOCUMENT} event has been generated.
      */
@@ -1006,10 +1004,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 }
                 updateCompleteStatus();
                 break;
-            case SWITCHED:
-                currentEvent = parser.next();
-                updateCompleteStatus();
-                break;
             default:
                 throw new IllegalStateException("unsuppported state!");
         }
@@ -1064,23 +1058,11 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else if (currentEvent == END_ELEMENT) {
             depth--;
         }
-        if (state == NAVIGABLE) {
-            if (rootNode == node && visited) {
-                if (currentEvent == END_DOCUMENT) {
-                    state = DOCUMENT_COMPLETE;
-                } else {
-                    state = COMPLETED;
-                }
-            }
-        } else {
-            assert state == SWITCHED;
-            if (depth == 0 && rootNode instanceof OMElement) {
-                // If rootNode is an OMElement and depth == 0, then currentEvent can only be END_ELEMENT
-                // (because we don't generate any other events at depth 0)
-                assert currentEvent == END_ELEMENT;
-                state = COMPLETED;
-            } else if (currentEvent == END_DOCUMENT) {
+        if (rootNode == node && visited) {
+            if (currentEvent == END_DOCUMENT) {
                 state = DOCUMENT_COMPLETE;
+            } else {
+                state = COMPLETED;
             }
         }
     }
