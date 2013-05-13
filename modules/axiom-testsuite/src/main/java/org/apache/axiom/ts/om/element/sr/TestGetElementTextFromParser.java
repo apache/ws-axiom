@@ -50,8 +50,8 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
         this.cache = cache;
         this.build = build;
         builderFactory.addTestParameters(this);
-        addTestParameter("cache", Boolean.toString(cache));
-        addTestParameter("build", String.valueOf(build));
+        addTestParameter("cache", cache);
+        addTestParameter("build", build);
     }
 
     protected void runTest() throws Throwable {

@@ -38,7 +38,7 @@ public class TestCommentEvent extends AxiomTestCase {
         this.builderFactory = builderFactory;
         this.cache = cache;
         builderFactory.addTestParameters(this);
-        addTestParameter("cache", Boolean.toString(cache));
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {

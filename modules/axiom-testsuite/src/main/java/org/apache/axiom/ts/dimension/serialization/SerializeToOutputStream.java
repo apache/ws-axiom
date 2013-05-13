@@ -37,7 +37,7 @@ public class SerializeToOutputStream implements SerializationStrategy {
 
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("serializationStrategy", "OutputStream");
-        testCase.addTestParameter("cache", String.valueOf(cache));
+        testCase.addTestParameter("cache", cache);
     }
 
     public XML serialize(OMContainer container) throws Exception {

@@ -40,7 +40,7 @@ public class TestClose extends AxiomTestCase {
     public TestClose(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", String.valueOf(cache));
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {

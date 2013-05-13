@@ -34,7 +34,7 @@ public class TestSetMustUnderstandBoolean extends SOAPTestCase {
     
     public TestSetMustUnderstandBoolean(OMMetaFactory metaFactory, SOAPSpec spec, boolean value, String stringValue) {
         super(metaFactory, spec);
-        addTestParameter("value", Boolean.toString(value));
+        addTestParameter("value", value);
         this.value = value;
         this.stringValue = stringValue;
     }

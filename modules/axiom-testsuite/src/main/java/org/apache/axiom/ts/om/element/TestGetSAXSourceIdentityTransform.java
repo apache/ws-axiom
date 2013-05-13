@@ -45,7 +45,7 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
         xsltImplementation.addTestParameters(this);
-        addTestParameter("cache", String.valueOf(cache));
+        addTestParameter("cache", cache);
     }
 
     private InputStream getInput() {

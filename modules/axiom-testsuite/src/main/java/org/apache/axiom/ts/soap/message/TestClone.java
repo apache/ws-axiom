@@ -38,7 +38,7 @@ public class TestClone extends SOAPTestCase {
     public TestClone(OMMetaFactory metaFactory, SOAPSpec spec, boolean preserveModel) {
         super(metaFactory, spec);
         this.preserveModel = preserveModel;
-        addTestParameter("preserveModel", String.valueOf(preserveModel));
+        addTestParameter("preserveModel", preserveModel);
     }
 
     protected void runTest() throws Throwable {

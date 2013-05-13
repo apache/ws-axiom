@@ -38,7 +38,7 @@ public class TestCloneNonDestructive extends AxiomTestCase {
     public TestCloneNonDestructive(OMMetaFactory metaFactory, boolean copyOMDataSources) {
         super(metaFactory);
         this.copyOMDataSources = copyOMDataSources;
-        addTestParameter("copyOMDataSources", String.valueOf(copyOMDataSources));
+        addTestParameter("copyOMDataSources", copyOMDataSources);
     }
 
     protected void runTest() throws Throwable {

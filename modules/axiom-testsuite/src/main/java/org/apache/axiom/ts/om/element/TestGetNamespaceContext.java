@@ -39,7 +39,7 @@ public class TestGetNamespaceContext extends AxiomTestCase {
     public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean detached) {
         super(metaFactory);
         this.detached = detached;
-        addTestParameter("detached", Boolean.toString(detached));
+        addTestParameter("detached", detached);
     }
 
     protected void runTest() throws Throwable {

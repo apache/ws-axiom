@@ -40,7 +40,7 @@ public class TestSerialize extends AxiomTestCase {
     public TestSerialize(OMMetaFactory metaFactory, boolean base64) {
         super(metaFactory);
         this.base64 = base64;
-        addTestParameter("base64", String.valueOf(base64));
+        addTestParameter("base64", base64);
     }
 
     protected void runTest() throws Throwable {

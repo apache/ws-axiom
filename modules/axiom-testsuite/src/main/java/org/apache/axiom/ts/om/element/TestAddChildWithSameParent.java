@@ -36,7 +36,7 @@ public class TestAddChildWithSameParent extends AxiomTestCase {
     public TestAddChildWithSameParent(OMMetaFactory metaFactory, boolean build) {
         super(metaFactory);
         this.build = build;
-        addTestParameter("build", String.valueOf(build));
+        addTestParameter("build", build);
     }
 
     protected void runTest() throws Throwable {

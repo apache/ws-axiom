@@ -44,7 +44,7 @@ public class OMElementFactory implements OMContainerFactory {
 
     public void addTestParameters(MatrixTestCase testCase) {
         testCase.addTestParameter("container", "element");
-        testCase.addTestParameter("detached", Boolean.toString(detached));
+        testCase.addTestParameter("detached", detached);
     }
 
     public InputSource getControl(InputStream testFileContent) throws Exception {

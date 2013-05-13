@@ -44,7 +44,7 @@ public class TestGetDataHandlerFromElement extends AxiomTestCase {
     public TestGetDataHandlerFromElement(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", String.valueOf(cache));
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {

@@ -47,7 +47,7 @@ public class TestGetXMLStreamReaderWithIncompleteDescendant extends AxiomTestCas
     public TestGetXMLStreamReaderWithIncompleteDescendant(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", String.valueOf(cache));
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {

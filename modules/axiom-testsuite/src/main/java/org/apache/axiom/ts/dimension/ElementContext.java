@@ -63,7 +63,7 @@ public interface ElementContext extends Dimension {
     ElementContext ELEMENT = new ElementContext() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("container", "element");
-            testCase.addTestParameter("complete", "true");
+            testCase.addTestParameter("complete", true);
         }
 
         public OMContainer wrap(OMElement element) {

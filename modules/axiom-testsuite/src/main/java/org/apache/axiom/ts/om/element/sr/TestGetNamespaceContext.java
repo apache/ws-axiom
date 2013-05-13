@@ -32,7 +32,7 @@ public class TestGetNamespaceContext extends AxiomTestCase {
     public TestGetNamespaceContext(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", Boolean.toString(cache));
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {

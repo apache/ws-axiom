@@ -45,7 +45,7 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
     public TestGetNamespaceNormalized(OMMetaFactory metaFactory, boolean useNull) {
         super(metaFactory);
         this.useNull = useNull;
-        addTestParameter("useNull", String.valueOf(useNull));
+        addTestParameter("useNull", useNull);
     }
 
     protected void runTest() throws Throwable {

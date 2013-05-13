@@ -38,7 +38,7 @@ public class TestSetLocalName extends AxiomTestCase {
     public TestSetLocalName(OMMetaFactory metaFactory, boolean expand) {
         super(metaFactory);
         this.expand = expand;
-        addTestParameter("expand", String.valueOf(expand));
+        addTestParameter("expand", expand);
     }
 
     protected void runTest() throws Throwable {

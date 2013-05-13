@@ -31,7 +31,7 @@ public abstract class ReplaceChildTestCase extends DOMTestCase {
     public ReplaceChildTestCase(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
         super(dbf);
         this.newChildHasSiblings = newChildHasSiblings;
-        addTestParameter("newChildHasSiblings", String.valueOf(newChildHasSiblings));
+        addTestParameter("newChildHasSiblings", newChildHasSiblings);
     }
 
     protected final void runTest() throws Throwable {

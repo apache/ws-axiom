@@ -43,7 +43,7 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     public TestGetXMLStreamReaderMTOMEncoded(OMMetaFactory metaFactory, boolean cache) {
         super(metaFactory);
         this.cache = cache;
-        addTestParameter("cache", String.valueOf(cache));
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {

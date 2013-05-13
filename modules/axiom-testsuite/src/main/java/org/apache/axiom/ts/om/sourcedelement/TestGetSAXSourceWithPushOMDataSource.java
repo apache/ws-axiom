@@ -48,7 +48,7 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
         this.scenario = scenario;
         this.serializeParent = serializeParent;
         scenario.addTestParameters(this);
-        addTestParameter("serializeParent", Boolean.toString(serializeParent));
+        addTestParameter("serializeParent", serializeParent);
     }
 
     protected void runTest() throws Throwable {

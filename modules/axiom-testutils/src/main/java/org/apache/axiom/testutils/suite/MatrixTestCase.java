@@ -38,6 +38,14 @@ public abstract class MatrixTestCase extends TestCase {
         parameters.put(name, value);
     }
     
+    public final void addTestParameter(String name, boolean value) {
+        addTestParameter(name, String.valueOf(value));
+    }
+    
+    public final void addTestParameter(String name, int value) {
+        addTestParameter(name, String.valueOf(value));
+    }
+    
     public final Dictionary getTestParameters() {
         return parameters;
     }

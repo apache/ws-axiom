@@ -35,7 +35,7 @@ public class TestXPathAppliedToSOAPEnvelope extends SOAPTestCase {
     public TestXPathAppliedToSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec, boolean createDocument) {
         super(metaFactory, spec);
         this.createDocument = createDocument;
-        addTestParameter("createDocument", String.valueOf(createDocument));
+        addTestParameter("createDocument", createDocument);
     }
 
     protected void runTest() throws Throwable {

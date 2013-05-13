@@ -31,7 +31,7 @@ public class TestGetDescendants extends AxiomTestCase {
     public TestGetDescendants(OMMetaFactory metaFactory, boolean includeSelf) {
         super(metaFactory);
         this.includeSelf = includeSelf;
-        addTestParameter("includeSelf", Boolean.toString(includeSelf));
+        addTestParameter("includeSelf", includeSelf);
     }
 
     protected void runTest() throws Throwable {

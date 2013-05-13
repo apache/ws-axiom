@@ -49,7 +49,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         this.cache = cache;
         builderFactory.addTestParameters(this);
         containerFactory.addTestParameters(this);
-        addTestParameter("cache", Boolean.toString(cache));
+        addTestParameter("cache", cache);
     }
     
     protected final void runTest() throws Throwable {
