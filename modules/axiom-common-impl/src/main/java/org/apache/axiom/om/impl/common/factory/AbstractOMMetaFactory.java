@@ -92,7 +92,9 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
-        return new StAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
+        StAXOMBuilder builder = new StAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
+        builder.setAutoClose(true);
+        return builder;
     }
     
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
@@ -123,6 +125,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
             OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         XOPAwareStAXOMBuilder builder = new XOPAwareStAXOMBuilder(omFactory, createXMLStreamReader(
                 configuration, rootPart), mimePartProvider);
+        builder.setAutoClose(true);
         return builder;
     }
 
@@ -131,12 +134,16 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
-        return new StAXSOAPModelBuilder(this, createXMLStreamReader(configuration, is));
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(this, createXMLStreamReader(configuration, is));
+        builder.setAutoClose(true);
+        return builder;
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
-        return new MTOMStAXSOAPModelBuilder(soapFactory, createXMLStreamReader(
+        MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(soapFactory, createXMLStreamReader(
                 configuration, rootPart), mimePartProvider);
+        builder.setAutoClose(true);
+        return builder;
     }
 }
