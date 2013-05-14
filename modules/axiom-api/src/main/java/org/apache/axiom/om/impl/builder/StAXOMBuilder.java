@@ -198,10 +198,11 @@ public class StAXOMBuilder extends StAXBuilder {
                 return token;
             }
            
-            // The current token should be the same as the 
-            // one just obtained.  This bit of code is used to 
-            // detect invalid parser state.
-            if (doTrace) {
+            // Note: if autoClose is enabled, then the parser may be null at this point
+            if (doTrace && parser != null) {
+                // The current token should be the same as the 
+                // one just obtained.  This bit of code is used to 
+                // detect invalid parser state.
                 int currentParserToken = parser.getEventType();
                 if (currentParserToken != token) {
 
@@ -218,10 +219,8 @@ public class StAXOMBuilder extends StAXBuilder {
                                      "The parser is " + parser);
                      */
                 }
-            }
             
-            // Now log the current state of the parser
-            if (doTrace) {
+                // Now log the current state of the parser
                 logParserState();
             }
            
