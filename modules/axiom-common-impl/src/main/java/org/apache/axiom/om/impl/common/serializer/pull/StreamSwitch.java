@@ -24,12 +24,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
+import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
-final class StreamSwitch extends StreamReaderDelegate implements DataHandlerReader {
+final class StreamSwitch extends StreamReaderDelegate implements DataHandlerReader, DTDReader {
     /**
      * Indicates if an OMSourcedElement with an OMDataSource should
      * be considered as an interior node or a leaf node.
@@ -37,15 +38,26 @@ final class StreamSwitch extends StreamReaderDelegate implements DataHandlerRead
     private boolean isDataSourceALeaf;
 
     /**
-     * The {@link DataHandlerReader} extension of the underlying parser, or <code>null</code>
-     * if the parser doesn't support this extension.
+     * The {@link DataHandlerReader} extension of the parent, or <code>null</code> if the parser
+     * doesn't support this extension.
      */
     private DataHandlerReader dataHandlerReader;
+    
+    /**
+     * The {@link DTDReader} extension of the parent, or <code>null</code> if the parser doesn't
+     * support this extension.
+     */
+    private DTDReader dtdReader;
 
     public void setParent(XMLStreamReader reader) {
         super.setParent(reader);
         dataHandlerReader =
                 reader == null ? null : XMLStreamReaderUtils.getDataHandlerReader(reader);
+        try {
+            dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+        } catch (IllegalArgumentException ex) {
+            dtdReader = null;
+        }
     }
 
     OMDataSource getDataSource() {
@@ -128,6 +140,8 @@ final class StreamSwitch extends StreamReaderDelegate implements DataHandlerRead
         Object value = XMLStreamReaderUtils.processGetProperty(this, name);
         if (value != null) {
             return value;
+        } else if (DTDReader.PROPERTY.equals(name)) {
+            return this;
         } else {
             return super.getProperty(name);
         }
@@ -178,6 +192,30 @@ final class StreamSwitch extends StreamReaderDelegate implements DataHandlerRead
             return dataHandlerReader.getDataHandlerProvider();
         } else {
             throw new IllegalStateException();
+        }
+    }
+
+    public String getRootName() {
+        if (dtdReader != null) {
+            return dtdReader.getRootName();
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public String getPublicId() {
+        if (dtdReader != null) {
+            return dtdReader.getPublicId();
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public String getSystemId() {
+        if (dtdReader != null) {
+            return dtdReader.getSystemId();
+        } else {
+            throw new UnsupportedOperationException();
         }
     }
 }

@@ -35,6 +35,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.CharacterDataReader;
+import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttribute;
@@ -67,7 +68,7 @@ import org.apache.commons.logging.LogFactory;
  * Class used internally by {@link OMStAXWrapper}.
  */
 class SwitchingWrapper extends AbstractXMLStreamReader
-    implements DataHandlerReader, CharacterDataReader, XMLStreamConstants {
+    implements DataHandlerReader, CharacterDataReader, DTDReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
     
@@ -849,7 +850,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (value != null) {
             return value;
         }
-        if (CharacterDataReader.PROPERTY.equals(s)) {
+        if (CharacterDataReader.PROPERTY.equals(s) || DTDReader.PROPERTY.equals(s)) {
             return this;
         }
         if (parser != null) {
@@ -1016,6 +1017,38 @@ class SwitchingWrapper extends AbstractXMLStreamReader
 
     public DataHandlerProvider getDataHandlerProvider() {
         throw new IllegalStateException();
+    }
+
+    /*
+     *
+     * ################################################################
+     * DTDReader extension methods
+     * ################################################################
+     *
+     */
+
+    public String getRootName() {
+        if (currentEvent == DTD) {
+            return ((OMDocType)node).getRootName();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getPublicId() {
+        if (currentEvent == DTD) {
+            return ((OMDocType)node).getPublicId();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getSystemId() {
+        if (currentEvent == DTD) {
+            return ((OMDocType)node).getSystemId();
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     /*
