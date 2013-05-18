@@ -738,37 +738,38 @@ final class SwitchingWrapper extends PullSerializerState
                     }
                 } else {
                     OMNode current = (OMNode)node;
-                    OMContainer parent = current.getParent();
                     OMNode nextSibling = getNextSibling(current);
                     if (nextSibling != null) {
                         nextNode = nextSibling;
                         visited = false;
-                    } else if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
-                        nextNode = parent;
-                        visited = true;
                     } else {
-                        nextNode = null;
-                    }
-                }
-                if (nextNode instanceof OMSourcedElement) {
-                    OMSourcedElement element = (OMSourcedElement)nextNode;
-                    if (!element.isExpanded()) {
-                        OMDataSource ds = element.getDataSource();
-                        if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
-                                || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
-                            XMLStreamReader reader = ds.getReader();
-                            while (reader.next() != START_ELEMENT) {
-                                // Just loop
-                            }
-                            serializer.switchState(new IncludeWrapper(serializer, this, reader));
-                            node = nextNode;
+                        OMContainer parent = current.getParent();
+                        if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
+                            nextNode = parent;
                             visited = true;
-                            return START_ELEMENT;
+                        } else {
+                            nextNode = null;
                         }
                     }
                 }
                 if (nextNode != null) {
                     node = nextNode;
+                    if (node instanceof OMSourcedElement) {
+                        OMSourcedElement element = (OMSourcedElement)node;
+                        if (!element.isExpanded()) {
+                            OMDataSource ds = element.getDataSource();
+                            if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
+                                    || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
+                                XMLStreamReader reader = ds.getReader();
+                                while (reader.next() != START_ELEMENT) {
+                                    // Just loop
+                                }
+                                serializer.switchState(new IncludeWrapper(serializer, this, reader));
+                                visited = true;
+                                return START_ELEMENT;
+                            }
+                        }
+                    }
                     if (node instanceof OMContainer) {
                         OMContainer container = (OMContainer)node;
                         if (visited) {
