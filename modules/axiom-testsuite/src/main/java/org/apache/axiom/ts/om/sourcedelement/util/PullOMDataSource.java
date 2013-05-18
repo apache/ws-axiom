@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.sourcedelement;
+package org.apache.axiom.ts.om.sourcedelement.util;
 
 import java.io.StringReader;
 import java.util.HashSet;
@@ -28,17 +28,17 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
-class PullOMDataSource extends AbstractPullOMDataSource {
+public final class PullOMDataSource extends AbstractPullOMDataSource {
     private final String data;
     private final boolean destructive;
     private final Set unclosedReaders = new HashSet();
     private boolean destroyed;
 
-    PullOMDataSource(String data) {
+    public PullOMDataSource(String data) {
         this(data, true);
     }
     
-    PullOMDataSource(String data, boolean destructive) {
+    public PullOMDataSource(String data, boolean destructive) {
         this.data = data;
         this.destructive = destructive;
     }
@@ -60,7 +60,7 @@ class PullOMDataSource extends AbstractPullOMDataSource {
         return destructive;
     }
 
-    boolean hasUnclosedReaders() {
+    public boolean hasUnclosedReaders() {
         return !unclosedReaders.isEmpty();
     }
     

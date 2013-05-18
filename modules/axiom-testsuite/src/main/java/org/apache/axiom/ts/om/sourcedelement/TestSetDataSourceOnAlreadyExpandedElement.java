@@ -21,6 +21,7 @@ package org.apache.axiom.ts.om.sourcedelement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
     public TestSetDataSourceOnAlreadyExpandedElement(OMMetaFactory metaFactory) {

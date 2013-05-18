@@ -32,6 +32,7 @@ import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.XML;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;

@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
+import org.apache.axiom.ts.om.sourcedelement.util.PushOMDataSource;
 
 /**
  * Defines a set of test documents used to create {@link OMDataSource} and {@link OMSourcedElement}

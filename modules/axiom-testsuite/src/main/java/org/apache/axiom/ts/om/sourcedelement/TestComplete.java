@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Make sure that the incomplete setting of an OMSE is not 

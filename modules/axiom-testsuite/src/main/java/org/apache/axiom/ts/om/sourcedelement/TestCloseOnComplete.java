@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests that {@link OMSourcedElement} calls {@link XMLStreamReader#close()} on the

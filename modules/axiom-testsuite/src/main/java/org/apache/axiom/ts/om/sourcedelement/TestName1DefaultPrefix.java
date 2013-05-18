@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Tests the OMSourcedElement localName, namespace and prefix settings before and after

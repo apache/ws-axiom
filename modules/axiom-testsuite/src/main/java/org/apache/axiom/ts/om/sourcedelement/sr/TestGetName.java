@@ -16,41 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.sourcedelement;
+package org.apache.axiom.ts.om.sourcedelement.sr;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-import org.custommonkey.xmlunit.XMLAssert;
 
 /**
- * Tests that the effect of {@link OMNamedInformationItem#setLocalName(String)} on a
- * {@link OMSourcedElement} is the same on expanded and unexpanded elements. In both cases, it must
- * behave in the same way as a normal {@link OMElement}, which implies that it must override the
- * local name of the root element returned by the data source.
+ * Tests that {@link XMLStreamReader#getName()} returns a {@link QName} with the correct prefix for
+ * the {@link XMLStreamConstants#START_ELEMENT} event corresponding to an {@link OMSourcedElement},
+ * even if the prefix is not known in advance.
  */
-public class TestSetLocalName extends AxiomTestCase {
-    private boolean expand;
-
-    public TestSetLocalName(OMMetaFactory metaFactory, boolean expand) {
+public class TestGetName extends AxiomTestCase {
+    public TestGetName(OMMetaFactory metaFactory) {
         super(metaFactory);
-        this.expand = expand;
-        addTestParameter("expand", expand);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<p:root xmlns:p='urn:test'><child/></p:root>"),
-                "root", factory.createOMNamespace("urn:test", "p"));
-        if (expand) {
-            element.getFirstOMChild();
-        }
-        element.setLocalName("newroot");
-        XMLAssert.assertXMLEqual("<p:newroot xmlns:p='urn:test'><child/></p:newroot>", element.toString());
+        OMElement root = factory.createOMElement("root", null);
+        OMSourcedElement el = factory.createOMElement(new PullOMDataSource("<p:el xmlns:p='urn:ns'>content</p:el>"),
+                "el", factory.createOMNamespace("urn:ns", null));
+        root.addChild(el);
+        XMLStreamReader reader = root.getXMLStreamReader();
+        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        QName name = reader.getName();
+        assertEquals("p", name.getPrefix());
+        assertEquals("urn:ns", name.getNamespaceURI());
+        assertEquals("el", name.getLocalPart());
     }
 }

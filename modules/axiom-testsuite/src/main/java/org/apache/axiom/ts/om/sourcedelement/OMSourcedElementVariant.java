@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 public abstract class OMSourcedElementVariant {
     public static final OMSourcedElementVariant[] INSTANCES = {

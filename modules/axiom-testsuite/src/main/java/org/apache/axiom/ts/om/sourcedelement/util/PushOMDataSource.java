@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.sourcedelement;
+package org.apache.axiom.ts.om.sourcedelement.util;
 
 import java.io.StringReader;
 
@@ -28,13 +28,13 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 
-class PushOMDataSource extends AbstractPushOMDataSource {
+public final class PushOMDataSource extends AbstractPushOMDataSource {
     private final OMFactory factory;
     private final String data;
     private final boolean destructive;
     private boolean destroyed;
     
-    PushOMDataSource(OMFactory factory, String data, boolean destructive) {
+    public PushOMDataSource(OMFactory factory, String data, boolean destructive) {
         this.factory = factory;
         this.data = data;
         this.destructive = destructive;
