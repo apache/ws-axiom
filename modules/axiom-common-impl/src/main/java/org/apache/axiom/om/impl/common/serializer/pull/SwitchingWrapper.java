@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
@@ -100,22 +99,6 @@ final class SwitchingWrapper extends PullSerializerState
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
      */
     private final OMContainer rootNode;
-
-    // Navigable means the output should be taken from the navigator.
-    // As soon as the navigator returns a null navigable will be reset
-    // to false and the subsequent events will be taken from the builder
-    // or the parser directly.
-
-    /** Field NAVIGABLE */
-    private static final short NAVIGABLE = 0;
-    
-    /**
-     * Indicates that the final {@link XMLStreamConstants#END_DOCUMENT} event has been generated.
-     */
-    private static final short DOCUMENT_COMPLETE = 4;
-
-    /** Field state */
-    private short state;
 
     /** Field currentEvent Default set to START_DOCUMENT */
     private int currentEvent;
@@ -708,107 +691,99 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     void next() throws XMLStreamException {
-        switch (state) {
-            case DOCUMENT_COMPLETE:
-                throw new NoSuchElementException("End of the document reached");
-            case NAVIGABLE:
-                boolean navigable;
-                if (node == null) {
-                    // We get here if rootNode is an element and the current event is START_DOCUMENT
-                    assert !visited;
-                    node = rootNode;
+        boolean navigable;
+        if (node == null) {
+            // We get here if rootNode is an element and the current event is START_DOCUMENT
+            assert !visited;
+            node = rootNode;
+            navigable = true;
+        } else if (!isLeaf(node) && !visited) {
+            OMNode firstChild = _getFirstChild((OMContainer) node);
+            if (firstChild != null) {
+                node = firstChild;
+                visited = false;
+                navigable = true;
+            } else if (node.isComplete()) {
+                visited = true;
+                navigable = true;
+            } else {
+                navigable = false;
+            }
+        } else if (node == rootNode) {
+            // We get here if rootNode is an element and the next event is END_DOCUMENT
+            node = null;
+            visited = true;
+            navigable = true;
+        } else {
+            OMNode current = (OMNode)node;
+            OMNode nextSibling = getNextSibling(current);
+            if (nextSibling != null) {
+                node = nextSibling;
+                visited = false;
+                navigable = true;
+            } else {
+                OMContainer parent = current.getParent();
+                if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
+                    node = parent;
+                    visited = true;
                     navigable = true;
-                } else if (!isLeaf(node) && !visited) {
-                    OMNode firstChild = _getFirstChild((OMContainer) node);
-                    if (firstChild != null) {
-                        node = firstChild;
-                        visited = false;
-                        navigable = true;
-                    } else if (node.isComplete()) {
+                } else {
+                    navigable = false;
+                }
+            }
+        }
+        if (navigable) {
+            if (node instanceof OMSourcedElement) {
+                OMSourcedElement element = (OMSourcedElement)node;
+                if (!element.isExpanded()) {
+                    OMDataSource ds = element.getDataSource();
+                    if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
+                            || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
+                        XMLStreamReader reader = ds.getReader();
+                        while (reader.next() != START_ELEMENT) {
+                            // Just loop
+                        }
+                        serializer.pushState(new IncludeWrapper(serializer, reader));
                         visited = true;
-                        navigable = true;
-                    } else {
-                        navigable = false;
-                    }
-                } else if (node == rootNode) {
-                    // We get here if rootNode is an element and the next event is END_DOCUMENT
-                    node = null;
-                    visited = true;
-                    navigable = true;
-                } else {
-                    OMNode current = (OMNode)node;
-                    OMNode nextSibling = getNextSibling(current);
-                    if (nextSibling != null) {
-                        node = nextSibling;
-                        visited = false;
-                        navigable = true;
-                    } else {
-                        OMContainer parent = current.getParent();
-                        if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
-                            node = parent;
-                            visited = true;
-                            navigable = true;
-                        } else {
-                            navigable = false;
-                        }
+                        return;
                     }
                 }
-                if (navigable) {
-                    if (node instanceof OMSourcedElement) {
-                        OMSourcedElement element = (OMSourcedElement)node;
-                        if (!element.isExpanded()) {
-                            OMDataSource ds = element.getDataSource();
-                            if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
-                                    || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
-                                XMLStreamReader reader = ds.getReader();
-                                while (reader.next() != START_ELEMENT) {
-                                    // Just loop
-                                }
-                                serializer.pushState(new IncludeWrapper(serializer, reader));
-                                visited = true;
-                                return;
-                            }
-                        }
-                    }
-                    if (node == null || node instanceof OMDocument) {
-                        assert visited;
-                        currentEvent = END_DOCUMENT;
-                        state = DOCUMENT_COMPLETE;
-                    } else if (node instanceof OMElement) {
-                        currentEvent = visited ? END_ELEMENT : START_ELEMENT;
-                    } else {
-                        currentEvent = ((OMNode)node).getType();
-                    }
-                    attributeCount = -1;
-                    namespaceCount = -1;
-                } else {
-                    OMContainer container;
-                    if (!(node instanceof OMContainer) || visited) {
-                        container = ((OMNode)node).getParent();
-                    } else {
-                        container = (OMContainer)node;
-                    }
-                    StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
-                    int depth = 1;
-                    // Find the root node for the builder (i.e. the topmost node having the same
-                    // builder as the current node)
-                    while (container != rootNode && container instanceof OMElement) {
-                        OMContainer parent = ((OMElement)container).getParent();
-                        if (parent.getBuilder() != builder) {
-                            break;
-                        }
-                        container = parent;
-                        depth++;
-                    }
-                    PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, builder.disableCaching(), depth);
-                    serializer.pushState(wrapper);
-                    node = container;
-                    visited = true;
-                    wrapper.next();
+            }
+            if (node == null || node instanceof OMDocument) {
+                assert visited;
+                serializer.switchState(EndDocumentState.INSTANCE);
+                return;
+            } else if (node instanceof OMElement) {
+                currentEvent = visited ? END_ELEMENT : START_ELEMENT;
+            } else {
+                currentEvent = ((OMNode)node).getType();
+            }
+            attributeCount = -1;
+            namespaceCount = -1;
+        } else {
+            OMContainer container;
+            if (!(node instanceof OMContainer) || visited) {
+                container = ((OMNode)node).getParent();
+            } else {
+                container = (OMContainer)node;
+            }
+            StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
+            int depth = 1;
+            // Find the root node for the builder (i.e. the topmost node having the same
+            // builder as the current node)
+            while (container != rootNode && container instanceof OMElement) {
+                OMContainer parent = ((OMElement)container).getParent();
+                if (parent.getBuilder() != builder) {
+                    break;
                 }
-                break;
-            default:
-                throw new IllegalStateException("unsuppported state!");
+                container = parent;
+                depth++;
+            }
+            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, builder.disableCaching(), depth);
+            serializer.pushState(wrapper);
+            node = container;
+            visited = true;
+            wrapper.next();
         }
     }
 
@@ -844,12 +819,7 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     NamespaceContext getNamespaceContext() {
-        if (parser != null) {
-            return currentEvent == END_DOCUMENT ? new MapBasedNamespaceContext(Collections.EMPTY_MAP) : parser.getNamespaceContext();
-        } else {
-            return new MapBasedNamespaceContext(
-                    currentEvent == END_DOCUMENT ? Collections.EMPTY_MAP : getAllNamespaces(node));
-        }
+        return new MapBasedNamespaceContext(getAllNamespaces(node));
     }
 
     String getEncoding() {
@@ -1055,8 +1025,7 @@ final class SwitchingWrapper extends PullSerializerState
      * @return OMDataSource associated with the current node or Null
      */
     OMDataSource getDataSource() {
-        if (getEventType() != XMLStreamReader.START_ELEMENT ||
-                state != NAVIGABLE) {
+        if (getEventType() != XMLStreamReader.START_ELEMENT) {
             return null;
         }
         OMDataSource ds = null;

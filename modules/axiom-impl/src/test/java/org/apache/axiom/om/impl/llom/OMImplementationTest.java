@@ -27,6 +27,7 @@ import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
+import org.apache.axiom.ts.om.element.sr.TestClose;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
@@ -51,6 +52,9 @@ public class OMImplementationTest extends TestCase {
         builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(|(scenario=writeDataHandler)(scenario=writeDataHandlerProvider))");
         // TODO: need to evaluate if the test case is correct
         builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(&(scenario=getNamespaceContext)(serializeParent=false))");
+        
+        // TODO: test case needing review
+        builder.exclude(TestClose.class);
         
         return builder.build();
     }
