@@ -375,28 +375,10 @@ final class Navigator extends PullSerializerState
     }
     
     String getNamespaceURI(int i) {
-        if (parser != null) {
-            String uri = parser.getNamespaceURI(i);
-
-            /*
-              The following line is necessary to overcome an issue where the empty
-              namespace URI returning null rather than the empty string. Our resolution
-              is to return "" if the return is actually null
-
-              Note that this is not the case for  getNamespaceURI(prefix) method
-              where the contract clearly specifies that the return may be null
-
-            */
-            if (uri == null) {
-                uri = "";
-            }
-            return uri;
+        if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
+            return getNamespace(i).getNamespaceURI();
         } else {
-            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
-                return getNamespace(i).getNamespaceURI();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
