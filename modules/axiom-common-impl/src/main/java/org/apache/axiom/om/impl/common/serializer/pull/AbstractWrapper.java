@@ -35,7 +35,6 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 /**
  * Base class for {@link PullSerializerState} implementations that wrap an {@link XMLStreamReader}.
  */
-//TODO: what about the close() method?
 abstract class AbstractWrapper extends PullSerializerState implements CharacterDataReader {
     protected final XMLStreamReader reader;
     private final PullSerializer serializer;
@@ -116,9 +115,15 @@ abstract class AbstractWrapper extends PullSerializerState implements CharacterD
     }
 
     final void next() throws XMLStreamException {
-        if (depth == 0) {
+        if (!doNext()) {
             // We get here if the underlying XMLStreamReader is on the last END_ELEMENT event
             serializer.popState();
+        }
+    }
+    
+    final boolean doNext() throws XMLStreamException {
+        if (depth == 0) {
+            return false;
         } else {
             switch (reader.next()) {
                 case XMLStreamReader.START_ELEMENT:
@@ -128,6 +133,7 @@ abstract class AbstractWrapper extends PullSerializerState implements CharacterD
                     depth--;
                     break;
             }
+            return true;
         }
     }
     
@@ -142,10 +148,6 @@ abstract class AbstractWrapper extends PullSerializerState implements CharacterD
                 depth--;
         }
         return result;
-    }
-
-    final void close() throws XMLStreamException {
-        reader.close();
     }
 
     final Object getProperty(String name) throws IllegalArgumentException {

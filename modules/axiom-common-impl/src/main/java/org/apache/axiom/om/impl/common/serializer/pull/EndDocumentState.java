@@ -65,11 +65,6 @@ final class EndDocumentState extends PullSerializerState {
         throw new IllegalStateException();
     }
 
-    void close() throws XMLStreamException {
-        // TODO Auto-generated method stub
-        
-    }
-
     Object getProperty(String name) throws IllegalArgumentException {
         // TODO Auto-generated method stub
         return null;

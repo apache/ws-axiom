@@ -161,6 +161,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplace(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.sr.TestCharacterDataReaderFromParser(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.document.sr.TestCharacterDataReaderFromParser(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.document.sr.TestCloseWithoutCaching(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.sr.TestDTDReader(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser(metaFactory, false, true));
         addTest(new org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser(metaFactory, true, true));
@@ -346,6 +347,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.sr.TestClose(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.sr.TestClose(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding(metaFactory, false));
         for (int i=0; i<builderFactories.length; i++) {
             BuilderFactory bf = builderFactories[i];
             addTest(new org.apache.axiom.ts.om.element.sr.TestCommentEvent(metaFactory, bf, true));
@@ -528,6 +531,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestGetName(metaFactory));
+            for (int events = 0; events < 7; events++) {
+                addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching(metaFactory, events));
+            }
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource(metaFactory));

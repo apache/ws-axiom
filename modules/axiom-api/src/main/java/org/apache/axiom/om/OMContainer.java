@@ -25,6 +25,8 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.ext.DeclHandler;
@@ -274,7 +276,7 @@ public interface OMContainer extends OMSerializable {
 
     /**
      * Get a pull parser representation of this information item. This methods creates an
-     * {@link XMLStreamReader} instance that produces a sequence of StAX events for this element and
+     * {@link XMLStreamReader} instance that produces a sequence of StAX events for this container and
      * its content. The sequence of events is independent of the state of this element and the value
      * of the <code>cache</code> parameter, but the side effects of calling this method and
      * consuming the reader are different:
@@ -305,8 +307,11 @@ public interface OMContainer extends OMSerializable {
      * <td><code>false</code></td>
      * <td>The reader will delegate to the underlying parser starting from the event corresponding
      * to the last information item that has been built. In other words, after synthesizing a number
-     * of events, the reader will switch to delegation mode. An attempt to access the object model
-     * afterwards will result in an error.</td>
+     * of events, the reader will switch to delegation mode (also called "pull through" mode).
+     * This will consume the part of the object model from which the reader was requested.
+     * An attempt to access that part of the object model afterwards will result in a
+     * {@link NodeUnavailableException}. Other parts of the object model can be accessed in a normal
+     * way once the reader has been completely consumed or closed.</td>
      * </tr>
      * </table>
      * <p>
@@ -314,7 +319,7 @@ public interface OMContainer extends OMSerializable {
      * {@link XMLStreamReader#close()} method.
      * <p>
      * The returned reader MAY implement the extension defined by
-     * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} and any binary content will
+     * {@link DataHandlerReader} and any binary content will
      * be reported using this extension. More precisely, if the object model contains an
      * {@link OMText} instance with {@link OMText#isBinary()} returning <code>true</code> (or
      * would contain such an instance after it has been fully built), then its data will always be
@@ -327,18 +332,10 @@ public interface OMContainer extends OMSerializable {
      * prior to 1.2.9 makes assumptions on the returned reader that should no longer be considered
      * valid:
      * <ul>
-     * <li>Some code assumes that the returned reader is an instance of
-     * {@link org.apache.axiom.om.impl.common.OMStAXWrapper}. While it is true that Axiom internally uses
-     * this class to synthesize StAX events, it may wrap this instance in another reader
-     * implementation. E.g. depending on the log level, the reader will be wrapped using
-     * {@link org.apache.axiom.om.util.OMXMLStreamReaderValidator}. This was already the case in
-     * Axiom versions prior to 1.2.9. It should also be noted that instances of
-     * {@link OMSourcedElement} (which extends the present interface) may return a reader that is
-     * not implemented using {@link org.apache.axiom.om.impl.common.OMStAXWrapper}.</li>
      * <li>Some code uses the {@link OMXMLStreamReader} interface of the returned reader to switch
      * off MTOM inlining using {@link OMXMLStreamReader#setInlineMTOM(boolean)}. This has now been
      * deprecated and it is recommended to use
-     * {@link org.apache.axiom.util.stax.xop.XOPEncodingStreamReader} instead.</li>
+     * {@link XOPEncodingStreamReader} instead.</li>
      * <li>Some existing code uses the {@link OMAttachmentAccessor} interface of the returned
      * reader to fetch attachments using {@link OMAttachmentAccessor#getDataHandler(String)}. There
      * is no reason anymore to do so:</li>
@@ -353,7 +350,7 @@ public interface OMContainer extends OMSerializable {
      * with 1.2.9 this is no longer be the case: as specified above, the sequence of events is
      * independent of the state of the object model and the value of the <code>cache</code>
      * parameter, and all binary content is reported through the
-     * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} extension.</li>
+     * {@link DataHandlerReader} extension.</li>
      * <li>Finally, it should be noted that {@link OMAttachmentAccessor#getDataHandler(String)}
      * doesn't give access to the attachments in the SwA case (neither in 1.2.9 nor in previous
      * versions).</li>
@@ -361,8 +358,8 @@ public interface OMContainer extends OMSerializable {
      * </ul>
      * <p>
      * Code making any of these assumptions should be fixed, so that only {@link XMLStreamReader}
-     * and {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} are used (and if
-     * necessary, {@link org.apache.axiom.util.stax.xop.XOPEncodingStreamReader}).
+     * and {@link DataHandlerReader} are used (and if
+     * necessary, {@link XOPEncodingStreamReader}).
      * 
      * @param cache
      *            indicates if caching should be enabled

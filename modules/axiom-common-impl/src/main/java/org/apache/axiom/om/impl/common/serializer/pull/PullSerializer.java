@@ -73,7 +73,12 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
      */
     void switchState(PullSerializerState newState) throws XMLStreamException {
         PullSerializerState oldState = state;
+        PullSerializerState savedState = this.savedState;
         state = newState;
+        this.savedState = null;
+        if (savedState != null) {
+            savedState.released();
+        }
         oldState.released();
     }
     
@@ -99,12 +104,13 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
      * @throws XMLStreamException 
      */
     void popState() throws XMLStreamException {
+        PullSerializerState savedState = this.savedState;
         if (savedState == null) {
             throw new IllegalStateException();
         }
+        this.savedState = null;
         switchState(savedState);
-        savedState = null;
-        state.restored();
+        savedState.restored();
     }
 
     OMDataSource getDataSource() {
@@ -139,7 +145,7 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
     }
 
     public void close() throws XMLStreamException {
-        state.close();
+        switchState(ClosedState.INSTANCE);
     }
 
     public Object getProperty(String name) {

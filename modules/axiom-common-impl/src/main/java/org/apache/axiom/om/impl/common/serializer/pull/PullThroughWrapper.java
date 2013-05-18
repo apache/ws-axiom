@@ -22,6 +22,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 final class PullThroughWrapper extends AbstractWrapper {
@@ -35,6 +36,15 @@ final class PullThroughWrapper extends AbstractWrapper {
     }
 
     void released() throws XMLStreamException {
-        builder.reenableCaching(container);
+        if (container instanceof OMDocument) {
+            // No need to reenable caching; just close the builder
+            builder.close();
+        } else {
+            // Consume remaining events so that we can reenable caching
+            while (doNext()) {
+                // Just loop
+            }
+            builder.reenableCaching(container);
+        }
     }
 }

@@ -500,20 +500,6 @@ final class Navigator extends PullSerializerState
         return null;
     }
 
-    void close() throws XMLStreamException {
-        try {
-            // If there is a builder, it controls its parser
-            if (builder != null && builder instanceof StAXBuilder) {
-                StAXBuilder staxBuilder = (StAXBuilder) builder;
-                staxBuilder.close();
-            }
-        } finally {
-            // Note that as a side effect of this instruction, the Navigator instance
-            // will become unreachable and the parser can be GC'd or reused.
-            serializer.switchState(ClosedState.INSTANCE);
-        }
-    }
-
     boolean hasNext() throws XMLStreamException {
         return currentEvent != END_DOCUMENT;
     }
@@ -911,8 +897,6 @@ final class Navigator extends PullSerializerState
     }
 
     void released() throws XMLStreamException {
-        // TODO Auto-generated method stub
-        
     }
 
     void restored() throws XMLStreamException {

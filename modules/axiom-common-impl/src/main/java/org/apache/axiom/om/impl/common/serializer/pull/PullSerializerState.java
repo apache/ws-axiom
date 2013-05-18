@@ -87,8 +87,6 @@ abstract class PullSerializerState {
      */
     abstract int nextTag() throws XMLStreamException ;
 
-    abstract void close() throws XMLStreamException;
-
     abstract Object getProperty(String name) throws IllegalArgumentException;
 
     abstract String getVersion();

@@ -44,10 +44,6 @@ final class ClosedState extends PullSerializerState {
         return NullCharacterDataReader.INSTANCE;
     }
 
-    void close() throws XMLStreamException {
-        // no-op
-    }
-
     Object getProperty(String name) throws IllegalArgumentException {
         return null;
     }
