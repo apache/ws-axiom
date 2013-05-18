@@ -662,7 +662,7 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     String getElementText() throws XMLStreamException {
-        // Let StreamSwitch handle this method
+        // Let PullSerializer handle this method
         return null;
     }
 
@@ -809,7 +809,7 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     int nextTag() throws XMLStreamException {
-        // Let StreamSwitch handle this method
+        // Let PullSerializer handle this method
         return -1;
     }
 
