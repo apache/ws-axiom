@@ -71,7 +71,7 @@ class SwitchingWrapper extends PullSerializerState
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
     
-    private final PullSerializer streamSwitch;
+    private final PullSerializer serializer;
     
     /**
      * The current node, corresponding to the current event.
@@ -153,15 +153,15 @@ class SwitchingWrapper extends PullSerializerState
     /**
      * Constructor.
      *
-     * @param streamSwitch
+     * @param serializer
      * @param builder
      * @param startNode
      * @param cache
      * @param preserveNamespaceContext
      */
-    public SwitchingWrapper(PullSerializer streamSwitch, OMXMLParserWrapper builder, OMContainer startNode,
+    public SwitchingWrapper(PullSerializer serializer, OMXMLParserWrapper builder, OMContainer startNode,
                             boolean cache, boolean preserveNamespaceContext) {
-        this.streamSwitch = streamSwitch;
+        this.serializer = serializer;
         this.builder = builder;
         this.rootNode = startNode;
         this.cache = cache;
@@ -662,7 +662,7 @@ class SwitchingWrapper extends PullSerializerState
         } finally {
             // Note that as a side effect of this instruction, the SwitchingWrapper instance
             // will become unreachable and the parser can be GC'd or reused.
-            streamSwitch.switchState(ClosedState.INSTANCE);
+            serializer.switchState(ClosedState.INSTANCE);
         }
     }
 
@@ -681,7 +681,7 @@ class SwitchingWrapper extends PullSerializerState
      */
     private boolean isLeaf(OMSerializable n) {
         if (n instanceof OMContainer) {
-            return streamSwitch.isDataSourceALeaf() && isOMSourcedElement(n) && !((OMSourcedElement)n).isExpanded() && n != rootNode;
+            return serializer.isDataSourceALeaf() && isOMSourcedElement(n) && !((OMSourcedElement)n).isExpanded() && n != rootNode;
         } else {
             return true;
         }
@@ -772,7 +772,7 @@ class SwitchingWrapper extends PullSerializerState
                             while (reader.next() != START_ELEMENT) {
                                 // Just loop
                             }
-                            streamSwitch.switchState(new IncludeWrapper(streamSwitch, this, reader));
+                            serializer.switchState(new IncludeWrapper(serializer, this, reader));
                             node = nextNode;
                             visited = true;
                             return START_ELEMENT;
@@ -803,8 +803,8 @@ class SwitchingWrapper extends PullSerializerState
                         container = parent;
                         depth++;
                     }
-                    PullThroughWrapper wrapper = new PullThroughWrapper(streamSwitch, this, builder, container, builder.disableCaching(), depth);
-                    streamSwitch.switchState(wrapper);
+                    PullThroughWrapper wrapper = new PullThroughWrapper(serializer, this, builder, container, builder.disableCaching(), depth);
+                    serializer.switchState(wrapper);
                     node = container;
                     visited = true;
                     currentEvent = wrapper.next();

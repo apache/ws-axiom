@@ -51,10 +51,10 @@ abstract class AbstractWrapper extends PullSerializerState {
      */
     private DataHandlerReader dataHandlerReader;
 
-    AbstractWrapper(PullSerializer streamSwitch, PullSerializerState nextState,
+    AbstractWrapper(PullSerializer serializer, PullSerializerState nextState,
             XMLStreamReader reader, int startDepth) {
         this.reader = reader;
-        this.serializer = streamSwitch;
+        this.serializer = serializer;
         this.nextState = nextState;
         depth = startDepth;
     }
