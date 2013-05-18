@@ -160,133 +160,97 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     String getPrefix() {
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            return parser.getPrefix();
+        if ((currentEvent == START_ELEMENT)
+                || (currentEvent == END_ELEMENT)) {
+            return ((OMElement)node).getPrefix();
         } else {
-            if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)) {
-                return ((OMElement)node).getPrefix();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     String getNamespaceURI() {
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            return parser.getNamespaceURI();
+        if ((currentEvent == START_ELEMENT)
+                || (currentEvent == END_ELEMENT)) {
+            return ((OMElement)node).getNamespaceURI();
         } else {
-            if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)) {
-                return ((OMElement)node).getNamespaceURI();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     String getLocalName() {
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            return parser.getLocalName();
-        } else {
-            switch (currentEvent) {
-                case START_ELEMENT:
-                case END_ELEMENT:
-                    return ((OMElement)node).getLocalName();
-                case ENTITY_REFERENCE:
-                    return ((OMEntityReference)node).getName();
-                default:
-                    throw new IllegalStateException();
-            }
+        switch (currentEvent) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                return ((OMElement)node).getLocalName();
+            case ENTITY_REFERENCE:
+                return ((OMEntityReference)node).getName();
+            default:
+                throw new IllegalStateException();
         }
     }
 
     QName getName() {
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            return parser.getName();
-        } else {
-            if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)) {
-                // START quick & dirty hack
-                if (node instanceof OMSourcedElement) {
-                    // TODO: Need to force expansion to solve an issue in Axis2 where the returned QName is incorrect.
-                    //       Note that in previous versions of SwitchingWrapper, the sourced element was always expanded
-                    //       at this point (because SwitchingWrapper was looking 2 nodes ahead).
-                    ((OMElement)node).getFirstOMChild();
-                }
-                // END quick & dirty hack
-                return ((OMElement)node).getQName();
-            } else {
-                throw new IllegalStateException();
+        if ((currentEvent == START_ELEMENT)
+                || (currentEvent == END_ELEMENT)) {
+            // START quick & dirty hack
+            if (node instanceof OMSourcedElement) {
+                // TODO: Need to force expansion to solve an issue in Axis2 where the returned QName is incorrect.
+                //       Note that in previous versions of SwitchingWrapper, the sourced element was always expanded
+                //       at this point (because SwitchingWrapper was looking 2 nodes ahead).
+                ((OMElement)node).getFirstOMChild();
             }
+            // END quick & dirty hack
+            return ((OMElement)node).getQName();
+        } else {
+            throw new IllegalStateException();
         }
     }
 
     int getTextLength() {
-        if (parser != null) {
-            return parser.getTextLength();
-        } else {
-            return getTextFromNode().length();
-        }
+        return getTextFromNode().length();
     }
 
     int getTextStart() {
-        if (parser != null) {
-            return parser.getTextStart();
-        } else {
-            switch (currentEvent) {
-                case CHARACTERS:
-                case CDATA:
-                case COMMENT:
-                case SPACE:
-                    // getTextCharacters always returns a new char array and the start
-                    // index is therefore always 0
-                    return 0;
-                default:
-                    // getTextStart() is not allowed for DTD and ENTITY_REFERENCE events; see
-                    // the table in the Javadoc of XMLStreamReader
-                    throw new IllegalStateException();
-            }
+        switch (currentEvent) {
+            case CHARACTERS:
+            case CDATA:
+            case COMMENT:
+            case SPACE:
+                // getTextCharacters always returns a new char array and the start
+                // index is therefore always 0
+                return 0;
+            default:
+                // getTextStart() is not allowed for DTD and ENTITY_REFERENCE events; see
+                // the table in the Javadoc of XMLStreamReader
+                throw new IllegalStateException();
         }
     }
 
     int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
-        if (parser != null) {
-            return parser.getTextCharacters(sourceStart, target, targetStart, length);
-        } else {
-            String text = getTextFromNode();
-            int copied = Math.min(length, text.length()-sourceStart);
-            text.getChars(sourceStart, sourceStart + copied, target, targetStart);
-            return copied;
-        }
+        String text = getTextFromNode();
+        int copied = Math.min(length, text.length()-sourceStart);
+        text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+        return copied;
     }
 
     char[] getTextCharacters() {
-        if (parser != null) {
-            return parser.getTextCharacters();
-        } else {
-            return getTextFromNode().toCharArray();
-        }
+        return getTextFromNode().toCharArray();
     }
 
     String getText() {
-        if (parser != null) {
-            return parser.getText();
-        } else {
-            // For DTD and ENTITY_REFERENCE events, only getText() is allowed, but not getTextCharacters() etc.
-            // (see the table in the Javadoc of XMLStreamReader); therefore we handle these event here,
-            // and the other ones in getTextFromNode().
-            switch (currentEvent) {
-                case DTD:
-                    String internalSubset = ((OMDocType)node).getInternalSubset();
-                    // Woodstox returns the empty string if there is no internal subset
-                    return internalSubset != null ? internalSubset : "";
-                case ENTITY_REFERENCE:
-                    return ((OMEntityReference)node).getReplacementText();
-                default:
-                    return getTextFromNode();
-            }
+        // For DTD and ENTITY_REFERENCE events, only getText() is allowed, but not getTextCharacters() etc.
+        // (see the table in the Javadoc of XMLStreamReader); therefore we handle these event here,
+        // and the other ones in getTextFromNode().
+        switch (currentEvent) {
+            case DTD:
+                String internalSubset = ((OMDocType)node).getInternalSubset();
+                // Woodstox returns the empty string if there is no internal subset
+                return internalSubset != null ? internalSubset : "";
+            case ENTITY_REFERENCE:
+                return ((OMEntityReference)node).getReplacementText();
+            default:
+                return getTextFromNode();
         }
     }
     
@@ -438,158 +402,108 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     String getNamespacePrefix(int i) {
-        if (parser != null) {
-            return parser.getNamespacePrefix(i);
+        if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
+            String prefix = getNamespace(i).getPrefix();
+            return prefix.length() == 0 ? null : prefix; 
         } else {
-            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
-                String prefix = getNamespace(i).getPrefix();
-                return prefix.length() == 0 ? null : prefix; 
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     int getNamespaceCount() {
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            return parser.getNamespaceCount();
+        if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
+            loadNamespaces();
+            return namespaceCount;
         } else {
-            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
-                loadNamespaces();
-                return namespaceCount;
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     boolean isAttributeSpecified(int i) {
-        if (parser != null) {
-            return parser.isAttributeSpecified(i);
+        if (currentEvent == START_ELEMENT) {
+            // The Axiom object model doesn't store this information,
+            // but returning true is a reasonable default.
+            return true;
         } else {
-            if (currentEvent == START_ELEMENT) {
-                // The Axiom object model doesn't store this information,
-                // but returning true is a reasonable default.
-                return true;
-            } else {
-                throw new IllegalStateException(
-                        "attribute type accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute type accessed in illegal event!");
         }
     }
 
     String getAttributeValue(int i) {
-        if (parser != null) {
-            return parser.getAttributeValue(i);
+        if (currentEvent == START_ELEMENT) {
+            return getAttribute(i).getAttributeValue();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                return getAttribute(i).getAttributeValue();
-            } else {
-                throw new IllegalStateException(
-                        "attribute type accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute type accessed in illegal event!");
         }
     }
 
     String getAttributeType(int i) {
-        if (parser != null) {
-            return parser.getAttributeType(i);
+        if (currentEvent == START_ELEMENT) {
+            return getAttribute(i).getAttributeType();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                return getAttribute(i).getAttributeType();
-            } else {
-                throw new IllegalStateException(
-                        "attribute type accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute type accessed in illegal event!");
         }
     }
 
     String getAttributePrefix(int i) {
-        if (parser != null) {
-            return parser.getAttributePrefix(i);
+        if (currentEvent == START_ELEMENT) {
+            return getAttribute(i).getPrefix();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                return getAttribute(i).getPrefix();
-            } else {
-                throw new IllegalStateException(
-                        "attribute prefix accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute prefix accessed in illegal event!");
         }
     }
 
     String getAttributeLocalName(int i) {
-        if (parser != null) {
-            return parser.getAttributeLocalName(i);
+        if (currentEvent == START_ELEMENT) {
+            return getAttribute(i).getLocalName();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                return getAttribute(i).getLocalName();
-            } else {
-                throw new IllegalStateException(
-                        "attribute localName accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute localName accessed in illegal event!");
         }
     }
 
     String getAttributeNamespace(int i) {
-        if (parser != null) {
-            return parser.getAttributeNamespace(i);
+        if (currentEvent == START_ELEMENT) {
+            return getAttribute(i).getNamespaceURI();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                return getAttribute(i).getNamespaceURI();
-            } else {
-                throw new IllegalStateException(
-                        "attribute nameSpace accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute nameSpace accessed in illegal event!");
         }
     }
 
     QName getAttributeName(int i) {
-        if (parser != null) {
-            return parser.getAttributeName(i);
+        if (currentEvent == START_ELEMENT) {
+            return getAttribute(i).getQName();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                return getAttribute(i).getQName();
-            } else {
-                throw new IllegalStateException(
-                        "attribute count accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute count accessed in illegal event!");
         }
     }
 
     int getAttributeCount() {
-        int returnCount = 0;
-        if (parser != null) {
-            returnCount = parser.getAttributeCount();
+        if (currentEvent == START_ELEMENT) {
+            loadAttributes();
+            return attributeCount;
         } else {
-            if (currentEvent == START_ELEMENT) {
-                loadAttributes();
-                returnCount = attributeCount;
-            } else {
-                throw new IllegalStateException(
-                        "attribute count accessed in illegal event (" +
-                                currentEvent + ")!");
-            }
+            throw new IllegalStateException(
+                    "attribute count accessed in illegal event (" +
+                            currentEvent + ")!");
         }
-        return returnCount;
     }
 
     String getAttributeValue(String s, String s1) {
-        String returnString = null;
-        if (parser != null) {
-            returnString = parser.getAttributeValue(s, s1);
+        if (currentEvent == START_ELEMENT) {
+            QName qname = new QName(s, s1);
+            OMAttribute attr = ((OMElement)node).getAttribute(qname);
+            return attr == null ? null : attr.getAttributeValue();
         } else {
-            if (currentEvent == START_ELEMENT) {
-                QName qname = new QName(s, s1);
-                OMAttribute attrib = ((OMElement) node).getAttribute(qname);
-                if (attrib != null) {
-                    returnString = attrib.getAttributeValue();
-                }
-            } else {
-                throw new IllegalStateException(
-                        "attribute type accessed in illegal event!");
-            }
+            throw new IllegalStateException(
+                    "attribute type accessed in illegal event!");
         }
-        return returnString;
     }
 
     Boolean isWhiteSpace() {
@@ -597,20 +511,15 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     String getNamespaceURI(String prefix) {
-        String returnString = null;
-        if (parser != null) {
-            returnString = parser.getNamespaceURI(prefix);
-        } else {
-            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
+        if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
 
-                if (node instanceof OMElement) {
-                    OMNamespace namespaceURI =
-                            ((OMElement) node).findNamespaceURI(prefix);
-                    return namespaceURI != null ? namespaceURI.getNamespaceURI() : null;
-                }
+            if (node instanceof OMElement) {
+                OMNamespace namespaceURI =
+                        ((OMElement) node).findNamespaceURI(prefix);
+                return namespaceURI != null ? namespaceURI.getNamespaceURI() : null;
             }
         }
-        return returnString;
+        return null;
     }
 
     void close() throws XMLStreamException {
@@ -619,11 +528,6 @@ final class SwitchingWrapper extends PullSerializerState
             if (builder != null && builder instanceof StAXBuilder) {
                 StAXBuilder staxBuilder = (StAXBuilder) builder;
                 staxBuilder.close();
-                setParser(null);
-            } else {
-                if (parser != null) {
-                    parser.close();
-                }
             }
         } finally {
             // Note that as a side effect of this instruction, the SwitchingWrapper instance
@@ -823,18 +727,14 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     String getEncoding() {
-        if (parser != null) {
-            return parser.getEncoding();
-        } else {
-            if (currentEvent == START_DOCUMENT) {
-                if (node instanceof OMDocument) {
-                    return ((OMDocument)node).getCharsetEncoding();
-                } else {
-                    return null;
-                }
+        if (currentEvent == START_DOCUMENT) {
+            if (node instanceof OMDocument) {
+                return ((OMDocument)node).getCharsetEncoding();
             } else {
-                throw new IllegalStateException();
+                return null;
             }
+        } else {
+            throw new IllegalStateException();
         }
     }
 
@@ -851,42 +751,30 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     String getCharacterEncodingScheme() {
-        if (parser != null) {
-            return parser.getCharacterEncodingScheme();
-        } else {
-            if (currentEvent == START_DOCUMENT) {
-                if (node instanceof OMDocument) {
-                    return ((OMDocument)node).getXMLEncoding();
-                } else {
-                    return null;
-                }
+        if (currentEvent == START_DOCUMENT) {
+            if (node instanceof OMDocument) {
+                return ((OMDocument)node).getXMLEncoding();
             } else {
-                throw new IllegalStateException();
+                return null;
             }
+        } else {
+            throw new IllegalStateException();
         }
     }
 
     String getPITarget() {
-        if (parser != null) {
-            return parser.getPITarget();
+        if (currentEvent == PROCESSING_INSTRUCTION) {
+            return ((OMProcessingInstruction)node).getTarget();
         } else {
-            if (currentEvent == PROCESSING_INSTRUCTION) {
-                return ((OMProcessingInstruction)node).getTarget();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
     String getPIData() {
-        if (parser != null) {
-            return parser.getPIData();
+        if (currentEvent == PROCESSING_INSTRUCTION) {
+            return ((OMProcessingInstruction)node).getValue();
         } else {
-            if (currentEvent == PROCESSING_INSTRUCTION) {
-                return ((OMProcessingInstruction)node).getValue();
-            } else {
-                throw new IllegalStateException();
-            }
+            throw new IllegalStateException();
         }
     }
 
@@ -980,10 +868,6 @@ final class SwitchingWrapper extends PullSerializerState
      * Other helper methods
      * ####################################################################
      */
-
-    private void setParser(XMLStreamReader parser) {
-        this.parser = parser;
-    }
 
     private Map getAllNamespaces(OMSerializable contextNode) {
         if (contextNode == null) {
