@@ -814,11 +814,8 @@ final class SwitchingWrapper extends PullSerializerState
     }
 
     Object getProperty(String s) throws IllegalArgumentException {
-        Object value = XMLStreamReaderUtils.processGetProperty(this, s);
-        if (value != null) {
-            return value;
-        }
-        if (CharacterDataReader.PROPERTY.equals(s) || DTDReader.PROPERTY.equals(s)) {
+        // TODO: CharacterDataReader extension needs to be handled in PullSerializer
+        if (CharacterDataReader.PROPERTY.equals(s)) {
             return this;
         }
         if (parser != null) {
