@@ -74,7 +74,9 @@ final class SwitchingWrapper extends PullSerializerState
     private final PullSerializer serializer;
     
     /**
-     * The current node, corresponding to the current event.
+     * The current node, corresponding to the current event. It is <code>null</code> if the root
+     * node is an {@link OMElement} and the current event is
+     * {@link XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#END_DOCUMENT}.
      */
     private OMSerializable node;
 
@@ -106,13 +108,6 @@ final class SwitchingWrapper extends PullSerializerState
 
     /** Field NAVIGABLE */
     private static final short NAVIGABLE = 0;
-    
-    /**
-     * Indicates that the last event before the final {@link XMLStreamConstants#END_DOCUMENT} event
-     * has been generated. The next event will be {@link XMLStreamConstants#END_DOCUMENT} and state
-     * will transition to {@link #DOCUMENT_COMPLETE}.
-     */
-    private static final short COMPLETED = 2;
     
     /**
      * Indicates that the final {@link XMLStreamConstants#END_DOCUMENT} event has been generated.
@@ -716,44 +711,49 @@ final class SwitchingWrapper extends PullSerializerState
         switch (state) {
             case DOCUMENT_COMPLETE:
                 throw new NoSuchElementException("End of the document reached");
-            case COMPLETED:
-                state = DOCUMENT_COMPLETE;
-                currentEvent = END_DOCUMENT;
-                break;
             case NAVIGABLE:
-                OMSerializable nextNode;
+                boolean navigable;
                 if (node == null) {
                     // We get here if rootNode is an element and the current event is START_DOCUMENT
-                    nextNode = rootNode;
+                    assert !visited;
+                    node = rootNode;
+                    navigable = true;
                 } else if (!isLeaf(node) && !visited) {
                     OMNode firstChild = _getFirstChild((OMContainer) node);
                     if (firstChild != null) {
-                        nextNode = firstChild;
+                        node = firstChild;
                         visited = false;
+                        navigable = true;
                     } else if (node.isComplete()) {
-                        nextNode = node;
                         visited = true;
+                        navigable = true;
                     } else {
-                        nextNode = null;
+                        navigable = false;
                     }
+                } else if (node == rootNode) {
+                    // We get here if rootNode is an element and the next event is END_DOCUMENT
+                    node = null;
+                    visited = true;
+                    navigable = true;
                 } else {
                     OMNode current = (OMNode)node;
                     OMNode nextSibling = getNextSibling(current);
                     if (nextSibling != null) {
-                        nextNode = nextSibling;
+                        node = nextSibling;
                         visited = false;
+                        navigable = true;
                     } else {
                         OMContainer parent = current.getParent();
                         if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
-                            nextNode = parent;
+                            node = parent;
                             visited = true;
+                            navigable = true;
                         } else {
-                            nextNode = null;
+                            navigable = false;
                         }
                     }
                 }
-                if (nextNode != null) {
-                    node = nextNode;
+                if (navigable) {
                     if (node instanceof OMSourcedElement) {
                         OMSourcedElement element = (OMSourcedElement)node;
                         if (!element.isExpanded()) {
@@ -770,9 +770,10 @@ final class SwitchingWrapper extends PullSerializerState
                             }
                         }
                     }
-                    if (node instanceof OMDocument) {
+                    if (node == null || node instanceof OMDocument) {
                         assert visited;
                         currentEvent = END_DOCUMENT;
+                        state = DOCUMENT_COMPLETE;
                     } else if (node instanceof OMElement) {
                         currentEvent = visited ? END_ELEMENT : START_ELEMENT;
                     } else {
@@ -804,13 +805,6 @@ final class SwitchingWrapper extends PullSerializerState
                     node = container;
                     visited = true;
                     currentEvent = wrapper.next();
-                }
-                if (rootNode == node && visited) {
-                    if (currentEvent == END_DOCUMENT) {
-                        state = DOCUMENT_COMPLETE;
-                    } else {
-                        state = COMPLETED;
-                    }
                 }
                 break;
             default:
