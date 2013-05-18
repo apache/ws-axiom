@@ -22,11 +22,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 final class IncludeWrapper extends AbstractWrapper {
-    IncludeWrapper(PullSerializer serializer, PullSerializerState nextState, XMLStreamReader parent) {
-        super(serializer, nextState, parent, 1);
+    IncludeWrapper(PullSerializer serializer, XMLStreamReader parent) {
+        super(serializer, parent, 1);
     }
 
-    void release() throws XMLStreamException {
+    void released() throws XMLStreamException {
         reader.close();
     }
 }

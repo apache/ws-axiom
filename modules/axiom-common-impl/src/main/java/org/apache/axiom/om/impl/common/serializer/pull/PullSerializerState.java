@@ -48,7 +48,7 @@ abstract class PullSerializerState {
 
     abstract boolean hasNext() throws XMLStreamException;
 
-    abstract int next() throws XMLStreamException;
+    abstract void next() throws XMLStreamException;
 
     /**
      * Skip to the next {@link XMLStreamConstants#START_ELEMENT} or
@@ -156,4 +156,20 @@ abstract class PullSerializerState {
      * @see OMXMLStreamReaderEx#getDataSource()
      */
     abstract OMDataSource getDataSource();
+
+    /**
+     * Inform this state object that it has been released due to a call to
+     * {@link PullSerializer#switchState(PullSerializerState)} or {@link PullSerializer#popState()}.
+     * 
+     * @throws XMLStreamException
+     */
+    abstract void released() throws XMLStreamException;
+    
+    /**
+     * Inform this state object that it has been restored by a call to
+     * {@link PullSerializer#popState()}.
+     * 
+     * @throws XMLStreamException 
+     */
+    abstract void restored() throws XMLStreamException;
 }

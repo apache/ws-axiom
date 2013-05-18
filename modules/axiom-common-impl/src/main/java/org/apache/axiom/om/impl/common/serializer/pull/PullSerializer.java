@@ -37,7 +37,15 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * {@link XMLStreamReader} implementation that generates events from a given Axiom tree.
  */
 public final class PullSerializer extends AbstractXMLStreamReader implements DataHandlerReader, DTDReader {
+    /**
+     * The current state of the serializer.
+     */
     private PullSerializerState state;
+    
+    /**
+     * The serializer state saved by {@link #pushState(PullSerializerState)}.
+     */
+    private PullSerializerState savedState;
     
     /**
      * Indicates if an OMSourcedElement with an OMDataSource should
@@ -50,8 +58,49 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
         state = new SwitchingWrapper(this, builder, startNode, cache, preserveNamespaceContext);
     }
     
-    void switchState(PullSerializerState state) {
-        this.state = state;
+    /**
+     * Switch the state of the serializer and release the old state. This method will use the
+     * {@link PullSerializerState#released()} method to inform the old state that it has been
+     * released.
+     * 
+     * @param newState
+     *            the new state
+     * @throws XMLStreamException
+     */
+    void switchState(PullSerializerState newState) throws XMLStreamException {
+        PullSerializerState oldState = state;
+        state = newState;
+        oldState.released();
+    }
+    
+    /**
+     * Save the current state of the serializer and switch to a new state. The old state can be
+     * restored with {@link #popState()}.
+     * 
+     * @param newState
+     *            the new state
+     */
+    void pushState(PullSerializerState newState) {
+        if (savedState != null) {
+            throw new IllegalStateException();
+        }
+        savedState = state;
+        state = newState;
+    }
+    
+    /**
+     * Release the current state and restore the state previously saved by
+     * {@link #pushState(PullSerializerState)}.
+     * 
+     * @throws XMLStreamException 
+     */
+    void popState() throws XMLStreamException {
+        if (savedState == null) {
+            throw new IllegalStateException();
+        }
+        switchState(savedState);
+        savedState = null;
+        state.restored();
     }
 
     OMDataSource getDataSource() {
@@ -75,7 +124,9 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
     }
 
     public int next() throws XMLStreamException {
-        return state.next();
+        // Note: the state may change as a side effect of the call to next()
+        state.next();
+        return state.getEventType();
     }
 
     public int nextTag() throws XMLStreamException {

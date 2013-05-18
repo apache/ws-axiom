@@ -707,7 +707,7 @@ final class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    int next() throws XMLStreamException {
+    void next() throws XMLStreamException {
         switch (state) {
             case DOCUMENT_COMPLETE:
                 throw new NoSuchElementException("End of the document reached");
@@ -764,9 +764,9 @@ final class SwitchingWrapper extends PullSerializerState
                                 while (reader.next() != START_ELEMENT) {
                                     // Just loop
                                 }
-                                serializer.switchState(new IncludeWrapper(serializer, this, reader));
+                                serializer.pushState(new IncludeWrapper(serializer, reader));
                                 visited = true;
-                                return START_ELEMENT;
+                                return;
                             }
                         }
                     }
@@ -800,17 +800,16 @@ final class SwitchingWrapper extends PullSerializerState
                         container = parent;
                         depth++;
                     }
-                    PullThroughWrapper wrapper = new PullThroughWrapper(serializer, this, builder, container, builder.disableCaching(), depth);
-                    serializer.switchState(wrapper);
+                    PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, builder.disableCaching(), depth);
+                    serializer.pushState(wrapper);
                     node = container;
                     visited = true;
-                    currentEvent = wrapper.next();
+                    wrapper.next();
                 }
                 break;
             default:
                 throw new IllegalStateException("unsuppported state!");
         }
-        return currentEvent;
     }
 
     int nextTag() throws XMLStreamException {
@@ -1085,5 +1084,14 @@ final class SwitchingWrapper extends PullSerializerState
             }
         }
         return ds;
+    }
+
+    void released() throws XMLStreamException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    void restored() throws XMLStreamException {
+        next();
     }
 }

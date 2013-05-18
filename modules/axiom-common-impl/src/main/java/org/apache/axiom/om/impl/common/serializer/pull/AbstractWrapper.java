@@ -35,7 +35,6 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 abstract class AbstractWrapper extends PullSerializerState {
     protected final XMLStreamReader reader;
     private final PullSerializer serializer;
-    private final PullSerializerState nextState;
     private int depth;
     
     /**
@@ -50,11 +49,9 @@ abstract class AbstractWrapper extends PullSerializerState {
      */
     private DataHandlerReader dataHandlerReader;
 
-    AbstractWrapper(PullSerializer serializer, PullSerializerState nextState,
-            XMLStreamReader reader, int startDepth) {
+    AbstractWrapper(PullSerializer serializer, XMLStreamReader reader, int startDepth) {
         this.reader = reader;
         this.serializer = serializer;
-        this.nextState = nextState;
         depth = startDepth;
     }
 
@@ -90,16 +87,12 @@ abstract class AbstractWrapper extends PullSerializerState {
         return reader.hasNext();
     }
 
-    final int next() throws XMLStreamException {
+    final void next() throws XMLStreamException {
         if (depth == 0) {
             // We get here if the underlying XMLStreamReader is on the last END_ELEMENT event
-            // TODO: also do this if the reader is prematurely closed
-            release();
-            serializer.switchState(nextState);
-            return nextState.next();
+            serializer.popState();
         } else {
-            int event = reader.next();
-            switch (event) {
+            switch (reader.next()) {
                 case XMLStreamReader.START_ELEMENT:
                     depth++;
                     break;
@@ -107,7 +100,6 @@ abstract class AbstractWrapper extends PullSerializerState {
                     depth--;
                     break;
             }
-            return event;
         }
     }
     
@@ -265,5 +257,6 @@ abstract class AbstractWrapper extends PullSerializerState {
         return null;
     }
 
-    abstract void release() throws XMLStreamException;
+    final void restored() {
+    }
 }

@@ -28,14 +28,13 @@ final class PullThroughWrapper extends AbstractWrapper {
     private final StAXOMBuilder builder;
     private final OMContainer container;
 
-    PullThroughWrapper(PullSerializer serializer, PullSerializerState nextState,
-            StAXOMBuilder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
-        super(serializer, nextState, reader, startDepth);
+    PullThroughWrapper(PullSerializer serializer, StAXOMBuilder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
+        super(serializer, reader, startDepth);
         this.builder = builder;
         this.container = container;
     }
 
-    void release() throws XMLStreamException {
+    void released() throws XMLStreamException {
         builder.reenableCaching(container);
     }
 }

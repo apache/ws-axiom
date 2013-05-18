@@ -180,7 +180,7 @@ final class ClosedState extends PullSerializerState {
         throw new IllegalStateException("Reader already closed");
     }
 
-    int next() throws XMLStreamException {
+    void next() throws XMLStreamException {
         throw new IllegalStateException("Reader already closed");
     }
 
@@ -194,5 +194,11 @@ final class ClosedState extends PullSerializerState {
 
     OMDataSource getDataSource() {
         throw new IllegalStateException("Reader already closed");
+    }
+
+    void released() throws XMLStreamException {
+    }
+
+    void restored() {
     }
 }
