@@ -18,12 +18,16 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
@@ -36,7 +40,7 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 /**
  * {@link XMLStreamReader} implementation that generates events from a given Axiom tree.
  */
-public final class PullSerializer extends AbstractXMLStreamReader implements DataHandlerReader, DTDReader {
+public final class PullSerializer extends AbstractXMLStreamReader implements DataHandlerReader, DTDReader, CharacterDataReader {
     /**
      * The current state of the serializer.
      */
@@ -142,7 +146,7 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
         Object value = XMLStreamReaderUtils.processGetProperty(this, name);
         if (value != null) {
             return value;
-        } else if (DTDReader.PROPERTY.equals(name)) {
+        } else if (DTDReader.PROPERTY.equals(name) || CharacterDataReader.PROPERTY.equals(name)) {
             return this;
         } else {
             return state.getProperty(name);
@@ -313,5 +317,9 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
 
     public String getSystemId() {
         return state.getDTDReader().getSystemId();
+    }
+
+    public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
+        state.getCharacterDataReader().writeTextTo(writer);
     }
 }

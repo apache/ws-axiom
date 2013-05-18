@@ -58,7 +58,6 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -156,6 +155,10 @@ final class Navigator extends PullSerializerState
     }
 
     DataHandlerReader getDataHandlerReader() {
+        return this;
+    }
+
+    CharacterDataReader getCharacterDataReader() {
         return this;
     }
 
@@ -275,27 +278,23 @@ final class Navigator extends PullSerializerState
     }
 
     public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
-        if (parser != null) {
-            XMLStreamReaderUtils.writeTextTo(parser, writer);
-        } else {
-            switch (currentEvent) {
-                case CHARACTERS:
-                case CDATA:
-                case SPACE:
-                    OMText text = (OMText)node;
-                    if (text.isCharacters()) {
-                        writer.write(text.getTextCharacters());
-                    } else {
-                        // TODO: we should cover the binary case in an optimized way
-                        writer.write(text.getText());
-                    }
-                    break;
-                case COMMENT:
-                    writer.write(((OMComment)node).getValue());
-                    break;
-                default:
-                    throw new IllegalStateException();
-            }
+        switch (currentEvent) {
+            case CHARACTERS:
+            case CDATA:
+            case SPACE:
+                OMText text = (OMText)node;
+                if (text.isCharacters()) {
+                    writer.write(text.getTextCharacters());
+                } else {
+                    // TODO: we should cover the binary case in an optimized way
+                    writer.write(text.getText());
+                }
+                break;
+            case COMMENT:
+                writer.write(((OMComment)node).getValue());
+                break;
+            default:
+                throw new IllegalStateException();
         }
     }
 
@@ -697,10 +696,6 @@ final class Navigator extends PullSerializerState
     }
 
     Object getProperty(String s) throws IllegalArgumentException {
-        // TODO: CharacterDataReader extension needs to be handled in PullSerializer
-        if (CharacterDataReader.PROPERTY.equals(s)) {
-            return this;
-        }
         if (parser != null) {
             return parser.getProperty(s);
         }

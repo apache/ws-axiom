@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMDataSource;
@@ -42,6 +43,10 @@ final class EndDocumentState extends PullSerializerState {
 
     DataHandlerReader getDataHandlerReader() {
         return NullDataHandlerReader.INSTANCE;
+    }
+
+    CharacterDataReader getCharacterDataReader() {
+        return NullCharacterDataReader.INSTANCE;
     }
 
     int getEventType() {

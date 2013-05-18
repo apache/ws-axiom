@@ -24,6 +24,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMDataSource;
@@ -59,6 +60,13 @@ abstract class PullSerializerState {
      * @return the {@link DataHandlerReader} extension; must not be <code>null</code>
      */
     abstract DataHandlerReader getDataHandlerReader();
+    
+    /**
+     * Get the {@link CharacterDataReader} extension.
+     * 
+     * @return the {@link CharacterDataReader} extension; must not be <code>null</code>
+     */
+    abstract CharacterDataReader getCharacterDataReader();
     
     abstract int getEventType();
 

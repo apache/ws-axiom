@@ -18,11 +18,15 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMDataSource;
@@ -32,7 +36,7 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * Base class for {@link PullSerializerState} implementations that wrap an {@link XMLStreamReader}.
  */
 //TODO: what about the close() method?
-abstract class AbstractWrapper extends PullSerializerState {
+abstract class AbstractWrapper extends PullSerializerState implements CharacterDataReader {
     protected final XMLStreamReader reader;
     private final PullSerializer serializer;
     private int depth;
@@ -48,6 +52,12 @@ abstract class AbstractWrapper extends PullSerializerState {
      * has not yet been retrieved.
      */
     private DataHandlerReader dataHandlerReader;
+
+    /**
+     * The {@link CharacterDataReader} extension of the reader, or <code>null</code> if the extension
+     * has not yet been retrieved.
+     */
+    private CharacterDataReader characterDataReader;
 
     AbstractWrapper(PullSerializer serializer, XMLStreamReader reader, int startDepth) {
         this.reader = reader;
@@ -77,6 +87,24 @@ abstract class AbstractWrapper extends PullSerializerState {
             }
         }
         return dataHandlerReader;
+    }
+
+    final CharacterDataReader getCharacterDataReader() {
+        if (characterDataReader == null) {
+            try {
+                characterDataReader = (CharacterDataReader)reader.getProperty(CharacterDataReader.PROPERTY);
+            } catch (IllegalArgumentException ex) {
+                // Continue
+            }
+            if (characterDataReader == null) {
+                characterDataReader = this;
+            }
+        }
+        return characterDataReader;
+    }
+
+    public final void writeTextTo(Writer writer) throws XMLStreamException, IOException {
+        writer.write(reader.getText());
     }
 
     final int getEventType() {
