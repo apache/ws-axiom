@@ -769,7 +769,16 @@ final class SwitchingWrapper extends PullSerializerState
                 }
                 if (nextNode != null) {
                     node = nextNode;
-                    currentEvent = generateEvents(node);
+                    if (node instanceof OMContainer) {
+                        OMContainer container = (OMContainer)node;
+                        if (visited) {
+                            currentEvent = container instanceof OMDocument ? END_DOCUMENT : END_ELEMENT;
+                        } else {
+                            currentEvent = container instanceof OMDocument ? START_DOCUMENT : START_ELEMENT;
+                        }
+                    } else {
+                        currentEvent = ((OMNode)node).getType();
+                    }
                     attributeCount = -1;
                     namespaceCount = -1;
                 } else {
@@ -1001,27 +1010,6 @@ final class SwitchingWrapper extends PullSerializerState
             return ((OMDocType)node).getSystemId();
         } else {
             throw new IllegalStateException();
-        }
-    }
-
-    /*
-     *
-     * ################################################################
-     * Generator methods for the OMNodes returned by the navigator
-     * ################################################################
-     *
-     */
-
-    private int generateEvents(OMSerializable node) {
-        if (node instanceof OMContainer) {
-            OMContainer container = (OMContainer)node;
-            if (visited) {
-                return container instanceof OMDocument ? END_DOCUMENT : END_ELEMENT;
-            } else {
-                return container instanceof OMDocument ? START_DOCUMENT : START_ELEMENT;
-            }
-        } else {
-            return ((OMNode)node).getType();
         }
     }
 
