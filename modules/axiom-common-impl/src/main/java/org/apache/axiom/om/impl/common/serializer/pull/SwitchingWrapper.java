@@ -770,13 +770,11 @@ final class SwitchingWrapper extends PullSerializerState
                             }
                         }
                     }
-                    if (node instanceof OMContainer) {
-                        OMContainer container = (OMContainer)node;
-                        if (visited) {
-                            currentEvent = container instanceof OMDocument ? END_DOCUMENT : END_ELEMENT;
-                        } else {
-                            currentEvent = container instanceof OMDocument ? START_DOCUMENT : START_ELEMENT;
-                        }
+                    if (node instanceof OMDocument) {
+                        assert visited;
+                        currentEvent = END_DOCUMENT;
+                    } else if (node instanceof OMElement) {
+                        currentEvent = visited ? END_ELEMENT : START_ELEMENT;
                     } else {
                         currentEvent = ((OMNode)node).getType();
                     }
