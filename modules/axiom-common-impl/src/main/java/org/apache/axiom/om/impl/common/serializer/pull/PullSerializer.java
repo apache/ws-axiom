@@ -55,7 +55,7 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
 
     public PullSerializer(OMXMLParserWrapper builder, OMContainer startNode,
             boolean cache, boolean preserveNamespaceContext) {
-        state = new SwitchingWrapper(this, builder, startNode, cache, preserveNamespaceContext);
+        state = new Navigator(this, builder, startNode, cache, preserveNamespaceContext);
     }
     
     /**

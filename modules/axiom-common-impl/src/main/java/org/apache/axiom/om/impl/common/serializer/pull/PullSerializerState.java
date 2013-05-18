@@ -29,6 +29,22 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 
+/**
+ * Encapsulates the state of the {@link PullSerializer}. Different subclasses are used depending on
+ * the position reached in the OM tree or original document and the state of the serializer:
+ * <ul>
+ * <li>{@link PullThroughWrapper} is used if caching is turned off and the node for the current
+ * event has not been instantiated. In this case, events are pulled directly from the underlying
+ * parser.
+ * <li>{@link IncludeWrapper} is used for events pulled directly from an {@link OMDataSource}.
+ * <li>{@link EndDocumentState} is used when the {@link XMLStreamConstants#END_DOCUMENT} event has
+ * been reached.
+ * <li>{@link ClosedState} is used when {@link XMLStreamReader#close()} has been called on the
+ * serializer.
+ * <li>In all other cases, {@link Navigator} is used. This class is responsible for
+ * generating StAX events from nodes in the object model.
+ * </ul>
+ */
 abstract class PullSerializerState {
     /**
      * Get the {@link DTDReader} extension.

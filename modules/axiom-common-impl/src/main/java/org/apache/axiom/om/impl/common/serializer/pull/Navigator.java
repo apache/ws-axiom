@@ -63,12 +63,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Class used internally by {@link OMXMLStreamReaderExAdapter}.
+ * {@link PullSerializerState} implementation that generates events from nodes in the OM tree.
  */
-final class SwitchingWrapper extends PullSerializerState
+final class Navigator extends PullSerializerState
     implements DataHandlerReader, CharacterDataReader, DTDReader, XMLStreamConstants {
     
-    private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
+    private static final Log log = LogFactory.getLog(Navigator.class);
     
     private final PullSerializer serializer;
     
@@ -134,7 +134,7 @@ final class SwitchingWrapper extends PullSerializerState
      * @param cache
      * @param preserveNamespaceContext
      */
-    SwitchingWrapper(PullSerializer serializer, OMXMLParserWrapper builder, OMContainer startNode,
+    Navigator(PullSerializer serializer, OMXMLParserWrapper builder, OMContainer startNode,
                             boolean cache, boolean preserveNamespaceContext) {
         this.serializer = serializer;
         this.builder = builder;
@@ -195,8 +195,8 @@ final class SwitchingWrapper extends PullSerializerState
             // START quick & dirty hack
             if (node instanceof OMSourcedElement) {
                 // TODO: Need to force expansion to solve an issue in Axis2 where the returned QName is incorrect.
-                //       Note that in previous versions of SwitchingWrapper, the sourced element was always expanded
-                //       at this point (because SwitchingWrapper was looking 2 nodes ahead).
+                //       Note that in previous versions of Navigator, the sourced element was always expanded
+                //       at this point (because Navigator was looking 2 nodes ahead).
                 ((OMElement)node).getFirstOMChild();
             }
             // END quick & dirty hack
@@ -530,7 +530,7 @@ final class SwitchingWrapper extends PullSerializerState
                 staxBuilder.close();
             }
         } finally {
-            // Note that as a side effect of this instruction, the SwitchingWrapper instance
+            // Note that as a side effect of this instruction, the Navigator instance
             // will become unreachable and the parser can be GC'd or reused.
             serializer.switchState(ClosedState.INSTANCE);
         }

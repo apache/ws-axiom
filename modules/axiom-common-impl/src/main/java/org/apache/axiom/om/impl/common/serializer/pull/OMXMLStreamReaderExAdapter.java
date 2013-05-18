@@ -56,8 +56,8 @@ public class OMXMLStreamReaderExAdapter extends StreamReaderDelegate implements 
 
     public void setInlineMTOM(boolean value) {
         // For inlineMTOM=false, we insert an XOPEncodingStreamReader proxy between
-        // us and SwitchingWrapper.
-        // For inlineMTOM=true, we remove it and delegate directly to SwitchingWrapper.
+        // us and PullSerializer.
+        // For inlineMTOM=true, we remove it and delegate directly to PullSerializer.
         if (value) {
             if (xopEncoder != null) {
                 xopEncoder = null;
