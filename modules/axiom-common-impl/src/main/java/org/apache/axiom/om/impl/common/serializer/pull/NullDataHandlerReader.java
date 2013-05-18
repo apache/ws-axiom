@@ -18,15 +18,38 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
-final class IncludeWrapper extends AbstractWrapper {
-    IncludeWrapper(PullSerializer serializer, PullSerializerState nextState, XMLStreamReader parent) {
-        super(serializer, nextState, parent, 1);
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+
+final class NullDataHandlerReader implements DataHandlerReader {
+    static final NullDataHandlerReader INSTANCE = new NullDataHandlerReader();
+    
+    private NullDataHandlerReader() {}
+
+    public boolean isBinary() {
+        return false;
     }
 
-    void release() throws XMLStreamException {
-        reader.close();
+    public boolean isOptimized() {
+        throw new IllegalStateException();
+    }
+
+    public boolean isDeferred() {
+        throw new IllegalStateException();
+    }
+
+    public String getContentID() {
+        throw new IllegalStateException();
+    }
+
+    public DataHandler getDataHandler() throws XMLStreamException {
+        throw new IllegalStateException();
+    }
+
+    public DataHandlerProvider getDataHandlerProvider() {
+        throw new IllegalStateException();
     }
 }

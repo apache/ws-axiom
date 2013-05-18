@@ -16,19 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.om.impl.common.serializer.pull;
 
 import java.io.IOException;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
@@ -37,28 +34,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * {@link XMLStreamReader} implementation that generates events from a given Axiom tree.
- * This class does intentionally does not implement XMLStreamReaderContainer because
- * it does not wrap a parser (it wraps an OM graph).
+ * Adapter that adds the {@link OMXMLStreamReaderEx} interface to a {@link PullSerializer}.
+ * <p>
+ * Note that this class will disappear in Axiom 1.3 because the methods defined by
+ * {@link OMXMLStreamReader} are deprecated.
  */
-public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
-    private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
+public class OMXMLStreamReaderExAdapter extends StreamReaderDelegate implements OMXMLStreamReaderEx {
+    private static final Log log = LogFactory.getLog(OMXMLStreamReaderExAdapter.class);
     
-    private final StreamSwitch streamSwitch = new StreamSwitch();
+    private final PullSerializer serializer;
     private XOPEncodingStreamReader xopEncoder;
     
-    /**
-     * Constructor OMStAXWrapper.
-     *
-     * @param builder
-     * @param startNode
-     * @param cache
-     * @param preserveNamespaceContext
-     */
-    public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
-                         boolean cache, boolean preserveNamespaceContext) {
-        streamSwitch.setParent(new SwitchingWrapper(streamSwitch, builder, startNode, cache, preserveNamespaceContext));
-        setParent(streamSwitch);
+    public OMXMLStreamReaderExAdapter(PullSerializer serializer) {
+        super(serializer);
+        this.serializer = serializer;
     }
 
     public boolean isInlineMTOM() {
@@ -72,14 +61,14 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         if (value) {
             if (xopEncoder != null) {
                 xopEncoder = null;
-                setParent(streamSwitch);
+                setParent(serializer);
             }
         } else {
             if (xopEncoder == null) {
                 // Since the intention is to support an efficient way to pass binary content to a
                 // consumer that is not aware of our data handler extension (see AXIOM-202), we
                 // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
-                xopEncoder = new XOPEncodingStreamReader(streamSwitch, ContentIDGenerator.DEFAULT,
+                xopEncoder = new XOPEncodingStreamReader(serializer, ContentIDGenerator.DEFAULT,
                         OptimizationPolicy.ALL);
                 setParent(xopEncoder);
             }
@@ -108,10 +97,10 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
     }
     
     public OMDataSource getDataSource() {
-        return streamSwitch.getDataSource();
+        return serializer.getDataSource();
     }
     
     public void enableDataSourceEvents(boolean value) {
-        streamSwitch.enableDataSourceEvents(value);
+        serializer.enableDataSourceEvents(value);
     }
 }

@@ -31,7 +31,8 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.serializer.pull.OMStAXWrapper;
+import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
+import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,13 +63,13 @@ public final class OMContainerHelper {
         boolean done = container.isComplete();
         // TODO: review & clean up
         if ((builder == null) && done) {
-            reader = new OMStAXWrapper(null, container, cache, configuration.isPreserveNamespaceContext());
+            reader = new OMXMLStreamReaderExAdapter(new PullSerializer(null, container, cache, configuration.isPreserveNamespaceContext()));
         } else {
             if (builder != null && builder.isCompleted() && !cache && !done) {
                 throw new UnsupportedOperationException(
                 "The parser is already consumed!");
             }
-            reader = new OMStAXWrapper(builder, container, cache, configuration.isPreserveNamespaceContext());
+            reader = new OMXMLStreamReaderExAdapter(new PullSerializer(builder, container, cache, configuration.isPreserveNamespaceContext()));
         }
         
         if (configuration.isNamespaceURIInterning()) {

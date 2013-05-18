@@ -28,9 +28,9 @@ final class PullThroughWrapper extends AbstractWrapper {
     private final StAXOMBuilder builder;
     private final OMContainer container;
 
-    PullThroughWrapper(StreamSwitch streamSwitch, XMLStreamReader nextTarget,
+    PullThroughWrapper(PullSerializer serializer, PullSerializerState nextState,
             StAXOMBuilder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
-        super(streamSwitch, nextTarget, reader, startDepth);
+        super(serializer, nextState, reader, startDepth);
         this.builder = builder;
         this.container = container;
     }

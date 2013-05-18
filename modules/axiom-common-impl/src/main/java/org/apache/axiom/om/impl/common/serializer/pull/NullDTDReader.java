@@ -18,15 +18,22 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.ext.stax.DTDReader;
 
-final class IncludeWrapper extends AbstractWrapper {
-    IncludeWrapper(PullSerializer serializer, PullSerializerState nextState, XMLStreamReader parent) {
-        super(serializer, nextState, parent, 1);
+final class NullDTDReader implements DTDReader {
+    static final NullDTDReader INSTANCE = new NullDTDReader();
+    
+    private NullDTDReader() {}
+
+    public String getRootName() {
+        throw new UnsupportedOperationException();
     }
 
-    void release() throws XMLStreamException {
-        reader.close();
+    public String getPublicId() {
+        throw new UnsupportedOperationException();
+    }
+
+    public String getSystemId() {
+        throw new UnsupportedOperationException();
     }
 }

@@ -20,193 +20,179 @@ package org.apache.axiom.om.impl.common.serializer.pull;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
-final class ClosedReader implements XMLStreamReader {
-    static final ClosedReader INSTANCE = new ClosedReader();
+import org.apache.axiom.ext.stax.DTDReader;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.om.OMDataSource;
+
+final class ClosedState extends PullSerializerState {
+    static final ClosedState INSTANCE = new ClosedState();
     
-    private ClosedReader() {}
+    private ClosedState() {}
 
-    public void close() throws XMLStreamException {
+    DTDReader getDTDReader() {
+        return NullDTDReader.INSTANCE;
+    }
+
+    DataHandlerReader getDataHandlerReader() {
+        return NullDataHandlerReader.INSTANCE;
+    }
+
+    void close() throws XMLStreamException {
         // no-op
     }
 
-    public Object getProperty(String name) throws IllegalArgumentException {
+    Object getProperty(String name) throws IllegalArgumentException {
         return null;
     }
 
-    public int getAttributeCount() {
+    int getAttributeCount() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getAttributeLocalName(int index) {
+    String getAttributeLocalName(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public QName getAttributeName(int index) {
+    QName getAttributeName(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getAttributeNamespace(int index) {
+    String getAttributeNamespace(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getAttributePrefix(int index) {
+    String getAttributePrefix(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getAttributeType(int index) {
+    String getAttributeType(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getAttributeValue(int index) {
+    String getAttributeValue(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getAttributeValue(String namespaceURI, String localName) {
+    String getAttributeValue(String namespaceURI, String localName) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getCharacterEncodingScheme() {
+    String getCharacterEncodingScheme() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getElementText() throws XMLStreamException {
+    String getElementText() throws XMLStreamException {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getEncoding() {
+    String getEncoding() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public int getEventType() {
+    int getEventType() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getLocalName() {
+    String getLocalName() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public Location getLocation() {
+    QName getName() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public QName getName() {
+    NamespaceContext getNamespaceContext() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public NamespaceContext getNamespaceContext() {
+    int getNamespaceCount() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public int getNamespaceCount() {
+    String getNamespacePrefix(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getNamespacePrefix(int index) {
+    String getNamespaceURI() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getNamespaceURI() {
+    String getNamespaceURI(String prefix) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getNamespaceURI(String prefix) {
+    String getNamespaceURI(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getNamespaceURI(int index) {
+    String getPIData() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getPIData() {
+    String getPITarget() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getPITarget() {
+    String getPrefix() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getPrefix() {
+    String getText() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getText() {
+    char[] getTextCharacters() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public char[] getTextCharacters() {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
+    int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public int getTextLength() {
+    int getTextLength() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public int getTextStart() {
+    int getTextStart() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public String getVersion() {
+    String getVersion() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public boolean hasName() {
+    boolean hasNext() throws XMLStreamException {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public boolean hasNext() throws XMLStreamException {
+    boolean isAttributeSpecified(int index) {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public boolean hasText() {
+    boolean isStandalone() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public boolean isAttributeSpecified(int index) {
+    Boolean isWhiteSpace() {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public boolean isCharacters() {
+    int next() throws XMLStreamException {
         throw new IllegalStateException("Reader already closed");
     }
 
-    public boolean isEndElement() {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public boolean isStandalone() {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public boolean isStartElement() {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public boolean isWhiteSpace() {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public int next() throws XMLStreamException {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public int nextTag() throws XMLStreamException {
-        throw new IllegalStateException("Reader already closed");
-    }
-
-    public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
+    int nextTag() throws XMLStreamException {
         throw new IllegalStateException("Reader already closed");
     }
 
     public boolean standaloneSet() {
+        throw new IllegalStateException("Reader already closed");
+    }
+
+    OMDataSource getDataSource() {
         throw new IllegalStateException("Reader already closed");
     }
 }

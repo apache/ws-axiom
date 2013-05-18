@@ -59,20 +59,19 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
-import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Class used internally by {@link OMStAXWrapper}.
+ * Class used internally by {@link OMXMLStreamReaderExAdapter}.
  */
-class SwitchingWrapper extends AbstractXMLStreamReader
+class SwitchingWrapper extends PullSerializerState
     implements DataHandlerReader, CharacterDataReader, DTDReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
     
-    private final StreamSwitch streamSwitch;
+    private final PullSerializer streamSwitch;
     
     /**
      * The current node, corresponding to the current event.
@@ -160,7 +159,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @param cache
      * @param preserveNamespaceContext
      */
-    public SwitchingWrapper(StreamSwitch streamSwitch, OMXMLParserWrapper builder, OMContainer startNode,
+    public SwitchingWrapper(PullSerializer streamSwitch, OMXMLParserWrapper builder, OMContainer startNode,
                             boolean cache, boolean preserveNamespaceContext) {
         this.streamSwitch = streamSwitch;
         this.builder = builder;
@@ -175,6 +174,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             node = startNode;
         }
         currentEvent = START_DOCUMENT;
+    }
+
+    DTDReader getDTDReader() {
+        return this;
+    }
+
+    DataHandlerReader getDataHandlerReader() {
+        return this;
     }
 
     public String getPrefix() {
@@ -261,14 +268,18 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getTextStart();
         } else {
-            if (currentEvent == DTD || currentEvent == ENTITY_REFERENCE || !hasText()) {
-                // getTextStart() is not allowed for DTD and ENTITY_REFERENCE events; see
-                // the table in the Javadoc of XMLStreamReader
-                throw new IllegalStateException();
-            } else {
-                // getTextCharacters always returns a new char array and the start
-                // index is therefore always 0
-                return 0;
+            switch (currentEvent) {
+                case CHARACTERS:
+                case CDATA:
+                case COMMENT:
+                case SPACE:
+                    // getTextCharacters always returns a new char array and the start
+                    // index is therefore always 0
+                    return 0;
+                default:
+                    // getTextStart() is not allowed for DTD and ENTITY_REFERENCE events; see
+                    // the table in the Javadoc of XMLStreamReader
+                    throw new IllegalStateException();
             }
         }
     }
@@ -452,7 +463,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             }
             return uri;
         } else {
-            if (isStartElement() || isEndElement()) {
+            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
                 return getNamespace(i).getNamespaceURI();
             } else {
                 throw new IllegalStateException();
@@ -464,7 +475,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getNamespacePrefix(i);
         } else {
-            if (isStartElement() || isEndElement()) {
+            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
                 String prefix = getNamespace(i).getPrefix();
                 return prefix.length() == 0 ? null : prefix; 
             } else {
@@ -477,7 +488,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceCount();
         } else {
-            if (isStartElement() || isEndElement()) {
+            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
                 loadNamespaces();
                 return namespaceCount;
             } else {
@@ -490,7 +501,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.isAttributeSpecified(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 // The Axiom object model doesn't store this information,
                 // but returning true is a reasonable default.
                 return true;
@@ -505,7 +516,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getAttributeValue(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 return getAttribute(i).getAttributeValue();
             } else {
                 throw new IllegalStateException(
@@ -518,7 +529,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getAttributeType(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 return getAttribute(i).getAttributeType();
             } else {
                 throw new IllegalStateException(
@@ -531,7 +542,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getAttributePrefix(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 return getAttribute(i).getPrefix();
             } else {
                 throw new IllegalStateException(
@@ -544,7 +555,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getAttributeLocalName(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 return getAttribute(i).getLocalName();
             } else {
                 throw new IllegalStateException(
@@ -557,7 +568,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getAttributeNamespace(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 return getAttribute(i).getNamespaceURI();
             } else {
                 throw new IllegalStateException(
@@ -570,7 +581,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getAttributeName(i);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 return getAttribute(i).getQName();
             } else {
                 throw new IllegalStateException(
@@ -584,7 +595,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnCount = parser.getAttributeCount();
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 loadAttributes();
                 returnCount = attributeCount;
             } else {
@@ -601,7 +612,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeValue(s, s1);
         } else {
-            if (isStartElement()) {
+            if (currentEvent == START_ELEMENT) {
                 QName qname = new QName(s, s1);
                 OMAttribute attrib = ((OMElement) node).getAttribute(qname);
                 if (attrib != null) {
@@ -615,42 +626,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return returnString;
     }
 
-    public boolean isWhiteSpace() {
-        if (parser != null) {
-            return parser.isWhiteSpace();
-        } else {
-            return super.isWhiteSpace();
-        }
-    }
-
-    public boolean isCharacters() {
-        boolean b;
-        if (parser != null) {
-            b = parser.isCharacters();
-        } else {
-            b = (currentEvent == CHARACTERS);
-        }
-        return b;
-    }
-
-    public boolean isEndElement() {
-        boolean b;
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            b = parser.isEndElement();
-        } else {
-            b = (currentEvent == END_ELEMENT);
-        }
-        return b;
-    }
-
-    public boolean isStartElement() {
-        boolean b;
-        if (parser != null) {
-            b = parser.isStartElement();
-        } else {
-            b = (currentEvent == START_ELEMENT);
-        }
-        return b;
+    Boolean isWhiteSpace() {
+        return null;
     }
 
     public String getNamespaceURI(String prefix) {
@@ -658,7 +635,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespaceURI(prefix);
         } else {
-            if (isStartElement() || isEndElement()) {
+            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
 
                 if (node instanceof OMElement) {
                     OMNamespace namespaceURI =
@@ -685,7 +662,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } finally {
             // Note that as a side effect of this instruction, the SwitchingWrapper instance
             // will become unreachable and the parser can be GC'd or reused.
-            streamSwitch.setParent(ClosedReader.INSTANCE);
+            streamSwitch.switchState(ClosedState.INSTANCE);
         }
     }
 
@@ -795,7 +772,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                             while (reader.next() != START_ELEMENT) {
                                 // Just loop
                             }
-                            streamSwitch.setParent(new IncludeWrapper(streamSwitch, this, reader));
+                            streamSwitch.switchState(new IncludeWrapper(streamSwitch, this, reader));
                             node = nextNode;
                             visited = true;
                             return START_ELEMENT;
@@ -827,7 +804,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                         depth++;
                     }
                     PullThroughWrapper wrapper = new PullThroughWrapper(streamSwitch, this, builder, container, builder.disableCaching(), depth);
-                    streamSwitch.setParent(wrapper);
+                    streamSwitch.switchState(wrapper);
                     node = container;
                     visited = true;
                     currentEvent = wrapper.next();
@@ -1121,7 +1098,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /**
      * @return OMDataSource associated with the current node or Null
      */
-    public OMDataSource getDataSource() {
+    OMDataSource getDataSource() {
         if (getEventType() != XMLStreamReader.START_ELEMENT ||
                 state != NAVIGABLE) {
             return null;
