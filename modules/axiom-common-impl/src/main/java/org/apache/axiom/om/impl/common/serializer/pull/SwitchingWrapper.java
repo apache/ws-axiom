@@ -138,9 +138,6 @@ final class SwitchingWrapper extends PullSerializerState
      */
     private final boolean preserveNamespaceContext;
     
-    /** Track depth to ensure we stop generating events when we are done with the root node. */
-    int depth = 0;
-
     // Cache attributes and namespaces. This avoids creating a new Iterator for every call
     // to getAttributeXXX and getNamespaceXXX. A value of -1 indicates that the
     // attributes or namespaces for the current element have not been loaded yet. The
@@ -799,11 +796,6 @@ final class SwitchingWrapper extends PullSerializerState
                     node = container;
                     visited = true;
                     currentEvent = wrapper.next();
-                }
-                if (currentEvent == START_ELEMENT) {
-                    depth++;
-                } else if (currentEvent == END_ELEMENT) {
-                    depth--;
                 }
                 if (rootNode == node && visited) {
                     if (currentEvent == END_DOCUMENT) {
