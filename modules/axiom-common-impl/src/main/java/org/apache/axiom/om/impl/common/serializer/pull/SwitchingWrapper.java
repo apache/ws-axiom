@@ -800,7 +800,18 @@ final class SwitchingWrapper extends PullSerializerState
                     visited = true;
                     currentEvent = wrapper.next();
                 }
-                updateCompleteStatus();
+                if (currentEvent == START_ELEMENT) {
+                    depth++;
+                } else if (currentEvent == END_ELEMENT) {
+                    depth--;
+                }
+                if (rootNode == node && visited) {
+                    if (currentEvent == END_DOCUMENT) {
+                        state = DOCUMENT_COMPLETE;
+                    } else {
+                        state = COMPLETED;
+                    }
+                }
                 break;
             default:
                 throw new IllegalStateException("unsuppported state!");
@@ -837,21 +848,6 @@ final class SwitchingWrapper extends PullSerializerState
             }
         }
         return null;
-    }
-
-    private void updateCompleteStatus() {
-        if (currentEvent == START_ELEMENT) {
-            depth++;
-        } else if (currentEvent == END_ELEMENT) {
-            depth--;
-        }
-        if (rootNode == node && visited) {
-            if (currentEvent == END_DOCUMENT) {
-                state = DOCUMENT_COMPLETE;
-            } else {
-                state = COMPLETED;
-            }
-        }
     }
 
     NamespaceContext getNamespaceContext() {
