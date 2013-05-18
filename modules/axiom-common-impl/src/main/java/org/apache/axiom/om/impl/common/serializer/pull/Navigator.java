@@ -90,9 +90,6 @@ final class Navigator extends PullSerializerState
 
     /** Field builder */
     private OMXMLParserWrapper builder;
-
-    /** Field parser */
-    private XMLStreamReader parser;
     
     /**
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
@@ -678,9 +675,6 @@ final class Navigator extends PullSerializerState
     }
 
     Object getProperty(String s) throws IllegalArgumentException {
-        if (parser != null) {
-            return parser.getProperty(s);
-        }
         // Delegate to the builder's parser.
         if (builder != null && builder instanceof StAXBuilder) {
             StAXBuilder staxBuilder = (StAXBuilder) builder;
