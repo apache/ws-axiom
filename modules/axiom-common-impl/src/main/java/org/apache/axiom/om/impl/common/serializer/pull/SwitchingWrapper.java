@@ -66,7 +66,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Class used internally by {@link OMXMLStreamReaderExAdapter}.
  */
-class SwitchingWrapper extends PullSerializerState
+final class SwitchingWrapper extends PullSerializerState
     implements DataHandlerReader, CharacterDataReader, DTDReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
@@ -159,7 +159,7 @@ class SwitchingWrapper extends PullSerializerState
      * @param cache
      * @param preserveNamespaceContext
      */
-    public SwitchingWrapper(PullSerializer serializer, OMXMLParserWrapper builder, OMContainer startNode,
+    SwitchingWrapper(PullSerializer serializer, OMXMLParserWrapper builder, OMContainer startNode,
                             boolean cache, boolean preserveNamespaceContext) {
         this.serializer = serializer;
         this.builder = builder;
@@ -184,7 +184,7 @@ class SwitchingWrapper extends PullSerializerState
         return this;
     }
 
-    public String getPrefix() {
+    String getPrefix() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getPrefix();
         } else {
@@ -197,7 +197,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getNamespaceURI() {
+    String getNamespaceURI() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceURI();
         } else {
@@ -210,16 +210,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public boolean hasName() {
-        if (parser != null && currentEvent != END_DOCUMENT) {
-            return parser.hasName();
-        } else {
-            return ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT));
-        }
-    }
-
-    public String getLocalName() {
+    String getLocalName() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getLocalName();
         } else {
@@ -235,7 +226,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public QName getName() {
+    QName getName() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getName();
         } else {
@@ -256,7 +247,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public int getTextLength() {
+    int getTextLength() {
         if (parser != null) {
             return parser.getTextLength();
         } else {
@@ -264,7 +255,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public int getTextStart() {
+    int getTextStart() {
         if (parser != null) {
             return parser.getTextStart();
         } else {
@@ -284,7 +275,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
+    int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         if (parser != null) {
             return parser.getTextCharacters(sourceStart, target, targetStart, length);
@@ -296,7 +287,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public char[] getTextCharacters() {
+    char[] getTextCharacters() {
         if (parser != null) {
             return parser.getTextCharacters();
         } else {
@@ -304,7 +295,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getText() {
+    String getText() {
         if (parser != null) {
             return parser.getText();
         } else {
@@ -370,7 +361,7 @@ class SwitchingWrapper extends PullSerializerState
     }
 
     // todo this should be improved
-    public int getEventType() {
+    int getEventType() {
         return currentEvent;
     }
 
@@ -445,7 +436,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
     
-    public String getNamespaceURI(int i) {
+    String getNamespaceURI(int i) {
         if (parser != null) {
             String uri = parser.getNamespaceURI(i);
 
@@ -471,7 +462,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getNamespacePrefix(int i) {
+    String getNamespacePrefix(int i) {
         if (parser != null) {
             return parser.getNamespacePrefix(i);
         } else {
@@ -484,7 +475,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public int getNamespaceCount() {
+    int getNamespaceCount() {
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceCount();
         } else {
@@ -497,7 +488,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public boolean isAttributeSpecified(int i) {
+    boolean isAttributeSpecified(int i) {
         if (parser != null) {
             return parser.isAttributeSpecified(i);
         } else {
@@ -512,7 +503,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getAttributeValue(int i) {
+    String getAttributeValue(int i) {
         if (parser != null) {
             return parser.getAttributeValue(i);
         } else {
@@ -525,7 +516,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getAttributeType(int i) {
+    String getAttributeType(int i) {
         if (parser != null) {
             return parser.getAttributeType(i);
         } else {
@@ -538,7 +529,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getAttributePrefix(int i) {
+    String getAttributePrefix(int i) {
         if (parser != null) {
             return parser.getAttributePrefix(i);
         } else {
@@ -551,7 +542,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getAttributeLocalName(int i) {
+    String getAttributeLocalName(int i) {
         if (parser != null) {
             return parser.getAttributeLocalName(i);
         } else {
@@ -564,7 +555,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getAttributeNamespace(int i) {
+    String getAttributeNamespace(int i) {
         if (parser != null) {
             return parser.getAttributeNamespace(i);
         } else {
@@ -577,7 +568,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public QName getAttributeName(int i) {
+    QName getAttributeName(int i) {
         if (parser != null) {
             return parser.getAttributeName(i);
         } else {
@@ -590,7 +581,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public int getAttributeCount() {
+    int getAttributeCount() {
         int returnCount = 0;
         if (parser != null) {
             returnCount = parser.getAttributeCount();
@@ -607,7 +598,7 @@ class SwitchingWrapper extends PullSerializerState
         return returnCount;
     }
 
-    public String getAttributeValue(String s, String s1) {
+    String getAttributeValue(String s, String s1) {
         String returnString = null;
         if (parser != null) {
             returnString = parser.getAttributeValue(s, s1);
@@ -630,7 +621,7 @@ class SwitchingWrapper extends PullSerializerState
         return null;
     }
 
-    public String getNamespaceURI(String prefix) {
+    String getNamespaceURI(String prefix) {
         String returnString = null;
         if (parser != null) {
             returnString = parser.getNamespaceURI(prefix);
@@ -647,7 +638,7 @@ class SwitchingWrapper extends PullSerializerState
         return returnString;
     }
 
-    public void close() throws XMLStreamException {
+    void close() throws XMLStreamException {
         try {
             // If there is a builder, it controls its parser
             if (builder != null && builder instanceof StAXBuilder) {
@@ -666,11 +657,11 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public boolean hasNext() throws XMLStreamException {
+    boolean hasNext() throws XMLStreamException {
         return currentEvent != END_DOCUMENT;
     }
 
-    public String getElementText() throws XMLStreamException {
+    String getElementText() throws XMLStreamException {
         // Let StreamSwitch handle this method
         return null;
     }
@@ -724,7 +715,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public int next() throws XMLStreamException {
+    int next() throws XMLStreamException {
         switch (state) {
             case DOCUMENT_COMPLETE:
                 throw new NoSuchElementException("End of the document reached");
@@ -817,12 +808,12 @@ class SwitchingWrapper extends PullSerializerState
         return currentEvent;
     }
 
-    public int nextTag() throws XMLStreamException {
+    int nextTag() throws XMLStreamException {
         // Let StreamSwitch handle this method
         return -1;
     }
 
-    public Object getProperty(String s) throws IllegalArgumentException {
+    Object getProperty(String s) throws IllegalArgumentException {
         Object value = XMLStreamReaderUtils.processGetProperty(this, s);
         if (value != null) {
             return value;
@@ -866,7 +857,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public NamespaceContext getNamespaceContext() {
+    NamespaceContext getNamespaceContext() {
         if (parser != null) {
             return currentEvent == END_DOCUMENT ? new MapBasedNamespaceContext(Collections.EMPTY_MAP) : parser.getNamespaceContext();
         } else {
@@ -875,7 +866,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getEncoding() {
+    String getEncoding() {
         if (parser != null) {
             return parser.getEncoding();
         } else {
@@ -891,19 +882,19 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getVersion() {
+    String getVersion() {
         return "1.0"; // todo put the constant
     }
 
-    public boolean isStandalone() {
+    boolean isStandalone() {
         return true;
     }
 
-    public boolean standaloneSet() {
+    boolean standaloneSet() {
         return false;
     }
 
-    public String getCharacterEncodingScheme() {
+    String getCharacterEncodingScheme() {
         if (parser != null) {
             return parser.getCharacterEncodingScheme();
         } else {
@@ -919,7 +910,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getPITarget() {
+    String getPITarget() {
         if (parser != null) {
             return parser.getPITarget();
         } else {
@@ -931,7 +922,7 @@ class SwitchingWrapper extends PullSerializerState
         }
     }
 
-    public String getPIData() {
+    String getPIData() {
         if (parser != null) {
             return parser.getPIData();
         } else {

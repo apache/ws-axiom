@@ -32,7 +32,6 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * Base class for {@link PullSerializerState} implementations that wrap an {@link XMLStreamReader}.
  */
 //TODO: what about the close() method?
-// TODO: make methods final
 abstract class AbstractWrapper extends PullSerializerState {
     protected final XMLStreamReader reader;
     private final PullSerializer serializer;
@@ -83,15 +82,15 @@ abstract class AbstractWrapper extends PullSerializerState {
         return dataHandlerReader;
     }
 
-    int getEventType() {
+    final int getEventType() {
         return reader.getEventType();
     }
 
-    boolean hasNext() throws XMLStreamException {
+    final boolean hasNext() throws XMLStreamException {
         return reader.hasNext();
     }
 
-    int next() throws XMLStreamException {
+    final int next() throws XMLStreamException {
         if (depth == 0) {
             // We get here if the underlying XMLStreamReader is on the last END_ELEMENT event
             // TODO: also do this if the reader is prematurely closed
@@ -112,7 +111,7 @@ abstract class AbstractWrapper extends PullSerializerState {
         }
     }
     
-    int nextTag() throws XMLStreamException {
+    final int nextTag() throws XMLStreamException {
         // TODO: need to handle depth == 0 case here!
         int result = reader.nextTag();
         switch (result) {
@@ -125,144 +124,144 @@ abstract class AbstractWrapper extends PullSerializerState {
         return result;
     }
 
-    void close() throws XMLStreamException {
+    final void close() throws XMLStreamException {
         reader.close();
     }
 
-    Object getProperty(String name) throws IllegalArgumentException {
+    final Object getProperty(String name) throws IllegalArgumentException {
         return reader.getProperty(name);
     }
 
-    String getVersion() {
+    final String getVersion() {
         return reader.getVersion();
     }
 
-    String getCharacterEncodingScheme() {
+    final String getCharacterEncodingScheme() {
         return reader.getCharacterEncodingScheme();
     }
 
-    String getEncoding() {
+    final String getEncoding() {
         return reader.getEncoding();
     }
 
-    boolean isStandalone() {
+    final boolean isStandalone() {
         return reader.isStandalone();
     }
 
-    boolean standaloneSet() {
+    final boolean standaloneSet() {
         return reader.standaloneSet();
     }
 
-    String getPrefix() {
+    final String getPrefix() {
         return reader.getPrefix();
     }
 
-    String getNamespaceURI() {
+    final String getNamespaceURI() {
         return reader.getNamespaceURI();
     }
 
-    String getLocalName() {
+    final String getLocalName() {
         return reader.getLocalName();
     }
 
-    QName getName() {
+    final QName getName() {
         return reader.getName();
     }
 
-    int getNamespaceCount() {
+    final int getNamespaceCount() {
         return reader.getNamespaceCount();
     }
 
-    String getNamespacePrefix(int index) {
+    final String getNamespacePrefix(int index) {
         return reader.getNamespacePrefix(index);
     }
 
-    String getNamespaceURI(int index) {
+    final String getNamespaceURI(int index) {
         return reader.getNamespaceURI(index);
     }
 
-    int getAttributeCount() {
+    final int getAttributeCount() {
         return reader.getAttributeCount();
     }
 
-    String getAttributePrefix(int index) {
+    final String getAttributePrefix(int index) {
         return reader.getAttributePrefix(index);
     }
 
-    String getAttributeNamespace(int index) {
+    final String getAttributeNamespace(int index) {
         return reader.getAttributeNamespace(index);
     }
 
-    String getAttributeLocalName(int index) {
+    final String getAttributeLocalName(int index) {
         return reader.getAttributeLocalName(index);
     }
 
-    QName getAttributeName(int index) {
+    final QName getAttributeName(int index) {
         return reader.getAttributeName(index);
     }
 
-    boolean isAttributeSpecified(int index) {
+    final boolean isAttributeSpecified(int index) {
         return reader.isAttributeSpecified(index);
     }
 
-    String getAttributeType(int index) {
+    final String getAttributeType(int index) {
         return reader.getAttributeType(index);
     }
 
-    String getAttributeValue(int index) {
+    final String getAttributeValue(int index) {
         return reader.getAttributeValue(index);
     }
 
-    String getAttributeValue(String namespaceURI, String localName) {
+    final String getAttributeValue(String namespaceURI, String localName) {
         return reader.getAttributeValue(namespaceURI, localName);
     }
 
-    NamespaceContext getNamespaceContext() {
+    final NamespaceContext getNamespaceContext() {
         return reader.getNamespaceContext();
     }
 
-    String getNamespaceURI(String prefix) {
+    final String getNamespaceURI(String prefix) {
         return reader.getNamespaceURI(prefix);
     }
 
-    String getElementText() throws XMLStreamException {
+    final String getElementText() throws XMLStreamException {
         return reader.getElementText();
     }
 
-    String getText() {
+    final String getText() {
         return reader.getText();
     }
 
-    char[] getTextCharacters() {
+    final char[] getTextCharacters() {
         return reader.getTextCharacters();
     }
 
-    int getTextStart() {
+    final int getTextStart() {
         return reader.getTextStart();
     }
 
-    int getTextLength() {
+    final int getTextLength() {
         return reader.getTextLength();
     }
 
-    int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
+    final int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         return reader.getTextCharacters(sourceStart, target, targetStart, length);
     }
 
-    Boolean isWhiteSpace() {
+    final Boolean isWhiteSpace() {
         return Boolean.valueOf(reader.isWhiteSpace());
     }
 
-    String getPIData() {
+    final String getPIData() {
         return reader.getPIData();
     }
 
-    String getPITarget() {
+    final String getPITarget() {
         return reader.getPITarget();
     }
 
-    OMDataSource getDataSource() {
+    final OMDataSource getDataSource() {
         return null;
     }
 
