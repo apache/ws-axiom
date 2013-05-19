@@ -558,49 +558,78 @@ final class Navigator extends PullSerializerState
         }
     }
 
-    void next() throws XMLStreamException {
-        boolean navigable;
+    /**
+     * Advance to the next node if it is available.
+     * <p>
+     * The following table describes the possible return values and postconditions:
+     * <p>
+     * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <tr>
+     * <th>Outcome</th>
+     * <th>Return value</th>
+     * <th>Postconditions</th>
+     * </tr>
+     * <tr>
+     * <td>Next node is available</td>
+     * <td><code>true</code></td>
+     * <td>{@link #node} and {@link #visited} have been updated</td>
+     * </tr>
+     * <tr>
+     * <td>Next node has not been instantiated</td>
+     * <td><code>false</code></td>
+     * <td>{@link #node} is set to the parent of the next node that would be created</td>
+     * </tr>
+     * </table>
+     * 
+     * @return <code>true</code> if the next node is available, <code>false</code> if the next node
+     *         has not been instantiated yet and the serializer should be switched to pull through
+     *         mode
+     */
+    private boolean nextNode() {
         if (node == null) {
             // We get here if rootNode is an element and the current event is START_DOCUMENT
             assert !visited;
             node = rootNode;
-            navigable = true;
+            return true;
         } else if (!isLeaf(node) && !visited) {
             OMNode firstChild = _getFirstChild((OMContainer) node);
             if (firstChild != null) {
                 node = firstChild;
                 visited = false;
-                navigable = true;
+                return true;
             } else if (node.isComplete()) {
                 visited = true;
-                navigable = true;
+                return true;
             } else {
-                navigable = false;
+                return false;
             }
         } else if (node == rootNode) {
             // We get here if rootNode is an element and the next event is END_DOCUMENT
             node = null;
             visited = true;
-            navigable = true;
+            return true;
         } else {
             OMNode current = (OMNode)node;
             OMNode nextSibling = getNextSibling(current);
             if (nextSibling != null) {
                 node = nextSibling;
                 visited = false;
-                navigable = true;
+                return true;
             } else {
                 OMContainer parent = current.getParent();
+                node = parent;
                 if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
-                    node = parent;
                     visited = true;
-                    navigable = true;
+                    return true;
                 } else {
-                    navigable = false;
+                    return false;
                 }
             }
         }
-        if (navigable) {
+    }
+    
+    void next() throws XMLStreamException {
+        if (nextNode()) {
             if (node instanceof OMSourcedElement) {
                 OMSourcedElement element = (OMSourcedElement)node;
                 if (!element.isExpanded()) {
@@ -629,12 +658,7 @@ final class Navigator extends PullSerializerState
             attributeCount = -1;
             namespaceCount = -1;
         } else {
-            OMContainer container;
-            if (!(node instanceof OMContainer) || visited) {
-                container = ((OMNode)node).getParent();
-            } else {
-                container = (OMContainer)node;
-            }
+            OMContainer container = (OMContainer)node;
             StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
             int depth = 1;
             // Find the root node for the builder (i.e. the topmost node having the same
