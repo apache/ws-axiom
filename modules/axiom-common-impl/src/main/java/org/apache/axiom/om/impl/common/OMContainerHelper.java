@@ -61,7 +61,7 @@ public final class OMContainerHelper {
         if (builder != null && builder.isCompleted() && !cache && !container.isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
         }
-        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(builder, container, cache, configuration.isPreserveNamespaceContext()));
+        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(container, cache, configuration.isPreserveNamespaceContext()));
         
         if (configuration.isNamespaceURIInterning()) {
             reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);

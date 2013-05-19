@@ -88,9 +88,6 @@ final class Navigator extends PullSerializerState
      */
     private boolean visited;
 
-    /** Field builder */
-    private OMXMLParserWrapper builder;
-    
     /**
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
      */
@@ -130,10 +127,9 @@ final class Navigator extends PullSerializerState
      * @param cache
      * @param preserveNamespaceContext
      */
-    Navigator(PullSerializer serializer, OMXMLParserWrapper builder, OMContainer startNode,
+    Navigator(PullSerializer serializer, OMContainer startNode,
                             boolean cache, boolean preserveNamespaceContext) {
         this.serializer = serializer;
-        this.builder = builder;
         this.rootNode = startNode;
         this.cache = cache;
         this.preserveNamespaceContext = preserveNamespaceContext;
@@ -685,6 +681,15 @@ final class Navigator extends PullSerializerState
     }
 
     Object getProperty(String s) throws IllegalArgumentException {
+        OMContainer container;
+        if (node == null) {
+            container = rootNode;
+        } else if (node instanceof OMContainer) {
+            container = (OMContainer)node;
+        } else {
+            container = ((OMNode)node).getParent();
+        }
+        OMXMLParserWrapper builder = container.getBuilder();
         // Delegate to the builder's parser.
         if (builder != null && builder instanceof StAXBuilder) {
             StAXBuilder staxBuilder = (StAXBuilder) builder;

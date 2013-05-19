@@ -33,7 +33,6 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
@@ -57,9 +56,8 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
      */
     private boolean isDataSourceALeaf;
 
-    public PullSerializer(OMXMLParserWrapper builder, OMContainer startNode,
-            boolean cache, boolean preserveNamespaceContext) {
-        state = new Navigator(this, builder, startNode, cache, preserveNamespaceContext);
+    public PullSerializer(OMContainer startNode, boolean cache, boolean preserveNamespaceContext) {
+        state = new Navigator(this, startNode, cache, preserveNamespaceContext);
     }
     
     /**
