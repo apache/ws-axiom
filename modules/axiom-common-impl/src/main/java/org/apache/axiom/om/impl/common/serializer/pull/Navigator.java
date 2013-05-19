@@ -533,30 +533,6 @@ final class Navigator extends PullSerializerState
     }
     
     /**
-     * @param node
-     * @return first child or null
-     */
-    private OMNode _getFirstChild(OMContainer node) {
-        if (cache) {
-            return node.getFirstOMChild();
-        } else {
-            return ((IContainer)node).getFirstOMChildIfAvailable();
-        }
-    }
-
-    /**
-     * @param node
-     * @return next sibling or null
-     */
-    private OMNode getNextSibling(OMNode node) {
-        if (cache) {
-            return node.getNextOMSibling();
-        } else {
-            return ((OMNodeEx) node).getNextOMSiblingIfAvailable();
-        }
-    }
-
-    /**
      * Advance to the next node if it is available.
      * <p>
      * The following table describes the possible return values and postconditions:
@@ -590,7 +566,8 @@ final class Navigator extends PullSerializerState
             node = rootNode;
             return true;
         } else if (!isLeaf(node) && !visited) {
-            OMNode firstChild = _getFirstChild((OMContainer) node);
+            IContainer current = (IContainer)node;
+            OMNode firstChild = cache ? current.getFirstOMChild() : current.getFirstOMChildIfAvailable();
             if (firstChild != null) {
                 node = firstChild;
                 visited = false;
@@ -607,8 +584,8 @@ final class Navigator extends PullSerializerState
             visited = true;
             return true;
         } else {
-            OMNode current = (OMNode)node;
-            OMNode nextSibling = getNextSibling(current);
+            OMNodeEx current = (OMNodeEx)node;
+            OMNode nextSibling = cache ? current.getNextOMSibling() : current.getNextOMSiblingIfAvailable();
             if (nextSibling != null) {
                 node = nextSibling;
                 visited = false;
