@@ -497,7 +497,9 @@ final class Navigator extends PullSerializerState
     }
 
     boolean hasNext() throws XMLStreamException {
-        return currentEvent != END_DOCUMENT;
+        // When we reach the end of the document, we switch to EndDocumentState.
+        // Therefore we can always return true here.
+        return true;
     }
 
     String getElementText() throws XMLStreamException {
