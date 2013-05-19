@@ -547,7 +547,7 @@ final class Navigator extends PullSerializerState
      * @return next sibling or null
      */
     private OMNode getNextSibling(OMNode node) {
-        if (cache || isOMSourcedElement(node)) {
+        if (cache) {
             return node.getNextOMSibling();
         } else {
             return ((OMNodeEx) node).getNextOMSiblingIfAvailable();
