@@ -58,19 +58,10 @@ public final class OMContainerHelper {
             }
         }
         
-        // The om tree was built by hand and is already complete
-        OMXMLStreamReader reader;
-        boolean done = container.isComplete();
-        // TODO: review & clean up
-        if ((builder == null) && done) {
-            reader = new OMXMLStreamReaderExAdapter(new PullSerializer(null, container, cache, configuration.isPreserveNamespaceContext()));
-        } else {
-            if (builder != null && builder.isCompleted() && !cache && !done) {
-                throw new UnsupportedOperationException(
-                "The parser is already consumed!");
-            }
-            reader = new OMXMLStreamReaderExAdapter(new PullSerializer(builder, container, cache, configuration.isPreserveNamespaceContext()));
+        if (builder != null && builder.isCompleted() && !cache && !container.isComplete()) {
+            throw new UnsupportedOperationException("The parser is already consumed!");
         }
+        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(builder, container, cache, configuration.isPreserveNamespaceContext()));
         
         if (configuration.isNamespaceURIInterning()) {
             reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
