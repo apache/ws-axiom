@@ -119,6 +119,11 @@ final class Navigator extends PullSerializerState
     private OMNamespace[] namespaces = new OMNamespace[16];
     
     /**
+     * The data source exposed by {@link #getDataSource()}.
+     */
+    private OMDataSource ds;
+    
+    /**
      * Constructor.
      *
      * @param serializer
@@ -508,31 +513,6 @@ final class Navigator extends PullSerializerState
     }
 
     /**
-     * @param n OMNode
-     * @return true if this OMNode should be considered a leaf node
-     */
-    private boolean isLeaf(OMSerializable n) {
-        if (n instanceof OMContainer) {
-            return serializer.isDataSourceALeaf() && isOMSourcedElement(n) && !((OMSourcedElement)n).isExpanded() && n != rootNode;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isOMSourcedElement(OMSerializable node) {
-        if (node instanceof OMSourcedElement) {
-            try {
-                return ((OMSourcedElement)node).getDataSource() != null;
-            } catch (UnsupportedOperationException e) {
-                // Operation unsupported for some implementations
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-    
-    /**
      * Advance to the next node if it is available.
      * <p>
      * The following table describes the possible return values and postconditions:
@@ -565,7 +545,7 @@ final class Navigator extends PullSerializerState
             assert !visited;
             node = rootNode;
             return true;
-        } else if (!isLeaf(node) && !visited) {
+        } else if (node instanceof OMContainer && !visited) {
             IContainer current = (IContainer)node;
             OMNode firstChild = cache ? current.getFirstOMChild() : current.getFirstOMChildIfAvailable();
             if (firstChild != null) {
@@ -609,15 +589,24 @@ final class Navigator extends PullSerializerState
                 OMSourcedElement element = (OMSourcedElement)node;
                 if (!element.isExpanded()) {
                     OMDataSource ds = element.getDataSource();
-                    if (ds != null && !(OMDataSourceUtil.isPushDataSource(ds)
-                            || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
-                        XMLStreamReader reader = ds.getReader();
-                        while (reader.next() != START_ELEMENT) {
-                            // Just loop
+                    if (ds != null) {
+                        if (serializer.isDataSourceALeaf()) {
+                            this.ds = ds;
+                            currentEvent = -1;
+                            // Mark the node as visited so that we continue with the next sibling
+                            visited = true;
+                            return;
                         }
-                        serializer.pushState(new IncludeWrapper(serializer, reader));
-                        visited = true;
-                        return;
+                        if (!(OMDataSourceUtil.isPushDataSource(ds)
+                            || (cache && OMDataSourceUtil.isDestructiveRead(ds)))) {
+                            XMLStreamReader reader = ds.getReader();
+                            while (reader.next() != START_ELEMENT) {
+                                // Just loop
+                            }
+                            serializer.pushState(new IncludeWrapper(serializer, reader));
+                            visited = true;
+                            return;
+                        }
                     }
                 }
             }
@@ -630,6 +619,7 @@ final class Navigator extends PullSerializerState
             } else {
                 currentEvent = ((OMNode)node).getType();
             }
+            ds = null;
             attributeCount = -1;
             namespaceCount = -1;
         } else {
@@ -873,32 +863,8 @@ final class Navigator extends PullSerializerState
      * @return OMDataSource associated with the current node or Null
      */
     OMDataSource getDataSource() {
-        if (getEventType() != XMLStreamReader.START_ELEMENT) {
-            return null;
-        }
-        OMDataSource ds = null;
-        if (node != null &&
-            node instanceof OMSourcedElement) {
-            OMSourcedElement element = (OMSourcedElement)node;
-            if (element.isExpanded()) {
-                // If the element is expanded, then we can't return the OMDataSource because the
-                // expanded element may already have been modified
-                ds = null;
-            } else {
-                try {
-                    ds = element.getDataSource();
-                } catch (UnsupportedOperationException e) {
-                    // Some implementations throw an UnsupportedOperationException.
-                    ds =null;
-                }
-                if (log.isDebugEnabled()) {
-                    if (ds != null) {
-                        log.debug("OMSourcedElement exposed an OMDataSource." + ds);
-                    } else {
-                        log.debug("OMSourcedElement does not have a OMDataSource.");
-                    }
-                }
-            }
+        if (log.isDebugEnabled() && ds != null) {
+            log.debug("Exposed OMDataSource: " + ds);
         }
         return ds;
     }
