@@ -286,11 +286,20 @@ public abstract class Serializer {
                 StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
                 XMLStreamReader reader = builder.disableCaching();
                 DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
+                boolean first = true;
                 int depth = 0;
                 loop: while (true) {
-                    // We use the next() method on the builder instead of the XMLStreamReader
-                    // because this takes care of lookahead and autoClose.
-                    int event = builder.next();
+                    int event;
+                    if (first) {
+                        event = reader.getEventType();
+                        first = false;
+                    } else {
+                        try {
+                            event = reader.next();
+                        } catch (XMLStreamException ex) {
+                            throw new DeferredParsingException(ex);
+                        }
+                    }
                     switch (event) {
                         case XMLStreamReader.START_ELEMENT:
                             depth++;

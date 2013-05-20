@@ -50,14 +50,6 @@ public final class OMContainerHelper {
     
     public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = container.getBuilder();
-        if (builder != null && builder instanceof StAXOMBuilder) {
-            if (!container.isComplete()) {
-                if (((StAXOMBuilder) builder).isLookahead()) {
-                    buildNext(container);
-                }
-            }
-        }
-        
         if (builder != null && builder.isCompleted() && !cache && !container.isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
         }

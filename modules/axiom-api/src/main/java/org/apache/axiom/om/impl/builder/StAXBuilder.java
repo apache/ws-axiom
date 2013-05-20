@@ -86,6 +86,12 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     protected String charEncoding = null;
     
+    /**
+     * Specifies whether the builder/parser should be automatically closed when the
+     * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
+     */
+    boolean autoClose;
+    
     protected boolean _isClosed = false;              // Indicate if parser is closed
 
     // Fields for Custom Builder implementation
@@ -542,6 +548,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     public XMLStreamReader disableCaching() {
         cache = false;
+        // Always advance to the event right after the current node; this also takes
+        // care of lookahead
+        parserNext();
         return parser;
     }
     
@@ -579,6 +588,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             done = true;
         } else {
             target = (OMContainerEx)((OMElement)container).getParent();
+        }
+        if (done && autoClose) {
+            close();
         }
         cache = true;
     }
@@ -759,6 +771,14 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         return this.charEncoding;
     }
     
+    /**
+     * For internal use only.
+     * 
+     * @param autoClose
+     */
+    public void setAutoClose(boolean autoClose) {
+        this.autoClose = autoClose;
+    }
     
     /**
      * @return if parser is closed

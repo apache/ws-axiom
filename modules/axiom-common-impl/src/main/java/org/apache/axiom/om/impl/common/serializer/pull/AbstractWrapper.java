@@ -122,16 +122,14 @@ abstract class AbstractWrapper extends PullSerializerState implements CharacterD
     }
     
     final boolean doNext() throws XMLStreamException {
+        if (reader.getEventType() == XMLStreamReader.START_ELEMENT) {
+            depth++;
+        }
         if (depth == 0) {
             return false;
         } else {
-            switch (reader.next()) {
-                case XMLStreamReader.START_ELEMENT:
-                    depth++;
-                    break;
-                case XMLStreamReader.END_ELEMENT:
-                    depth--;
-                    break;
+            if (reader.next() == XMLStreamReader.END_ELEMENT) {
+                depth--;
             }
             return true;
         }

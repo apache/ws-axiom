@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 
 final class IncludeWrapper extends AbstractWrapper {
     IncludeWrapper(PullSerializer serializer, XMLStreamReader parent) {
-        super(serializer, parent, 1);
+        super(serializer, parent, 0);
     }
 
     void released() throws XMLStreamException {

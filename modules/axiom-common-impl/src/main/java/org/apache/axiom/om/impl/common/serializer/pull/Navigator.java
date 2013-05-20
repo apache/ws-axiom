@@ -650,7 +650,6 @@ final class Navigator extends PullSerializerState
             serializer.pushState(wrapper);
             node = container;
             visited = true;
-            wrapper.next();
         }
     }
 

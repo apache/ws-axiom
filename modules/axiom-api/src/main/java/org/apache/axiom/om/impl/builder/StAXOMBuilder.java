@@ -95,12 +95,6 @@ public class StAXOMBuilder extends StAXBuilder {
     // on an OMElement is interned.
     private boolean namespaceURIInterning = false;
     
-    /**
-     * Specifies whether the builder/parser should be automatically closed when the
-     * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
-     */
-    private boolean autoClose;
-    
     private int lookAheadToken = -1;
     
     /**
@@ -658,15 +652,6 @@ public class StAXOMBuilder extends StAXBuilder {
         return this.namespaceURIInterning;
     }
     
-    /**
-     * For internal use only.
-     * 
-     * @param autoClose
-     */
-    public void setAutoClose(boolean autoClose) {
-        this.autoClose = autoClose;
-    }
-
     /**
      * Pushes the virtual parser ahead one token.
      * If a look ahead token was calculated it is returned.
