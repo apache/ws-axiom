@@ -62,6 +62,9 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
 
     public PullSerializer(OMContainer startNode, boolean cache, boolean preserveNamespaceContext) {
         state = new Navigator(this, startNode, cache, preserveNamespaceContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Pull serializer created; initial state is " + state);
+        }
     }
     
     /**
@@ -77,6 +80,10 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
         if (log.isDebugEnabled()) {
             log.debug("Switching to state " + newState);
         }
+        internalSwitchState(newState);
+    }
+    
+    private void internalSwitchState(PullSerializerState newState) throws XMLStreamException {
         PullSerializerState oldState = state;
         PullSerializerState savedState = this.savedState;
         state = newState;
@@ -120,7 +127,7 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
             log.debug("Restoring state " + savedState);
         }
         this.savedState = null;
-        switchState(savedState);
+        internalSwitchState(savedState);
         savedState.restored();
     }
 

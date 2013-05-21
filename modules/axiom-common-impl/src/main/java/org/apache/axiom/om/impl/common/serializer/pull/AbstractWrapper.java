@@ -291,4 +291,8 @@ abstract class AbstractWrapper extends PullSerializerState implements CharacterD
 
     final void restored() {
     }
+    
+    public String toString() {
+        return super.toString() + "[reader=" + reader + "]";
+    }
 }

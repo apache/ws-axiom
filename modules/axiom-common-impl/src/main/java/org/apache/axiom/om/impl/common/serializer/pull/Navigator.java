@@ -880,4 +880,8 @@ final class Navigator extends PullSerializerState
     void restored() throws XMLStreamException {
         next();
     }
+    
+    public String toString() {
+        return super.toString() + "[cache=" + cache + ",document=" + (rootNode instanceof OMDocument) + "]";
+    }
 }
