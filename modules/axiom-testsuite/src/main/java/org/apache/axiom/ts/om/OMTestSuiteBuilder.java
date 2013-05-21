@@ -287,6 +287,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, false));
+        for (int build=0; build<5; build++) {
+            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(metaFactory, true, build));
+            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt(metaFactory, false, build));
+        }
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithCaching(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithIncompleteDescendant(metaFactory, false));

@@ -62,6 +62,10 @@ abstract class AbstractWrapper extends PullSerializerState implements CharacterD
         this.reader = reader;
         this.serializer = serializer;
         depth = startDepth;
+        // Adjust the depth if we start with an END_ELEMENT event
+        if (reader.getEventType() == XMLStreamReader.END_ELEMENT) {
+            depth--;
+        }
     }
 
     final DTDReader getDTDReader() {
