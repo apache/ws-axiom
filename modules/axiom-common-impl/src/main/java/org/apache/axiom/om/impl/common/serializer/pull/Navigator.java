@@ -58,6 +58,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
+import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -636,7 +637,11 @@ final class Navigator extends PullSerializerState
                 container = parent;
                 depth++;
             }
-            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, builder.disableCaching(), depth);
+            XMLStreamReader reader = builder.disableCaching();
+            if (log.isDebugEnabled()) {
+                log.debug("Switching to pull-through mode; first event is " + XMLEventUtils.getEventTypeString(reader.getEventType()) + "; depth is " + depth);
+            }
+            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, reader, depth);
             serializer.pushState(wrapper);
             node = container;
             visited = true;

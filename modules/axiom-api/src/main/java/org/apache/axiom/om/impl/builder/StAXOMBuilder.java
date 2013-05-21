@@ -660,6 +660,9 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     int parserNext() {
         if (lookAheadToken >= 0) {
+            if (log.isDebugEnabled()) {
+                log.debug("Consuming look-ahead token " + XMLEventUtils.getEventTypeString(lookAheadToken));
+            }
             int token = lookAheadToken;
             lookAheadToken = -1; // Reset
             return token;
@@ -706,10 +709,14 @@ public class StAXOMBuilder extends StAXBuilder {
                 lookAheadToken = parserNext();
             }
             if (lookAheadToken == XMLStreamConstants.START_ELEMENT) {
+                log.debug("Performing look-ahead; START_ELEMENT found");
                 return true;
             } else if (lookAheadToken == XMLStreamConstants.END_ELEMENT ||
                     lookAheadToken == XMLStreamConstants.START_DOCUMENT ||
                     lookAheadToken == XMLStreamConstants.END_DOCUMENT) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Performing look-ahead; " + XMLEventUtils.getEventTypeString(lookAheadToken) + " found");
+                }
                 next();
                 return false;  // leaving scope...start element not found
             } else {

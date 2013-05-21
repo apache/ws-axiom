@@ -551,6 +551,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         // Always advance to the event right after the current node; this also takes
         // care of lookahead
         parserNext();
+        if (log.isDebugEnabled()) {
+            log.debug("Caching disabled; current element level is " + elementLevel);
+        }
         return parser;
     }
     
@@ -588,6 +591,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             done = true;
         } else {
             target = (OMContainerEx)((OMElement)container).getParent();
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Caching re-enabled; new element level: " + elementLevel + "; done=" + done);
         }
         if (done && autoClose) {
             close();

@@ -35,11 +35,15 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * {@link XMLStreamReader} implementation that generates events from a given Axiom tree.
  */
 public final class PullSerializer extends AbstractXMLStreamReader implements DataHandlerReader, DTDReader, CharacterDataReader {
+    private static final Log log = LogFactory.getLog(PullSerializer.class);
+    
     /**
      * The current state of the serializer.
      */
@@ -70,6 +74,9 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
      * @throws XMLStreamException
      */
     void switchState(PullSerializerState newState) throws XMLStreamException {
+        if (log.isDebugEnabled()) {
+            log.debug("Switching to state " + newState);
+        }
         PullSerializerState oldState = state;
         PullSerializerState savedState = this.savedState;
         state = newState;
@@ -91,6 +98,9 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
         if (savedState != null) {
             throw new IllegalStateException();
         }
+        if (log.isDebugEnabled()) {
+            log.debug("Switching to state " + newState);
+        }
         savedState = state;
         state = newState;
     }
@@ -105,6 +115,9 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
         PullSerializerState savedState = this.savedState;
         if (savedState == null) {
             throw new IllegalStateException();
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Restoring state " + savedState);
         }
         this.savedState = null;
         switchState(savedState);
