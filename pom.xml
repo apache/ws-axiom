@@ -37,32 +37,6 @@
         <system>JIRA</system>
         <url>http://issues.apache.org/jira/browse/AXIOM</url>
     </issueManagement>
-    <mailingLists>
-        <mailingList>
-            <name>Users</name>
-            <subscribe>users-subscribe@ws.apache.org</subscribe>
-            <unsubscribe>users-unsubscribe@ws.apache.org</unsubscribe>
-            <post>users@ws.apache.org</post>
-            <archive>http://mail-archives.apache.org/mod_mbox/ws-users/</archive>
-        </mailingList>
-        <mailingList>
-            <name>Developers</name>
-            <subscribe>dev-subscribe@ws.apache.org</subscribe>
-            <unsubscribe>dev-unsubscribe@ws.apache.org</unsubscribe>
-            <post>dev@ws.apache.org</post>
-            <archive>http://mail-archives.apache.org/mod_mbox/ws-dev/</archive>
-        </mailingList>
-        <mailingList>
-            <name>Commits</name>
-            <subscribe>commits-subscribe@ws.apache.org</subscribe>
-            <unsubscribe>commits-unsubscribe@ws.apache.org</unsubscribe>
-            <archive>http://mail-archives.apache.org/mod_mbox/ws-commits/</archive>
-        </mailingList>
-        <mailingList>
-            <name>WS Commons Developers (old)</name>
-            <archive>http://mail-archives.apache.org/mod_mbox/ws-commons-dev/</archive>
-        </mailingList>
-    </mailingLists>
     <inceptionYear>2004</inceptionYear>
     <developers>
         <developer>
@@ -745,7 +719,6 @@
                     <reportSet>
                         <reports>
                             <report>issue-tracking</report>
-                            <report>mailing-list</report>
                             <report>project-team</report>
                             <report>scm</report>
                         </reports>
