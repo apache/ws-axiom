@@ -42,6 +42,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
         TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
         TestConstants.EMPTY_BODY_MESSAGE, "soap/soap11/soapfault.xml", "soap/soap11/soapfault2.xml", "soap/soap11/bodyNotQualified.xml",
+        "soap/soap11/message.xml", "soap/soap12/message.xml",
         "soap/soap11/faultelements-with-comment.xml", "soap/soap11/additional-element-after-body.xml",
         "soap/soap11/message_without_header.xml", "soap/soap12/message_without_header.xml",
         "soap/soap11/empty-header.xml", "soap/soap12/empty-header.xml" };
