@@ -65,6 +65,7 @@ public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
             Assert.assertTrue(child.isBinary());
             Assert.assertSame(dh, child.getDataHandler());
         } else {
+            // TODO: this will only work if a single text node was created
             child.setBinary(true);
             IOTestUtils.compareStreams(dh.getInputStream(), ((DataHandler)child.getDataHandler()).getInputStream());
         }
