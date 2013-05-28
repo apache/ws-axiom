@@ -48,8 +48,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         
-        // TODO: not yet working
-        builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(|(scenario=writeDataHandler)(scenario=writeDataHandlerProvider))");
         // TODO: need to evaluate if the test case is correct
         builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(&(scenario=getNamespaceContext)(serializeParent=false))");
         

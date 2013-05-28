@@ -57,7 +57,7 @@ public class XMLStreamWriterUtils {
             throws IOException, XMLStreamException {
         
         Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(
-                new XMLStreamWriterWriter(writer));
+                new XMLStreamWriterWriter(writer), 4096, true);
         try {
             dh.writeTo(out);
             out.close();

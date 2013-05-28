@@ -22,15 +22,43 @@ package org.apache.axiom.util.base64;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.activation.DataHandler;
+
 /**
  * Base class for {@link OutputStream} implementations that encode data in base64.
  */
 public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
+    private final boolean ignoreFlush;
     private final byte[] in = new byte[3];
     private final byte[] out = new byte[4];
     private int rest; // Number of bytes remaining in the inBuffer
     private boolean completed;
 
+    /**
+     * Constructor.
+     * 
+     * @param ignoreFlush
+     *            Specifies if calls to {@link #flush()} should be ignored. Setting this to
+     *            <code>true</code> is particular useful in conjunction with
+     *            {@link DataHandler#writeTo(OutputStream)}: that method may call {@link #flush()}
+     *            after writing the data, but the call to {@link DataHandler#writeTo(OutputStream)}
+     *            must be followed by a call to {@link #close()} or {@link #complete()} which would
+     *            then output a single chunk with a few bytes. In some cases this may be
+     *            inconvenient.
+     */
+    public AbstractBase64EncodingOutputStream(boolean ignoreFlush) {
+        this.ignoreFlush = ignoreFlush;
+    }
+    
+    /**
+     * Default constructor. This constructor does the same as
+     * {@link #AbstractBase64EncodingOutputStream(boolean)} with <code>ignoreFlush</code> set to
+     * <code>false</code>.
+     */
+    public AbstractBase64EncodingOutputStream() {
+        this(false);
+    }
+    
     public final void write(byte[] b, int off, int len) throws IOException {
         if (completed) {
             throw new IOException("Attempt to write data after base64 encoding has been completed");
@@ -105,8 +133,10 @@ public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
     }
 
     public final void flush() throws IOException {
-        flushBuffer();
-        doFlush();
+        if (!ignoreFlush) {
+            flushBuffer();
+            doFlush();
+        }
     }
 
     public final void close() throws IOException {

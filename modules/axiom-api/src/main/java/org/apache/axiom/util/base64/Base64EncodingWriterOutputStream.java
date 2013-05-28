@@ -35,12 +35,29 @@ public class Base64EncodingWriterOutputStream extends AbstractBase64EncodingOutp
     /**
      * Constructor.
      * 
+     * @param writer
+     *            the stream to write the encoded data to
+     * @param bufferSize
+     *            the buffer size to use
+     * @param ignoreFlush
+     *            specifies if calls to {@link #flush()} should be ignored; see
+     *            {@link AbstractBase64EncodingOutputStream#AbstractBase64EncodingOutputStream(boolean)}
+     *            for more information
+     */
+    public Base64EncodingWriterOutputStream(Writer writer, int bufferSize, boolean ignoreFlush) {
+        super(ignoreFlush);
+        this.writer = writer;
+        buffer = new char[bufferSize];
+    }
+    
+    /**
+     * Constructor.
+     * 
      * @param writer the stream to write the encoded data to
      * @param bufferSize the buffer size to use
      */
     public Base64EncodingWriterOutputStream(Writer writer, int bufferSize) {
-        this.writer = writer;
-        buffer = new char[bufferSize];
+        this(writer, bufferSize, false);
     }
     
     /**
@@ -49,7 +66,7 @@ public class Base64EncodingWriterOutputStream extends AbstractBase64EncodingOutp
      * @param writer the stream to write the encoded data to
      */
     public Base64EncodingWriterOutputStream(Writer writer) {
-        this(writer, 4096);
+        this(writer, 4096, false);
     }
 
     protected void doWrite(byte[] b) throws IOException {

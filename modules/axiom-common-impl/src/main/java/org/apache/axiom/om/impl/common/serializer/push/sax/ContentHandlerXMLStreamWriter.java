@@ -211,7 +211,7 @@ final class ContentHandlerXMLStreamWriter implements XMLStreamWriter, DataHandle
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
         finishStartElementIfNecessary();
-        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler));
+        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
         dataHandler.writeTo(out);
         out.complete();
     }

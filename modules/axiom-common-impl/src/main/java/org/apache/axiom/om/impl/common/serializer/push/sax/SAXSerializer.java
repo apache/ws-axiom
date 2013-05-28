@@ -178,7 +178,7 @@ public class SAXSerializer extends Serializer {
     }
 
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException {
-        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler));
+        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
         try {
             dataHandler.writeTo(out);
             out.complete();

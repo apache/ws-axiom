@@ -57,8 +57,6 @@ public class OMImplementationTest extends TestCase {
         // TODO
         builder.exclude(TestSerializationWithTwoNonBuiltOMElements.class);
         
-        // TODO: not yet working
-        builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(|(scenario=writeDataHandler)(scenario=writeDataHandlerProvider))");
         // TODO: need to evaluate if the test case is correct
         builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(&(scenario=getNamespaceContext)(serializeParent=false))");
         
