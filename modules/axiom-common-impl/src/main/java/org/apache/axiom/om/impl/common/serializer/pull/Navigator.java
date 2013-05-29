@@ -297,7 +297,6 @@ final class Navigator extends PullSerializerState
         }
     }
 
-    // todo this should be improved
     int getEventType() {
         return currentEvent;
     }
