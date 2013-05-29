@@ -407,7 +407,12 @@
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
-                        <argLine>${jacoco.surefireArgLine}</argLine>
+                        <!-- Keep heap size small. We have some unit tests that deal with volumes
+                             of data proportional to the heap size (to test that Axiom is streaming
+                             the data instead of loading it into memory). Obviously, the execution time of
+                             these tests also are proportional to the heap size. To accelerate the execution
+                             of the tests, we should use a heap size as small as possible. -->
+                        <argLine>-Xms16m -Xmx32m ${jacoco.surefireArgLine}</argLine>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
