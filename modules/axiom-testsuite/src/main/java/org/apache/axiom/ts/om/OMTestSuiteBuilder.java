@@ -543,6 +543,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestDigest(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestGetNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestGetNamespaceNoNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler(metaFactory));
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, true));

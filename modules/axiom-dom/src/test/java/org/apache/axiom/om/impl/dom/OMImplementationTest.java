@@ -33,6 +33,7 @@ import org.apache.axiom.ts.om.element.sr.TestClose;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
+import org.apache.axiom.ts.om.text.TestGetNamespace;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -62,6 +63,8 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: test case needing review
         builder.exclude(TestClose.class);
+        
+        builder.exclude(TestGetNamespace.class);
         
         return builder.build();
     }
