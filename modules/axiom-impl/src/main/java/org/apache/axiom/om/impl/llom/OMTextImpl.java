@@ -30,7 +30,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
@@ -41,10 +40,6 @@ import javax.xml.namespace.QName;
 import java.io.IOException;
 
 public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
-    /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
-    public static final OMNamespace XOP_NS = new OMNamespaceImpl(
-            "http://www.w3.org/2004/08/xop/include", "xop");
-
     private int nodeType;
 
     protected String value = null;
