@@ -23,12 +23,14 @@ import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
@@ -49,8 +51,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     private boolean isBinary;
 
     private String contentID;
-
-    protected OMNamespace textNS;
 
     protected char[] charArray;
 
@@ -95,11 +95,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                 this.charArray[i] = source.charArray[i];
             }
         }
-
-
-        // Turn off textNS...the namespace will need to be recalculated
-        // in the new tree's context.
-        this.textNS = null;
 
         // Copy the optimized related settings.
         this.optimize = source.optimize;
@@ -174,7 +169,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public TextNodeImpl(OMContainer parent, QName text, int nodeType,
                         OMFactory factory) {
         this(factory);
-        this.textNS =
+        OMNamespace textNS =
                 ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
     }
@@ -272,38 +267,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         return charArray != null ? new String(charArray) : textValue;
     }
 
-    private String getTextString() {
-        if (textNS != null) {
-            String prefix = textNS.getPrefix();
-            if (prefix == null || "".equals(prefix)) {
-                return getTextFromProperPlace();
-            } else {
-                return prefix + ":" + getTextFromProperPlace();
-            }
-        }
-
-        return null;
-    }
-
     public QName getTextAsQName() {
-        if (textNS != null) {
-            String prefix = textNS.getPrefix();
-            String name = textNS.getNamespaceURI();
-            if (prefix == null || "".equals(prefix)) {
-                return new QName(name, getTextFromProperPlace());
-            } else {
-                return new QName(textNS.getNamespaceURI(), getTextFromProperPlace(), prefix);
-            }
-        } else if (this.textValue != null || charArray != null) {
-            return new QName(getTextFromProperPlace());
-        } else {
-            try {
-                // TODO: do we really want to build a QName from base64 encoded data?!?
-                return new QName(Base64Utils.encode((DataHandler) getDataHandler()));
-            } catch (Exception e) {
-                throw new OMException(e);
-            }
-        }
+        return ((OMElement)parentNode()).resolveQName(getTextFromProperPlace());
     }
 
     public String getNodeValue() throws DOMException {
@@ -322,10 +287,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
          * this should return a DataHandler containing the binary data
          * reperesented by the Base64 strings stored in OMText
          */
-        if ((textValue != null || charArray != null || textNS != null) & isBinary) {
-            String text = textNS == null ? getTextFromProperPlace() : getTextString();
-            return DataHandlerUtils
-                    .getDataHandlerFromText(text, mimeType);
+        if ((textValue != null || charArray != null) & isBinary) {
+            return DataHandlerUtils.getDataHandlerFromText(getTextFromProperPlace(), mimeType);
         } else {
 
             if (dataHandlerObject == null) {
@@ -416,7 +379,14 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public OMNamespace getNamespace() {
-        return textNS;
+        // Note: efficiency is not important here; the method is deprecated anyway
+        QName qname = getTextAsQName();
+        if (qname == null) {
+            return null;
+        } else {
+            String namespaceURI = qname.getNamespaceURI();
+            return namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, qname.getPrefix());
+        }
     }
 
     public void setContentID(String cid) {

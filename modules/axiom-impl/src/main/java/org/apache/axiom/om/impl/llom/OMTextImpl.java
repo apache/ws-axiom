@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
@@ -44,9 +45,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
 
     protected String value;
     protected char[] charArray;
-
-    private boolean calcNS;  // Set to true after textNS is calculated
-    protected OMNamespace textNS;
 
     protected String mimeType;
 
@@ -111,11 +109,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
             System.arraycopy(source.charArray, 0, this.charArray, 0, source.charArray.length);
         }
         
-        // Turn off calcNS...the namespace will need to be recalculated
-        // in the new tree's context.
-        this.calcNS = false;
-        this.textNS = null;
-        
         // Copy the optimized related settings.
         this.optimize = source.optimize;
         this.mimeType = source.mimeType;
@@ -150,8 +143,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
                       OMFactory factory) {
         super(parent, factory, false);
         if (text == null) throw new IllegalArgumentException("QName text arg cannot be null!");
-        this.calcNS = true;
-        this.textNS =
+        OMNamespace textNS =
                 ((OMElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.value = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
         this.nodeType = nodeType;
@@ -262,28 +254,14 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     }
 
     public OMNamespace getNamespace() {
-        // If the namespace has already been determined, return it
-        // Otherwise calculate the namespace if the text contains a colon and is not detached.
-        if (calcNS) {
-            return textNS;
+        // Note: efficiency is not important here; the method is deprecated anyway
+        QName qname = getTextAsQName();
+        if (qname == null) {
+            return null;
         } else {
-            calcNS = true;
-            if (getParent() != null) {
-                String text = getTextFromProperPlace();
-                if (text != null) {
-                    int colon = text.indexOf(':');
-                    if (colon > 0) {
-                        textNS = ((OMElementImpl) getParent()).
-                                findNamespaceURI(text.substring(0, colon));
-                        if (textNS != null) {
-                            charArray = null;
-                            value = text.substring(colon + 1);
-                        }
-                    }
-                }
-            }
+            String namespaceURI = qname.getNamespaceURI();
+            return namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, qname.getPrefix());
         }
-        return textNS;
     }
 
     public boolean isOptimized() {
