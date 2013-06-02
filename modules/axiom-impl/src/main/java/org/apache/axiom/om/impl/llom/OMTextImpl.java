@@ -42,7 +42,7 @@ import java.io.IOException;
 public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     private int nodeType;
 
-    protected String value = null;
+    protected String value;
     protected char[] charArray;
 
     private boolean calcNS;  // Set to true after textNS is calculated
@@ -50,18 +50,18 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
 
     protected String mimeType;
 
-    protected boolean optimize = false;
+    protected boolean optimize;
 
-    protected boolean isBinary = false;
+    protected boolean isBinary;
 
     /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
-    private String contentID = null;
+    private String contentID;
 
     /**
      * Field dataHandler contains the DataHandler Declaring as Object to remove the dependency on
      * Javax.activation.DataHandler
      */
-    private Object dataHandlerObject = null;
+    private Object dataHandlerObject;
 
     private static final String EMTPY_STRING = "";
 

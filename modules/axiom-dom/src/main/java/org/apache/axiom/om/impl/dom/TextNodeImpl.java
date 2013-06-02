@@ -48,9 +48,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     private boolean isBinary;
 
-    private String contentID = null;
+    private String contentID;
 
-    protected OMNamespace textNS = null;
+    protected OMNamespace textNS;
 
     protected char[] charArray;
 
@@ -58,7 +58,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * Field dataHandler contains the DataHandler. Declaring as Object to remove the dependency on
      * Javax.activation.DataHandler
      */
-    private Object dataHandlerObject = null;
+    private Object dataHandlerObject;
 
     /**
      * Creates a text node with the given text required by the OMDOMFactory. The owner document
