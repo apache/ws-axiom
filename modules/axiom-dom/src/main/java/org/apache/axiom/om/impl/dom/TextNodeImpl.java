@@ -393,10 +393,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         return (this.textValue != null) ? textValue : "";
     }
 
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMNode#buildAll()
-      */
-
     public void buildWithAttachments() {
         this.build();
         if (isOptimized()) {

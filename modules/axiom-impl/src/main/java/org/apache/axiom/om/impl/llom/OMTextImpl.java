@@ -257,15 +257,10 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         return charArray != null ? new String(charArray) : value;
     }
 
-
-    /** Returns the value. */
     public QName getTextAsQName() throws OMException {
         return ((OMElement)parent).resolveQName(getTextFromProperPlace());
     }
 
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMText#getNamespace()
-      */
     public OMNamespace getNamespace() {
         // If the namespace has already been determined, return it
         // Otherwise calculate the namespace if the text contains a colon and is not detached.
@@ -315,12 +310,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         return isBinary;
     }
 
-
-    /**
-     * Gets the datahandler.
-     *
-     * @return Returns javax.activation.DataHandler
-     */
     public Object getDataHandler() {
         if ((value != null || charArray != null) && isBinary) {
             String text = getTextFromProperPlace();
@@ -359,9 +348,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         }
     }
 
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMNode#buildAll()
-      */
     public void buildWithAttachments() {
         if (isOptimized()) {
             // The call to getDataSource ensures that the MIME part is completely read
