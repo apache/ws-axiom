@@ -55,8 +55,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     protected char[] charArray;
 
     /**
-     * Field dataHandler contains the DataHandler. Declaring as Object to remove the dependency on
-     * Javax.activation.DataHandler
+     * Contains a {@link DataHandler} or {@link DataHandlerProvider} object if the text node
+     * represents base64 encoded binary data.
      */
     private Object dataHandlerObject;
 

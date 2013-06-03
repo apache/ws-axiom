@@ -56,8 +56,8 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     private String contentID;
 
     /**
-     * Field dataHandler contains the DataHandler Declaring as Object to remove the dependency on
-     * Javax.activation.DataHandler
+     * Contains a {@link DataHandler} or {@link DataHandlerProvider} object if the text node
+     * represents base64 encoded binary data.
      */
     private Object dataHandlerObject;
 
