@@ -41,7 +41,13 @@ import javax.xml.namespace.QName;
 import java.io.IOException;
 
 public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
-    private int nodeType;
+    /**
+     * The node type; either {@link OMNode#TEXT_NODE} or {@link OMNode#CDATA_SECTION_NODE}. Note
+     * that this field must be final. The Axiom API doesn't allow to change the node type of an
+     * existing {@link OMText} instance. In addition to that, an Axiom implementation is free to use
+     * different concrete classes for simple character data and CDATA sections.
+     */
+    private final int nodeType;
 
     protected String value;
     protected char[] charArray;
@@ -169,7 +175,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         this.mimeType = mimeType;
         this.optimize = optimize;
         this.isBinary = true;
-        this.nodeType = TEXT_NODE;
     }
 
     /** @param dataHandler To send binary optimised content Created programatically. */
