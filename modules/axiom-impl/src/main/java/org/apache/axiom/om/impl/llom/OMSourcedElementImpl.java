@@ -280,7 +280,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 isExpanded = true;
                 StAXOMBuilder builder = new StAXOMBuilder(getOMFactory(), readerFromDS, this, characterEncoding);
                 builder.setAutoClose(true);
-                super.setBuilder(builder);
+                this.builder = builder;
                 setComplete(false);
             }
         }
@@ -434,11 +434,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);
-    }
-
-    public void setBuilder(OMXMLParserWrapper wrapper) {
-        throw new UnsupportedOperationException(
-                "Builder cannot be set for element backed by data source");
     }
 
     public OMXMLParserWrapper getBuilder() {
@@ -1012,7 +1007,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             this.dataSource = dataSource;
             setComplete(false);
             isExpanded = false;
-            super.setBuilder(null);
+            builder = null;
             if (isLossyPrefix(dataSource)) {
                 // Create a deferred namespace that forces an expand to get the prefix
                 definedNamespace = new DeferredNamespace(definedNamespace.getNamespaceURI());

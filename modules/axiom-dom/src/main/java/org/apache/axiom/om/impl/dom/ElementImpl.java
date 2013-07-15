@@ -833,15 +833,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     /**
-     * Sets the OM builder.
-     *
-     * @see org.apache.axiom.om.OMElement#setBuilder (org.apache.axiom.om.OMXMLParserWrapper)
-     */
-    public void setBuilder(OMXMLParserWrapper wrapper) {
-        this.builder = wrapper;
-    }
-
-    /**
      * Sets the local name.
      *
      * @see org.apache.axiom.om.OMElement#setLocalName(String)

@@ -386,13 +386,6 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void removeAttribute(OMAttribute attr);
 
     /**
-     * Method setBuilder.
-     *
-     * @param wrapper
-     */
-    void setBuilder(OMXMLParserWrapper wrapper);
-
-    /**
      * Returns the first child element of the element.
      *
      * @return Returns the first child element of the element, or <tt>null</tt> if none was found.

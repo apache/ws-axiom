@@ -627,11 +627,6 @@ public class OMElementImpl extends OMNodeImpl
         return addAttribute(new OMAttributeImpl(attributeName, namespace, value, this.factory));
     }
 
-    /** Method setBuilder. */
-    public void setBuilder(OMXMLParserWrapper wrapper) {
-        this.builder = wrapper;
-    }
-
     /**
      * Method getBuilder.
      *
