@@ -755,6 +755,7 @@
         <module>modules/axiom-integration</module>
         <module>modules/axiom-all</module>
         <module>modules/axiom-samples</module>
+        <module>axiom-spring-ws</module>
         <module>systests</module>
         <module>devguide</module>
         <module>userguide</module>
