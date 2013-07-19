@@ -84,7 +84,18 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     
     private OMContainerEx target;
 
-    private OMElement nextElement;
+    /**
+     * Stores namespace declarations reported to {@link #startPrefixMapping(String, String)}. These
+     * declarations will be added to the {@link OMElement} by
+     * {@link #startElement(String, String, String, Attributes)}. Each declaration is stored as
+     * (prefix, uri) pair using two array elements.
+     */
+    private String[] namespaces = new String[16];
+
+    /**
+     * The number of namespace declarations stored in {@link #namespaces}.
+     */
+    private int namespaceCount;
 
     private final OMFactoryEx factory;
 
@@ -242,10 +253,6 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
         internalSubset = null;
     }
 
-    protected OMElement createNextElement(String localName) throws OMException {
-        return factory.createOMElement(localName, target, this);
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -255,10 +262,15 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
         if (!inEntityReference) {
-            if (nextElement == null) {
-                nextElement = createNextElement("DUMMY");
+            int index = namespaceCount*2;
+            if (index == namespaces.length) {
+                String[] newNamespaces = new String[namespaces.length*2];
+                System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
+                namespaces = newNamespaces;
             }
-            ((OMElementEx)nextElement).addNamespaceDeclaration(uri, prefix);
+            namespaces[index] = prefix;
+            namespaces[index+1] = uri;
+            namespaceCount++;
         }
     }
 
@@ -276,14 +288,16 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
         if (!inEntityReference) {
             if (localName == null || localName.trim().equals(""))
                 localName = qName.substring(qName.indexOf(':') + 1);
-            if (nextElement == null)
-                nextElement = createNextElement(localName);
-            else
-                nextElement.setLocalName(localName);
+            OMElement element = factory.createOMElement(localName, target, this);
+            
+            for (int i = 0; i < namespaceCount; i++) {
+                ((OMElementEx)element).addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
+            }
+            namespaceCount = 0;
     
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
-            BuilderUtil.setNamespace(nextElement, namespaceURI, prefix, false);
+            BuilderUtil.setNamespace(element, namespaceURI, prefix, false);
             
             int j = atts.getLength();
             for (int i = 0; i < j; i++) {
@@ -297,7 +311,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
                     String attrNamespaceURI = atts.getURI(i);
                     OMNamespace ns;
                     if (attrNamespaceURI.length() > 0) {
-                        ns = nextElement.findNamespace(atts.getURI(i), null);
+                        ns = element.findNamespace(atts.getURI(i), null);
                         if (ns == null) {
                             // The "xml" prefix is not necessarily declared explicitly; in this case,
                             // create a new OMNamespace instance.
@@ -310,13 +324,12 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
                     } else {
                         ns = null;
                     }
-                    OMAttribute attr = nextElement.addAttribute(atts.getLocalName(i), atts.getValue(i), ns);
+                    OMAttribute attr = element.addAttribute(atts.getLocalName(i), atts.getValue(i), ns);
                     attr.setAttributeType(atts.getType(i));
                 }
             }
             
-            target = (OMContainerEx)nextElement;
-            nextElement = null;
+            target = (OMContainerEx)element;
         }
     }
 
