@@ -44,6 +44,7 @@ import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
@@ -60,6 +61,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.io.IOException;
@@ -1012,6 +1014,10 @@ public class OMElementImpl extends OMNodeImpl
 
     public SAXSource getSAXSource(boolean cache) {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
+    }
+
+    public SAXResult getSAXResult() {
+        return OMContainerHelper.getSAXResult(this);
     }
     
     public void removeChildren() {

@@ -45,6 +45,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
@@ -542,6 +543,10 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         return new SAXSource(new XMLReaderImpl((IContainer)this, cache), new InputSource());
     }
 
+    public SAXResult getSAXResult() {
+        return OMContainerHelper.getSAXResult((IContainer)this);
+    }
+    
     void notifyChildComplete() {
         if (!this.isComplete() && getBuilder() == null) {
             Iterator iterator = getChildren();

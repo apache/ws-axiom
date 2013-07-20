@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
@@ -411,4 +412,31 @@ public interface OMContainer extends OMSerializable {
      * @return a {@link SAXSource} representation of this element
      */
     SAXSource getSAXSource(boolean cache);
+    
+    /**
+     * Get a {@link SAXResult} object that can be used to append child nodes to this container. Note
+     * that existing child nodes will not be removed. In order to replace the content of the
+     * container, call {@link #removeChildren()} first.
+     * <p>
+     * The SAX content handler linked to the returned {@link SAXResult} supports
+     * {@link ContentHandler}, {@link LexicalHandler} and {@link DeclHandler}. DTD related events
+     * are processed in the following way:
+     * <ul>
+     * <li>A {@link LexicalHandler#startDTD(String, String, String)} events will create an
+     * {@link OMDocType} if the container is an {@link OMDocument}. If the container is an
+     * {@link OMElement}, the event will be ignored silently.
+     * <li>Entity references are always replaced, i.e. no {@link OMEntityReference} objects are
+     * created for {@link LexicalHandler#startEntity(String)} events.
+     * </ul>
+     * <p>
+     * Nodes created by the {@link ContentHandler} linked to the returned {@link SAXResult} will
+     * have the same characteristics as programmatically created nodes; in particular they will have
+     * no associated builder.
+     * 
+     * @return the {@link SAXResult} object
+     * 
+     * @see OMXMLBuilderFactory#createOMBuilder(SAXSource, boolean)
+     * @see OMXMLBuilderFactory#createOMBuilder(OMFactory, SAXSource, boolean)
+     */
+    SAXResult getSAXResult();
 }

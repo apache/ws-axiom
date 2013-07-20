@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.sax.SAXResult;
 
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
@@ -201,5 +202,13 @@ public final class OMContainerHelper {
         if (updateState) {
             that.setComplete(true);
         }
+    }
+    
+    public static SAXResult getSAXResult(IContainer that) {
+        SAXResultContentHandler handler = new SAXResultContentHandler(that);
+        SAXResult result = new SAXResult();
+        result.setHandler(handler);
+        result.setLexicalHandler(handler);
+        return result;
     }
 }

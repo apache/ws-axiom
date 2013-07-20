@@ -51,6 +51,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.io.IOException;
@@ -1038,6 +1039,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public SAXSource getSAXSource(boolean cache) {
         return super.getSAXSource(cache);
+    }
+
+    public SAXResult getSAXResult() {
+        return super.getSAXResult();
     }
 
     class DeferredNamespace implements OMNamespace {

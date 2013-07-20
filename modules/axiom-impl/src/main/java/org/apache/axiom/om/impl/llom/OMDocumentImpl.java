@@ -44,6 +44,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
@@ -332,6 +333,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
+    public SAXResult getSAXResult() {
+        return OMContainerHelper.getSAXResult(this);
+    }
+    
     public void build() {
         OMContainerHelper.build(this);
     }

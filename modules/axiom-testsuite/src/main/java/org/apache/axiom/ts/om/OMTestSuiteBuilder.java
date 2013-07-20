@@ -149,6 +149,14 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
+        for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
+            XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
+            if (xsltImplementation.supportsLexicalHandlerWithStreamSource()) {
+                for (int j=0; j<conformanceFiles.length; j++) {
+                    addTest(new org.apache.axiom.ts.om.document.TestGetSAXResult(metaFactory, xsltImplementation, conformanceFiles[j]));
+                }
+            }
+        }
         addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, false));
         addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, true));
@@ -266,6 +274,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetPrefixWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetSAXResultWithDTD(metaFactory));
         for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
             XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
             addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation, true));

@@ -19,6 +19,7 @@
 package org.apache.axiom.testutils.suite;
 
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 
 /**
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
@@ -33,6 +34,10 @@ public interface XSLTImplementation extends Dimension {
             public TransformerFactory newTransformerFactory() {
                 return new org.apache.xalan.processor.TransformerFactoryImpl();
             }
+
+            public boolean supportsLexicalHandlerWithStreamSource() {
+                return true;
+            }
         },
         new XSLTImplementation() {
             public void addTestParameters(MatrixTestCase testCase) {
@@ -42,8 +47,21 @@ public interface XSLTImplementation extends Dimension {
             public TransformerFactory newTransformerFactory() {
                 return new net.sf.saxon.TransformerFactoryImpl();
             }
+
+            public boolean supportsLexicalHandlerWithStreamSource() {
+                return false;
+            }
         },
     };
     
     TransformerFactory newTransformerFactory();
+    
+    /**
+     * Determine if an identity transformation from a {@link StreamSource} to a {@link SAXResult}
+     * will generate events defined by {@link LexicalHandler}.
+     * 
+     * @return <code>true</code> if the XSLT implementation will invoke the methods on the
+     *         {@link LexicalHandler} set on the {@link SAXResult}, <code>false</code> otherwise
+     */
+    boolean supportsLexicalHandlerWithStreamSource();
 }
