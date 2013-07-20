@@ -25,7 +25,7 @@
     
     <bean class="org.springframework.ws.client.core.WebServiceTemplate">
         <constructor-arg>
-            <bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+            <bean class="org.apache.axiom.spring.ws.AxiomSoapMessageFactory"/>
         </constructor-arg>
         <property name="defaultUri" value="http://localhost:${port}/"/>
     </bean>
