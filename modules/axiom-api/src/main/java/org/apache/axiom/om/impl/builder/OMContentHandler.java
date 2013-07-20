@@ -24,11 +24,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
-import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,7 @@ import javax.xml.XMLConstants;
 /**
  * For internal use only.
  */
-public abstract class OMContentHandler extends DefaultHandler implements LexicalHandler, DeclHandler {
+public abstract class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final boolean expandEntityReferences;
     
     private OMContainer root;
