@@ -419,8 +419,8 @@ public interface OMContainer extends OMSerializable {
      * container, call {@link #removeChildren()} first.
      * <p>
      * The SAX content handler linked to the returned {@link SAXResult} supports
-     * {@link ContentHandler}, {@link LexicalHandler} and {@link DeclHandler}. DTD related events
-     * are processed in the following way:
+     * {@link ContentHandler}, {@link LexicalHandler}, {@link DeclHandler} and {@link DTDHandler}.
+     * DTD related events are processed in the following way:
      * <ul>
      * <li>A {@link LexicalHandler#startDTD(String, String, String)} events will create an
      * {@link OMDocType} if the container is an {@link OMDocument}. If the container is an
