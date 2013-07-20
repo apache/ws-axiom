@@ -130,33 +130,6 @@ public class NamespaceTest extends XMLTestCase {
         }
     }
 
-    public void testNamespaceProblem6() {
-        OMFactory fac = OMAbstractFactory.getOMFactory();
-        //TODO: Find the constants for "Parameter" and "name"
-        OMElement paramElement = fac.createOMElement("Parameter", null);
-        OMNamespace ns = paramElement.declareDefaultNamespace("");
-        paramElement.addAttribute(fac.createOMAttribute("name", null, "someName"));
-
-
-        for (int i = 0; i < 5; i++) {
-            // Create the action element
-            OMElement actionElem = fac.createOMElement(
-                    "Action", ns);
-
-            for (int j = 0; j < 5; j++) {
-                // Create an element with the name of the key
-                OMElement elem = fac.createOMElement("someKey" + j, ns);
-                // Set the text value of the element
-                elem.setText("someValue" + j);
-                // Add the element as a child of this action element
-                actionElem.addChild(elem);
-            }
-
-            paramElement.addChild(actionElem);
-        }
-
-    }
-
     /**
      * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/AXIOM-35
      */
