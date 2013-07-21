@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerFactory;
 
+import org.apache.axiom.spring.ws.soap.AxiomSoapMessageFactory;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.server.endpoint.support.PayloadRootUtils;
 

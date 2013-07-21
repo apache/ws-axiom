@@ -16,57 +16,57 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws;
+package org.apache.axiom.spring.ws.soap;
 
-import java.util.Iterator;
+import java.util.Locale;
 
-import javax.xml.namespace.QName;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 
-import org.apache.axiom.om.OMElement;
-import org.springframework.ws.soap.SoapElement;
+import org.apache.axiom.soap.SOAPBody;
+import org.springframework.ws.soap.SoapBody;
+import org.springframework.ws.soap.SoapFault;
+import org.springframework.ws.soap.SoapFaultException;
 
-abstract class SoapElementImpl<T extends OMElement> implements SoapElement {
-    final T axiomNode;
-
-    SoapElementImpl(T axiomNode) {
-        if (axiomNode == null) {
-            throw new IllegalArgumentException();
-        }
-        this.axiomNode = axiomNode;
+final class SoapBodyImpl extends SoapElementImpl<SOAPBody> implements SoapBody {
+    SoapBodyImpl(SOAPBody axiomNode) {
+        super(axiomNode);
     }
 
-    public QName getName() {
+    public Source getPayloadSource() {
+        return axiomNode.getFirstElement().getSAXSource(false);
+    }
+
+    public Result getPayloadResult() {
+        // TODO: clear content first?
+        return axiomNode.getSAXResult();
+    }
+
+    public SoapFault addMustUnderstandFault(String faultStringOrReason, Locale locale) throws SoapFaultException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public Source getSource() {
+    public SoapFault addClientOrSenderFault(String faultStringOrReason, Locale locale) throws SoapFaultException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public void addAttribute(QName name, String value) {
+    public SoapFault addServerOrReceiverFault(String faultStringOrReason, Locale locale) throws SoapFaultException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public void removeAttribute(QName name) {
+    public SoapFault addVersionMismatchFault(String faultStringOrReason, Locale locale) throws SoapFaultException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public String getAttributeValue(QName name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public boolean hasFault() {
+        return axiomNode.hasFault();
     }
 
-    public Iterator<QName> getAllAttributes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
-    }
-
-    public void addNamespaceDeclaration(String prefix, String namespaceUri) {
+    public SoapFault getFault() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }

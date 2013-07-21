@@ -16,33 +16,57 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws;
+package org.apache.axiom.spring.ws.soap;
 
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.Source;
 
-import org.apache.axiom.soap.SOAPHeader;
-import org.springframework.ws.soap.SoapHeaderElement;
-import org.springframework.ws.soap.SoapHeaderException;
-import org.springframework.ws.soap.soap12.Soap12Header;
+import org.apache.axiom.om.OMElement;
+import org.springframework.ws.soap.SoapElement;
 
-final class Soap12HeaderImpl extends SoapHeaderImpl implements Soap12Header {
-    Soap12HeaderImpl(SOAPHeader axiomNode) {
-        super(axiomNode);
+abstract class SoapElementImpl<T extends OMElement> implements SoapElement {
+    final T axiomNode;
+
+    SoapElementImpl(T axiomNode) {
+        if (axiomNode == null) {
+            throw new IllegalArgumentException();
+        }
+        this.axiomNode = axiomNode;
     }
 
-    public SoapHeaderElement addNotUnderstoodHeaderElement(QName headerName) {
+    public QName getName() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public SoapHeaderElement addUpgradeHeaderElement(String[] supportedSoapUris) {
+    public Source getSource() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public Iterator<SoapHeaderElement> examineHeaderElementsToProcess(String[] roles, boolean isUltimateReceiver) throws SoapHeaderException {
+    public void addAttribute(QName name, String value) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public void removeAttribute(QName name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public String getAttributeValue(QName name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public Iterator<QName> getAllAttributes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public void addNamespaceDeclaration(String prefix, String namespaceUri) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }

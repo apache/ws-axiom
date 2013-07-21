@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws;
+package org.apache.axiom.spring.ws.soap;
 
 import java.util.Iterator;
 

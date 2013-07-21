@@ -16,50 +16,49 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws;
+package org.apache.axiom.spring.ws.soap;
 
+import java.util.Iterator;
+
+import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 
-import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPHeader;
+import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapHeaderException;
 
-final class SoapHeaderElementImpl extends SoapElementImpl<SOAPHeaderBlock> implements SoapHeaderElement {
-    SoapHeaderElementImpl(SOAPHeaderBlock axiomNode) {
+abstract class SoapHeaderImpl extends SoapElementImpl<SOAPHeader> implements SoapHeader {
+    SoapHeaderImpl(SOAPHeader axiomNode) {
         super(axiomNode);
     }
 
-    public String getActorOrRole() throws SoapHeaderException {
+    public Result getResult() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public void setActorOrRole(String actorOrRole) throws SoapHeaderException {
+    public SoapHeaderElement addHeaderElement(QName name) throws SoapHeaderException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public boolean getMustUnderstand() throws SoapHeaderException {
+    public void removeHeaderElement(QName name) throws SoapHeaderException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public void setMustUnderstand(boolean mustUnderstand) throws SoapHeaderException {
+    public Iterator<SoapHeaderElement> examineMustUnderstandHeaderElements(String actorOrRole) throws SoapHeaderException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public Result getResult() throws SoapHeaderException {
+    public Iterator<SoapHeaderElement> examineAllHeaderElements() throws SoapHeaderException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
-    public String getText() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
-    }
-
-    public void setText(String content) {
+    public Iterator<SoapHeaderElement> examineHeaderElements(QName name) throws SoapHeaderException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }

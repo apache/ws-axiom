@@ -16,39 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws;
+package org.apache.axiom.spring.ws.soap;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
-import org.apache.axiom.soap.RolePlayer;
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.soap.SOAPHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapHeaderException;
-import org.springframework.ws.soap.soap11.Soap11Header;
+import org.springframework.ws.soap.soap12.Soap12Header;
 
-final class Soap11HeaderImpl extends SoapHeaderImpl implements Soap11Header {
-    Soap11HeaderImpl(SOAPHeader axiomNode) {
+final class Soap12HeaderImpl extends SoapHeaderImpl implements Soap12Header {
+    Soap12HeaderImpl(SOAPHeader axiomNode) {
         super(axiomNode);
     }
 
-    public Iterator<SoapHeaderElement> examineHeaderElementsToProcess(String[] actors) throws SoapHeaderException {
-        RolePlayer rolePlayer;
-        if (actors == null) {
-            rolePlayer = null;
-        } else {
-            final List<String> roles = Arrays.asList(actors);
-            rolePlayer = new RolePlayer() {
-                public List<?> getRoles() {
-                    return roles;
-                }
-    
-                public boolean isUltimateDestination() {
-                    return false;
-                }
-            };
-        }
-        return new SoapHeaderElementIterator(axiomNode.getHeadersToProcess(rolePlayer));
+    public SoapHeaderElement addNotUnderstoodHeaderElement(QName headerName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public SoapHeaderElement addUpgradeHeaderElement(String[] supportedSoapUris) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public Iterator<SoapHeaderElement> examineHeaderElementsToProcess(String[] roles, boolean isUltimateReceiver) throws SoapHeaderException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
     }
 }
