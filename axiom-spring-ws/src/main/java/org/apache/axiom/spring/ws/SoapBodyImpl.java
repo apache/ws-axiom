@@ -34,8 +34,7 @@ final class SoapBodyImpl extends SoapElementImpl<SOAPBody> implements SoapBody {
     }
 
     public Source getPayloadSource() {
-        // TODO: need to optimize this so that we can use cache=false whenever possible
-        return axiomNode.getFirstElement().getSAXSource(true);
+        return axiomNode.getFirstElement().getSAXSource(false);
     }
 
     public Result getPayloadResult() {

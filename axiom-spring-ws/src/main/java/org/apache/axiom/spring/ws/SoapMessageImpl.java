@@ -23,13 +23,17 @@ import java.io.OutputStream;
 import java.util.Iterator;
 
 import javax.activation.DataHandler;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.mime.Attachment;
 import org.springframework.ws.mime.AttachmentException;
 import org.springframework.ws.soap.AbstractSoapMessage;
@@ -39,7 +43,9 @@ import org.springframework.ws.transport.TransportConstants;
 import org.springframework.ws.transport.TransportOutputStream;
 import org.w3c.dom.Document;
 
-final class SoapMessageImpl extends AbstractSoapMessage {
+final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServiceMessage {
+    private static final Log log = LogFactory.getLog(SoapMessageImpl.class);
+    
     private final SOAPMessage axiomMessage;
     private SoapEnvelopeImpl envelope;
     
@@ -114,5 +120,17 @@ final class SoapMessageImpl extends AbstractSoapMessage {
         } catch (XMLStreamException ex) {
             throw new SoapMessageSerializationException("Message serialization failure", ex);
         }
+    }
+
+    public QName getPayloadRootQName() {
+        log.debug("Getting the QName of the payload root element");
+        SOAPEnvelope envelope = axiomMessage.getSOAPEnvelope();
+        OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
+        String localName = envelope.getSOAPBodyFirstElementLocalName();
+        QName qname = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
+        if (log.isDebugEnabled()) {
+            log.debug("Payload root QName is " + qname);
+        }
+        return qname;
     }
 }
