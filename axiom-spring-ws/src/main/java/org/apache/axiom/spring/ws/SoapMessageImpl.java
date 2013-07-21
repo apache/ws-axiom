@@ -35,7 +35,6 @@ import org.springframework.ws.mime.AttachmentException;
 import org.springframework.ws.soap.AbstractSoapMessage;
 import org.springframework.ws.soap.SoapEnvelope;
 import org.springframework.ws.soap.SoapEnvelopeException;
-import org.springframework.ws.soap.SoapMessageException;
 import org.springframework.ws.transport.TransportConstants;
 import org.springframework.ws.transport.TransportOutputStream;
 import org.w3c.dom.Document;
