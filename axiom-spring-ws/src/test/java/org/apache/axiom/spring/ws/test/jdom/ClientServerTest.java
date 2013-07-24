@@ -20,9 +20,6 @@ package org.apache.axiom.spring.ws.test.jdom;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.axiom.testutils.PortAllocator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -32,15 +29,16 @@ import org.jdom2.transform.JDOMSource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.env.MapPropertySource;
+import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.mock.env.MockPropertySource;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class ClientServerTest {
     private static Server server;
     private static int port;
-    private static ClassPathXmlApplicationContext context;
+    private static GenericXmlApplicationContext context;
     
     @BeforeClass
     public static void setUp() throws Exception {
@@ -49,12 +47,12 @@ public class ClientServerTest {
         new WebAppContext(server, "src/test/webapps/jdom", "/");
         server.start();
         
-        StandardEnvironment environment = new StandardEnvironment();
-        Map<String,Object> props = new HashMap<String,Object>();
-        props.put("port", port);
-        environment.getPropertySources().addFirst(new MapPropertySource("test", props));
-        context = new ClassPathXmlApplicationContext(new String[] { ClientServerTest.class.getResource("beans.xml").toString() }, false);
-        context.setEnvironment(environment);
+        context = new GenericXmlApplicationContext();
+        ConfigurableEnvironment environment = context.getEnvironment();
+        MockPropertySource propertySource = new MockPropertySource();
+        propertySource.setProperty("port", port);
+        environment.getPropertySources().replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
+        context.load(ClientServerTest.class, "beans.xml");
         context.refresh();
     }
     
