@@ -33,6 +33,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.spring.ws.AxiomWebServiceMessage;
+import org.apache.axiom.spring.ws.PayloadAccessStrategy;
+import org.apache.axiom.spring.ws.PayloadAccessStrategyStack;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.mime.Attachment;
@@ -48,6 +50,7 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
     private static final Log log = LogFactory.getLog(SoapMessageImpl.class);
     
     private final SOAPMessage axiomMessage;
+    private final PayloadAccessStrategyStack payloadAccessStrategyStack = new PayloadAccessStrategyStack();
     private SoapEnvelopeImpl envelope;
     
     SoapMessageImpl(SOAPMessage axiomMessage) {
@@ -57,7 +60,7 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
     public SoapEnvelope getEnvelope() throws SoapEnvelopeException {
         SOAPEnvelope axiomEnvelope = axiomMessage.getSOAPEnvelope();
         if (envelope == null || envelope.axiomNode != axiomEnvelope) {
-            envelope = new SoapEnvelopeImpl(axiomEnvelope);
+            envelope = new SoapEnvelopeImpl(this, axiomEnvelope);
         }
         return envelope;
     }
@@ -133,5 +136,17 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
             log.debug("Payload root QName is " + qname);
         }
         return qname;
+    }
+
+    public void pushPayloadAccessStrategy(PayloadAccessStrategy strategy, Object bean) {
+        payloadAccessStrategyStack.push(strategy, bean);
+    }
+
+    public void popPayloadAccessStrategy(Object bean) {
+        payloadAccessStrategyStack.pop(bean);
+    }
+    
+    PayloadAccessStrategy getPayloadAccessStrategy() {
+        return payloadAccessStrategyStack.getCurrent();
     }
 }

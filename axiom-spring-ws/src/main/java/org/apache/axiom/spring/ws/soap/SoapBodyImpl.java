@@ -24,17 +24,29 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 
 import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.spring.ws.PayloadAccessStrategy;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.SoapFaultException;
 
 final class SoapBodyImpl extends SoapElementImpl<SOAPBody> implements SoapBody {
-    SoapBodyImpl(SOAPBody axiomNode) {
+    private static final Log log = LogFactory.getLog(SoapBodyImpl.class);
+    
+    private final SoapEnvelopeImpl parent;
+    
+    SoapBodyImpl(SoapEnvelopeImpl parent, SOAPBody axiomNode) {
         super(axiomNode);
+        this.parent = parent;
     }
 
     public Source getPayloadSource() {
-        return axiomNode.getFirstElement().getSAXSource(false);
+        PayloadAccessStrategy strategy = parent.getParent().getPayloadAccessStrategy();
+        if (log.isDebugEnabled()) {
+            log.debug("Returning payload using strategy " + strategy);
+        }
+        return strategy.getSource(axiomNode.getFirstElement());
     }
 
     public Result getPayloadResult() {

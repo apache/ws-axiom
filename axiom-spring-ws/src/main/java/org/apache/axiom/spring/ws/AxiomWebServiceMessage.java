@@ -25,6 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import org.apache.axiom.spring.ws.soap.AxiomSoapMessageFactory;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.server.endpoint.support.PayloadRootUtils;
+import org.springframework.ws.soap.SoapBody;
 
 /**
  * Interface implemented by {@link WebServiceMessage} instances created by
@@ -40,4 +41,35 @@ public interface AxiomWebServiceMessage extends WebServiceMessage {
      * @return the qualified name of they payload root element
      */
     QName getPayloadRootQName();
+    
+    /**
+     * Set the payload access strategy used in subsequent calls to
+     * {@link WebServiceMessage#getPayloadSource()} and {@link SoapBody#getPayloadSource()}. The
+     * strategy is pushed to a stack and will be in effect as long as it is on top of the stack,
+     * i.e. until the next call to {@link #pushPayloadAccessStrategy(PayloadAccessStrategy, Object)}
+     * or {@link #popPayloadAccessStrategy(Object)}.
+     * <p>
+     * Note: this method is used internally; it is not expected to be called by application code.
+     * 
+     * @param strategy
+     *            the strategy
+     * @param bean
+     *            the bean on behalf of which the strategy is configured; this information is only
+     *            used for logging and to detect missing or unexpected calls to
+     *            {@link #popPayloadAccessStrategy(Object)}
+     */
+    void pushPayloadAccessStrategy(PayloadAccessStrategy strategy, Object bean);
+    
+    /**
+     * Restore the previous payload access strategy. This method removes the top of the stack so
+     * that the previous strategy again comes into effect.
+     * 
+     * @param bean
+     *            the bean corresponding to the current payload access strategy (i.e. the strategy
+     *            on top of the stack); must match the reference passed to the corresponding call to
+     *            {@link #pushPayloadAccessStrategy(PayloadAccessStrategy, Object)}.
+     * @throws IllegalStateException
+     *             if the stack is empty or if the caller didn't pass the expected bean
+     */
+    void popPayloadAccessStrategy(Object bean);
 }

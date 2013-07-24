@@ -33,11 +33,17 @@ import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderException;
 
 final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements SoapEnvelope {
+    private final SoapMessageImpl parent;
     private SoapHeaderImpl header;
     private SoapBodyImpl body;
     
-    SoapEnvelopeImpl(SOAPEnvelope axiomNode) {
+    SoapEnvelopeImpl(SoapMessageImpl parent, SOAPEnvelope axiomNode) {
         super(axiomNode);
+        this.parent = parent;
+    }
+
+    SoapMessageImpl getParent() {
+        return parent;
     }
 
     public SoapHeader getHeader() throws SoapHeaderException {
@@ -62,7 +68,7 @@ final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements So
     public SoapBody getBody() throws SoapBodyException {
         SOAPBody axiomBody = axiomNode.getBody();
         if (body == null || body.axiomNode != axiomBody) {
-            body = new SoapBodyImpl(axiomBody);
+            body = new SoapBodyImpl(this, axiomBody);
         }
         return body;
     }
