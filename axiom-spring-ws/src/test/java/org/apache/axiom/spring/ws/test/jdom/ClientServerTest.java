@@ -22,7 +22,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.axiom.testutils.PortAllocator;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
 import org.jdom2.transform.JDOMSource;
@@ -34,6 +35,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 public class ClientServerTest {
     private static Server server;
@@ -44,7 +46,12 @@ public class ClientServerTest {
     public static void setUp() throws Exception {
         port = PortAllocator.allocatePort();
         server = new Server(port);
-        new WebAppContext(server, "src/test/webapps/jdom", "/");
+        ServletContextHandler handler = new ServletContextHandler(server, "/");
+        ServletHolder servlet = new ServletHolder(MessageDispatcherServlet.class);
+        servlet.setName("spring-ws");
+        servlet.setInitParameter("contextConfigLocation", ClientServerTest.class.getResource("spring-ws-servlet.xml").toString());
+        servlet.setInitOrder(1);
+        handler.addServlet(servlet, "/*");
         server.start();
         
         context = new GenericXmlApplicationContext();
