@@ -62,7 +62,7 @@ public class ClientServerTest extends MatrixTestCase {
             }
         });
         servlet.setName("spring-ws");
-        servlet.setInitParameter("contextConfigLocation", ClientServerTest.class.getResource("spring-ws-servlet.xml").toString());
+        servlet.setInitParameter("contextConfigLocation", ClientServerTest.class.getResource("server.xml").toString());
         servlet.setInitOrder(1);
         handler.addServlet(servlet, "/*");
         server.start();
@@ -74,7 +74,7 @@ public class ClientServerTest extends MatrixTestCase {
         MutablePropertySources propertySources = environment.getPropertySources();
         propertySources.replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
         propertySources.addFirst(testParameters);
-        context.load(ClientServerTest.class, "beans.xml");
+        context.load(ClientServerTest.class, "client.xml");
         context.refresh();
     }
     
