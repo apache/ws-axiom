@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.spring.ws.test.jdom;
 
-import static org.junit.Assert.assertEquals;
-
+import org.apache.axiom.spring.ws.test.MatrixTestCasePropertySource;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
@@ -28,28 +28,39 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
 import org.jdom2.transform.JDOMSource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.env.MockPropertySource;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
-public class ClientServerTest {
-    private static Server server;
-    private static GenericXmlApplicationContext context;
+public class ClientServerTest extends MatrixTestCase {
+    private Server server;
+    private GenericXmlApplicationContext context;
     
-    @BeforeClass
-    public static void setUp() throws Exception {
+    public ClientServerTest(String soapVersion) {
+        addTestParameter("soapVersion", soapVersion);
+    }
+    
+    @Override
+    @SuppressWarnings("serial")
+    protected void setUp() throws Exception {
+        final MatrixTestCasePropertySource testParameters = new MatrixTestCasePropertySource(this);
+        
         server = new Server();
         Connector connector = new SelectChannelConnector();
         connector.setPort(0);
         server.setConnectors(new Connector[] { connector });
         ServletContextHandler handler = new ServletContextHandler(server, "/");
-        ServletHolder servlet = new ServletHolder(MessageDispatcherServlet.class);
+        ServletHolder servlet = new ServletHolder(new MessageDispatcherServlet() {
+            @Override
+            protected void postProcessWebApplicationContext(ConfigurableWebApplicationContext wac) {
+                wac.getEnvironment().getPropertySources().addFirst(testParameters);
+            }
+        });
         servlet.setName("spring-ws");
         servlet.setInitParameter("contextConfigLocation", ClientServerTest.class.getResource("spring-ws-servlet.xml").toString());
         servlet.setInitOrder(1);
@@ -60,20 +71,24 @@ public class ClientServerTest {
         ConfigurableEnvironment environment = context.getEnvironment();
         MockPropertySource propertySource = new MockPropertySource();
         propertySource.setProperty("port", connector.getLocalPort());
-        environment.getPropertySources().replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
+        MutablePropertySources propertySources = environment.getPropertySources();
+        propertySources.replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
+        propertySources.addFirst(testParameters);
         context.load(ClientServerTest.class, "beans.xml");
         context.refresh();
     }
     
-    @AfterClass
-    public static void tearDown() throws Exception {
+    @Override
+    protected void tearDown() throws Exception {
         context.close();
+        context = null;
         
         server.stop();
+        server = null;
     }
     
-    @Test
-    public void test() throws Exception {
+    @Override
+    protected void runTest() throws Throwable {
         JDOMSource source = new JDOMSource(new SAXBuilder().build(ClientServerTest.class.getResourceAsStream("request.xml")).getRootElement());
         JDOMResult result = new JDOMResult();
         context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(source, result);

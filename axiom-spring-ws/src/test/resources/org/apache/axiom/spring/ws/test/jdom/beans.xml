@@ -18,14 +18,20 @@
   ~ under the License.
   -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"/>
     
     <bean class="org.springframework.ws.client.core.WebServiceTemplate">
         <constructor-arg>
-            <bean class="org.apache.axiom.spring.ws.soap.AxiomSoapMessageFactory"/>
+            <bean class="org.apache.axiom.spring.ws.soap.AxiomSoapMessageFactory">
+                <property name="soapVersion">
+                    <util:constant static-field="org.springframework.ws.soap.SoapVersion.${soapVersion}"/>
+                </property>
+            </bean>
         </constructor-arg>
         <property name="defaultUri" value="http://localhost:${port}/"/>
     </bean>
