@@ -20,8 +20,9 @@ package org.apache.axiom.spring.ws.test.jdom;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.axiom.testutils.PortAllocator;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.jdom2.input.SAXBuilder;
@@ -39,13 +40,14 @@ import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 public class ClientServerTest {
     private static Server server;
-    private static int port;
     private static GenericXmlApplicationContext context;
     
     @BeforeClass
     public static void setUp() throws Exception {
-        port = PortAllocator.allocatePort();
-        server = new Server(port);
+        server = new Server();
+        Connector connector = new SelectChannelConnector();
+        connector.setPort(0);
+        server.setConnectors(new Connector[] { connector });
         ServletContextHandler handler = new ServletContextHandler(server, "/");
         ServletHolder servlet = new ServletHolder(MessageDispatcherServlet.class);
         servlet.setName("spring-ws");
@@ -57,7 +59,7 @@ public class ClientServerTest {
         context = new GenericXmlApplicationContext();
         ConfigurableEnvironment environment = context.getEnvironment();
         MockPropertySource propertySource = new MockPropertySource();
-        propertySource.setProperty("port", port);
+        propertySource.setProperty("port", connector.getLocalPort());
         environment.getPropertySources().replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
         context.load(ClientServerTest.class, "beans.xml");
         context.refresh();
