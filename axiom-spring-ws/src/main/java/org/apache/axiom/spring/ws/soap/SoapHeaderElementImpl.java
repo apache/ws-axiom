@@ -25,8 +25,8 @@ import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapHeaderException;
 
 final class SoapHeaderElementImpl extends SoapElementImpl<SOAPHeaderBlock> implements SoapHeaderElement {
-    SoapHeaderElementImpl(SOAPHeaderBlock axiomNode) {
-        super(axiomNode);
+    SoapHeaderElementImpl(SoapMessageImpl message, SOAPHeaderBlock axiomNode) {
+        super(message, axiomNode);
     }
 
     public String getActorOrRole() throws SoapHeaderException {
@@ -40,13 +40,11 @@ final class SoapHeaderElementImpl extends SoapElementImpl<SOAPHeaderBlock> imple
     }
 
     public boolean getMustUnderstand() throws SoapHeaderException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        return axiomNode.getMustUnderstand();
     }
 
     public void setMustUnderstand(boolean mustUnderstand) throws SoapHeaderException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        axiomNode.setMustUnderstand(mustUnderstand);
     }
 
     public Result getResult() throws SoapHeaderException {
@@ -60,7 +58,6 @@ final class SoapHeaderElementImpl extends SoapElementImpl<SOAPHeaderBlock> imple
     }
 
     public void setText(String content) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        axiomNode.setText(content);
     }
 }

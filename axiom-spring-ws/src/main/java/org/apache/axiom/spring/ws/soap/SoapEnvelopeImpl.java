@@ -33,17 +33,11 @@ import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderException;
 
 final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements SoapEnvelope {
-    private final SoapMessageImpl parent;
     private SoapHeaderImpl header;
     private SoapBodyImpl body;
     
-    SoapEnvelopeImpl(SoapMessageImpl parent, SOAPEnvelope axiomNode) {
-        super(axiomNode);
-        this.parent = parent;
-    }
-
-    SoapMessageImpl getParent() {
-        return parent;
+    SoapEnvelopeImpl(SoapMessageImpl message, SOAPEnvelope axiomNode) {
+        super(message, axiomNode);
     }
 
     public SoapHeader getHeader() throws SoapHeaderException {
@@ -54,9 +48,9 @@ final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements So
             } else {
                 SOAPVersion soapVersion = ((SOAPFactory)axiomHeader.getOMFactory()).getSOAPVersion();
                 if (soapVersion == SOAP11Version.getSingleton()) {
-                    header = new Soap11HeaderImpl(axiomHeader);
+                    header = new Soap11HeaderImpl(getMessage(), axiomHeader);
                 } else if (soapVersion == SOAP12Version.getSingleton()) {
-                    header = new Soap12HeaderImpl(axiomHeader);
+                    header = new Soap12HeaderImpl(getMessage(), axiomHeader);
                 } else {
                     throw new SoapEnvelopeException("Unrecognized SOAP version");
                 }
@@ -68,7 +62,7 @@ final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements So
     public SoapBody getBody() throws SoapBodyException {
         SOAPBody axiomBody = axiomNode.getBody();
         if (body == null || body.axiomNode != axiomBody) {
-            body = new SoapBodyImpl(this, axiomBody);
+            body = new SoapBodyImpl(getMessage(), axiomBody);
         }
         return body;
     }

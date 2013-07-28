@@ -26,6 +26,8 @@ import org.apache.axiom.om.OMNamespace;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.xml.namespace.QName;
+
 /** Interface SOAPHeader */
 public interface SOAPHeader extends OMElement {
     /**
@@ -44,6 +46,20 @@ public interface SOAPHeader extends OMElement {
      */
     SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns) throws OMException;
 
+    /**
+     * Creates a new {@link SOAPHeaderBlock} object initialized with the specified name and adds it
+     * to this {@link SOAPHeader} object.
+     * 
+     * @param qname
+     *            the name of the header block (which must have a non empty namespace URI)
+     * @return the new {@link SOAPHeaderBlock} object that was inserted into this {@link SOAPHeader}
+     *         object
+     * @throws OMException
+     *             if an error occurs, e.g. if the namespace URI specified by the {@link QName} is
+     *             empty
+     */
+    SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException;
+    
     /**
      * Get the appropriate set of headers for a {@link RolePlayer}.
      * <p>

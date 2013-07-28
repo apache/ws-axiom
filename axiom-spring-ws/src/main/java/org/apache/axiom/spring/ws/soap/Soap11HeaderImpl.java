@@ -18,37 +18,19 @@
  */
 package org.apache.axiom.spring.ws.soap;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
-import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapHeaderException;
 import org.springframework.ws.soap.soap11.Soap11Header;
 
 final class Soap11HeaderImpl extends SoapHeaderImpl implements Soap11Header {
-    Soap11HeaderImpl(SOAPHeader axiomNode) {
-        super(axiomNode);
+    Soap11HeaderImpl(SoapMessageImpl message, SOAPHeader axiomNode) {
+        super(message, axiomNode);
     }
 
     public Iterator<SoapHeaderElement> examineHeaderElementsToProcess(String[] actors) throws SoapHeaderException {
-        RolePlayer rolePlayer;
-        if (actors == null) {
-            rolePlayer = null;
-        } else {
-            final List<String> roles = Arrays.asList(actors);
-            rolePlayer = new RolePlayer() {
-                public List<?> getRoles() {
-                    return roles;
-                }
-    
-                public boolean isUltimateDestination() {
-                    return false;
-                }
-            };
-        }
-        return new SoapHeaderElementIterator(axiomNode.getHeadersToProcess(rolePlayer));
+        return internalExamineHeaderElementsToProcess(actors, false);
     }
 }

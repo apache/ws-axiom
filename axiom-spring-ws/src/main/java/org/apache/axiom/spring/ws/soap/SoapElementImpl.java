@@ -24,26 +24,43 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.spring.ws.SourceExtractionStrategy;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.soap.SoapElement;
 
 abstract class SoapElementImpl<T extends OMElement> implements SoapElement {
+    private static final Log log = LogFactory.getLog(SoapElementImpl.class);
+    
+    private final SoapMessageImpl message;
     final T axiomNode;
 
-    SoapElementImpl(T axiomNode) {
+    SoapElementImpl(SoapMessageImpl message, T axiomNode) {
         if (axiomNode == null) {
             throw new IllegalArgumentException();
         }
+        this.message = message;
         this.axiomNode = axiomNode;
     }
-
-    public QName getName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    
+    final SoapMessageImpl getMessage() {
+        return message;
     }
 
-    public Source getSource() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    final SourceExtractionStrategy getSourceExtractionStrategy() {
+        return message.getSourceExtractionStrategy();
+    }
+    
+    public final QName getName() {
+        return axiomNode.getQName();
+    }
+
+    public final Source getSource() {
+        SourceExtractionStrategy strategy = getSourceExtractionStrategy();
+        if (log.isDebugEnabled()) {
+            log.debug("Returning Source for " + getClass().getSimpleName() + " using strategy " + strategy);
+        }
+        return strategy.getSource(axiomNode);
     }
 
     public void addAttribute(QName name, String value) {
@@ -66,8 +83,11 @@ abstract class SoapElementImpl<T extends OMElement> implements SoapElement {
         throw new UnsupportedOperationException();
     }
 
-    public void addNamespaceDeclaration(String prefix, String namespaceUri) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public final void addNamespaceDeclaration(String prefix, String namespaceUri) {
+        if (prefix == null || prefix.length() == 0) {
+            axiomNode.declareDefaultNamespace(namespaceUri);
+        } else {
+            axiomNode.declareNamespace(namespaceUri, prefix);
+        }
     }
 }

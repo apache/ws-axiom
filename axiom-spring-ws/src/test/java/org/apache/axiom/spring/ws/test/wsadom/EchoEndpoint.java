@@ -16,31 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.soap;
+package org.apache.axiom.spring.ws.test.wsadom;
 
-import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.ws.server.endpoint.annotation.Endpoint;
+import org.springframework.ws.server.endpoint.annotation.RequestPayload;
+import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import org.springframework.ws.soap.addressing.server.annotation.Action;
+import org.w3c.dom.Element;
 
-import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.springframework.ws.soap.SoapHeaderElement;
-
-final class SoapHeaderElementIterator implements Iterator<SoapHeaderElement> {
-    private final SoapMessageImpl message;
-    private final Iterator<?> parent;
-
-    SoapHeaderElementIterator(SoapMessageImpl message, Iterator<?> parent) {
-        this.message = message;
-        this.parent = parent;
-    }
-
-    public boolean hasNext() {
-        return parent.hasNext();
-    }
-
-    public SoapHeaderElement next() {
-        return new SoapHeaderElementImpl(message, (SOAPHeaderBlock)parent.next());
-    }
-
-    public void remove() {
-        parent.remove();
+@Endpoint
+public class EchoEndpoint {
+    private static final Log log = LogFactory.getLog(EchoEndpoint.class);
+    
+    public static final String ACTION = "urn:echo";
+    
+    @Action(ACTION)
+    @ResponsePayload
+    public Element echo(@RequestPayload Element request) {
+        log.debug("Endpoint invoked");
+        return request;
     }
 }

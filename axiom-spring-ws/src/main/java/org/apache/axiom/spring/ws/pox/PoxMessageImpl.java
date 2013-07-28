@@ -26,11 +26,11 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 
 import org.apache.axiom.spring.ws.AxiomWebServiceMessage;
-import org.apache.axiom.spring.ws.PayloadAccessStrategy;
-import org.apache.axiom.spring.ws.PayloadAccessStrategyStack;
+import org.apache.axiom.spring.ws.SourceExtractionStrategy;
+import org.apache.axiom.spring.ws.SourceExtractionStrategyStack;
 
 final class PoxMessageImpl implements AxiomWebServiceMessage {
-    private final PayloadAccessStrategyStack payloadAccessStrategyStack = new PayloadAccessStrategyStack();
+    private final SourceExtractionStrategyStack extractionStrategyStack = new SourceExtractionStrategyStack();
     
     public Source getPayloadSource() {
         // TODO
@@ -52,11 +52,11 @@ final class PoxMessageImpl implements AxiomWebServiceMessage {
         throw new UnsupportedOperationException();
     }
 
-    public void pushPayloadAccessStrategy(PayloadAccessStrategy strategy, Object bean) {
-        payloadAccessStrategyStack.push(strategy, bean);
+    public void pushSourceExtractionStrategy(SourceExtractionStrategy strategy, Object bean) {
+        extractionStrategyStack.push(strategy, bean);
     }
 
-    public void popPayloadAccessStrategy(Object bean) {
-        payloadAccessStrategyStack.pop(bean);
+    public void popSourceExtractionStrategy(Object bean) {
+        extractionStrategyStack.pop(bean);
     }
 }

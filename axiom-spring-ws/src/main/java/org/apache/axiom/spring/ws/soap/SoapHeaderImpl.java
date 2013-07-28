@@ -18,29 +18,30 @@
  */
 package org.apache.axiom.spring.ws.soap;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 
+import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPHeader;
 import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderElement;
 import org.springframework.ws.soap.SoapHeaderException;
 
 abstract class SoapHeaderImpl extends SoapElementImpl<SOAPHeader> implements SoapHeader {
-    SoapHeaderImpl(SOAPHeader axiomNode) {
-        super(axiomNode);
+    SoapHeaderImpl(SoapMessageImpl message, SOAPHeader axiomNode) {
+        super(message, axiomNode);
     }
 
-    public Result getResult() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public final Result getResult() {
+        return axiomNode.getSAXResult();
     }
 
-    public SoapHeaderElement addHeaderElement(QName name) throws SoapHeaderException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public final SoapHeaderElement addHeaderElement(QName name) throws SoapHeaderException {
+        return new SoapHeaderElementImpl(getMessage(), axiomNode.addHeaderBlock(name));
     }
 
     public void removeHeaderElement(QName name) throws SoapHeaderException {
@@ -53,13 +54,31 @@ abstract class SoapHeaderImpl extends SoapElementImpl<SOAPHeader> implements Soa
         throw new UnsupportedOperationException();
     }
 
-    public Iterator<SoapHeaderElement> examineAllHeaderElements() throws SoapHeaderException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public final Iterator<SoapHeaderElement> examineAllHeaderElements() throws SoapHeaderException {
+        return new SoapHeaderElementIterator(getMessage(), axiomNode.examineAllHeaderBlocks());
     }
 
     public Iterator<SoapHeaderElement> examineHeaderElements(QName name) throws SoapHeaderException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
+    }
+
+    final Iterator<SoapHeaderElement> internalExamineHeaderElementsToProcess(String[] roles, final boolean isUltimateReceiver) throws SoapHeaderException {
+        RolePlayer rolePlayer;
+        if (roles == null) {
+            rolePlayer = null;
+        } else {
+            final List<String> roleList = Arrays.asList(roles);
+            rolePlayer = new RolePlayer() {
+                public List<?> getRoles() {
+                    return roleList;
+                }
+    
+                public boolean isUltimateDestination() {
+                    return isUltimateReceiver;
+                }
+            };
+        }
+        return new SoapHeaderElementIterator(getMessage(), axiomNode.getHeadersToProcess(rolePlayer));
     }
 }

@@ -19,12 +19,18 @@
 package org.apache.axiom.spring.ws.test;
 
 import org.apache.axiom.spring.ws.test.jdom.ClientServerTest;
+import org.apache.axiom.spring.ws.test.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     @Override
     protected void addTests() {
-        addTest(new ClientServerTest("SOAP_11"));
-        addTest(new ClientServerTest("SOAP_12"));
+        addTests("SOAP_11");
+        addTests("SOAP_12");
+    }
+    
+    private void addTests(String soapVersion) {
+        addTest(new ClientServerTest(soapVersion));
+        addTest(new WSAddressingDOMTest(soapVersion));
     }
 }

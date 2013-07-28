@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.spring.ws.test.jdom;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
@@ -30,6 +32,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
 public class CalculatorEndpoint {
+    private static final Log log = LogFactory.getLog(CalculatorEndpoint.class);
+    
     private static final String NAMESPACE_URI = "urn:calculator";
     private static final Namespace NAMESPACE = Namespace.getNamespace("c", NAMESPACE_URI);
 
@@ -37,9 +41,10 @@ public class CalculatorEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddRequest")
     @ResponsePayload
-    public Element handleHolidayRequest(@RequestPayload Element holidayRequest) throws Exception {
+    public Element add(@RequestPayload Element addRequest) throws Exception {
+        log.debug("Endpoint invoked");
         double sum = 0d;
-        for (Element operand : operandExpression.evaluate(holidayRequest)) {
+        for (Element operand : operandExpression.evaluate(addRequest)) {
             sum += Double.parseDouble(operand.getTextNormalize());
         }
         Element response = new Element("AddResponse", NAMESPACE);

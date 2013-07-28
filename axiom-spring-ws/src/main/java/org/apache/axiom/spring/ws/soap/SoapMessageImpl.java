@@ -33,8 +33,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.spring.ws.AxiomWebServiceMessage;
-import org.apache.axiom.spring.ws.PayloadAccessStrategy;
-import org.apache.axiom.spring.ws.PayloadAccessStrategyStack;
+import org.apache.axiom.spring.ws.SourceExtractionStrategy;
+import org.apache.axiom.spring.ws.SourceExtractionStrategyStack;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.mime.Attachment;
@@ -50,7 +50,7 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
     private static final Log log = LogFactory.getLog(SoapMessageImpl.class);
     
     private final SOAPMessage axiomMessage;
-    private final PayloadAccessStrategyStack payloadAccessStrategyStack = new PayloadAccessStrategyStack();
+    private final SourceExtractionStrategyStack extractionStrategyStack = new SourceExtractionStrategyStack();
     private SoapEnvelopeImpl envelope;
     
     SoapMessageImpl(SOAPMessage axiomMessage) {
@@ -67,7 +67,7 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
 
     public String getSoapAction() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        return "\"\"";
     }
 
     public void setSoapAction(String soapAction) {
@@ -138,15 +138,15 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
         return qname;
     }
 
-    public void pushPayloadAccessStrategy(PayloadAccessStrategy strategy, Object bean) {
-        payloadAccessStrategyStack.push(strategy, bean);
+    public void pushSourceExtractionStrategy(SourceExtractionStrategy strategy, Object bean) {
+        extractionStrategyStack.push(strategy, bean);
     }
 
-    public void popPayloadAccessStrategy(Object bean) {
-        payloadAccessStrategyStack.pop(bean);
+    public void popSourceExtractionStrategy(Object bean) {
+        extractionStrategyStack.pop(bean);
     }
     
-    PayloadAccessStrategy getPayloadAccessStrategy() {
-        return payloadAccessStrategyStack.getCurrent();
+    SourceExtractionStrategy getSourceExtractionStrategy() {
+        return extractionStrategyStack.getCurrent();
     }
 }

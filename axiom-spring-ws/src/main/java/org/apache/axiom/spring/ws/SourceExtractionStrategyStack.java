@@ -23,26 +23,26 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Helper class for implementations of
- * {@link AxiomWebServiceMessage#pushPayloadAccessStrategy(PayloadAccessStrategy, Object)} and
- * {@link AxiomWebServiceMessage#popPayloadAccessStrategy(Object)}.
+ * {@link AxiomWebServiceMessage#pushSourceExtractionStrategy(SourceExtractionStrategy, Object)} and
+ * {@link AxiomWebServiceMessage#popSourceExtractionStrategy(Object)}.
  * <p>
  * Note: this class is used internally; it is not expected to be used by application code.
  */
-public final class PayloadAccessStrategyStack {
-    private static final Log log = LogFactory.getLog(PayloadAccessStrategyStack.class);
+public final class SourceExtractionStrategyStack {
+    private static final Log log = LogFactory.getLog(SourceExtractionStrategyStack.class);
     
-    private PayloadAccessStrategy[] strategies = new PayloadAccessStrategy[4];
+    private SourceExtractionStrategy[] strategies = new SourceExtractionStrategy[4];
     private Object[] beans = new Object[4];
     private int top = -1;
     
-    public void push(PayloadAccessStrategy strategy, Object bean) {
+    public void push(SourceExtractionStrategy strategy, Object bean) {
         if (log.isDebugEnabled()) {
-            log.debug("Set payload access strategy " + strategy + " for bean " + bean);
+            log.debug("Set Source extraction strategy " + strategy + " for bean " + bean);
         }
         top++;
         int capacity = strategies.length;
         if (top == capacity) {
-            PayloadAccessStrategy[] newStrategies = new PayloadAccessStrategy[capacity*2];
+            SourceExtractionStrategy[] newStrategies = new SourceExtractionStrategy[capacity*2];
             System.arraycopy(strategies, 0, newStrategies, 0, capacity);
             strategies = newStrategies;
             Object[] newBeans = new Object[capacity*2];
@@ -60,14 +60,19 @@ public final class PayloadAccessStrategyStack {
         top--;
         if (log.isDebugEnabled()) {
             if (top == -1) {
-                log.debug("Restored default payload access strategy");
+                log.debug("Restored default strategy");
             } else {
-                log.debug("Restored payload access strategy " + strategies[top] + " for bean " + beans[top]);
+                log.debug("Restored strategy " + strategies[top] + " for bean " + beans[top]);
             }
         }
     }
     
-    public PayloadAccessStrategy getCurrent() {
-        return top == -1 ? PayloadAccessStrategy.DEFAULT : strategies[top];
+    public SourceExtractionStrategy getCurrent() {
+        if (top == -1) {
+            log.debug("Stack is empty; returning default strategy");
+            return SourceExtractionStrategy.DEFAULT;
+        } else {
+            return strategies[top];
+        }
     }
 }

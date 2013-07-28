@@ -26,6 +26,7 @@ import org.apache.axiom.spring.ws.soap.AxiomSoapMessageFactory;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.server.endpoint.support.PayloadRootUtils;
 import org.springframework.ws.soap.SoapBody;
+import org.springframework.ws.soap.SoapElement;
 
 /**
  * Interface implemented by {@link WebServiceMessage} instances created by
@@ -43,11 +44,12 @@ public interface AxiomWebServiceMessage extends WebServiceMessage {
     QName getPayloadRootQName();
     
     /**
-     * Set the payload access strategy used in subsequent calls to
-     * {@link WebServiceMessage#getPayloadSource()} and {@link SoapBody#getPayloadSource()}. The
-     * strategy is pushed to a stack and will be in effect as long as it is on top of the stack,
-     * i.e. until the next call to {@link #pushPayloadAccessStrategy(PayloadAccessStrategy, Object)}
-     * or {@link #popPayloadAccessStrategy(Object)}.
+     * Set the extraction strategy used in subsequent calls to
+     * {@link WebServiceMessage#getPayloadSource()}, {@link SoapBody#getPayloadSource()} and
+     * {@link SoapElement#getSource()}. The strategy is pushed to a stack and will be in effect as
+     * long as it is on top of the stack, i.e. until the next call to
+     * {@link #pushSourceExtractionStrategy(SourceExtractionStrategy, Object)} or
+     * {@link #popSourceExtractionStrategy(Object)}.
      * <p>
      * Note: this method is used internally; it is not expected to be called by application code.
      * 
@@ -56,20 +58,20 @@ public interface AxiomWebServiceMessage extends WebServiceMessage {
      * @param bean
      *            the bean on behalf of which the strategy is configured; this information is only
      *            used for logging and to detect missing or unexpected calls to
-     *            {@link #popPayloadAccessStrategy(Object)}
+     *            {@link #popSourceExtractionStrategy(Object)}
      */
-    void pushPayloadAccessStrategy(PayloadAccessStrategy strategy, Object bean);
+    void pushSourceExtractionStrategy(SourceExtractionStrategy strategy, Object bean);
     
     /**
-     * Restore the previous payload access strategy. This method removes the top of the stack so
-     * that the previous strategy again comes into effect.
+     * Restore the previous extraction strategy. This method removes the top of the stack so that
+     * the previous strategy again comes into effect.
      * 
      * @param bean
-     *            the bean corresponding to the current payload access strategy (i.e. the strategy
-     *            on top of the stack); must match the reference passed to the corresponding call to
-     *            {@link #pushPayloadAccessStrategy(PayloadAccessStrategy, Object)}.
+     *            the bean corresponding to the current extraction strategy (i.e. the strategy on
+     *            top of the stack); must match the reference passed to the corresponding call to
+     *            {@link #pushSourceExtractionStrategy(SourceExtractionStrategy, Object)}.
      * @throws IllegalStateException
      *             if the stack is empty or if the caller didn't pass the expected bean
      */
-    void popPayloadAccessStrategy(Object bean);
+    void popSourceExtractionStrategy(Object bean);
 }

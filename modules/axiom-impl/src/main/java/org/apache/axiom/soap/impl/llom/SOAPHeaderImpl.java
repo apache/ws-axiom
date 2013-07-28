@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     
@@ -92,6 +94,10 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         }
         ((OMNodeEx) soapHeaderBlock).setComplete(true);
         return soapHeaderBlock;
+    }
+
+    public SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
+        return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
     }
 
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {

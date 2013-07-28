@@ -28,8 +28,8 @@ import org.springframework.ws.soap.SoapHeaderException;
 import org.springframework.ws.soap.soap12.Soap12Header;
 
 final class Soap12HeaderImpl extends SoapHeaderImpl implements Soap12Header {
-    Soap12HeaderImpl(SOAPHeader axiomNode) {
-        super(axiomNode);
+    Soap12HeaderImpl(SoapMessageImpl message, SOAPHeader axiomNode) {
+        super(message, axiomNode);
     }
 
     public SoapHeaderElement addNotUnderstoodHeaderElement(QName headerName) {
@@ -43,7 +43,6 @@ final class Soap12HeaderImpl extends SoapHeaderImpl implements Soap12Header {
     }
 
     public Iterator<SoapHeaderElement> examineHeaderElementsToProcess(String[] roles, boolean isUltimateReceiver) throws SoapHeaderException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        return internalExamineHeaderElementsToProcess(roles, isUltimateReceiver);
     }
 }
