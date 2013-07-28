@@ -34,6 +34,8 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.PriorityOrdered;
+import org.springframework.ws.server.EndpointInterceptor;
+import org.springframework.ws.server.EndpointMapping;
 import org.springframework.ws.server.endpoint.adapter.method.MethodArgumentResolver;
 import org.springframework.ws.server.endpoint.adapter.method.dom.DomPayloadMethodProcessor;
 import org.springframework.ws.server.endpoint.adapter.method.dom.JDomPayloadMethodProcessor;
@@ -90,6 +92,31 @@ public class AxiomOptimizationEnabler implements BeanFactoryPostProcessor, BeanP
                 AxiomPayloadRootAnnotationMethodEndpointMapping.class.getName());
     }
     
+    /**
+     * Defines the interfaces for which proxies should be created.
+     */
+    private static final Class<?>[] proxyableInterfaces = {
+        EndpointMapping.class,
+        EndpointInterceptor.class,
+        MethodArgumentResolver.class,
+    };
+    
+    private static final Map<Class<?>,SourceExtractionStrategy> strategyMap;
+    
+    static {
+        strategyMap = new HashMap<Class<?>,SourceExtractionStrategy>();
+        strategyMap.put(AxiomPayloadRootAnnotationMethodEndpointMapping.class, null);
+        strategyMap.put(JDomPayloadMethodProcessor.class, SourceExtractionStrategy.SAX_CONSUME);
+        strategyMap.put(DomPayloadMethodProcessor.class, SourceExtractionStrategy.DOM_OR_SAX_CONSUME);
+        strategyMap.put(AnnotationActionEndpointMapping.class, SourceExtractionStrategy.DOM_OR_SAX_PRESERVE);
+        try {
+            strategyMap.put(Class.forName("org.springframework.ws.soap.addressing.server.AddressingEndpointInterceptor"), SourceExtractionStrategy.DOM_OR_SAX_PRESERVE);
+        } catch (ClassNotFoundException ex) {
+            // TODO Auto-generated catch block
+            ex.printStackTrace();
+        }
+    }
+    
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         for (String beanName : beanFactory.getBeanDefinitionNames()) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
@@ -109,27 +136,58 @@ public class AxiomOptimizationEnabler implements BeanFactoryPostProcessor, BeanP
         return bean;
     }
 
-    public Object postProcessAfterInitialization(Object bean, String beanName)
-            throws BeansException {
-        if (bean instanceof JDomPayloadMethodProcessor) {
-            return createSourceExtractionStrategyProxy(bean, beanName, SourceExtractionStrategy.SAX_CONSUME);
-        } else if (bean instanceof DomPayloadMethodProcessor) {
-            return createSourceExtractionStrategyProxy(bean, beanName, SourceExtractionStrategy.DOM_OR_SAX_CONSUME);
-        } else if (bean instanceof AnnotationActionEndpointMapping) {
-            return createSourceExtractionStrategyProxy(bean, beanName, SourceExtractionStrategy.DOM_OR_SAX_PRESERVE);
-        } else {
-            return bean;
+    private static boolean isProxyable(Object bean) {
+        for (Class<?> iface : proxyableInterfaces) {
+            if (iface.isInstance(bean)) {
+                return true;
+            }
         }
+        return false;
     }
     
-    private Object createSourceExtractionStrategyProxy(Object bean, String beanName, SourceExtractionStrategy strategy) {
-        if (log.isDebugEnabled()) {
-            log.debug("Creating proxy to associate extraction strategy " + strategy + " with bean " + beanName);
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return isProxyable(bean) ? createSourceExtractionStrategyProxy(bean, beanName) : bean;
+    }
+    
+    Object createSourceExtractionStrategyProxy(Object target, String beanName) {
+        boolean hasStrategy;
+        SourceExtractionStrategy strategy;
+        if (strategyMap.containsKey(target.getClass())) {
+            hasStrategy = true;
+            strategy = strategyMap.get(target.getClass());
+        } else {
+            hasStrategy = false;
+            strategy = null;
+            for (Map.Entry<Class<?>,SourceExtractionStrategy> entry : strategyMap.entrySet()) {
+                if (entry.getKey().isInstance(target)) {
+                    hasStrategy = true;
+                    strategy = entry.getValue();
+                    // TODO: not correct: there may be a more specialized class/interface in the map
+                    break;
+                }
+            }
         }
-        Set<Class<?>> ifaces = new HashSet<Class<?>>();
-        collectInterfaces(bean.getClass(), ifaces);
-        return Proxy.newProxyInstance(AxiomOptimizationEnabler.class.getClassLoader(), ifaces.toArray(new Class<?>[ifaces.size()]),
-                new SourceExtractionStrategyInvocationHandler(bean, beanName, strategy));
+        if (hasStrategy) {
+            if (strategy == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("No extraction strategy required for bean \"" + beanName + "\" (of type " + target.getClass().getName() + ")");
+                }
+                return target;
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug("Creating proxy to associate extraction strategy " + strategy + " with bean " + beanName);
+                }
+                Set<Class<?>> ifaces = new HashSet<Class<?>>();
+                collectInterfaces(target.getClass(), ifaces);
+                return Proxy.newProxyInstance(AxiomOptimizationEnabler.class.getClassLoader(), ifaces.toArray(new Class<?>[ifaces.size()]),
+                        new SourceExtractionStrategyInvocationHandler(target, beanName, strategy, this));
+            }
+        } else {
+            if (log.isWarnEnabled()) {
+                log.warn("No extraction strategy associated with bean \"" + beanName + "\" (of type " + target.getClass().getName() + ")");
+            }
+            return target;
+        }
     }
     
     private void collectInterfaces(Class<?> clazz, Set<Class<?>> ifaces) {

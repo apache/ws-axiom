@@ -24,16 +24,20 @@ import java.lang.reflect.Method;
 
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.context.MessageContext;
+import org.springframework.ws.server.EndpointInterceptor;
+import org.springframework.ws.server.EndpointInvocationChain;
 
 final class SourceExtractionStrategyInvocationHandler implements InvocationHandler {
     private final Object bean;
     private final String beanName;
     private final SourceExtractionStrategy strategy;
+    private final AxiomOptimizationEnabler optimizer;
     
-    SourceExtractionStrategyInvocationHandler(Object bean, String beanName, SourceExtractionStrategy strategy) {
+    SourceExtractionStrategyInvocationHandler(Object bean, String beanName, SourceExtractionStrategy strategy, AxiomOptimizationEnabler optimizer) {
         this.bean = bean;
         this.beanName = beanName;
         this.strategy = strategy;
+        this.optimizer = optimizer;
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -53,8 +57,9 @@ final class SourceExtractionStrategyInvocationHandler implements InvocationHandl
             // Use the beanName here (instead of bean) to improve logging
             message.pushSourceExtractionStrategy(strategy, beanName);
         }
+        Object result;
         try {
-            return method.invoke(bean, args);
+            result = method.invoke(bean, args);
         } catch (InvocationTargetException ex) {
             throw ex.getCause();
         } finally {
@@ -62,5 +67,17 @@ final class SourceExtractionStrategyInvocationHandler implements InvocationHandl
                 message.popSourceExtractionStrategy(beanName);
             }
         }
+        // The WS-Addressing dynamically adds an EndpointInterceptor (that is not a bean); ensure that
+        // a proxy is created for that interceptor as well
+        if (result instanceof EndpointInvocationChain) {
+            EndpointInterceptor[] interceptors = ((EndpointInvocationChain)result).getInterceptors();
+            for (int i=0; i<interceptors.length; i++) {
+                // TODO: this may be problematic if the array is shared
+                // TODO: need to filter out EndpointInterceptors that are already proxies
+                // TODO: improve logging with respect to bean names
+                interceptors[i] = (EndpointInterceptor)optimizer.createSourceExtractionStrategyProxy(interceptors[i], "<anonymous>");
+            }
+        }
+        return result;
     }
 }
