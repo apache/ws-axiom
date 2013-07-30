@@ -20,15 +20,15 @@ package org.apache.axiom.om;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.text.ParseException;
 
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;

@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.om;
 
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
+import java.text.ParseException;
+
+import org.apache.axiom.mime.ContentType;
 
 public class MIMEResource {
     private final String name;

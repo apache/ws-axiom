@@ -20,6 +20,7 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -28,12 +29,11 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.DetachableInputStream;

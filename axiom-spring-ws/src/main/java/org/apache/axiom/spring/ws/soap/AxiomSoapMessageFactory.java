@@ -20,11 +20,10 @@ package org.apache.axiom.spring.ws.soap;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.Iterator;
 
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
-
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -72,7 +71,6 @@ public class AxiomSoapMessageFactory implements SoapMessageFactory, Initializing
         Iterator<String> it = transportInputStream.getHeaders(TransportConstants.HEADER_CONTENT_TYPE);
         ContentType contentType;
         if (it.hasNext()) {
-            // TODO: this depends on javamail!
             try {
                 contentType = new ContentType(it.next());
             } catch (ParseException ex) {

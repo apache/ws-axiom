@@ -22,13 +22,13 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.internet.ContentType;
 
 import java.io.IOException;
 import java.io.InputStream;

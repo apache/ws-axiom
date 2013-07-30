@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.mail.internet.ContentType;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMException;
 
 /**
