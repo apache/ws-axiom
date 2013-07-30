@@ -29,7 +29,6 @@ import java.io.OutputStream;
 import java.util.Observable;
 
 import javax.activation.DataHandler;
-import javax.mail.MessagingException;
 
 import org.apache.axiom.attachments.CachedFileDataSource;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
@@ -57,7 +56,7 @@ public class FileAccessor extends Observable{
     /**
      * @deprecated This method is no longer used in Axiom 1.2.13 and will be removed in Axiom 1.3.
      */
-    public DataHandler getDataHandler(String contentType) throws MessagingException {
+    public DataHandler getDataHandler(String contentType) {
         if(log.isDebugEnabled()){
             log.debug("getDataHandler()");
             log.debug("accessCount =" +accessCount);
@@ -71,14 +70,14 @@ public class FileAccessor extends Observable{
        	return new DataHandlerExtImpl(dataHandler, manager);        
     }
 
-    public String getFileName() throws MessagingException {
+    public String getFileName() {
         if(log.isDebugEnabled()){
             log.debug("getFileName()");
         }
         return file.getAbsolutePath();
     }
 
-    public InputStream getInputStream() throws IOException, MessagingException {
+    public InputStream getInputStream() throws IOException {
         if(log.isDebugEnabled()){
             log.debug("getInputStream()");
         }

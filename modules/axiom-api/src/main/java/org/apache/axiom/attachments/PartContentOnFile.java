@@ -23,7 +23,6 @@ import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
 import javax.activation.DataSource;
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -66,15 +65,7 @@ class PartContentOnFile extends PartContent {
     }
 
     InputStream getInputStream() throws IOException {
-        try {
-            return fileAccessor.getInputStream();
-        } catch (MessagingException ex) {
-            // The FileAccessor API uses MessagingException, although we no longer use javax.mail.
-            // Convert the exception to an IOException to keep the attachments API clean.
-            IOException ex2 = new IOException(ex.getMessage());
-            ex2.setStackTrace(ex.getStackTrace());
-            throw ex2;
-        }
+        return fileAccessor.getInputStream();
     }
     
     DataSource getDataSource(String contentType) {
