@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
@@ -32,6 +31,18 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
  * Contains utility methods to work with {@link DataSource} objects.
  */
 public class DataSourceUtils {
+    private static final Class byteArrayDataSourceClass;
+    
+    static {
+        Class clazz;
+        try {
+            clazz = Class.forName("javax.mail.util.ByteArrayDataSource");
+        } catch (ClassNotFoundException e) {
+            clazz = null;
+        }
+        byteArrayDataSourceClass = clazz;
+    }
+    
     /**
      * Determine the size of the data represented by a {@link DataSource} object.
      * The method will try to determine the size without reading the data source.
@@ -49,7 +60,7 @@ public class DataSourceUtils {
     public static long getSize(DataSource ds) {
         if (ds instanceof SizeAwareDataSource) {
             return ((SizeAwareDataSource)ds).getSize();
-        } else if (ds instanceof ByteArrayDataSource) {
+        } else if (byteArrayDataSourceClass != null && byteArrayDataSourceClass.isInstance(ds)) {
             // Special optimization for JavaMail's ByteArrayDataSource (Axiom's ByteArrayDataSource
             // already implements SizeAwareDataSource and doesn't need further optimization):
             // we know that ByteArrayInputStream#available() directly returns the size of the
