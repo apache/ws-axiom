@@ -44,7 +44,7 @@ import javax.activation.MimeType;
  * This class is similar to {@link MimeType} and JavaMail's <code>ContentType</code> class, but the
  * following differences exist:
  * <ul>
- * <li>This class is more lenient than (the reference implementation of) {@link MimeType}. It will
+ * <li>This class is more lenient than (certain implementations of) {@link MimeType}. It will
  * accept content types that are not strictly valid, but that are commonly found. E.g. it will
  * accept content types with an extra semicolon at the end.
  * <li>This class is immutable.
