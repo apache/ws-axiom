@@ -46,7 +46,6 @@ final class ContentTypeTokenizer {
             // Just loop
         }
         int end = index;
-        skipWhiteSpace();
         for (; end > begin && whitespace.indexOf(s.charAt(end-1)) != -1; end--) {
             // Just loop
         }
@@ -100,12 +99,9 @@ final class ContentTypeTokenizer {
             } else {
                 return requireToken();
             }
+        } else {
+            throw new ParseException("Unexpected end of string; expected token or quoted string", index);
         }
-        return null;
-    }
-
-    int getChar() {
-        return index == s.length() ? -1 : s.charAt(index++);
     }
 
     boolean expect(char c) throws ParseException {
@@ -126,9 +122,5 @@ final class ContentTypeTokenizer {
         if (!expect(c)) {
             throw new ParseException("Unexpected end of string; expected '" + c + "'", index);
         }
-    }
-    
-    boolean hasMoreTokens() {
-        return index < s.length();
     }
 }

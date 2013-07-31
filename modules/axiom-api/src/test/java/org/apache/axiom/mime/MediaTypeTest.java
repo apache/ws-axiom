@@ -36,6 +36,7 @@ public class MediaTypeTest extends TestCase {
         assertFalse(mt1.equals(mt3));
         assertFalse(mt1.equals(mt4));
         assertFalse(mt3.equals(mt4));
+        assertFalse(mt1.equals("test"));
     }
     
     public void testEqualsIgnoresCase() {

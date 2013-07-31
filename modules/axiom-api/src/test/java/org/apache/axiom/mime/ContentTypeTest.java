@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.mime;
 
+import java.text.ParseException;
+
 import junit.framework.TestCase;
 
 public class ContentTypeTest extends TestCase {
@@ -54,5 +56,79 @@ public class ContentTypeTest extends TestCase {
         ContentType ct = new ContentType("text/xml; charset=utf-8;");
         assertEquals(new MediaType("text", "xml"), ct.getMediaType());
         assertEquals("utf-8", ct.getParameter("charset"));
+    }
+    
+    public void testParseWithExtraSpaces() throws Exception {
+        ContentType ct = new ContentType("text/xml ; charset = utf-8 ");
+        assertEquals(new MediaType("text", "xml"), ct.getMediaType());
+        assertEquals("utf-8", ct.getParameter("charset"));
+    }
+    
+    public void testParseWithQuotedPair() throws Exception {
+        ContentType ct = new ContentType("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"");
+        assertEquals("this is not a \"quote\"", ct.getParameter("comment"));
+    }
+    
+    public void testParseInvalid1() {
+        try {
+            new ContentType("text/xml; ?");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid2() {
+        try {
+            new ContentType("text/");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid3() {
+        try {
+            new ContentType("text/xml; charset=");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid4() {
+        try {
+            new ContentType("text/xml; charset=\"asc");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid5() {
+        try {
+            new ContentType("text/xml; param=\"test\\");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid6() {
+        try {
+            new ContentType("text/xml; param;");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid7() {
+        try {
+            new ContentType("text/xml; param");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
     }
 }
