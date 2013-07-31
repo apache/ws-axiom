@@ -30,6 +30,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -40,7 +41,7 @@ import org.junit.Assert;
  * creates an {@link OMText} backed by a {@link DataHandlerProvider}.
  */
 public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenario {
-    private final DataHandler dh = new DataHandler("test", "text/plain");
+    private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
     private final DataHandlerProvider dhp = new DataHandlerProvider() {
         public boolean isLoaded() {
             return true;
