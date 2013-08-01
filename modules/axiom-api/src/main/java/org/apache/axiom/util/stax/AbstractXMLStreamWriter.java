@@ -184,6 +184,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     public final void writeNamespace(String prefix, String namespaceURI) throws XMLStreamException {
         doWriteNamespace(prefix, namespaceURI);
+        namespaceContext.setPrefix(prefix, namespaceURI);
     }
     
     protected abstract void doWriteNamespace(String prefix, String namespaceURI)
@@ -191,6 +192,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
 
     public final void writeDefaultNamespace(String namespaceURI) throws XMLStreamException {
         doWriteDefaultNamespace(namespaceURI);
+        namespaceContext.setPrefix("", namespaceURI);
     }
 
     protected abstract void doWriteDefaultNamespace(String namespaceURI) throws XMLStreamException;

@@ -95,10 +95,8 @@ public class StAXSerializer extends Serializer {
         try {
             if (prefix.length() != 0) {
                 writer.writeNamespace(prefix, namespaceURI);
-                writer.setPrefix(prefix, namespaceURI);
             } else {
                 writer.writeDefaultNamespace(namespaceURI);
-                writer.setDefaultNamespace(namespaceURI);
             }
         } catch (XMLStreamException ex) {
             throw new StAXOutputException(ex);

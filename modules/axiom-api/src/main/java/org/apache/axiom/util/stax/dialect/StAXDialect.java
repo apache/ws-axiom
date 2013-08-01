@@ -22,6 +22,7 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Encapsulates the specific characteristics of a particular StAX implementation.
@@ -90,6 +91,32 @@ import javax.xml.stream.XMLStreamConstants;
  *       but some return <code>true</code> for {@link javax.xml.stream.XMLStreamConstants#SPACE}
  *       events as well. Where necessary, the dialect implementations correct this behavior.
  *       </li>
+ *   <li>It is not clear which methods other than {@link XMLStreamWriter#setPrefix(String, String)}
+ *       and {@link XMLStreamWriter#setDefaultNamespace(String)} should update the namespace
+ *       context maintained by the {@link XMLStreamWriter} when namespace repairing is disabled.
+ *       In Woodstox and IBM's XL XP-J, only {@link XMLStreamWriter#writeNamespace(String, String)}
+ *       and {@link XMLStreamWriter#writeDefaultNamespace(String)} do this. On the other hand, in
+ *       BEA's reference implementation and in SJSXP,
+ *       {@link XMLStreamWriter#writeStartElement(String, String, String)} also updates
+ *       the namespace context (unless the given prefix is already bound to the namespace URI).
+ *       The dialect implementations normalize the behavior such that only
+ *       {@link XMLStreamWriter#writeNamespace(String, String)} and
+ *       {@link XMLStreamWriter#writeDefaultNamespace(String)} update the namespace context.
+ *       <p>
+ *       Note that the statement about Woodstox doesn't apply to very old versions.
+ *       Originally, Woodstox' {@link XMLStreamWriter#writeNamespace(String, String)}
+ *       and {@link XMLStreamWriter#writeDefaultNamespace(String)} implementations didn't update
+ *       the namespace context (as mentioned in
+ *       <a href="http://markmail.org/message/olsdl3p3gciqqeob">this post</a> from 2006). This
+ *       behavior <a href="http://markmail.org/thread/eoxprrkr2d2qoeqs">was changed in 2007</a>.
+ *       Woodstox versions older than that are not supported.
+ *       <p>
+ *       Also note that as a corollary, if namespace repairing is disabled, it is mandatory
+ *       to make the necessary calls to {@link XMLStreamWriter#writeNamespace(String, String)}
+ *       and {@link XMLStreamWriter#writeDefaultNamespace(String)} in order to produce XML that
+ *       is well formed with respect to namespaces, and it should therefore not be necessary to
+ *       call {@link XMLStreamWriter#setPrefix(String, String)} or
+ *       {@link XMLStreamWriter#setDefaultNamespace(String)} explicitly.
  * </ul>
  * <p>
  * Note that there are several ambiguities in the StAX specification which are not addressed by

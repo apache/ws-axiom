@@ -46,4 +46,13 @@ class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
             throw new IllegalArgumentException();
         }
     }
+
+    public void writeStartElement(String prefix, String localName, String namespaceURI)
+            throws XMLStreamException {
+        // In SJSXP, writeStartElement(String,String,String) will update the namespace context,
+        // but according to our interpretation of the StAX specs, this should only occur
+        // when writeNamespace is called. We use the namespace unaware method to prevent
+        // SJSXP from updating the namespace context.
+        super.writeStartElement(prefix.length() == 0 ? localName : prefix + ":" + localName);
+    }
 }

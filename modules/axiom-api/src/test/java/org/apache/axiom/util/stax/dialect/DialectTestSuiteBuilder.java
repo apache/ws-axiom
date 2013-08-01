@@ -115,6 +115,9 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceURIWithNullNamespace(staxImpl));
+        addTest(new TestGetPrefixAfterWriteDefaultNamespace(staxImpl));
+        addTest(new TestGetPrefixAfterWriteNamespace(staxImpl));
+        addTest(new TestGetPrefixAfterWriteStartElement(staxImpl));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.END_ELEMENT, false));
         addTest(new TestGetPrefixIllegalStateException(staxImpl, XMLStreamConstants.PROCESSING_INSTRUCTION, true));
