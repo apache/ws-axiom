@@ -1477,6 +1477,17 @@ while (iterator.hasNext()) {
                     </para>
                 </section>
             </section>
+            <section id="changes-1.2.15">
+                <title>Changes in Axiom 1.2.15</title>
+                <section>
+                    <title>Removal of the JavaMail dependency</title>
+                    <para>
+                        Axiom 1.2.15 no longer uses JavaMail and the corresponding dependency has
+                        been removed. If your project relies on Axiom to introduce JavaMail as a
+                        transitive dependency, you need to update your build.
+                    </para>
+                </section>
+            </section>
         </section>
     </chapter>
 
