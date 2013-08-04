@@ -29,6 +29,31 @@ package org.apache.axiom.mime;
  * to allow comparing media types as described by RFC 2045, i.e. in a case insensitive way.
  */
 public final class MediaType {
+    /**
+     * The media type for <tt>text/xml</tt>.
+     */
+    public static final MediaType TEXT_XML = new MediaType("text", "xml");
+    
+    /**
+     * The media type for <tt>application/xml</tt>.
+     */
+    public static final MediaType APPLICATION_XML = new MediaType("application", "xml");
+    
+    /**
+     * The media type for <tt>application/soap+xml</tt>.
+     */
+    public static final MediaType APPLICATION_SOAP_XML = new MediaType("application", "soap+xml");
+    
+    /**
+     * The media type for <tt>application/xop+xml</tt>.
+     */
+    public static final MediaType APPLICATION_XOP_XML = new MediaType("application", "xop+xml");
+    
+    /**
+     * The media type for <tt>multipart/related</tt>.
+     */
+    public static final MediaType MULTIPART_RELATED = new MediaType("multipart", "related");
+    
     private final String primaryType;
     private final String subType;
     

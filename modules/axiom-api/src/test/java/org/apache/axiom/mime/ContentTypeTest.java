@@ -25,13 +25,13 @@ import junit.framework.TestCase;
 public class ContentTypeTest extends TestCase {
     public void testImmutable() {
         String[] parameters = { "charset", "utf-8" };
-        ContentType ct = new ContentType(new MediaType("text", "xml"), parameters);
+        ContentType ct = new ContentType(MediaType.TEXT_XML, parameters);
         parameters[1] = "ascii";
         assertEquals("utf-8", ct.getParameter("charset"));
     }
     
     public void testGetParameterIgnoresCase() {
-        ContentType ct = new ContentType(new MediaType("text", "xml"), new String[] { "charset", "utf-8" });
+        ContentType ct = new ContentType(MediaType.TEXT_XML, new String[] { "charset", "utf-8" });
         assertEquals("utf-8", ct.getParameter("CHARSET"));
     }
     
@@ -43,7 +43,7 @@ public class ContentTypeTest extends TestCase {
                 + "start-info=\"application/soap+xml\"; "
                 + "charset=UTF-8;"
                 + "action=\"urn:myAction\"");
-        assertEquals(new MediaType("multipart", "related"), ct.getMediaType());
+        assertEquals(MediaType.MULTIPART_RELATED, ct.getMediaType());
         assertEquals("boundaryA3ADBAEE51A1A87B2A11443668160701", ct.getParameter("boundary"));
         assertEquals("application/xop+xml", ct.getParameter("type"));
         assertEquals("<A3ADBAEE51A1A87B2A11443668160702@apache.org>", ct.getParameter("start"));
@@ -54,13 +54,13 @@ public class ContentTypeTest extends TestCase {
     
     public void testParseWithExtraSemicolon() throws Exception {
         ContentType ct = new ContentType("text/xml; charset=utf-8;");
-        assertEquals(new MediaType("text", "xml"), ct.getMediaType());
+        assertEquals(MediaType.TEXT_XML, ct.getMediaType());
         assertEquals("utf-8", ct.getParameter("charset"));
     }
     
     public void testParseWithExtraSpaces() throws Exception {
         ContentType ct = new ContentType("text/xml ; charset = utf-8 ");
-        assertEquals(new MediaType("text", "xml"), ct.getMediaType());
+        assertEquals(MediaType.TEXT_XML, ct.getMediaType());
         assertEquals("utf-8", ct.getParameter("charset"));
     }
     
@@ -130,5 +130,22 @@ public class ContentTypeTest extends TestCase {
         } catch (ParseException ex) {
             // Expected
         }
+    }
+
+    public void testToString() {
+        ContentType ct = new ContentType(MediaType.TEXT_XML, new String[] { "charset", "utf-8" });
+        assertEquals("text/xml; charset=\"utf-8\"", ct.toString());
+    }
+    
+    public void testToStringWithQuote() {
+        ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
+                new String[] { "comment", "this is not a \"quote\""});
+        assertEquals("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"", ct.toString());
+    }
+
+    public void testToStringWithBackslash() {
+        ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
+                new String[] { "filename", "c:\\temp\\test.dat"});
+        assertEquals("application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
     }
 }

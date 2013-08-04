@@ -21,6 +21,8 @@ package org.apache.axiom.soap;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.mime.MediaType;
+
 /**
  * Version-specific stuff for SOAP 1.1
  */
@@ -73,5 +75,9 @@ public class SOAP11Version implements SOAPVersion, SOAP11Constants {
 
     public QName getFaultRoleQName() {
         return QNAME_FAULT_ROLE;
+    }
+
+    public MediaType getMediaType() {
+        return MediaType.TEXT_XML;
     }
 }

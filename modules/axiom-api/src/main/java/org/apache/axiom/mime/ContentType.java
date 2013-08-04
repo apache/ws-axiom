@@ -20,7 +20,10 @@ package org.apache.axiom.mime;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.activation.MimeType;
 
@@ -106,6 +109,17 @@ public final class ContentType {
         this.parameters = (String[])parameters.toArray(new String[parameters.size()]);
     }
     
+    ContentType(MediaType mediaType, Map parameters) {
+        this.mediaType = mediaType;
+        this.parameters = new String[parameters.size()*2];
+        int i = 0;
+        for (Iterator it = parameters.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry)it.next();
+            this.parameters[i++] = (String)entry.getKey();
+            this.parameters[i++] = (String)entry.getValue();
+        }
+    }
+    
     /**
      * Get the media type this content type refers to.
      * 
@@ -130,5 +144,41 @@ public final class ContentType {
             }
         }
         return null;
+    }
+    
+    /**
+     * Create a string representation of this content type suitable as the value for a
+     * <tt>Content-Type</tt> header as specified by RFC 2045. Note that this method serializes all
+     * parameter values as quoted strings, even values that could be represented as tokens. This is
+     * compatible with R1109 in WS-I Basic Profile 1.2 and 2.0.
+     * 
+     * @return the string representation of this content type
+     */
+    public String toString() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(mediaType.getPrimaryType());
+        buffer.append('/');
+        buffer.append(mediaType.getSubType());
+        for (int i=0; i<parameters.length; ) {
+            buffer.append("; ");
+            buffer.append(parameters[i++]);
+            buffer.append("=\"");
+            String value = parameters[i++];
+            for (int j=0, l=value.length(); j<l; j++) {
+                char c = value.charAt(j);
+                if (c == '"' || c == '\\') {
+                    buffer.append('\\');
+                }
+                buffer.append(c);
+            }
+            buffer.append('"');
+        }
+        return buffer.toString();
+    }
+
+    void getParameters(Map map) {
+        for (int i=0; i<parameters.length; i+=2) {
+            map.put(parameters[i].toLowerCase(Locale.ENGLISH), parameters[i+1]);
+        }
     }
 }

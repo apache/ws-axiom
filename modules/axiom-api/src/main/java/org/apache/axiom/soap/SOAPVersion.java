@@ -21,6 +21,8 @@ package org.apache.axiom.soap;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.mime.MediaType;
+
 /**
  * A generic way to get at SOAP-version-specific values.  As long as we can get
  * one of these from a SOAP element, we can get at the right 
@@ -91,4 +93,11 @@ public interface SOAPVersion {
      * @return the QName for the fault role/actor element
      */
     QName getFaultRoleQName();
+    
+    /**
+     * Obtain the media type for this version of SOAP.
+     * 
+     * @return the media type
+     */
+    MediaType getMediaType();
 }
