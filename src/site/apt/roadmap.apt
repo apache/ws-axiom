@@ -280,9 +280,6 @@ APIs that need to be overhauled
    
    * <<<LifecycleManager>>> is an abstract API (interface), but refers to <<<FileAccessor>>> which
      is placed in an <<<impl>>> package.
-   
-   * <<<FileAccessor>>> uses the <<<MessagingException>>> class from JavaMail, although Axiom no
-     longer relies on this API to parse or create MIME messages.
 
 * <<<SOAPVersion>>>
 
