@@ -23,8 +23,8 @@
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
         <!-- Note: versions 10 to 12 declare a reportSet with reports
-                   that we don't need/want; stick with version 9 -->
-        <version>9</version>
+                   that we don't need/want; don't use these versions -->
+        <version>13</version>
     </parent>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
