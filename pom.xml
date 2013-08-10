@@ -566,6 +566,11 @@
                                 if (project.packaging == 'pom' || project.properties['skipTests'] == 'true') {
                                     project.properties['skipJacoco'] = 'true'
                                 }
+                                <!-- JaCoCo doesn't work on Java 1.8 -->
+                                if (System.properties['java.specification.version'] == '1.8') {
+                                    println 'WARNING: Java 1.8 not supported; disabling JaCoCo'
+                                    project.properties['skipJacoco'] = 'true'
+                                }
                             </source>
                         </configuration>
                     </execution>
