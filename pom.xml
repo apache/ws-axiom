@@ -614,12 +614,11 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Use the same ID as in org.apache:apache; otherwise, the goal
-                             will be executed twice when the apache-release profile is
-                             activated -->
-                        <id>attach-sources</id>
+                        <id>source-jars</id>
                         <goals>
-                            <goal>jar</goal>
+                            <!-- Use "jar-no-fork" instead of "jar" to avoid forking the build
+                                 (which is not a problem, but unnecessary) -->
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -678,6 +677,24 @@
             <id>apache-release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <!-- Skip the execution configured in org.apache:apache. We use our own configuration. -->
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <skipSource>true</skipSource>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.rat</groupId>
                         <artifactId>apache-rat-plugin</artifactId>
