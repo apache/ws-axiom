@@ -27,12 +27,12 @@ import org.apache.axiom.util.stax.wrapper.WrappingXMLInputFactory;
 class NormalizingXMLInputFactoryWrapper extends WrappingXMLInputFactory {
     private final AbstractStAXDialect dialect;
 
-    public NormalizingXMLInputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect) {
+    NormalizingXMLInputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect) {
         super(parent);
         this.dialect = dialect;
     }
 
-    protected XMLStreamReader wrap(XMLStreamReader reader) {
+    protected final XMLStreamReader wrap(XMLStreamReader reader) {
         return dialect.normalize(reader);
     }
 }
