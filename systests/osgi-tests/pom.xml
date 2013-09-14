@@ -35,22 +35,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-stax-api_1.2_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <!-- Used by geronimo-stax-api_1.2_spec to locate the StAX implementation;
-                 only required in an OSGi environment -->
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-osgi-registry</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.log</artifactId>
-            <version>1.0.1</version>
+            <groupId>org.apache.servicemix.specs</groupId>
+            <artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
+            <version>2.2.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -95,12 +82,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-            <version>1.7.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.servicemix.specs</groupId>
             <artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
             <version>2.0.0</version>
@@ -114,21 +95,39 @@
         </dependency>
         
         <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.framework</artifactId>
+            <version>3.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam</artifactId>
+            <artifactId>pax-exam-container-native</artifactId>
             <version>${exam.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-container-default</artifactId>
+            <artifactId>pax-exam-junit4</artifactId>
             <version>${exam.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-junit</artifactId>
+            <artifactId>pax-exam-link-mvn</artifactId>
             <version>${exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.url</groupId>
+            <artifactId>pax-url-aether</artifactId>
+            <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -144,27 +143,34 @@
         </dependency>
     </dependencies>
     <properties>
-        <exam.version>1.2.4</exam.version>
+        <exam.version>3.2.0</exam.version>
     </properties>
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>${project.build.directory}/test-resources</directory>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
-                <groupId>org.ops4j.pax.exam</groupId>
-                <artifactId>maven-paxexam-plugin</artifactId>
-                <version>${exam.version}</version>
+                <groupId>org.apache.servicemix.tooling</groupId>
+                <artifactId>depends-maven-plugin</artifactId>
+                <version>1.2</version>
                 <executions>
                     <execution>
+                        <id>generate-depends-file</id>
+                        <phase>generate-test-resources</phase>
                         <goals>
-                            <goal>generate-config</goal>
+                            <goal>generate-depends-file</goal>
                         </goals>
+                        <configuration>
+                            <outputFile>${project.build.directory}/test-resources/META-INF/maven/dependencies.properties</outputFile>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <settings>
-                        <platform>felix</platform>
-                        <profiles>log,url</profiles>
-                    </settings>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
