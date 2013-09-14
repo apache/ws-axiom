@@ -44,7 +44,7 @@ public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
 
     /**
      * Wrap a writer created from this factory. Implementations should override this method if they
-     * which to wrap {@link XMLEventWriter} instances created from the factory. The default
+     * wish to wrap {@link XMLEventWriter} instances created from the factory. The default
      * implementation simply returns the unwrapped writer.
      * 
      * @param writer
@@ -57,7 +57,7 @@ public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
     
     /**
      * Wrap a writer created from this factory. Implementations should override this method if they
-     * which to wrap {@link XMLStreamWriter} instances created from the factory. The default
+     * wish to wrap {@link XMLStreamWriter} instances created from the factory. The default
      * implementation simply returns the unwrapped writer.
      * 
      * @param writer
