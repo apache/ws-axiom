@@ -119,12 +119,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.ops4j.pax.url</groupId>
-            <artifactId>pax-url-aether</artifactId>
-            <version>1.6.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
@@ -146,29 +140,16 @@
         <exam.version>3.2.0</exam.version>
     </properties>
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>${project.build.directory}/test-resources</directory>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
-                <groupId>org.apache.servicemix.tooling</groupId>
-                <artifactId>depends-maven-plugin</artifactId>
-                <version>1.2</version>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>paxexam-maven-plugin</artifactId>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
-                        <id>generate-depends-file</id>
-                        <phase>generate-test-resources</phase>
                         <goals>
-                            <goal>generate-depends-file</goal>
+                            <goal>generate-link-files</goal>
                         </goals>
-                        <configuration>
-                            <outputFile>${project.build.directory}/test-resources/META-INF/maven/dependencies.properties</outputFile>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

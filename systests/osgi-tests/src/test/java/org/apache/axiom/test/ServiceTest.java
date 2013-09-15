@@ -22,9 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.frameworkProperty;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.MavenUtils.asInProject;
+import static org.ops4j.pax.exam.CoreOptions.url;
 
 import javax.inject.Inject;
 
@@ -44,14 +43,14 @@ public class ServiceTest {
     @Configuration
     public static Option[] configuration() {
         return options(
-                mavenBundle().groupId("org.apache.geronimo.specs").artifactId("geronimo-activation_1.1_spec").version(asInProject()),
-                mavenBundle().groupId("org.apache.servicemix.specs").artifactId("org.apache.servicemix.specs.stax-api-1.0").version(asInProject()),
-                mavenBundle().groupId("org.codehaus.woodstox").artifactId("stax2-api").version(asInProject()),
-                mavenBundle().groupId("org.codehaus.woodstox").artifactId("woodstox-core-asl").version(asInProject()),
-                mavenBundle().groupId("org.apache.james").artifactId("apache-mime4j-core").version(asInProject()),
-                mavenBundle().groupId("org.apache.ws.commons.axiom").artifactId("axiom-api").version(asInProject()),
-                mavenBundle().groupId("org.apache.ws.commons.axiom").artifactId("axiom-impl").version(asInProject()),
-                mavenBundle().groupId("org.apache.ws.commons.axiom").artifactId("axiom-dom").version(asInProject()),
+                url("link:classpath:org.apache.geronimo.specs.geronimo-activation_1.1_spec.link"),
+                url("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"),
+                url("link:classpath:stax2-api.link"),
+                url("link:classpath:woodstox-core-asl.link"),
+                url("link:classpath:org.apache.james.apache-mime4j-core.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
+                url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link"),
                 junitBundles(),
                 frameworkProperty("foo").value("bar"));
     }
