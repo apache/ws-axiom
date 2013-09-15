@@ -207,7 +207,11 @@
                         <_nouses>true</_nouses>
                         <_removeheaders>Private-Package</_removeheaders>
                         <Export-Package>*;-noimport:=true</Export-Package>
-                        <Import-Package>org.jaxen.*;resolution:=optional,*</Import-Package>
+                        <Import-Package>
+                            org.jaxen.*;resolution:=optional,
+                            org.codehaus.stax2;resolution:=optional,
+                            *
+                        </Import-Package>
                         <Bundle-Activator>org.apache.axiom.locator.Activator</Bundle-Activator>
                     </instructions>
                 </configuration>
