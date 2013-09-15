@@ -553,11 +553,16 @@
                                 new File(project.build.directory, 'tmp').mkdirs()
                                 
                                 <!-- Skip Jacoco if necessary -->
-                                if (project.packaging == 'pom' || project.properties['skipTests'] == 'true') {
+                                if (project.packaging == 'pom') {
+                                    println 'Disabling JaCoCo for project with packaging "pom"'
                                     project.properties['skipJacoco'] = 'true'
-                                }
-                                <!-- JaCoCo doesn't work on Java 1.8 -->
-                                if (System.properties['java.specification.version'] == '1.8') {
+                                } else if (project.properties['skipTests'] == 'true') {
+                                    println 'Disabling JaCoCo because tests are skipped'
+                                    project.properties['skipJacoco'] = 'true'
+                                } else if (!new File(project.build.testSourceDirectory).exists()) {
+                                    println 'Disabling JaCoCo because there are no tests'
+                                    project.properties['skipJacoco'] = 'true'
+                                } else if (System.properties['java.specification.version'] == '1.8') {
                                     println 'WARNING: Java 1.8 not supported; disabling JaCoCo'
                                     project.properties['skipJacoco'] = 'true'
                                 }
