@@ -25,8 +25,13 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
+import java.io.StringReader;
+
 import javax.inject.Inject;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -39,7 +44,7 @@ import org.osgi.framework.ServiceReference;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class ServiceTest {
+public class FactoryTest {
     @Configuration
     public static Option[] configuration() {
         return options(
@@ -55,8 +60,24 @@ public class ServiceTest {
                 frameworkProperty("foo").value("bar"));
     }
     
-    @Inject BundleContext context;
+    @Inject
+    private BundleContext context;
     
+    @Test
+    public void testGetOMFactory() throws Exception {
+        assertNotNull(OMAbstractFactory.getOMFactory());
+    }
+
+    @Test
+    public void testGetSOAP11Factory() throws Exception {
+        assertNotNull(OMAbstractFactory.getSOAP11Factory());
+    }
+
+    @Test
+    public void testGetSOAP12Factory() throws Exception {
+        assertNotNull(OMAbstractFactory.getSOAP12Factory());
+    }
+
     @Test
     public void testLLOMMetaFactoryServicePresent() throws Exception {
         ServiceReference[] omfactRefs = context
@@ -71,5 +92,13 @@ public class ServiceTest {
                 .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
         assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);
+    }
+    
+    @Test
+    public void testCreateOMBuilder() throws Exception {
+        OMElement oe = OMXMLBuilderFactory.createOMBuilder(new StringReader(
+                "<a:testElement xmlns:a=\"http://test/namespace\"/>")).getDocumentElement();
+        assertEquals("testElement",oe.getLocalName());
+        assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
     }
 }
