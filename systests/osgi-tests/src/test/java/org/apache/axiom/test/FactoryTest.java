@@ -20,7 +20,6 @@ package org.apache.axiom.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.ops4j.pax.exam.CoreOptions.frameworkProperty;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
@@ -56,8 +55,7 @@ public class FactoryTest {
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-dom.link"),
-                junitBundles(),
-                frameworkProperty("foo").value("bar"));
+                junitBundles());
     }
     
     @Inject

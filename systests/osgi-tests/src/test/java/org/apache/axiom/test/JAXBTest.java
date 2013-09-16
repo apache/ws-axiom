@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.test;
 
-import static org.ops4j.pax.exam.CoreOptions.frameworkProperty;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.url;
@@ -58,8 +57,7 @@ public class JAXBTest {
                 url("link:classpath:org.apache.servicemix.specs.jaxb-api-2.1.link"),
                 url("link:classpath:org.apache.servicemix.bundles.jaxb-impl.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-jaxb.link"),
-                junitBundles(),
-                frameworkProperty("foo").value("bar"));
+                junitBundles());
     }
     
     @Test
