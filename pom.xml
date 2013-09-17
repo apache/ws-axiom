@@ -270,7 +270,8 @@
             <dependency>
                 <groupId>org.apache.james</groupId>
                 <artifactId>apache-mime4j-core</artifactId>
-                <version>0.8.0-SNAPSHOT</version>
+                <!-- Note: snapshot versions are currently not stable because of MIME4J-231 -->
+                <version>0.7.2</version>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>
