@@ -776,6 +776,7 @@
         <module>modules/axiom-samples</module>
         <module>axiom-spring-ws</module>
         <module>systests</module>
+        <module>forbiddenapi-signatures</module>
         <module>devguide</module>
         <module>userguide</module>
         <module>apidocs</module>
