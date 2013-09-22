@@ -58,6 +58,14 @@ import org.apache.axiom.soap.SOAPFactory;
  * <p>
  */
 public class OMAbstractFactory {
+    /**
+     * The name of the system property that allows to override the default Axiom implementation. The
+     * value must be the fully qualified name of a class implementing {@link OMMetaFactory} and that
+     * is visible to the class loader from which the <tt>axiom-api</tt> library is loaded. An
+     * instance of this class will be returned by {@link #getMetaFactory()}.
+     * <p>
+     * Note that this system property is not supported in an OSGi environment.
+     */
     public static final String META_FACTORY_NAME_PROPERTY = "org.apache.axiom.om.OMMetaFactory";
 
     /**
@@ -176,7 +184,9 @@ public class OMAbstractFactory {
     }
     
     /**
-     * Get the default OM factory instance.
+     * Get the default OM factory instance. This method has the same effect as calling
+     * {@link OMMetaFactory#getOMFactory()} on the {@link OMMetaFactory} instance returned by
+     * {@link #getMetaFactory()}.
      *
      * @return the default OM factory instance
      * @throws OMException if the factory's implementation class can't be found
@@ -188,7 +198,9 @@ public class OMAbstractFactory {
 
 
     /**
-     * Get the default SOAP 1.1 OM factory instance.
+     * Get the default SOAP 1.1 OM factory instance. This method has the same effect as calling
+     * {@link OMMetaFactory#getSOAP11Factory()} on the {@link OMMetaFactory} instance returned by
+     * {@link #getMetaFactory()}.
      *
      * @return the default SOAP 1.1 OM factory instance
      * @throws OMException if the factory's implementation class can't be found
@@ -200,7 +212,9 @@ public class OMAbstractFactory {
 
 
     /**
-     * Get the default SOAP 1.2 OM factory instance.
+     * Get the default SOAP 1.2 OM factory instance. This method has the same effect as calling
+     * {@link OMMetaFactory#getSOAP12Factory()} on the {@link OMMetaFactory} instance returned by
+     * {@link #getMetaFactory()}.
      *
      * @return the default SOAP 1.2 OM factory instance
      * @throws OMException if the factory's implementation class can't be found
