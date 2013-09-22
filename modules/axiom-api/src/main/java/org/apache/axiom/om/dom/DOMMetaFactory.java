@@ -108,7 +108,7 @@ import org.w3c.dom.Text;
  * <dd>Only applies to attributes created using DOM 2 methods such as
  * {@link Document#createAttributeNS(String, String)} and that don't represent namespace
  * declarations. Axiom doesn't use {@link OMAttribute} to represent namespace declarations, and
- * {@link OMNamespace} instances representing a namespace declarations are not expected to implement
+ * {@link OMNamespace} instances representing namespace declarations are not expected to implement
  * {@link Attr}.
  * </dl>
  * <p>
