@@ -118,21 +118,21 @@
                     </execution>
                 </executions>
             </plugin>
-                <plugin>
-                    <groupId>org.apache.rat</groupId>
-                    <artifactId>apache-rat-plugin</artifactId>
-                    <configuration>
-                        <excludes>
-                            <!-- Don't need license headers for Eclipse project files -->
-                            <exclude>src/it/*/.project</exclude>
-                            <exclude>src/it/*/.classpath</exclude>
-                            <exclude>src/it/*/.settings/**</exclude>
-                            <exclude>src/it/*/build.properties</exclude>
-                            <!-- Manifests can't contain comments -->
-                            <exclude>src/it/*/META-INF/MANIFEST.MF</exclude>
-                        </excludes>
-                    </configuration> 
-                </plugin>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <!-- Don't need license headers for Eclipse project files -->
+                        <exclude>src/it/*/.project</exclude>
+                        <exclude>src/it/*/.classpath</exclude>
+                        <exclude>src/it/*/.settings/**</exclude>
+                        <exclude>src/it/*/build.properties</exclude>
+                        <!-- Manifests can't contain comments -->
+                        <exclude>src/it/*/META-INF/MANIFEST.MF</exclude>
+                    </excludes>
+                </configuration> 
+            </plugin>
         </plugins>
     </build>
 </project>
