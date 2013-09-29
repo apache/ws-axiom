@@ -565,12 +565,23 @@
                                 } else if (project.properties['skipTests'] == 'true') {
                                     println 'Disabling JaCoCo because tests are skipped'
                                     project.properties['skipJacoco'] = 'true'
-                                } else if (!new File(project.build.testSourceDirectory).exists()) {
-                                    println 'Disabling JaCoCo because there are no tests'
-                                    project.properties['skipJacoco'] = 'true'
                                 } else if (System.properties['java.specification.version'] == '1.8') {
                                     println 'WARNING: Java 1.8 not supported; disabling JaCoCo'
                                     project.properties['skipJacoco'] = 'true'
+                                }
+                            </source>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>check-jacoco-exec</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                if (project.properties['skipJacoco'] == 'true' || !new File(project.build.directory, 'jacoco.exec').exists()) {
+                                    project.properties['skipJacocoAttach'] = 'true'
                                 }
                             </source>
                         </configuration>
@@ -654,12 +665,12 @@
                 <executions>
                     <execution>
                         <id>attach-jacoco-exec</id>
-                        <phase>test</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>attach-artifact</goal>
                         </goals>
                         <configuration>
-                            <skipAttach>${skipJacoco}</skipAttach>
+                            <skipAttach>${skipJacocoAttach}</skipAttach>
                             <artifacts>
                                 <artifact>
                                     <file>${project.build.directory}/jacoco.exec</file>
