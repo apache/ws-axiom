@@ -46,6 +46,7 @@
         </plugins>
     </build>
     <modules>
+        <module>eclipse-tests</module>
         <module>jboss-tests</module>
         <module>osgi-tests</module>
         <module>spring-ws-tests</module>

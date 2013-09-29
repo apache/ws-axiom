@@ -213,6 +213,12 @@
                             *
                         </Import-Package>
                         <Bundle-Activator>org.apache.axiom.locator.Activator</Bundle-Activator>
+                        <!-- On the Eclipse platform, bundles are initially not started. However,
+                             bundles with lazy activation are started automatically when the first
+                             class is loaded. Using this activation policy ensures that Axiom can
+                             be used out of the box with Eclipse plug-ins (for the IDE or in an RCP
+                             application). -->
+                        <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                     </instructions>
                 </configuration>
             </plugin>

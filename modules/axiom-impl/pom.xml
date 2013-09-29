@@ -113,6 +113,7 @@
                     <instructions>
                         <_nouses>true</_nouses>
                         <Private-Package>org.apache.axiom.*</Private-Package>
+                        <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                     </instructions>
                 </configuration>
             </plugin>

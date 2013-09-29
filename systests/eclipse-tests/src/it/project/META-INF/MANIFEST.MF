@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: eclipse-tests-project
+Bundle-Version: 0.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.axiom.om,
+ org.apache.axiom.om.dom
+Require-Bundle: org.junit;bundle-version="[4.0.0,5.0.0)"

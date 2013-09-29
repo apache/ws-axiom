@@ -37,7 +37,9 @@ public class Activator implements BundleActivator {
     public void start(BundleContext context) throws Exception {
         OSGiOMMetaFactoryLocator locator = new OSGiOMMetaFactoryLocator(context);
         OMAbstractFactory.setMetaFactoryLocator(locator);
-        tracker = new BundleTracker(context, Bundle.ACTIVE, locator);
+        // Bundle.STARTING covers the case where the implementation bundle has
+        // "Bundle-ActivationPolicy: lazy".
+        tracker = new BundleTracker(context, Bundle.STARTING | Bundle.ACTIVE, locator);
         tracker.open();
         // In an OSGi environment, the thread context class loader is generally not set in a meaningful way.
         // Therefore we should use singleton factories. Note that if the StAX API is provided by Geronimo's or
