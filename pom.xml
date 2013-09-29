@@ -505,6 +505,11 @@
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>1.7</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.rat</groupId>
+                    <artifactId>apache-rat-plugin</artifactId>
+                    <version>0.10</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -694,7 +699,6 @@
                     <plugin>
                         <groupId>org.apache.rat</groupId>
                         <artifactId>apache-rat-plugin</artifactId>
-                        <version>0.10</version>
                         <executions>
                             <execution>
                                 <phase>verify</phase>
