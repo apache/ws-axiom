@@ -61,6 +61,7 @@
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
+                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <!-- Need this to pass information to the hook scripts. Once maven-invoker-plugin 1.9 is released,
@@ -112,7 +113,7 @@
                             <streamLogs>true</streamLogs>
                             <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                             <goals>
-                                <goal>test</goal>
+                                <goal>integration-test</goal>
                             </goals>
                         </configuration>
                     </execution>
