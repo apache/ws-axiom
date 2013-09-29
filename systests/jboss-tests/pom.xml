@@ -167,9 +167,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <skip>${skipJacoco}</skip>
-                </configuration>
             </plugin>
         </plugins>
     </build>
