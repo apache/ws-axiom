@@ -61,7 +61,6 @@
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <!-- Need this to pass information to the hook scripts. Once maven-invoker-plugin 1.9 is released,
@@ -71,6 +70,7 @@
                         <goals>
                             <goal>execute</goal>
                         </goals>
+                        <inherited>false</inherited>
                         <configuration>
                             <source>
                                 import java.io.*
@@ -91,7 +91,6 @@
             <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
                 <version>1.8</version>
-                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <!-- Instead of executing the Tycho eclipse-test-plugin project directly, we use the invoker plugin.
@@ -109,6 +108,7 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
+                        <inherited>false</inherited>
                         <configuration>
                             <streamLogs>true</streamLogs>
                             <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
