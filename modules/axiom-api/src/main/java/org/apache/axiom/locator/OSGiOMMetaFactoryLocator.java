@@ -75,18 +75,16 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
     }
 
     public void removedBundle(Bundle bundle, BundleEvent event, Object object) {
-        if (object != null) {
-            for (Iterator it = ((List)object).iterator(); it.hasNext(); ) {
-                RegisteredImplementation registeredImplementation = (RegisteredImplementation)it.next();
-                apiBundleContext.ungetService(registeredImplementation.getReference());
-                registeredImplementation.getRegistration().unregister();
-                synchronized (this) {
-                    implementations.remove(registeredImplementation.getImplementation());
-                }
-            }
+        for (Iterator it = ((List)object).iterator(); it.hasNext(); ) {
+            RegisteredImplementation registeredImplementation = (RegisteredImplementation)it.next();
+            apiBundleContext.ungetService(registeredImplementation.getReference());
+            registeredImplementation.getRegistration().unregister();
             synchronized (this) {
-                loadImplementations(implementations);
+                implementations.remove(registeredImplementation.getImplementation());
             }
+        }
+        synchronized (this) {
+            loadImplementations(implementations);
         }
     }
 }
