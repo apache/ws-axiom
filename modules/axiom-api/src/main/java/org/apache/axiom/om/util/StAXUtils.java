@@ -435,8 +435,8 @@ public class StAXUtils {
                 }
                 try {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
-                    // Woodstox by default creates coalescing parsers. Even if this violates
-                    // the StAX specs, for compatibility with Woodstox, we always enable the
+                    // Woodstox 3.x by default creates coalescing parsers. Even if this violates
+                    // the StAX specs (see WSTX-140), for compatibility with Woodstox 3.x, we always enable
                     // coalescing mode. Note that we need to do that before loading
                     // XMLInputFactory.properties so that this setting can be overridden.
                     factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
