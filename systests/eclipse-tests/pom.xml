@@ -115,6 +115,7 @@
                             <goals>
                                 <goal>integration-test</goal>
                             </goals>
+                            <skipInvocation>${skipTests}</skipInvocation>
                         </configuration>
                     </execution>
                 </executions>
