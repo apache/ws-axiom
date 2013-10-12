@@ -4,5 +4,8 @@ Bundle-SymbolicName: eclipse-tests-project
 Bundle-Version: 0.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.apache.axiom.om,
- org.apache.axiom.om.dom
+ org.apache.axiom.om.dom,
+ org.eclipse.wst.xml.xpath2.api,
+ org.eclipse.wst.xml.xpath2.processor,
+ org.eclipse.wst.xml.xpath2.processor.util
 Require-Bundle: org.junit;bundle-version="[4.0.0,5.0.0)"
