@@ -121,7 +121,7 @@
         </dependency>
     </dependencies>
     <properties>
-        <exam.version>3.2.0</exam.version>
+        <exam.version>3.3.0</exam.version>
     </properties>
     <build>
         <plugins>
