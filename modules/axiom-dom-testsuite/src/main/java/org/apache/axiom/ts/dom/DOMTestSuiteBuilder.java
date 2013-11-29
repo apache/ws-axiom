@@ -95,7 +95,8 @@ public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, xsltImplementation));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestValidator(dbf));
-        addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNode(dbf));
+        addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNodeDeep(dbf));
+        addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNodeShallow(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser1(dbf));
         addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser2(dbf));

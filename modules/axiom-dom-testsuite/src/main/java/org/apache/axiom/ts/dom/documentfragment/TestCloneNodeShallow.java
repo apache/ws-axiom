@@ -25,26 +25,22 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
-public class TestCloneNode extends DOMTestCase {
-    public TestCloneNode(DocumentBuilderFactory dbf) {
+/**
+ * Tests {@link Node#cloneNode(boolean)} with <code>deep</code> set to <code>false</code>.
+ */
+public class TestCloneNodeShallow extends DOMTestCase {
+    public TestCloneNodeShallow(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         DocumentFragment fragment = document.createDocumentFragment();
-        fragment.appendChild(document.createComment("comment"));
         fragment.appendChild(document.createElementNS(null, "test"));
-        DocumentFragment clone = (DocumentFragment)fragment.cloneNode(true);
+        DocumentFragment clone = (DocumentFragment)fragment.cloneNode(false);
         assertSame(document, clone.getOwnerDocument());
-        Node child = clone.getFirstChild();
-        assertNotNull(child);
-        assertEquals(Node.COMMENT_NODE, child.getNodeType());
-        child = child.getNextSibling();
-        assertNotNull(child);
-        assertEquals(Node.ELEMENT_NODE, child.getNodeType());
-        assertEquals("test", child.getLocalName());
-        child = child.getNextSibling();
-        assertNull(child);
+        assertNull(clone.getFirstChild());
+        assertNull(clone.getLastChild());
+        assertEquals(0, clone.getChildNodes().getLength());
     }
 }
