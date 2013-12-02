@@ -43,7 +43,7 @@ public class TestRemoveChildren extends AxiomTestCase {
         this.complete = complete;
         this.accessDocumentElement = accessDocumentElement;
         addTestParameter("complete", complete);
-        addTestParameter("accessDocumentElement", complete);
+        addTestParameter("accessDocumentElement", accessDocumentElement);
     }
 
     protected void runTest() throws Throwable {
