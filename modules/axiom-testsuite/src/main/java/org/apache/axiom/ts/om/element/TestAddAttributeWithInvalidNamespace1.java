@@ -25,7 +25,15 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace1;
 
+/**
+ * Tests that {@link OMElement#addAttribute(String, String, OMNamespace)} throws an exception if the
+ * specified namespace is invalid, i.e. if the {@link OMNamespace} object specifies a prefix for an
+ * empty namespace.
+ * 
+ * @see TestCreateOMAttributeWithInvalidNamespace1
+ */
 public class TestAddAttributeWithInvalidNamespace1 extends AxiomTestCase {
     public TestAddAttributeWithInvalidNamespace1(OMMetaFactory metaFactory) {
         super(metaFactory);
