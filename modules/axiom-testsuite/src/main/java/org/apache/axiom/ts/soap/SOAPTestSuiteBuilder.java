@@ -92,6 +92,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestCloneOMElement(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultFakeFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));

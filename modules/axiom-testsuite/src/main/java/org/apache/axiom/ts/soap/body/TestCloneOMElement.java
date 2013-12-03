@@ -16,31 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.soap.body;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 
-public class TestCloneOMElement extends AxiomTestCase {
-    public TestCloneOMElement(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class TestCloneOMElement extends SOAPTestCase {
+    public TestCloneOMElement(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                AbstractTestCase.getTestResource(TestConstants.SOAP_SOAPMESSAGE), null).getSOAPEnvelope();
+        SOAPEnvelope soapEnvelope = getTestMessage(SOAP_MESSAGE);
         SOAPBody body = soapEnvelope.getBody();
 
         OMElement firstClonedBodyElement = body.cloneOMElement();
         OMElement secondClonedBodyElement = body.cloneOMElement();
 
+        // cloneOMElement creates plain OMElements
+        assertFalse(firstClonedBodyElement instanceof SOAPBody);
+        assertFalse(secondClonedBodyElement instanceof SOAPBody);
+        
         // first check whether both have the same information
         XMLAssert.assertXMLEqual(body.toString(),
                                  firstClonedBodyElement.toString());

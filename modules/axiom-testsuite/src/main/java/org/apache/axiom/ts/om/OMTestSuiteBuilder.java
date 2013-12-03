@@ -197,7 +197,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestBuildDiscarded(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             ConformanceTestFile file = conformanceFiles[i];
             if (!file.hasEntityReferences()) {
