@@ -34,7 +34,5 @@ public class TestFactoryIsSingleton extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         assertSame(metaFactory.getOMFactory(), metaFactory.getOMFactory());
-        assertSame(metaFactory.getSOAP11Factory(), metaFactory.getSOAP11Factory());
-        assertSame(metaFactory.getSOAP12Factory(), metaFactory.getSOAP12Factory());
     }
 }
