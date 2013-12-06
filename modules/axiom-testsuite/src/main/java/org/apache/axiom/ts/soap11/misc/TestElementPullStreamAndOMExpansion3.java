@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.misc;
+package org.apache.axiom.ts.soap11.misc;
 
 import java.io.ByteArrayOutputStream;
 
@@ -43,15 +43,15 @@ import org.apache.axiom.ts.AxiomTestCase;
  *    
  *    Expansion of the message results in both a time and space penalty.
  */
-public class TestElementPullStreamAndOMExpansion2 extends AxiomTestCase {
-    public TestElementPullStreamAndOMExpansion2(OMMetaFactory metaFactory) {
+public class TestElementPullStreamAndOMExpansion3 extends AxiomTestCase {
+    public TestElementPullStreamAndOMExpansion3(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         // Create a builder from a message containing an interesting payload
         StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                AbstractTestCase.getTestResource("soap/soapmessageWithXSI.xml"), null);
+                AbstractTestCase.getTestResource("soap/noprettyprint.xml"), null);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
         ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
@@ -77,9 +77,13 @@ public class TestElementPullStreamAndOMExpansion2 extends AxiomTestCase {
         String outputString = new String(byteArrayOutputStream.toByteArray());
         assertTrue("Expected output was incorrect.  Received:" + outputString,
                 outputString != null && !"".equals(outputString) && outputString.length() > 1);
+        int indexHelloWorld = outputString.indexOf("Hello World");
         assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString.contains("Hello World"));
-        
+                indexHelloWorld > 0);
+        int indexHelloWorld2 = outputString.indexOf("Hello World", indexHelloWorld+1);
+        assertTrue("Expected output was incorrect.  Received:" + outputString,
+                indexHelloWorld2 < 0);
+
         assertTrue("Expectation is that an OMSourcedElement was created for the payload", 
                 omse != null);
         assertTrue("Expectation is that the OMSourcedElement was not expanded by serialization ", 

@@ -429,11 +429,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.factory.TestFactoryIsSingleton(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestGetMetaFactory(metaFactory));
         addTest(new org.apache.axiom.ts.om.misc.TestAxiom95(metaFactory));
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.om.misc.TestElementPullStreamAndOMExpansion(metaFactory));
-            addTest(new org.apache.axiom.ts.om.misc.TestElementPullStreamAndOMExpansion2(metaFactory));
-            addTest(new org.apache.axiom.ts.om.misc.TestElementPullStreamAndOMExpansion3(metaFactory));
-        }
         addTest(new org.apache.axiom.ts.om.namespace.TestEquals(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestEqualsWithNullPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestGetNamespaceURI(metaFactory));
