@@ -143,8 +143,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         if (namespaceURI == null) {
             namespace = null;
         } else {
-            namespace = new OMNamespaceImpl(namespaceURI,
-                    prefix == null && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? "" : prefix);
+            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
         return new AttrImpl(this, localName, namespace, this.factory);
     }

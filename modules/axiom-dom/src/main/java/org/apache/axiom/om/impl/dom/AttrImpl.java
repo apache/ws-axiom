@@ -375,8 +375,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
      * @see org.w3c.dom.Node#getPrefix()
      */
     public String getPrefix() {
-        // TODO Error checking
-        return (this.namespace == null) ? null : this.namespace.getPrefix();
+        return NamedNodeHelper.getPrefix(this);
     }
 
     public void setPrefix(String prefix) throws DOMException {

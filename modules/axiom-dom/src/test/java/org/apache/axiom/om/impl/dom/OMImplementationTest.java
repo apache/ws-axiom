@@ -27,7 +27,6 @@ import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
-import org.apache.axiom.ts.om.document.TestGetSAXResult;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements;
 import org.apache.axiom.ts.om.element.sr.TestClose;
@@ -63,9 +62,6 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: test case needing review
         builder.exclude(TestClose.class);
-
-        // TODO: fails because of an issue elsewhere in DOOM
-        builder.exclude(TestGetSAXResult.class);
         
         return builder.build();
     }

@@ -22,10 +22,20 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.DOMException;
 
-public final class NamedNodeHelper {
+final class NamedNodeHelper {
     private NamedNodeHelper() {}
 
-    public static void setPrefix(NamedNode node, String prefix) throws DOMException {
+    static String getPrefix(NamedNode node) {
+        OMNamespace ns = node.getNamespace();
+        if (ns == null) {
+            return null;
+        } else {
+            String prefix = ns.getPrefix();
+            return prefix.length() == 0 ? null : prefix;
+        }
+    }
+    
+    static void setPrefix(NamedNode node, String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";
         }

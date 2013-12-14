@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -26,11 +27,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Tests the behavior of {@link Element#setAttributeNS(String, String, String)} if the element
- * already has an attribute with the same namespace URI and local name.
+ * Tests the behavior of {@link Element#setAttributeNS(String, String, String)} when used to modify
+ * a namespace declaration for the default namespace.
  */
-public class TestSetAttributeNSExisting extends DOMTestCase {
-    public TestSetAttributeNSExisting(DocumentBuilderFactory dbf) {
+public class TestSetAttributeNSExistingDefaultNamespaceDeclaration extends DOMTestCase {
+    public TestSetAttributeNSExistingDefaultNamespaceDeclaration(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
@@ -38,16 +39,16 @@ public class TestSetAttributeNSExisting extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS(null, "test");
         
-        // Add the original attribute
-        Attr attr = document.createAttributeNS("urn:test", "p1:attr");
-        attr.setValue("value1");
+        // Add the original default namespace declaration
+        Attr attr = document.createAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
+        attr.setValue("urn:ns1");
         element.setAttributeNodeNS(attr);
         
-        // Now change the attribute using setAttributeNS (using a different prefix and value)
-        element.setAttributeNS("urn:test", "p2:attr", "value2");
+        // Now change the attribute using setAttributeNS
+        element.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "urn:ns2");
         
         // DOM is expected to change the original attribute, not to create a new one
-        assertEquals("value2", attr.getValue());
-        assertEquals("p2", attr.getPrefix());
+        assertEquals("urn:ns2", attr.getValue());
+        assertNull(attr.getPrefix());
     }
 }

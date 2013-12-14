@@ -151,6 +151,7 @@ public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, validAttrQNames[i], "value"));
         }
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSExisting(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSExistingDefaultNamespaceDeclaration(dbf));
         for (int i=0; i<invalidAttrQNames.length; i++) {
             addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(dbf, invalidAttrQNames[i]));
         }

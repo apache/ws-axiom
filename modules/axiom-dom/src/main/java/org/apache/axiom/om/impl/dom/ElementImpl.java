@@ -462,7 +462,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         } else {
             if (namespaceURI != null) {
                 attr = new AttrImpl(ownerDocument(), localName, value, this.factory);
-                attr.setOMNamespace(new OMNamespaceImpl(namespaceURI, prefix));
+                attr.setOMNamespace(new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix));
     
                 this.setAttributeNodeNS(attr);
             } else {
@@ -967,13 +967,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
      * @see org.w3c.dom.Node#getPrefix()
      */
     public String getPrefix() {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            return null;
-        } else {
-            String prefix = ns.getPrefix();
-            return prefix.length() == 0 ? null : prefix;
-        }
+        return NamedNodeHelper.getPrefix(this);
     }
 
     public void setPrefix(String prefix) throws DOMException {
