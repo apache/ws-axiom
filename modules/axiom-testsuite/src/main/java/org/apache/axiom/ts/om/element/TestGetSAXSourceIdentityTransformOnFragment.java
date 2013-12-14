@@ -24,6 +24,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -75,10 +76,10 @@ public class TestGetSAXSourceIdentityTransformOnFragment extends AxiomTestCase {
         
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement().getFirstElement();
-        OMResult omResult = new OMResult(factory);
-        transformer.transform(element.getSAXSource(cache), omResult);
+        OMDocument outputDocument = factory.createOMDocument();
+        transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
         
-        OMNamespace ns = omResult.getRootElement().findNamespaceURI("p");
+        OMNamespace ns = outputDocument.getOMDocumentElement().findNamespaceURI("p");
         assertNotNull(ns);
         assertEquals("urn:some:namespace", ns.getNamespaceURI());
         

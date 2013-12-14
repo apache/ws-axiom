@@ -28,11 +28,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.jaxp.OMResult;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -57,15 +57,16 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = OMXMLBuilderFactory.createOMBuilder(factory, getInput()).getDocumentElement();
-        OMResult omResult = new OMResult(factory);
-        transformer.transform(element.getSAXSource(cache), omResult);
+        OMDocument outputDocument = factory.createOMDocument();
+        transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
         
         StreamSource streamSource = new StreamSource(getInput());
         StringWriter out = new StringWriter();
         StreamResult streamResult = new StreamResult(out);
         transformer.transform(streamSource, streamResult);
         
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(out.toString(), omResult.getRootElement().toString()), true);
+        System.out.println(outputDocument.getOMDocumentElement().toString());
+        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(out.toString(), outputDocument.getOMDocumentElement().toString()), true);
         
         element.close(false);
     }
