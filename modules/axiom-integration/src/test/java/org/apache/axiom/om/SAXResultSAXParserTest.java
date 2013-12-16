@@ -17,28 +17,31 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import javax.xml.parsers.SAXParserFactory;
 
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
+public class SAXResultSAXParserTest extends AbstractTestCase {
     private final SAXParserFactory factory;
     private final ConformanceTestFile file;
     
-    public SAXOMBuilderSAXParserTest(String name, SAXParserFactory factory, ConformanceTestFile file) {
+    public SAXResultSAXParserTest(String name, SAXParserFactory factory, ConformanceTestFile file) {
         super(name);
         this.factory = factory;
         this.file = file;
@@ -48,14 +51,15 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
     protected void runTest() throws Throwable {
         factory.setNamespaceAware(true);
         XMLReader reader = factory.newSAXParser().getXMLReader();
-        SAXOMBuilder builder = new SAXOMBuilder();
-        reader.setContentHandler(builder);
-        reader.setDTDHandler(builder);
-        reader.setProperty("http://xml.org/sax/properties/lexical-handler", builder);
-        reader.setProperty("http://xml.org/sax/properties/declaration-handler", builder);
+        OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
+        ContentHandler handler = document.getSAXResult().getHandler();
+        reader.setContentHandler(handler);
+        reader.setDTDHandler((DTDHandler)handler);
+        reader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
+        reader.setProperty("http://xml.org/sax/properties/declaration-handler", handler);
         reader.parse(new InputSource(file.getUrl().toString()));
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        builder.getDocument().serialize(baos);
+        document.serialize(baos);
         XMLUnit.setIgnoreAttributeOrder(true);
         XMLAssertEx.assertXMLIdentical(file.getUrl(),
                 new ByteArrayInputStream(baos.toByteArray()), true);
@@ -63,7 +67,7 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
         for (ConformanceTestFile file : ConformanceTestFile.getConformanceTestFiles()) {
-            suite.addTest(new SAXOMBuilderSAXParserTest(
+            suite.addTest(new SAXResultSAXParserTest(
                     file.getShortName() + " - " + name, factory, file));
         }
     }

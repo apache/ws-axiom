@@ -17,19 +17,23 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
 import static org.custommonkey.xmlunit.XMLUnit.compareXML;
 
 import java.io.StringWriter;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order.Item;
 import org.junit.Test;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
-public class SAXOMBuilderXMLBeansTest {
+public class SAXResultXMLBeansTest {
     @Test
     public void test() throws Exception {
         OrderDocument document = OrderDocument.Factory.newInstance();
@@ -44,9 +48,10 @@ public class SAXOMBuilderXMLBeansTest {
         
         StringWriter out = new StringWriter();
         document.save(out);
-        SAXOMBuilder builder = new SAXOMBuilder();
-        document.save(builder, builder);
+        OMDocument omDocument = OMAbstractFactory.getOMFactory().createOMDocument();
+        ContentHandler handler = omDocument.getSAXResult().getHandler();
+        document.save(handler, (LexicalHandler)handler);
         
-        assertXMLIdentical(compareXML(out.toString(), builder.getRootElement().toString()), true);
+        assertXMLIdentical(compareXML(out.toString(), omDocument.getOMDocumentElement().toString()), true);
     }
 }

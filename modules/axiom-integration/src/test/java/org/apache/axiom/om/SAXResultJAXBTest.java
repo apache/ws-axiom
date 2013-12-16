@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
 import static org.custommonkey.xmlunit.XMLUnit.compareXML;
@@ -29,11 +29,13 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.builder.test.jaxb.Order;
 import org.apache.axiom.om.impl.builder.test.jaxb.OrderItem;
 import org.junit.Test;
 
-public class SAXOMBuilderJAXBTest {
+public class SAXResultJAXBTest {
     @Test
     public void test() throws Exception {
         List<OrderItem> items = new ArrayList<OrderItem>(2);
@@ -53,9 +55,9 @@ public class SAXOMBuilderJAXBTest {
         StringWriter out = new StringWriter();
         marshaller.marshal(order, out);
         
-        SAXOMBuilder builder = new SAXOMBuilder();
-        marshaller.marshal(order, builder);
+        OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
+        marshaller.marshal(order, document.getSAXResult().getHandler());
         
-        assertXMLIdentical(compareXML(out.toString(), builder.getRootElement().toString()), true);
+        assertXMLIdentical(compareXML(out.toString(), document.getOMDocumentElement().toString()), true);
     }
 }
