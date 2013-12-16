@@ -22,10 +22,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMElementEx;
 
-class BuilderUtil {
+/**
+ * For internal use only.
+ */
+public class BuilderUtil {
     private BuilderUtil() {}
     
-    static void setNamespace(OMElement element, String namespaceURI, String prefix, boolean namespaceURIInterning) {
+    public static void setNamespace(OMElement element, String namespaceURI, String prefix, boolean namespaceURIInterning) {
         if (prefix == null) {
             prefix = "";
         }

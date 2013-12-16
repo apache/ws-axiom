@@ -17,18 +17,19 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om.impl.common.factory;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
+import org.apache.axiom.om.impl.builder.BuilderUtil;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -43,35 +44,10 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     
     private final OMFactoryEx factory;
 
-    /**
-     * For internal use only.
-     * 
-     * @param factory
-     * @param source
-     * @param expandEntityReferences
-     */
     public SAXOMBuilder(OMFactory factory, SAXSource source, boolean expandEntityReferences) {
         super(expandEntityReferences);
         this.factory = (OMFactoryEx)factory;
         this.source = source;
-    }
-    
-    /**
-     * @deprecated Instead of creating an instance of this class directly, create a
-     *             {@link SAXSource} and use
-     *             {@link OMXMLBuilderFactory#createOMBuilder(OMFactory, SAXSource, boolean)}.
-     */
-    public SAXOMBuilder(OMFactory factory) {
-        this(factory, null, true);
-    }
-    
-    /**
-     * @deprecated Instead of creating an instance of this class directly, create a
-     *             {@link SAXSource} and use
-     *             {@link OMXMLBuilderFactory#createOMBuilder(SAXSource, boolean)}.
-     */
-    public SAXOMBuilder() {
-        this(OMAbstractFactory.getOMFactory());
     }
     
     protected OMContainer doStartDocument() {
@@ -113,22 +89,6 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         }
     }
     
-    /**
-     * Get the root element of the Axiom tree built by this content handler.
-     * 
-     * @deprecated
-     * @return the root element of the tree
-     * @throws OMException if the tree is not complete
-     */
-    public OMElement getRootElement() {
-        OMElement root = getDocumentElement();
-        if (root != null && root.isComplete()) {
-            return root;
-        } else {
-            throw new OMException("Tree not complete");
-        }
-    }
-
     public int next() throws OMException {
         throw new UnsupportedOperationException();
     }

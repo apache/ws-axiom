@@ -22,18 +22,15 @@ package org.apache.axiom.om.impl.jaxp;
 import javax.xml.transform.sax.SAXResult;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.builder.SAXOMBuilder;
 
 /**
- * Implementation of {@link javax.xml.transform.Result} for AXIOM.
- * The implementation is based on {@link SAXResult} and transforms the stream
- * of SAX events to an AXIOM tree using {@link SAXOMBuilder}.
- * <p>
- * Note that building {@link org.apache.axiom.om.OMDocType} nodes from DTD information is
- * not supported.
+ * @deprecated In order to create a {@link SAXResult} that builds an Axiom tree, create an
+ *             {@link OMDocument} instance and call {@link OMContainer#getSAXResult()} on it.
  */
 public class OMResult extends SAXResult {
     private final SAXOMBuilder builder;

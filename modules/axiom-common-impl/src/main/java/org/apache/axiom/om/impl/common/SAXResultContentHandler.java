@@ -22,7 +22,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.OMContentHandler;
 
 public class SAXResultContentHandler extends OMContentHandler {
     private final OMContainer root;

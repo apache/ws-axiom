@@ -21,47 +21,47 @@ package org.apache.axiom.om.impl.jaxp;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.xalan.processor.TransformerFactoryImpl;
 
-public class StreamSourceToOMResultTestCase extends AbstractTestCase {
+public class StreamSourceToOMResultTest extends MatrixTestCase {
+    private static final String[] axiomImplementations = { "default", "dom" };
+    
     private final OMMetaFactory omMetaFactory;
-    private final TransformerFactory transformerFactory;
     private final ConformanceTestFile file;
     
-    private StreamSourceToOMResultTestCase(OMMetaFactory omMetaFactory,
-            TransformerFactory transformerFactory, String name, ConformanceTestFile file) {
-        super(name);
-        this.omMetaFactory = omMetaFactory;
-        this.transformerFactory = transformerFactory;
+    private StreamSourceToOMResultTest(String axiomImplementation, ConformanceTestFile file) {
+        omMetaFactory = OMAbstractFactory.getMetaFactory(axiomImplementation);
         this.file = file;
+        addTestParameter("axiomImplementation", axiomImplementation);
+        addTestParameter("file", file.getShortName());
     }
     
     protected void runTest() throws Throwable {
         StreamSource source = new StreamSource(file.getUrl().toString());
         OMResult result = new OMResult(omMetaFactory.getOMFactory());
-        transformerFactory.newTransformer().transform(source, result);
+        new TransformerFactoryImpl().newTransformer().transform(source, result);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         result.getDocument().serialize(out);
         XMLAssertEx.assertXMLIdentical(file.getUrl(),
                 new ByteArrayInputStream(out.toByteArray()), true);
     }
 
-    public static TestSuite suite(OMMetaFactory omMetaFactory,
-            TransformerFactory transformerFactory) throws Exception {
+    public static TestSuite suite() {
         TestSuite suite = new TestSuite();
         ConformanceTestFile[] files = ConformanceTestFile.getConformanceTestFiles();
-        for (int i=0; i<files.length; i++) {
-            ConformanceTestFile file = files[i];
-            suite.addTest(new StreamSourceToOMResultTestCase(omMetaFactory, transformerFactory,
-                    file.getShortName(), file));
+        for (int i=0; i<axiomImplementations.length; i++) {
+            for (int j=0; j<files.length; j++) {
+                suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], files[j]));
+            }
         }
         return suite;
     }
