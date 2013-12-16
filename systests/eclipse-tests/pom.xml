@@ -90,7 +90,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
-                <version>1.8</version>
                 <executions>
                     <execution>
                         <!-- Instead of executing the Tycho eclipse-test-plugin project directly, we use the invoker plugin.
