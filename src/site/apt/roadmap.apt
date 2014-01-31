@@ -292,6 +292,13 @@ APIs that need to be overhauled
   In addition, <<<SOAPVersion>>> should be changed from an interface to an abstract class so that one can
   define static methods to get the SOAP version by envelope namespace or media type.
 
+* <<<StAXParserConfiguration>>>
+
+  The <<<StAXParserConfiguration>>> API relies on the assumption that the XML parser used by Axiom is
+  an implementation of StAX. However, as noted above, this is not a strict requirement; an Axiom
+  implementation could equally well use another API or provide its own XML parser.
+  Therefore <<<StAXParserConfiguration>>> should be replaced by something more generic.
+
 Miscellaneous
 
 * Make non coalescing mode the default
