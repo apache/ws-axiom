@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import javax.xml.XMLConstants;
 
@@ -58,6 +59,9 @@ class NSDeclIterator implements Iterator {
     public Object next() {
         hasNext();
         hasNextCalled = false;
+        if (nsDecl == null) {
+            throw new NoSuchElementException();
+        }
         return new OMNamespaceImpl(nsDecl.getValue(), nsDecl.getPrefix() == null ? "" : nsDecl.getLocalName());
     }
 
