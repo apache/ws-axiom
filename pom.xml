@@ -691,6 +691,11 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- We need this to make sure that shade:shade is executed after source:jar-no-fork
+                     (see MSHADE-120). -->
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
