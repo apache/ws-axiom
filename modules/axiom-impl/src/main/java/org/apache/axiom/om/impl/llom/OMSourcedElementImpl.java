@@ -369,7 +369,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.addNamespaceDeclaration(uri, prefix);
     }
 
-    void addNamespaceDeclaration(OMNamespace ns) {
+    public void addNamespaceDeclaration(OMNamespace ns) {
         super.addNamespaceDeclaration(ns);
     }
 
@@ -594,6 +594,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         forceExpand();
         super.setNamespaceWithNoFindInCurrentScope(namespace);
+    }
+
+    public void setNamespace(OMNamespace namespace, boolean declare) {
+        forceExpand();
+        super.setNamespace(namespace, declare);
     }
 
     public QName getQName() {

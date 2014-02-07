@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
@@ -303,6 +304,10 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     public void internalSetNamespace(OMNamespace namespace) {
         this.namespace = namespace;
+    }
+
+    public void setNamespace(OMNamespace namespace, boolean declare) {
+        this.namespace = OMNamedInformationItemHelper.handleNamespace(owner instanceof ElementImpl ? (ElementImpl)owner : null, namespace, true, declare);
     }
 
     /**

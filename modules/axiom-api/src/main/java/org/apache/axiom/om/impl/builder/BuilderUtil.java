@@ -49,7 +49,7 @@ public class BuilderUtil {
             namespace = ((OMElementEx)element).addNamespaceDeclaration(namespaceURI, prefix);
         }
         if (namespace != null && namespaceURI.length() > 0) {
-            element.setNamespaceWithNoFindInCurrentScope(namespace);
+            element.setNamespace(namespace, false);
         }
     }
 }

@@ -18,35 +18,41 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.SetNamespaceTestCase;
 
 /**
- * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} if no matching namespace
- * binding is in scope. In this case, the method must add a new namespace declaration.
+ * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} and
+ * {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)}.
  */
-public class TestSetNamespace extends AxiomTestCase {
-    public TestSetNamespace(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class TestSetNamespace extends SetNamespaceTestCase {
+    private final Boolean declare;
+    
+    public TestSetNamespace(OMMetaFactory metaFactory, String namespaceURI, String prefix, Boolean declare, String prefixInScope, boolean invalid, String expectedPrefix, boolean expectNSDecl) {
+        super(metaFactory, namespaceURI, prefix, prefixInScope, invalid, expectedPrefix, expectNSDecl);
+        this.declare = declare;
+        if (declare != null) {
+            addTestParameter("declare", declare.booleanValue());
+        }
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new QName("test"));
-        OMNamespace ns = factory.createOMNamespace("urn:test", "p");
-        element.setNamespace(ns);
-        assertEquals(new QName("urn:test", "test"), element.getQName());
-        assertEquals(ns, element.getNamespace());
-        Iterator it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
-        assertFalse(it.hasNext());
+    protected boolean context() {
+        return true;
+    }
+
+    protected OMNamedInformationItem node(OMFactory factory, OMElement context) {
+        return context;
+    }
+
+    protected void setNamespace(OMNamedInformationItem node, OMNamespace ns) {
+        if (declare == null) {
+            ((OMElement)node).setNamespace(ns);
+        } else {
+            node.setNamespace(ns, declare.booleanValue());
+        }
     }
 }

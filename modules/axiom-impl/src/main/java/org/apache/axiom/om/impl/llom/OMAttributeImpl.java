@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 
 import javax.xml.namespace.QName;
 
@@ -57,7 +58,7 @@ public class OMAttributeImpl implements OMAttribute {
     private OMFactory factory;
 
     // Keep track of the owner of the attribute
-    protected OMElement owner;
+    OMElementImpl owner;
 
     /**
      * Constructor OMAttributeImpl.
@@ -157,6 +158,11 @@ public class OMAttributeImpl implements OMAttribute {
      */
     public void setAttributeType(String type) {
         this.type = type;
+    }
+
+    public void setNamespace(OMNamespace namespace, boolean declare) {
+        this.namespace = OMNamedInformationItemHelper.handleNamespace(owner, namespace, true, declare);
+        this.qName = null;
     }
 
     /**

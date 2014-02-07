@@ -41,11 +41,9 @@ public interface OMAttribute extends OMNamedInformationItem {
     /** @param value  */
     void setAttributeType(String value);
 
-    /** @param omNamespace  */
-    // TODO: ill-defined API:
-    //  * if the attribute has an owner, should a namespace declaration be added (if no matching declaration is in scope)?
-    //  * what if prefix is null?
-    //  * constraints on OMNamespace not defined (e.g. empty prefix not allowed if namespace URI not empty)
+    /**
+     * @deprecated Use {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} instead.
+     */
     void setOMNamespace(OMNamespace omNamespace);
 
     /**

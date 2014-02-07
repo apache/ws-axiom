@@ -58,6 +58,7 @@ public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.attr.TestLookupNamespaceURIWithoutOwnerElement(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestParseURI(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestWhitespaceAroundDocumentElement(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNode(dbf));

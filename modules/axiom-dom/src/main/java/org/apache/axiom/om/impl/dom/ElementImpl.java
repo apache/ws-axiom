@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMElementHelper;
+import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -113,7 +114,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             parentNode.addChild(this, builder != null);
         }
         this.attributes = new AttributeMap(this);
-        namespace = generateNSDecl ? handleNamespace(ns) : ns;
+        namespace = generateNSDecl ? OMNamedInformationItemHelper.handleNamespace(this, ns, false, true) : ns;
     }
 
     final ParentNode internalGetOwnerNode() {
@@ -138,29 +139,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     
     final void internalSetNextSibling(NodeImpl nextSibling) {
         this.nextSibling = nextSibling;
-    }
-
-    private OMNamespace handleNamespace(OMNamespace ns) {
-        String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
-        String prefix = ns == null ? "" : ns.getPrefix();
-        if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
-            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
-        }
-        if (namespaceURI.length() == 0) {
-            // Special case: no namespace; we need to generate a namespace declaration only if
-            // there is a conflicting namespace declaration (i.e. a declaration for the default
-            // namespace with a non empty URI) is in scope
-            if (getDefaultNamespace() != null) {
-                declareDefaultNamespace("");
-            }
-            return null;
-        } else {
-            OMNamespace namespace = findNamespace(namespaceURI, prefix);
-            if (namespace == null || (prefix != null && !namespace.getPrefix().equals(prefix))) {
-                namespace = declareNamespace(ns);
-            }
-            return namespace;
-        }
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
@@ -462,7 +440,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         } else {
             if (namespaceURI != null) {
                 attr = new AttrImpl(ownerDocument(), localName, value, this.factory);
-                attr.setOMNamespace(new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix));
+                attr.internalSetNamespace(new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix));
     
                 this.setAttributeNodeNS(attr);
             } else {
@@ -567,8 +545,14 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
-        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, uri);
-        return new OMNamespaceImpl(uri, prefix);
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        addNamespaceDeclaration(ns);
+        return ns;
+    }
+    
+    public void addNamespaceDeclaration(OMNamespace ns) {
+        String prefix = ns.getPrefix();
+        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, ns.getNamespaceURI());
     }
 
     /**
@@ -845,8 +829,12 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         this.namespace = namespace;
     }
 
+    public void setNamespace(OMNamespace namespace, boolean declare) {
+        this.namespace = OMNamedInformationItemHelper.handleNamespace(this, namespace, false, declare);
+    }
+
     public void setNamespace(OMNamespace namespace) {
-        internalSetNamespace(handleNamespace(namespace));
+        setNamespace(namespace, true);
     }
 
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {

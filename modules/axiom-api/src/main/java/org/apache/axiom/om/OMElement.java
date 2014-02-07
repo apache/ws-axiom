@@ -78,7 +78,7 @@ import java.util.Iterator;
  * <li>More precisely, Axiom will always make sure that any {@link OMElement} or {@link OMAttribute}
  * node will keep the namespace URI that has been assigned to the node at creation time, unless the
  * namespace is explicitly changed using {@link #setNamespace(OMNamespace)} or
- * {@link OMAttribute#setOMNamespace(OMNamespace)}.
+ * {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)}.
  * </ul>
  */
 public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
@@ -511,10 +511,8 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void setNamespace(OMNamespace namespace);
 
     /**
-     * This will not search the namespace in the scope nor will declare in the current element, as
-     * in setNamespace(OMNamespace). This will just assign the given namespace to the element.
-     *
-     * @param namespace
+     * @deprecated Use {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} with
+     *             <code>declare</code> set to <code>true</code>.
      */
     void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace);
 

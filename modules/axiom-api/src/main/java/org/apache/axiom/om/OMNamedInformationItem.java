@@ -52,6 +52,30 @@ public interface OMNamedInformationItem extends OMInformationItem {
      *         prefix is returned.
      */
     OMNamespace getNamespace();
+    
+    /**
+     * Set the namespace for this information item. This will change the namespace URI and the
+     * prefix of the information item. In addition, if <code>declare</code> is <code>true</code>
+     * this method ensures that a corresponding namespace declaration exists: if no corresponding
+     * namespace declaration is already in scope, then a new one will be added to the nearest
+     * element (i.e. the element itself if this information item is an element or the owner element
+     * if this information item is an attribute).
+     * 
+     * @param namespace
+     *            The new namespace for this information item, or <code>null</code> to remove the
+     *            namespace from this information item. If an {@link OMNamespace} instance with a
+     *            <code>null</code> prefix is given, then a prefix will be generated automatically.
+     *            In this case, the generated prefix can be determined using {@link #getNamespace()}
+     *            method.
+     * @param declare
+     *            Indicates whether a namespace declaration should be generated if necessary;
+     *            ignored if the information item is an attribute without owner element.
+     * @throws IllegalArgumentException
+     *             if an attempt is made to change the namespace of the information item in such a
+     *             way that it would make the document ill-formed with respect to namespaces (e.g.
+     *             binding a prefix to the empty namespace name)
+     */
+    void setNamespace(OMNamespace namespace, boolean declare);
 
     /**
      * Get the QName of this information item.

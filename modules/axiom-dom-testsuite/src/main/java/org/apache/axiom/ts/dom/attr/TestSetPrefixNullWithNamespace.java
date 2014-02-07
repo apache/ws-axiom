@@ -16,30 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.dom.attr;
 
-import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
- * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} if the {@link OMNamespace}
- * parameter is <code>null</code>.
+ * Tests the behavior of {@link Node#setPrefix(String)} when used to remove the prefix on an
+ * {@link Attr} that has a namespace. Although this results in an attribute that is invalid with
+ * respect to namespaces, no exception is thrown.
  */
-public class TestSetNamespaceWithNullOMNamespace extends AxiomTestCase {
-    public TestSetNamespaceWithNullOMNamespace(OMMetaFactory metaFactory) {
-        super(metaFactory);
+public class TestSetPrefixNullWithNamespace extends DOMTestCase {
+    public TestSetPrefixNullWithNamespace(DocumentBuilderFactory dbf) {
+        super(dbf);
     }
 
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement("test", "urn:test", "p");
-        element.setNamespace(null);
-        assertNull(element.getNamespace());
-        assertEquals(new QName("test"), element.getQName());
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Attr attr = document.createAttributeNS("urn:test", "p:test");
+        attr.setPrefix(null);
+        assertNull(attr.getPrefix());
     }
 }

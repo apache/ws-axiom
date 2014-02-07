@@ -115,7 +115,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
             parent = factory.createOMElement(localName, parent, null);
         }
         if (ns != null) {
-            parent.setNamespaceWithNoFindInCurrentScope(ns);
+            parent.setNamespace(ns, false);
         }
     }
 

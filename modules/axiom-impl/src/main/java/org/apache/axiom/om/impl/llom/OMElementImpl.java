@@ -43,6 +43,7 @@ import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementHelper;
+import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -126,7 +127,7 @@ public class OMElementImpl extends OMNodeImpl
         if (parent != null) {
             ((IContainer)parent).addChild(this, builder != null);
         }
-        this.ns = generateNSDecl ? handleNamespace(ns) : ns;
+        this.ns = generateNSDecl ? OMNamedInformationItemHelper.handleNamespace(this, ns, false, true) : ns;
     }
 
     /**
@@ -181,29 +182,6 @@ public class OMElementImpl extends OMNodeImpl
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
         return ns;
-    }
-
-    private OMNamespace handleNamespace(OMNamespace ns) {
-        String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
-        String prefix = ns == null ? "" : ns.getPrefix();
-        if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
-            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
-        }
-        if (namespaceURI.length() == 0) {
-            // Special case: no namespace; we need to generate a namespace declaration only if
-            // there is a conflicting namespace declaration (i.e. a declaration for the default
-            // namespace with a non empty URI) is in scope
-            if (getDefaultNamespace() != null) {
-                declareDefaultNamespace("");
-            }
-            return null;
-        } else {
-            OMNamespace namespace = findNamespace(namespaceURI, prefix);
-            if (namespace == null || (prefix != null && !namespace.getPrefix().equals(prefix))) {
-                namespace = declareNamespace(ns);
-            }
-            return namespace;
-        }
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
@@ -362,7 +340,7 @@ public class OMElementImpl extends OMNodeImpl
         return ns;
     }
     
-    void addNamespaceDeclaration(OMNamespace ns) {
+    public void addNamespaceDeclaration(OMNamespace ns) {
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
         }
@@ -854,12 +832,16 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void setNamespace(OMNamespace namespace) {
-        this.ns = handleNamespace(namespace);
-        this.qName = null;
+        setNamespace(namespace, true);
     }
 
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         this.ns = namespace;
+        this.qName = null;
+    }
+
+    public void setNamespace(OMNamespace namespace, boolean declare) {
+        this.ns = OMNamedInformationItemHelper.handleNamespace(this, namespace, false, declare);
         this.qName = null;
     }
 
