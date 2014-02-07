@@ -344,7 +344,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         return getSOAPEnvelope().getNamespace();
     }
 
+    /**
+     * @deprecated Use {@link SOAPModelBuilder#getSOAPMessage()} instead.
+     */
     public SOAPMessage getSoapMessage() {
+        return getSOAPMessage();
+    }
+    
+    public SOAPMessage getSOAPMessage() {
         return (SOAPMessage)getDocument();
     }
 

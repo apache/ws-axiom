@@ -36,7 +36,7 @@ public class TestGetOMFactoryWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = (SOAPMessage)getBuilderForTestMessage(SOAP_MESSAGE).getDocument();
+        SOAPMessage message = getBuilderForTestMessage(SOAP_MESSAGE).getSOAPMessage();
         assertSame(soapFactory, message.getOMFactory());
     }
 }

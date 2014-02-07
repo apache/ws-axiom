@@ -41,7 +41,7 @@ public class TestCloneIncomplete extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = (SOAPMessage)getBuilderForTestMessage(SOAP_MESSAGE).getDocument();
+        SOAPMessage message = getBuilderForTestMessage(SOAP_MESSAGE).getSOAPMessage();
         OMCloneOptions options = new OMCloneOptions();
         options.setPreserveModel(preserveModel);
         OMInformationItem clone = message.clone(options);

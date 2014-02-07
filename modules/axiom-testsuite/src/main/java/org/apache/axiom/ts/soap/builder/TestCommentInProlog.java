@@ -34,7 +34,7 @@ public class TestCommentInProlog extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = (SOAPMessage)getBuilderForTestMessage(SOAP_MESSAGE).getDocument();
+        SOAPMessage message = getBuilderForTestMessage(SOAP_MESSAGE).getSOAPMessage();
         OMNode firstChild = message.getFirstOMChild();
         assertTrue(firstChild instanceof OMComment);
     }

@@ -46,8 +46,8 @@ public class TestGetCharsetEncodingWithParser extends SOAPTestCase {
         OMOutputFormat format = new OMOutputFormat();
         format.setCharSetEncoding(encoding);
         orgEnvelope.serialize(baos, format);
-        SOAPMessage message = (SOAPMessage)OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                new ByteArrayInputStream(baos.toByteArray()), encoding).getDocument();
+        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
+                new ByteArrayInputStream(baos.toByteArray()), encoding).getSOAPMessage();
         assertEquals(encoding, message.getCharsetEncoding());
     }
 }
