@@ -57,5 +57,6 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASectionWithParent(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.node.TestInsertSiblingAfterFromForeignDocument(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.node.TestInsertSiblingBeforeFromForeignDocument(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.text.TestCloneNodeBinary(metaFactory));
     }
 }

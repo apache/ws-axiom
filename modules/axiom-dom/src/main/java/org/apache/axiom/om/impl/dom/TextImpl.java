@@ -82,6 +82,6 @@ public class TextImpl extends TextNodeImpl {
     }
 
     LeafNode createClone() {
-        return new TextImpl(textValue, factory);
+        return new TextImpl(this, factory);
     }
 }
