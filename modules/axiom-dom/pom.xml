@@ -138,7 +138,7 @@
                                 </includes>
                             </artifactSet>
                             <transformers>
-                                <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />
+                                <transformer implementation="org.apache.axiom.buildutils.shade.osgi.OSGiManifestResourceTransformer" />
                             </transformers>
                             <createSourcesJar>true</createSourcesJar>
                         </configuration>
@@ -147,7 +147,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>axiom-buildutils</artifactId>
+                        <artifactId>shade-osgi</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>

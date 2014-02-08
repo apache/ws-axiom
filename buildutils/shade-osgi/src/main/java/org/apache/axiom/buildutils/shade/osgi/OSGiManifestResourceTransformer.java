@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.buildutils;
+package org.apache.axiom.buildutils.shade.osgi;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,8 +31,11 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
+import org.apache.maven.plugins.shade.relocation.Relocator;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.codehaus.plexus.util.StringUtils;
+import org.eclipse.osgi.util.ManifestElement;
+import org.osgi.framework.BundleException;
 
 /**
  * Resource transformer that modifies the OSGi metadata in the manifest. It is designed for
@@ -51,7 +55,26 @@ public class OSGiManifestResourceTransformer implements ResourceTransformer {
         return resource.equals(JarFile.MANIFEST_NAME);
     }
 
-    public void processResource(String resource, InputStream is, List relocators) throws IOException {
+    private static List<String> extractPackages(Attributes attributes, String header) throws IOException {
+        String value = attributes.getValue(header);
+        if (value == null) {
+            return Collections.emptyList();
+        } else {
+            ManifestElement[] elements;
+            try {
+                elements = ManifestElement.parseHeader("Export-Package", value);
+            } catch (BundleException ex) {
+                throw new IOException("Invalid bundle manifest", ex);
+            }
+            List<String> result = new ArrayList<String>(elements.length);
+            for (ManifestElement element : elements) {
+                result.add(element.getValue());
+            }
+            return result;
+        }
+    }
+    
+    public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
         // We know that the first invocation of processResource is for the project's
         // manifest (see the existing ManifestResourceTransformer's source code)
         if (shadedManifest == null) {
@@ -60,16 +83,10 @@ public class OSGiManifestResourceTransformer implements ResourceTransformer {
             Manifest manifest = new Manifest(is);
             Attributes includedAttributes = manifest.getMainAttributes();
             Attributes shadedAttributes = shadedManifest.getMainAttributes();
-            Set shadedImportPackages = new LinkedHashSet(Arrays.asList(
-                    shadedAttributes.getValue("Import-Package").split(",")));
-            String exportPackage = includedAttributes.getValue("Export-Package");
-            if (exportPackage != null) {
-                shadedImportPackages.removeAll(Arrays.asList(exportPackage.split(",")));
-            }
-            String importPackage = includedAttributes.getValue("Import-Package");
-            if (importPackage != null) {
-                shadedImportPackages.addAll(Arrays.asList(importPackage.split(",")));
-            }
+            Set<String> shadedImportPackages = new LinkedHashSet<String>(
+                    extractPackages(shadedAttributes, "Import-Package"));
+            shadedImportPackages.removeAll(extractPackages(includedAttributes, "Export-Package"));
+            shadedImportPackages.addAll(extractPackages(includedAttributes, "Import-Package"));
             shadedAttributes.putValue("Import-Package",
                     StringUtils.join(shadedImportPackages.iterator(), ","));
         }

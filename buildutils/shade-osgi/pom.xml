@@ -21,15 +21,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom</artifactId>
+        <artifactId>buildutils</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
-    <artifactId>buildutils</artifactId>
-    <name>Build utilities</name>
-    <packaging>pom</packaging>
+    <artifactId>shade-osgi</artifactId>
+    <name>Resource Transformer for OSGi Manifests</name>
     <build>
         <plugins>
-            <!-- The build requires Java 1.6; therefore we can use that version for the build utils as well -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -37,37 +35,19 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>check</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <signature>
-                                <groupId>org.codehaus.mojo.signature</groupId>
-                                <artifactId>java16</artifactId>
-                                <version>1.0</version>
-                            </signature>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                    <skipDeploy>true</skipDeploy>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>paxexam-maven-plugin</module>
-        <module>shade-osgi</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>${shade.plugin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.osgi</groupId>
+            <artifactId>org.eclipse.osgi</artifactId>
+            <version>3.7.1</version>
+        </dependency>
+    </dependencies>
 </project>
