@@ -299,6 +299,11 @@ APIs that need to be overhauled
   implementation could equally well use another API or provide its own XML parser.
   Therefore <<<StAXParserConfiguration>>> should be replaced by something more generic.
 
+* <<<OMMetaFactory>>>
+
+  The argument order is not consistent across methods. See e.g. the two <<<createOMBuilder>>> methods that
+  take an <<<InputSource>>> argument.
+
 Miscellaneous
 
 * Make non coalescing mode the default
