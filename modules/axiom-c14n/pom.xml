@@ -64,7 +64,6 @@
                 <configuration>
                     <excludeDependencies>true</excludeDependencies>
                     <instructions>
-                        <_nouses>true</_nouses>
                         <_removeheaders>Private-Package</_removeheaders>
                         <Export-Package>*;-noimport:=true</Export-Package>
                     </instructions>
