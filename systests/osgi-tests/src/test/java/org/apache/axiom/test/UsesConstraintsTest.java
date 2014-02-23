@@ -92,7 +92,7 @@ public class UsesConstraintsTest {
     @Test
     public void test() throws Exception {
         System.setProperty("java.protocol.handler.pkgs", "org.ops4j.pax.url");
-        Map<String,Object> p = new HashMap<String,Object>(); // createFrameworkProperties();
+        Map<String,String> p = new HashMap<String,String>();
         p.put(FRAMEWORK_STORAGE, new File("target/felix").getAbsolutePath());
         p.put(FRAMEWORK_STORAGE_CLEAN, FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
         FrameworkFactory frameworkFactory = new org.apache.felix.framework.FrameworkFactory();
