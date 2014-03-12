@@ -376,6 +376,18 @@
         <shade.plugin.version>1.6</shade.plugin.version>
         <jacoco.version>0.6.3.201306030806</jacoco.version>
     </properties>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>cloudbees-snapshot</id>
+            <url>http://repository-veithen.forge.cloudbees.com/snapshot/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <extensions>
             <extension>

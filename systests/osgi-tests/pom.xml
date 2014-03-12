@@ -30,18 +30,6 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.apache.servicemix.specs</groupId>
-            <artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
-            <version>2.2.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!-- Contains SJSXP -->
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.jaxp-ri</artifactId>
-            <version>1.4.5_1</version>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
@@ -65,18 +53,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.specs</groupId>
-            <artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
-            <version>2.0.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
-            <version>2.1.13_2</version>
-            <scope>test</scope>
-        </dependency>
         
         <dependency>
             <groupId>org.apache.felix</groupId>
@@ -97,21 +73,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.ops4j.pax.exam</groupId>
-            <artifactId>pax-exam-link-mvn</artifactId>
-            <version>${exam.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.ops4j.pax.logging</groupId>
-            <artifactId>pax-logging-api</artifactId>
-            <version>1.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -132,14 +96,46 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>paxexam-maven-plugin</artifactId>
-                <version>${project.version}</version>
+                <groupId>com.github.veithen.alta</groupId>
+                <artifactId>alta-maven-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate-link-files</goal>
+                            <goal>generate-test-resources</goal>
                         </goals>
+                        <configuration>
+                            <name>%paxexam.linkName%</name>
+                            <altName>%bundle.symbolicName%.link</altName>
+                            <value>%url%</value>
+                            <dependencySet>
+                                <scope>test</scope>
+                            </dependencySet>
+                            <artifacts>
+                                <artifact>
+                                    <groupId>org.apache.servicemix.specs</groupId>
+                                    <artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
+                                    <version>2.2.0</version>
+                                </artifact>
+                                <artifact>
+                                    <!-- Contains SJSXP -->
+                                    <groupId>org.apache.servicemix.bundles</groupId>
+                                    <artifactId>org.apache.servicemix.bundles.jaxp-ri</artifactId>
+                                    <version>1.4.5_1</version>
+                                </artifact>
+                                <artifact>
+                                    <groupId>org.apache.servicemix.specs</groupId>
+                                    <artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
+                                    <version>2.0.0</version>
+                                </artifact>
+                                <artifact>
+                                    <groupId>org.apache.servicemix.bundles</groupId>
+                                    <artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
+                                    <version>2.1.13_2</version>
+                                </artifact>
+                            </artifacts>
+                            <paxExam>${exam.version}</paxExam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

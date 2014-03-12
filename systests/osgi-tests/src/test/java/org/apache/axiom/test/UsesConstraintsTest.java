@@ -102,7 +102,7 @@ public class UsesConstraintsTest {
         Listener listener = new Listener();
         context.addFrameworkListener(listener);
         List<Bundle> bundles = new ArrayList<Bundle>();
-        bundles.add(context.installBundle("link:classpath:org.ops4j.pax.logging.pax-logging-api.link"));
+        bundles.add(context.installBundle("link:classpath:META-INF/links/org.ops4j.pax.logging.api.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.geronimo.specs.geronimo-activation_1.1_spec.link"));
         bundles.add(context.installBundle("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"));
         bundles.add(context.installBundle("link:classpath:stax2-api.link"));
