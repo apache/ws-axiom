@@ -21,6 +21,8 @@ package org.apache.axiom.locator;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -32,6 +34,8 @@ import org.osgi.util.tracker.BundleTracker;
  * {@link OMAbstractFactory#setMetaFactoryLocator(OMMetaFactoryLocator)}.
  */
 public class Activator implements BundleActivator {
+    private static final Log log = LogFactory.getLog(Activator.class);
+    
     private BundleTracker tracker;
 
     public void start(BundleContext context) throws Exception {
@@ -48,11 +52,13 @@ public class Activator implements BundleActivator {
         // Axiom from creating new factory instances unnecessarily. The setting may be more relevant if the
         // StAX API is provided by the JRE.
         StAXUtils.setFactoryPerClassLoader(false);
+        log.debug("OSGi support enabled");
     }
 
     public void stop(BundleContext context) throws Exception {
         tracker.close();
         OMAbstractFactory.setMetaFactoryLocator(null);
         StAXUtils.setFactoryPerClassLoader(true);
+        log.debug("OSGi support disabled");
     }
 }
