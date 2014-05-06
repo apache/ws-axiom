@@ -55,6 +55,12 @@ public final class Strategies {
         AddAttributeStrategy.DIRECT,
     };
     
+    private static final NoNamespaceStrategy[] noNamespaceStrategies = {
+        NoNamespaceStrategy.NULL,
+        NoNamespaceStrategy.NULL_PREFIX,
+        NoNamespaceStrategy.EMPTY,
+    };
+    
     private Strategies() {}
     
     public static SerializationStrategy[] getSerializationStrategies() {
@@ -71,5 +77,9 @@ public final class Strategies {
 
     public static AddAttributeStrategy[] getAddattributestrategies() {
         return (AddAttributeStrategy[])addAttributeStrategies.clone();
+    }
+
+    public static NoNamespaceStrategy[] getNoNamespaceStrategies() {
+        return (NoNamespaceStrategy[])noNamespaceStrategies.clone();
     }
 }

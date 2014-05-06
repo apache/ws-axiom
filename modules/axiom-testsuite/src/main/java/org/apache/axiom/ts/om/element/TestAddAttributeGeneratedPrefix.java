@@ -33,13 +33,22 @@ import org.apache.axiom.ts.AxiomTestCase;
  * namespace URI is in scope, the method generates a prefix.
  */
 public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
-    public TestAddAttributeGeneratedPrefix(OMMetaFactory metaFactory) {
+    private final boolean defaultNamespaceInScope;
+    
+    public TestAddAttributeGeneratedPrefix(OMMetaFactory metaFactory, boolean defaultNamespaceInScope) {
         super(metaFactory);
+        this.defaultNamespaceInScope = defaultNamespaceInScope;
+        addTestParameter("defaultNamespaceInScope", defaultNamespaceInScope);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement("test", null);
+        OMNamespace otherNS = factory.createOMNamespace("urn:ns2", "p");
+        OMElement parent = factory.createOMElement("parent", otherNS);
+        if (defaultNamespaceInScope) {
+            parent.declareDefaultNamespace("urn:test");
+        }
+        OMElement element = factory.createOMElement("test", otherNS, parent);
         OMAttribute attr = element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
         OMNamespace ns = attr.getNamespace();
         assertTrue(ns.getPrefix().length() > 0);

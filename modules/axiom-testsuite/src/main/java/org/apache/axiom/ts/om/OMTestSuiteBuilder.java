@@ -30,6 +30,7 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
+import org.apache.axiom.ts.dimension.NoNamespaceStrategy;
 import org.apache.axiom.ts.dimension.Strategies;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
@@ -71,6 +72,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         ElementContext[] elementContexts = Strategies.getElementContexts();
         ExpansionStrategy[] expansionStrategies = Strategies.getExpansionStrategies();
         AddAttributeStrategy[] addAttributeStrategies = Strategies.getAddattributestrategies();
+        NoNamespaceStrategy[] noNamespaceStrategies = Strategies.getNoNamespaceStrategies();
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
@@ -198,7 +200,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser(metaFactory, false, false));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeGeneratedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeGeneratedPrefix(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeGeneratedPrefix(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReuseExistingPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace2(metaFactory));
@@ -210,7 +213,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory, strategy));
             addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory, strategy));
             addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory, strategy));
-            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory, strategy));
+            for (int j=0; j<noNamespaceStrategies.length; j++) {
+                addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory, strategy, noNamespaceStrategies[j]));
+            }
         }
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild2(metaFactory));
