@@ -365,9 +365,11 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      *            the given attribute value can be serialized directly as an XML value. The caller
      *            may, for example, pass a string with the character 0x01.
      * @param ns
-     *            The namespace has to be one of the in scope namespace. i.e. the passed namespace
-     *            must be declared in the parent element of this attribute or ancestors of the
-     *            parent element of the attribute.
+     *            The namespace for the attribute. If no corresponding namespace declaration is in
+     *            scope, then a new namespace declaration will be added to the element. The
+     *            {@link OMNamespace} may have a <code>null</code> prefix, in which case the method
+     *            will generate a prefix (if no namespace declaration for the given namespace URI is
+     *            in scope) or use an existing one.
      * @return Returns the added attribute.
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed attribute with an empty namespace name

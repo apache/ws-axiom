@@ -59,6 +59,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
@@ -531,17 +532,16 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     public OMAttribute addAttribute(String localName, String value,
                                     OMNamespace ns) {
+        OMNamespace namespace = null;
         if (ns != null) {
-            String uri = ns.getNamespaceURI();
-            if (uri.length() > 0) {
-                String prefix = ns.getPrefix();
-                OMNamespace ns2 = findNamespaceURI(prefix);
-                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
-                    declareNamespace(uri, prefix);
-                }
+            String namespaceURI = ns.getNamespaceURI();
+            String prefix = ns.getPrefix();
+            namespace = findNamespace(namespaceURI, prefix);
+            if (namespace == null) {
+                namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
             }
         }
-        return addAttribute(new AttrImpl(null, localName, ns, value, factory));
+        return addAttribute(new AttrImpl(null, localName, namespace, value, factory));
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {

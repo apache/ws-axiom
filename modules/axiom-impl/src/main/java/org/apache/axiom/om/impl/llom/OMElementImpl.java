@@ -593,7 +593,7 @@ public class OMElementImpl extends OMNodeImpl
         attributes.remove(attr.getQName());
     }
 
-    public OMAttribute addAttribute(String attributeName, String value,
+    public OMAttribute addAttribute(String localName, String value,
                                     OMNamespace ns) {
         OMNamespace namespace = null;
         if (ns != null) {
@@ -601,10 +601,10 @@ public class OMElementImpl extends OMNodeImpl
             String prefix = ns.getPrefix();
             namespace = findNamespace(namespaceURI, prefix);
             if (namespace == null) {
-                namespace = new OMNamespaceImpl(namespaceURI, prefix);
+                namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
             }
         }
-        return addAttribute(new OMAttributeImpl(attributeName, namespace, value, this.factory));
+        return addAttribute(new OMAttributeImpl(localName, namespace, value, this.factory));
     }
 
     /**

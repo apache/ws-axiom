@@ -198,6 +198,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser(metaFactory, false, false));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeGeneratedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReuseExistingPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace2(metaFactory));
         for (int i=0; i<addAttributeStrategies.length; i++) {
