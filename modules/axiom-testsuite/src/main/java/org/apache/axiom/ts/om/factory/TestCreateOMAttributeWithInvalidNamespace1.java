@@ -40,7 +40,7 @@ public class TestCreateOMAttributeWithInvalidNamespace1 extends AxiomTestCase {
             factory.createOMAttribute("attr", ns, "value");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
-            // Expected
+            assertEquals("Cannot create a prefixed attribute with an empty namespace name", ex.getMessage());
         }
     }
 }

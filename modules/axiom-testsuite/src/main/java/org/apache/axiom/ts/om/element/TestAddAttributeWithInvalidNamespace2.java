@@ -47,7 +47,9 @@ public class TestAddAttributeWithInvalidNamespace2 extends AxiomTestCase {
             element.addAttribute("attr", "value", ns);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
-            // Expected
+            assertEquals("Cannot create an unprefixed attribute with a namespace", ex.getMessage());
+            // No namespace declaration should have been added before throwing the exception
+            assertFalse(element.getAllDeclaredNamespaces().hasNext());
         }
     }
 }
