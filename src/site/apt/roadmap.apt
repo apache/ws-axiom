@@ -304,6 +304,11 @@ APIs that need to be overhauled
   The argument order is not consistent across methods. See e.g. the two <<<createOMBuilder>>> methods that
   take an <<<InputSource>>> argument.
 
+* <<<OMElement>>>
+
+  The argument order of the <<<addAttribute(String, String, OMNamespace)>>> method is inconsistent with that
+  of the <<<createOMAttribute>>> method in <<<OMFactory>>>.
+
 Miscellaneous
 
 * Make non coalescing mode the default
