@@ -69,14 +69,6 @@ public class OMAttributeTest extends TestCase {
         assertEquals(addAttributeMethod1(xmlString), addAttributeMethod2(xmlString));
     }
 
-    public void testDefaultAttributeType() throws Exception {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
-        OMAttribute at = factory.createOMAttribute("id", ns, "value");
-
-        assertEquals(at.getAttributeType(), "CDATA");
-    }
-
     private String addAttributeMethod1(String xmlString) throws Exception {
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();

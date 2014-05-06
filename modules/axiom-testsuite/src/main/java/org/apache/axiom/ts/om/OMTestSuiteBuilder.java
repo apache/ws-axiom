@@ -72,6 +72,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestGetAttributeTypeDefault(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceNormalized(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithoutNamespace(metaFactory));
