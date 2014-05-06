@@ -28,14 +28,19 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
- * Test that {@link OMElement#addAttribute(OMAttribute)} behaves correctly when an attribute with
- * the same name and namespace URI already exists.
+ * Test that adding an attribute has the expected effect when an
+ * attribute with the same name and namespace URI already exists.
  */
-public class TestAddAttributeReplace1 extends AxiomTestCase {
-    public TestAddAttributeReplace1(OMMetaFactory metaFactory) {
+public class TestAddAttributeReplace extends AxiomTestCase {
+    private final AddAttributeStrategy strategy;
+    
+    public TestAddAttributeReplace(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
+        this.strategy = strategy;
+        strategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {
@@ -44,15 +49,15 @@ public class TestAddAttributeReplace1 extends AxiomTestCase {
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "p2");
         OMElement element = factory.createOMElement(new QName("test"));
-        OMAttribute att1 = factory.createOMAttribute("test", ns1, "test");
-        OMAttribute att2 = factory.createOMAttribute("test", ns2, "test");
-        element.addAttribute(att1);
-        element.addAttribute(att2);
+        OMAttribute att1 = strategy.addAttribute(element, "test", ns1, "value1");
+        OMAttribute att2 = strategy.addAttribute(element, "test", ns2, "value2");
         Iterator it = element.getAllAttributes();
         assertTrue(it.hasNext());
         assertSame(att2, it.next());
         assertFalse(it.hasNext());
         assertNull(att1.getOwner());
         assertSame(element, att2.getOwner());
+        assertEquals("value1", att1.getAttributeValue());
+        assertEquals("value2", att2.getAttributeValue());
     }
 }

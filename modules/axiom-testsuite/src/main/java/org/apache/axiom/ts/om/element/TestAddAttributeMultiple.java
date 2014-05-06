@@ -25,18 +25,22 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 /**
- * Tests that when {@link OMElement#addAttribute(org.apache.axiom.om.OMAttribute)} is called
- * multiple times for attributes with different namespaces, each call adds a corresponding namespace
- * declaration.
+ * Tests that when adding multiple attributes with different namespaces, a corresponding namespace
+ * declaration is generated for each of them.
  */
-public class TestAddAttributeFromOMAttributeMultiple extends AxiomTestCase {
-    public TestAddAttributeFromOMAttributeMultiple(OMMetaFactory metaFactory) {
+public class TestAddAttributeMultiple extends AxiomTestCase {
+    private final AddAttributeStrategy strategy;
+    
+    public TestAddAttributeMultiple(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
+        this.strategy = strategy;
+        strategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {
@@ -51,8 +55,8 @@ public class TestAddAttributeFromOMAttributeMultiple extends AxiomTestCase {
         OMNamespace attrNS2 =
                 omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
         OMElement omElement = omFactory.createOMElement("AttributeTester", null);
-        omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
-        omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
+        strategy.addAttribute(omElement, "attrNumber", attrNS1, "1");
+        strategy.addAttribute(omElement, "attrNumber", attrNS2, "2");
     
         int nsCount = 0;
         for (Iterator iterator = omElement.getAllDeclaredNamespaces(); iterator.hasNext();) {

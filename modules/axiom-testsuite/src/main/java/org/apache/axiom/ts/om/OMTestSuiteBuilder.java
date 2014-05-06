@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
+import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
@@ -69,6 +70,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         ElementContext[] elementContexts = Strategies.getElementContexts();
         ExpansionStrategy[] expansionStrategies = Strategies.getExpansionStrategies();
+        AddAttributeStrategy[] addAttributeStrategies = Strategies.getAddattributestrategies();
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
@@ -196,17 +198,18 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.sr.TestDTDReaderFromParser(metaFactory, false, false));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeFromOMAttributeMultiple(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeFromOMAttributeWithExistingName(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReplace1(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReplace2(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace2(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
+        for (int i=0; i<addAttributeStrategies.length; i++) {
+            AddAttributeStrategy strategy = addAttributeStrategies[i];
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeMultiple(metaFactory, strategy));
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReplace(metaFactory, strategy));
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory, strategy));
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory, strategy));
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory, strategy));
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory, strategy));
+            addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory, strategy));
+        }
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildDiscarded(metaFactory));

@@ -22,20 +22,24 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
- * Tests {@link OMElement#addAttribute(OMAttribute)} doesn't create an additional namespace declaration if
+ * Tests that adding an attribute doesn't create an additional namespace declaration if
  * a corresponding declaration is already in scope.
  */
 public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends AxiomTestCase {
-    public TestAddAttributeWithExistingNamespaceDeclarationInScope(OMMetaFactory metaFactory) {
+    private final AddAttributeStrategy strategy;
+    
+    public TestAddAttributeWithExistingNamespaceDeclarationInScope(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
+        this.strategy = strategy;
+        strategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {
@@ -44,8 +48,7 @@ public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends Axi
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         root.declareNamespace(ns);
         OMElement child = factory.createOMElement(new QName("test"), root);
-        OMAttribute att = factory.createOMAttribute("test", ns, "test");
-        child.addAttribute(att);
+        strategy.addAttribute(child, "test", ns, "test");
         Iterator it = child.getAllDeclaredNamespaces();
         assertFalse(it.hasNext());
     }

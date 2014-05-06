@@ -50,6 +50,11 @@ public final class Strategies {
         ExpansionStrategy.FULL
     };
     
+    private static final AddAttributeStrategy[] addAttributeStrategies = {
+        AddAttributeStrategy.FACTORY,
+        AddAttributeStrategy.DIRECT,
+    };
+    
     private Strategies() {}
     
     public static SerializationStrategy[] getSerializationStrategies() {
@@ -62,5 +67,9 @@ public final class Strategies {
     
     public static ExpansionStrategy[] getExpansionStrategies() {
         return (ExpansionStrategy[])expansionStrategies.clone();
+    }
+
+    public static AddAttributeStrategy[] getAddattributestrategies() {
+        return (AddAttributeStrategy[])addAttributeStrategies.clone();
     }
 }

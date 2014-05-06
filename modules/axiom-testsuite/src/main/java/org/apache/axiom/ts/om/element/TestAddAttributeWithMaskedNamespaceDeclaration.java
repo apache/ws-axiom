@@ -22,15 +22,15 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 
 /**
- * Test checking that {@link OMElement#addAttribute(OMAttribute)} correctly generates a
+ * Test checking that adding an attribute correctly generates a
  * new namespace declaration if an equivalent namespace declaration exists but is masked.
  * The test attempts to create the following XML:
  * <pre>
@@ -47,8 +47,12 @@ import org.apache.axiom.ts.AxiomTestCase;
  * Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */
 public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCase {
-    public TestAddAttributeWithMaskedNamespaceDeclaration(OMMetaFactory metaFactory) {
+    private final AddAttributeStrategy strategy;
+    
+    public TestAddAttributeWithMaskedNamespaceDeclaration(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
         super(metaFactory);
+        this.strategy = strategy;
+        strategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {
@@ -60,8 +64,7 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
         OMElement element2 = factory.createOMElement(new QName("b"), element1);
         element2.declareNamespace(ns2);
         OMElement element3 = factory.createOMElement(new QName("c"), element2);
-        OMAttribute att = factory.createOMAttribute("attr", ns1, "test");
-        element3.addAttribute(att);
+        strategy.addAttribute(element3, "attr", ns1, "test");
         Iterator it = element3.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns1, it.next());
