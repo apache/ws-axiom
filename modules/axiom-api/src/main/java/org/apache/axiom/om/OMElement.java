@@ -501,6 +501,10 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * the element information item, this method ensures that a corresponding namespace declaration
      * exists. If no corresponding namespace declaration is already in scope, then a new one will be
      * added to this element.
+     * <p>
+     * This method has the same effect as
+     * {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} with <code>declare</code>
+     * set to <code>true</code>.
      * 
      * @param namespace
      *            The new namespace for this element, or <code>null</code> to remove the namespace
@@ -514,7 +518,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     /**
      * @deprecated Use {@link OMNamedInformationItem#setNamespace(OMNamespace, boolean)} with
-     *             <code>declare</code> set to <code>true</code>.
+     *             <code>declare</code> set to <code>false</code>.
      */
     void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace);
 
