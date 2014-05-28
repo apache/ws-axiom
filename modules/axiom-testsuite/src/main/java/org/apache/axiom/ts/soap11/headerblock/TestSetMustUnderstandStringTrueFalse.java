@@ -16,14 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap11.headerblock;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP12HeaderBlockTestBase;
+public class TestSetMustUnderstandStringTrueFalse extends SOAPTestCase {
+    public TestSetMustUnderstandStringTrueFalse(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP11);
+    }
 
-public class SOAP12HeaderBlockTest extends SOAP12HeaderBlockTestBase {
-    public SOAP12HeaderBlockTest() {
-        super(new OMLinkedListMetaFactory());
+    protected void runTest() throws Throwable {
+        SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
+        try {
+            soapHeaderBlock.setMustUnderstand("true");
+        } catch (Exception e) {
+            fail(
+                    "SOAP HeaderBlock Test : - MustUnderstand value can not be set to any value rather than 1 or 0");
+        }
     }
 }

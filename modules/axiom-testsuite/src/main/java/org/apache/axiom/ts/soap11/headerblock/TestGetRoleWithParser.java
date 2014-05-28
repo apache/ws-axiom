@@ -16,21 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap11.headerblock;
 
-package org.apache.axiom.soap;
+import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAPHeaderBlockTestBase extends UnifiedSOAPTestCase {
-    public SOAPHeaderBlockTestBase(OMMetaFactory omMetaFactory, String envelopeNamespaceURI) {
-        super(omMetaFactory, envelopeNamespaceURI);
+public class TestGetRoleWithParser extends SOAPTestCase {
+    public TestGetRoleWithParser(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP11);
     }
-    
-    protected SOAPHeaderBlock createSOAPHeaderBlock() {
-        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");;
-        SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
-        SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
-        return soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
+
+    protected void runTest() throws Throwable {
+        Iterator iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
+        assertTrue(
+                "SOAP HeaderBlock Test With Parser : - getRole method returns incorrect role value",
+                ((SOAPHeaderBlock) iterator.next()).getRole().equals(
+                        "http://schemas.xmlsoap.org/soap/actor/next"));
     }
 }

@@ -16,45 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap12.headerblock;
 
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP11HeaderBlockTestBase extends SOAPHeaderBlockTestBase {
-    public SOAP11HeaderBlockTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory, SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+public class TestGetMustUnderstandWithParser extends SOAPTestCase {
+    public TestGetMustUnderstandWithParser(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP12);
     }
 
-    public void testSetMustUnderstandStringTrueFalse() {
-        SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
-        try {
-            soapHeaderBlock.setMustUnderstand("true");
-        } catch (Exception e) {
-            fail(
-                    "SOAP HeaderBlock Test : - MustUnderstand value can not be set to any value rather than 1 or 0");
-        }
-    }
-
-    // SOAPHeaderBlock Test (With Parser)
-    public void testGetRoleWithParser() {
+    protected void runTest() throws Throwable {
         Iterator iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
-        assertTrue(
-                "SOAP HeaderBlock Test With Parser : - getRole method returns incorrect role value",
-                ((SOAPHeaderBlock) iterator.next()).getRole().equals(
-                        "http://schemas.xmlsoap.org/soap/actor/next"));
-    }
-
-    public void testGetMustUnderstandWithParser() {
-        Iterator iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
-        iterator.next();
         assertTrue(
                 "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
                 ((SOAPHeaderBlock) iterator.next()).getMustUnderstand());
         assertFalse(
                 "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
                 ((SOAPHeaderBlock) iterator.next()).getMustUnderstand());
+        ((SOAPHeaderBlock) iterator.next()).getMustUnderstand();
     }
 }
