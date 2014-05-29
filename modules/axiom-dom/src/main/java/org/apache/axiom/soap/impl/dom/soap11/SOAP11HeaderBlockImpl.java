@@ -89,13 +89,6 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
         }
     }
 
-    /**
-     * Returns whether the mustUnderstand attribute for this <CODE>SOAPHeaderBlock</CODE> object is
-     * turned on.
-     *
-     * @return <CODE>true</CODE> if the mustUnderstand attribute of this
-     *         <CODE>SOAPHeaderBlock</CODE> object is turned on; <CODE>false</CODE> otherwise
-     */
     public boolean getMustUnderstand() throws SOAPProcessingException {
         String mustUnderstand;
         if ((mustUnderstand =

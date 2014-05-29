@@ -16,36 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap12.headerblock;
+package org.apache.axiom.ts.soap11.headerblock;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+/**
+ * Tests that {@link SOAPHeaderBlock#setRelay()} throws {@link UnsupportedOperationException} for
+ * SOAP 1.1 messages.
+ */
 public class TestSetRelay extends SOAPTestCase {
-    private final boolean value;
-    
-    public TestSetRelay(OMMetaFactory metaFactory, boolean value) {
-        super(metaFactory, SOAPSpec.SOAP12);
-        this.value = value;
-        addTestParameter("value", value);
+    public TestSetRelay(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP11);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope env = soapFactory.createSOAPEnvelope();
-        SOAPHeader header = soapFactory.createSOAPHeader(env);
-        soapFactory.createSOAPBody(env);
-        OMNamespace ns = soapFactory.createOMNamespace("http://ns1", "ns1");
-        SOAPHeaderBlock relayHeader = header.addHeaderBlock("foo", ns);
-        relayHeader.setText("hey there");
-        relayHeader.setRelay(value);
-
-        String envString = env.toString();
-        assertTrue("No relay header after setRelay(true)",
-                   envString.indexOf("relay=\"" + value + "\"") >= 0);
+        SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
+        SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
+        try {
+            headerBlock.setRelay(true);
+            fail("Expected UnsupportedOperationException");
+        } catch (UnsupportedOperationException ex) {
+            // Expected
+        }
     }
 }

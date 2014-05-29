@@ -75,14 +75,15 @@ public interface SOAPHeaderBlock extends OMSourcedElement {
     void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException;
 
     /**
-     * Returns whether the mustUnderstand attribute for this <CODE>SOAPHeaderBlock</CODE> object is
-     * turned on.
-     *
-     * @return <CODE>true</CODE> if the mustUnderstand attribute of this
-     *         <CODE>SOAPHeaderBlock</CODE> object is turned on; <CODE>false</CODE> otherwise
+     * Returns the boolean value of the <tt>mustUnderstand</tt> attribute for this header block.
+     * 
+     * @return <code>true</code> if a <tt>mustUnderstand</tt> attribute is present and its value is
+     *         equivalent to true, <code>false</code> if the <tt>mustUnderstand</tt> is not present
+     *         or its value is equivalent to false
+     * @throws SOAPProcessingException
+     *             if the <tt>mustUnderstand</tt> attribute is present, but has an invalid value
      */
     boolean getMustUnderstand() throws SOAPProcessingException;
-
 
     boolean isProcessed();
 
