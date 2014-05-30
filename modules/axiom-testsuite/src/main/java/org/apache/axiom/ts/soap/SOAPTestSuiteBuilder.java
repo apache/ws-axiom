@@ -90,6 +90,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     
     private void addTests(SOAPSpec spec) {
         SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
+        BooleanLiteral[] booleanLiterals = spec.getBooleanLiterals();
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestCloneOMElement(metaFactory, spec));
@@ -220,7 +221,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, true, spec == SOAPSpec.SOAP11 ? "1" : "true"));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, false, spec == SOAPSpec.SOAP11 ? "0" : "false"));
-        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString01(metaFactory, spec));
+        for (int i=0; i<booleanLiterals.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString(metaFactory, spec, booleanLiterals[i]));
+        }
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandWithInvalidValue(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent1(metaFactory, spec));
@@ -322,7 +325,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetMustUnderstandStringTrueFalse(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetRelay(metaFactory, true));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetRelay(metaFactory, false));
         addTest(new org.apache.axiom.ts.soap12.mtom.TestGetXMLStreamReaderMTOMEncoded(metaFactory, true));

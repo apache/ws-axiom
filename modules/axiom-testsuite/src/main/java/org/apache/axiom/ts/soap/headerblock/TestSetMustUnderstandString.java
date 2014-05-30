@@ -20,23 +20,25 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.BooleanLiteral;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestSetMustUnderstandString01 extends SOAPTestCase {
-    public TestSetMustUnderstandString01(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestSetMustUnderstandString extends SOAPTestCase {
+    private final BooleanLiteral literal;
+    
+    public TestSetMustUnderstandString(OMMetaFactory metaFactory, SOAPSpec spec, BooleanLiteral literal) {
         super(metaFactory, spec);
+        this.literal = literal;
+        addTestParameter("literal", literal.getLexicalRepresentation());
     }
 
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
-        soapHeaderBlock.setMustUnderstand("1");
-        assertTrue(
-                "SOAP HeaderBlock Test : - After setting MustUnderstand \"1\" calling setMustUnderstand method , getMustUnderstand method returns false",
-                soapHeaderBlock.getMustUnderstand());
-        soapHeaderBlock.setMustUnderstand("0");
-        assertFalse(
-                "SOAP HeaderBlock Test : - After setting MustUnderstand \"0\" calling setMustUnderstand method , getMustUnderstand method returns true",
+        soapHeaderBlock.setMustUnderstand(literal.getLexicalRepresentation());
+        assertEquals(
+                "SOAP HeaderBlock Test : - After setting MustUnderstand \"" + literal.getLexicalRepresentation() + "\" calling setMustUnderstand method , getMustUnderstand method returns " + !literal.getValue(),
+                literal.getValue(),
                 soapHeaderBlock.getMustUnderstand());
     }
 }

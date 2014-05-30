@@ -33,7 +33,8 @@ import org.apache.axiom.soap.SOAPVersion;
  * but is designed specifically for the test suite.
  */
 public abstract class SOAPSpec {
-    public static final SOAPSpec SOAP11 = new SOAPSpec(SOAP11Version.getSingleton()) {
+    public static final SOAPSpec SOAP11 = new SOAPSpec(SOAP11Version.getSingleton(),
+            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO }) {
         public String getName() {
             return "soap11";
         }
@@ -51,7 +52,8 @@ public abstract class SOAPSpec {
         }
     };
 
-    public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton()) {
+    public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton(),
+            new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO }) {
         public String getName() {
             return "soap12";
         }
@@ -68,11 +70,13 @@ public abstract class SOAPSpec {
             return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
     };
-    
+
     private final SOAPVersion version;
+    private final BooleanLiteral[] booleanLiterals; 
     
-    public SOAPSpec(SOAPVersion version) {
+    public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals) {
         this.version = version;
+        this.booleanLiterals = booleanLiterals;
     }
     
     public abstract String getName();
@@ -94,6 +98,17 @@ public abstract class SOAPSpec {
 
     public QName getFaultDetailQName() {
         return version.getFaultDetailQName();
+    }
+    
+    /**
+     * Get the boolean literals recognized by this SOAP version. While SOAP 1.2 refers to the
+     * <tt>xs:boolean</tt> type and therefore recognizes <tt>true</tt>, <tt>false</tt>, <tt>1</tt>
+     * and <tt>0</tt>, SOAP 1.1 only recognizes <tt>1</tt> and <tt>0</tt>.
+     * 
+     * @return an array with the recognized boolean literals
+     */
+    public BooleanLiteral[] getBooleanLiterals() {
+        return (BooleanLiteral[])booleanLiterals.clone();
     }
 
     public String getNextRoleURI() {
