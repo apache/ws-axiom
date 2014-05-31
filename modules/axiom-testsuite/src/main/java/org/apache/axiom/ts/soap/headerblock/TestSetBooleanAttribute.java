@@ -23,30 +23,29 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.BooleanAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestSetMustUnderstandBoolean extends SOAPTestCase {
+public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
     private final boolean value;
     
-    public TestSetMustUnderstandBoolean(OMMetaFactory metaFactory, SOAPSpec spec, boolean value) {
-        super(metaFactory, spec);
+    public TestSetBooleanAttribute(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute, boolean value) {
+        super(metaFactory, spec, attribute);
         addTestParameter("value", value);
         this.value = value;
     }
 
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
-        soapHeaderBlock.setMustUnderstand(value);
-        assertEquals("getMustUnderstand return value", value, soapHeaderBlock.getMustUnderstand());
+        attribute.setValue(soapHeaderBlock, value);
+        assertEquals(value, attribute.getValue(soapHeaderBlock));
         Iterator it = soapHeaderBlock.getAllAttributes();
         assertTrue(it.hasNext());
         OMAttribute att = (OMAttribute)it.next();
         OMNamespace ns = att.getNamespace();
         assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
-        assertEquals(SOAPConstants.ATTR_MUSTUNDERSTAND, att.getLocalName());
+        assertEquals(attribute.getName(), att.getLocalName());
         assertEquals(spec.getCanonicalRepresentation(value), att.getAttributeValue());
         assertFalse(it.hasNext());
     }

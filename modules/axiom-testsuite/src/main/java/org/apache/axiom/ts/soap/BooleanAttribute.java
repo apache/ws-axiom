@@ -40,6 +40,10 @@ public interface BooleanAttribute {
         public boolean getValue(SOAPHeaderBlock headerBlock) {
             return headerBlock.getMustUnderstand();
         }
+
+        public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
+            headerBlock.setMustUnderstand(value);
+        }
     };
     
     BooleanAttribute RELAY = new BooleanAttribute() {
@@ -53,6 +57,10 @@ public interface BooleanAttribute {
 
         public boolean getValue(SOAPHeaderBlock headerBlock) {
             return headerBlock.getRelay();
+        }
+
+        public void setValue(SOAPHeaderBlock headerBlock, boolean value) {
+            headerBlock.setRelay(value);
         }
     };
     
@@ -80,4 +88,14 @@ public interface BooleanAttribute {
      * @return the value returned by the getter method
      */
     boolean getValue(SOAPHeaderBlock headerBlock);
+    
+    /**
+     * Invoke the setter method for this attribute on the given {@link SOAPHeaderBlock}.
+     * 
+     * @param headerBlock
+     *            the heaer block
+     * @param value
+     *            the value to pass to the setter
+     */
+    void setValue(SOAPHeaderBlock headerBlock, boolean value);
 }

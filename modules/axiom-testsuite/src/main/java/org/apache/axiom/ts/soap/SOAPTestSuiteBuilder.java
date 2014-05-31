@@ -223,6 +223,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(metaFactory, spec, attribute));
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "invalid"));
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "TRUE"));
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, true));
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, false));
             }
         }
         if (supportsOMSourcedElement) {
@@ -231,8 +233,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstand(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, true));
-        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, false));
         for (int i=0; i<booleanLiterals.length; i++) {
             addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString(metaFactory, spec, booleanLiterals[i]));
         }
@@ -341,8 +341,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetRelay(metaFactory, true));
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetRelay(metaFactory, false));
         addTest(new org.apache.axiom.ts.soap12.mtom.TestGetXMLStreamReaderMTOMEncoded(metaFactory, true));
         addTest(new org.apache.axiom.ts.soap12.mtom.TestGetXMLStreamReaderMTOMEncoded(metaFactory, false));
     }
