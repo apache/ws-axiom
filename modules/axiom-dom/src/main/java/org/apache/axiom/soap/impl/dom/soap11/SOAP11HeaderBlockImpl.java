@@ -31,6 +31,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
+import org.apache.axiom.soap.impl.common.SOAPHelper;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
@@ -75,43 +76,6 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
                      SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
-    public void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException {
-        if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
-            setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                         mustUnderstand,
-                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        } else {
-            throw new SOAPProcessingException(
-                    "mustUndertand should be one of \"true\", \"false\", \"0\" or \"1\" ");
-        }
-    }
-
-    public boolean getMustUnderstand() throws SOAPProcessingException {
-        String mustUnderstand;
-        if ((mustUnderstand =
-                getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI))
-                != null) {
-            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
-                return true;
-            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand)) {
-                return false;
-            } else {
-                throw new SOAPProcessingException(
-                        "Invalid value found in mustUnderstand value of " +
-                                this.getLocalName() +
-                                " header block");
-            }
-        }
-        return false;
-
-    }
-
     /**
      * What SOAP version is this HeaderBlock?
      *
@@ -119,6 +83,10 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
      */
     public SOAPVersion getVersion() {
         return SOAP11Version.getSingleton();
+    }
+
+    protected SOAPHelper getSOAPHelper() {
+        return SOAPHelper.SOAP11;
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {

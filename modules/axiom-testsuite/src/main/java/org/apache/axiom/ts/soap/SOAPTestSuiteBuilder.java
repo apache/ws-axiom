@@ -96,6 +96,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private void addTests(SOAPSpec spec) {
         SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         BooleanLiteral[] booleanLiterals = spec.getBooleanLiterals();
+        String[] invalidBooleanLiterals = spec.getInvalidBooleanLiterals();
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestCloneOMElement(metaFactory, spec));
@@ -224,8 +225,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                     addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttribute(metaFactory, spec, attribute, booleanLiterals[j]));
                 }
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(metaFactory, spec, attribute));
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "invalid"));
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "TRUE"));
+                for (int j=0; j<invalidBooleanLiterals.length; j++) {
+                    addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, invalidBooleanLiterals[j]));
+                }
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, true));
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, false));
             } else {
@@ -241,7 +243,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (int i=0; i<booleanLiterals.length; i++) {
             addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString(metaFactory, spec, booleanLiterals[i]));
         }
-        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandWithInvalidValue(metaFactory, spec));
+        for (int i=0; i<invalidBooleanLiterals.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandWithInvalidValue(metaFactory, spec, invalidBooleanLiterals[i]));
+        }
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent2(metaFactory, spec));
@@ -301,7 +305,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeadersToProcessWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetRoleWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.headerblock.TestSetMustUnderstandStringTrueFalse(metaFactory));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion(metaFactory));
             addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion2(metaFactory));

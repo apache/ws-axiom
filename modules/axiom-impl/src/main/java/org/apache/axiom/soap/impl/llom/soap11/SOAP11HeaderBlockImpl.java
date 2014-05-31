@@ -31,6 +31,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
+import org.apache.axiom.soap.impl.common.SOAPHelper;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
@@ -82,51 +83,6 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
                      SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
-    public void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException {
-        if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
-            setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                         mustUnderstand,
-                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        } else {
-            throw new SOAPProcessingException(
-                    "mustUndertand should be one of \"true\", \"false\", \"0\" or \"1\" ");
-        }
-    }
-
-    public boolean getMustUnderstand() throws SOAPProcessingException {
-        // First, try getting the information from the property
-        // Fallback to getting the information from the attribute
-        String mustUnderstand;
-        if (this.hasOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY)) {
-            mustUnderstand = this.getOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY);
-        } else {
-            mustUnderstand =
-                getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        }
-        
-        // Parse the value
-        if (mustUnderstand != null) {
-            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
-                return true;
-            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand)) {
-                return false;
-            } else {
-                throw new SOAPProcessingException(
-                        "Invalid value found in mustUnderstand value of " +
-                                this.getLocalName() +
-                                " header block");
-            }
-        }
-        return false;
-
-    }
-
     public void setRelay(boolean relay) {
         throw new UnsupportedOperationException("Not supported for SOAP 1.1");
     }
@@ -137,5 +93,9 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     public SOAPVersion getVersion() {
         return SOAP11Version.getSingleton();
+    }
+
+    protected SOAPHelper getSOAPHelper() {
+        return SOAPHelper.SOAP11;
     }
 }

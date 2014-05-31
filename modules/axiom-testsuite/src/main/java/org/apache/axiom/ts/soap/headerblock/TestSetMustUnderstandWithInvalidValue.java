@@ -29,14 +29,18 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * {@link SOAPProcessingException} if the argument is not a valid boolean literal.
  */
 public class TestSetMustUnderstandWithInvalidValue extends SOAPTestCase {
-    public TestSetMustUnderstandWithInvalidValue(OMMetaFactory metaFactory, SOAPSpec spec) {
+    private final String value;
+    
+    public TestSetMustUnderstandWithInvalidValue(OMMetaFactory metaFactory, SOAPSpec spec, String value) {
         super(metaFactory, spec);
+        this.value = value;
+        addTestParameter("value", value);
     }
 
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         try {
-            soapHeaderBlock.setMustUnderstand("otherValue");
+            soapHeaderBlock.setMustUnderstand(value);
             fail("Expected SOAPProcessingException");
         } catch (SOAPProcessingException ex) {
             // Expected

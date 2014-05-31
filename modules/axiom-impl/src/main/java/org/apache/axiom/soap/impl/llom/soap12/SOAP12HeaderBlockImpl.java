@@ -80,51 +80,6 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
 
     }
 
-    public void setMustUnderstand(String mustUnderstand)
-            throws SOAPProcessingException {
-        if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand) ||
-                SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
-            setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                         mustUnderstand,
-                         SOAP_ENVELOPE_NAMESPACE_URI);
-        } else {
-            throw new SOAPProcessingException(
-                    "mustUndertand should be one of \"true\", " +
-                            "\"false\", \"0\" or \"1\" ");
-        }
-    }
-
-    public boolean getMustUnderstand() throws SOAPProcessingException {
-        // First, try getting the information from the property
-        // Fallback to getting the information from the attribute
-        String mustUnderstand;
-        if (this.hasOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY)) {
-            mustUnderstand = this.getOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY);
-        } else {
-            mustUnderstand = getAttribute(ATTR_MUSTUNDERSTAND, SOAP_ENVELOPE_NAMESPACE_URI);
-        }
-       
-        // Now parse the value
-        if (mustUnderstand != null) {
-            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
-                return true;
-            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand)) {
-                return false;
-            } else {
-                throw new SOAPProcessingException(
-                        "Invalid value found in mustUnderstand value of " +
-                                this.getLocalName() +
-                                " header block");
-            }
-        }
-        return false;
-
-    }
-
     public void setRelay(boolean relay) {
         setAttribute(SOAP_RELAY, relay ? "true" : "false", SOAP_ENVELOPE_NAMESPACE_URI);
     }
@@ -157,5 +112,9 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
      */
     public SOAPVersion getVersion() {
         return SOAP12Version.getSingleton();
+    }
+
+    protected SOAPHelper getSOAPHelper() {
+        return SOAPHelper.SOAP12;
     }
 }

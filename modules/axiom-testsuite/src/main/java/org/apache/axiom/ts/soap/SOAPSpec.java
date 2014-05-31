@@ -18,6 +18,11 @@
  */
 package org.apache.axiom.ts.soap;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -39,12 +44,12 @@ public abstract class SOAPSpec {
             return "soap11";
         }
         
-        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP11Factory();
+        public SOAPSpec getAltSpec() {
+            return SOAPSpec.SOAP12;
         }
 
-        public SOAPFactory getAltFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP12Factory();
+        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
+            return metaFactory.getSOAP11Factory();
         }
 
         public String getEnvelopeNamespaceURI() {
@@ -62,12 +67,12 @@ public abstract class SOAPSpec {
             return "soap12";
         }
         
-        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP12Factory();
+        public SOAPSpec getAltSpec() {
+            return SOAPSpec.SOAP11;
         }
 
-        public SOAPFactory getAltFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP11Factory();
+        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
+            return metaFactory.getSOAP12Factory();
         }
 
         public String getEnvelopeNamespaceURI() {
@@ -88,8 +93,21 @@ public abstract class SOAPSpec {
     }
     
     public abstract String getName();
+    
+    /**
+     * Get the {@link SOAPSpec} instance for the other SOAP version. This is useful when
+     * constructing test cases that test SOAP version mismatches.
+     * 
+     * @return the {@link SOAPSpec} instance for the other SOAP version
+     */
+    public abstract SOAPSpec getAltSpec();
+    
     public abstract SOAPFactory getFactory(OMMetaFactory metaFactory);
-    public abstract SOAPFactory getAltFactory(OMMetaFactory metaFactory);
+    
+    public final SOAPFactory getAltFactory(OMMetaFactory metaFactory) {
+        return getAltSpec().getFactory(metaFactory);
+    }
+    
     public abstract String getEnvelopeNamespaceURI();
     
     public final QName getFaultCodeQName() {
@@ -119,6 +137,39 @@ public abstract class SOAPSpec {
         return (BooleanLiteral[])booleanLiterals.clone();
     }
 
+    private static List getReps(BooleanLiteral[] literals) {
+        List result = new ArrayList(literals.length);
+        for (int i=0; i<literals.length; i++) {
+            result.add(literals[i].getLexicalRepresentation());
+        }
+        return result;
+    }
+    
+    /**
+     * Produce a representative list of strings that are not valid lexical representations of
+     * booleans as defined by this SOAP version. The list in particular contains:
+     * <ul>
+     * <li>Boolean literals allowed by the other SOAP version, but that are not valid in this SOAP
+     * version.
+     * <li>A variant of a valid boolean literal that uses a different case and that is not valid,
+     * unless no such variant exists.
+     * <li>The string <code>"invalid"</code>.
+     * </ul>
+     * 
+     * @return an array of invalid boolean literals
+     */
+    public final String[] getInvalidBooleanLiterals() {
+        Set result = new LinkedHashSet();
+        result.addAll(getReps(getAltSpec().booleanLiterals));
+        List valid = getReps(booleanLiterals);
+        result.removeAll(valid);
+        result.add("invalid");
+        if (valid.contains("true")) {
+            result.add("TRUE");
+        }
+        return (String[])result.toArray(new String[result.size()]);
+    }
+    
     /**
      * Get the canonical representation for the given boolean value as specified by this SOAP
      * version.

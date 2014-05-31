@@ -28,8 +28,13 @@ import org.apache.axiom.soap.SOAPVersion;
 public interface SOAPHelper {
     SOAPHelper SOAP11 = new SOAPHelper() {
         public Boolean parseBoolean(String literal) {
-            // TODO
-            return null;
+            if (literal.equals("1")) {
+                return Boolean.TRUE;
+            } else if (literal.equals("0")) {
+                return Boolean.FALSE;
+            } else {
+                return null;
+            }
         }
     };
     
