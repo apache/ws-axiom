@@ -68,6 +68,11 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         SOAPFaultChild.DETAIL,
     };
     
+    private static final BooleanAttribute[] booleanAttributes = {
+        BooleanAttribute.MUST_UNDERSTAND,
+        BooleanAttribute.RELAY,
+    };
+    
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
     private final boolean supportsBodyElementNameOptimization;
@@ -212,6 +217,12 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURI(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));
+        for (int i=0; i<booleanAttributes.length; i++) {
+            BooleanAttribute attribute = booleanAttributes[i];
+            if (attribute.isSupported(spec)) {
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(metaFactory, spec, attribute));
+            }
+        }
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.headerblock.TestByteArrayDS(metaFactory, spec));
         }
@@ -327,7 +338,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (int i=0; i<soap12BooleanLiterals.length; i++) {
             addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelay(metaFactory, soap12BooleanLiterals[i]));
         }
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayDefault(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayInvalid(metaFactory, "invalid"));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayInvalid(metaFactory, "TRUE"));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));

@@ -18,21 +18,27 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import javax.xml.namespace.QName;
 
-public class TestGetMustUnderstand extends SOAPTestCase {
-    public TestGetMustUnderstand(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.SOAPSpec;
+
+/**
+ * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
+ * returns <code>false</code> if the <tt>mustUnderstand</tt> (resp. <tt>relay</tt>) attribute is
+ * absent.
+ */
+public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
+    public TestGetBooleanAttributeDefault(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute) {
+        super(metaFactory, spec, attribute);
     }
 
     protected void runTest() throws Throwable {
-        SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
-        soapHeaderBlock.setMustUnderstand(true);
-        assertTrue(
-                "SOAP HeaderBlock Test : - After setting MustUnderstand true calling setMustUnderstand method , getMustUnderstand method returns false",
-                soapHeaderBlock.getMustUnderstand());
+        SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
+        SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
+        assertFalse(attribute.getValue(headerBlock));
     }
 }

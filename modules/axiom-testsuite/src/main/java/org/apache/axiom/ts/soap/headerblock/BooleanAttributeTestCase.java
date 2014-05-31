@@ -16,28 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap12.headerblock;
-
-import javax.xml.namespace.QName;
+package org.apache.axiom.ts.soap.headerblock;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.BooleanAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests that {@link SOAPHeaderBlock#getRelay()} returns <code>false</code> if the <tt>relay</tt>
- * attribute is absent.
- */
-public class TestGetRelayDefault extends SOAPTestCase {
-    public TestGetRelayDefault(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
-    }
+public abstract class BooleanAttributeTestCase extends SOAPTestCase {
+    protected final BooleanAttribute attribute;
 
-    protected void runTest() throws Throwable {
-        SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
-        SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
-        assertFalse(headerBlock.getRelay());
+    public BooleanAttributeTestCase(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute) {
+        super(metaFactory, spec);
+        this.attribute = attribute;
+        addTestParameter("attribute", attribute.getName());
     }
 }
