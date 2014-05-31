@@ -84,19 +84,19 @@ public abstract class SOAPSpec {
     public abstract SOAPFactory getAltFactory(OMMetaFactory metaFactory);
     public abstract String getEnvelopeNamespaceURI();
     
-    public QName getFaultCodeQName() {
+    public final QName getFaultCodeQName() {
         return version.getFaultCodeQName();
     }
     
-    public QName getFaultReasonQName() {
+    public final QName getFaultReasonQName() {
         return version.getFaultReasonQName();
     }
 
-    public QName getFaultRoleQName() {
+    public final QName getFaultRoleQName() {
         return version.getFaultRoleQName();
     }
 
-    public QName getFaultDetailQName() {
+    public final QName getFaultDetailQName() {
         return version.getFaultDetailQName();
     }
     
@@ -107,15 +107,15 @@ public abstract class SOAPSpec {
      * 
      * @return an array with the recognized boolean literals
      */
-    public BooleanLiteral[] getBooleanLiterals() {
+    public final BooleanLiteral[] getBooleanLiterals() {
         return (BooleanLiteral[])booleanLiterals.clone();
     }
 
-    public String getNextRoleURI() {
+    public final String getNextRoleURI() {
         return version.getNextRoleURI();
     }
 
-    public SOAPVersion getVersion() {
+    public final SOAPVersion getVersion() {
         return version;
     }
 }
