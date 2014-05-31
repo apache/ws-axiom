@@ -16,30 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap11.headerblock;
+package org.apache.axiom.ts.soap.headerblock;
 
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.BooleanAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests that {@link SOAPHeaderBlock#setRelay()} throws {@link UnsupportedOperationException} for
  * SOAP 1.1 messages.
  */
-public class TestSetRelay extends SOAPTestCase {
-    public TestSetRelay(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP11);
+public class TestSetBooleanAttributeUnsupported extends BooleanAttributeTestCase {
+    public TestSetBooleanAttributeUnsupported(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute) {
+        super(metaFactory, spec, attribute);
     }
 
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
         try {
-            headerBlock.setRelay(true);
+            attribute.setValue(headerBlock, true);
             fail("Expected UnsupportedOperationException");
         } catch (UnsupportedOperationException ex) {
             // Expected

@@ -228,6 +228,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "TRUE"));
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, true));
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, false));
+            } else {
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeUnspported(metaFactory, spec, attribute));
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttributeUnsupported(metaFactory, spec, attribute));
             }
         }
         if (supportsOMSourcedElement) {
@@ -297,10 +300,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeadersToProcessWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetMustUnderstandWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetRelay(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetRoleWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestSetMustUnderstandStringTrueFalse(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.headerblock.TestSetRelay(metaFactory));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion(metaFactory));
             addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion2(metaFactory));
