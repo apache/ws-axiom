@@ -19,26 +19,30 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.llom.SOAPFaultNodeImpl;
+import org.apache.axiom.soap.impl.llom.SOAPElement;
 
-public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
+public class SOAP12FaultNodeImpl extends SOAPElement implements SOAPFaultNode {
 
     public SOAP12FaultNodeImpl(SOAPFactory factory) {
-        super(factory.getNamespace(), factory);
+        super(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, factory.getNamespace(), factory);
     }
 
     public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(parent, builder, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -46,5 +50,25 @@ public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultImpl, got " + parent.getClass());
         }
+    }
+
+    public void setFaultNodeValue(String uri) {
+        this.setText(uri);
+    }
+
+    public String getFaultNodeValue() {
+        return this.getText();
+    }
+
+    public void setNodeValue(String uri) {
+        setFaultNodeValue(uri);
+    }
+
+    public String getNodeValue() {
+        return getFaultNodeValue();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultNode((SOAPFault)targetParent);
     }
 }

@@ -19,27 +19,42 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.AttrImpl;
+import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.dom.SOAPFaultTextImpl;
+import org.apache.axiom.soap.impl.dom.SOAPElement;
 
-public class SOAP12FaultTextImpl extends SOAPFaultTextImpl {
+public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
+    private OMAttribute langAttr;
+    private final OMNamespace langNamespace;
 
     public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, true, factory);
+        this.langNamespace = factory.createOMNamespace(
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
     }
 
     public SOAP12FaultTextImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
+        super(parentNode, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, ns, builder, factory, generateNSDecl);
+        this.langNamespace = factory.createOMNamespace(
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -48,6 +63,27 @@ public class SOAP12FaultTextImpl extends SOAPFaultTextImpl {
                     "Expecting SOAP 1.2 implementation of SOAP FaultReason " +
                             "as the parent. But received some other implementation");
         }
+    }
+
+    public void setLang(String lang) {
+        langAttr =
+                new AttrImpl((DocumentImpl)getOwnerDocument(),
+                             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                             langNamespace,
+                             lang, this.factory);
+        this.addAttribute(langAttr);
+    }
+
+    public String getLang() {
+        if (langAttr == null) {
+            langAttr =
+                    this.getAttribute(
+                            new QName(langNamespace.getNamespaceURI(),
+                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
+        }
+
+        return langAttr == null ? null : langAttr.getAttributeValue();
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,

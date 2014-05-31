@@ -21,25 +21,31 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.llom.SOAPFaultSubCodeImpl;
+import org.apache.axiom.soap.impl.llom.SOAPElement;
 
-public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
+public class SOAP12FaultSubCodeImpl extends SOAPElement implements SOAPFaultSubCode {
+    private SOAPFaultValue value;
+    private SOAPFaultSubCode subCode;
+    
     //changed
     public SOAP12FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultSubCodeImpl(SOAPFactory factory) {
-        super(factory.getNamespace(), factory);
+        super(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory.getNamespace(), factory);
     }
 
     //changed
@@ -52,7 +58,7 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
 
     public SOAP12FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultSubCodeImpl(SOAPFaultSubCode parent,
@@ -77,7 +83,14 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultSubCodeImpl, got " + subCode.getClass());
         }
-        super.setSubCode(subCode);
+        ElementHelper.setNewElement(this, this.subCode, subCode);
+    }
+
+    public SOAPFaultSubCode getSubCode() {
+        if (subCode == null) {
+            subCode = (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
+        }
+        return subCode;
     }
 
     public void setValue(SOAPFaultValue soapFaultSubCodeValue)
@@ -86,7 +99,14 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultValueImpl, got " + soapFaultSubCodeValue.getClass());
         }
-        super.setValue(soapFaultSubCodeValue);
+        ElementHelper.setNewElement(this, value, soapFaultSubCodeValue);
+    }
+
+    public SOAPFaultValue getValue() {
+        if (value == null) {
+            value = (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
+        }
+        return value;
     }
 
     public void setValue(QName value) {
@@ -100,5 +120,13 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
     public QName getValueAsQName() {
         SOAPFaultValue value = getValue();
         return value == null ? null : value.getTextAsQName();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        if (targetParent instanceof SOAPFaultSubCode) {
+            return ((SOAPFactory)factory).createSOAPFaultSubCode((SOAPFaultSubCode)targetParent);
+        } else {
+            return ((SOAPFactory)factory).createSOAPFaultSubCode((SOAPFaultCode)targetParent);
+        }
     }
 }

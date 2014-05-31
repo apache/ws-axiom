@@ -21,26 +21,27 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.llom.SOAPFaultValueImpl;
+import org.apache.axiom.soap.impl.llom.SOAPElement;
 
-
-public class SOAP12FaultValueImpl extends SOAPFaultValueImpl {
+public class SOAP12FaultValueImpl extends SOAPElement implements SOAPFaultValue {
 
     public SOAP12FaultValueImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultValueImpl(SOAPFactory factory)
             throws SOAPProcessingException {
-        super(factory.getNamespace(), factory);
+        super(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, factory.getNamespace(), factory);
     }
 
     public SOAP12FaultValueImpl(OMElement parent, OMXMLParserWrapper builder,
                                 SOAPFactory factory) {
-        super(parent, builder, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, builder, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

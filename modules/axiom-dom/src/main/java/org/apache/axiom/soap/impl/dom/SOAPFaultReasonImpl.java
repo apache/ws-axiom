@@ -63,8 +63,8 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         Iterator childrenIter = this.getChildren();
         while (childrenIter.hasNext()) {
             OMNode node = (OMNode) childrenIter.next();
-            if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultTextImpl)) {
-                faultTexts.add(((SOAPFaultTextImpl) node));
+            if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultText)) {
+                faultTexts.add(((SOAPFaultText) node));
             }
         }
         return faultTexts;

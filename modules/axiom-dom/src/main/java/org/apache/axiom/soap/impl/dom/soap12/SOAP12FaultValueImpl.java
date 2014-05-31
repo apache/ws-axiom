@@ -25,20 +25,22 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.dom.SOAPFaultValueImpl;
+import org.apache.axiom.soap.impl.dom.SOAPElement;
 
-public class SOAP12FaultValueImpl extends SOAPFaultValueImpl {
+public class SOAP12FaultValueImpl extends SOAPElement implements SOAPFaultValue {
 
     public SOAP12FaultValueImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultValueImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
+        super(parentNode, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

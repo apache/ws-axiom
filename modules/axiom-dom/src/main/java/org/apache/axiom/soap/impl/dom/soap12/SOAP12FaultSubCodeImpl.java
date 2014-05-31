@@ -27,19 +27,23 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.dom.SOAPFaultSubCodeImpl;
+import org.apache.axiom.soap.impl.dom.SOAPElement;
 
-public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
+public class SOAP12FaultSubCodeImpl extends SOAPElement implements SOAPFaultSubCode {
+    private SOAPFaultValue value;
+    private SOAPFaultSubCode subCode;
+    
     //changed
     public SOAP12FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultSubCodeImpl(ParentNode parentNode, OMNamespace ns,
@@ -49,7 +53,7 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
 
     public SOAP12FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -68,7 +72,14 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault " +
                             "Sub Code. But received some other implementation");
         }
-        super.setSubCode(subCode);
+        ElementHelper.setNewElement(this, this.subCode, subCode);
+    }
+
+    public SOAPFaultSubCode getSubCode() {
+        if (subCode == null) {
+            subCode = (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
+        }
+        return subCode;
     }
 
     public void setValue(SOAPFaultValue soapFaultSubCodeValue)
@@ -78,7 +89,14 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault Value. " +
                             "But received some other implementation");
         }
-        super.setValue(soapFaultSubCodeValue);
+        ElementHelper.setNewElement(this, value, soapFaultSubCodeValue);
+    }
+
+    public SOAPFaultValue getValue() {
+        if (value == null) {
+            value = (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
+        }
+        return value;
     }
 
     public void setValue(QName value) {

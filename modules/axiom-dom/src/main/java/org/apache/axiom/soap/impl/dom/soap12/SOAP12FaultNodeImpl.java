@@ -25,20 +25,22 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.dom.SOAPFaultNodeImpl;
+import org.apache.axiom.soap.impl.dom.SOAPElement;
 
-public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
+public class SOAP12FaultNodeImpl extends SOAPElement implements SOAPFaultNode {
     public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultNodeImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
+        super(parentNode, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -47,6 +49,22 @@ public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
                             "parent. But received some other implementation");
         }
+    }
+
+    public void setFaultNodeValue(String uri) {
+        this.setText(uri);
+    }
+
+    public String getFaultNodeValue() {
+        return this.getText();
+    }
+
+    public void setNodeValue(String uri) {
+        setFaultNodeValue(uri);
+    }
+
+    public String getNodeValue() {
+        return getFaultNodeValue();
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
