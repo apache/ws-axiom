@@ -39,7 +39,7 @@ import org.apache.axiom.soap.SOAPVersion;
  */
 public abstract class SOAPSpec {
     public static final SOAPSpec SOAP11 = new SOAPSpec(SOAP11Version.getSingleton(),
-            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO }) {
+            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO }, null) {
         public String getName() {
             return "soap11";
         }
@@ -62,7 +62,8 @@ public abstract class SOAPSpec {
     };
 
     public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton(),
-            new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO }) {
+            new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO },
+            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME)) {
         public String getName() {
             return "soap12";
         }
@@ -85,11 +86,13 @@ public abstract class SOAPSpec {
     };
 
     private final SOAPVersion version;
-    private final BooleanLiteral[] booleanLiterals; 
+    private final BooleanLiteral[] booleanLiterals;
+    private final QName faultTextQName;
     
-    public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals) {
+    public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals, QName faultTextQName) {
         this.version = version;
         this.booleanLiterals = booleanLiterals;
+        this.faultTextQName = faultTextQName;
     }
     
     public abstract String getName();
@@ -126,6 +129,10 @@ public abstract class SOAPSpec {
         return version.getFaultDetailQName();
     }
     
+    public final QName getFaultTextQName() {
+        return faultTextQName;
+    }
+
     /**
      * Get the boolean literals recognized by this SOAP version. While SOAP 1.2 refers to the
      * <tt>xs:boolean</tt> type and therefore recognizes <tt>true</tt>, <tt>false</tt>, <tt>1</tt>

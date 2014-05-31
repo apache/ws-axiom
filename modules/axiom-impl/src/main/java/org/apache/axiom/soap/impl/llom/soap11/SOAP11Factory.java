@@ -228,11 +228,11 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultTextImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
-        return new SOAP11FaultTextImpl(this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent)
