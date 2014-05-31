@@ -323,6 +323,13 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestGetHeadersToProcessWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetMustUnderstandWithParser(metaFactory));
+        BooleanLiteral[] soap12BooleanLiterals = SOAPSpec.SOAP12.getBooleanLiterals();
+        for (int i=0; i<soap12BooleanLiterals.length; i++) {
+            addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelay(metaFactory, soap12BooleanLiterals[i]));
+        }
+        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayDefault(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayInvalid(metaFactory, "invalid"));
+        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayInvalid(metaFactory, "TRUE"));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetRelay(metaFactory, true));

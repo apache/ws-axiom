@@ -31,6 +31,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.impl.common.SOAPHelper;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12Constants {
@@ -129,8 +130,6 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
     }
 
     public boolean getRelay() {
-        boolean ret = false;
-        
         // Get the property or attribute
         String val;
         if (this.hasOMDataSourceProperty(RELAY_PROPERTY)) {
@@ -140,9 +139,15 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
         }
         
         if (val != null) {
-            ret = "true".equalsIgnoreCase(val);
+            Boolean parsedValue = SOAPHelper.SOAP12.parseBoolean(val);
+            if (parsedValue == null) {
+                throw new SOAPProcessingException("Invalid relay attribute value");
+            } else {
+                return parsedValue.booleanValue();
+            }
+        } else {
+            return false;
         }
-        return ret;
     }
 
     /**
