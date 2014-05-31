@@ -31,13 +31,14 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests {@link SOAPFactory#createSOAPFaultCode()}, {@link SOAPFactory#createSOAPFaultReason()},
- * {@link SOAPFactory#createSOAPFaultRole()} and {@link SOAPFactory#createSOAPFaultDetail()}.
+ * Tests {@link SOAPFactory#createSOAPEnvelope()}, {@link SOAPFactory#createSOAPFaultCode()},
+ * {@link SOAPFactory#createSOAPFaultReason()}, {@link SOAPFactory#createSOAPFaultRole()} and
+ * {@link SOAPFactory#createSOAPFaultDetail()}.
  */
-public class TestCreateSOAPFaultChild extends SOAPTestCase {
-    private final SOAPFaultChild type;
+public class TestCreateSOAPElement extends SOAPTestCase {
+    private final SOAPElementType type;
     
-    public TestCreateSOAPFaultChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
+    public TestCreateSOAPElement(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
         super(metaFactory, spec);
         this.type = type;
         type.addTestParameters(this);

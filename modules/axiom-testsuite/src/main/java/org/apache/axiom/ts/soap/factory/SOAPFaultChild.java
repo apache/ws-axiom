@@ -27,11 +27,10 @@ import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public interface SOAPFaultChild extends Dimension {
+public interface SOAPFaultChild extends SOAPElementType {
     SOAPFaultChild CODE = new SOAPFaultChild() {
         public Class getType() {
             return SOAPFaultCode.class;
@@ -152,10 +151,7 @@ public interface SOAPFaultChild extends Dimension {
         }
     };
 
-    Class getType();
-    QName getQName(SOAPSpec spec);
     int getOrder();
-    OMElement create(SOAPFactory factory);
     OMElement create(SOAPFactory factory, SOAPFault parent);
     void set(SOAPFault fault, OMElement element);
 }

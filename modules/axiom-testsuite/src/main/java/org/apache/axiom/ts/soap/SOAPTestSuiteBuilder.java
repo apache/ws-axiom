@@ -30,6 +30,7 @@ import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.Strategies;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.soap.factory.SOAPElementType;
 import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
 
 public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
@@ -61,7 +62,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
         new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX) };
     
-    private static final SOAPFaultChild[] soapFaultChildren = {
+    private static final SOAPElementType[] soapElementTypes = {
+        SOAPElementType.ENVELOPE,
         SOAPFaultChild.CODE,
         SOAPFaultChild.REASON,
         SOAPFaultChild.ROLE,
@@ -161,10 +163,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAndConsumeWithOMSEInBody(metaFactory, spec));
         }
-        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
-        for (int i=0; i<soapFaultChildren.length; i++) {
-            addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultChild(metaFactory, spec, soapFaultChildren[i]));
+        for (int i=0; i<soapElementTypes.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPElement(metaFactory, spec, soapElementTypes[i]));
         }
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithParent(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestFactoryIsSingleton(metaFactory, spec));

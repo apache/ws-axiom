@@ -30,6 +30,7 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
+import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
 
@@ -87,11 +88,13 @@ public abstract class SOAPSpec {
 
     private final SOAPVersion version;
     private final BooleanLiteral[] booleanLiterals;
+    private final QName envelopeQName;
     private final QName faultTextQName;
     
     public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals, QName faultTextQName) {
         this.version = version;
         this.booleanLiterals = booleanLiterals;
+        envelopeQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.SOAPENVELOPE_LOCAL_NAME);
         this.faultTextQName = faultTextQName;
     }
     
@@ -113,6 +116,10 @@ public abstract class SOAPSpec {
     
     public abstract String getEnvelopeNamespaceURI();
     
+    public final QName getEnvelopeQName() {
+        return envelopeQName;
+    }
+
     public final QName getFaultCodeQName() {
         return version.getFaultCodeQName();
     }
