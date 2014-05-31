@@ -50,6 +50,10 @@ public abstract class SOAPSpec {
         public String getEnvelopeNamespaceURI() {
             return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
+
+        public String getCanonicalRepresentation(boolean value) {
+            return value ? "1" : "0";
+        }
     };
 
     public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton(),
@@ -68,6 +72,10 @@ public abstract class SOAPSpec {
 
         public String getEnvelopeNamespaceURI() {
             return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
+        }
+
+        public String getCanonicalRepresentation(boolean value) {
+            return String.valueOf(value);
         }
     };
 
@@ -111,6 +119,16 @@ public abstract class SOAPSpec {
         return (BooleanLiteral[])booleanLiterals.clone();
     }
 
+    /**
+     * Get the canonical representation for the given boolean value as specified by this SOAP
+     * version.
+     * 
+     * @param value
+     *            the boolean value
+     * @return the canonical representation
+     */
+    public abstract String getCanonicalRepresentation(boolean value);
+    
     public final String getNextRoleURI() {
         return version.getNextRoleURI();
     }

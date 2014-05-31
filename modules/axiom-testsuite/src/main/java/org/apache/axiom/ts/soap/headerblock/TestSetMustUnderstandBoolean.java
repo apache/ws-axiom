@@ -30,13 +30,11 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestSetMustUnderstandBoolean extends SOAPTestCase {
     private final boolean value;
-    private final String stringValue;
     
-    public TestSetMustUnderstandBoolean(OMMetaFactory metaFactory, SOAPSpec spec, boolean value, String stringValue) {
+    public TestSetMustUnderstandBoolean(OMMetaFactory metaFactory, SOAPSpec spec, boolean value) {
         super(metaFactory, spec);
         addTestParameter("value", value);
         this.value = value;
-        this.stringValue = stringValue;
     }
 
     protected void runTest() throws Throwable {
@@ -49,7 +47,7 @@ public class TestSetMustUnderstandBoolean extends SOAPTestCase {
         OMNamespace ns = att.getNamespace();
         assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
         assertEquals(SOAPConstants.ATTR_MUSTUNDERSTAND, att.getLocalName());
-        assertEquals(stringValue, att.getAttributeValue());
+        assertEquals(spec.getCanonicalRepresentation(value), att.getAttributeValue());
         assertFalse(it.hasNext());
     }
 }
