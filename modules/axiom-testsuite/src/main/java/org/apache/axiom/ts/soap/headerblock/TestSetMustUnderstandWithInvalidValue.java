@@ -20,9 +20,14 @@ package org.apache.axiom.ts.soap.headerblock;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
+/**
+ * Tests that {@link SOAPHeaderBlock#setMustUnderstand(String)} throws a
+ * {@link SOAPProcessingException} if the argument is not a valid boolean literal.
+ */
 public class TestSetMustUnderstandWithInvalidValue extends SOAPTestCase {
     public TestSetMustUnderstandWithInvalidValue(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
@@ -32,11 +37,9 @@ public class TestSetMustUnderstandWithInvalidValue extends SOAPTestCase {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         try {
             soapHeaderBlock.setMustUnderstand("otherValue");
-            fail(
-                    "SOAP HeaderBlock Test : - MustUnderstand value can not be set to any value rather than 1 , 0 , true , false");
-
-        } catch (Exception e) {
-            assertTrue(true);
+            fail("Expected SOAPProcessingException");
+        } catch (SOAPProcessingException ex) {
+            // Expected
         }
     }
 }
