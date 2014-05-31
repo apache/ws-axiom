@@ -44,13 +44,13 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
+import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
 /**
  */
-public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactoryEx {
+public class SOAP12Factory extends OMLinkedListImplFactory implements SOAP12FactoryEx {
     /**
      * For internal use only.
      * 

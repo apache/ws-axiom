@@ -295,7 +295,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
             processingFault = true;
             if (soapFactory.getSOAPVersion() == SOAP12Version.getSingleton()) {
-                builderHelper = new SOAP12BuilderHelper(this, soapFactory);
+                builderHelper = new SOAP12BuilderHelper(this, (SOAP12FactoryEx)soapFactory);
             } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton()) {
                 builderHelper = new SOAP11BuilderHelper(this, soapFactory);
             }

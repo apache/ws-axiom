@@ -150,21 +150,10 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultValueImpl(parent, this);
     }
 
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent,
-                                               OMXMLParserWrapper builder) {
-        return new SOAP11FaultValueImpl((ParentNode)parent, null, builder, this, false);
-    }
-
     //added
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
         return new SOAP11FaultValueImpl(parent, this);
-    }
-
-    //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
-                                               OMXMLParserWrapper builder) {
-        return new SOAP11FaultValueImpl((ParentNode)parent, null, builder, this, false);
     }
 
     //changed
@@ -173,20 +162,9 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultSubCodeImpl(parent, this);
     }
 
-    //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
-                                                   OMXMLParserWrapper builder) {
-        return new SOAP11FaultSubCodeImpl((ParentNode)parent, null, builder, this, false);
-    }
-
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
         return new SOAP11FaultSubCodeImpl(parent, this);
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
-                                                   OMXMLParserWrapper builder) {
-        return new SOAP11FaultSubCodeImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultReason createSOAPFaultReason(SOAPFault parent)
@@ -208,18 +186,8 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultTextImpl(parent, this);
     }
 
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent,
-                                             OMXMLParserWrapper builder) {
-        return new SOAP11FaultTextImpl((ParentNode)parent, null, builder, this, false);
-    }
-
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent)
             throws SOAPProcessingException {
-        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
-    }
-
-    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
-                                             OMXMLParserWrapper builder) {
         throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
     }
 

@@ -26,12 +26,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
@@ -93,41 +89,6 @@ public interface SOAPFactoryEx extends SOAPFactory, OMFactoryEx {
                                              OMXMLParserWrapper builder);
 
     /**
-     * Value eii under Code (parent)
-     *
-     * @param parent
-     * @param builder
-     * @return Returns SOAPFaultValue.
-     */
-    SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent,
-                                               OMXMLParserWrapper builder);
-
-    //added
-    SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
-                                               OMXMLParserWrapper builder);
-
-    /**
-     * SubCode eii under Value (parent)
-     *
-     * @param parent
-     * @param builder
-     * @return Returns SOAPFaultSubCode.
-     */
-    //changed
-    SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
-                                                   OMXMLParserWrapper builder);
-
-    /**
-     * SubCode eii under SubCode (parent)
-     *
-     * @param parent
-     * @param builder
-     * @return Returns SOAPFaultSubCode.
-     */
-    SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
-                                                   OMXMLParserWrapper builder);
-
-    /**
      * Reason eii under SOAPFault (parent)
      *
      * @param parent
@@ -136,26 +97,6 @@ public interface SOAPFactoryEx extends SOAPFactory, OMFactoryEx {
      */
     SOAPFaultReason createSOAPFaultReason(SOAPFault parent,
                                                  OMXMLParserWrapper builder);
-
-    /**
-     * SubCode eii under SubCode (parent)
-     *
-     * @param parent
-     * @param builder
-     * @return Returns SOAPFaultText.
-     */
-    SOAPFaultText createSOAPFaultText(SOAPFaultReason parent,
-                                             OMXMLParserWrapper builder);
-
-    /**
-     * Node eii under SOAPFault (parent)
-     *
-     * @param parent
-     * @param builder
-     * @return Returns SOAPFaultNode.
-     */
-    SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
-                                             OMXMLParserWrapper builder);
 
     /**
      * Role eii under SOAPFault (parent)
