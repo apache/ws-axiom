@@ -221,13 +221,14 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             BooleanAttribute attribute = booleanAttributes[i];
             if (attribute.isSupported(spec)) {
                 addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(metaFactory, spec, attribute));
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "invalid"));
+                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, "TRUE"));
             }
         }
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.headerblock.TestByteArrayDS(metaFactory, spec));
         }
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstand(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstandInvalid(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, true, spec == SOAPSpec.SOAP11 ? "1" : "true"));
@@ -338,8 +339,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (int i=0; i<soap12BooleanLiterals.length; i++) {
             addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelay(metaFactory, soap12BooleanLiterals[i]));
         }
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayInvalid(metaFactory, "invalid"));
-        addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayInvalid(metaFactory, "TRUE"));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestSetRelay(metaFactory, true));

@@ -21,28 +21,32 @@ package org.apache.axiom.ts.soap.headerblock;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.ts.soap.BooleanAttribute;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} throws {@link SOAPProcessingException} if
- * a <tt>mustUnderstand</tt> attribute is present but has an invalid value.
+ * Tests that {@link SOAPHeaderBlock#getMustUnderstand()} (resp. {@link SOAPHeaderBlock#getRelay()})
+ * throws {@link SOAPProcessingException} if a <tt>mustUnderstand</tt> (resp. <tt>relay</tt>)
+ * attribute is present but has an invalid value.
  */
-public class TestGetMustUnderstandInvalid extends SOAPTestCase {
-    public TestGetMustUnderstandInvalid(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
+    private final String value;
+    
+    public TestGetBooleanAttributeInvalid(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute, String value) {
+        super(metaFactory, spec, attribute);
+        this.value = value;
+        addTestParameter("value", value);
     }
 
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
-        headerBlock.addAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND, "invalid", header.getNamespace());
+        headerBlock.addAttribute(attribute.getName(), value, header.getNamespace());
         try {
-            headerBlock.getMustUnderstand();
+            attribute.getValue(headerBlock);
             fail("Expected SOAPProcessingException");
         } catch (SOAPProcessingException ex) {
             // Expected
