@@ -76,6 +76,10 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAPEnvelopeImpl(null, ns, null, this, true);
     }
 
+    public SOAPHeader createSOAPHeader() throws SOAPProcessingException {
+        return new SOAP11HeaderImpl(null, getNamespace(), null, this, true);
+    }
+
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope)
             throws SOAPProcessingException {
         return new SOAP11HeaderImpl(envelope, this);
@@ -120,6 +124,10 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultImpl((ParentNode)parent, null, builder, this, false);
     }
 
+    public SOAPBody createSOAPBody() throws SOAPProcessingException {
+        return new SOAP11BodyImpl(null, getNamespace(), null, this, true);
+    }
+
     public SOAPBody createSOAPBody(SOAPEnvelope envelope)
             throws SOAPProcessingException {
         return new SOAP11BodyImpl(envelope, (SOAPFactory) envelope
@@ -145,6 +153,10 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultCodeImpl(null, null, null, this, true);
     }
 
+    public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
             throws SOAPProcessingException {
         throw new UnsupportedOperationException();
@@ -153,6 +165,10 @@ public class SOAP11Factory extends DOMSOAPFactory {
     //added
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException {
         throw new UnsupportedOperationException();
     }
 
@@ -181,8 +197,16 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultReasonImpl(null, null, null, this, true);
     }
 
+    public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
             throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
         throw new UnsupportedOperationException();
     }
 

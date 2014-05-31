@@ -40,7 +40,7 @@ import org.apache.axiom.soap.SOAPVersion;
  */
 public abstract class SOAPSpec {
     public static final SOAPSpec SOAP11 = new SOAPSpec(SOAP11Version.getSingleton(),
-            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO }, null) {
+            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO }, null, null, null, null) {
         public String getName() {
             return "soap11";
         }
@@ -64,7 +64,10 @@ public abstract class SOAPSpec {
 
     public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton(),
             new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO },
-            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME)) {
+            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME),
+            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME),
+            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME),
+            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME)) {
         public String getName() {
             return "soap12";
         }
@@ -89,13 +92,24 @@ public abstract class SOAPSpec {
     private final SOAPVersion version;
     private final BooleanLiteral[] booleanLiterals;
     private final QName envelopeQName;
+    private final QName headerQName;
+    private final QName bodyQName;
+    private final QName faultValueQName;
+    private final QName faultSubCodeQName;
     private final QName faultTextQName;
+    private final QName faultNodeQName;
     
-    public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals, QName faultTextQName) {
+    public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals, QName faultValueQName,
+            QName faultSubCodeQName, QName faultTextQName, QName faultNodeQName) {
         this.version = version;
         this.booleanLiterals = booleanLiterals;
         envelopeQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.SOAPENVELOPE_LOCAL_NAME);
+        headerQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.HEADER_LOCAL_NAME);
+        bodyQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.BODY_LOCAL_NAME);
+        this.faultValueQName = faultValueQName;
+        this.faultSubCodeQName = faultSubCodeQName;
         this.faultTextQName = faultTextQName;
+        this.faultNodeQName = faultNodeQName;
     }
     
     public abstract String getName();
@@ -120,12 +134,36 @@ public abstract class SOAPSpec {
         return envelopeQName;
     }
 
+    public final QName getHeaderQName() {
+        return headerQName;
+    }
+
+    public final QName getBodyQName() {
+        return bodyQName;
+    }
+
     public final QName getFaultCodeQName() {
         return version.getFaultCodeQName();
     }
     
+    public final QName getFaultValueQName() {
+        return faultValueQName;
+    }
+
+    public final QName getFaultSubCodeQName() {
+        return faultSubCodeQName;
+    }
+
     public final QName getFaultReasonQName() {
         return version.getFaultReasonQName();
+    }
+
+    public final QName getFaultTextQName() {
+        return faultTextQName;
+    }
+
+    public final QName getFaultNodeQName() {
+        return faultNodeQName;
     }
 
     public final QName getFaultRoleQName() {
@@ -136,10 +174,6 @@ public abstract class SOAPSpec {
         return version.getFaultDetailQName();
     }
     
-    public final QName getFaultTextQName() {
-        return faultTextQName;
-    }
-
     /**
      * Get the boolean literals recognized by this SOAP version. While SOAP 1.2 refers to the
      * <tt>xs:boolean</tt> type and therefore recognizes <tt>true</tt>, <tt>false</tt>, <tt>1</tt>

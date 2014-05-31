@@ -64,8 +64,14 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     
     private static final SOAPElementType[] soapElementTypes = {
         SOAPElementType.ENVELOPE,
+        SOAPElementType.HEADER,
+        SOAPElementType.BODY,
         SOAPFaultChild.CODE,
+        SOAPElementType.VALUE,
+        SOAPElementType.SUB_CODE,
         SOAPFaultChild.REASON,
+        SOAPElementType.TEXT,
+        SOAPFaultChild.NODE,
         SOAPFaultChild.ROLE,
         SOAPFaultChild.DETAIL,
     };

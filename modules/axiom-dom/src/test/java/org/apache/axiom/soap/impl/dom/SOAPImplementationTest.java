@@ -24,26 +24,10 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.envelope.TestSerialize;
-import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
-import org.apache.axiom.ts.soap.faulttext.TestSetLang;
-import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
-import org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false, false);
-        builder.exclude(TestWSCommons202.class);
-        
-        // TODO: not sure if this is an issue in DOOM or if the test case is wrong
-        builder.exclude(TestMoreChildrenAddition.class);
-        
-        // SOAPFaultText is currently unsupported in DOOM
-        builder.exclude(TestSetLang.class);
-        
-        // TODO: a couple of prerequisites for these tests are not implemented
-        builder.exclude(org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName.class);
-        builder.exclude(org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName.class);
-        builder.exclude(TestSetValueFromQNameWithExistingValue.class);
         
         // TODO: AXIOM-430
         builder.exclude(TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter)(serializationStrategy=SAXSource)))");

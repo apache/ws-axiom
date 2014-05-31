@@ -25,13 +25,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -64,30 +58,6 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
 
     public final SOAPMessage createSOAPMessage() {
         return new SOAPMessageImpl(this);
-    }
-
-    public SOAPHeader createSOAPHeader() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPBody createSOAPBody() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {

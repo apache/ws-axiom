@@ -25,6 +25,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
@@ -91,6 +92,36 @@ public interface SOAPFaultChild extends SOAPElementType {
         }
     };
 
+    SOAPFaultChild NODE = new SOAPFaultChild() {
+        public Class getType() {
+            return SOAPFaultNode.class;
+        }
+
+        public void addTestParameters(MatrixTestCase testCase) {
+            testCase.addTestParameter("type", "SOAPFaultNode");
+        }
+
+        public QName getQName(SOAPSpec spec) {
+            return spec.getFaultNodeQName();
+        }
+        
+        public int getOrder() {
+            return 3;
+        }
+
+        public OMElement create(SOAPFactory factory) {
+            return factory.createSOAPFaultNode();
+        }
+        
+        public OMElement create(SOAPFactory factory, SOAPFault parent) {
+            return factory.createSOAPFaultNode(parent);
+        }
+
+        public void set(SOAPFault fault, OMElement element) {
+            fault.setNode((SOAPFaultNode)element);
+        }
+    };
+
     SOAPFaultChild ROLE = new SOAPFaultChild() {
         public Class getType() {
             return SOAPFaultRole.class;
@@ -105,7 +136,7 @@ public interface SOAPFaultChild extends SOAPElementType {
         }
         
         public int getOrder() {
-            return 3;
+            return 4;
         }
 
         public OMElement create(SOAPFactory factory) {
@@ -135,7 +166,7 @@ public interface SOAPFaultChild extends SOAPElementType {
         }
         
         public int getOrder() {
-            return 4;
+            return 5;
         }
 
         public OMElement create(SOAPFactory factory) {

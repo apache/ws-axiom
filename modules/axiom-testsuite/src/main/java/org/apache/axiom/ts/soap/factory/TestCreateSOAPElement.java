@@ -32,8 +32,9 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests {@link SOAPFactory#createSOAPEnvelope()}, {@link SOAPFactory#createSOAPFaultCode()},
- * {@link SOAPFactory#createSOAPFaultReason()}, {@link SOAPFactory#createSOAPFaultRole()} and
- * {@link SOAPFactory#createSOAPFaultDetail()}.
+ * {@link SOAPFactory#createSOAPFaultValue()}, {@link SOAPFactory#createSOAPFaultSubCode()},
+ * {@link SOAPFactory#createSOAPFaultReason()}, {@link SOAPFactory#createSOAPFaultText()},
+ * {@link SOAPFactory#createSOAPFaultRole()} and {@link SOAPFactory#createSOAPFaultDetail()}.
  */
 public class TestCreateSOAPElement extends SOAPTestCase {
     private final SOAPElementType type;
@@ -46,21 +47,30 @@ public class TestCreateSOAPElement extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         QName expectedName = type.getQName(spec);
-        String expectedPrefix = expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX; 
-        OMElement child = type.create(soapFactory);
-        QName actualName = child.getQName();
-        assertEquals(expectedName, actualName);
-        assertEquals(expectedPrefix, actualName.getPrefix());
-        assertNull(child.getParent());
-        Iterator it = child.getAllDeclaredNamespaces();
-        if (expectedPrefix.length() != 0) {
-            assertTrue(it.hasNext());
-            OMNamespace ns = (OMNamespace)it.next();
-            assertEquals(expectedName.getNamespaceURI(), ns.getNamespaceURI());
-            assertEquals(expectedPrefix, ns.getPrefix());
+        if (expectedName == null) {
+            try {
+                type.create(soapFactory);
+                fail("Expect UnsupportedOperationException");
+            } catch (UnsupportedOperationException ex) {
+                // Expected
+            }
+        } else {
+            String expectedPrefix = expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX; 
+            OMElement child = type.create(soapFactory);
+            QName actualName = child.getQName();
+            assertEquals(expectedName, actualName);
+            assertEquals(expectedPrefix, actualName.getPrefix());
+            assertNull(child.getParent());
+            Iterator it = child.getAllDeclaredNamespaces();
+            if (expectedPrefix.length() != 0) {
+                assertTrue(it.hasNext());
+                OMNamespace ns = (OMNamespace)it.next();
+                assertEquals(expectedName.getNamespaceURI(), ns.getNamespaceURI());
+                assertEquals(expectedPrefix, ns.getPrefix());
+            }
+            assertFalse(it.hasNext());
+            assertFalse(child.getAllAttributes().hasNext());
+            assertNull(child.getFirstOMChild());
         }
-        assertFalse(it.hasNext());
-        assertFalse(child.getAllAttributes().hasNext());
-        assertNull(child.getFirstOMChild());
     }
 }
