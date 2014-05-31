@@ -33,22 +33,6 @@ public class SOAPFaultValueTestBase extends SOAPFaultSubCodeTestCase {
                 soap12Factory.createSOAPFaultValue(soap12FaultSubCodeInCode);
     }
 
-    //SOAP 1.1 Fault Value Test (Programaticaly Created)
-    public void testSOAP11setText() {
-        soap11FaultValue.setText("This is only Test");
-        assertEquals("SOAP 1.1 Fault Value Test : - value text mismatch",
-                "This is only Test", soap11FaultValue.getText());
-    }
-
-    public void testSOAP11GetText() {
-        assertEquals(
-                "SOAP 1.1 Fault Value Test : - After creating Fault Value, it has a text",
-                "", soap11FaultValue.getText());
-        soap11FaultValue.setText("This is only Test");
-        assertEquals("SOAP 1.1 Fault Value Test : - value text mismatch",
-                "This is only Test", soap11FaultValue.getText());
-    }
-
     //SOAP 1.2 Fault Value(In Fault Code) Test (Programaticaly Created)
     public void testSOAP12setTextInFaultCode() {
         soap12FaultValueInFaultCode.setText("This is only Test");

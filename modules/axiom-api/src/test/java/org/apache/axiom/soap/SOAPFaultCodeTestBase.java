@@ -52,13 +52,6 @@ public class SOAPFaultCodeTestBase extends SOAPFaultCodeTestCase {
         assertFalse(
                 "SOAP 1.2 Fault Code Test :- After calling setValue method, getValue method returns null",
                 soap12FaultCode.getValue() == null);
-        try {
-            soap12FaultCode.setValue(
-                    soap11Factory.createSOAPFaultValue(soap11FaultCode));
-            fail("SOAP11FaultValue should not be inserted to SOAP12FaultCode");
-        } catch (SOAPProcessingException e) {
-            assertTrue(true);
-        }
 
         try {
             soap12FaultCode.setValue(
@@ -88,14 +81,6 @@ public class SOAPFaultCodeTestBase extends SOAPFaultCodeTestCase {
         assertFalse(
                 "SOAP 1.2 Fault Code Test :- After calling setSubCode method, getSubCode method returns null",
                 soap12FaultCode.getSubCode() == null);
-        try {
-            soap12FaultCode.setSubCode(
-                    soap11Factory.createSOAPFaultSubCode(soap11FaultCode));
-            fail(
-                    "SOAP11FaultSubCode should not be inserted to SOAP12FaultCode");
-        } catch (SOAPProcessingException e) {
-            assertTrue(true);
-        }
 
         try {
             soap12FaultCode.setSubCode(

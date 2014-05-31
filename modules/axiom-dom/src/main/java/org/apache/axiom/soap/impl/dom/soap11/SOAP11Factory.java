@@ -147,24 +147,24 @@ public class SOAP11Factory extends DOMSOAPFactory {
 
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultValueImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     //added
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultValueImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     //changed
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultSubCodeImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultSubCodeImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultReason createSOAPFaultReason(SOAPFault parent)
@@ -183,7 +183,7 @@ public class SOAP11Factory extends DOMSOAPFactory {
 
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultTextImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent)

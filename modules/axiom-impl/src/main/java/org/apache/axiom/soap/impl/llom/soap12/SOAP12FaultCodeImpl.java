@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -58,7 +59,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultSubCodeImpl, got " + subCode.getClass());
         }
-        super.setSubCode(subCode);
+        ElementHelper.setNewElement(this, getSubCode(), subCode);
     }
 
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
@@ -66,7 +67,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultValueImpl, got " + value.getClass());
         }
-        super.setValue(value);
+        ElementHelper.setNewElement(this, value, value);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

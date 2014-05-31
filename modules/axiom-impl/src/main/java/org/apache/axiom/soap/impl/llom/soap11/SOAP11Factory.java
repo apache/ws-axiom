@@ -184,32 +184,32 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultValueImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
-        return new SOAP11FaultValueImpl(this);
+        throw new UnsupportedOperationException();
     }
 
     //added
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultValueImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     //changed
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultSubCodeImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException {
-        return new SOAP11FaultSubCodeImpl(this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultSubCodeImpl(parent, this);
+        throw new UnsupportedOperationException();
     }
 
     public SOAPFaultReason createSOAPFaultReason(SOAPFault parent)

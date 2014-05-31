@@ -24,12 +24,9 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
@@ -67,14 +64,6 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
         this(parent,
              factory.getSOAPVersion().getFaultCodeQName().getLocalPart(),
              extractNamespaceFromParent, factory);
-    }
-
-    public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
-        ElementHelper.setNewElement(this, value, value);
-    }
-
-    public void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException {
-        ElementHelper.setNewElement(this, getSubCode(), value);
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

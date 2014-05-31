@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -55,7 +56,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault " +
                             "Sub Code. But received some other implementation");
         }
-        super.setSubCode(subCode);
+        ElementHelper.setNewElement(this, getSubCode(), subCode);
     }
 
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
@@ -64,7 +65,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault Value. " +
                             "But received some other implementation");
         }
-        super.setValue(value);
+        ElementHelper.setNewElement(this, value, value);
     }
 
     // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3

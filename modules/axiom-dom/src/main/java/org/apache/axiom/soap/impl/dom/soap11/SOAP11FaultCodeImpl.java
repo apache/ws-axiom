@@ -49,21 +49,11 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
 
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
-        if (!(subCode instanceof SOAP11FaultSubCodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Sub " +
-                            "Code. But received some other implementation");
-        }
-        super.setSubCode(subCode);
+        throw new UnsupportedOperationException();
     }
 
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
-        if (!(value instanceof SOAP11FaultValueImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Value. " +
-                            "But received some other implementation");
-        }
-        super.setValue(value);
+        throw new UnsupportedOperationException();
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

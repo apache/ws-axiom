@@ -22,7 +22,6 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
-    protected SOAPFaultText soap11FaultText;
     protected SOAPFaultText soap12FaultText;
     protected String soap11FaultTextWithParser;
     protected SOAPFaultText soap12FaultTextWithParser;
@@ -33,40 +32,9 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        soap11FaultText = soap11Factory.createSOAPFaultText(soap11FaultReason);
         soap12FaultText = soap12Factory.createSOAPFaultText(soap12FaultReason);
         soap11FaultTextWithParser = soap11FaultReasonWithParser.getText();
         soap12FaultTextWithParser = soap12FaultReasonWithParser.getFirstSOAPText();
-    }
-
-    public void testSOAP11GetLang() {
-
-
-        assertNull(
-                "SOAP 1.1 Fault Text Test : - After creating SOAPFaultText, it has a Lnag attribute",
-                soap11FaultText.getLang());
-
-        soap11FaultText.setLang("en");
-        assertEquals(
-                "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                "en", soap11FaultText.getLang());
-    }
-
-    public void testSOAP11SetText() {
-        soap11FaultText.setText("This is only a test");
-        assertEquals(
-                "SOAP 1.1 Fault Text Test : - After calling setText method, getText method return incorrect string",
-                "This is only a test", soap11FaultText.getText());
-    }
-
-    public void testSOAP11GetText() {
-        assertEquals(
-                "SOAP 1.1 Fault Text Test : - After creating SOAPFaultText, it has a text",
-                "", soap11FaultText.getText());
-        soap11FaultText.setText("This is only a test");
-        assertEquals(
-                "SOAP 1.1 Fault Text Test : - After calling setText method, getText method return incorrect string",
-                "This is only a test", soap11FaultText.getText());
     }
 
     public void testSOAP12GetLang() {
