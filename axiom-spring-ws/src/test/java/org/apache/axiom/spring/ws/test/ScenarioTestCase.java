@@ -25,27 +25,31 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.env.MockPropertySource;
-import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 public abstract class ScenarioTestCase extends MatrixTestCase {
+    private final ScenarioConfig config;
     private Server server;
     protected GenericXmlApplicationContext context;
     
-    public ScenarioTestCase(String soapVersion) {
+    public ScenarioTestCase(ScenarioConfig config, String soapVersion) {
+        this.config = config;
+        addTestParameter("client", config.getClientMessageFactoryConfigurator().getName());
+        addTestParameter("server", config.getServerMessageFactoryConfigurator().getName());
         addTestParameter("soapVersion", soapVersion);
     }
     
     @Override
-    @SuppressWarnings("serial")
     protected void setUp() throws Exception {
-        final MatrixTestCasePropertySource testParameters = new MatrixTestCasePropertySource(this);
-        
         server = new Server();
         
         // Set up a custom thread pool to improve thread names (for logging purposes)
@@ -57,27 +61,34 @@ public abstract class ScenarioTestCase extends MatrixTestCase {
         connector.setPort(0);
         server.setConnectors(new Connector[] { connector });
         ServletContextHandler handler = new ServletContextHandler(server, "/");
-        ServletHolder servlet = new ServletHolder(new MessageDispatcherServlet() {
-            @Override
-            protected void postProcessWebApplicationContext(ConfigurableWebApplicationContext wac) {
-                wac.getEnvironment().getPropertySources().addFirst(testParameters);
+        MessageDispatcherServlet servlet = new MessageDispatcherServlet();
+        servlet.setContextClass(GenericWebApplicationContext.class);
+        servlet.setContextInitializers(new ApplicationContextInitializer<ConfigurableApplicationContext>() {
+            public void initialize(ConfigurableApplicationContext applicationContext) {
+                configureContext((GenericWebApplicationContext)applicationContext, config.getServerMessageFactoryConfigurator(), "server.xml");
             }
         });
-        servlet.setName("spring-ws");
-        servlet.setInitParameter("contextConfigLocation", getClass().getResource("server.xml").toString());
-        servlet.setInitOrder(1);
-        handler.addServlet(servlet, "/*");
+        ServletHolder servletHolder = new ServletHolder(servlet);
+        servletHolder.setName("spring-ws");
+        servletHolder.setInitOrder(1);
+        handler.addServlet(servletHolder, "/*");
         server.start();
         
         context = new GenericXmlApplicationContext();
-        ConfigurableEnvironment environment = context.getEnvironment();
         MockPropertySource propertySource = new MockPropertySource();
         propertySource.setProperty("port", connector.getLocalPort());
-        MutablePropertySources propertySources = environment.getPropertySources();
-        propertySources.replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
-        propertySources.addFirst(testParameters);
-        context.load(getClass(), "client.xml");
+        context.getEnvironment().getPropertySources().replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
+        configureContext(context, config.getClientMessageFactoryConfigurator(), "client.xml");
         context.refresh();
+    }
+    
+    void configureContext(GenericApplicationContext context, MessageFactoryConfigurator messageFactoryConfigurator, String relativeConfigLocation) {
+        context.getEnvironment().getPropertySources().addFirst(new MatrixTestCasePropertySource(this));
+        messageFactoryConfigurator.configure(context);
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
+        reader.loadBeanDefinitions(
+                new ClassPathResource("common.xml", ScenarioTestCase.class),
+                new ClassPathResource(relativeConfigLocation, getClass()));
     }
     
     @Override

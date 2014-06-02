@@ -19,25 +19,12 @@
   -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:sws="http://www.springframework.org/schema/web-services"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
          http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
-    
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"/>
-    
     <context:component-scan base-package="org.apache.axiom.spring.ws.test.jdom"/>
-    
-    <bean name="messageFactory" class="org.apache.axiom.spring.ws.soap.AxiomSoapMessageFactory">
-        <property name="soapVersion">
-            <util:constant static-field="org.springframework.ws.soap.SoapVersion.${soapVersion}"/>
-        </property>
-    </bean>
-    <bean class="org.apache.axiom.spring.ws.AxiomOptimizationEnabler"/>
-    
     <sws:annotation-driven/>
 </beans>

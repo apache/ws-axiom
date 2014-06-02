@@ -18,13 +18,22 @@
  */
 package org.apache.axiom.spring.ws.test;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class SpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(MessageFactoryConfigurator.AXIOM, MessageFactoryConfigurator.SAAJ);
-        
-        return builder.build();
+public final class ScenarioConfig {
+    private final MessageFactoryConfigurator clientMessageFactoryConfigurator;
+    private final MessageFactoryConfigurator serverMessageFactoryConfigurator;
+    
+    public ScenarioConfig(MessageFactoryConfigurator clientMessageFactoryConfigurator,
+            MessageFactoryConfigurator serverMessageFactoryConfigurator) {
+        this.clientMessageFactoryConfigurator = clientMessageFactoryConfigurator;
+        this.serverMessageFactoryConfigurator = serverMessageFactoryConfigurator;
     }
+
+    public final MessageFactoryConfigurator getClientMessageFactoryConfigurator() {
+        return clientMessageFactoryConfigurator;
+    }
+
+    public final MessageFactoryConfigurator getServerMessageFactoryConfigurator() {
+        return serverMessageFactoryConfigurator;
+    }
+    
 }

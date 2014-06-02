@@ -23,14 +23,25 @@ import org.apache.axiom.spring.ws.test.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
+    private final MessageFactoryConfigurator messageFactoryConfigurator;
+    private final MessageFactoryConfigurator altMessageFactoryConfigurator;
+    
+    public SpringWSTestSuiteBuilder(MessageFactoryConfigurator messageFactoryConfigurator,
+            MessageFactoryConfigurator altMessageFactoryConfigurator) {
+        this.messageFactoryConfigurator = messageFactoryConfigurator;
+        this.altMessageFactoryConfigurator = altMessageFactoryConfigurator;
+    }
+
     @Override
     protected void addTests() {
-        addTests("SOAP_11");
-        addTests("SOAP_12");
+        addTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), "SOAP_11");
+        addTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), "SOAP_12");
+        addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_11");
+        addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_12");
     }
     
-    private void addTests(String soapVersion) {
-        addTest(new ClientServerTest(soapVersion));
-        addTest(new WSAddressingDOMTest(soapVersion));
+    private void addTests(ScenarioConfig config, String soapVersion) {
+        addTest(new ClientServerTest(config, soapVersion));
+        addTest(new WSAddressingDOMTest(config, soapVersion));
     }
 }

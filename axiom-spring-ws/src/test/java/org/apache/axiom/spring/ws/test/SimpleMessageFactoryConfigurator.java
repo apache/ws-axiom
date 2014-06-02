@@ -18,13 +18,24 @@
  */
 package org.apache.axiom.spring.ws.test;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.Resource;
 
-public class SpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(MessageFactoryConfigurator.AXIOM, MessageFactoryConfigurator.SAAJ);
-        
-        return builder.build();
+public final class SimpleMessageFactoryConfigurator implements MessageFactoryConfigurator {
+    private final String name;
+    private final Resource resource;
+
+    public SimpleMessageFactoryConfigurator(String name, Resource resource) {
+        this.name = name;
+        this.resource = resource;
+    }
+
+    public final String getName() {
+        return name;
+    }
+
+    public void configure(GenericApplicationContext context) {
+        new XmlBeanDefinitionReader(context).loadBeanDefinitions(resource);
     }
 }

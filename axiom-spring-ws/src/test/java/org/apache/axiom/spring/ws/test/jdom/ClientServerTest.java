@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.spring.ws.test.jdom;
 
+import org.apache.axiom.spring.ws.test.ScenarioConfig;
 import org.apache.axiom.spring.ws.test.ScenarioTestCase;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
@@ -25,8 +26,8 @@ import org.jdom2.transform.JDOMSource;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class ClientServerTest extends ScenarioTestCase {
-    public ClientServerTest(String soapVersion) {
-        super(soapVersion);
+    public ClientServerTest(ScenarioConfig config, String soapVersion) {
+        super(config, soapVersion);
     }
     
     @Override
