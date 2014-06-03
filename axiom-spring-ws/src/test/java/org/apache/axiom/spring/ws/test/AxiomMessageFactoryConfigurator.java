@@ -20,17 +20,23 @@ package org.apache.axiom.spring.ws.test;
 
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mock.env.MockPropertySource;
 
-public final class SimpleMessageFactoryConfigurator extends MessageFactoryConfigurator {
-    private final Resource resource;
+public final class AxiomMessageFactoryConfigurator extends MessageFactoryConfigurator {
+    private final String feature;
 
-    public SimpleMessageFactoryConfigurator(String name, Resource resource) {
-        super(name);
-        this.resource = resource;
+    public AxiomMessageFactoryConfigurator(String feature) {
+        super("axiom-" + feature);
+        this.feature = feature;
     }
 
+    @Override
     public void configure(GenericApplicationContext context) {
-        new XmlBeanDefinitionReader(context).loadBeanDefinitions(resource);
+        MockPropertySource propertySource = new MockPropertySource("axiom-properties");
+        propertySource.setProperty("axiom.feature", feature);
+        context.getEnvironment().getPropertySources().addLast(propertySource);
+        new XmlBeanDefinitionReader(context).loadBeanDefinitions(new ClassPathResource(
+                "axiom-message-factory.xml", AxiomMessageFactoryConfigurator.class));
     }
 }

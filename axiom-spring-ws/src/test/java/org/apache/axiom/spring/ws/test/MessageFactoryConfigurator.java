@@ -25,11 +25,18 @@ import org.springframework.ws.soap.SoapVersion;
 /**
  * Defines a particular {@link SoapMessageFactory} configuration.
  */
-public interface MessageFactoryConfigurator {
-    MessageFactoryConfigurator SAAJ = new SimpleMessageFactoryConfigurator("saaj", new ClassPathResource("saaj-message-factory.xml", MessageFactoryConfigurator.class));
-    MessageFactoryConfigurator AXIOM = new SimpleMessageFactoryConfigurator("axiom", new ClassPathResource("axiom-message-factory.xml", MessageFactoryConfigurator.class));
+public abstract class MessageFactoryConfigurator {
+    public static final MessageFactoryConfigurator SAAJ = new SimpleMessageFactoryConfigurator("saaj", new ClassPathResource("saaj-message-factory.xml", MessageFactoryConfigurator.class));
     
-    String getName();
+    private final String name;
+    
+    public MessageFactoryConfigurator(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
     
     /**
      * Configure a {@link SoapMessageFactory} in the given application context. The method must
@@ -43,5 +50,5 @@ public interface MessageFactoryConfigurator {
      * 
      * @param context
      */
-    void configure(GenericApplicationContext context);
+    public abstract void configure(GenericApplicationContext context);
 }

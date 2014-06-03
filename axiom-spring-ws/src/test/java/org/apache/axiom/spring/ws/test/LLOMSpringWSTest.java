@@ -18,19 +18,15 @@
  */
 package org.apache.axiom.spring.ws.test;
 
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.io.Resource;
+import org.apache.axiom.om.OMAbstractFactory;
 
-public final class SimpleMessageFactoryConfigurator extends MessageFactoryConfigurator {
-    private final Resource resource;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-    public SimpleMessageFactoryConfigurator(String name, Resource resource) {
-        super(name);
-        this.resource = resource;
-    }
-
-    public void configure(GenericApplicationContext context) {
-        new XmlBeanDefinitionReader(context).loadBeanDefinitions(resource);
+public class LLOMSpringWSTest extends TestCase {
+    public static TestSuite suite() {
+        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DEFAULT), MessageFactoryConfigurator.SAAJ);
+        
+        return builder.build();
     }
 }

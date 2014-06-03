@@ -27,6 +27,7 @@
         <property name="soapVersion">
             <util:constant static-field="org.springframework.ws.soap.SoapVersion.${soapVersion}"/>
         </property>
+        <property name="feature" value="${axiom.feature}"/>
     </bean>
     <bean class="org.apache.axiom.spring.ws.AxiomOptimizationEnabler"/>
 </beans>

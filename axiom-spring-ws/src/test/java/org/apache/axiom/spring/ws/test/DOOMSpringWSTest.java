@@ -18,12 +18,14 @@
  */
 package org.apache.axiom.spring.ws.test;
 
+import org.apache.axiom.om.OMAbstractFactory;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class SpringWSTest extends TestCase {
+public class DOOMSpringWSTest extends TestCase {
     public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(MessageFactoryConfigurator.AXIOM, MessageFactoryConfigurator.SAAJ);
+        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DOM), MessageFactoryConfigurator.SAAJ);
         
         return builder.build();
     }

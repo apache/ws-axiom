@@ -38,18 +38,30 @@ import org.springframework.ws.soap.SoapVersion;
 import org.springframework.ws.transport.TransportConstants;
 import org.springframework.ws.transport.TransportInputStream;
 
-public class AxiomSoapMessageFactory implements SoapMessageFactory, InitializingBean {
+public final class AxiomSoapMessageFactory implements SoapMessageFactory, InitializingBean {
+    private String feature = "default";
     private SoapVersion soapVersion = SoapVersion.SOAP_11;
     private OMMetaFactory metaFactory;
     private SOAPFactory soapFactory;
     
+    /**
+     * Set the feature to request when looking up the {@link OMMetaFactory}. This effectively
+     * selects the Axiom implementation that will be used. By default, Axiom supports
+     * {@link OMAbstractFactory#FEATURE_DEFAULT} and {@link OMAbstractFactory#FEATURE_DOM}.
+     * 
+     * @param feature
+     *            the feature to pass to {@link OMAbstractFactory#getMetaFactory(String)}
+     */
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
+
     public void setSoapVersion(SoapVersion soapVersion) {
         this.soapVersion = soapVersion;
     }
 
     public void afterPropertiesSet() throws Exception {
-        // TODO: make the implementation configurable
-        metaFactory = OMAbstractFactory.getMetaFactory();
+        metaFactory = OMAbstractFactory.getMetaFactory(feature);
         if (soapVersion == SoapVersion.SOAP_11) {
             soapFactory = metaFactory.getSOAP11Factory();
         } else if (soapVersion == SoapVersion.SOAP_12) {

@@ -75,7 +75,7 @@ public abstract class ScenarioTestCase extends MatrixTestCase {
         server.start();
         
         context = new GenericXmlApplicationContext();
-        MockPropertySource propertySource = new MockPropertySource();
+        MockPropertySource propertySource = new MockPropertySource("client-properties");
         propertySource.setProperty("port", connector.getLocalPort());
         context.getEnvironment().getPropertySources().replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
         configureContext(context, config.getClientMessageFactoryConfigurator(), "client.xml");
