@@ -19,6 +19,8 @@
 package org.apache.axiom.spring.ws.test;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
+import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

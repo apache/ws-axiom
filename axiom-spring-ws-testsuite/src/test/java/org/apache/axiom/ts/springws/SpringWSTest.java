@@ -16,20 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws;
 
-import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.springframework.core.env.PropertySource;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-public class MatrixTestCasePropertySource extends PropertySource<MatrixTestCase> {
-    public static final String TEST_PARAMETERS_PROPERTY_SOURCE_NAME = "testParameters";
-    
-    public MatrixTestCasePropertySource(MatrixTestCase source) {
-        super(TEST_PARAMETERS_PROPERTY_SOURCE_NAME, source);
-    }
-
-    @Override
-    public Object getProperty(String name) {
-        return source.getTestParameters().get(name);
+public class SpringWSTest extends TestCase {
+    public static TestSuite suite() {
+        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(MessageFactoryConfigurator.SAAJ, MessageFactoryConfigurator.SAAJ);
+        
+        return builder.build();
     }
 }

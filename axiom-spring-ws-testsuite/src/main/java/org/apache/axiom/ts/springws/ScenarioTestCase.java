@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.eclipse.jetty.server.Connector;

@@ -16,26 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test.wsadom;
+package org.apache.axiom.ts.springws;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.ws.server.endpoint.annotation.Endpoint;
-import org.springframework.ws.server.endpoint.annotation.RequestPayload;
-import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import org.springframework.ws.soap.addressing.server.annotation.Action;
-import org.w3c.dom.Element;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.springframework.core.env.PropertySource;
 
-@Endpoint
-public class EchoEndpoint {
-    private static final Log log = LogFactory.getLog(EchoEndpoint.class);
+public class MatrixTestCasePropertySource extends PropertySource<MatrixTestCase> {
+    public static final String TEST_PARAMETERS_PROPERTY_SOURCE_NAME = "testParameters";
     
-    public static final String ACTION = "urn:echo";
-    
-    @Action(ACTION)
-    @ResponsePayload
-    public Element echo(@RequestPayload Element request) {
-        log.debug("Endpoint invoked");
-        return request;
+    public MatrixTestCasePropertySource(MatrixTestCase source) {
+        super(TEST_PARAMETERS_PROPERTY_SOURCE_NAME, source);
+    }
+
+    @Override
+    public Object getProperty(String name) {
+        return source.getTestParameters().get(name);
     }
 }

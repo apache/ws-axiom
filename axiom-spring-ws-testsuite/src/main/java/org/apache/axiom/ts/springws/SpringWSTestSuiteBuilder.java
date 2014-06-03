@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws;
 
-import org.apache.axiom.spring.ws.test.jdom.ClientServerTest;
-import org.apache.axiom.spring.ws.test.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.springws.jdom.ClientServerTest;
+import org.apache.axiom.ts.springws.wsadom.WSAddressingDOMTest;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final MessageFactoryConfigurator messageFactoryConfigurator;
@@ -36,8 +36,10 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     protected void addTests() {
         addTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), "SOAP_11");
         addTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), "SOAP_12");
-        addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_11");
-        addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_12");
+        if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
+            addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_11");
+            addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_12");
+        }
     }
     
     private void addTests(ScenarioConfig config, String soapVersion) {

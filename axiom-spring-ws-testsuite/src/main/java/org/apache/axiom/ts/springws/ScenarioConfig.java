@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws;
 
 public final class ScenarioConfig {
     private final MessageFactoryConfigurator clientMessageFactoryConfigurator;

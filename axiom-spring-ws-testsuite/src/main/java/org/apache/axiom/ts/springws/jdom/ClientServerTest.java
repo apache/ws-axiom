@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test.jdom;
+package org.apache.axiom.ts.springws.jdom;
 
-import org.apache.axiom.spring.ws.test.ScenarioConfig;
-import org.apache.axiom.spring.ws.test.ScenarioTestCase;
+import org.apache.axiom.ts.springws.ScenarioConfig;
+import org.apache.axiom.ts.springws.ScenarioTestCase;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
 import org.jdom2.transform.JDOMSource;

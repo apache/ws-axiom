@@ -355,6 +355,11 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.16</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <properties>
@@ -868,6 +873,7 @@
         <module>modules/axiom-integration</module>
         <module>modules/axiom-all</module>
         <module>modules/axiom-samples</module>
+        <module>axiom-spring-ws-testsuite</module>
         <module>axiom-spring-ws</module>
         <module>systests</module>
         <module>forbiddenapi-signatures</module>

@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.spring.ws.test;
 
+import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;

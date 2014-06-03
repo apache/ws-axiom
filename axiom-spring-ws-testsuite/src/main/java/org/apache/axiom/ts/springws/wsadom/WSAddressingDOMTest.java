@@ -16,15 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test.wsadom;
+package org.apache.axiom.ts.springws.wsadom;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.apache.axiom.spring.ws.test.ScenarioConfig;
-import org.apache.axiom.spring.ws.test.ScenarioTestCase;
+import org.apache.axiom.ts.springws.ScenarioConfig;
+import org.apache.axiom.ts.springws.ScenarioTestCase;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.addressing.client.ActionCallback;
 import org.w3c.dom.Document;
