@@ -294,6 +294,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             for (int j=0; j<expansionStrategies.length; j++) {
                 for (int k=0; k<serializationStrategies.length; k++) {
                     addTest(new org.apache.axiom.ts.soap.envelope.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategies[j], serializationStrategies[k]));
+                    addTest(new org.apache.axiom.ts.soap.message.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategies[j], serializationStrategies[k]));
                 }
             }
         }

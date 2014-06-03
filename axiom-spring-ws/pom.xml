@@ -117,6 +117,7 @@
                 <configuration>
                     <includes>
                         <include>**/LLOMSpringWSTest.java</include>
+                        <include>**/DOOMSpringWSTest.java</include>
                     </includes>
                 </configuration>
             </plugin>

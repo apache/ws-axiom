@@ -61,7 +61,7 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
     protected void internalSerialize(Serializer serializer, OMOutputFormat format,
                                      boolean cache, boolean includeXMLDeclaration) throws OutputException {
-        ((NodeImpl)getOwnerDocument().getDocumentElement()).internalSerialize(serializer, format, cache);
+        ((NodeImpl)getDocumentElement()).internalSerialize(serializer, format, cache);
     }
 
     protected DocumentImpl createClone(OMCloneOptions options) {
