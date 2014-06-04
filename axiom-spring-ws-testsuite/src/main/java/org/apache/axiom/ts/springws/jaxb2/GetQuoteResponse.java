@@ -16,23 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws.jaxb2;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
-import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+@XmlRootElement(namespace="urn:stockquote", name="GetQuoteResponse")
+@XmlType
+public class GetQuoteResponse {
+    private double price;
 
-public class DOOMSpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DOM), MessageFactoryConfigurator.SAAJ);
-        
-        // TODO: Iteration 5
-        builder.exclude(JAXB2Test.class);
-        
-        return builder.build();
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

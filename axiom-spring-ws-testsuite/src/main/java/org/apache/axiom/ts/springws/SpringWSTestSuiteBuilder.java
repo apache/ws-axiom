@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
 import org.apache.axiom.ts.springws.jdom.ClientServerTest;
 import org.apache.axiom.ts.springws.wsadom.WSAddressingDOMTest;
 
@@ -45,5 +46,6 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private void addTests(ScenarioConfig config, String soapVersion) {
         addTest(new ClientServerTest(config, soapVersion));
         addTest(new WSAddressingDOMTest(config, soapVersion));
+        addTest(new JAXB2Test(config, soapVersion));
     }
 }

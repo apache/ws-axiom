@@ -16,23 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws.jaxb2;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
-import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
+import org.apache.axiom.ts.springws.ScenarioConfig;
+import org.apache.axiom.ts.springws.ScenarioTestCase;
+import org.springframework.ws.client.core.WebServiceTemplate;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class DOOMSpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DOM), MessageFactoryConfigurator.SAAJ);
-        
-        // TODO: Iteration 5
-        builder.exclude(JAXB2Test.class);
-        
-        return builder.build();
+public class JAXB2Test extends ScenarioTestCase {
+    public JAXB2Test(ScenarioConfig config, String soapVersion) {
+        super(config, soapVersion);
+    }
+    
+    @Override
+    protected void runTest() throws Throwable {
+        GetQuoteRequest request = new GetQuoteRequest();
+        request.setSymbol("GOOG");
+        context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
     }
 }
