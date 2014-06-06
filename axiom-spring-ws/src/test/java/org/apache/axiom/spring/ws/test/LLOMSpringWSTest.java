@@ -21,7 +21,6 @@ package org.apache.axiom.spring.ws.test;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -29,9 +28,6 @@ import junit.framework.TestSuite;
 public class LLOMSpringWSTest extends TestCase {
     public static TestSuite suite() {
         SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DEFAULT), MessageFactoryConfigurator.SAAJ);
-        
-        // TODO: Iteration 5
-        builder.exclude(JAXB2Test.class);
         
         return builder.build();
     }

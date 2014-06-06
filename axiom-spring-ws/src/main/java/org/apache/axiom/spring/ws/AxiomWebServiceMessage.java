@@ -27,12 +27,13 @@ import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.server.endpoint.support.PayloadRootUtils;
 import org.springframework.ws.soap.SoapBody;
 import org.springframework.ws.soap.SoapElement;
+import org.springframework.ws.stream.StreamingWebServiceMessage;
 
 /**
  * Interface implemented by {@link WebServiceMessage} instances created by
  * {@link AxiomSoapMessageFactory}.
  */
-public interface AxiomWebServiceMessage extends WebServiceMessage {
+public interface AxiomWebServiceMessage extends StreamingWebServiceMessage {
     /**
      * Returns the root qualified name of the payload of this message. The return value is the same
      * as that of {@link PayloadRootUtils#getPayloadRootQName(Source, TransformerFactory)} when

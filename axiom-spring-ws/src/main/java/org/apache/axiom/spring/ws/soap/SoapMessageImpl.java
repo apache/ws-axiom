@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.soap.SOAP11Version;
+import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
@@ -42,6 +43,7 @@ import org.springframework.ws.mime.AttachmentException;
 import org.springframework.ws.soap.AbstractSoapMessage;
 import org.springframework.ws.soap.SoapEnvelope;
 import org.springframework.ws.soap.SoapEnvelopeException;
+import org.springframework.ws.stream.StreamingPayload;
 import org.springframework.ws.transport.TransportConstants;
 import org.springframework.ws.transport.TransportOutputStream;
 import org.w3c.dom.Document;
@@ -136,6 +138,12 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
             log.debug("Payload root QName is " + qname);
         }
         return qname;
+    }
+
+    public void setStreamingPayload(StreamingPayload payload) {
+        SOAPBody body = axiomMessage.getSOAPEnvelope().getBody();
+        body.removeChildren();
+        body.addChild(axiomMessage.getOMFactory().createOMElement(new StreamingPayloadOMDataSource(payload)));
     }
 
     public void pushSourceExtractionStrategy(SourceExtractionStrategy strategy, Object bean) {

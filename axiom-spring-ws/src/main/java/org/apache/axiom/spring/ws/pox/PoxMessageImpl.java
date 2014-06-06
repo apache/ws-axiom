@@ -28,6 +28,7 @@ import javax.xml.transform.Source;
 import org.apache.axiom.spring.ws.AxiomWebServiceMessage;
 import org.apache.axiom.spring.ws.SourceExtractionStrategy;
 import org.apache.axiom.spring.ws.SourceExtractionStrategyStack;
+import org.springframework.ws.stream.StreamingPayload;
 
 final class PoxMessageImpl implements AxiomWebServiceMessage {
     private final SourceExtractionStrategyStack extractionStrategyStack = new SourceExtractionStrategyStack();
@@ -48,6 +49,11 @@ final class PoxMessageImpl implements AxiomWebServiceMessage {
     }
 
     public QName getPayloadRootQName() {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public void setStreamingPayload(StreamingPayload payload) {
         // TODO
         throw new UnsupportedOperationException();
     }

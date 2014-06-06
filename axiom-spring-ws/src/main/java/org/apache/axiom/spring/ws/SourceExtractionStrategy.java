@@ -21,6 +21,7 @@ package org.apache.axiom.spring.ws;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stax.StAXSource;
 
 import org.apache.axiom.om.OMContainer;
 import org.springframework.ws.WebServiceMessage;
@@ -70,6 +71,38 @@ import org.w3c.dom.Node;
  * type.
  */
 public interface SourceExtractionStrategy {
+    /**
+     * Extraction strategy that creates a {@link StAXSource} using
+     * {@link OMContainer#getXMLStreamReader(boolean) with <code>cache</code> set to
+     * <code>true</code>.
+     */
+    SourceExtractionStrategy STAX_PRESERVE = new SourceExtractionStrategy() {
+        public Source getSource(OMContainer container) {
+            return new StAXSource(container.getXMLStreamReader(true));
+        }
+
+        @Override
+        public String toString() {
+            return "STAX_PRESERVE";
+        }
+    };
+    
+    /**
+     * Extraction strategy that creates a {@link StAXSource} using
+     * {@link OMContainer#getXMLStreamReader(boolean) with <code>cache</code> set to
+     * <code>false</code>.
+     */
+    SourceExtractionStrategy STAX_CONSUME = new SourceExtractionStrategy() {
+        public Source getSource(OMContainer container) {
+            return new StAXSource(container.getXMLStreamReader(false));
+        }
+
+        @Override
+        public String toString() {
+            return "STAX_CONSUME";
+        }
+    };
+
     /**
      * Extraction strategy that uses {@link OMContainer#getSAXSource(boolean)} with
      * <code>cache</code> set to <code>true</code>.

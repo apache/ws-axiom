@@ -39,6 +39,7 @@ import org.springframework.ws.server.EndpointMapping;
 import org.springframework.ws.server.endpoint.adapter.method.MethodArgumentResolver;
 import org.springframework.ws.server.endpoint.adapter.method.dom.DomPayloadMethodProcessor;
 import org.springframework.ws.server.endpoint.adapter.method.dom.JDomPayloadMethodProcessor;
+import org.springframework.ws.server.endpoint.adapter.method.jaxb.AbstractJaxb2PayloadMethodProcessor;
 import org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping;
 import org.springframework.ws.soap.addressing.server.AnnotationActionEndpointMapping;
 
@@ -69,6 +70,10 @@ import org.springframework.ws.soap.addressing.server.AnnotationActionEndpointMap
  * <tr>
  * <td>{@link AnnotationActionEndpointMapping}
  * <td>{@link SourceExtractionStrategy#DOM_OR_SAX_PRESERVE}
+ * </tr>
+ * <tr>
+ * <td>{@link AbstractJaxb2PayloadMethodProcessor}
+ * <td>{@link SourceExtractionStrategy#STAX_CONSUME}
  * </tr>
  * </table>
  * <p>
@@ -109,6 +114,7 @@ public class AxiomOptimizationEnabler implements BeanFactoryPostProcessor, BeanP
         strategyMap.put(JDomPayloadMethodProcessor.class, SourceExtractionStrategy.SAX_CONSUME);
         strategyMap.put(DomPayloadMethodProcessor.class, SourceExtractionStrategy.DOM_OR_SAX_CONSUME);
         strategyMap.put(AnnotationActionEndpointMapping.class, SourceExtractionStrategy.DOM_OR_SAX_PRESERVE);
+        strategyMap.put(AbstractJaxb2PayloadMethodProcessor.class, SourceExtractionStrategy.STAX_CONSUME);
         try {
             strategyMap.put(Class.forName("org.springframework.ws.soap.addressing.server.AddressingEndpointInterceptor"), SourceExtractionStrategy.DOM_OR_SAX_PRESERVE);
         } catch (ClassNotFoundException ex) {
