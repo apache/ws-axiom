@@ -170,760 +170,763 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     </chapter>
     
     <chapter>
-        <title>OSGi integration and separation between API and implementation</title>
+        <title>Design</title>
         <section>
-            <title>Introduction</title>
-            <para>
-                This chapter addresses two related architectural questions:
-            </para>
-            <itemizedlist>
-                <listitem>
-                    <para>
-                        OSGi support was originally introduced in Axiom 1.2.9, but the implementation had
-                        a couple of flaws. This chapter discusses the rationale behind the new OSGi
-                        support introduced in Axiom 1.2.13.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Axiom is designed as a set of abstract APIs for which two implementations are
-                        provided: LLOM and DOOM. It is important to make a clear distinction between what
-                        is part of the public API and what should be considered implementation classes that
-                        must not be used by application code directly. This also implies that Axiom must
-                        provide the necessary APIs to allow application code to access all features without
-                        the need to access implementation classes directly. This chapter in particular
-                        discusses the question how application code can request factories that support DOM
-                        without the need to refer directly to DOOM.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <para>
-                These two questions are closely related because OSGi allows to enforce the distinction
-                between public API and implementation classes by carefully selecting the packages
-                exported by the different bundles: only classes belonging to the public API
-                should be exported, while implementation classes should be private to the bundles
-                containing them. This in turn has implications for the packaging of these artifacts.
-            </para>
-        </section>
-        <section>
-            <title>Requirements</title>
-            <formalpara xml:id="osgi-req-no-separate-bundles">
-                <title>Requirement 1</title>
+            <title>OSGi integration and separation between API and implementation</title>
+            <section>
+                <title>Introduction</title>
                 <para>
-                    The Axiom artifacts SHOULD be usable both as normal JAR files and as OSGi bundles.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    The alternative would be to produce two sets of artifacts during the build. This
-                    should be avoided in order to keep the build process as simple as possible.
-                    It should also be noted that the Geronimo Spec artifacts also meet this requirement.
-                </para>
-            </note>
-            <formalpara xml:id="osgi-req-same-api">
-                <title>Requirement 2</title>
-                <para>
-                    All APIs defined by the <literal>axiom-api</literal> module, and in particular the
-                    <classname>OMAbstractFactory</classname> API MUST continue to work
-                    as expected in an OSGi environment, so that code in downstream projects
-                    doesn't need to be rewritten.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    This requirement was already satisfied by the OSGi support introduced in Axiom 1.2.9.
-                    It therefore also ensures that the transition to the new OSGi support in Axiom 1.2.13
-                    is transparent for applications that already use Axiom in an OSGi container.
-                </para>
-            </note>
-            <formalpara xml:id="osgi-req-same-impl-selection">
-                <title>Requirement 3</title>
-                <para>
-                    <classname>OMAbstractFactory</classname> MUST select the same implementation
-                    regardless of the type of container (OSGi or non OSGi). The only exception is
-                    related to the usage of system properties to specify the default <classname>OMMetaFactory</classname>
-                    implementation: in an OSGi environment, selecting an implementation class using
-                    a system property is not meaningful.
-                </para>
-            </formalpara>
-            <formalpara xml:id="osgi-ref-impl-not-exported">
-                <title>Requirement 4</title>
-                <para>
-                    Only classes belonging to the public API should be exported by the OSGi bundles.
-                    Implementation classes should not be exported. In particular,
-                    the bundles for the LLOM and DOOM implementations MUST NOT export any packages.
-                    This is required to keep a clean separation between the public API and implementation
-                    specific classes and to make sure that the implementations can be modified without the
-                    risk of breaking existing code.
-                    An exception MAY be made for factory classes related to foreign APIs, such as the
-                    <classname>DocumentBuilderFactory</classname> implementation for an Axiom implementation
-                    supporting DOM.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    When the Axiom artifacts are used as normal JAR files in a Maven build, this requirement implies that
-                    they should be used in scope <literal>runtime</literal>.
-                </para>
-                <para>
-                    Although this requirement is easy to implement for the Axiom project, it requires
-                    changes to downstreams project to make this actually work:
+                    This section addresses two related architectural questions:
                 </para>
                 <itemizedlist>
                     <listitem>
                         <para>
-                            As explained in <link xlink:href="https://issues.apache.org/jira/browse/AXIS2-4902">AXIS2-4902</link>,
-                            there used to be many places in Axis2 that still referred directly to Axiom implementation classes.
-                            The same was true for Rampart and Sandesha2. This has now been fixed and all three projects
-                            use <literal>axiom-impl</literal> and <literal>axiom-dom</literal> as dependencies in scope
-                            <literal>runtime</literal>.
+                            OSGi support was originally introduced in Axiom 1.2.9, but the implementation had
+                            a couple of flaws. This section discusses the rationale behind the new OSGi
+                            support introduced in Axiom 1.2.13.
                         </para>
                     </listitem>
                     <listitem>
                         <para>
-                            Abdera extends the LLOM implementation. Probably, some <literal>maven-shade-plugin</literal>
-                            magic will be required here to create Abdera OSGi bundles that work properly with
-                            the Axiom bundles.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            For Spring Web Services this issue is addressed by
-                            <link xlink:href="https://jira.springsource.org/browse/SWS-822">SWS-822</link>.
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </note>
-            <formalpara xml:id="osgi-req-dropin">
-                <title>Requirement 5</title>
-                <para>
-                    It MUST be possible to use a non standard (third party) Axiom implementation as a drop-in replacement
-                    for the standard LLOM and DOOM implementation, i.e. the <literal>axiom-impl</literal>
-                    and <literal>axiom-dom</literal> bundles. It MUST be possible to replace <literal>axiom-impl</literal>
-                    (resp. <literal>axiom-dom</literal>) by any Axiom implementation that supports the full Axiom API
-                    (resp. that supports DOM in addition to the Axiom API), without the need to change any application code.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    This requirement has several important implications:
-                </para>
-                <itemizedlist>
-                    <listitem>
-                        <para>
-                            It restricts the allowable exceptions to <xref linkend="osgi-ref-impl-not-exported"/>.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            It implies that there must be an API that allows application code to select an Axiom
-                            implementation based on its capabilities (e.g. DOM support) without introducing a
-                            hard dependency on a particular Axiom implementation.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            In accordance with <xref linkend="osgi-req-same-api"/> and <xref linkend="osgi-req-same-impl-selection"/>
-                            this requirement not only applies to an OSGi environment, but extends to non OSGi environments as well.
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </note>
-            <formalpara>
-                <title>Requirement 6</title>
-                <para>
-                    The OSGi integration SHOULD remove the necessity for downstreams projects
-                    to produce their own custom OSGi bundles for Axiom. There SHOULD be one
-                    and only one set of OSGi bundles for Axiom, namely the ones released by the Axiom project.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    Currently there are at least two projects that create their own modified Axiom bundles:
-                </para>
-                <itemizedlist>
-                    <listitem>
-                        <para>
-                            Apache Geronimo has a custom Axiom bundle to support the Axis2 integration.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            ServiceMix also has a custom bundles for Axiom. However, this bundle only seem to exist to
-                            support their own custom Abdera bundle, which is basically an incorrect repackaging of the
-                            original Abdera code. See
-                            <link xlink:href="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</link> for more details.
+                            Axiom is designed as a set of abstract APIs for which two implementations are
+                            provided: LLOM and DOOM. It is important to make a clear distinction between what
+                            is part of the public API and what should be considered implementation classes that
+                            must not be used by application code directly. This also implies that Axiom must
+                            provide the necessary APIs to allow application code to access all features without
+                            the need to access implementation classes directly. This section in particular
+                            discusses the question how application code can request factories that support DOM
+                            without the need to refer directly to DOOM.
                         </para>
                     </listitem>
                 </itemizedlist>
                 <para>
-                    Note that this requirement can't be satisfied directly by Axiom. It requires that
-                    the above mentioned projects (Geronimo, Axis2 and Abdera) use Axiom in a way that is
-                    compatible with its design, and in particular with <xref linkend="osgi-ref-impl-not-exported"/>.
-                    Nevertheless, Axiom must provide the necessary APIs and features to meet the needs
-                    of these projects.
+                    These two questions are closely related because OSGi allows to enforce the distinction
+                    between public API and implementation classes by carefully selecting the packages
+                    exported by the different bundles: only classes belonging to the public API
+                    should be exported, while implementation classes should be private to the bundles
+                    containing them. This in turn has implications for the packaging of these artifacts.
                 </para>
-            </note>
-            <formalpara xml:id="osgi-reg-no-framework">
-                <title>Requirement 7</title>
-                <para>
-                    The Axiom OSGi integration SHOULD NOT rely on any particular OSGi framework such
-                    as Felix SCR (Declarative Services). When deployed in an OSGi environment, Axiom should have the same
-                    runtime dependencies as in a non OSGi environment (i.e. StAX, Activation and JavaMail).
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    Axiom 1.2.12 relies on Felix SCR. Although there is no real issue with that, getting rid
-                    of this extra dependency is seen as a nice to have. One of the reasons for using Felix SCR
-                    was to avoid introducing OSGi specific code into Axiom. However, there is no issue with
-                    having such code, provided that <xref linkend="osgi-req-no-osgi-dep"/> is satisfied.
-                </para>
-            </note>
-            <formalpara xml:id="osgi-req-no-osgi-dep">
-                <title>Requirement 8</title>
-                <para>
-                    In a non OSGi environment, Axiom MUST NOT have any OSGi related dependencies. That means
-                    that the OSGi integration must be written in such a way that no OSGi specific classes are
-                    ever loaded in a non OSGi environment.
-                </para>
-            </formalpara>
-            <formalpara xml:id="osgi-req-best-practices">
-                <title>Requirement 9</title>
-                <para>
-                    The OSGi integration MUST follow established best practices. It SHOULD be inspired by
-                    what has been done to add OSGi integration to APIs that have a similar structure as Axiom.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    Axiom is designed around an abstract API and allows for the existence of multiple
-                    independent implementations. A factory (<classname>OMAbstractFactory</classname>) is used to
-                    locate and instantiate the desired implementation. This is similar to APIs such as
-                    JAXP (<classname>DocumentBuilderFactory</classname>, etc.) and JAXB (<classname>JAXBContext</classname>).
-                    These APIs have been successfully "OSGi-fied" e.g. by the Apache Geronimo project.
-                    Instead of reinventing the wheel, we should leverage that work and adapt it to
-                    Axiom's specific requirements.
-                </para>
-                <para>
-                    It should be noted that because of the way the Axiom API is designed and taking into account
-                    <xref linkend="osgi-req-same-api"/>, it is not possible to make Axiom entirely compatible
-                    with OSGi paradigms (the same is true for JAXB). In an OSGi-only world, each Axiom
-                    implementation would simply expose itself as an OSGi service (of type <classname>OMMetaFactory</classname> e.g.)
-                    and code depending on Axiom would bind to one (or more) of these services depending on its needs.
-                    That is not possible because it would conflict with <xref linkend="osgi-req-same-api"/>.
-                </para>
-            </note>
-            <formalpara>
-                <title>Non-Requirement 1</title>
-                <para>
-                    APIs such as JAXP and JAXB have been designed from the start for inclusion into the JRE.
-                    They need to support scenarios where an application bundles its own implementation
-                    (e.g. an application may package a version of Apache Xerces, which would then be
-                    instantiated by the <methodname>newInstance</methodname> method in
-                    <classname>DocumentBuilderFactory</classname>). That implies that the selected implementation
-                    depends on the thread context class loader. It is assumed that there is no such requirement
-                    for Axiom, which means that in a non OSGi environment, the Axiom implementations are always loaded from the same
-                    class loader as the <literal>axiom-api</literal> JAR.
-                </para>
-            </formalpara>
-            <note>
-                <para>
-                    This (non-)requirement is actually not directly relevant for the OSGi support, but it
-                    nevertheless has some importance because of <xref linkend="osgi-req-same-impl-selection"/>
-                    (which implies that the OSGi support needs to be designed in parallel with the implementation
-                    discovery strategy applicable in a non OSGi environment).
-                </para>
-            </note>
-        </section>
-        <section>
-            <title>Analysis of the Geronimo JAXB bundles</title>
-            <para>
-                As noted in <xref linkend="osgi-req-best-practices"/> the Apache Geronimo has successfully
-                added OSGi support to the JAXB API which has a structure similar to the Axiom API. This section briefly describes
-                how this works. The analysis refers to the following Geronimo artifacts: 
-                <literal>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec:1.0.1</literal> (called the "API bundle" hereafter),
-                <literal>org.apache.geronimo.bundles:jaxb-impl:2.2.3-1_1</literal> (the "implementation bundle"),
-                <literal>org.apache.geronimo.specs:geronimo-osgi-locator:1.0</literal> (the "locator bundle") and
-                <literal>org.apache.geronimo.specs:geronimo-osgi-registry:1.0</literal> (the "registry bundle"):
-            </para>
-            <itemizedlist>
-                <listitem>
+            </section>
+            <section>
+                <title>Requirements</title>
+                <formalpara xml:id="osgi-req-no-separate-bundles">
+                    <title>Requirement 1</title>
                     <para>
-                        The implementation bundle retains the <filename>META-INF/services/javax.xml.bind.JAXBContext</filename>
-                        resource from the original artifact (<literal>com.sun.xml.bind:jaxb-impl</literal>).
-                        In a non OSGi environment, that resource will be used to discover the implementation, following
-                        the standard JDK 1.3 service discovery algorithm will (as required by the JAXB specification).
-                        This is the equivalent of our <xref linkend="osgi-req-no-separate-bundles"/>.
+                        The Axiom artifacts SHOULD be usable both as normal JAR files and as OSGi bundles.
                     </para>
-                </listitem>
-                <listitem>
+                </formalpara>
+                <note>
                     <para>
-                        The manifest of the implementation bundle has an attribute <literal>SPI-Provider: true</literal> that indicates
-                        that it contains provider implementations that are discovered using the JDK 1.3 service discovery.
+                        The alternative would be to produce two sets of artifacts during the build. This
+                        should be avoided in order to keep the build process as simple as possible.
+                        It should also be noted that the Geronimo Spec artifacts also meet this requirement.
                     </para>
-                </listitem>
-                <listitem>
+                </note>
+                <formalpara xml:id="osgi-req-same-api">
+                    <title>Requirement 2</title>
                     <para>
-                        The registry bundle creates a <classname>BundleTracker</classname> that looks for
-                        the <literal>SPI-Provider</literal> attribute in active bundles. For each bundle
-                        that has this attribute set to <literal>true</literal>, it will scan the content of
-                        <filename>META-INF/services</filename> and add the discovered services to a registry
-                        (Note that the registry bundle supports other ways to declare SPI providers,
-                        but this is not really relevant for the present discussion).
+                        All APIs defined by the <literal>axiom-api</literal> module, and in particular the
+                        <classname>OMAbstractFactory</classname> API MUST continue to work
+                        as expected in an OSGi environment, so that code in downstream projects
+                        doesn't need to be rewritten.
                     </para>
-                </listitem>
-                <listitem>
+                </formalpara>
+                <note>
                     <para>
-                        The <classname>ContextFinder</classname> class (the interface of which is defined by
-                        the JAXB specification and that is used by the <methodname>newInstance</methodname>
-                        method in <classname>JAXBContext</classname>) in the API bundle delegates the discovery
-                        of the SPI implementation to a static method of the <classname>ProviderLocator</classname>
-                        class defined by the locator bundle (which is not specific to JAXB and is used by other
-                        API bundles as well). This is true both in an OSGi environment and in a non OSGi environment.
+                        This requirement was already satisfied by the OSGi support introduced in Axiom 1.2.9.
+                        It therefore also ensures that the transition to the new OSGi support in Axiom 1.2.13
+                        is transparent for applications that already use Axiom in an OSGi container.
+                    </para>
+                </note>
+                <formalpara xml:id="osgi-req-same-impl-selection">
+                    <title>Requirement 3</title>
+                    <para>
+                        <classname>OMAbstractFactory</classname> MUST select the same implementation
+                        regardless of the type of container (OSGi or non OSGi). The only exception is
+                        related to the usage of system properties to specify the default <classname>OMMetaFactory</classname>
+                        implementation: in an OSGi environment, selecting an implementation class using
+                        a system property is not meaningful.
+                    </para>
+                </formalpara>
+                <formalpara xml:id="osgi-ref-impl-not-exported">
+                    <title>Requirement 4</title>
+                    <para>
+                        Only classes belonging to the public API should be exported by the OSGi bundles.
+                        Implementation classes should not be exported. In particular,
+                        the bundles for the LLOM and DOOM implementations MUST NOT export any packages.
+                        This is required to keep a clean separation between the public API and implementation
+                        specific classes and to make sure that the implementations can be modified without the
+                        risk of breaking existing code.
+                        An exception MAY be made for factory classes related to foreign APIs, such as the
+                        <classname>DocumentBuilderFactory</classname> implementation for an Axiom implementation
+                        supporting DOM.
+                    </para>
+                </formalpara>
+                <note>
+                    <para>
+                        When the Axiom artifacts are used as normal JAR files in a Maven build, this requirement implies that
+                        they should be used in scope <literal>runtime</literal>.
                     </para>
                     <para>
-                        The build is configured (using a <literal>Private-Package</literal> instruction)
-                        such that the classes of the locator bundle are actually included into the API bundle, thus
-                        avoiding an additional dependency.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        The <classname>ProviderLocator</classname> class and related code provided by the locator bundle is designed
-                        such that in a non OSGi environment, it will simply use JDK 1.3 service discovery to locate
-                        the SPI implementation, without ever loading any OSGi specific class. On the other hand,
-                        in an OSGi environment, it will query the registry maintained by the registry bundle to locate
-                        the provider. The reference to the registry is injected into the <classname>ProviderLocator</classname>
-                        class using a bundle activator.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Finally, it should also be noted that the API bundle is configured with <literal>singleton=true</literal>.
-                        There is indeed no meaningful way how providers could be matched with different versions of the same API
-                        bundle.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <para>
-                This is an example of a particularly elegant way to satisfy <xref linkend="osgi-req-no-separate-bundles"/>,
-                <xref linkend="osgi-req-same-api"/> and <xref linkend="osgi-req-same-impl-selection"/>, especially because
-                it relies on the same metadata (the <filename>META-INF/services/javax.xml.bind.JAXBContext</filename> resources)
-                in OSGi and non OSGi environments.
-            </para>
-            <para>
-                Obviously, Axiom could reuse the registry and locator bundles developed by Geronimo. This however would
-                contradict <xref linkend="osgi-reg-no-framework"/>. In addition, for Axiom there is no requirement to
-                strictly follow the JDK 1.3 service discovery algorithm. Therefore Axiom should reuse the pattern
-                developed by Geronimo, but not the actual implementation.
-            </para>
-        </section>
-        <section>
-            <title>New abstract APIs</title>
-            <para>
-                Application code rarely uses DOOM as the default Axiom implementation. Several downstream projects
-                (e.g. the Axis2/Rampart combination) use both the default (LLOM) implementation and DOOM. They select
-                the implementation based on the particular context. As of Axiom 1.2.12, the only way to create an object
-                model instance with the DOOM implementation is to use the <classname>DOOMAbstractFactory</classname> API
-                or to instantiate one of the factory classes (<classname>OMDOMMetaFactory</classname>, <classname>OMDOMFactory</classname>
-                or one of the subclasses of <classname>DOMSOAPFactory</classname>). All these classes are part of
-                the <literal>axiom-dom</literal> artifact. This is clearly in contradiction with <xref linkend="osgi-ref-impl-not-exported"/>
-                and <xref linkend="osgi-req-dropin"/>.
-            </para>
-            <para>
-                To overcome this problem the Axiom API must be enhanced to make it possible to select an Axiom
-                implementation based on capabilities/features requested by the application code. E.g. in the case
-                of DOOM, the application code would request a factory that implements the DOM API. It is then up
-                to the Axiom API classes to locate an appropriate implementation, which may be DOOM or another
-                drop-in replacement, as per <xref linkend="osgi-req-dropin"/>.
-            </para>
-            <para>
-                If multiple Axiom implementations are available (on the class path in non OSGi environment or
-                deployed as bundles in an OSGi environment), then the Axiom API must also be able to select an
-                appropriate default implementation if no specific feature is requested by the application code.
-                This can be easily implemented by defining a special feature called "default" that would be
-                declared by any Axiom implementation that is suitable as a default implementation.
-            </para>
-            <note>
-                <para>
-                    DOOM is generally not considered suitable as a default implementation because it doesn't
-                    implement the complete Axiom API (e.g. it doesn't support <classname>OMSourcedElement</classname>).
-                    In addition, in earlier versions of Axiom, the factory classes for DOOM were not stateless
-                    (see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</link>).
-                </para>
-            </note>
-            <para>
-                Finally, to make the selection algorithm deterministic, there should also be a concept
-                of priority: if multiple Axiom implementations are found for the same feature, then the Axiom API
-                would select the one with the highest priority.
-            </para>
-            <para>
-                This leads to the following design:
-            </para>
-            <orderedlist>
-                <listitem>
-                    <para>
-                        Every Axiom implementation declares a set of features that it supports. A feature is
-                        simply identified by a string. Two features are predefined by the Axiom API:
+                        Although this requirement is easy to implement for the Axiom project, it requires
+                        changes to downstreams project to make this actually work:
                     </para>
                     <itemizedlist>
                         <listitem>
                             <para>
-                                <literal>default</literal>: indicates that the implementation is a complete
-                                implementation of the Axiom API and may be used as a default implementation.
+                                As explained in <link xlink:href="https://issues.apache.org/jira/browse/AXIS2-4902">AXIS2-4902</link>,
+                                there used to be many places in Axis2 that still referred directly to Axiom implementation classes.
+                                The same was true for Rampart and Sandesha2. This has now been fixed and all three projects
+                                use <literal>axiom-impl</literal> and <literal>axiom-dom</literal> as dependencies in scope
+                                <literal>runtime</literal>.
                             </para>
                         </listitem>
                         <listitem>
                             <para>
-                                <literal>dom</literal>: indicates that the implementation supports DOM
-                                in addition to the Axiom API.
+                                Abdera extends the LLOM implementation. Probably, some <literal>maven-shade-plugin</literal>
+                                magic will be required here to create Abdera OSGi bundles that work properly with
+                                the Axiom bundles.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                For Spring Web Services this issue is addressed by
+                                <link xlink:href="https://jira.springsource.org/browse/SWS-822">SWS-822</link>.
                             </para>
                         </listitem>
                     </itemizedlist>
+                </note>
+                <formalpara xml:id="osgi-req-dropin">
+                    <title>Requirement 5</title>
                     <para>
-                        For every feature it declares, the Axiom implementation specifies a priority,
-                        which is a positive integer.
+                        It MUST be possible to use a non standard (third party) Axiom implementation as a drop-in replacement
+                        for the standard LLOM and DOOM implementation, i.e. the <literal>axiom-impl</literal>
+                        and <literal>axiom-dom</literal> bundles. It MUST be possible to replace <literal>axiom-impl</literal>
+                        (resp. <literal>axiom-dom</literal>) by any Axiom implementation that supports the full Axiom API
+                        (resp. that supports DOM in addition to the Axiom API), without the need to change any application code.
                     </para>
-                </listitem>
-                <listitem>
+                </formalpara>
+                <note>
                     <para>
-                        The relevant Axiom APIs are enhanced so that they take an optional argument
-                        specifying the feature requested by the application code. If no explicit feature
-                        is requested, then Axiom will use the <literal>default</literal> feature.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        To determine the <classname>OMMetaFactory</classname> to be used, Axiom locates
-                        the implementations declaring the requested feature and selects the one that
-                        has the highest priority for that feature.
-                    </para>
-                </listitem>
-            </orderedlist>
-            <para>
-                A remaining question is how the implementation declares the feature/priority information.
-                There are two options:
-            </para>
-            <itemizedlist>
-                <listitem>
-                    <para>
-                        Add a method to <classname>OMMetaFactory</classname> that allows the Axiom API
-                        to query the feature/priority information from the implementation (i.e. the
-                        features and priorities are hardcoded in the implementation).
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Let the implementation provide this information declaratively in its metadata
-                        (either in the manifest or in a separate resource with a well defined name).
-                        Note that in a non OSGi environment, such a metadata resource must be used anyway
-                        to enable the Axiom API to locate the <classname>OMMetaFactory</classname> implementations.
-                        Therefore this would be a natural place to declare the features as well.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <para>
-                The second option has the advantage to make it easier for users to debug and tweak
-                the implementation discovery process (e.g. there may be a need to
-                customize the features and priorities declared by the different implementations to ensure
-                that the right implementation is chosen in a particular use case).
-            </para>
-            <para>
-                This leads to the following design decision:
-                the features and priorities (together with the class name of the <classname>OMMetaFactory</classname>
-                implementation) will be defined in an XML descriptor with resource name <filename>META-INF/axiom.xml</filename>.
-                The format of that descriptor must take into account that a single JAR may contain several
-                Axiom implementations (e.g. if the JAR is an uber-JAR repackaged from the standard Axiom JARs).
-            </para>
-        </section>
-        <section>
-            <title>Common implementation classes</title>
-            <para>
-                Obviously the LLOM and DOOM implementations share some amount of common code. Historically,
-                implementation classes reusable between LLOM and DOOM were placed in <literal>axiom-api</literal>.
-                This however tends to blur the distinction between the public API and implementation classes.
-                Starting with Axiom 1.2.13 such classes are placed into a separate module called
-                <literal>axiom-common-impl</literal>. However, <literal>axiom-common-impl</literal> cannot simply
-                be a dependency of <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
-                The reason is that in an OSGi environment, the <literal>axiom-common-impl</literal> bundle
-                would have to export these shared classes, which is in contradiction with <xref linkend="osgi-ref-impl-not-exported"/>.
-                Therefore the code from <literal>axiom-common-impl</literal> needs to be packaged into
-                <literal>axiom-impl</literal> and <literal>axiom-dom</literal> by the build process so that
-                the <literal>axiom-common-impl</literal> artifact is not required at runtime.
-                <xref linkend="osgi-req-no-separate-bundles"/> forbids using embedded JARs to achieve this.
-                Instead <literal>maven-shade-plugin</literal> is used to include the classes
-                from <literal>axiom-common-impl</literal> into <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
-                (and to modify the POMs to remove the dependencies on <literal>axiom-common-impl</literal>).
-            </para>
-            <para>
-                This raises the question whether <literal>maven-shade-plugin</literal> should be configured to
-                simply copy the classes or to relocate them (i.e. to change their package names). There are a couple
-                of arguments in favor of relocating them:
-            </para>
-            <itemizedlist>
-                <listitem>
-                    <para>
-                        According to <xref linkend="osgi-req-no-separate-bundles"/>, the Axiom artifacts should be
-                        usable both as normal JARs and as OSGi bundles. Obviously the expectation is that from the
-                        point of view of application code, they should work in the same in OSGi and non OSGi environments.
-                        Relocation is required if one wants to strictly satisfy this requirement even if different versions
-                        of <literal>axiom-impl</literal> and <literal>axiom-dom</literal> are mixed.
-                        Since the container creates separate class loaders for the <literal>axiom-impl</literal> and <literal>axiom-dom</literal> bundles,
-                        it is always possible to do that in an OSGi environment: even if the shared classes
-                        included in <literal>axiom-impl</literal> and <literal>axiom-dom</literal> are
-                        not relocated, but have the same names, this will not result in conflicts.
-                        The situation is different in a non OSGi environment where the classes in <literal>axiom-impl</literal>
-                        and <literal>axiom-dom</literal> are loaded by the same class loader. If the shared classes
-                        are not relocated, then there may be a conflict if the versions don't match.
-                    </para>
-                    <para>
-                        However, in practice it is unlikely that there are valid use case where one would use
-                        <literal>axiom-impl</literal> and <literal>axiom-dom</literal> artifacts from different Axiom versions.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Relocation allows to preserve compatibility when duplicate code from
-                        <literal>axiom-impl</literal> and <literal>axiom-dom</literal> is merged and moved
-                        to <literal>axiom-common-impl</literal>. The <classname>OMNamespaceImpl</classname>,
-                        <classname>OMNavigator</classname> and <classname>OMStAXWrapper</classname> classes
-                        from <literal>axiom-impl</literal> and the <classname>NamespaceImpl</classname>,
-                        <classname>DOMNavigator</classname> and <classname>DOMStAXWrapper</classname>
-                        classes from <literal>axiom-dom</literal> that existed in earlier versions of Axiom
-                        are examples of this. The classes in <literal>axiom-dom</literal> were almost identical
-                        to the corresponding classes in <literal>axiom-impl</literal>. These classes have been
-                        merged and moved to <literal>axiom-common-impl</literal>. Relocation then allows them
-                        to retain their original name (including the original package name) in the
-                        <literal>axiom-impl</literal> and <literal>axiom-dom</literal> artifacts.
-                    </para>
-                    <para>
-                        However, this is only a concern if one wants to preserve compatibility with existing
-                        code that directly uses these implementation specific classes (which is something that is
-                        strongly discouraged). One example where this was relevant was the SAAJ implementation
-                        in Axis2 which used to be very strongly coupled to the DOOM implementation. This however
-                        has been fixed now.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <para>
-                Using relocation also has some serious disadvantages:
-            </para>
-            <itemizedlist>
-                <listitem>
-                    <para>
-                        Stack traces may contain class names that don't match class names in the Axiom source
-                        code, making debugging harder.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Axiom now uses JaCoCo to produce code coverage reports. However these reports are
-                        incomplete if relocation is used. This doesn't affect test cases executed in
-                        the <literal>axiom-impl</literal> and <literal>axiom-dom</literal> modules
-                        (because they are executed with the original classes), but tests in separate modules
-                        (such as integration tests). There are actually two issues:
+                        This requirement has several important implications:
                     </para>
                     <itemizedlist>
                         <listitem>
                             <para>
-                                For the relocated classes, JaCoCo is unable to find the corresponding source code.
-                                This means that the reported code coverage is inaccurate for classes in
-                                <literal>axiom-common-impl</literal>.
+                                It restricts the allowable exceptions to <xref linkend="osgi-ref-impl-not-exported"/>.
                             </para>
                         </listitem>
                         <listitem>
                             <para>
-                                Relocation not only modifies the classes in <literal>axiom-common-impl</literal>, but
-                                also the classes in <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
-                                that use them. JaCoCo <link xlink:href="https://github.com/jacoco/jacoco/issues/51">detects this</link>
-                                and excludes the data from the coverage analysis. This means that the
-                                reported code coverage will also be inaccurate for classes in
-                                <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
+                                It implies that there must be an API that allows application code to select an Axiom
+                                implementation based on its capabilities (e.g. DOM support) without introducing a
+                                hard dependency on a particular Axiom implementation.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                In accordance with <xref linkend="osgi-req-same-api"/> and <xref linkend="osgi-req-same-impl-selection"/>
+                                this requirement not only applies to an OSGi environment, but extends to non OSGi environments as well.
                             </para>
                         </listitem>
                     </itemizedlist>
-                </listitem>
-            </itemizedlist>
-            <para>
-                In Axiom 1.2.14 relocation was used, but this has been changed in Axiom 1.2.15 because the disadvantages
-                outweigh the advantages.
-            </para>
+                </note>
+                <formalpara>
+                    <title>Requirement 6</title>
+                    <para>
+                        The OSGi integration SHOULD remove the necessity for downstreams projects
+                        to produce their own custom OSGi bundles for Axiom. There SHOULD be one
+                        and only one set of OSGi bundles for Axiom, namely the ones released by the Axiom project.
+                    </para>
+                </formalpara>
+                <note>
+                    <para>
+                        Currently there are at least two projects that create their own modified Axiom bundles:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                Apache Geronimo has a custom Axiom bundle to support the Axis2 integration.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                ServiceMix also has a custom bundles for Axiom. However, this bundle only seem to exist to
+                                support their own custom Abdera bundle, which is basically an incorrect repackaging of the
+                                original Abdera code. See
+                                <link xlink:href="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</link> for more details.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        Note that this requirement can't be satisfied directly by Axiom. It requires that
+                        the above mentioned projects (Geronimo, Axis2 and Abdera) use Axiom in a way that is
+                        compatible with its design, and in particular with <xref linkend="osgi-ref-impl-not-exported"/>.
+                        Nevertheless, Axiom must provide the necessary APIs and features to meet the needs
+                        of these projects.
+                    </para>
+                </note>
+                <formalpara xml:id="osgi-reg-no-framework">
+                    <title>Requirement 7</title>
+                    <para>
+                        The Axiom OSGi integration SHOULD NOT rely on any particular OSGi framework such
+                        as Felix SCR (Declarative Services). When deployed in an OSGi environment, Axiom should have the same
+                        runtime dependencies as in a non OSGi environment (i.e. StAX, Activation and JavaMail).
+                    </para>
+                </formalpara>
+                <note>
+                    <para>
+                        Axiom 1.2.12 relies on Felix SCR. Although there is no real issue with that, getting rid
+                        of this extra dependency is seen as a nice to have. One of the reasons for using Felix SCR
+                        was to avoid introducing OSGi specific code into Axiom. However, there is no issue with
+                        having such code, provided that <xref linkend="osgi-req-no-osgi-dep"/> is satisfied.
+                    </para>
+                </note>
+                <formalpara xml:id="osgi-req-no-osgi-dep">
+                    <title>Requirement 8</title>
+                    <para>
+                        In a non OSGi environment, Axiom MUST NOT have any OSGi related dependencies. That means
+                        that the OSGi integration must be written in such a way that no OSGi specific classes are
+                        ever loaded in a non OSGi environment.
+                    </para>
+                </formalpara>
+                <formalpara xml:id="osgi-req-best-practices">
+                    <title>Requirement 9</title>
+                    <para>
+                        The OSGi integration MUST follow established best practices. It SHOULD be inspired by
+                        what has been done to add OSGi integration to APIs that have a similar structure as Axiom.
+                    </para>
+                </formalpara>
+                <note>
+                    <para>
+                        Axiom is designed around an abstract API and allows for the existence of multiple
+                        independent implementations. A factory (<classname>OMAbstractFactory</classname>) is used to
+                        locate and instantiate the desired implementation. This is similar to APIs such as
+                        JAXP (<classname>DocumentBuilderFactory</classname>, etc.) and JAXB (<classname>JAXBContext</classname>).
+                        These APIs have been successfully "OSGi-fied" e.g. by the Apache Geronimo project.
+                        Instead of reinventing the wheel, we should leverage that work and adapt it to
+                        Axiom's specific requirements.
+                    </para>
+                    <para>
+                        It should be noted that because of the way the Axiom API is designed and taking into account
+                        <xref linkend="osgi-req-same-api"/>, it is not possible to make Axiom entirely compatible
+                        with OSGi paradigms (the same is true for JAXB). In an OSGi-only world, each Axiom
+                        implementation would simply expose itself as an OSGi service (of type <classname>OMMetaFactory</classname> e.g.)
+                        and code depending on Axiom would bind to one (or more) of these services depending on its needs.
+                        That is not possible because it would conflict with <xref linkend="osgi-req-same-api"/>.
+                    </para>
+                </note>
+                <formalpara>
+                    <title>Non-Requirement 1</title>
+                    <para>
+                        APIs such as JAXP and JAXB have been designed from the start for inclusion into the JRE.
+                        They need to support scenarios where an application bundles its own implementation
+                        (e.g. an application may package a version of Apache Xerces, which would then be
+                        instantiated by the <methodname>newInstance</methodname> method in
+                        <classname>DocumentBuilderFactory</classname>). That implies that the selected implementation
+                        depends on the thread context class loader. It is assumed that there is no such requirement
+                        for Axiom, which means that in a non OSGi environment, the Axiom implementations are always loaded from the same
+                        class loader as the <literal>axiom-api</literal> JAR.
+                    </para>
+                </formalpara>
+                <note>
+                    <para>
+                        This (non-)requirement is actually not directly relevant for the OSGi support, but it
+                        nevertheless has some importance because of <xref linkend="osgi-req-same-impl-selection"/>
+                        (which implies that the OSGi support needs to be designed in parallel with the implementation
+                        discovery strategy applicable in a non OSGi environment).
+                    </para>
+                </note>
+            </section>
+            <section>
+                <title>Analysis of the Geronimo JAXB bundles</title>
+                <para>
+                    As noted in <xref linkend="osgi-req-best-practices"/> the Apache Geronimo has successfully
+                    added OSGi support to the JAXB API which has a structure similar to the Axiom API. This section briefly describes
+                    how this works. The analysis refers to the following Geronimo artifacts: 
+                    <literal>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec:1.0.1</literal> (called the "API bundle" hereafter),
+                    <literal>org.apache.geronimo.bundles:jaxb-impl:2.2.3-1_1</literal> (the "implementation bundle"),
+                    <literal>org.apache.geronimo.specs:geronimo-osgi-locator:1.0</literal> (the "locator bundle") and
+                    <literal>org.apache.geronimo.specs:geronimo-osgi-registry:1.0</literal> (the "registry bundle"):
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            The implementation bundle retains the <filename>META-INF/services/javax.xml.bind.JAXBContext</filename>
+                            resource from the original artifact (<literal>com.sun.xml.bind:jaxb-impl</literal>).
+                            In a non OSGi environment, that resource will be used to discover the implementation, following
+                            the standard JDK 1.3 service discovery algorithm will (as required by the JAXB specification).
+                            This is the equivalent of our <xref linkend="osgi-req-no-separate-bundles"/>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The manifest of the implementation bundle has an attribute <literal>SPI-Provider: true</literal> that indicates
+                            that it contains provider implementations that are discovered using the JDK 1.3 service discovery.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The registry bundle creates a <classname>BundleTracker</classname> that looks for
+                            the <literal>SPI-Provider</literal> attribute in active bundles. For each bundle
+                            that has this attribute set to <literal>true</literal>, it will scan the content of
+                            <filename>META-INF/services</filename> and add the discovered services to a registry
+                            (Note that the registry bundle supports other ways to declare SPI providers,
+                            but this is not really relevant for the present discussion).
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The <classname>ContextFinder</classname> class (the interface of which is defined by
+                            the JAXB specification and that is used by the <methodname>newInstance</methodname>
+                            method in <classname>JAXBContext</classname>) in the API bundle delegates the discovery
+                            of the SPI implementation to a static method of the <classname>ProviderLocator</classname>
+                            class defined by the locator bundle (which is not specific to JAXB and is used by other
+                            API bundles as well). This is true both in an OSGi environment and in a non OSGi environment.
+                        </para>
+                        <para>
+                            The build is configured (using a <literal>Private-Package</literal> instruction)
+                            such that the classes of the locator bundle are actually included into the API bundle, thus
+                            avoiding an additional dependency.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The <classname>ProviderLocator</classname> class and related code provided by the locator bundle is designed
+                            such that in a non OSGi environment, it will simply use JDK 1.3 service discovery to locate
+                            the SPI implementation, without ever loading any OSGi specific class. On the other hand,
+                            in an OSGi environment, it will query the registry maintained by the registry bundle to locate
+                            the provider. The reference to the registry is injected into the <classname>ProviderLocator</classname>
+                            class using a bundle activator.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Finally, it should also be noted that the API bundle is configured with <literal>singleton=true</literal>.
+                            There is indeed no meaningful way how providers could be matched with different versions of the same API
+                            bundle.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    This is an example of a particularly elegant way to satisfy <xref linkend="osgi-req-no-separate-bundles"/>,
+                    <xref linkend="osgi-req-same-api"/> and <xref linkend="osgi-req-same-impl-selection"/>, especially because
+                    it relies on the same metadata (the <filename>META-INF/services/javax.xml.bind.JAXBContext</filename> resources)
+                    in OSGi and non OSGi environments.
+                </para>
+                <para>
+                    Obviously, Axiom could reuse the registry and locator bundles developed by Geronimo. This however would
+                    contradict <xref linkend="osgi-reg-no-framework"/>. In addition, for Axiom there is no requirement to
+                    strictly follow the JDK 1.3 service discovery algorithm. Therefore Axiom should reuse the pattern
+                    developed by Geronimo, but not the actual implementation.
+                </para>
+            </section>
+            <section>
+                <title>New abstract APIs</title>
+                <para>
+                    Application code rarely uses DOOM as the default Axiom implementation. Several downstream projects
+                    (e.g. the Axis2/Rampart combination) use both the default (LLOM) implementation and DOOM. They select
+                    the implementation based on the particular context. As of Axiom 1.2.12, the only way to create an object
+                    model instance with the DOOM implementation is to use the <classname>DOOMAbstractFactory</classname> API
+                    or to instantiate one of the factory classes (<classname>OMDOMMetaFactory</classname>, <classname>OMDOMFactory</classname>
+                    or one of the subclasses of <classname>DOMSOAPFactory</classname>). All these classes are part of
+                    the <literal>axiom-dom</literal> artifact. This is clearly in contradiction with <xref linkend="osgi-ref-impl-not-exported"/>
+                    and <xref linkend="osgi-req-dropin"/>.
+                </para>
+                <para>
+                    To overcome this problem the Axiom API must be enhanced to make it possible to select an Axiom
+                    implementation based on capabilities/features requested by the application code. E.g. in the case
+                    of DOOM, the application code would request a factory that implements the DOM API. It is then up
+                    to the Axiom API classes to locate an appropriate implementation, which may be DOOM or another
+                    drop-in replacement, as per <xref linkend="osgi-req-dropin"/>.
+                </para>
+                <para>
+                    If multiple Axiom implementations are available (on the class path in non OSGi environment or
+                    deployed as bundles in an OSGi environment), then the Axiom API must also be able to select an
+                    appropriate default implementation if no specific feature is requested by the application code.
+                    This can be easily implemented by defining a special feature called "default" that would be
+                    declared by any Axiom implementation that is suitable as a default implementation.
+                </para>
+                <note>
+                    <para>
+                        DOOM is generally not considered suitable as a default implementation because it doesn't
+                        implement the complete Axiom API (e.g. it doesn't support <classname>OMSourcedElement</classname>).
+                        In addition, in earlier versions of Axiom, the factory classes for DOOM were not stateless
+                        (see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</link>).
+                    </para>
+                </note>
+                <para>
+                    Finally, to make the selection algorithm deterministic, there should also be a concept
+                    of priority: if multiple Axiom implementations are found for the same feature, then the Axiom API
+                    would select the one with the highest priority.
+                </para>
+                <para>
+                    This leads to the following design:
+                </para>
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Every Axiom implementation declares a set of features that it supports. A feature is
+                            simply identified by a string. Two features are predefined by the Axiom API:
+                        </para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    <literal>default</literal>: indicates that the implementation is a complete
+                                    implementation of the Axiom API and may be used as a default implementation.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    <literal>dom</literal>: indicates that the implementation supports DOM
+                                    in addition to the Axiom API.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        <para>
+                            For every feature it declares, the Axiom implementation specifies a priority,
+                            which is a positive integer.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The relevant Axiom APIs are enhanced so that they take an optional argument
+                            specifying the feature requested by the application code. If no explicit feature
+                            is requested, then Axiom will use the <literal>default</literal> feature.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            To determine the <classname>OMMetaFactory</classname> to be used, Axiom locates
+                            the implementations declaring the requested feature and selects the one that
+                            has the highest priority for that feature.
+                        </para>
+                    </listitem>
+                </orderedlist>
+                <para>
+                    A remaining question is how the implementation declares the feature/priority information.
+                    There are two options:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Add a method to <classname>OMMetaFactory</classname> that allows the Axiom API
+                            to query the feature/priority information from the implementation (i.e. the
+                            features and priorities are hardcoded in the implementation).
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Let the implementation provide this information declaratively in its metadata
+                            (either in the manifest or in a separate resource with a well defined name).
+                            Note that in a non OSGi environment, such a metadata resource must be used anyway
+                            to enable the Axiom API to locate the <classname>OMMetaFactory</classname> implementations.
+                            Therefore this would be a natural place to declare the features as well.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    The second option has the advantage to make it easier for users to debug and tweak
+                    the implementation discovery process (e.g. there may be a need to
+                    customize the features and priorities declared by the different implementations to ensure
+                    that the right implementation is chosen in a particular use case).
+                </para>
+                <para>
+                    This leads to the following design decision:
+                    the features and priorities (together with the class name of the <classname>OMMetaFactory</classname>
+                    implementation) will be defined in an XML descriptor with resource name <filename>META-INF/axiom.xml</filename>.
+                    The format of that descriptor must take into account that a single JAR may contain several
+                    Axiom implementations (e.g. if the JAR is an uber-JAR repackaged from the standard Axiom JARs).
+                </para>
+            </section>
+            <section>
+                <title>Common implementation classes</title>
+                <para>
+                    Obviously the LLOM and DOOM implementations share some amount of common code. Historically,
+                    implementation classes reusable between LLOM and DOOM were placed in <literal>axiom-api</literal>.
+                    This however tends to blur the distinction between the public API and implementation classes.
+                    Starting with Axiom 1.2.13 such classes are placed into a separate module called
+                    <literal>axiom-common-impl</literal>. However, <literal>axiom-common-impl</literal> cannot simply
+                    be a dependency of <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
+                    The reason is that in an OSGi environment, the <literal>axiom-common-impl</literal> bundle
+                    would have to export these shared classes, which is in contradiction with <xref linkend="osgi-ref-impl-not-exported"/>.
+                    Therefore the code from <literal>axiom-common-impl</literal> needs to be packaged into
+                    <literal>axiom-impl</literal> and <literal>axiom-dom</literal> by the build process so that
+                    the <literal>axiom-common-impl</literal> artifact is not required at runtime.
+                    <xref linkend="osgi-req-no-separate-bundles"/> forbids using embedded JARs to achieve this.
+                    Instead <literal>maven-shade-plugin</literal> is used to include the classes
+                    from <literal>axiom-common-impl</literal> into <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
+                    (and to modify the POMs to remove the dependencies on <literal>axiom-common-impl</literal>).
+                </para>
+                <para>
+                    This raises the question whether <literal>maven-shade-plugin</literal> should be configured to
+                    simply copy the classes or to relocate them (i.e. to change their package names). There are a couple
+                    of arguments in favor of relocating them:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            According to <xref linkend="osgi-req-no-separate-bundles"/>, the Axiom artifacts should be
+                            usable both as normal JARs and as OSGi bundles. Obviously the expectation is that from the
+                            point of view of application code, they should work in the same in OSGi and non OSGi environments.
+                            Relocation is required if one wants to strictly satisfy this requirement even if different versions
+                            of <literal>axiom-impl</literal> and <literal>axiom-dom</literal> are mixed.
+                            Since the container creates separate class loaders for the <literal>axiom-impl</literal> and <literal>axiom-dom</literal> bundles,
+                            it is always possible to do that in an OSGi environment: even if the shared classes
+                            included in <literal>axiom-impl</literal> and <literal>axiom-dom</literal> are
+                            not relocated, but have the same names, this will not result in conflicts.
+                            The situation is different in a non OSGi environment where the classes in <literal>axiom-impl</literal>
+                            and <literal>axiom-dom</literal> are loaded by the same class loader. If the shared classes
+                            are not relocated, then there may be a conflict if the versions don't match.
+                        </para>
+                        <para>
+                            However, in practice it is unlikely that there are valid use case where one would use
+                            <literal>axiom-impl</literal> and <literal>axiom-dom</literal> artifacts from different Axiom versions.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Relocation allows to preserve compatibility when duplicate code from
+                            <literal>axiom-impl</literal> and <literal>axiom-dom</literal> is merged and moved
+                            to <literal>axiom-common-impl</literal>. The <classname>OMNamespaceImpl</classname>,
+                            <classname>OMNavigator</classname> and <classname>OMStAXWrapper</classname> classes
+                            from <literal>axiom-impl</literal> and the <classname>NamespaceImpl</classname>,
+                            <classname>DOMNavigator</classname> and <classname>DOMStAXWrapper</classname>
+                            classes from <literal>axiom-dom</literal> that existed in earlier versions of Axiom
+                            are examples of this. The classes in <literal>axiom-dom</literal> were almost identical
+                            to the corresponding classes in <literal>axiom-impl</literal>. These classes have been
+                            merged and moved to <literal>axiom-common-impl</literal>. Relocation then allows them
+                            to retain their original name (including the original package name) in the
+                            <literal>axiom-impl</literal> and <literal>axiom-dom</literal> artifacts.
+                        </para>
+                        <para>
+                            However, this is only a concern if one wants to preserve compatibility with existing
+                            code that directly uses these implementation specific classes (which is something that is
+                            strongly discouraged). One example where this was relevant was the SAAJ implementation
+                            in Axis2 which used to be very strongly coupled to the DOOM implementation. This however
+                            has been fixed now.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    Using relocation also has some serious disadvantages:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Stack traces may contain class names that don't match class names in the Axiom source
+                            code, making debugging harder.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Axiom now uses JaCoCo to produce code coverage reports. However these reports are
+                            incomplete if relocation is used. This doesn't affect test cases executed in
+                            the <literal>axiom-impl</literal> and <literal>axiom-dom</literal> modules
+                            (because they are executed with the original classes), but tests in separate modules
+                            (such as integration tests). There are actually two issues:
+                        </para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    For the relocated classes, JaCoCo is unable to find the corresponding source code.
+                                    This means that the reported code coverage is inaccurate for classes in
+                                    <literal>axiom-common-impl</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Relocation not only modifies the classes in <literal>axiom-common-impl</literal>, but
+                                    also the classes in <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
+                                    that use them. JaCoCo <link xlink:href="https://github.com/jacoco/jacoco/issues/51">detects this</link>
+                                    and excludes the data from the coverage analysis. This means that the
+                                    reported code coverage will also be inaccurate for classes in
+                                    <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    In Axiom 1.2.14 relocation was used, but this has been changed in Axiom 1.2.15 because the disadvantages
+                    outweigh the advantages.
+                </para>
+            </section>
         </section>
-    </chapter>
     
-    <chapter>
-        <title><classname>LifecycleManager</classname> design (Axiom 1.3)</title>
-        <para>
-            The <classname>LifecycleManager</classname> API is used by the MIME handling code in Axiom
-            to manage the temporary files that are used to buffer the content of attachment parts.
-            The <classname>LifecycleManager</classname> implementation is responsible to track the temorary
-            files that have been created and to ensure that they are deleted when they are no longer used.
-            In Axiom 1.2.x, this API has multiple issues and a redesign is required for Axiom 1.3.
-        </para>
         <section>
-            <title>Issues with the <classname>LifecycleManager</classname> API in Axiom 1.2.x</title>
-            <orderedlist>
-                <listitem>
-                    <para>
-                        Temporary files that are not cleaned up explicitly by application code will only be removed
-                        when the JVM stops (<classname>LifecycleManagerImpl</classname> registers a shutdown hook
-                        and maintains a list of files that need to be deleted when the JVM exits). This means that
-                        temporary files may pile up, causing the file system to fill.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <classname>LifecycleManager</classname> also has a method <methodname>deleteOnTimeInterval</methodname>
-                        that deletes a file after some specified time interval. However, the implementation creates a new
-                        thread for each invocation of that method, which is generally not acceptable in high performance
-                        use cases.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        One of the stated design goals (see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-192">AXIOM-192</link>)
-                        of the <classname>LifecycleManager</classname> API was to wrap the files in <classname>FileAccessor</classname> objects to
-                        <quote>keep track of activity that occurs on the files</quote>. However, as pointed out in
-                        <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</link>, since
-                        <classname>FileAccessor</classname> has a method that returns the corresponding <classname>File</classname>
-                        object, this goal has not been reached.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        As noted in <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-382">AXIOM-382</link>, the fact
-                        that <classname>LifecycleManagerImpl</classname> registers a shutdown hook which is never unregistered
-                        causes a class loader leak in J2EE environments.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        In an attempt to work around the issues related to <classname>LifecycleManager</classname> (in particular
-                        the first item above), <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</link>
-                        introduced another class called <classname>AttachmentCacheMonitor</classname> that implements a timer
-                        based mechanism to clean up temporary files. However, this change causes other issues:
-                    </para>
-                    <itemizedlist>
-                        <listitem>
-                            <para>
-                                The existence of this API has a negative impact on Axiom's architectural integrity because it
-                                has functionality that overlaps with <classname>LifecycleManager</classname>. This means that
-                                we now have two completely separate APIs that are expected to serve the same purpose, but
-                                none of them addresses the problem properly.
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>
-                                <classname>AttachmentCacheMonitor</classname> automatically creates a timer, but there is no
-                                way to stop that timer. This means that this API can only be used if Axiom is integrated
-                                into the container, but not when it is deployed with an application.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                    <para>
-                        Fortunately, that change was only meant as a workaround to solve a particular issue in WebSphere
-                        (see APAR <link xlink:href="http://www-01.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PK91497">PK91497</link>),
-                        and once the <classname>LifecycleManager</classname> API is redesigned to solve that issue,
-                        <classname>AttachmentCacheMonitor</classname> no longer has a reason to exist.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <classname>LifecycleManager</classname> is an abstract API (interface), but refers to
-                        <classname>FileAccessor</classname> which is placed in an <literal>impl</literal> package.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <classname>FileAccessor</classname> uses the <classname>MessagingException</classname> class
-                        from JavaMail, although Axiom no longer relies on this API to parse or create MIME messages.
-                    </para>
-                </listitem>
-            </orderedlist>
-        </section>
-        <section>
-            <title>Cleanup strategy for temporary files</title>
+            <title><classname>LifecycleManager</classname> design (Axiom 1.3)</title>
             <para>
-                As pointed out in the previous section, one of the primary problems with the
-                <classname>LifecycleManager</classname> API in Axiom 1.2.x is that temporary files that are
-                not cleaned up explicitly by application code (e.g. using the <methodname>purgeDataSource</methodname> method
-                defined by <classname>DataHandlerExt</classname>) are only removed when the JVM exits.
-                A timer based strategy that deletes temporary file after a given time interval (as proposed
-                by <classname>AttachmentCacheMonitor</classname>) is not reliable
-                because in some use cases, application code may keep a reference to the attachment part for
-                a long time before accessing it again.
+                The <classname>LifecycleManager</classname> API is used by the MIME handling code in Axiom
+                to manage the temporary files that are used to buffer the content of attachment parts.
+                The <classname>LifecycleManager</classname> implementation is responsible to track the temorary
+                files that have been created and to ensure that they are deleted when they are no longer used.
+                In Axiom 1.2.x, this API has multiple issues and a redesign is required for Axiom 1.3.
             </para>
-            <para>
-                The only reliable strategy is to take advantage of finalization, i.e. to rely on the garbage
-                collector to trigger the deletion of temporary files that are no longer used. For this to work
-                the design of the API (and its default implementation) must satisfy the following two conditions:
-            </para>
-            <orderedlist>
-                <listitem>
-                    <para>
-                        All access to the underlying file must be strictly encapsulated, so that the file
-                        is only accessible as long as there is a strong reference to the object that
-                        encapsulates the file access. This is necessary to ensure that the file can
-                        be safely deleted once there is no longer a strong reference and the
-                        object is garbage collected.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Java guarantees that the finalizer is invoked before the instance is garbage
-                        collected. However, instances are not necessarily garbage collected before the
-                        JVM exits, and in that case the finalizer is never invoked. Therefore, the
-                        implementation must delete all existing temporary files when the JVM exits.
-                        The API design should also take into account that some implementations of
-                        the <classname>LifecycleManager</classname> API may want to trigger this
-                        cleanup before the JVM exits, e.g. when the J2EE application in which
-                        Axiom is deployed is stopped.
-                    </para>
-                </listitem>
-            </orderedlist>
-            <para>
-                The first condition can be satisfied by redesigning the <classname>FileAccessor</classname>
-                such that it never leaks the name of the file it represents (neither as a <classname>String</classname>
-                nor a <classname>File</classname> object). This in turn means that the
-                <classname>CachedFileDataSource</classname> class must be removed from the Axiom API.
-                In addition, the <methodname>getInputStream</methodname> method defined by
-                <classname>FileAccessor</classname> must no longer return a simple <classname>FileInputStream</classname>
-                instance, but must use a wrapper that keeps a strong reference to the <classname>FileAccessor</classname>,
-                so that the <classname>FileAccessor</classname> can't be garbage collected while the
-                input stream is still in use.
-            </para>
-            <para>
-                To satisfy the second condition, one may want to use <methodname>File#deleteOnExit</methodname>.
-                However, this method causes a native memory leak, especially when used with temporary files,
-                which are expected to have unique names (see
-                <link xlink:href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4513817">bug 4513817</link>).
-                Therefore this can only be implemented using a shutdown hook. However, a shutdown hook will
-                cause a class loader leak if it is used improperly, e.g. if it is registered by an application deployed
-                into a J2EE container and not unregistered when that application is stopped. For this
-                particular case, it is possible to create a special <classname>LifecycleManager</classname>
-                implementation, but for this to work, the lifecycle of this type of <classname>LifecycleManager</classname>
-                must be bound to the lifecycle of the application, e.g. using a
-                <classname>ServletContextListener</classname>. This is not always possible and this approach
-                is therefore not suitable for the default <classname>LifecycleManager</classname> implementation.
-            </para>
-            <para>
-                To avoid the class loader leak, the default <classname>LifecycleManager</classname> implementation
-                should register the shutdown hook when the first temporary file is registered and
-                automatically unregister the shutdown hook again when there are no more temporary files.
-                This implies that the shutdown hook is repeatedly registered and unregistered. However, since
-                these are relatively cheap operations<footnote><para>Since the JRE typically uses an
-                <classname>IdentityHashMap</classname> to store shutdown hooks, the only overhead is caused
-                by Java 2 security checks and synchronization.</para></footnote>, this should not be a concern.
-            </para>
-            <para>
-                An additional complication is that when the shutdown hook is executed, the temporary files
-                may still be in use. This contrasts with the finalizer case where encapsulation guarantees
-                that the file is no longer in use. This situation doesn't cause an issue on Unix platforms (where it is possible
-                to delete a file while it is still open), but needs to be handled properly on Windows.
-                This can only be achieved if the <classname>FileAccessor</classname> keeps track of
-                created streams, so that it can forcibly close the underlying <classname>FileInputStream</classname> objects.
-            </para>
+            <section>
+                <title>Issues with the <classname>LifecycleManager</classname> API in Axiom 1.2.x</title>
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            Temporary files that are not cleaned up explicitly by application code will only be removed
+                            when the JVM stops (<classname>LifecycleManagerImpl</classname> registers a shutdown hook
+                            and maintains a list of files that need to be deleted when the JVM exits). This means that
+                            temporary files may pile up, causing the file system to fill.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <classname>LifecycleManager</classname> also has a method <methodname>deleteOnTimeInterval</methodname>
+                            that deletes a file after some specified time interval. However, the implementation creates a new
+                            thread for each invocation of that method, which is generally not acceptable in high performance
+                            use cases.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            One of the stated design goals (see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-192">AXIOM-192</link>)
+                            of the <classname>LifecycleManager</classname> API was to wrap the files in <classname>FileAccessor</classname> objects to
+                            <quote>keep track of activity that occurs on the files</quote>. However, as pointed out in
+                            <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</link>, since
+                            <classname>FileAccessor</classname> has a method that returns the corresponding <classname>File</classname>
+                            object, this goal has not been reached.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            As noted in <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-382">AXIOM-382</link>, the fact
+                            that <classname>LifecycleManagerImpl</classname> registers a shutdown hook which is never unregistered
+                            causes a class loader leak in J2EE environments.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            In an attempt to work around the issues related to <classname>LifecycleManager</classname> (in particular
+                            the first item above), <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</link>
+                            introduced another class called <classname>AttachmentCacheMonitor</classname> that implements a timer
+                            based mechanism to clean up temporary files. However, this change causes other issues:
+                        </para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The existence of this API has a negative impact on Axiom's architectural integrity because it
+                                    has functionality that overlaps with <classname>LifecycleManager</classname>. This means that
+                                    we now have two completely separate APIs that are expected to serve the same purpose, but
+                                    none of them addresses the problem properly.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    <classname>AttachmentCacheMonitor</classname> automatically creates a timer, but there is no
+                                    way to stop that timer. This means that this API can only be used if Axiom is integrated
+                                    into the container, but not when it is deployed with an application.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        <para>
+                            Fortunately, that change was only meant as a workaround to solve a particular issue in WebSphere
+                            (see APAR <link xlink:href="http://www-01.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PK91497">PK91497</link>),
+                            and once the <classname>LifecycleManager</classname> API is redesigned to solve that issue,
+                            <classname>AttachmentCacheMonitor</classname> no longer has a reason to exist.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <classname>LifecycleManager</classname> is an abstract API (interface), but refers to
+                            <classname>FileAccessor</classname> which is placed in an <literal>impl</literal> package.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <classname>FileAccessor</classname> uses the <classname>MessagingException</classname> class
+                            from JavaMail, although Axiom no longer relies on this API to parse or create MIME messages.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </section>
+            <section>
+                <title>Cleanup strategy for temporary files</title>
+                <para>
+                    As pointed out in the previous section, one of the primary problems with the
+                    <classname>LifecycleManager</classname> API in Axiom 1.2.x is that temporary files that are
+                    not cleaned up explicitly by application code (e.g. using the <methodname>purgeDataSource</methodname> method
+                    defined by <classname>DataHandlerExt</classname>) are only removed when the JVM exits.
+                    A timer based strategy that deletes temporary file after a given time interval (as proposed
+                    by <classname>AttachmentCacheMonitor</classname>) is not reliable
+                    because in some use cases, application code may keep a reference to the attachment part for
+                    a long time before accessing it again.
+                </para>
+                <para>
+                    The only reliable strategy is to take advantage of finalization, i.e. to rely on the garbage
+                    collector to trigger the deletion of temporary files that are no longer used. For this to work
+                    the design of the API (and its default implementation) must satisfy the following two conditions:
+                </para>
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            All access to the underlying file must be strictly encapsulated, so that the file
+                            is only accessible as long as there is a strong reference to the object that
+                            encapsulates the file access. This is necessary to ensure that the file can
+                            be safely deleted once there is no longer a strong reference and the
+                            object is garbage collected.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Java guarantees that the finalizer is invoked before the instance is garbage
+                            collected. However, instances are not necessarily garbage collected before the
+                            JVM exits, and in that case the finalizer is never invoked. Therefore, the
+                            implementation must delete all existing temporary files when the JVM exits.
+                            The API design should also take into account that some implementations of
+                            the <classname>LifecycleManager</classname> API may want to trigger this
+                            cleanup before the JVM exits, e.g. when the J2EE application in which
+                            Axiom is deployed is stopped.
+                        </para>
+                    </listitem>
+                </orderedlist>
+                <para>
+                    The first condition can be satisfied by redesigning the <classname>FileAccessor</classname>
+                    such that it never leaks the name of the file it represents (neither as a <classname>String</classname>
+                    nor a <classname>File</classname> object). This in turn means that the
+                    <classname>CachedFileDataSource</classname> class must be removed from the Axiom API.
+                    In addition, the <methodname>getInputStream</methodname> method defined by
+                    <classname>FileAccessor</classname> must no longer return a simple <classname>FileInputStream</classname>
+                    instance, but must use a wrapper that keeps a strong reference to the <classname>FileAccessor</classname>,
+                    so that the <classname>FileAccessor</classname> can't be garbage collected while the
+                    input stream is still in use.
+                </para>
+                <para>
+                    To satisfy the second condition, one may want to use <methodname>File#deleteOnExit</methodname>.
+                    However, this method causes a native memory leak, especially when used with temporary files,
+                    which are expected to have unique names (see
+                    <link xlink:href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4513817">bug 4513817</link>).
+                    Therefore this can only be implemented using a shutdown hook. However, a shutdown hook will
+                    cause a class loader leak if it is used improperly, e.g. if it is registered by an application deployed
+                    into a J2EE container and not unregistered when that application is stopped. For this
+                    particular case, it is possible to create a special <classname>LifecycleManager</classname>
+                    implementation, but for this to work, the lifecycle of this type of <classname>LifecycleManager</classname>
+                    must be bound to the lifecycle of the application, e.g. using a
+                    <classname>ServletContextListener</classname>. This is not always possible and this approach
+                    is therefore not suitable for the default <classname>LifecycleManager</classname> implementation.
+                </para>
+                <para>
+                    To avoid the class loader leak, the default <classname>LifecycleManager</classname> implementation
+                    should register the shutdown hook when the first temporary file is registered and
+                    automatically unregister the shutdown hook again when there are no more temporary files.
+                    This implies that the shutdown hook is repeatedly registered and unregistered. However, since
+                    these are relatively cheap operations<footnote><para>Since the JRE typically uses an
+                    <classname>IdentityHashMap</classname> to store shutdown hooks, the only overhead is caused
+                    by Java 2 security checks and synchronization.</para></footnote>, this should not be a concern.
+                </para>
+                <para>
+                    An additional complication is that when the shutdown hook is executed, the temporary files
+                    may still be in use. This contrasts with the finalizer case where encapsulation guarantees
+                    that the file is no longer in use. This situation doesn't cause an issue on Unix platforms (where it is possible
+                    to delete a file while it is still open), but needs to be handled properly on Windows.
+                    This can only be achieved if the <classname>FileAccessor</classname> keeps track of
+                    created streams, so that it can forcibly close the underlying <classname>FileInputStream</classname> objects.
+                </para>
+            </section>
         </section>
     </chapter>
     
