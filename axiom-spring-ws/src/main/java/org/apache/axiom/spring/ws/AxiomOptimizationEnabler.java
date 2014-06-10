@@ -110,7 +110,7 @@ public class AxiomOptimizationEnabler implements BeanFactoryPostProcessor, BeanP
     
     static {
         strategyMap = new HashMap<Class<?>,SourceExtractionStrategy>();
-        strategyMap.put(AxiomPayloadRootAnnotationMethodEndpointMapping.class, null);
+        strategyMap.put(AxiomPayloadRootAnnotationMethodEndpointMapping.class, SourceExtractionStrategy.NONE);
         strategyMap.put(JDomPayloadMethodProcessor.class, SourceExtractionStrategy.SAX_CONSUME);
         strategyMap.put(DomPayloadMethodProcessor.class, SourceExtractionStrategy.DOM_OR_SAX_CONSUME);
         strategyMap.put(AnnotationActionEndpointMapping.class, SourceExtractionStrategy.DOM_OR_SAX_PRESERVE);
@@ -156,38 +156,27 @@ public class AxiomOptimizationEnabler implements BeanFactoryPostProcessor, BeanP
     }
     
     Object createSourceExtractionStrategyProxy(Object target, String beanName) {
-        boolean hasStrategy;
         SourceExtractionStrategy strategy;
         if (strategyMap.containsKey(target.getClass())) {
-            hasStrategy = true;
             strategy = strategyMap.get(target.getClass());
         } else {
-            hasStrategy = false;
             strategy = null;
             for (Map.Entry<Class<?>,SourceExtractionStrategy> entry : strategyMap.entrySet()) {
                 if (entry.getKey().isInstance(target)) {
-                    hasStrategy = true;
                     strategy = entry.getValue();
                     // TODO: not correct: there may be a more specialized class/interface in the map
                     break;
                 }
             }
         }
-        if (hasStrategy) {
-            if (strategy == null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("No extraction strategy required for bean \"" + beanName + "\" (of type " + target.getClass().getName() + ")");
-                }
-                return target;
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Creating proxy to associate extraction strategy " + strategy + " with bean " + beanName);
-                }
-                Set<Class<?>> ifaces = new HashSet<Class<?>>();
-                collectInterfaces(target.getClass(), ifaces);
-                return Proxy.newProxyInstance(AxiomOptimizationEnabler.class.getClassLoader(), ifaces.toArray(new Class<?>[ifaces.size()]),
-                        new SourceExtractionStrategyInvocationHandler(target, beanName, strategy, this));
+        if (strategy != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Creating proxy to associate extraction strategy " + strategy + " with bean " + beanName);
             }
+            Set<Class<?>> ifaces = new HashSet<Class<?>>();
+            collectInterfaces(target.getClass(), ifaces);
+            return Proxy.newProxyInstance(AxiomOptimizationEnabler.class.getClassLoader(), ifaces.toArray(new Class<?>[ifaces.size()]),
+                    new SourceExtractionStrategyInvocationHandler(target, beanName, strategy, this));
         } else {
             if (log.isWarnEnabled()) {
                 log.warn("No extraction strategy associated with bean \"" + beanName + "\" (of type " + target.getClass().getName() + ")");

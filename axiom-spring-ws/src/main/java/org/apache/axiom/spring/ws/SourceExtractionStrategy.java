@@ -72,6 +72,21 @@ import org.w3c.dom.Node;
  */
 public interface SourceExtractionStrategy {
     /**
+     * Pseudo extraction strategy that will throw an exception if the payload source is requested.
+     * This is for use with beans that are not expected to access the payload.
+     */
+    SourceExtractionStrategy NONE = new SourceExtractionStrategy() {
+        public Source getSource(OMContainer container) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public String toString() {
+            return "NONE";
+        }
+    };
+    
+    /**
      * Extraction strategy that creates a {@link StAXSource} using
      * {@link OMContainer#getXMLStreamReader(boolean) with <code>cache</code> set to
      * <code>true</code>.
