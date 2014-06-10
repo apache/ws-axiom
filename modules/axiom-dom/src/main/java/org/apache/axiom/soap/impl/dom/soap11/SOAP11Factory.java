@@ -42,7 +42,6 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
-import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 
 /**
@@ -61,19 +60,6 @@ public class SOAP11Factory extends DOMSOAPFactory {
 
     public SOAPVersion getSOAPVersion() {
         return SOAP11Version.getSingleton();
-    }
-
-    public SOAPEnvelope createSOAPEnvelope() {
-        return new SOAPEnvelopeImpl(
-                null,
-                new OMNamespaceImpl(
-                        SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                null, this, true);
-    }
-    
-    public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return new SOAPEnvelopeImpl(null, ns, null, this, true);
     }
 
     public SOAPHeader createSOAPHeader() throws SOAPProcessingException {

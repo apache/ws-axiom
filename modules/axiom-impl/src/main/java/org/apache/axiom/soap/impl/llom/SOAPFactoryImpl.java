@@ -16,64 +16,58 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.llom;
 
-package org.apache.axiom.soap.impl.dom.factory;
-
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
-import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
-import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 
-public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactoryEx {
-    public DOMSOAPFactory(OMDOMMetaFactory metaFactory) {
+public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements SOAPFactoryEx {
+    public SOAPFactoryImpl(OMLinkedListMetaFactory metaFactory) {
         super(metaFactory);
     }
 
-    public DOMSOAPFactory() {
-    }
-
-    public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
-        return new SOAPMessageImpl(builder, this);
-    }
-
-    public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl((ParentNode)message, null, builder, this, false);
-    }
-
-    public final SOAPEnvelope createSOAPEnvelope() {
-        return new SOAPEnvelopeImpl(null, getNamespace(), null, this, true);
-    }
-    
-    public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return new SOAPEnvelopeImpl(null, ns, null, this, true);
-    }
-
-    public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(null, getNamespace(), null, this, true);
-        createSOAPHeader(env);
-        createSOAPBody(env);
-        return env;
+    /**
+     * @deprecated
+     */
+    public SOAPFactoryImpl() {
+        super();
     }
 
     public final SOAPMessage createSOAPMessage() {
         return new SOAPMessageImpl(this);
     }
 
-    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
-        throw new UnsupportedOperationException("TODO");
+    public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
+        if (builder == null) {
+            // For Spring-WS compatibility
+            return createSOAPMessage();
+        } else {
+            return new SOAPMessageImpl(builder, this);
+        }
     }
 
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
+    public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
+        return new SOAPEnvelopeImpl(message, builder, this);
     }
 
+    public final SOAPEnvelope createSOAPEnvelope() {
+        return new SOAPEnvelopeImpl(getNamespace(), this);
+    }
+    
+    public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
+        return new SOAPEnvelopeImpl(ns, this);
+    }
+
+    public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
+        SOAPEnvelope env = createSOAPEnvelope();
+        createSOAPHeader(env);
+        createSOAPBody(env);
+        return env;
+    }
 }

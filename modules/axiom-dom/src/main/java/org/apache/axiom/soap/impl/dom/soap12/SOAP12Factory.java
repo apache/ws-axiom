@@ -42,7 +42,6 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
-import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 
 /**
@@ -61,19 +60,6 @@ public class SOAP12Factory extends DOMSOAPFactory implements SOAP12FactoryEx {
 
     public SOAPVersion getSOAPVersion() {
         return SOAP12Version.getSingleton();
-    }
-
-    public SOAPEnvelope createSOAPEnvelope() {
-        return new SOAPEnvelopeImpl(
-                null,
-                new OMNamespaceImpl(
-                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                null, this, true);
-    }
-    
-    public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return new SOAPEnvelopeImpl(null, ns, null, this, true);
     }
 
     public SOAPHeader createSOAPHeader() throws SOAPProcessingException {

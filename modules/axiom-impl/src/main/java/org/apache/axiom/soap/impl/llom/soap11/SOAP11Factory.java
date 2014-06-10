@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -40,17 +39,14 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
-import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
-import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
-import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
+import org.apache.axiom.soap.impl.llom.SOAPFactoryImpl;
 
 /**
  */
-public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactoryEx {
+public class SOAP11Factory extends SOAPFactoryImpl {
     /**
      * For internal use only.
      * 
@@ -78,19 +74,6 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public SOAPVersion getSOAPVersion() {
         return SOAP11Version.getSingleton();
-    }
-
-    public SOAPEnvelope createSOAPEnvelope() {
-        return new SOAPEnvelopeImpl(
-                new OMNamespaceImpl(
-                        SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                this);
-    }
-    
-    public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return new SOAPEnvelopeImpl(ns,
-                                    this);
     }
 
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope)
@@ -272,17 +255,6 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         return new SOAP11FaultDetailImpl(parent, builder, this);
     }
 
-    public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        OMNamespace ns =
-                new OMNamespaceImpl(
-                        SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
-        createSOAPHeader(env);
-        createSOAPBody(env);
-        return env;
-    }
-
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
         SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
@@ -291,23 +263,4 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         createSOAPFaultDetail(fault);
         return defaultEnvelope;
     }
-
-    public SOAPMessage createSOAPMessage() {
-        return new SOAPMessageImpl(this);
-    }
-
-    public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
-        if (builder == null) {
-            // For Spring-WS compatibility
-            return createSOAPMessage();
-        } else {
-            return new SOAPMessageImpl(builder, this);
-        }
-    }
-
-    public SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl(message, builder, this);
-    }
-
-
 }
