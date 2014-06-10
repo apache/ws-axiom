@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.dom.factory;
+package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
@@ -30,15 +30,17 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
-import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
-import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 
-public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactoryEx {
-    public DOMSOAPFactory(OMDOMMetaFactory metaFactory) {
+public abstract class SOAPFactoryImpl extends OMDOMFactory implements SOAPFactoryEx {
+    public SOAPFactoryImpl(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
-    public DOMSOAPFactory() {
+    public SOAPFactoryImpl() {
+    }
+
+    public final SOAPMessage createSOAPMessage() {
+        return new SOAPMessageImpl(this);
     }
 
     public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
@@ -50,7 +52,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public final SOAPEnvelope createSOAPEnvelope() {
-        return new SOAPEnvelopeImpl(null, getNamespace(), null, this, true);
+        return createSOAPEnvelope(getNamespace());
     }
     
     public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
@@ -58,14 +60,10 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(null, getNamespace(), null, this, true);
+        SOAPEnvelope env = createSOAPEnvelope();
         createSOAPHeader(env);
         createSOAPBody(env);
         return env;
-    }
-
-    public final SOAPMessage createSOAPMessage() {
-        return new SOAPMessageImpl(this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {

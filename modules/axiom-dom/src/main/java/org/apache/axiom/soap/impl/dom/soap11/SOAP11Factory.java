@@ -42,11 +42,11 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
-import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
+import org.apache.axiom.soap.impl.dom.SOAPFactoryImpl;
 
 /**
  */
-public class SOAP11Factory extends DOMSOAPFactory {
+public class SOAP11Factory extends SOAPFactoryImpl {
     public SOAP11Factory(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }

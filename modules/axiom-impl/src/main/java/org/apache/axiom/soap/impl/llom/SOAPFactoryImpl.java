@@ -36,7 +36,6 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
      * @deprecated
      */
     public SOAPFactoryImpl() {
-        super();
     }
 
     public final SOAPMessage createSOAPMessage() {
@@ -57,7 +56,7 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
     }
 
     public final SOAPEnvelope createSOAPEnvelope() {
-        return new SOAPEnvelopeImpl(getNamespace(), this);
+        return createSOAPEnvelope(getNamespace());
     }
     
     public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
