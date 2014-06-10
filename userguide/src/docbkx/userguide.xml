@@ -19,7 +19,7 @@
   ~ under the License.
   -->
 <book>
-    <bookinfo>
+    <info>
         <title>Axiom User Guide</title>
         <releaseinfo>&version;
         </releaseinfo>
@@ -32,7 +32,7 @@
                 this file except in compliance with the License. You may obtain a copy of the License at
             </para>
             <para>
-                <ulink url="http://www.apache.org/licenses/LICENSE-2.0"/>
+                <link xlink:href="http://www.apache.org/licenses/LICENSE-2.0"/>
             </para>
             <para>
                 Unless required by applicable law or agreed to in writing, software distributed under the License is
@@ -41,7 +41,7 @@
                 License.
             </para>
         </legalnotice>
-    </bookinfo>
+    </info>
 
     <toc/>
 
@@ -54,7 +54,7 @@
                 that is initially developed for Apache Axis2. XML infoset refers to the information included inside the
                 XML, and for programmatic manipulation it is convenient to have a representation of this XML infoset in
                 a language specific manner. For an object oriented language the obvious choice is a model made up of
-                objects. <ulink url="http://www.w3.org/DOM/">DOM</ulink> and <ulink url="http://www.jdom.org/">JDOM</ulink>
+                objects. <link xlink:href="http://www.w3.org/DOM/">DOM</link> and <link xlink:href="http://www.jdom.org/">JDOM</link>
                 are two such XML models. Axiom is conceptually similar to such an XML model by its external behavior but
                 deep down it is very much different. The objective of this tutorial is to introduce the basics of Axiom and
                 explain the best practices to be followed while using Axiom. However, before diving in to the deep end of
@@ -67,8 +67,8 @@
                 This tutorial can be used by anyone who is interested in Axiom and needs to
                 gain a deeper knowledge about the model. However, it is assumed that the
                 reader has a basic understanding of the concepts of XML (such as
-                <ulink src="http://www.w3.org/TR/REC-xml-names/">Namespaces</ulink>) and a working
-                knowledge of tools such as <ulink href="http://ant.apache.org/">Ant</ulink>.
+                <link xlink:href="http://www.w3.org/TR/REC-xml-names/">Namespaces</link>) and a working
+                knowledge of tools such as <link xlink:href="http://ant.apache.org/">Ant</link>.
                 Knowledge in similar object models such as DOM will be quite helpful in
                 understanding Axiom, mainly to highlight the differences and similarities
                 between the two, but such knowledge is not assumed. Several links are listed
@@ -81,8 +81,8 @@
             <para>
                 Pull parsing is a recent trend in XML processing. The previously popular XML
                 processing frameworks such as
-                <ulink url="http://en.wikipedia.org/wiki/Simple_API_for_XML">SAX</ulink> and
-                <ulink url="http://en.wikipedia.org/wiki/Document_Object_Model">DOM</ulink> were
+                <link xlink:href="http://en.wikipedia.org/wiki/Simple_API_for_XML">SAX</link> and
+                <link xlink:href="http://en.wikipedia.org/wiki/Document_Object_Model">DOM</link> were
                 "push-based" which means the control of the parsing was in the hands of the
                 parser itself. This approach is fine and easy to use, but it was not
                 efficient in handling large XML documents since a complete memory model will
@@ -90,8 +90,8 @@
                 parser only proceeds at the users command. The user can decide to store or
                 discard events generated from the parser. Axiom is based on pull parsing. To
                 learn more about XML pull parsing see the
-                <ulink url="http://www.bearcave.com/software/java/xml/xmlpull.html">XML pull
-                parsing introduction</ulink>.
+                <link xlink:href="http://www.bearcave.com/software/java/xml/xmlpull.html">XML pull
+                parsing introduction</link>.
             </para>
         </section>
         <section>
@@ -102,7 +102,7 @@
                 The original OM was proposed as a store for the pull parser events for
                 later processing, at the Axis summit held in Colombo, Sri Lanka, in September
                 2004. However, this approach was soon improved and OM was pursued as a
-                complete <ulink url="http://dret.net/glossary/xmlinfoset">XML infoset</ulink> model
+                complete <link xlink:href="http://dret.net/glossary/xmlinfoset">XML infoset</link> model
                 due to its flexibility. Several implementation techniques were attempted
                 during the initial phases. The two most promising techniques were the table
                 based technique and the link list based technique. During the intermediate
@@ -116,7 +116,7 @@
                 tight integration was evident at this stage and this resulted in having SOAP
                 specific interfaces as part of OM rather than a layer on top of it. OM was
                 deliberately made
-                <ulink url="http://en.wikipedia.org/wiki/Application_programming_interface">API</ulink>
+                <link xlink:href="http://en.wikipedia.org/wiki/Application_programming_interface">API</link>
                 centric. It allows the implementations to take place independently and
                 swapped without affecting the program later.
             </para>
@@ -127,7 +127,7 @@
                 Axiom is a lightweight XML infoset representation that supports deferred building
                 That means that the object model can be
                 manipulated as flexibly as any other object model (Such as
-                <ulink url="http://www.jdom.org/">JDOM</ulink>), but underneath, the objects will be
+                <link xlink:href="http://www.jdom.org/">JDOM</link>), but underneath, the objects will be
                 created only when they are absolutely required. This leads to much less
                 memory intensive programming. Following is a short feature overview of OM.
             </para>
@@ -170,8 +170,8 @@
         <section>
             <title>Relation with StAX</title>
             <para>
-                <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</ulink>
-                (<ulink url="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</ulink>) is the standard pull parser API for Java.            
+                <link xlink:href="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</link>
+                (<link xlink:href="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</link>) is the standard pull parser API for Java.            
                 Axiom makes use of the StAX API to allow application code to access the object model in streaming mode, which means
                 that application code can request an <classname>XMLStreamReader</classname> for any document or element information item.
                 In addition, support for deferred building relies on the usage of a pull parser. The two standard implementations
@@ -196,7 +196,7 @@
         <section>
             <title>Where Does SOAP Come into Play?</title>
             <para>
-                In a nutshell <ulink url="http://www.w3schools.com/SOAP/soap_intro.asp">SOAP</ulink> is an
+                In a nutshell <link xlink:href="http://www.w3schools.com/SOAP/soap_intro.asp">SOAP</link> is an
                 information exchange protocol based on XML. SOAP has a defined set of XML
                 elements that should be used in messages. Since Axis2 is a "SOAP Engine" and
                 Axiom is built for Axis2, a set of SOAP specific objects were also defined along
@@ -224,7 +224,7 @@
                 <listitem>
                     <para>
                         A prebuilt binary distribution can be
-                        <ulink url="http://ws.apache.org/axiom/download.cgi">downloaded</ulink>
+                        <link xlink:href="http://ws.apache.org/axiom/download.cgi">downloaded</link>
                         from the site. Source distributions are also available. They can be built
                         using Maven 2, by executing <command>mvn install</command> in the root
                         directory of the distribution.
@@ -236,7 +236,7 @@
                         version (trunk) or previous releases from the Subversion repository and build it
                         using Maven 2. Detailed information on getting the source code
                         from the Subversion repository is found
-                        <ulink url="http://ws.apache.org/axiom/source-repository.html">here</ulink>.
+                        <link xlink:href="http://ws.apache.org/axiom/source-repository.html">here</link>.
                     </para>
                 </listitem>
             </orderedlist>
@@ -261,7 +261,7 @@
                 The reason for this is to cater for different implementations of the Axiom API,
                 as shown in <xref linkend="fig_api"/>.
             </para>
-            <figure id="fig_api">
+            <figure xml:id="fig_api">
                 <title>The Axiom API with different implementations</title>
                 <mediaobject>
                     <imageobject>
@@ -293,7 +293,7 @@
                 factory for plain XML. <xref linkend="list2"/> shows how this factory is used to create
                 several <classname>OMElement</classname> instances.
             </para>
-            <example id="list2">
+            <example xml:id="list2">
                 <title>Creating an object model programmatically</title>
 <programlisting>//create a factory
 OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -317,7 +317,7 @@ public void addAttribute(OMAttribute attr);</programlisting>
                 <xref linkend="ex-addChild"/> shows how this method is used to assemble the three elements
                 created in <xref linkend="list2"/> into a tree structure.
             </para>
-            <example id="ex-addChild">
+            <example xml:id="ex-addChild">
                 <title>Usage of <methodname>addChild</methodname></title>
 <programlisting>//set the children
 elt11.addChild(elt21);
@@ -357,7 +357,7 @@ root.addChild(elt12);</programlisting>
                     This approach is still supported as well.
                 </para>
             </note>
-            <example id="list1">
+            <example xml:id="list1">
                 <title>Creating an object model from an input stream</title>
 <programlisting>//create the input stream
 InputStream in = new FileInputStream(file);
@@ -439,7 +439,7 @@ public OMNamespace findNamespace(String uri, String prefix);</programlisting>
             <para>
                 The following simple code segment shows how the namespaces are dealt in OM
             </para>
-            <example id="list6">
+            <example xml:id="list6">
                 <title>Creating an OM document with namespaces</title>
 <programlisting>OMFactory factory = OMAbstractFactory.getOMFactory();
 OMNamespace ns1 = factory.createOMNamespace("bar","x");
@@ -492,7 +492,7 @@ while(children.hasNext()){
                 </para>
             </important>
         </section>
-        <section id="serializer">
+        <section xml:id="serializer">
             <title>Serializer</title>
             <para>
                 An Axiom tree can be serialized either as the pure object model or the pull event
@@ -588,7 +588,7 @@ OMElement documentElement = builder.getDocumentElement();
 //dump the out put to console with caching
 System.out.println(documentElement.toStringWithConsume());</programlisting>
         </section>
-        <section id="StAXUtils">
+        <section xml:id="StAXUtils">
             <title>Creating stream readers and writers using <classname>StAXUtils</classname></title>
             <para>
                 The normal way to create <classname>XMLStreamReader</classname> and
@@ -621,7 +621,7 @@ System.out.println(documentElement.toStringWithConsume());</programlisting>
                     Therefore, when using Axiom versions prior to 1.2.9, you should avoid using <classname>StAXUtils</classname>
                     together with a StAX implementation other than Woodstox, especially in a highly
                     concurrent environment. The issue has been fixed in Axiom 1.2.9. See
-                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-74">AXIOM-74</ulink>
+                    <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-74">AXIOM-74</link>
                     for more details.
                 </para>
             </caution>
@@ -763,7 +763,7 @@ try {
                     sequence of events. Starting with Axiom 1.2.8, the object model builder
                     will never attempt to read new events from a parser that has previously reported
                     an I/O or parsing error. These versions of Axiom are therefore safe; see
-                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-34">AXIOM-34</ulink>
+                    <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-34">AXIOM-34</link>
                     for more details.
                 </para>
             </caution>
@@ -780,7 +780,7 @@ try {
         </section>
     </chapter>
 
-    <chapter id="advanced">
+    <chapter xml:id="advanced">
         <title>Advanced Operations with Axiom</title>
         <section>
             <title>Accessing the Pull Parser</title>
@@ -819,13 +819,13 @@ try {
 
     <chapter>
         <title>Integrating Axiom into your project</title>
-        <section id="using-maven2">
+        <section xml:id="using-maven2">
             <title>Using Axiom in a Maven 2 project</title>
             <section>
                 <title>Adding Axiom as a dependency</title>
                 <para>
                     If your project uses Maven 2, it is fairly easy to add Axiom to your project.
-                    Simply add the following entries to the <sgmltag class="element">dependencies</sgmltag>
+                    Simply add the following entries to the <tag class="element">dependencies</tag>
                     section of <filename>pom.xml</filename>:
                 </para>
 <programlisting><![CDATA[<dependency>
@@ -840,7 +840,7 @@ try {
 </dependency>]]></programlisting>
                 <para>
                     All Axiom releases are deployed to the Maven central repository and there is no need
-                    to add an entry to the <sgmltag class="element">repositories</sgmltag> section.
+                    to add an entry to the <tag class="element">repositories</tag> section.
                     However, if you want to work with the development (snapshot) version of Axiom, it
                     is necessary to add the Apache Snapshot Repository:
                 </para>
@@ -865,9 +865,9 @@ try {
                 <para>
                     Axiom requires the Java Activation Framework (JAF) and the JavaMail API to work. There are two
                     commonly used incarnations of these libraries: one is Sun's reference implementation, the other
-                    is part of the <ulink url="http://geronimo.apache.org/">Geronimo</ulink> project. Axiom declares
+                    is part of the <link xlink:href="http://geronimo.apache.org/">Geronimo</link> project. Axiom declares
                     dependencies on the Geronimo versions (though that might
-                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-319">change</ulink> in the future).
+                    <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-319">change</link> in the future).
                     If your project uses another library that depends on JAF and/or JavaMail, but that refers
                     to Sun's implementation, your project will end up with dependencies on two different
                     artifacts implementing the same API.
@@ -917,7 +917,7 @@ try {
                 and/or property files. This is also important when using third party applications or
                 libraries that depend on Axiom.
             </para>
-            <section id="factory.properties">
+            <section xml:id="factory.properties">
                 <title>Changing the default StAX factory settings</title>
                 <note>
                     <para>
@@ -964,7 +964,7 @@ try {
                     </para>
                     <para>
                         The only way to strictly preserve CR characters is to serialize them as
-                        character entities, i.e. <sgmltag class="genentity">#xD</sgmltag>. This is the default
+                        character entities, i.e. <tag class="genentity">#xD</tag>. This is the default
                         behavior of Woodstox. This can be easily checked using the following Java snippet:
                     </para>
 <programlisting>OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -991,7 +991,7 @@ with CRLF</root>]]></screen>
                     </note>
                     <para>
                         In some cases this behavior may be undesirable<footnote><para>See
-                        <ulink url="http://jira.codehaus.org/browse/WSTX-94">WSTX-94</ulink> for a discussion
+                        <link xlink:href="http://jira.codehaus.org/browse/WSTX-94">WSTX-94</link> for a discussion
                         about this.</para></footnote>. Fortunately Woodstox allows to modify this behavior
                         by changing the value of the <varname>com.ctc.wstx.outputEscapeCr</varname> property
                         on the <classname>XMLOutputFactory</classname>. If Axiom is used (and in particular
@@ -1131,8 +1131,8 @@ with CRLF</root>]]></screen>
                         </listitem>
                     </orderedlist>
                     <para>
-                        As explained in <ulink url="https://issues.apache.org/jira/browse/AXIOM-255">AXIOM-255</ulink>
-                        and <ulink url="https://issues.apache.org/jira/browse/AXIOM-122">AXIOM-122</ulink>,
+                        As explained in <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-255">AXIOM-255</link>
+                        and <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-122">AXIOM-122</link>,
                         in Axiom 1.2.8, the type of stream reader provided by the API was not always well defined.
                         Sometimes the type of the stream reader even depended on the state of the Axiom tree
                         (i.e. whether some part of it has been accessed or not).
@@ -1147,9 +1147,9 @@ with CRLF</root>]]></screen>
                     </para>
                 </section>
             </section>
-            <section id="changes-1.2.11">
+            <section xml:id="changes-1.2.11">
                 <title>Changes in Axiom 1.2.11</title>
-                <section id="OMXMLBuilderFactory">
+                <section xml:id="OMXMLBuilderFactory">
                     <title>Resurrection of the <classname>OMXMLBuilderFactory</classname> API</title>
                     <para>
                         Historically, <classname>org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory</classname> was used to
@@ -1182,7 +1182,7 @@ with CRLF</root>]]></screen>
                         migration should be easy.
                     </para>
                 </section>
-                <section id="iterator-changes">
+                <section xml:id="iterator-changes">
                     <title>Changes in the behavior of certain iterators</title>
                     <para>
                         In Axiom 1.2.10 and previous versions, iterators returned by methods such as <methodname>OMIterator#getChildren()</methodname>
@@ -1235,7 +1235,7 @@ while (iterator.hasNext()) {
                     </para>
                 </section>
             </section>
-            <section id="changes-1.2.13">
+            <section xml:id="changes-1.2.13">
                 <title>Changes in Axiom 1.2.13</title>
                 <section>
                     <title>Handling of illegal namespace declarations</title>
@@ -1354,8 +1354,8 @@ while (iterator.hasNext()) {
                 <section>
                     <title>Usage of Apache James Mime4J as MIME parser</title>
                     <para>
-                        Starting with version 1.2.13, Axiom uses <ulink url="http://james.apache.org/mime4j/">Apache
-                        James Mime4J</ulink> as MIME parser implementation instead of its own custom parser
+                        Starting with version 1.2.13, Axiom uses <link xlink:href="http://james.apache.org/mime4j/">Apache
+                        James Mime4J</link> as MIME parser implementation instead of its own custom parser
                         implementation. The public API as defined by the <classname>Attachments</classname> class
                         remains unchanged, with the following exceptions:
                     </para>
@@ -1440,7 +1440,7 @@ while (iterator.hasNext()) {
                     </itemizedlist>
                 </section>
             </section>
-            <section id="changes-1.2.14">
+            <section xml:id="changes-1.2.14">
                 <title>Changes in Axiom 1.2.14</title>
                 <section>
                     <title>Upgrade of Woodstox</title>
@@ -1464,7 +1464,7 @@ while (iterator.hasNext()) {
                     </para>
                     <para>
                         For more information about the new semantics, refer to the Javadoc of <classname>DOMMetaFactory</classname>
-                        and to <ulink url="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</ulink>.
+                        and to <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</link>.
                     </para>
                 </section>
                 <section>
@@ -1477,7 +1477,7 @@ while (iterator.hasNext()) {
                     </para>
                 </section>
             </section>
-            <section id="changes-1.2.15">
+            <section xml:id="changes-1.2.15">
                 <title>Changes in Axiom 1.2.15</title>
                 <section>
                     <title>Removal of the JavaMail dependency</title>
@@ -1526,11 +1526,11 @@ public InputStream getInputStream() throws IOException;</programlisting>
                 <methodname>getInputStream</methodname> <quote>destructive</quote>. Consider
                 the implementation shown in <xref linkend="InputStreamDataSource"/><footnote><para>The example
                 shown is actually a simplified version of code that is 
-                <ulink url="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/InputStreamDataSource.java">part of Axis2 1.5</ulink>.</para></footnote>.
+                <link xlink:href="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/InputStreamDataSource.java">part of Axis2 1.5</link>.</para></footnote>.
                 It is clear that this data source can only be read once and that any subsequent call to
                 <methodname>getInputStream</methodname> will return an already closed input stream.
             </para>
-            <example id="InputStreamDataSource">
+            <example xml:id="InputStreamDataSource">
                 <title><classname>DataSource</classname> implementation that violates the interface contract</title>
 <programlisting>public class InputStreamDataSource implements DataSource {
     private final InputStream is;
@@ -1566,7 +1566,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
             </para>
             <para>
                 Imagine for example<footnote><para>For another example, see
-                <ulink url="http://markmail.org/thread/omx7umk5fnpb6dnc"/>.</para></footnote>
+                <link xlink:href="http://markmail.org/thread/omx7umk5fnpb6dnc"/>.</para></footnote>
                 that the implementation shown above is used to produce an
                 MTOM message. At first this will work without any problems because the data
                 source is read only once when serializing the message. If later on the MTOM
@@ -1664,9 +1664,9 @@ public InputStream getInputStream() throws IOException;</programlisting>
                     <classname>XMLStreamReader</classname> provided by
                     <methodname>OMElement#getXMLStreamReader()</methodname>. For example, older versions of ADB
                     (Axis2 Data Binding) used the following code<footnote><para>For the complete
-                    code, see <ulink url="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/adb/src/org/apache/axis2/databinding/ADBDataSource.java"/>.</para></footnote>:
+                    code, see <link xlink:href="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/adb/src/org/apache/axis2/databinding/ADBDataSource.java"/>.</para></footnote>:
                 </para>
-                <example id="adb-getReader">
+                <example xml:id="adb-getReader">
                     <title><methodname>OMDataSource#getReader()</methodname> implementation used in older ADB versions</title>
 <programlisting>public XMLStreamReader getReader() throws XMLStreamException {
     MTOMAwareOMBuilder mtomAwareOMBuilder = new MTOMAwareOMBuilder();
@@ -1728,7 +1728,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
                         <para>
                             The <methodname>getReader</methodname> method also uses an intermediary
                             Axiom tree<footnote><para>See e.g.
-                            <ulink url="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/UnknownContentOMDataSource.java"/>.</para></footnote>.
+                            <link xlink:href="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/UnknownContentOMDataSource.java"/>.</para></footnote>.
                             In that case it doesn't make sense to use an <classname>OMSourcedElement</classname>
                             in the first place! At least it doesn't make sense if one assumes that
                             in general the <classname>OMSourcedElement</classname> will either be
@@ -1754,7 +1754,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
         </section>
     </chapter>
 
-    <chapter id="appendix">
+    <chapter xml:id="appendix">
         <title>Appendix</title>
         <section>
             <title>Program Listing for Build and Serialize</title>
@@ -1793,7 +1793,7 @@ public class TestOMBuilder {
     }
 }</programlisting>
         </section>
-        <section id="links">
+        <section xml:id="links">
             <title>Links</title>
             <para>
                 For basics in XML
@@ -1801,27 +1801,27 @@ public class TestOMBuilder {
             <itemizedlist>
                 <listitem>
                     <para>
-                        <ulink url="http://www-128.ibm.com/developerworks/xml/newto/index.html">Developerworks Introduction to XML</ulink>
+                        <link xlink:href="http://www-128.ibm.com/developerworks/xml/newto/index.html">Developerworks Introduction to XML</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://www.bearcave.com/software/java/xml/xmlpull.html">Introduction to Pull parsing</ulink>
+                        <link xlink:href="http://www.bearcave.com/software/java/xml/xmlpull.html">Introduction to Pull parsing</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">Introduction to StAX</ulink>
+                        <link xlink:href="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">Introduction to StAX</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://www.jaxmag.com/itr/online_artikel/psecom,id,726,nodeid,147.html">Fast and Lightweight Object Model for XML</ulink>
+                        <link xlink:href="http://www.jaxmag.com/itr/online_artikel/psecom,id,726,nodeid,147.html">Fast and Lightweight Object Model for XML</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://www-128.ibm.com/developerworks/library/x-axiom/">Get the most out of XML processing with AXIOM</ulink>
+                        <link xlink:href="http://www-128.ibm.com/developerworks/library/x-axiom/">Get the most out of XML processing with AXIOM</link>
                     </para>
                 </listitem>
             </itemizedlist>
@@ -1832,21 +1832,21 @@ public class TestOMBuilder {
         <title>References</title>
         <bibliodiv>
             <title>Specifications</title>
-            <biblioentry id="bib.xml">
+            <biblioentry xml:id="bib.xml">
                 <abbrev>XML</abbrev>
-                <title><ulink url="http://www.w3.org/TR/2008/REC-xml-20081126/">Extensible Markup Language (XML) 1.0 (Fifth Edition)</ulink></title>
+                <title><link xlink:href="http://www.w3.org/TR/2008/REC-xml-20081126/">Extensible Markup Language (XML) 1.0 (Fifth Edition)</link></title>
                 <publishername>W3C Recommendation</publishername>
                 <pubdate>26 November 2008</pubdate>
             </biblioentry>
-            <biblioentry id="bib.xmlns">
+            <biblioentry xml:id="bib.xmlns">
                 <abbrev>XMLNS</abbrev>
-                <title><ulink url="http://www.w3.org/TR/2009/REC-xml-names-20091208/">Namespaces in XML 1.0 (Third Edition)</ulink></title>
+                <title><link xlink:href="http://www.w3.org/TR/2009/REC-xml-names-20091208/">Namespaces in XML 1.0 (Third Edition)</link></title>
                 <publishername>W3C Recommendation</publishername>
                 <pubdate>8 December 2009</pubdate>
             </biblioentry>
-            <biblioentry id="bib.xmlns11">
+            <biblioentry xml:id="bib.xmlns11">
                 <abbrev>XMLNS11</abbrev>
-                <title><ulink url="http://www.w3.org/TR/2006/REC-xml-names11-20060816/">Namespaces in XML 1.1 (Second Edition)</ulink></title>
+                <title><link xlink:href="http://www.w3.org/TR/2006/REC-xml-names11-20060816/">Namespaces in XML 1.1 (Second Edition)</link></title>
                 <publishername>W3C Recommendation</publishername>
                 <pubdate>16 August 2006</pubdate>
             </biblioentry>

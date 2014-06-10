@@ -19,7 +19,7 @@
   ~ under the License.
   -->
 <book>
-    <bookinfo>
+    <info>
         <title>Axiom Developer Guide</title>
         <releaseinfo>&version;</releaseinfo>
 
@@ -31,7 +31,7 @@
                 this file except in compliance with the License. You may obtain a copy of the License at
             </para>
             <para>
-                <ulink url="http://www.apache.org/licenses/LICENSE-2.0"/>
+                <link xlink:href="http://www.apache.org/licenses/LICENSE-2.0"/>
             </para>
             <para>
                 Unless required by applicable law or agreed to in writing, software distributed under the License is
@@ -40,7 +40,7 @@
                 License.
             </para>
         </legalnotice>
-    </bookinfo>
+    </info>
 
     <toc/>
 
@@ -67,7 +67,7 @@
                     was the intention to split the <filename>axiom-tests</filename> project into several parts
                     and make them part of <filename>axiom-api</filename>, <filename>axiom-impl</filename> and
                     <filename>axiom-dom</filename>. This reorganization is not complete
-                    yet<footnote><para>See <ulink url="https://issues.apache.org/jira/browse/AXIOM-311">AXIOM-311</ulink>.</para></footnote>.
+                    yet<footnote><para>See <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-311">AXIOM-311</link>.</para></footnote>.
                     For new test cases (or when refactoring existing tests), the following guidelines should be applied:
                 </para>
                 <orderedlist>
@@ -78,7 +78,7 @@
                             This primarily applies to tests that validate utility classes in <filename>axiom-api</filename>.
                         </para>
                     </listitem>
-                    <listitem id="test.category.api">
+                    <listitem xml:id="test.category.api">
                         <para>
                             The code of unit tests that apply to all Axiom implementations and that check conformance
                             to the specifications of the Axiom API should be added
@@ -134,7 +134,7 @@
                         <listitem>
                             <para>
                                 The reference implementation was written by BEA and is available as Maven artifact
-                                <literal>stax:stax:1.2.0</literal>. The homepage is <ulink url="http://stax.codehaus.org/Home"/>.
+                                <literal>stax:stax:1.2.0</literal>. The homepage is <link xlink:href="http://stax.codehaus.org/Home"/>.
                                 Note that the JAR doesn't contain the necessary files to enable service discovery.
                                 Geronimo's implementation of the StAX API library will not be able to locate
                                 the reference implementation unless the following system properties are set:
@@ -151,12 +151,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                                 and is part of IBM's JRE/JDK v6. Note that due
                                 to an agreement between IBM and Sun, IBM's Java implementation for the Windows
                                 platform is not available as a separate download, but only bundled with another
-                                IBM product, e.g. <ulink url="http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/">WebSphere
-                                Application Server for Developers</ulink>.
+                                IBM product, e.g. <link xlink:href="http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/">WebSphere
+                                Application Server for Developers</link>.
                             </para>
                             <para>    
                                 On the other hand, the JDK for Linux can be downloaded as a separate package from the
-                                <link url="https://www.ibm.com/developerworks/java/jdk/linux/download.html">developerWorks
+                                <link xlink:href="https://www.ibm.com/developerworks/java/jdk/linux/download.html">developerWorks
                                 site</link>. There are versions for 32-bit x86 (<quote>xSeries</quote>) and 64-bit AMD.
                                 They are available as RPMs and tarballs. To install the JDK properly on a Debian
                                 based system (including Ubuntu), follow the instructions given in
@@ -207,7 +207,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         </section>
         <section>
             <title>Requirements</title>
-            <formalpara id="osgi-req-no-separate-bundles">
+            <formalpara xml:id="osgi-req-no-separate-bundles">
                 <title>Requirement 1</title>
                 <para>
                     The Axiom artifacts SHOULD be usable both as normal JAR files and as OSGi bundles.
@@ -220,7 +220,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     It should also be noted that the Geronimo Spec artifacts also meet this requirement.
                 </para>
             </note>
-            <formalpara id="osgi-req-same-api">
+            <formalpara xml:id="osgi-req-same-api">
                 <title>Requirement 2</title>
                 <para>
                     All APIs defined by the <literal>axiom-api</literal> module, and in particular the
@@ -236,7 +236,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     is transparent for applications that already use Axiom in an OSGi container.
                 </para>
             </note>
-            <formalpara id="osgi-req-same-impl-selection">
+            <formalpara xml:id="osgi-req-same-impl-selection">
                 <title>Requirement 3</title>
                 <para>
                     <classname>OMAbstractFactory</classname> MUST select the same implementation
@@ -246,7 +246,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     a system property is not meaningful.
                 </para>
             </formalpara>
-            <formalpara id="osgi-ref-impl-not-exported">
+            <formalpara xml:id="osgi-ref-impl-not-exported">
                 <title>Requirement 4</title>
                 <para>
                     Only classes belonging to the public API should be exported by the OSGi bundles.
@@ -255,8 +255,6 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     This is required to keep a clean separation between the public API and implementation
                     specific classes and to make sure that the implementations can be modified without the
                     risk of breaking existing code.
-                </para>
-                <para>
                     An exception MAY be made for factory classes related to foreign APIs, such as the
                     <classname>DocumentBuilderFactory</classname> implementation for an Axiom implementation
                     supporting DOM.
@@ -274,7 +272,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <itemizedlist>
                     <listitem>
                         <para>
-                            As explained in <ulink url="https://issues.apache.org/jira/browse/AXIS2-4902">AXIS2-4902</ulink>,
+                            As explained in <link xlink:href="https://issues.apache.org/jira/browse/AXIS2-4902">AXIS2-4902</link>,
                             there used to be many places in Axis2 that still referred directly to Axiom implementation classes.
                             The same was true for Rampart and Sandesha2. This has now been fixed and all three projects
                             use <literal>axiom-impl</literal> and <literal>axiom-dom</literal> as dependencies in scope
@@ -291,12 +289,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     <listitem>
                         <para>
                             For Spring Web Services this issue is addressed by
-                            <ulink url="https://jira.springsource.org/browse/SWS-822">SWS-822</ulink>.
+                            <link xlink:href="https://jira.springsource.org/browse/SWS-822">SWS-822</link>.
                         </para>
                     </listitem>
                 </itemizedlist>
             </note>
-            <formalpara id="osgi-req-dropin">
+            <formalpara xml:id="osgi-req-dropin">
                 <title>Requirement 5</title>
                 <para>
                     It MUST be possible to use a non standard (third party) Axiom implementation as a drop-in replacement
@@ -354,7 +352,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                             ServiceMix also has a custom bundles for Axiom. However, this bundle only seem to exist to
                             support their own custom Abdera bundle, which is basically an incorrect repackaging of the
                             original Abdera code. See
-                            <ulink url="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</ulink> for more details.
+                            <link xlink:href="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</link> for more details.
                         </para>
                     </listitem>
                 </itemizedlist>
@@ -366,7 +364,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     of these projects.
                 </para>
             </note>
-            <formalpara id="osgi-reg-no-framework">
+            <formalpara xml:id="osgi-reg-no-framework">
                 <title>Requirement 7</title>
                 <para>
                     The Axiom OSGi integration SHOULD NOT rely on any particular OSGi framework such
@@ -382,7 +380,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     having such code, provided that <xref linkend="osgi-req-no-osgi-dep"/> is satisfied.
                 </para>
             </note>
-            <formalpara id="osgi-req-no-osgi-dep">
+            <formalpara xml:id="osgi-req-no-osgi-dep">
                 <title>Requirement 8</title>
                 <para>
                     In a non OSGi environment, Axiom MUST NOT have any OSGi related dependencies. That means
@@ -390,7 +388,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     ever loaded in a non OSGi environment.
                 </para>
             </formalpara>
-            <formalpara id="osgi-req-best-practices">
+            <formalpara xml:id="osgi-req-best-practices">
                 <title>Requirement 9</title>
                 <para>
                     The OSGi integration MUST follow established best practices. It SHOULD be inspired by
@@ -552,7 +550,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     DOOM is generally not considered suitable as a default implementation because it doesn't
                     implement the complete Axiom API (e.g. it doesn't support <classname>OMSourcedElement</classname>).
                     In addition, in earlier versions of Axiom, the factory classes for DOOM were not stateless
-                    (see <ulink url="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</ulink>).
+                    (see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</link>).
                 </para>
             </note>
             <para>
@@ -738,7 +736,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                             <para>
                                 Relocation not only modifies the classes in <literal>axiom-common-impl</literal>, but
                                 also the classes in <literal>axiom-impl</literal> and <literal>axiom-dom</literal>
-                                that use them. JaCoCo <ulink url="https://github.com/jacoco/jacoco/issues/51">detects this</ulink>
+                                that use them. JaCoCo <link xlink:href="https://github.com/jacoco/jacoco/issues/51">detects this</link>
                                 and excludes the data from the coverage analysis. This means that the
                                 reported code coverage will also be inaccurate for classes in
                                 <literal>axiom-impl</literal> and <literal>axiom-dom</literal>.
@@ -784,17 +782,17 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </listitem>
                 <listitem>
                     <para>
-                        One of the stated design goals (see <ulink url="https://issues.apache.org/jira/browse/AXIOM-192">AXIOM-192</ulink>)
+                        One of the stated design goals (see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-192">AXIOM-192</link>)
                         of the <classname>LifecycleManager</classname> API was to wrap the files in <classname>FileAccessor</classname> objects to
                         <quote>keep track of activity that occurs on the files</quote>. However, as pointed out in
-                        <ulink url="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</ulink>, since
+                        <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</link>, since
                         <classname>FileAccessor</classname> has a method that returns the corresponding <classname>File</classname>
                         object, this goal has not been reached.
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        As noted in <ulink url="https://issues.apache.org/jira/browse/AXIOM-382">AXIOM-382</ulink>, the fact
+                        As noted in <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-382">AXIOM-382</link>, the fact
                         that <classname>LifecycleManagerImpl</classname> registers a shutdown hook which is never unregistered
                         causes a class loader leak in J2EE environments.
                     </para>
@@ -802,7 +800,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <listitem>
                     <para>
                         In an attempt to work around the issues related to <classname>LifecycleManager</classname> (in particular
-                        the first item above), <ulink url="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</ulink>
+                        the first item above), <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</link>
                         introduced another class called <classname>AttachmentCacheMonitor</classname> that implements a timer
                         based mechanism to clean up temporary files. However, this change causes other issues:
                     </para>
@@ -825,7 +823,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </itemizedlist>
                     <para>
                         Fortunately, that change was only meant as a workaround to solve a particular issue in WebSphere
-                        (see APAR <ulink url="http://www-01.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PK91497">PK91497</ulink>),
+                        (see APAR <link xlink:href="http://www-01.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PK91497">PK91497</link>),
                         and once the <classname>LifecycleManager</classname> API is redesigned to solve that issue,
                         <classname>AttachmentCacheMonitor</classname> no longer has a reason to exist.
                     </para>
@@ -899,7 +897,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 To satisfy the second condition, one may want to use <methodname>File#deleteOnExit</methodname>.
                 However, this method causes a native memory leak, especially when used with temporary files,
                 which are expected to have unique names (see
-                <ulink url="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4513817">bug 4513817</ulink>).
+                <link xlink:href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4513817">bug 4513817</link>).
                 Therefore this can only be implemented using a shutdown hook. However, a shutdown hook will
                 cause a class loader leak if it is used improperly, e.g. if it is registered by an application deployed
                 into a J2EE container and not unregistered when that application is stopped. For this
@@ -950,7 +948,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         to contain utility classes that don't depend on higher level APIs. More precisely,
                         <package>org.apache.axiom.util</package> should only have dependencies on
                         <package>org.apache.axiom.ext</package>, but not e.g. on <package>org.apache.axiom.om</package>.
-                        <ulink url="http://www.hello2morrow.com/products/sonarj">SonarJ</ulink> can be used
+                        <link xlink:href="http://www.hello2morrow.com/products/sonarj">SonarJ</link> can be used
                         to check these dependencies. The following figure shows the expected structure:
                     </para>
                     <figure>
@@ -974,7 +972,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         </mediaobject>
                     </figure>
                     <para>
-                        The check can also be done using <ulink url="http://mojo.codehaus.org/jdepend-maven-plugin/">jdepend-maven-plugin</ulink>.
+                        The check can also be done using <link xlink:href="http://mojo.codehaus.org/jdepend-maven-plugin/">jdepend-maven-plugin</link>.
                         To do this, execute the following command in the <filename>axiom-api</filename> module:
                     </para>
                     <screen>mvn jdepend:generate</screen>
@@ -1008,8 +1006,8 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <listitem>
                     <para>
                         Check that the Maven site conforms to the latest version of the
-                        <ulink url="http://apache.org/foundation/marks/pmcs">Apache Project
-                        Branding Guidelines</ulink>.
+                        <link xlink:href="http://apache.org/foundation/marks/pmcs">Apache Project
+                        Branding Guidelines</link>.
                     </para>
                 </listitem>
                 <listitem>
@@ -1059,8 +1057,8 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <itemizedlist>
                 <listitem>
                     <para>
-                        A PGP key that conforms to the <ulink url="http://www.apache.org/dev/release-signing.html">requirement
-                        for Apache release signing</ulink>. To make the release process easier, the passphrase for the
+                        A PGP key that conforms to the <link xlink:href="http://www.apache.org/dev/release-signing.html">requirement
+                        for Apache release signing</link>. To make the release process easier, the passphrase for the
                         code signing key should be configured in <filename>${user.home}/.m2/settings.xml</filename>:
                     </para>
 <screen><![CDATA[<settings>
@@ -1100,7 +1098,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         On Unix systems this will work out of the box if you have SSH installed, a public key installed
                         on <literal>people.apache.org</literal> and your user name is the same on your local system and
                         <literal>people.apache.org</literal>. If this is not the case, some additional configuration will be
-                        required, as described in <ulink url="http://maven.apache.org/plugins/maven-deploy-plugin/examples/deploy-ssh-external.html"/>.
+                        required, as described in <link xlink:href="http://maven.apache.org/plugins/maven-deploy-plugin/examples/deploy-ssh-external.html"/>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -1152,9 +1150,9 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Log in to the Nexus repository (<ulink url="https://repository.apache.org/"/>
+                        Log in to the Nexus repository (<link xlink:href="https://repository.apache.org/"/>
                         and close the staging repository. The name of the staging profile is
-                        <literal>org.apache.ws</literal>. See <ulink url="http://maven.apache.org/developers/release/apache-release.html"/>
+                        <literal>org.apache.ws</literal>. See <link xlink:href="http://maven.apache.org/developers/release/apache-release.html"/>
                         for a more thorough description of this step.
                     </para>
                 </step>
@@ -1224,7 +1222,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <step>
                     <para>
                         Promote the artifacts in the staging repository. See
-                        <ulink url="http://maven.apache.org/developers/release/apache-release.html"/>
+                        <link xlink:href="http://maven.apache.org/developers/release/apache-release.html"/>
                         for detailed instructions for this step.
                     </para>
                 </step>
@@ -1277,12 +1275,12 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                 </listitem>
                 <listitem>
                     <para>
-                        the Maven site has been synchronized to <ulink url="http://ws.apache.org/axiom/"/>;
+                        the Maven site has been synchronized to <link xlink:href="http://ws.apache.org/axiom/"/>;
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        the binary and source distributions can be downloaded from <ulink url="http://ws.apache.org/axiom/download.cgi"/>.
+                        the binary and source distributions can be downloaded from <link xlink:href="http://ws.apache.org/axiom/download.cgi"/>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -1382,22 +1380,22 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
             <itemizedlist>
                 <listitem>
                     <para>
-                        <ulink url="http://www.apache.org/legal/src-headers.html">ASF Source Header and Copyright Notice Policy</ulink>
+                        <link xlink:href="http://www.apache.org/legal/src-headers.html">ASF Source Header and Copyright Notice Policy</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://apache.org/foundation/marks/pmcs">Apache Project Branding Guidelines</ulink>
+                        <link xlink:href="http://apache.org/foundation/marks/pmcs">Apache Project Branding Guidelines</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://projects.apache.org/doap.html">DOAP Files</ulink>
+                        <link xlink:href="http://projects.apache.org/doap.html">DOAP Files</link>
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        <ulink url="http://www.apache.org/dev/release-publishing.html">Publishing Releases</ulink>
+                        <link xlink:href="http://www.apache.org/dev/release-publishing.html">Publishing Releases</link>
                     </para>
                 </listitem>
             </itemizedlist>
@@ -1406,7 +1404,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
     
     <appendix>
         <title>Appendix</title>
-        <section id="install.ibm.jdk">
+        <section xml:id="install.ibm.jdk">
             <title>Installing IBM's JDK on Debian Linux</title>
             <procedure>
                 <step>
@@ -1419,7 +1417,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                 <step>
                     <para>
                         Download the <filename>.tgz</filename> version of the JDK from
-                        <ulink url="http://www.ibm.com/developerworks/java/jdk/linux/download.html"/>.
+                        <link xlink:href="http://www.ibm.com/developerworks/java/jdk/linux/download.html"/>.
                     </para>
                 </step>
                 <step>
