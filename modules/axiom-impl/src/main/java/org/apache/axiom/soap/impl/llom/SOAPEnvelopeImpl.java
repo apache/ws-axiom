@@ -19,8 +19,6 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import java.util.Iterator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.om.OMCloneOptions;
@@ -32,7 +30,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -201,16 +198,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                             : charSetEncoding,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
         }
-        serializer.serializeStartpart(this);
-        //serialize children
-        for (Iterator it = getChildren(); it.hasNext(); ) {
-        	OMNodeImpl child = (OMNodeImpl)it.next();
-        	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
-        	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
-        		child.internalSerialize(serializer, format, cache);
-        	}
-        }
-        serializer.writeEndElement();
+        super.internalSerialize(serializer, format, cache);
         serializer.writeEndDocument();
         if (!cache) {
             // let's try to close the builder/parser here since we are now done with the

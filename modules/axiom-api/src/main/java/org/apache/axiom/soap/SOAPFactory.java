@@ -270,11 +270,27 @@ public interface SOAPFactory extends OMFactory {
      * Create a default SOAP envelope with an empty header and an empty body. Note that the method
      * will not create an associated {@link SOAPMessage} or {@link OMDocument} instance and the
      * parent of the returned {@link SOAPEnvelope} is <code>null</code>.
+     * <p>
+     * <b>Note:</b> This method is typically used in conjunction with
+     * {@link SOAPEnvelope#getHeader()}. In order to avoid generating unnecessary empty SOAP
+     * headers, you should consider using {@link #createDefaultSOAPMessage()} together with
+     * {@link SOAPEnvelope#getOrCreateHeader()} instead. This method may be deprecated and/or
+     * removed in future Axiom versions.
      * 
      * @return the default SOAP envelope
      */
     SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException;
 
+    /**
+     * Create a default SOAP message with an envelope with an empty body.
+     * <p>
+     * Since no SOAP header is added to the envelope, this method should be used in conjunction with
+     * {@link SOAPEnvelope#getOrCreateHeader()} (if SOAP header blocks need to be added).
+     * 
+     * @return the default SOAP envelope
+     */
+    SOAPMessage createDefaultSOAPMessage();
+    
     SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException;
 
     /**

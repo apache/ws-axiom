@@ -51,6 +51,14 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
         }
     }
 
+    public final SOAPMessage createDefaultSOAPMessage() {
+        SOAPMessage message = createSOAPMessage();
+        SOAPEnvelope env = createSOAPEnvelope();
+        message.addChild(env);
+        createSOAPBody(env);
+        return message;
+    }
+    
     public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
         return new SOAPEnvelopeImpl(message, builder, this);
     }

@@ -172,6 +172,30 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     <chapter>
         <title>Design</title>
         <section>
+            <title>General design principles and goals</title>
+            <formalpara>
+                <title>Consistent serialization</title>
+                <para>
+                    Axiom supports multiple methods and APIs to serialize an object model to XML or to transform it
+                    to another (non Axiom) representation. This includes serialization to byte or character streams, transformation
+                    to StAX in push mode (i.e. writing to an <classname>XMLStreamWriter</classname>) or pull mode
+                    (i.e. reading from an <classname>XMLStreamReader</classname>), as well as transformation to SAX.
+                    The representations produced by these different methods should be consistent with each other.
+                    If a given use case can be implemented using more than one of these methods, then the end result
+                    should be the same, whichever method is chosen.
+                </para>
+            </formalpara>
+            <para>
+                <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-430">AXIOM-430</link> provides an example
+                where this principle was not respected.
+            </para>
+            <para>
+                It should be noted that this principle can obviously only be respected within the limits imposed
+                by a given API. E.g. if a given API has limited support for DTDs, then a <tag class="element">DOCTYPE</tag>
+                declaration may be skipped when that API is used.
+            </para>
+        </section>
+        <section>
             <title>OSGi integration and separation between API and implementation</title>
             <section>
                 <title>Introduction</title>

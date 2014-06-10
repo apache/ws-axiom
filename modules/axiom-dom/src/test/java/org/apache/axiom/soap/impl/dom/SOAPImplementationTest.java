@@ -23,15 +23,10 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
-import org.apache.axiom.ts.soap.envelope.TestSerialize;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false, false);
-        
-        // TODO: AXIOM-430
-        builder.exclude(org.apache.axiom.ts.soap.envelope.TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter)(serializationStrategy=SAXSource)))");
-        builder.exclude(org.apache.axiom.ts.soap.message.TestSerialize.class, "(&(file=*/empty-header.xml)(|(serializationStrategy=OutputStream)(serializationStrategy=Writer)(serializationStrategy=XMLStreamWriter)(serializationStrategy=SAXSource)))");
         
         return builder.build();
     }

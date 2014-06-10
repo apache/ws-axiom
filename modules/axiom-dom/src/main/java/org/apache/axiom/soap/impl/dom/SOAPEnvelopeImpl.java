@@ -19,8 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import java.util.Iterator;
-
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -32,7 +30,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -200,16 +197,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION
                             : xmlVersion);
         }
-        serializer.serializeStartpart(this);
-        //serialize children
-        for (Iterator it = getChildren(); it.hasNext(); ) {
-        	NodeImpl child = (NodeImpl)it.next();
-        	// Skip empty SOAPHeader (compatibility with previous Axiom versions; see AXIOM-340)
-        	if (!(child instanceof SOAPHeader && ((SOAPHeader)child).getFirstOMChild() == null)) {
-        		child.internalSerialize(serializer, format, cache);
-        	}
-        }
-        serializer.writeEndElement();
+        super.internalSerialize(serializer, format, cache);
         serializer.writeEndDocument();
     }
 

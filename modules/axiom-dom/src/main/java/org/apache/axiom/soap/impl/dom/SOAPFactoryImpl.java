@@ -47,6 +47,14 @@ public abstract class SOAPFactoryImpl extends OMDOMFactory implements SOAPFactor
         return new SOAPMessageImpl(builder, this);
     }
 
+    public final SOAPMessage createDefaultSOAPMessage() {
+        SOAPMessage message = createSOAPMessage();
+        SOAPEnvelope env = createSOAPEnvelope();
+        message.addChild(env);
+        createSOAPBody(env);
+        return message;
+    }
+    
     public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
         return new SOAPEnvelopeImpl((ParentNode)message, null, builder, this, false);
     }

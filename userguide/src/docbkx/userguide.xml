@@ -1487,6 +1487,28 @@ while (iterator.hasNext()) {
                         transitive dependency, you need to update your build.
                     </para>
                 </section>
+                <section>
+                    <title>Serialization changes</title>
+                    <para>
+                        In previous Axiom versions, the <methodname>serialize</methodname> and <methodname>serializeAndConsume</methodname>
+                        methods skipped empty SOAP <tag class="element">Header</tag> elements. On the other hand, such elements would still
+                        appear in the representations produced by <methodname>getXMLStreamReader</methodname> and
+                        <methodname>getSAXSource</methodname>.
+                        For consistency, starting with Axiom 1.2.15, SOAP <tag class="element">Header</tag> elements are always serialized.
+                        This may change the output of existing code, especially code that uses the <methodname>getDefaultEnvelope()</methodname>
+                        defined by <classname>SOAPFactory</classname>.
+                        However, it is expected that this will not break anything because empty SOAP <tag class="element">Header</tag> elements
+                        should be ignored by the receiver.
+                    </para>
+                    <para>
+                        To avoid producing empty <tag class="element">Header</tag> elements, projects should switch from using
+                        <methodname>getDefaultEnvelope()</methodname> and <methodname>getHeader()</methodname> (in <classname>SOAPEnvelope</classname>)
+                        to using <methodname>createDefaultSOAPMessage()</methodname> and <methodname>getOrCreateHeader()</methodname>.
+                    </para>
+                    <para>
+                        For more information, see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-430">AXIOM-430</link>.
+                    </para>
+                </section>
             </section>
         </section>
     </chapter>

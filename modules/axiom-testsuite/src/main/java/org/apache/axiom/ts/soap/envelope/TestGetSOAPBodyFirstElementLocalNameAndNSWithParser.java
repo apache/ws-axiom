@@ -52,7 +52,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         // Prepare the message. Note that we do this programmatically to make sure that the message
         // doesn't contain any unwanted whitespace.
         SOAPFactory factory = spec.getFactory(metaFactory);
-        SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
+        SOAPEnvelope orgEnvelope = factory.createDefaultSOAPMessage().getSOAPEnvelope();
         orgEnvelope.getBody().addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         String message = orgEnvelope.toString();
         
