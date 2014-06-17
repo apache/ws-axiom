@@ -73,9 +73,7 @@ public final class AxiomSoapMessageFactory implements SoapMessageFactory, Initia
     }
 
     public SoapMessage createWebServiceMessage() {
-        SOAPMessage axiomMessage = soapFactory.createSOAPMessage();
-        axiomMessage.setSOAPEnvelope(soapFactory.getDefaultEnvelope());
-        return new SoapMessageImpl(axiomMessage);
+        return new SoapMessageImpl(soapFactory.createDefaultSOAPMessage(), true);
     }
 
     public SoapMessage createWebServiceMessage(InputStream inputStream) throws IOException {
@@ -100,6 +98,6 @@ public final class AxiomSoapMessageFactory implements SoapMessageFactory, Initia
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, inputStream, charset);
         // TODO: should SOAPModelBuilder have a getSOAPMessage() method?
         // TODO: need to check that the SOAP version matches the content type
-        return new SoapMessageImpl((SOAPMessage)builder.getDocument());
+        return new SoapMessageImpl((SOAPMessage)builder.getDocument(), false);
     }
 }

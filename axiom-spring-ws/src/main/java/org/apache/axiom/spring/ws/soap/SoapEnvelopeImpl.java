@@ -33,15 +33,17 @@ import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapHeaderException;
 
 final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements SoapEnvelope {
+    private final boolean autoCreateHeader;
     private SoapHeaderImpl header;
     private SoapBodyImpl body;
     
-    SoapEnvelopeImpl(SoapMessageImpl message, SOAPEnvelope axiomNode) {
+    SoapEnvelopeImpl(SoapMessageImpl message, SOAPEnvelope axiomNode, boolean autoCreateHeader) {
         super(message, axiomNode);
+        this.autoCreateHeader = autoCreateHeader;
     }
 
     public SoapHeader getHeader() throws SoapHeaderException {
-        SOAPHeader axiomHeader = axiomNode.getHeader();
+        SOAPHeader axiomHeader = autoCreateHeader ? axiomNode.getOrCreateHeader() : axiomNode.getHeader();
         if (header == null || header.axiomNode != axiomHeader) {
             if (axiomHeader == null) {
                 header = null;

@@ -55,14 +55,17 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
     private final SourceExtractionStrategyStack extractionStrategyStack = new SourceExtractionStrategyStack();
     private SoapEnvelopeImpl envelope;
     
-    SoapMessageImpl(SOAPMessage axiomMessage) {
+    SoapMessageImpl(SOAPMessage axiomMessage, boolean autoCreateHeader) {
         this.axiomMessage = axiomMessage;
+        if (autoCreateHeader) {
+            envelope = new SoapEnvelopeImpl(this, axiomMessage.getSOAPEnvelope(), true);
+        }
     }
 
     public SoapEnvelope getEnvelope() throws SoapEnvelopeException {
         SOAPEnvelope axiomEnvelope = axiomMessage.getSOAPEnvelope();
         if (envelope == null || envelope.axiomNode != axiomEnvelope) {
-            envelope = new SoapEnvelopeImpl(this, axiomEnvelope);
+            envelope = new SoapEnvelopeImpl(this, axiomEnvelope, false);
         }
         return envelope;
     }
