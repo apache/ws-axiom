@@ -25,36 +25,23 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP11Version;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPVersion;
-
 /**
- * Describes the characteristics of a given SOAP version. This is similar to {@link SOAPVersion},
- * but is designed specifically for the test suite.
+ * Describes the characteristics of a given SOAP version.
  */
-public abstract class SOAPSpec {
-    public static final SOAPSpec SOAP11 = new SOAPSpec(SOAP11Version.getSingleton(),
-            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO }, null, null, null, null) {
-        public String getName() {
-            return "soap11";
-        }
-        
+public abstract class SOAPSpec extends Adaptable {
+    public static final SOAPSpec SOAP11 = new SOAPSpec("soap11", "http://schemas.xmlsoap.org/soap/envelope/",
+            new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO },
+            new QName("faultcode"),
+            null,
+            null,
+            new QName("faultstring"),
+            null,
+            null,
+            new QName("faultactor"),
+            new QName("detail"),
+            "http://schemas.xmlsoap.org/soap/actor/next") {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP12;
-        }
-
-        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP11Factory();
-        }
-
-        public String getEnvelopeNamespaceURI() {
-            return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
 
         public String getCanonicalRepresentation(boolean value) {
@@ -62,26 +49,19 @@ public abstract class SOAPSpec {
         }
     };
 
-    public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton(),
+    public static final SOAPSpec SOAP12 = new SOAPSpec("soap12", "http://www.w3.org/2003/05/soap-envelope",
             new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO },
-            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME),
-            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME),
-            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME),
-            new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME)) {
-        public String getName() {
-            return "soap12";
-        }
-        
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Code"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Value"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Subcode"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Reason"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Text"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Node"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Role"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Detail"),
+            "http://www.w3.org/2003/05/soap-envelope/role/next") {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP11;
-        }
-
-        public SOAPFactory getFactory(OMMetaFactory metaFactory) {
-            return metaFactory.getSOAP12Factory();
-        }
-
-        public String getEnvelopeNamespaceURI() {
-            return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
 
         public String getCanonicalRepresentation(boolean value) {
@@ -89,30 +69,46 @@ public abstract class SOAPSpec {
         }
     };
 
-    private final SOAPVersion version;
+    private final String name;
+    private final String envelopeNamespaceURI;
     private final BooleanLiteral[] booleanLiterals;
     private final QName envelopeQName;
     private final QName headerQName;
     private final QName bodyQName;
+    private final QName faultCodeQName;
     private final QName faultValueQName;
     private final QName faultSubCodeQName;
+    private final QName faultReasonQName;
     private final QName faultTextQName;
     private final QName faultNodeQName;
+    private final QName faultRoleQName;
+    private final QName faultDetailQName;
+    private final String nextRoleURI;
     
-    public SOAPSpec(SOAPVersion version, BooleanLiteral[] booleanLiterals, QName faultValueQName,
-            QName faultSubCodeQName, QName faultTextQName, QName faultNodeQName) {
-        this.version = version;
+    public SOAPSpec(String name, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
+            QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
+            QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
+            String nextRoleURI) {
+        this.name = name;
+        this.envelopeNamespaceURI = envelopeNamespaceURI;
         this.booleanLiterals = booleanLiterals;
-        envelopeQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.SOAPENVELOPE_LOCAL_NAME);
-        headerQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.HEADER_LOCAL_NAME);
-        bodyQName = new QName(getEnvelopeNamespaceURI(), SOAPConstants.BODY_LOCAL_NAME);
+        envelopeQName = new QName(envelopeNamespaceURI, "Envelope");
+        headerQName = new QName(envelopeNamespaceURI, "Header");
+        bodyQName = new QName(envelopeNamespaceURI, "Body");
+        this.faultCodeQName = faultCodeQName;
         this.faultValueQName = faultValueQName;
         this.faultSubCodeQName = faultSubCodeQName;
+        this.faultReasonQName = faultReasonQName;
         this.faultTextQName = faultTextQName;
         this.faultNodeQName = faultNodeQName;
+        this.faultRoleQName = faultRoleQName;
+        this.faultDetailQName = faultDetailQName;
+        this.nextRoleURI = nextRoleURI;
     }
     
-    public abstract String getName();
+    public final String getName() {
+        return name;
+    }
     
     /**
      * Get the {@link SOAPSpec} instance for the other SOAP version. This is useful when
@@ -122,13 +118,9 @@ public abstract class SOAPSpec {
      */
     public abstract SOAPSpec getAltSpec();
     
-    public abstract SOAPFactory getFactory(OMMetaFactory metaFactory);
-    
-    public final SOAPFactory getAltFactory(OMMetaFactory metaFactory) {
-        return getAltSpec().getFactory(metaFactory);
+    public final String getEnvelopeNamespaceURI() {
+        return envelopeNamespaceURI;
     }
-    
-    public abstract String getEnvelopeNamespaceURI();
     
     public final QName getEnvelopeQName() {
         return envelopeQName;
@@ -143,7 +135,7 @@ public abstract class SOAPSpec {
     }
 
     public final QName getFaultCodeQName() {
-        return version.getFaultCodeQName();
+        return faultCodeQName;
     }
     
     public final QName getFaultValueQName() {
@@ -155,7 +147,7 @@ public abstract class SOAPSpec {
     }
 
     public final QName getFaultReasonQName() {
-        return version.getFaultReasonQName();
+        return faultReasonQName;
     }
 
     public final QName getFaultTextQName() {
@@ -167,11 +159,11 @@ public abstract class SOAPSpec {
     }
 
     public final QName getFaultRoleQName() {
-        return version.getFaultRoleQName();
+        return faultRoleQName;
     }
 
     public final QName getFaultDetailQName() {
-        return version.getFaultDetailQName();
+        return faultDetailQName;
     }
     
     /**
@@ -229,10 +221,6 @@ public abstract class SOAPSpec {
     public abstract String getCanonicalRepresentation(boolean value);
     
     public final String getNextRoleURI() {
-        return version.getNextRoleURI();
-    }
-
-    public final SOAPVersion getVersion() {
-        return version;
+        return nextRoleURI;
     }
 }

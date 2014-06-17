@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
@@ -39,6 +40,6 @@ public class TestGetBooleanAttributeDefault extends BooleanAttributeTestCase {
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
-        assertFalse(attribute.getValue(headerBlock));
+        assertFalse(attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock));
     }
 }

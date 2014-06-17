@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.soap.factory;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.soap.FactorySelector;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -33,6 +34,7 @@ public class TestFactoryIsSingleton extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        assertSame(spec.getFactory(metaFactory), spec.getFactory(metaFactory));
+        FactorySelector factorySelector = spec.getAdapter(FactorySelector.class);
+        assertSame(factorySelector.getFactory(metaFactory), factorySelector.getFactory(metaFactory));
     }
 }

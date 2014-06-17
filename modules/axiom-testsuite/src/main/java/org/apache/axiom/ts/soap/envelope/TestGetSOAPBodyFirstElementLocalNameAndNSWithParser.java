@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -51,8 +50,7 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
     protected void runTest() throws Throwable {
         // Prepare the message. Note that we do this programmatically to make sure that the message
         // doesn't contain any unwanted whitespace.
-        SOAPFactory factory = spec.getFactory(metaFactory);
-        SOAPEnvelope orgEnvelope = factory.createDefaultSOAPMessage().getSOAPEnvelope();
+        SOAPEnvelope orgEnvelope = soapFactory.createDefaultSOAPMessage().getSOAPEnvelope();
         orgEnvelope.getBody().addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         String message = orgEnvelope.toString();
         

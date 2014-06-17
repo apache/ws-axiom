@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
@@ -39,7 +40,7 @@ public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase 
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
         try {
-            attribute.getValue(headerBlock);
+            attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock);
             fail("Expected UnsupportedOperationException");
         } catch (UnsupportedOperationException ex) {
             // Expected

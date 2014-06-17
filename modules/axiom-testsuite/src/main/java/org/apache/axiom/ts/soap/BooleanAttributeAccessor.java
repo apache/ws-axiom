@@ -16,21 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.headerblock;
+package org.apache.axiom.ts.soap;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestGetVersion extends SOAPTestCase {
-    public TestGetVersion(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
-    }
-
-    protected void runTest() throws Throwable {
-        SOAPHeaderBlock h = soapFactory.createSOAPHeaderBlock("myHeader", soapFactory.createOMNamespace("urn:test", "p"));
-        assertSame(spec.getAdapter(SOAPVersion.class), h.getVersion());
-    }
+/**
+ * {@link BooleanAttribute} adapter that allows to invoke the getter and setter methods for the
+ * attribute on a given {@link SOAPHeaderBlock}.
+ */
+public interface BooleanAttributeAccessor {
+    /**
+     * Invoke the getter method for this attribute on the given {@link SOAPHeaderBlock}.
+     * 
+     * @param headerBlock
+     *            the header block
+     * @return the value returned by the getter method
+     */
+    boolean getValue(SOAPHeaderBlock headerBlock);
+    
+    /**
+     * Invoke the setter method for this attribute on the given {@link SOAPHeaderBlock}.
+     * 
+     * @param headerBlock
+     *            the heaer block
+     * @param value
+     *            the value to pass to the setter
+     */
+    void setValue(SOAPHeaderBlock headerBlock, boolean value);
 }

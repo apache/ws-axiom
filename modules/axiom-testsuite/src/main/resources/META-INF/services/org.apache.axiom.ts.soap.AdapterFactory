@@ -1,0 +1,2 @@
+org.apache.axiom.ts.soap.BooleanAttributeAdapterFactory
+org.apache.axiom.ts.soap.SOAPSpecAdapterFactory

@@ -49,8 +49,8 @@ public abstract class SOAPTestCase extends AxiomTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        soapFactory = spec.getFactory(metaFactory);
-        altSoapFactory = spec.getAltFactory(metaFactory);
+        soapFactory = spec.getAdapter(FactorySelector.class).getFactory(metaFactory);
+        altSoapFactory = spec.getAltSpec().getAdapter(FactorySelector.class).getFactory(metaFactory);
     }
 
     protected SOAPModelBuilder getBuilderForTestMessage(String name) {

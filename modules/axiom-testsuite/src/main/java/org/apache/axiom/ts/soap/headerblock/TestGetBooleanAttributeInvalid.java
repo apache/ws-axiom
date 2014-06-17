@@ -25,6 +25,7 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**
@@ -46,7 +47,7 @@ public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
         headerBlock.addAttribute(attribute.getName(), value, header.getNamespace());
         try {
-            attribute.getValue(headerBlock);
+            attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock);
             fail("Expected SOAPProcessingException");
         } catch (SOAPProcessingException ex) {
             // Expected

@@ -16,21 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.headerblock;
+package org.apache.axiom.ts.soap;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-
-public class TestGetVersion extends SOAPTestCase {
-    public TestGetVersion(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
-    }
-
-    protected void runTest() throws Throwable {
-        SOAPHeaderBlock h = soapFactory.createSOAPHeaderBlock("myHeader", soapFactory.createOMNamespace("urn:test", "p"));
-        assertSame(spec.getAdapter(SOAPVersion.class), h.getVersion());
-    }
+public interface AdapterFactory<T extends Adaptable> {
+    void createAdapters(T instance, Adapters adapters);
 }
