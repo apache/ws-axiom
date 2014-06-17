@@ -79,19 +79,25 @@ public final class AxiomSoapMessageFactory implements SoapMessageFactory, Initia
     }
 
     public SoapMessage createWebServiceMessage(InputStream inputStream) throws IOException {
-        TransportInputStream transportInputStream = (TransportInputStream)inputStream;
-        Iterator<String> it = transportInputStream.getHeaders(TransportConstants.HEADER_CONTENT_TYPE);
-        ContentType contentType;
-        if (it.hasNext()) {
-            try {
-                contentType = new ContentType(it.next());
-            } catch (ParseException ex) {
-                throw new SoapMessageCreationException("Failed to parse Content-Type header", ex);
+        String charset;
+        if (inputStream instanceof TransportInputStream) {
+            TransportInputStream transportInputStream = (TransportInputStream)inputStream;
+            Iterator<String> it = transportInputStream.getHeaders(TransportConstants.HEADER_CONTENT_TYPE);
+            ContentType contentType;
+            if (it.hasNext()) {
+                try {
+                    contentType = new ContentType(it.next());
+                } catch (ParseException ex) {
+                    throw new SoapMessageCreationException("Failed to parse Content-Type header", ex);
+                }
+            } else {
+                throw new SoapMessageCreationException("No Content-Type header found");
             }
+            charset = contentType.getParameter("charset");
         } else {
-            throw new SoapMessageCreationException("No Content-Type header found");
+            charset = null;
         }
-        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, inputStream, contentType.getParameter("charset"));
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, inputStream, charset);
         // TODO: should SOAPModelBuilder have a getSOAPMessage() method?
         // TODO: need to check that the SOAP version matches the content type
         return new SoapMessageImpl((SOAPMessage)builder.getDocument());

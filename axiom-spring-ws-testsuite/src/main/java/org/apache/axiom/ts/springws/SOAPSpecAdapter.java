@@ -16,22 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws.jaxb2;
+package org.apache.axiom.ts.springws;
 
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.ScenarioConfig;
-import org.apache.axiom.ts.springws.ScenarioTestCase;
-import org.springframework.ws.client.core.WebServiceTemplate;
+public final class SOAPSpecAdapter {
+    private final String soapVersion;
 
-public class JAXB2Test extends ScenarioTestCase {
-    public JAXB2Test(ScenarioConfig config, SOAPSpec spec) {
-        super(config, spec);
+    SOAPSpecAdapter(String soapVersion) {
+        this.soapVersion = soapVersion;
     }
-    
-    @Override
-    protected void runTest() throws Throwable {
-        GetQuoteRequest request = new GetQuoteRequest();
-        request.setSymbol("GOOG");
-        context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
+
+    public String getSoapVersion() {
+        return soapVersion;
     }
 }

@@ -19,8 +19,11 @@
 package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
 import org.apache.axiom.ts.springws.jdom.ClientServerTest;
+import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessage;
+import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStream;
 import org.apache.axiom.ts.springws.wsadom.WSAddressingDOMTest;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
@@ -35,17 +38,24 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
     @Override
     protected void addTests() {
-        addTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), "SOAP_11");
-        addTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), "SOAP_12");
+        addSimpleTests(messageFactoryConfigurator, SOAPSpec.SOAP11);
+        addSimpleTests(messageFactoryConfigurator, SOAPSpec.SOAP12);
+        addScenarioTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), SOAPSpec.SOAP11);
+        addScenarioTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), SOAPSpec.SOAP12);
         if (altMessageFactoryConfigurator != messageFactoryConfigurator) {
-            addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_11");
-            addTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), "SOAP_12");
+            addScenarioTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), SOAPSpec.SOAP11);
+            addScenarioTests(new ScenarioConfig(messageFactoryConfigurator, altMessageFactoryConfigurator), SOAPSpec.SOAP12);
         }
     }
     
-    private void addTests(ScenarioConfig config, String soapVersion) {
-        addTest(new ClientServerTest(config, soapVersion));
-        addTest(new WSAddressingDOMTest(config, soapVersion));
-        addTest(new JAXB2Test(config, soapVersion));
+    private void addSimpleTests(MessageFactoryConfigurator mfc, SOAPSpec spec) {
+        addTest(new TestCreateWebServiceMessage(mfc, spec));
+        addTest(new TestCreateWebServiceMessageFromInputStream(mfc, spec));
+    }
+    
+    private void addScenarioTests(ScenarioConfig config, SOAPSpec spec) {
+        addTest(new ClientServerTest(config, spec));
+        addTest(new WSAddressingDOMTest(config, spec));
+        addTest(new JAXB2Test(config, spec));
     }
 }

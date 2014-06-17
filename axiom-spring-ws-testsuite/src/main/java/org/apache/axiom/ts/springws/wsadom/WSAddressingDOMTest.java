@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.ScenarioConfig;
 import org.apache.axiom.ts.springws.ScenarioTestCase;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -31,8 +32,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class WSAddressingDOMTest extends ScenarioTestCase {
-    public WSAddressingDOMTest(ScenarioConfig config, String soapVersion) {
-        super(config, soapVersion);
+    public WSAddressingDOMTest(ScenarioConfig config, SOAPSpec spec) {
+        super(config, spec);
     }
     
     @Override

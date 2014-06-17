@@ -16,22 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws.jaxb2;
+package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.ScenarioConfig;
-import org.apache.axiom.ts.springws.ScenarioTestCase;
-import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.ws.soap.SoapMessageFactory;
 
-public class JAXB2Test extends ScenarioTestCase {
-    public JAXB2Test(ScenarioConfig config, SOAPSpec spec) {
-        super(config, spec);
-    }
+public abstract class SimpleTestCase extends SpringWSTestCase {
+    private final MessageFactoryConfigurator mfc;
     
-    @Override
-    protected void runTest() throws Throwable {
-        GetQuoteRequest request = new GetQuoteRequest();
-        request.setSymbol("GOOG");
-        context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
+    public SimpleTestCase(MessageFactoryConfigurator mfc, SOAPSpec spec) {
+        super(spec);
+        this.mfc = mfc;
     }
+
+    @Override
+    protected final void runTest() throws Throwable {
+        GenericApplicationContext context = new GenericApplicationContext();
+        configureContext(context, mfc, null);
+        context.refresh();
+        try {
+            runTest((SoapMessageFactory)context.getBean("messageFactory"));
+        } finally {
+            context.close();
+        }
+    }
+
+    protected abstract void runTest(SoapMessageFactory messageFactory) throws Throwable;
 }

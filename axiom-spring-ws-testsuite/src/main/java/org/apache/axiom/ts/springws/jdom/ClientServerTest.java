@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.springws.jdom;
 
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.ScenarioConfig;
 import org.apache.axiom.ts.springws.ScenarioTestCase;
 import org.jdom2.input.SAXBuilder;
@@ -26,8 +27,8 @@ import org.jdom2.transform.JDOMSource;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class ClientServerTest extends ScenarioTestCase {
-    public ClientServerTest(ScenarioConfig config, String soapVersion) {
-        super(config, soapVersion);
+    public ClientServerTest(ScenarioConfig config, SOAPSpec spec) {
+        super(config, spec);
     }
     
     @Override
