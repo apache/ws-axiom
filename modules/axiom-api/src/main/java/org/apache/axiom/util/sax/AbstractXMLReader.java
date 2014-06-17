@@ -35,10 +35,15 @@ import org.xml.sax.ext.LexicalHandler;
  * the reader through protected attributes.
  */
 public abstract class AbstractXMLReader implements XMLReader {
+    private static final String URI_NAMESPACES = "http://xml.org/sax/features/namespaces";
+    private static final String URI_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
+    private static final String URI_EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
+    
     private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
     
     protected boolean namespaces = true;
     protected boolean namespacePrefixes = false;
+    protected boolean externalGeneralEntities = true;
     
     protected ContentHandler contentHandler;
     protected LexicalHandler lexicalHandler;
@@ -80,16 +85,26 @@ public abstract class AbstractXMLReader implements XMLReader {
 
     public boolean getFeature(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
-        throw new SAXNotRecognizedException(name);
+        if (URI_NAMESPACES.equals(name)) {
+            return namespaces;
+        } else if (URI_NAMESPACE_PREFIXES.equals(name)) {
+            return namespacePrefixes;
+        } else if (URI_EXTERNAL_GENERAL_ENTITIES.equals(name)) {
+            return externalGeneralEntities;
+        } else {
+            throw new SAXNotRecognizedException(name);
+        }
     }
 
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         
-        if ("http://xml.org/sax/features/namespaces".equals(name)) {
+        if (URI_NAMESPACES.equals(name)) {
             namespaces = value;
-        } else if ("http://xml.org/sax/features/namespace-prefixes".equals(name)) {
+        } else if (URI_NAMESPACE_PREFIXES.equals(name)) {
             namespacePrefixes = value;
+        } else if (URI_EXTERNAL_GENERAL_ENTITIES.equals(name)) {
+            externalGeneralEntities = value;
         } else {
             throw new SAXNotRecognizedException(name);
         }
@@ -98,11 +113,7 @@ public abstract class AbstractXMLReader implements XMLReader {
     public Object getProperty(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         
-        if ("http://xml.org/sax/features/namespaces".equals(name)) {
-            return Boolean.valueOf(namespaces);
-        } else if ("http://xml.org/sax/features/namespace-prefixes".equals(name)) {
-            return Boolean.valueOf(namespacePrefixes);
-        } else if (URI_LEXICAL_HANDLER.equals(name)) {
+        if (URI_LEXICAL_HANDLER.equals(name)) {
             return lexicalHandler;
         } else {
             throw new SAXNotRecognizedException(name);
