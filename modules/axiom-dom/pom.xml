@@ -81,13 +81,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-common-impl-testsuite</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-dom-testsuite</artifactId>
+            <artifactId>dom-testsuite</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

@@ -67,7 +67,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-spring-ws-testsuite</artifactId>
+            <artifactId>spring-ws-testsuite</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

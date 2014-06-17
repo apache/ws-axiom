@@ -865,8 +865,6 @@
         <module>buildutils</module>
         <module>modules/axiom-buildutils</module>
         <module>modules/axiom-testutils</module>
-        <module>modules/axiom-jaxen-testsuite</module>
-        <module>modules/axiom-dom-testsuite</module>
         <module>modules/axiom-api</module>
         <module>modules/axiom-testsuite</module>
         <module>modules/axiom-common-impl</module>
@@ -879,7 +877,6 @@
         <module>modules/axiom-integration</module>
         <module>modules/axiom-all</module>
         <module>modules/axiom-samples</module>
-        <module>axiom-spring-ws-testsuite</module>
         <module>axiom-spring-ws</module>
         <module>systests</module>
         <module>forbiddenapi-signatures</module>

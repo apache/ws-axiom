@@ -21,10 +21,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom</artifactId>
+        <artifactId>testsuites</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
-    <artifactId>axiom-spring-ws-testsuite</artifactId>
+    <artifactId>spring-ws-testsuite</artifactId>
     <name>Spring-WS Test Suite</name>
     <dependencies>
         <dependency>

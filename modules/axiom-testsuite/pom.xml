@@ -78,7 +78,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-jaxen-testsuite</artifactId>
+            <artifactId>jaxen-testsuite</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

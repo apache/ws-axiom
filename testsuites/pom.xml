@@ -28,7 +28,10 @@
     <name>Test Suites</name>
     <packaging>pom</packaging>
     <modules>
+        <module>dom-testsuite</module>
+        <module>jaxen-testsuite</module>
         <module>soap-testsuite</module>
+        <module>spring-ws-testsuite</module>
     </modules>
     <build>
         <plugins>
