@@ -56,6 +56,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         TestMessageSet.NO_HEADER.getMessage(SOAPSpec.SOAP12),
         new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),
         new SimpleTestMessage(SOAPSpec.SOAP12, "soap/soap12/empty-header.xml"),
+        TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11),
+        TestMessageSet.WSA.getMessage(SOAPSpec.SOAP12),
     };
     
     private static final QName[] generalQNames = {
@@ -319,7 +321,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestAddSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetFirstSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetTextWithCDATA(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.header.TestExamineAllHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
@@ -355,7 +356,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueAsQNameWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faulttext.TestGetLangWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.header.TestExamineAllHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocks(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));

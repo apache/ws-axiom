@@ -21,9 +21,12 @@ package org.apache.axiom.ts.soap.header;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestExamineAllHeaderBlocksWithParser extends SOAPTestCase {
     public TestExamineAllHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -31,14 +34,20 @@ public class TestExamineAllHeaderBlocksWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPHeader header = getTestMessage(MESSAGE).getHeader();
-        Iterator iterator = header.examineAllHeaderBlocks();
-        int headerElementCount = 0;
-        while (iterator.hasNext()) {
-            iterator.next();
-            headerElementCount++;
-        }
-        assertEquals("Number of header elements in the header differs from expected value of 3",
-                3, headerElementCount);
+        SOAPEnvelope envelope = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        Iterator iterator = envelope.getHeader().examineAllHeaderBlocks();
+        iterator.hasNext();
+        SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)iterator.next();
+        assertEquals("MessageID", headerBlock.getLocalName());
+        assertTrue(iterator.hasNext());
+        headerBlock = (SOAPHeaderBlock)iterator.next();
+        assertEquals("ReplyTo", headerBlock.getLocalName());
+        assertTrue(iterator.hasNext());
+        headerBlock = (SOAPHeaderBlock)iterator.next();
+        assertEquals("To", headerBlock.getLocalName());
+        assertTrue(iterator.hasNext());
+        headerBlock = (SOAPHeaderBlock)iterator.next();
+        assertEquals("Action", headerBlock.getLocalName());
+        assertFalse(iterator.hasNext());
     }
 }

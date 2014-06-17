@@ -27,6 +27,11 @@ public final class TestMessageSet extends Adaptable {
      */
     public static final TestMessageSet NO_HEADER = new TestMessageSet("no-header");
     
+    /**
+     * A SOAP request with WS-Addressing headers.
+     */
+    public static final TestMessageSet WSA = new TestMessageSet("wsa");
+    
     private final TestMessage soap11Message;
     private final TestMessage soap12Message;
     

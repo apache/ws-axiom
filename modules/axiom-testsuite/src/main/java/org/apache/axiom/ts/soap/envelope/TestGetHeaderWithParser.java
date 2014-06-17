@@ -24,6 +24,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestGetHeaderWithParser extends SOAPTestCase {
     public TestGetHeaderWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -31,7 +33,7 @@ public class TestGetHeaderWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        SOAPEnvelope envelope = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
         SOAPHeader header = envelope.getHeader();
         assertEquals("Header Test : - Header local name mismatch",
                 SOAPConstants.HEADER_LOCAL_NAME, header.getLocalName());
