@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws.jdom;
+package org.apache.axiom.ts.springws.scenario.jdom;
 
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.ScenarioConfig;
-import org.apache.axiom.ts.springws.ScenarioTestCase;
+import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
+import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.transform.JDOMResult;
 import org.jdom2.transform.JDOMSource;

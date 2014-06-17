@@ -18,19 +18,13 @@
   ~ under the License.
   -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:sws="http://www.springframework.org/schema/web-services"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd">
-    <oxm:jaxb2-marshaller id="marshaller">
-        <oxm:class-to-be-bound name="org.apache.axiom.ts.springws.jaxb2.GetQuoteRequest"/>
-        <oxm:class-to-be-bound name="org.apache.axiom.ts.springws.jaxb2.GetQuoteResponse"/>
-    </oxm:jaxb2-marshaller>
-    <bean class="org.springframework.ws.client.core.WebServiceTemplate">
-        <constructor-arg ref="messageFactory"/>
-        <property name="marshaller" ref="marshaller"/>
-        <property name="unmarshaller" ref="marshaller"/>
-        <property name="defaultUri" value="http://localhost:${port}/"/>
-    </bean>
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+         http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
+    <context:component-scan base-package="org.apache.axiom.ts.springws.scenario.wsadom"/>
+    <sws:annotation-driven/>
 </beans>

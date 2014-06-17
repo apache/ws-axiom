@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws;
+package org.apache.axiom.ts.springws.scenario;
+
+import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 
 public final class ScenarioConfig {
     private final MessageFactoryConfigurator clientMessageFactoryConfigurator;

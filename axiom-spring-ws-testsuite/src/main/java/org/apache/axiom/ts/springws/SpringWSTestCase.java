@@ -33,11 +33,11 @@ public abstract class SpringWSTestCase extends MatrixTestCase {
         addTestParameter("soapVersion", spec.getAdapter(SOAPSpecAdapter.class).getSoapVersion());
     }
     
-    void configureContext(GenericApplicationContext context, MessageFactoryConfigurator messageFactoryConfigurator, Resource configResource) {
+    protected void configureContext(GenericApplicationContext context, MessageFactoryConfigurator messageFactoryConfigurator, Resource configResource) {
         context.getEnvironment().getPropertySources().addFirst(new MatrixTestCasePropertySource(this));
         messageFactoryConfigurator.configure(context);
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
-        reader.loadBeanDefinitions(new ClassPathResource("common.xml", ScenarioTestCase.class));
+        reader.loadBeanDefinitions(new ClassPathResource("common.xml", SpringWSTestCase.class));
         if (configResource != null) {
             reader.loadBeanDefinitions(configResource);
         }

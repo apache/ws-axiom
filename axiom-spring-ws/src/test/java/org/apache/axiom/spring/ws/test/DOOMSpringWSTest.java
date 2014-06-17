@@ -21,7 +21,7 @@ package org.apache.axiom.spring.ws.test;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
+import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -16,26 +16,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws.wsadom;
+package org.apache.axiom.ts.springws.scenario.jdom;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
+import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import org.springframework.ws.soap.addressing.server.annotation.Action;
-import org.w3c.dom.Element;
 
 @Endpoint
-public class EchoEndpoint {
-    private static final Log log = LogFactory.getLog(EchoEndpoint.class);
+public class CalculatorEndpoint {
+    private static final Log log = LogFactory.getLog(CalculatorEndpoint.class);
     
-    public static final String ACTION = "urn:echo";
-    
-    @Action(ACTION)
+    private static final String NAMESPACE_URI = "urn:calculator";
+    private static final Namespace NAMESPACE = Namespace.getNamespace("c", NAMESPACE_URI);
+
+    private XPathExpression<Element> operandExpression = XPathFactory.instance().compile("c:Operand", Filters.element(), null, NAMESPACE);
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddRequest")
     @ResponsePayload
-    public Element echo(@RequestPayload Element request) {
+    public Element add(@RequestPayload Element addRequest) throws Exception {
         log.debug("Endpoint invoked");
-        return request;
+        double sum = 0d;
+        for (Element operand : operandExpression.evaluate(addRequest)) {
+            sum += Double.parseDouble(operand.getTextNormalize());
+        }
+        Element response = new Element("AddResponse", NAMESPACE);
+        response.setText(String.valueOf(sum));
+        return response;
     }
 }

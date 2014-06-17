@@ -16,21 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws.jaxb2;
+package org.apache.axiom.ts.springws.scenario.jaxb2;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
+import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
+import org.springframework.ws.client.core.WebServiceTemplate;
 
-@XmlRootElement(namespace="urn:stockquote", name="GetQuoteResponse")
-@XmlType
-public class GetQuoteResponse {
-    private double price;
-
-    public double getPrice() {
-        return price;
+public class JAXB2Test extends ScenarioTestCase {
+    public JAXB2Test(ScenarioConfig config, SOAPSpec spec) {
+        super(config, spec);
     }
-
-    public void setPrice(double price) {
-        this.price = price;
+    
+    @Override
+    protected void runTest() throws Throwable {
+        GetQuoteRequest request = new GetQuoteRequest();
+        request.setSymbol("GOOG");
+        context.getBean(WebServiceTemplate.class).marshalSendAndReceive(request);
     }
 }

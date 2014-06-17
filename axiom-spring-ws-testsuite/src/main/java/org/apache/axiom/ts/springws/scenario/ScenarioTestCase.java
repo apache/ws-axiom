@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws;
+package org.apache.axiom.ts.springws.scenario;
 
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.springws.SpringWSTestCase;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;

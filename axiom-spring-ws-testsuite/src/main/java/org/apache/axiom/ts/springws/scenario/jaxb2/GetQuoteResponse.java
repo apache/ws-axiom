@@ -16,20 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws.jaxb2;
+package org.apache.axiom.ts.springws.scenario.jaxb2;
 
-import org.springframework.ws.server.endpoint.annotation.Endpoint;
-import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
-import org.springframework.ws.server.endpoint.annotation.RequestPayload;
-import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-@Endpoint
-public class StockQuoteEndpoint {
-    @PayloadRoot(namespace="urn:stockquote", localPart="GetQuote")
-    @ResponsePayload
-    public GetQuoteResponse getQuote(@RequestPayload GetQuoteRequest request) {
-        GetQuoteResponse response = new GetQuoteResponse();
-        response.setPrice(105.37);
-        return response;
+@XmlRootElement(namespace="urn:stockquote", name="GetQuoteResponse")
+@XmlType
+public class GetQuoteResponse {
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

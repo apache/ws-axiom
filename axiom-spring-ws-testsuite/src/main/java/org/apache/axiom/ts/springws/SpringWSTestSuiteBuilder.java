@@ -20,11 +20,12 @@ package org.apache.axiom.ts.springws;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.springws.jaxb2.JAXB2Test;
-import org.apache.axiom.ts.springws.jdom.ClientServerTest;
+import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
+import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
+import org.apache.axiom.ts.springws.scenario.jdom.ClientServerTest;
+import org.apache.axiom.ts.springws.scenario.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessage;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStream;
-import org.apache.axiom.ts.springws.wsadom.WSAddressingDOMTest;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final MessageFactoryConfigurator messageFactoryConfigurator;

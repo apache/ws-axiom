@@ -25,6 +25,6 @@
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
          http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
-    <context:component-scan base-package="org.apache.axiom.ts.springws.jaxb2"/>
+    <context:component-scan base-package="org.apache.axiom.ts.springws.scenario.jaxb2"/>
     <sws:annotation-driven/>
 </beans>
