@@ -16,22 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws.scenario.broker;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
-import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
+public class UnknownCustomerException extends Exception {
+    private static final long serialVersionUID = 1L;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class LLOMSpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DEFAULT), MessageFactoryConfigurator.SAAJ);
-        
-        builder.exclude(BrokerScenarioTest.class);
-        
-        return builder.build();
+    public UnknownCustomerException(String message) {
+        super(message);
     }
 }

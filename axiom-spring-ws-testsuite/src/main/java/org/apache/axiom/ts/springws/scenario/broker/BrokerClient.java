@@ -16,22 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws.scenario.broker;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
-import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
+import org.springframework.ws.client.core.WebServiceTemplate;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+public class BrokerClient {
+    private final WebServiceTemplate webServiceTemplate;
 
-public class LLOMSpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DEFAULT), MessageFactoryConfigurator.SAAJ);
-        
-        builder.exclude(BrokerScenarioTest.class);
-        
-        return builder.build();
+    public BrokerClient(WebServiceTemplate webServiceTemplate) {
+        this.webServiceTemplate = webServiceTemplate;
+    }
+    
+    public OrderStatus order(Order order) {
+        return (OrderStatus)webServiceTemplate.marshalSendAndReceive(order);
+    }
+    
+    public Order receiveNextOrder() {
+        return (Order)webServiceTemplate.marshalSendAndReceive(new RetrieveNextOrder());
     }
 }

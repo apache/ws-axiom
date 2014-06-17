@@ -16,22 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.spring.ws.test;
+package org.apache.axiom.ts.springws.scenario.broker;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
-import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
+import java.util.Date;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-public class LLOMSpringWSTest extends TestCase {
-    public static TestSuite suite() {
-        SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DEFAULT), MessageFactoryConfigurator.SAAJ);
-        
-        builder.exclude(BrokerScenarioTest.class);
-        
-        return builder.build();
+@XmlRootElement(namespace="urn:broker", name="OrderStatus")
+@XmlType
+public class OrderStatus {
+    private Date received;
+
+    @XmlElement(namespace="urn:broker", name="Received")
+    public Date getReceived() {
+        return received;
+    }
+
+    public void setReceived(Date received) {
+        this.received = received;
     }
 }

@@ -39,7 +39,9 @@ public abstract class SOAPSpec extends Adaptable {
             null,
             new QName("faultactor"),
             new QName("detail"),
-            "http://schemas.xmlsoap.org/soap/actor/next") {
+            "http://schemas.xmlsoap.org/soap/actor/next",
+            new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"),
+            new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server")) {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP12;
         }
@@ -59,7 +61,9 @@ public abstract class SOAPSpec extends Adaptable {
             new QName("http://www.w3.org/2003/05/soap-envelope", "Node"),
             new QName("http://www.w3.org/2003/05/soap-envelope", "Role"),
             new QName("http://www.w3.org/2003/05/soap-envelope", "Detail"),
-            "http://www.w3.org/2003/05/soap-envelope/role/next") {
+            "http://www.w3.org/2003/05/soap-envelope/role/next",
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Sender"),
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver")) {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP11;
         }
@@ -84,11 +88,13 @@ public abstract class SOAPSpec extends Adaptable {
     private final QName faultRoleQName;
     private final QName faultDetailQName;
     private final String nextRoleURI;
+    private final QName senderFaultCode;
+    private final QName receiverFaultCode;
     
     public SOAPSpec(String name, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
             QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
             QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
-            String nextRoleURI) {
+            String nextRoleURI, QName senderFaultCode, QName receiverFaultCode) {
         this.name = name;
         this.envelopeNamespaceURI = envelopeNamespaceURI;
         this.booleanLiterals = booleanLiterals;
@@ -104,6 +110,8 @@ public abstract class SOAPSpec extends Adaptable {
         this.faultRoleQName = faultRoleQName;
         this.faultDetailQName = faultDetailQName;
         this.nextRoleURI = nextRoleURI;
+        this.senderFaultCode = senderFaultCode;
+        this.receiverFaultCode = receiverFaultCode;
     }
     
     public final String getName() {
@@ -222,5 +230,13 @@ public abstract class SOAPSpec extends Adaptable {
     
     public final String getNextRoleURI() {
         return nextRoleURI;
+    }
+    
+    public final QName getSenderFaultCode() {
+        return senderFaultCode;
+    }
+    
+    public final QName getReceiverFaultCode() {
+        return receiverFaultCode;
     }
 }
