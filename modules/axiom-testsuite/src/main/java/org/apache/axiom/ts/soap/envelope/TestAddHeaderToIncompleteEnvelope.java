@@ -23,6 +23,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 /**
  * Test the behavior when adding a header to an envelope that has not yet been built completely.
@@ -34,7 +36,7 @@ public class TestAddHeaderToIncompleteEnvelope extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = getTestMessage(MESSAGE_WITHOUT_HEADER);
+        SOAPEnvelope envelope = TestMessageSet.NO_HEADER.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
         assertNull(envelope.getHeader());
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
         assertSame(header, envelope.getHeader());

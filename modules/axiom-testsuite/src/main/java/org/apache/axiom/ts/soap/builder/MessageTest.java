@@ -18,24 +18,24 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.soap.TestMessage;
 
 public class MessageTest extends AxiomTestCase {
-    private final String file;
+    private final TestMessage message;
 
-    public MessageTest(OMMetaFactory metaFactory, String file) {
+    public MessageTest(OMMetaFactory metaFactory, TestMessage message) {
         super(metaFactory);
-        this.file = file;
-        addTestParameter("file", file);
+        this.message = message;
+        addTestParameter("message", message.getName());
     }
 
     protected void runTest() throws Throwable {
         SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                AbstractTestCase.getTestResource(file), null).getSOAPEnvelope();
+                message.getInputStream(), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
         soapEnvelope.close(false);
     }

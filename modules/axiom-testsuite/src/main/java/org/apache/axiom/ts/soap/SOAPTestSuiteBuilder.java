@@ -40,13 +40,23 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             "soap12/header-bad-case.xml", "soap12/header-no-namespace.xml", "soap12/processing-instruction.xml", "soap12/entity-reference.xml",
             "soap12/additional-element-after-body.xml"};
     
-    private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
-        TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
-        TestConstants.EMPTY_BODY_MESSAGE, "soap/soap11/soapfault.xml", "soap/soap11/soapfault2.xml", "soap/soap11/bodyNotQualified.xml",
-        "soap/soap11/message.xml", "soap/soap12/message.xml",
-        "soap/soap11/faultelements-with-comment.xml", "soap/soap11/additional-element-after-body.xml",
-        "soap/soap11/message_without_header.xml", "soap/soap12/message_without_header.xml",
-        "soap/soap11/empty-header.xml", "soap/soap12/empty-header.xml" };
+    private static final TestMessage[] goodSOAPFiles = {
+        new SimpleTestMessage(SOAPSpec.SOAP11, TestConstants.WHITESPACE_MESSAGE),
+        new SimpleTestMessage(SOAPSpec.SOAP11, TestConstants.MINIMAL_MESSAGE),
+        new SimpleTestMessage(SOAPSpec.SOAP11, TestConstants.REALLY_BIG_MESSAGE),
+        new SimpleTestMessage(SOAPSpec.SOAP11, TestConstants.EMPTY_BODY_MESSAGE),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/soapfault2.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/message.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP12, "soap/soap12/message.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/faultelements-with-comment.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/additional-element-after-body.xml"),
+        TestMessageSet.NO_HEADER.getMessage(SOAPSpec.SOAP11),
+        TestMessageSet.NO_HEADER.getMessage(SOAPSpec.SOAP12),
+        new SimpleTestMessage(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),
+        new SimpleTestMessage(SOAPSpec.SOAP12, "soap/soap12/empty-header.xml"),
+    };
     
     private static final QName[] generalQNames = {
         new QName("root"),
