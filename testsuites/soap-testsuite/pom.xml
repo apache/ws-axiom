@@ -29,4 +29,24 @@
     <description>
         Contains sample messages, metadata and utilities to build tests for SOAP 1.1 and 1.2.
     </description>
+    <profiles>
+        <profile>
+            <id>apache-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <!-- src/main/resources contains test files and they obviously cannot
+                                     all contain a valid license header -->
+                                <exclude>src/main/resources/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
