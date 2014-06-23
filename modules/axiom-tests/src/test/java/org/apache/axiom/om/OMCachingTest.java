@@ -21,14 +21,19 @@ package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamException;
 
-public class OMCachingTest extends AbstractTestCase {
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
+
+import junit.framework.TestCase;
+
+public class OMCachingTest extends TestCase {
     /** This will first serialize the element without caching. Then it tries to serialize again . */
     public void testCachingOne() throws Exception {
 
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toStringWithConsume();
         } catch (XMLStreamException e) {
@@ -51,7 +56,7 @@ public class OMCachingTest extends AbstractTestCase {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toString();
             envelopeString = documentElement.toStringWithConsume();

@@ -24,21 +24,23 @@ import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.ByteArrayOutputStream;
 
 public class OMSerializerTest extends AbstractTestCase {
     public void testElementPullStream1() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
+                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -54,7 +56,7 @@ public class OMSerializerTest extends AbstractTestCase {
     public void testElementPullStream1WithCacheOff() throws Exception {
 
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
+                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
@@ -81,7 +83,7 @@ public class OMSerializerTest extends AbstractTestCase {
 
     public void testElementPullStream2() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
+                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 

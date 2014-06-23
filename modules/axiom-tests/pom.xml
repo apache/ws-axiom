@@ -86,6 +86,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>soap-testsuite</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>

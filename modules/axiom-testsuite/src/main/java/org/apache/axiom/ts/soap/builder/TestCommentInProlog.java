@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 /**
  * Tests that the SOAP builder creates {@link OMComment} nodes for comments in the XML prolog.
@@ -34,7 +36,7 @@ public class TestCommentInProlog extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = getBuilderForTestMessage(SOAP_MESSAGE).getSOAPMessage();
+        SOAPMessage message = TestMessageSet.COMMENT_IN_PROLOG.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPMessage(metaFactory);
         OMNode firstChild = message.getFirstOMChild();
         assertTrue(firstChild instanceof OMComment);
     }

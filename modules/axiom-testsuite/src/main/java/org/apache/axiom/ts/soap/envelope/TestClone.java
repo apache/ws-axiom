@@ -19,18 +19,19 @@
 package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessage;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
 
 public class TestClone extends CloneTestCase {
-    private final String file;
+    private final TestMessage message;
 
-    public TestClone(OMMetaFactory metaFactory, SOAPSpec spec, String file) {
-        super(metaFactory, spec);
-        this.file = file;
-        addTestParameter("file", file);
+    public TestClone(OMMetaFactory metaFactory, TestMessage message) {
+        super(metaFactory, message.getSOAPSpec());
+        this.message = message;
+        addTestParameter("message", message.getName());
     }
 
     protected void runTest() throws Throwable {
-        copyAndCheck(getTestMessage(file));
+        copyAndCheck(message.getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory));
     }
 }

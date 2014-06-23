@@ -32,6 +32,11 @@ public final class TestMessageSet extends Adaptable {
      */
     public static final TestMessageSet WSA = new TestMessageSet("wsa");
     
+    /**
+     * A simple SOAP request with a comment in the XML prolog.
+     */
+    public static final TestMessageSet COMMENT_IN_PROLOG = new TestMessageSet("comment-in-prolog");
+    
     private final TestMessage soap11Message;
     private final TestMessage soap12Message;
     

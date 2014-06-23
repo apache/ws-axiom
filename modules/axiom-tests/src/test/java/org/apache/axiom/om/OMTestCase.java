@@ -19,9 +19,13 @@
 
 package org.apache.axiom.om;
 
+import java.io.InputStream;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public abstract class OMTestCase extends AbstractTestCase {
     protected SOAPModelBuilder builder;
@@ -46,10 +50,13 @@ public abstract class OMTestCase extends AbstractTestCase {
     }
 
     protected SOAPModelBuilder getOMBuilder(String fileName) throws Exception {
+        InputStream in;
         if ("".equals(fileName) || fileName == null) {
-            fileName = TestConstants.SOAP_SOAPMESSAGE;
+            in = TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream();
+        } else {
+            in = getTestResource(fileName);
         }
-        builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(fileName), null);
+        builder = OMXMLBuilderFactory.createSOAPModelBuilder(in, null);
         return builder;
     }
 }

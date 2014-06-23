@@ -292,17 +292,10 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (int i=0; i<badSOAPFiles.length; i++) {
             addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFiles[i]));
         }
-        for (int i=0; i<goodSOAPFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i]));
+        for (TestMessage msg : goodSOAPFiles) {
+            addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, msg));
+            addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, msg));
         }
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "sample1.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soapmessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soapmessage1.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "whitespacedMessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "minimalMessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "reallyReallyBigMessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "emtyBodymessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soap11fault.xml")); 
         for (int i=0; i<goodSOAPFiles.length; i++) {
             for (int j=0; j<expansionStrategies.length; j++) {
                 for (int k=0; k<serializationStrategies.length; k++) {

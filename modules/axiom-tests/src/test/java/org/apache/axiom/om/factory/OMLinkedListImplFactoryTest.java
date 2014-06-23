@@ -34,6 +34,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 import javax.xml.namespace.QName;
 
@@ -117,7 +119,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateSOAPHeaderBlock() throws Exception {
         OMXMLParserWrapper omBuilder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
+                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
         SOAPHeader soapHeader = soapEnvelope.getHeader();
         SOAPHeaderBlock soapHeaderBlock = omFactory.createSOAPHeaderBlock(

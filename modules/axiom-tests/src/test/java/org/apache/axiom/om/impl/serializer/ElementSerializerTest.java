@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.serializer;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -29,24 +28,25 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
 import org.apache.commons.io.output.NullOutputStream;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 
-public class ElementSerializerTest extends AbstractTestCase {
+import junit.framework.TestCase;
+
+public class ElementSerializerTest extends TestCase {
     private XMLStreamReader reader;
     private XMLStreamWriter writer;
     private OMXMLParserWrapper builder;
 
     protected void setUp() throws Exception {
-        reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+        reader = StAXUtils.createXMLStreamReader(TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         writer = StAXUtils.createXMLStreamWriter(new NullOutputStream(),
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builder =

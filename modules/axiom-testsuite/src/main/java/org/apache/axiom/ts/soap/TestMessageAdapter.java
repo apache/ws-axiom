@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.junit.Assert;
 import org.xml.sax.InputSource;
@@ -39,6 +40,10 @@ public final class TestMessageAdapter {
     
     public SOAPModelBuilder getBuilder(OMMetaFactory metaFactory) {
         return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(testMessage.getInputStream()));
+    }
+    
+    public SOAPMessage getSOAPMessage(OMMetaFactory metaFactory) {
+        return getBuilder(metaFactory).getSOAPMessage();
     }
     
     public SOAPEnvelope getSOAPEnvelope(OMMetaFactory metaFactory) {

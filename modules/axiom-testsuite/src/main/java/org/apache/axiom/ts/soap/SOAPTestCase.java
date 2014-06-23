@@ -34,7 +34,6 @@ import org.xml.sax.InputSource;
 
 public abstract class SOAPTestCase extends AxiomTestCase {
     protected static final String MESSAGE = "message.xml";
-    protected static final String SOAP_MESSAGE = "soapmessage.xml";
     
     protected final SOAPSpec spec;
     protected SOAPFactory soapFactory;

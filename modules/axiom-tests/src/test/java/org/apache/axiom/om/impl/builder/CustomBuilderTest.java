@@ -34,6 +34,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 import javax.xml.namespace.QName;
 
@@ -53,7 +55,7 @@ public class CustomBuilderTest extends AbstractTestCase {
     
     public void testHeaderCustomBuilder() throws Exception{
         StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
+                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         builder.registerCustomBuilder(new QName("http://schemas.xmlsoap.org/ws/2004/03/addressing","To"), 3, new
                                       ByteArrayCustomBuilder("utf-8"));
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
@@ -73,7 +75,7 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testSOAPMESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE)), true);
+        copyAndCheck(createEnvelope(TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream()), true);
     }
     
     public void testWHITESPACE_MESSAGE() throws Exception {

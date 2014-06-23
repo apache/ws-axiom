@@ -30,6 +30,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} on a
@@ -44,9 +46,9 @@ public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock e
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = getTestMessage(SOAP_MESSAGE);
+        SOAPEnvelope envelope = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)envelope.getHeader().getFirstChildWithName(
-                new QName("http://schemas.xmlsoap.org/ws/2004/03/addressing", "From"));
+                new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         headerBlock.getFirstElement().getFirstOMChild();
         assertFalse(headerBlock.isComplete());
         XMLStreamReader reader = envelope.getXMLStreamReaderWithoutCaching();

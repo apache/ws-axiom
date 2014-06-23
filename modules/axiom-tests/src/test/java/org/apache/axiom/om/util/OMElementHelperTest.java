@@ -19,16 +19,18 @@
 
 package org.apache.axiom.om.util;
 
-import org.apache.axiom.om.AbstractTestCase;
+import junit.framework.TestCase;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
-public class OMElementHelperTest extends AbstractTestCase {
+public class OMElementHelperTest extends TestCase {
     public void testImportOMElement() throws Exception {
         OMElement documentElement =
-                OMXMLBuilderFactory.createOMBuilder(OMAbstractFactory.getOMFactory(), getTestResource(TestConstants.SOAP_SOAPMESSAGE))
+                OMXMLBuilderFactory.createOMBuilder(OMAbstractFactory.getOMFactory(), TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream())
                         .getDocumentElement();
 
         // first lets try to import an element created from llom in to llom factory. This should return the same element
