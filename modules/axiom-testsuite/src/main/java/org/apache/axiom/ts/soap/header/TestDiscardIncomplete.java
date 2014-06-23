@@ -22,6 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 // Regression test for AXIOM-223 (see r567512)
 public class TestDiscardIncomplete extends SOAPTestCase {
@@ -30,7 +32,7 @@ public class TestDiscardIncomplete extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        SOAPEnvelope envelope = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
         envelope.getHeader().discard();
         envelope.getBody().toStringWithConsume();
     }

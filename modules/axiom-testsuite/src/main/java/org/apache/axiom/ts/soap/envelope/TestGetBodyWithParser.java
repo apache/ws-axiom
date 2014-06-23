@@ -24,6 +24,8 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestGetBodyWithParser extends SOAPTestCase {
     public TestGetBodyWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -31,7 +33,7 @@ public class TestGetBodyWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        SOAPEnvelope envelope = TestMessageSet.NO_HEADER.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
         SOAPBody body = envelope.getBody();
         assertEquals("Body Test : - Body local name mismatch",
                 SOAPConstants.BODY_LOCAL_NAME, body.getLocalName());

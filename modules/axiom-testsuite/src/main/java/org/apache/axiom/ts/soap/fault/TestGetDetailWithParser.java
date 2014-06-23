@@ -22,6 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestGetDetailWithParser extends SOAPTestCase {
     public TestGetDetailWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -29,7 +31,7 @@ public class TestGetDetailWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
+        SOAPFault soapFaultWithParser = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault();
         assertNotNull(
                 "Fault Test with parser: - getDetail method returns null",
                 soapFaultWithParser.getDetail());

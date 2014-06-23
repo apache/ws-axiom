@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -54,48 +55,73 @@ final class ConvertedTestMessage extends TestMessage {
                 } finally {
                     in.close();
                 }
-                processEnvelope(document.getDocumentElement());
+                processSOAPElement(document.getDocumentElement(), SOAPElementType.ENVELOPE);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 TransformerFactory.newInstance().newTransformer().transform(
                         new DOMSource(document),
                         new StreamResult(baos));
                 content = baos.toByteArray();
             } catch (Exception ex) {
-                throw new Error("Error converting SOAP message");
+                throw new Error("Error converting SOAP message", ex);
             }
         }
         return new ByteArrayInputStream(content);
     }
     
-    private static void processEnvelope(Element envelope) {
-        NodeList children = changeSOAPNamespace(envelope).getChildNodes();
-        for (int i=0; i<children.getLength(); i++) {
-            Node child = children.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElement = (Element)child;
-                String localName = childElement.getLocalName();
-                if (localName.equals("Header")) {
-                    processHeader(childElement);
-                } else if (localName.equals("Body")) {
-                    processBody(childElement);
+    private static void processSOAPElement(Element element, SOAPElementType type) {
+        QName newName = type.getQName(SOAPSpec.SOAP11);
+        String prefix = element.getPrefix();
+        if (newName.getNamespaceURI().isEmpty()) {
+            prefix = null;
+        }
+        element = (Element)element.getOwnerDocument().renameNode(element, newName.getNamespaceURI(),
+                prefix == null ? newName.getLocalPart() : prefix + ":" + newName.getLocalPart());
+        if (type == SOAPFaultChild.CODE) {
+            Element value = getChild(element, SOAPFaultChild.VALUE);
+            // TODO: should translate fault code as well
+            element.setTextContent(value.getTextContent());
+        } else if (type == SOAPFaultChild.REASON) {
+            Element text = getChild(element, SOAPFaultChild.TEXT);
+            element.setTextContent(text.getTextContent());
+        } else {
+            SOAPElementType[] childTypes = type.getChildTypes();
+            if (childTypes.length != 0) {
+                NodeList children = element.getChildNodes();
+                for (int i=0; i<children.getLength(); i++) {
+                    Node child = children.item(i);
+                    if (child.getNodeType() == Node.ELEMENT_NODE) {
+                        Element childElement = (Element)child;
+                        for (SOAPElementType childType : childTypes) {
+                            if (hasName(childElement, childType.getQName(SOAPSpec.SOAP12))) {
+                                processSOAPElement(childElement, childType);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
     
-    private static void processHeader(Element header) {
-        changeSOAPNamespace(header);
-        // TODO: need to transform mustUnderstand attributes
-    }
-    
-    private static void processBody(Element body) {
-        changeSOAPNamespace(body);
-    }
-    
-    private static Element changeSOAPNamespace(Element element) {
-        if (!SOAPSpec.SOAP12.getEnvelopeNamespaceURI().equals(element.getNamespaceURI())) {
-            throw new Error("Unexpected namespace");
+    private static boolean hasName(Element element, QName name) {
+        String namespaceURI = element.getNamespaceURI();
+        if (namespaceURI == null) {
+            namespaceURI = "";
         }
-        return (Element)element.getOwnerDocument().renameNode(element, SOAPSpec.SOAP11.getEnvelopeNamespaceURI(), element.getTagName());
+        return namespaceURI.equals(name.getNamespaceURI()) && element.getLocalName().equals(name.getLocalPart());
+    }
+    
+    private static Element getChild(Element element, SOAPElementType type) {
+        NodeList children = element.getChildNodes();
+        for (int i=0; i<children.getLength(); i++) {
+            Node child = children.item(i);
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                Element childElement = (Element)child;
+                if (hasName(childElement, type.getQName(SOAPSpec.SOAP12))) {
+                    return childElement;
+                }
+            }
+        }
+        return null;
     }
 }

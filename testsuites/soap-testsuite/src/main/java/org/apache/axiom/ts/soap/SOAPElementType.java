@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.soap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 public abstract class SOAPElementType extends Adaptable {
@@ -78,7 +81,31 @@ public abstract class SOAPElementType extends Adaptable {
         SOAPFaultChild.DETAIL,
     };
     
+    static {
+        addRelation(ENVELOPE, HEADER);
+        addRelation(ENVELOPE, BODY);
+        addRelation(BODY, FAULT);
+        addRelation(FAULT, SOAPFaultChild.CODE);
+        addRelation(SOAPFaultChild.CODE, SOAPFaultChild.VALUE);
+        addRelation(SOAPFaultChild.CODE, SOAPFaultChild.SUB_CODE);
+        addRelation(SOAPFaultChild.SUB_CODE, SOAPFaultChild.VALUE);
+        addRelation(SOAPFaultChild.SUB_CODE, SOAPFaultChild.SUB_CODE);
+        addRelation(FAULT, SOAPFaultChild.REASON);
+        addRelation(SOAPFaultChild.REASON, SOAPFaultChild.TEXT);
+        addRelation(FAULT, SOAPFaultChild.NODE);
+        addRelation(FAULT, SOAPFaultChild.ROLE);
+        addRelation(FAULT, SOAPFaultChild.DETAIL);
+    }
+    
+    private final List<SOAPElementType> parentTypes = new ArrayList<SOAPElementType>();
+    private final List<SOAPElementType> childTypes = new ArrayList<SOAPElementType>();
+    
     SOAPElementType() {}
+    
+    private static void addRelation(SOAPElementType parentType, SOAPElementType childType) {
+        parentType.childTypes.add(childType);
+        childType.parentTypes.add(parentType);
+    }
     
     public static SOAPElementType[] getAll() {
         return allTypes.clone();
@@ -93,4 +120,12 @@ public abstract class SOAPElementType extends Adaptable {
      *         SOAP version
      */
     public abstract QName getQName(SOAPSpec spec);
+    
+    public SOAPElementType[] getParentTypes() {
+        return parentTypes.toArray(new SOAPElementType[parentTypes.size()]);
+    }
+    
+    public SOAPElementType[] getChildTypes() {
+        return childTypes.toArray(new SOAPElementType[childTypes.size()]);
+    }
 }

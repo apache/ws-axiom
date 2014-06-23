@@ -21,7 +21,6 @@ package org.apache.axiom.ts.soap.envelope;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
@@ -30,6 +29,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestHasFaultWithParserOptimized extends SOAPTestCase {
     public TestHasFaultWithParserOptimized(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -42,7 +42,7 @@ public class TestHasFaultWithParserOptimized extends SOAPTestCase {
         // implementation.
         
         XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
-                AbstractTestCase.getTestResource("soap/" + spec.getName() + "/" + MESSAGE), null);
+                TestMessageSet.SIMPLE_FAULT.getMessage(spec).getInputStream(), null);
         QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.BODY_FAULT_LOCAL_NAME, "SOAP-ENV");
         XMLStreamReaderWithQName parser = new XMLStreamReaderWithQName(soap11Parser, qname);
         SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, parser);

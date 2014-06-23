@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 /**
  * Tests {@link OMNode#detach()} when used on a {@link SOAPEnvelope}. Older Axiom versions threw an
@@ -36,7 +38,7 @@ public class TestDetach extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        SOAPEnvelope envelope = TestMessageSet.NO_HEADER.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
         OMDocument document = (OMDocument)envelope.getParent();
         envelope.detach();
         assertNull(envelope.getParent());

@@ -22,6 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestGetValueWithParser extends SOAPTestCase {
     public TestGetValueWithParser(OMMetaFactory metaFactory) {
@@ -29,7 +31,7 @@ public class TestGetValueWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultCode code = getTestMessage(MESSAGE).getBody().getFault().getCode();
+        SOAPFaultCode code = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getCode();
         assertNull(code.getValue());
     }
 }

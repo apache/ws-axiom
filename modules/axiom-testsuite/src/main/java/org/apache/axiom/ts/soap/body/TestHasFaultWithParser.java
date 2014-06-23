@@ -22,6 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
 public class TestHasFaultWithParser extends SOAPTestCase {
     public TestHasFaultWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -29,7 +31,7 @@ public class TestHasFaultWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPBody body = getTestMessage(MESSAGE).getBody();
+        SOAPBody body = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody();
         assertTrue(
                 "Body Test With parser :- hasFault method returns false",
                 body.hasFault());

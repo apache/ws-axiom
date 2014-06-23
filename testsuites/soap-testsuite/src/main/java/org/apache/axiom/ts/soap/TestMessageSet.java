@@ -37,6 +37,12 @@ public final class TestMessageSet extends Adaptable {
      */
     public static final TestMessageSet COMMENT_IN_PROLOG = new TestMessageSet("comment-in-prolog");
     
+    /**
+     * A SOAP response with a simple SOAP fault containing a fault code (without subcode), reason
+     * (English only) and detail.
+     */
+    public static final TestMessageSet SIMPLE_FAULT = new TestMessageSet("simple-fault");
+    
     private final TestMessage soap11Message;
     private final TestMessage soap12Message;
     

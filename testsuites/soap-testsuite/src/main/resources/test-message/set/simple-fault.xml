@@ -1,0 +1,16 @@
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+    <s:Body>
+        <s:Fault>
+            <s:Code>
+                <s:Value>s:Receiver</s:Value>
+            </s:Code>
+            <s:Reason>
+                <s:Text xml:lang="en">Request execution failure caused by system error</s:Text>
+            </s:Reason>
+            <s:Detail>
+                <p:ErrorCode xmlns:p="http://example.org/system">TYG9034E</p:ErrorCode>
+                <p:Message xmlns:p="http://example.org/system">CPU quota exceeded</p:Message>
+            </s:Detail>
+        </s:Fault>
+    </s:Body>
+</s:Envelope>
