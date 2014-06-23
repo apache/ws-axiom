@@ -64,7 +64,14 @@ final class SoapEnvelopeImpl extends SoapElementImpl<SOAPEnvelope> implements So
     public SoapBody getBody() throws SoapBodyException {
         SOAPBody axiomBody = axiomNode.getBody();
         if (body == null || body.axiomNode != axiomBody) {
-            body = new SoapBodyImpl(getMessage(), axiomBody);
+            SOAPVersion soapVersion = ((SOAPFactory)axiomBody.getOMFactory()).getSOAPVersion();
+            if (soapVersion == SOAP11Version.getSingleton()) {
+                body = new Soap11BodyImpl(getMessage(), axiomBody);
+            } else if (soapVersion == SOAP12Version.getSingleton()) {
+                body = new Soap12BodyImpl(getMessage(), axiomBody);
+            } else {
+                throw new SoapEnvelopeException("Unrecognized SOAP version");
+            }
         }
         return body;
     }
