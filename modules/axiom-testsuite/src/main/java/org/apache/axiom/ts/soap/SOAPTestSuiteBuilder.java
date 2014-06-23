@@ -72,20 +72,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
         new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX) };
     
-    private static final SOAPElementType[] soapElementTypes = {
-        SOAPElementType.ENVELOPE,
-        SOAPElementType.HEADER,
-        SOAPElementType.BODY,
-        SOAPFaultChild.CODE,
-        SOAPElementType.VALUE,
-        SOAPElementType.SUB_CODE,
-        SOAPFaultChild.REASON,
-        SOAPElementType.TEXT,
-        SOAPFaultChild.NODE,
-        SOAPFaultChild.ROLE,
-        SOAPFaultChild.DETAIL,
-    };
-    
     private static final BooleanAttribute[] booleanAttributes = {
         BooleanAttribute.MUST_UNDERSTAND,
         BooleanAttribute.RELAY,
@@ -184,8 +170,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateDefaultSOAPMessage(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
-        for (int i=0; i<soapElementTypes.length; i++) {
-            addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPElement(metaFactory, spec, soapElementTypes[i]));
+        for (SOAPElementType type : SOAPElementType.getAll()) {
+            addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPElement(metaFactory, spec, type));
         }
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithParent(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestFactoryIsSingleton(metaFactory, spec));

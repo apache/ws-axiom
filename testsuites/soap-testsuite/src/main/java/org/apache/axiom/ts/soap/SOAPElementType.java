@@ -57,7 +57,25 @@ public abstract class SOAPElementType extends Adaptable {
         }
     };
     
+    private static final SOAPElementType[] allTypes = {
+        SOAPElementType.ENVELOPE,
+        SOAPElementType.HEADER,
+        SOAPElementType.BODY,
+        SOAPFaultChild.CODE,
+        SOAPElementType.VALUE,
+        SOAPElementType.SUB_CODE,
+        SOAPFaultChild.REASON,
+        SOAPElementType.TEXT,
+        SOAPFaultChild.NODE,
+        SOAPFaultChild.ROLE,
+        SOAPFaultChild.DETAIL,
+    };
+    
     SOAPElementType() {}
+    
+    public static SOAPElementType[] getAll() {
+        return allTypes.clone();
+    }
     
     /**
      * Get the qualified name for this element type in the given SOAP version.
