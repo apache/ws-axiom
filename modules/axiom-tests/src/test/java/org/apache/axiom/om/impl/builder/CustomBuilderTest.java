@@ -43,7 +43,7 @@ import java.util.Iterator;
 /**
  * Validates CopyUtils utility
  */
-// TODO: This class seems to be a copy and paste of CopyUtilsTest. Clean this up.
+// TODO: Except for the call to registerCustomBuilderForPayload and some additional assertions, this class seems to be a copy and paste of CopyUtilsTest. Clean this up.
 public class CustomBuilderTest extends AbstractTestCase {
     public void testSample1() throws Exception {
         copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)), true);
