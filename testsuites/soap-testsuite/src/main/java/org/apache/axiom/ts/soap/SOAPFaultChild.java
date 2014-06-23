@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.factory;
+package org.apache.axiom.ts.soap;
 
 import javax.xml.namespace.QName;
-
-import org.apache.axiom.ts.soap.SOAPSpec;
 
 public abstract class SOAPFaultChild extends SOAPElementType {
     public static final SOAPFaultChild CODE = new SOAPFaultChild() {

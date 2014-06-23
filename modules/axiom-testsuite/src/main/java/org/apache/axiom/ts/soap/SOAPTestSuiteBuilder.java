@@ -30,8 +30,6 @@ import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.Strategies;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
-import org.apache.axiom.ts.soap.factory.SOAPElementType;
-import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
 
 public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",

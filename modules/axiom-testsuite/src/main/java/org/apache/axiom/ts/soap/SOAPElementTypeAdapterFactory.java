@@ -32,8 +32,6 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.factory.SOAPElementType;
-import org.apache.axiom.ts.soap.factory.SOAPFaultChild;
 
 public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElementType> {
     public void createAdapters(SOAPElementType type, Adapters adapters) {
