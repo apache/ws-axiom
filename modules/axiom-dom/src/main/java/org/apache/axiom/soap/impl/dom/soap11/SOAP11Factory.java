@@ -235,7 +235,7 @@ public class SOAP11Factory extends SOAPFactoryImpl {
     }
 
     public SOAPFault createSOAPFault() throws SOAPProcessingException {
-        return new SOAP11FaultImpl(this.getDefaultEnvelope().getBody(), this);
+        return new SOAP11FaultImpl(null, getNamespace(), null, this, true);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

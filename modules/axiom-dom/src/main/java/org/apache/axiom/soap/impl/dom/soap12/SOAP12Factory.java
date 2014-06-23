@@ -256,7 +256,7 @@ public class SOAP12Factory extends SOAPFactoryImpl implements SOAP12FactoryEx {
     }
 
     public SOAPFault createSOAPFault() throws SOAPProcessingException {
-        return new SOAP12FaultImpl(this.getDefaultEnvelope().getBody(), this);
+        return new SOAP12FaultImpl(null, getNamespace(), null, this, true);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

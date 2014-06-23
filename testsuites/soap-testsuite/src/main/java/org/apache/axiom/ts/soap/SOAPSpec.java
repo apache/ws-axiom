@@ -79,6 +79,7 @@ public abstract class SOAPSpec extends Adaptable {
     private final QName envelopeQName;
     private final QName headerQName;
     private final QName bodyQName;
+    private final QName faultQName;
     private final QName faultCodeQName;
     private final QName faultValueQName;
     private final QName faultSubCodeQName;
@@ -101,6 +102,7 @@ public abstract class SOAPSpec extends Adaptable {
         envelopeQName = new QName(envelopeNamespaceURI, "Envelope");
         headerQName = new QName(envelopeNamespaceURI, "Header");
         bodyQName = new QName(envelopeNamespaceURI, "Body");
+        faultQName = new QName(envelopeNamespaceURI, "Fault");
         this.faultCodeQName = faultCodeQName;
         this.faultValueQName = faultValueQName;
         this.faultSubCodeQName = faultSubCodeQName;
@@ -140,6 +142,10 @@ public abstract class SOAPSpec extends Adaptable {
 
     public final QName getBodyQName() {
         return bodyQName;
+    }
+
+    public final QName getFaultQName() {
+        return faultQName;
     }
 
     public final QName getFaultCodeQName() {

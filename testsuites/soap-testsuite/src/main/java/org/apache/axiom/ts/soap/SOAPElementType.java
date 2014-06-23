@@ -39,6 +39,12 @@ public abstract class SOAPElementType extends Adaptable {
         }
     };
     
+    public static final SOAPElementType FAULT = new SOAPElementType() {
+        public QName getQName(SOAPSpec spec) {
+            return spec.getFaultQName();
+        }
+    };
+    
     public static final SOAPElementType VALUE = new SOAPElementType() {
         public QName getQName(SOAPSpec spec) {
             return spec.getFaultValueQName();
@@ -61,6 +67,7 @@ public abstract class SOAPElementType extends Adaptable {
         SOAPElementType.ENVELOPE,
         SOAPElementType.HEADER,
         SOAPElementType.BODY,
+        SOAPElementType.FAULT,
         SOAPFaultChild.CODE,
         SOAPElementType.VALUE,
         SOAPElementType.SUB_CODE,

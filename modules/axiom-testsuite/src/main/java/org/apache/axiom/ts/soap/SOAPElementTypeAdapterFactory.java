@@ -53,6 +53,12 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPBody();
                 }
             });
+        } else if (type == SOAPElementType.FAULT) {
+            adapters.add(new SOAPElementTypeAdapter(SOAPFault.class) {
+                public OMElement create(SOAPFactory factory) {
+                    return factory.createSOAPFault();
+                }
+            });
         } else if (type == SOAPFaultChild.CODE) {
             adapters.add(new SOAPFaultChildAdapter(SOAPFaultCode.class) {
                 public OMElement create(SOAPFactory factory) {
