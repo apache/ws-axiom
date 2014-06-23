@@ -37,10 +37,7 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.TestMessageSet;
 
-import javax.xml.namespace.QName;
-
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -50,24 +47,6 @@ import java.util.Iterator;
 public class CustomBuilderTest extends AbstractTestCase {
     public void testSample1() throws Exception {
         copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)), true);
-    }
-    
-    
-    public void testHeaderCustomBuilder() throws Exception{
-        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(
-                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
-        builder.registerCustomBuilder(new QName("http://schemas.xmlsoap.org/ws/2004/03/addressing","To"), 3, new
-                                      ByteArrayCustomBuilder("utf-8"));
-        SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
-        SOAPHeader header = sourceEnv.getHeader();
-        ArrayList al =
-            header.getHeaderBlocksWithNSURI("http://schemas.xmlsoap.org/ws/2004/03/addressing");
-        for(int i=0;i<al.size();i++){
-            SOAPHeaderBlock shb = (SOAPHeaderBlock)al.get(i);
-            if("To".equals(shb.getLocalName())){
-                assertNotNull(shb.getDataSource());
-            }
-        }
     }
     
     /**
