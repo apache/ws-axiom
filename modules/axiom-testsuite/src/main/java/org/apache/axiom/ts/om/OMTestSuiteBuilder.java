@@ -136,6 +136,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithIllFormedDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestInvalidXML(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestIOExceptionInGetText(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestMalformedDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestNextBeforeGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestReadAttachmentBeforeRootPartComplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
@@ -163,6 +164,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestBuild(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, conformanceFiles[i]));
         }

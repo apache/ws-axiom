@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.commons.io.input.CountingInputStream;
-
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
@@ -83,20 +81,6 @@ public class OMDocumentTestBase extends AbstractTestCase {
         assertTrue(commentFound && piFound);
     }
 
-    /**
-     * Test that a document that is not well formed triggers an appropriate error.
-     */
-    public void testMalformedDocument() {
-        OMDocument document = getSampleOMDocument("<Root><Child attr='a' attr='a'/></Root>");
-        try {
-            document.serialize(new ByteArrayOutputStream());
-            fail("Expected exception");
-        } catch (Exception ex) {
-            // We expect an exception here
-        }
-        document.close(false);
-    }
-
     private OMDocument getSampleOMDocument(String xml) {
         return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), new StringReader(xml)).getDocument();
     }
@@ -115,21 +99,4 @@ public class OMDocumentTestBase extends AbstractTestCase {
 //
 //        return omDocument;
 //    }
-
-    public void testBuild() throws Exception {
-        CountingInputStream in = new CountingInputStream(getTestResource(
-                TestConstants.REALLY_BIG_MESSAGE));
-        OMDocument doc = OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), in).getDocument();
-        assertFalse(doc.isComplete());
-        int countBeforeBuild = in.getCount();
-        doc.build();
-        assertTrue(doc.isComplete());
-        int countAfterBuild = in.getCount();
-        assertTrue(countAfterBuild > countBeforeBuild);
-        OMNode node = doc.getFirstOMChild();
-        while (node != null) {
-            node = node.getNextOMSibling();
-        }
-        assertEquals(countAfterBuild, in.getCount());
-    }
 }
