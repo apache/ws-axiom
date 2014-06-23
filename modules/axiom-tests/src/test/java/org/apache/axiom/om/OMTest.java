@@ -74,10 +74,6 @@ public class OMTest extends AbstractTestCase {
         }
     }
 
-    public void testRootNotCompleteInPartialBuild() throws Exception {
-        assertFalse("Root should not be complete", envelope.isComplete());
-    }
-
     //todo this is wrong correct this
     public void testAdditionOfaCompletelyNewElement() throws Exception {
 

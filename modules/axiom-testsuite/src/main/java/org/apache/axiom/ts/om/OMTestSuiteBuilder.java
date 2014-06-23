@@ -340,6 +340,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestHasNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestHasNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestIsCompleteWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttributeNotOwner(metaFactory));
