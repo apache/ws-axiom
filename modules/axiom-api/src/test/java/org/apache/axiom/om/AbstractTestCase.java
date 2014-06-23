@@ -30,21 +30,6 @@ import org.custommonkey.xmlunit.XMLTestCase;
 /** Abstract base class for test cases. */
 public abstract class AbstractTestCase
         extends XMLTestCase {
-    public static final String[] soapFiles = {
-        "emtyBodymessage.xml",
-        "invalidMustUnderstandSOAP12.xml",
-        "minimalMessage.xml",
-        "OMElementTest.xml",
-        "reallyReallyBigMessage.xml",
-        "sample1.xml",
-        "security2-soap.xml",
-        "soap12/message.xml",
-        "soap12/roleMessage.xml",
-        "soapmessage.xml",
-        "soapmessage1.xml",
-        "whitespacedMessage.xml"
-    };
-
     public AbstractTestCase() {
         this(null);
     }
