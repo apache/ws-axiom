@@ -64,6 +64,6 @@ public class PsychoPathTest {
         ResultSequence rs = evaluate("/Persons/Person[BirthYear='1664']/Name");
         assertEquals(2, rs.size());
         assertEquals("Jean Meslier", rs.item(0).getStringValue());
-        assertEquals("Andreas Schlüter", rs.item(1).getStringValue());
+        assertEquals("Andreas Schl√ºter", rs.item(1).getStringValue());
     }
 }
