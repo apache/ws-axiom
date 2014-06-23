@@ -17,5 +17,6 @@
 # under the License.
 #
 org.apache.axiom.ts.soap.BooleanAttributeAdapterFactory
+org.apache.axiom.ts.soap.SOAPElementTypeAdapterFactory
 org.apache.axiom.ts.soap.SOAPSpecAdapterFactory
 org.apache.axiom.ts.soap.TestMessageAdapterFactory

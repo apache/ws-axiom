@@ -23,7 +23,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 public class BooleanAttributeAdapterFactory implements AdapterFactory<BooleanAttribute> {
     public void createAdapters(BooleanAttribute attribute, Adapters adapters) {
         if (attribute == BooleanAttribute.MUST_UNDERSTAND) {
-            adapters.add(BooleanAttributeAccessor.class, new BooleanAttributeAccessor() {
+            adapters.add(new BooleanAttributeAccessor() {
                 public boolean getValue(SOAPHeaderBlock headerBlock) {
                     return headerBlock.getMustUnderstand();
                 }
@@ -33,7 +33,7 @@ public class BooleanAttributeAdapterFactory implements AdapterFactory<BooleanAtt
                 }
             });
         } else if (attribute == BooleanAttribute.RELAY) {
-            adapters.add(BooleanAttributeAccessor.class, new BooleanAttributeAccessor() {
+            adapters.add(new BooleanAttributeAccessor() {
                 public boolean getValue(SOAPHeaderBlock headerBlock) {
                     return headerBlock.getRelay();
                 }

@@ -24,6 +24,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
  * {@link BooleanAttribute} adapter that allows to invoke the getter and setter methods for the
  * attribute on a given {@link SOAPHeaderBlock}.
  */
+@AdapterType
 public interface BooleanAttributeAccessor {
     /**
      * Invoke the getter method for this attribute on the given {@link SOAPHeaderBlock}.

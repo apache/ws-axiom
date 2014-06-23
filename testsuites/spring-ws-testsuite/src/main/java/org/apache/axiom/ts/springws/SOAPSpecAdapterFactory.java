@@ -24,6 +24,6 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
-        adapters.add(SOAPSpecAdapter.class, new SOAPSpecAdapter(spec == SOAPSpec.SOAP11 ? "SOAP_11" : "SOAP_12"));
+        adapters.add(new SOAPSpecAdapter(spec == SOAPSpec.SOAP11 ? "SOAP_11" : "SOAP_12"));
     }
 }

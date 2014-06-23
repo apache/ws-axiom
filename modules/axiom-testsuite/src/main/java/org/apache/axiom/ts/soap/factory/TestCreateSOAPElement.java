@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -42,21 +43,21 @@ public class TestCreateSOAPElement extends SOAPTestCase {
     public TestCreateSOAPElement(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
         super(metaFactory, spec);
         this.type = type;
-        type.addTestParameters(this);
+        type.getAdapter(SOAPElementTypeAdapter.class).addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {
         QName expectedName = type.getQName(spec);
         if (expectedName == null) {
             try {
-                type.create(soapFactory);
+                type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
                 fail("Expect UnsupportedOperationException");
             } catch (UnsupportedOperationException ex) {
                 // Expected
             }
         } else {
             String expectedPrefix = expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX; 
-            OMElement child = type.create(soapFactory);
+            OMElement child = type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
             QName actualName = child.getQName();
             assertEquals(expectedName, actualName);
             assertEquals(expectedPrefix, actualName.getPrefix());

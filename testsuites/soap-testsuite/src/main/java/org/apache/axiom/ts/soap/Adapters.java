@@ -19,7 +19,9 @@
 package org.apache.axiom.ts.soap;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public final class Adapters {
     private final Map<Class<?>,Object> adapters = new HashMap<Class<?>,Object>();
@@ -27,6 +29,25 @@ public final class Adapters {
     
     public <T> void add(Class<T> type, T adapter) {
         adapters.put(type, adapter);
+    }
+    
+    public void add(Object adapter) {
+        add(adapter, adapter.getClass(), new HashSet<Class<?>>());
+    }
+    
+    private void add(Object adapter, Class<?> asType, Set<Class<?>> seen) {
+        if (seen.add(asType)) {
+            if (asType.getAnnotation(AdapterType.class) != null) {
+                adapters.put(asType, adapter);
+            }
+            Class<?> superClass = asType.getSuperclass();
+            if (superClass != null) {
+                add(adapter, superClass, seen);
+            }
+            for (Class<?> iface : asType.getInterfaces()) {
+                add(adapter, iface, seen);
+            }
+        }
     }
     
     <T> T get(Class<T> type) {

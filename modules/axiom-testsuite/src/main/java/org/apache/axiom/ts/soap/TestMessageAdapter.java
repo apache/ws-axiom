@@ -31,6 +31,7 @@ import org.xml.sax.InputSource;
  * {@link TestMessage} adapter that adds some Axiom specific methods to retrieve the content of the
  * test message.
  */
+@AdapterType
 public final class TestMessageAdapter {
     private final TestMessage testMessage;
 

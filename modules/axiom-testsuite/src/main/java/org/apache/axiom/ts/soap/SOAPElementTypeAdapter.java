@@ -18,8 +18,26 @@
  */
 package org.apache.axiom.ts.soap;
 
-public class TestMessageAdapterFactory implements AdapterFactory<TestMessage> {
-    public void createAdapters(TestMessage testMessage, Adapters adapters) {
-        adapters.add(new TestMessageAdapter(testMessage));
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.suite.Dimension;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
+
+@AdapterType
+public abstract class SOAPElementTypeAdapter implements Dimension {
+    private final Class<? extends OMElement> type;
+    
+    SOAPElementTypeAdapter(Class<? extends OMElement> type) {
+        this.type = type;
     }
+
+    public final void addTestParameters(MatrixTestCase testCase) {
+        testCase.addTestParameter("type", type.getSimpleName());
+    }
+
+    public final Class<? extends OMElement> getType() {
+        return type;
+    }
+    
+    public abstract OMElement create(SOAPFactory factory);
 }

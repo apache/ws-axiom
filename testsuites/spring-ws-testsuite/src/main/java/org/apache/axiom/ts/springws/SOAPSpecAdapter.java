@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.springws;
 
+import org.apache.axiom.ts.soap.AdapterType;
+
+@AdapterType
 public final class SOAPSpecAdapter {
     private final String soapVersion;
 

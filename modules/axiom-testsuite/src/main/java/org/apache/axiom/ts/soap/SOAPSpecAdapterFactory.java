@@ -27,14 +27,14 @@ import org.apache.axiom.soap.SOAPVersion;
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     public void createAdapters(SOAPSpec spec, Adapters adapters) {
         if (spec == SOAPSpec.SOAP11) {
-            adapters.add(FactorySelector.class, new FactorySelector() {
+            adapters.add(new FactorySelector() {
                 public SOAPFactory getFactory(OMMetaFactory metaFactory) {
                     return metaFactory.getSOAP11Factory();
                 }
             });
             adapters.add(SOAPVersion.class, SOAP11Version.getSingleton());
         } else if (spec == SOAPSpec.SOAP12) {
-            adapters.add(FactorySelector.class, new FactorySelector() {
+            adapters.add(new FactorySelector() {
                 public SOAPFactory getFactory(OMMetaFactory metaFactory) {
                     return metaFactory.getSOAP12Factory();
                 }

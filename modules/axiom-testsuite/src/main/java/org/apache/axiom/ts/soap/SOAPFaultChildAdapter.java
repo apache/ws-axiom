@@ -18,8 +18,16 @@
  */
 package org.apache.axiom.ts.soap;
 
-public class TestMessageAdapterFactory implements AdapterFactory<TestMessage> {
-    public void createAdapters(TestMessage testMessage, Adapters adapters) {
-        adapters.add(new TestMessageAdapter(testMessage));
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFault;
+
+@AdapterType
+public abstract class SOAPFaultChildAdapter extends SOAPElementTypeAdapter {
+    SOAPFaultChildAdapter(Class<? extends OMElement> type) {
+        super(type);
     }
+    
+    public abstract OMElement create(SOAPFactory factory, SOAPFault parent);
+    public abstract void set(SOAPFault fault, OMElement element);
 }

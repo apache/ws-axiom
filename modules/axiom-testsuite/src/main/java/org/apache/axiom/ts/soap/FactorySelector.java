@@ -25,6 +25,7 @@ import org.apache.axiom.soap.SOAPFactory;
  * {@link SOAPSpec} adapter that allows to retrieve the {@link SOAPFactory} corresponding to the
  * SOAP version from a {@link OMMetaFactory}.
  */
+@AdapterType
 public interface FactorySelector {
     SOAPFactory getFactory(OMMetaFactory metaFactory);
 }
