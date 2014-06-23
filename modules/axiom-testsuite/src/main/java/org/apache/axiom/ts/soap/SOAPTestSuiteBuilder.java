@@ -297,6 +297,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         for (TestMessage msg : goodSOAPFiles) {
             addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, msg));
+            if (supportsOMSourcedElement) {
+                addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayload(metaFactory, msg));
+            }
             addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, msg));
         }
         for (int i=0; i<goodSOAPFiles.length; i++) {

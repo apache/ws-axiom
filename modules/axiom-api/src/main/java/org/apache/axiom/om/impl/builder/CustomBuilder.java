@@ -40,6 +40,7 @@ public interface CustomBuilder {
      * Create an OMElement for this whole subtree.
      * A null is returned if the default StAXBuilder behavior should be used.
      * @param namespace
+     *            the namespace URI, or the empty string if the element has no namespace
      * @param localPart
      * @param parent
      * @param reader

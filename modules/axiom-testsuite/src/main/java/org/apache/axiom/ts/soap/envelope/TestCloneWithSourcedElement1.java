@@ -43,5 +43,6 @@ public class TestCloneWithSourcedElement1 extends CloneTestCase {
         OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
         copyAndCheck(sourceEnv);
+        assertFalse(omse.isExpanded());
     }
 }

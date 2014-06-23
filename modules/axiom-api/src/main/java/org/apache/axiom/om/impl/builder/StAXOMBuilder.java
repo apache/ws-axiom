@@ -324,6 +324,9 @@ public class StAXOMBuilder extends StAXBuilder {
     protected OMNode createWithCustomBuilder(CustomBuilder customBuilder, OMFactory factory) {
         
         String namespace = parser.getNamespaceURI();
+        if (namespace == null) {
+            namespace = "";
+        }
         String localPart = parser.getLocalName();
         
         if (log.isDebugEnabled()) {
