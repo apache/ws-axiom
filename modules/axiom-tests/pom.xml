@@ -93,20 +93,6 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-impl</artifactId>
-            <classifier>tests</classifier>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-dom</artifactId>
-            <classifier>tests</classifier>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-testutils</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

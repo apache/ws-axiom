@@ -139,18 +139,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!-- Attach a JAR with the test classes so that we can reuse them in other modules
-                 (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
                 <configuration>
