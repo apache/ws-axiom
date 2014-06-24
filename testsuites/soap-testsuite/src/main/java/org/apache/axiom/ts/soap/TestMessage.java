@@ -21,6 +21,8 @@ package org.apache.axiom.ts.soap;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
@@ -36,12 +38,24 @@ import org.xml.sax.InputSource;
  * A SOAP test message.
  */
 public abstract class TestMessage extends Adaptable {
+    private static final List<TestMessage> instances = new ArrayList<TestMessage>();
+    
+    static {
+        // Force instantiation of TestMessage objects related to TestMessageSets
+        TestMessageSet.getAll();
+    }
+    
     private final SOAPSpec spec;
     private final String name;
     
     TestMessage(SOAPSpec spec, String name) {
         this.spec = spec;
         this.name = name;
+        instances.add(this);
+    }
+    
+    public static TestMessage[] getAll() {
+        return instances.toArray(new TestMessage[instances.size()]);
     }
     
     /**

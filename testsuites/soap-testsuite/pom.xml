@@ -29,6 +29,13 @@
     <description>
         Contains sample messages, metadata and utilities to build tests for SOAP 1.1 and 1.2.
     </description>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <profiles>
         <profile>
             <id>apache-release</id>
@@ -39,9 +46,10 @@
                         <artifactId>apache-rat-plugin</artifactId>
                         <configuration>
                             <excludes>
-                                <!-- src/main/resources contains test files and they obviously cannot
-                                     all contain a valid license header -->
-                                <exclude>src/main/resources/**</exclude>
+                                <!-- the schemas have their own copyright notices -->
+                                <exclude>src/main/resources/org/apache/axiom/ts/soap/xsd/*</exclude>
+                                <!-- test messages obviously cannot all contain a valid license header -->
+                                <exclude>src/main/resources/test-message/**</exclude>
                             </excludes>
                         </configuration>
                     </plugin>

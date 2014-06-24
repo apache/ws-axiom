@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 /**
  * Describes the characteristics of a given SOAP version.
@@ -41,7 +45,8 @@ public abstract class SOAPSpec extends Adaptable {
             new QName("detail"),
             "http://schemas.xmlsoap.org/soap/actor/next",
             new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"),
-            new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server")) {
+            new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"),
+            new String[] { "soap-1.1.xsd" }) {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP12;
         }
@@ -63,7 +68,8 @@ public abstract class SOAPSpec extends Adaptable {
             new QName("http://www.w3.org/2003/05/soap-envelope", "Detail"),
             "http://www.w3.org/2003/05/soap-envelope/role/next",
             new QName("http://www.w3.org/2003/05/soap-envelope", "Sender"),
-            new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver")) {
+            new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver"),
+            new String[] { "xml.xsd", "soap-1.2.xsd" }) {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP11;
         }
@@ -91,11 +97,14 @@ public abstract class SOAPSpec extends Adaptable {
     private final String nextRoleURI;
     private final QName senderFaultCode;
     private final QName receiverFaultCode;
+    private final String[] schemaResources;
+    private Schema schema;
     
     public SOAPSpec(String name, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
             QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
             QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
-            String nextRoleURI, QName senderFaultCode, QName receiverFaultCode) {
+            String nextRoleURI, QName senderFaultCode, QName receiverFaultCode,
+            String[] schemaResources) {
         this.name = name;
         this.envelopeNamespaceURI = envelopeNamespaceURI;
         this.booleanLiterals = booleanLiterals;
@@ -114,6 +123,7 @@ public abstract class SOAPSpec extends Adaptable {
         this.nextRoleURI = nextRoleURI;
         this.senderFaultCode = senderFaultCode;
         this.receiverFaultCode = receiverFaultCode;
+        this.schemaResources = schemaResources;
     }
     
     public final String getName() {
@@ -244,5 +254,20 @@ public abstract class SOAPSpec extends Adaptable {
     
     public final QName getReceiverFaultCode() {
         return receiverFaultCode;
+    }
+    
+    public synchronized final Schema getSchema() {
+        if (schema == null) {
+            Source[] sources = new Source[schemaResources.length];
+            for (int i=0; i<schemaResources.length; i++) {
+                sources[i] = new StreamSource(SOAPSpec.class.getResource("xsd/" + schemaResources[i]).toString());
+            }
+            try {
+                schema = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema(sources);
+            } catch (Exception ex) {
+                throw new Error(ex);
+            }
+        }
+        return schema;
     }
 }
