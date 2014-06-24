@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-dom-testsuite</artifactId>
+            <artifactId>dom-testsuite</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
