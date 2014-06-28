@@ -16,33 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.axiom.om.OMAttribute;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Node;
-
-public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
-    public CDATASectionImpl(String text, OMFactory factory) {
-        super(text, factory);
-    }
-
-    public int getType() throws OMException {
-        return OMNode.CDATA_SECTION_NODE;
-    }
-
-    public short getNodeType() {
-        return Node.CDATA_SECTION_NODE;
-    }
-
-    public String getNodeName() {
-        return "#cdata-section";
-    }
-
-    ChildNode createClone() {
-        return new CDATASectionImpl(textValue, factory);
-    }
+/**
+ * Interface that is used internally by Axiom and that should not be considered being part of the
+ * public API.
+ */
+public interface OMAttributeEx extends OMAttribute {
+    void setSpecified(boolean specified);
 }

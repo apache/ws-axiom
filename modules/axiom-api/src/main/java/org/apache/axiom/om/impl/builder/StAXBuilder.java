@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
@@ -243,7 +244,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             OMAttribute attr = node.addAttribute(parser.getAttributeLocalName(i),
                               parser.getAttributeValue(i), namespace);
             attr.setAttributeType(parser.getAttributeType(i));
-            
+            if (attr instanceof OMAttributeEx) {
+                ((OMAttributeEx)attr).setSpecified(parser.isAttributeSpecified(i));
+            }
         }
     }
 

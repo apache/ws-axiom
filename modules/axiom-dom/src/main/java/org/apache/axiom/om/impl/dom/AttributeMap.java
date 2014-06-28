@@ -130,7 +130,7 @@ public class AttributeMap implements NamedNodeMap {
             previous.setOwnerElement(null, true);
 
             // make sure it won't be mistaken with defaults in case it's reused
-            previous.isSpecified(true);
+            previous.setSpecified(true);
         } else {
             i = -1 - i; // Insert point (may be end of list)
             if (null == nodes) {
@@ -178,7 +178,7 @@ public class AttributeMap implements NamedNodeMap {
             nodes.setElementAt(attr, i);
             previous.setOwnerElement(null, useDomSemantics);
             // make sure it won't be mistaken with defaults in case it's reused
-            previous.isSpecified(true);
+            previous.setSpecified(true);
         } else {
             // If we can't find by namespaceURI, localName, then we find by
             // nodeName so we know where to insert.

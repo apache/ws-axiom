@@ -949,7 +949,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
             AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, true, false);
-            clonedAttr.isSpecified(attr.isSpecified());
+            clonedAttr.setSpecified(attr.getSpecified());
             clone.setAttributeNodeNS(clonedAttr, false, namespaceRepairing && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI()));
         }
         return clone;

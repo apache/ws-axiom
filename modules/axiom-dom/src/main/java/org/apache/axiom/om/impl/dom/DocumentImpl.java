@@ -499,6 +499,9 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
                 childNode.detach();
             }
             childNode.setOwnerDocument(this);
+            if (node instanceof AttrImpl) {
+                ((AttrImpl)node).setSpecified(true);
+            }
             return childNode;
         } else {
             return null;
@@ -515,8 +518,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     }
 
     public String getInputEncoding() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return charEncoding;
     }
 
     public boolean getStrictErrorChecking() {
@@ -525,7 +527,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     }
 
     public String getXmlEncoding() {
-        return this.charEncoding;
+        return xmlEncoding;
     }
 
     public boolean getXmlStandalone() {

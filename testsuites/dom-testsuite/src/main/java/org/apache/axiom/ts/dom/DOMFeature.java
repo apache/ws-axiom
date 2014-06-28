@@ -28,6 +28,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.domts.level1.core.attrremovechild1;
 import org.w3c.domts.level1.core.attrreplacechild1;
+import org.w3c.domts.level1.core.attrsetvaluenomodificationallowederr;
 import org.w3c.domts.level1.core.attrsetvaluenomodificationallowederrEE;
 import org.w3c.domts.level1.core.characterdataappenddatanomodificationallowederr;
 import org.w3c.domts.level1.core.characterdataappenddatanomodificationallowederrEE;
@@ -47,6 +48,7 @@ import org.w3c.domts.level1.core.elementremoveattributenomodificationallowederrE
 import org.w3c.domts.level1.core.elementsetattributenodenomodificationallowederr;
 import org.w3c.domts.level1.core.elementsetattributenodenomodificationallowederrEE;
 import org.w3c.domts.level1.core.elementsetattributenomodificationallowederrEE;
+import org.w3c.domts.level1.core.hc_textparseintolistofelements;
 import org.w3c.domts.level1.core.nodeappendchildnomodificationallowederr;
 import org.w3c.domts.level1.core.nodeinsertbeforenomodificationallowederr;
 import org.w3c.domts.level1.core.noderemovechildnomodificationallowederr;
@@ -56,6 +58,7 @@ import org.w3c.domts.level1.core.nodereplacechildnomodificationallowederrEE;
 import org.w3c.domts.level1.core.nodesetnodevaluenomodificationallowederr;
 import org.w3c.domts.level1.core.nodesetnodevaluenomodificationallowederrEE;
 import org.w3c.domts.level1.core.processinginstructionsetdatanomodificationallowederrEE;
+import org.w3c.domts.level1.core.textparseintolistofelements;
 import org.w3c.domts.level1.core.textsplittextnomodificationallowederr;
 import org.w3c.domts.level1.core.textsplittextnomodificationallowederrEE;
 import org.w3c.domts.level2.core.elementsetattributenodens06;
@@ -70,11 +73,13 @@ import org.w3c.domts.level3.core.nodecomparedocumentposition26;
 import org.w3c.domts.level3.core.nodecomparedocumentposition27;
 import org.w3c.domts.level3.core.nodecomparedocumentposition28;
 import org.w3c.domts.level3.core.nodecomparedocumentposition29;
+import org.w3c.domts.level3.core.nodegettextcontent14;
 import org.w3c.domts.level3.core.nodegettextcontent17;
 import org.w3c.domts.level3.core.nodeinsertbefore15;
 import org.w3c.domts.level3.core.noderemovechild13;
 import org.w3c.domts.level3.core.noderemovechild14;
 import org.w3c.domts.level3.core.noderemovechild15;
+import org.w3c.domts.level3.core.noderemovechild31;
 
 public final class DOMFeature {
     static final class Signature {
@@ -145,6 +150,11 @@ public final class DOMFeature {
                     noderemovechild13.class,
                     noderemovechild14.class,
                     noderemovechild15.class,
+                    attrsetvaluenomodificationallowederr.class,
+                    textparseintolistofelements.class,
+                    hc_textparseintolistofelements.class,
+                    noderemovechild31.class,
+                    nodegettextcontent14.class,
             });
     public static final DOMFeature NOTATIONS = new DOMFeature(
             new Signature[] {

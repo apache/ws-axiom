@@ -50,7 +50,7 @@ public class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
     
     public DocumentBuilder newDocumentBuilder()
             throws ParserConfigurationException {
-        return new DOOMDocumentBuilder(factory, isCoalescing(), schema);
+        return new DOOMDocumentBuilder(factory, new DOMStAXParserConfiguration(isCoalescing(), isExpandEntityReferences()), schema);
     }
 
     public Object getAttribute(String name) throws IllegalArgumentException {

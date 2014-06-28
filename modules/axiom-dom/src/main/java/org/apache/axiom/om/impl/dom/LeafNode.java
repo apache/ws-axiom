@@ -28,6 +28,14 @@ public abstract class LeafNode extends ChildNode {
         super(factory);
     }
 
+    public final Node getFirstChild() {
+        return null;
+    }
+
+    public final Node getLastChild() {
+        return null;
+    }
+
     public final NodeList getChildNodes() {
         return EmptyNodeList.INSTANCE;
     }
@@ -46,5 +54,16 @@ public abstract class LeafNode extends ChildNode {
 
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+    }
+    
+    public final String getTextContent() throws DOMException {
+        return getNodeValue();
+    }
+
+    final void getTextContent(StringBuffer buf) {
+        String content = getNodeValue();
+        if (content != null) {
+            buf.append(content);
+        }
     }
 }

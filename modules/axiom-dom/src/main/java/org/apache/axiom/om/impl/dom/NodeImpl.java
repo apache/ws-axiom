@@ -71,7 +71,11 @@ public abstract class NodeImpl implements Node {
     
     protected final static short FIRSTCHILD = 0x1 << 2;
 
-    protected final static short SPECIFIED = 0x1 << 4;
+    /**
+     * Used by {@link AttrImpl} to determine whether the attribute has been specified explicitly
+     * (flag unset) or has a default value (flag set).
+     */
+    protected final static short DEFAULT_ATTR = 0x1 << 4;
 
     //
     // Constructors
@@ -135,28 +139,6 @@ public abstract class NodeImpl implements Node {
         return null; // overridden in ElementImpl
     }
 
-    /**
-     * Gets the first child of this Node, or null if none.
-     * <p/>
-     * By default we do not have any children, ParentNode overrides this.
-     *
-     * @see ParentNode
-     */
-    public Node getFirstChild() {
-        return null;
-    }
-
-    /**
-     * Gets the last child of this Node, or null if none.
-     * <p/>
-     * By default we do not have any children, ParentNode overrides this.
-     *
-     * @see ParentNode
-     */
-    public Node getLastChild() {
-        return null;
-    }
-
     public final Node cloneNode(boolean deep) {
         OMCloneOptions options = new OMCloneOptions();
         // This is not specified by the API, but it's compatible with versions before 1.2.14
@@ -193,14 +175,6 @@ public abstract class NodeImpl implements Node {
         flags = (short) (value ? flags | FIRSTCHILD : flags & ~FIRSTCHILD);
     }
 
-    final boolean isSpecified() {
-        return (flags & SPECIFIED) != 0;
-    }
-
-    final void isSpecified(boolean value) {
-        flags = (short) (value ? flags | SPECIFIED : flags & ~SPECIFIED);
-    }
-
     /*
      * DOM-Level 3 methods
      */
@@ -217,17 +191,8 @@ public abstract class NodeImpl implements Node {
         throw DOMUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
     }
 
-    public String getTextContent() throws DOMException {
-        return getNodeValue();  // overriden in some subclasses
-    }
-
     // internal method taking a StringBuffer in parameter
-    void getTextContent(StringBuffer buf) throws DOMException {
-        String content = getNodeValue();
-        if (content != null) {
-            buf.append(content);
-        }
-    }
+    abstract void getTextContent(StringBuffer buf);
 
     public void setTextContent(String textContent) throws DOMException {
         setNodeValue(textContent);  // overriden in some subclasses

@@ -37,6 +37,7 @@ import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.apache.axiom.om.impl.traverse.OMFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.w3c.dom.DOMException;
@@ -583,7 +584,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         if (name.equals("*")) {
             return new NodeListImpl() {
                 protected Iterator getIterator() {
-                    return getDescendants(false);
+                    return new OMFilterIterator(getDescendants(false)) {
+                        protected boolean matches(OMNode node) {
+                            return node.getType() == OMNode.ELEMENT_NODE;
+                        }
+                    };
                 }
             };
         } else {

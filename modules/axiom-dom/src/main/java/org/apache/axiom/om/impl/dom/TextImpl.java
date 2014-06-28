@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.w3c.dom.Node;
 
 public class TextImpl extends TextNodeImpl {
     private boolean isWhitespace;
@@ -79,6 +80,14 @@ public class TextImpl extends TextNodeImpl {
 
     public int getType() throws OMException {
         return isWhitespace ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
+    }
+
+    public String getNodeName() {
+        return "#text";
+    }
+
+    public short getNodeType() {
+        return Node.TEXT_NODE;
     }
 
     ChildNode createClone() {

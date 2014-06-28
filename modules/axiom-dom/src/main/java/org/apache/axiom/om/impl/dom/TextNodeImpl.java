@@ -203,18 +203,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     // /
-    // /org.w3c.dom.Node methods
-    // /
-
-    public String getNodeName() {
-        return "#text";
-    }
-
-    public short getNodeType() {
-        return Node.TEXT_NODE;
-    }
-
-    // /
     // /OMNode methods
     // /
 

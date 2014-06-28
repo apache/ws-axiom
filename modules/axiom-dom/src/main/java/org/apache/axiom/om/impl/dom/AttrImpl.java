@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -41,7 +42,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode {
     private String localName;
 
     private String type;
@@ -256,8 +257,11 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     }
     
     public boolean getSpecified() {
-        // Since we don't support DTD or schema, we always return true
-        return true;
+        return (flags & DEFAULT_ATTR) == 0;
+    }
+
+    public void setSpecified(boolean specified) {
+        flags = (short) (specified ? flags & ~DEFAULT_ATTR : flags | DEFAULT_ATTR);
     }
 
     /**

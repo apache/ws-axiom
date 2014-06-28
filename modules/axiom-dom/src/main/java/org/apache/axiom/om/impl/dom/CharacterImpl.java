@@ -94,7 +94,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
     public void insertData(int offset, String data) throws DOMException {
         int length = this.getLength();
 
-        if (offset < 0 || offset > length - 1) {
+        if (offset < 0 || offset > length) {
             throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
         }
 

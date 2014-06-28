@@ -67,6 +67,14 @@ public class EntityReferenceImpl extends ChildNode implements OMEntityReference,
         return Node.ENTITY_REFERENCE_NODE;
     }
 
+    public Node getFirstChild() {
+        throw new UnsupportedOperationException();
+    }
+
+    public Node getLastChild() {
+        throw new UnsupportedOperationException();
+    }
+
     public final NodeList getChildNodes() {
         throw new UnsupportedOperationException();
     }
@@ -85,5 +93,13 @@ public class EntityReferenceImpl extends ChildNode implements OMEntityReference,
 
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public String getTextContent() throws DOMException {
+        throw new UnsupportedOperationException();
+    }
+
+    void getTextContent(StringBuffer buf) {
+        throw new UnsupportedOperationException();
     }
 }
