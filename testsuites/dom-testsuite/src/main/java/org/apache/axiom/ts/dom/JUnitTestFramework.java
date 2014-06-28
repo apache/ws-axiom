@@ -1,0 +1,218 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.apache.axiom.ts.dom;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+
+import javax.xml.parsers.DocumentBuilder;
+
+import org.junit.Assert;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.w3c.domts.DOMTestCase;
+import org.w3c.domts.DOMTestFramework;
+
+final class JUnitTestFramework implements DOMTestFramework {
+    public static final JUnitTestFramework INSTANCE = new JUnitTestFramework();
+    
+    private JUnitTestFramework() {}
+    
+    private static String[] toArray(Collection<String> collection, boolean normalizeCase, boolean sort) {
+        String[] array = new String[collection.size()];
+        int i = 0;
+        for (String item : collection) {
+            array[i++] = normalizeCase ? item.toLowerCase(Locale.ENGLISH) : item;
+        }
+        if (sort) {
+            Arrays.sort(array);
+        }
+        return array;
+    }
+    
+    public boolean hasFeature(DocumentBuilder docBuilder, String feature, String version)  {
+       return docBuilder.getDOMImplementation().hasFeature(feature,version);
+    }
+
+    public void wait(int millisecond) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public void fail(DOMTestCase test, String assertID) {
+        Assert.fail(assertID);
+    }
+
+    public void assertTrue(DOMTestCase test, String assertID, boolean actual) {
+        Assert.assertTrue(assertID, actual);
+    }
+
+    public void assertFalse(DOMTestCase test, String assertID, boolean actual) {
+        Assert.assertFalse(assertID, actual);
+    }
+
+    public void assertNull(DOMTestCase test, String assertID, Object actual) {
+        Assert.assertNull(assertID, actual);
+    }
+
+    public void assertNotNull(DOMTestCase test, String assertID, Object actual) {
+        Assert.assertNotNull(assertID, actual);
+    }
+
+    public void assertSame(DOMTestCase test, String assertID, Object expected, Object actual) {
+        Assert.assertSame(assertID, expected, actual);
+    }
+
+    public void assertInstanceOf(DOMTestCase test, String assertID, Object obj, Class cls) {
+        Assert.assertTrue(assertID, cls.isInstance(obj));
+    }
+
+    public void assertSize(DOMTestCase test, String assertID, int expectedSize, NodeList collection) {
+        Assert.assertEquals(assertID, expectedSize, collection.getLength());
+    }
+
+    public void assertSize(DOMTestCase test, String assertID, int expectedSize, NamedNodeMap collection) {
+        Assert.assertEquals(assertID, expectedSize, collection.getLength());
+    }
+
+    public void assertSize(DOMTestCase test, String assertID, int expectedSize, Collection collection) {
+        Assert.assertEquals(assertID, expectedSize, collection.size());
+    }
+
+    public void assertEqualsIgnoreCase(DOMTestCase test, String assertID, String expected, String actual) {
+        Assert.assertEquals(assertID, expected, actual);
+    }
+
+    public void assertEqualsIgnoreCase(DOMTestCase test, String assertID, Collection expected, Collection actual) {
+        Assert.assertArrayEquals(assertID, toArray(expected, true, true), toArray(actual, true, true));
+    }
+
+    public void assertEqualsIgnoreCase(DOMTestCase test, String assertID, List expected, List actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public void assertEquals(DOMTestCase test, String assertID, String expected, String actual) {
+        Assert.assertEquals(assertID, expected, actual);
+    }
+
+    public void assertEquals(DOMTestCase test, String assertID, int expected, int actual) {
+        Assert.assertEquals(assertID, expected, actual);
+    }
+
+    public void assertEquals(DOMTestCase test, String assertID, boolean expected, boolean actual) {
+        Assert.assertEquals(assertID, expected, actual);
+    }
+
+    public void assertEquals(DOMTestCase test, String assertID, double expected, double actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public void assertEquals(DOMTestCase test, String assertID, Collection expected, Collection actual) {
+        Assert.assertArrayEquals(assertID, toArray(expected, false, true), toArray(actual, false, true));
+    }
+
+    public void assertNotEqualsIgnoreCase(DOMTestCase test, String assertID, String expected, String actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public void assertNotEquals(DOMTestCase test, String assertID, String expected, String actual) {
+        Assert.assertFalse(assertID, expected.equals(actual));
+    }
+
+    public void assertNotEquals(DOMTestCase test, String assertID, int expected, int actual) {
+        Assert.assertFalse(assertID, expected == actual);
+    }
+
+    public void assertNotEquals(DOMTestCase test, String assertID, boolean expected, boolean actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public void assertNotEquals(DOMTestCase test, String assertID, double expected, double actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean same(Object expected, Object actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean equalsIgnoreCase(String expected, String actual) {
+        return expected.equalsIgnoreCase(actual);
+    }
+
+    public boolean equalsIgnoreCase(Collection expected, Collection actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean equalsIgnoreCase(List expected, List actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean equals(String expected, String actual) {
+        return expected.equals(actual);
+    }
+
+    public boolean equals(int expected, int actual) {
+        return expected == actual;
+    }
+
+    public boolean equals(boolean expected, boolean actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean equals(double expected, double actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean equals(Collection expected, Collection actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean equals(List expected, List actual) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public int size(Collection collection) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public int size(NamedNodeMap collection) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public int size(NodeList collection) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+}

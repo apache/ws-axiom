@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,8 +28,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
+import org.w3c.domts.DOMTestCase;
+import org.w3c.domts.DOMTestDocumentBuilderFactory;
+import org.w3c.domts.DOMTestIncompatibleException;
+import org.w3c.domts.DOMTestSink;
+import org.w3c.domts.DOMTestSuite;
+import org.w3c.domts.DocumentBuilderSetting;
 
-public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
+public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final QName[] validAttrQNames = new QName[] {
         new QName("urn:ns2", "attr", "q"),
         new QName("", "attr", ""),
@@ -41,13 +50,15 @@ public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         new QName("", XMLConstants.XMLNS_ATTRIBUTE, ""),
     };
     
-    private final DocumentBuilderFactory dbf;
+    private final DocumentBuilderFactoryFactory dbff;
     
-    public DOMTestSuiteBuilder(DocumentBuilderFactory dbf) {
-        this.dbf = dbf;
+    public DOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff) {
+        this.dbff = dbff;
     }
     
     protected void addTests() {
+        DocumentBuilderFactory dbf = dbff.newInstance();
+        dbf.setNamespaceAware(true);
         ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, true));
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
@@ -172,5 +183,48 @@ public class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.text.TestLookupNamespaceURIWithoutParent(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
+        
+        DOMTestDocumentBuilderFactory factory;
+        try {
+            factory = new DOMTestDocumentBuilderFactoryImpl(dbff, new DocumentBuilderSetting[] {
+                    DocumentBuilderSetting.notCoalescing,
+                    DocumentBuilderSetting.notExpandEntityReferences,
+                    DocumentBuilderSetting.notIgnoringElementContentWhitespace,
+                    DocumentBuilderSetting.namespaceAware,
+                    DocumentBuilderSetting.notValidating});
+        } catch (DOMTestIncompatibleException ex) {
+            // TODO
+            throw new Error(ex);
+        }
+        try {
+            addW3CTests(factory, new org.w3c.domts.level1.core.alltests(factory));
+            addW3CTests(factory, new org.w3c.domts.level2.core.alltests(factory));
+            addW3CTests(factory, new org.w3c.domts.level3.core.alltests(factory));
+        } catch (Exception ex) {
+            // TODO
+            throw new Error(ex);
+        }
+    }
+    
+    private void addW3CTests(final DOMTestDocumentBuilderFactory factory, DOMTestSuite suite) {
+        suite.build(new DOMTestSink() {
+            public void addTest(Class testClass) {
+                try {
+                    Constructor<? extends DOMTestCase> testConstructor = ((Class<?>)testClass).asSubclass(DOMTestCase.class).getConstructor(DOMTestDocumentBuilderFactory.class);
+                    DOMTestCase test;
+                    try {
+                        test = testConstructor.newInstance(new Object[] { factory });
+                    } catch (InvocationTargetException ex) {
+                        throw ex.getTargetException();
+                    }
+                    test.setFramework(JUnitTestFramework.INSTANCE);
+                    DOMTestSuiteBuilder.this.addTest(new W3CTestCase(test));
+                }
+                catch (Throwable ex) {
+                    // TODO
+                    throw new Error(ex);
+                }
+            }
+        });
     }
 }

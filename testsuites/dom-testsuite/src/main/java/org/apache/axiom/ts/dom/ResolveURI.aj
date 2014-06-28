@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.w3c.dom;
+package org.apache.axiom.ts.dom;
 
 import java.net.URL;
 

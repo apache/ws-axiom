@@ -120,9 +120,6 @@
                                         <include name="org/w3c/domts/DOMTestInnerClass.java"/>
                                         <include name="org/w3c/domts/DOMTestSink.java"/>
                                         <include name="org/w3c/domts/DOMTestSuite.java"/>
-                                        <include name="org/w3c/domts/JAXPDOMTestDocumentBuilderFactory.java"/>
-                                        <include name="org/w3c/domts/JUnitTestCaseAdapter.java"/>
-                                        <include name="org/w3c/domts/JUnitTestSuiteAdapter.java"/>
                                         <include name="org/w3c/domts/UserDataMonitor.java"/>
                                         <include name="org/w3c/domts/UserDataNotification.java"/>
                                         <include name="org/w3c/domts/level?/core/*.java"/>

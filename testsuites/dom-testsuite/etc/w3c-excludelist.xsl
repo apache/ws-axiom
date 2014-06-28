@@ -23,28 +23,10 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="text"/>
-    <xsl:template name="substring-after-last">
-        <xsl:param name="string"/>
-        <xsl:param name="delimiter"/>
-        <xsl:choose>
-            <xsl:when test="contains($string, $delimiter)">
-                <xsl:call-template name="substring-after-last">
-                    <xsl:with-param name="string" select="substring-after($string, $delimiter)"/>
-                    <xsl:with-param name="delimiter" select="$delimiter"/>
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise><xsl:value-of select="$string"/></xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
     <xsl:template match="/">
-        <xsl:apply-templates select="//testcase[failure or error]"/>
+        <xsl:apply-templates select="//testcase[@classname='org.apache.axiom.ts.dom.W3CTestCase' and (failure or error)]"/>
     </xsl:template>
     <xsl:template match="testcase">
-        <xsl:text>        suite.addExclude(</xsl:text>
-        <xsl:call-template name="substring-after-last">
-            <xsl:with-param name="string" select="@name"/>
-            <xsl:with-param name="delimiter" select="'/'"/>
-        </xsl:call-template>
-        <xsl:text>.class);&#10;</xsl:text>
+        <xsl:text>        builder.exclude(W3CTestCase.class, "(id=</xsl:text><xsl:value-of select="substring-before(substring-after(@name, '[id='), ']')"/><xsl:text>)");&#10;</xsl:text>
     </xsl:template>
 </xsl:stylesheet>
