@@ -20,6 +20,9 @@ package org.apache.axiom.ts.dom;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -28,6 +31,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
+import org.objectweb.asm.ClassReader;
 import org.w3c.domts.DOMTestCase;
 import org.w3c.domts.DOMTestDocumentBuilderFactory;
 import org.w3c.domts.DOMTestIncompatibleException;
@@ -51,9 +55,11 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     };
     
     private final DocumentBuilderFactoryFactory dbff;
+    private final Set<DOMFeature> unsupportedFeatures;
     
-    public DOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff) {
+    public DOMTestSuiteBuilder(DocumentBuilderFactoryFactory dbff, DOMFeature... unsupportedFeatures) {
         this.dbff = dbff;
+        this.unsupportedFeatures = new HashSet<DOMFeature>(Arrays.asList(unsupportedFeatures));
     }
     
     protected void addTests() {
@@ -210,6 +216,16 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         suite.build(new DOMTestSink() {
             public void addTest(Class testClass) {
                 try {
+                    if (!unsupportedFeatures.isEmpty()) {
+                        ClassReader classReader = new ClassReader(testClass.getResourceAsStream(testClass.getSimpleName() + ".class"));
+                        DOMTSClassVisitor cv = new DOMTSClassVisitor();
+                        classReader.accept(cv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+                        Set<DOMFeature> features = cv.getUsedFeatures();
+                        features.retainAll(unsupportedFeatures);
+                        if (!features.isEmpty()) {
+                            return;
+                        }
+                    }
                     Constructor<? extends DOMTestCase> testConstructor = ((Class<?>)testClass).asSubclass(DOMTestCase.class).getConstructor(DOMTestDocumentBuilderFactory.class);
                     DOMTestCase test;
                     try {
