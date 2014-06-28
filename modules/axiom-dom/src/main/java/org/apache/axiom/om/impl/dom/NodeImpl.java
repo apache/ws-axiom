@@ -105,6 +105,7 @@ public abstract class NodeImpl implements Node {
         return null; // Override in AttrImpl and ElementImpl
     }
 
+    // TODO: should disappear
     public String getNodeValue() throws DOMException {
         return null;
     }

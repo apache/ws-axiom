@@ -41,6 +41,14 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
         this.textValue = (value != null) ? value : "";
     }
 
+    public final String getNodeValue() throws DOMException {
+        return textValue;
+    }
+
+    public final void setNodeValue(String nodeValue) throws DOMException {
+        textValue = nodeValue;
+    }
+
     ///
     ///org.w3c.dom.CharacterData mrthods
     ///

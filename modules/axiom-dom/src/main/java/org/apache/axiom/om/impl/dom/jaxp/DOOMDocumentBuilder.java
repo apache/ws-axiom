@@ -41,10 +41,12 @@ import java.io.InputStream;
 
 public class DOOMDocumentBuilder extends DocumentBuilder {
     private final OMFactory factory;
+    private final boolean coalescing;
     private final Schema schema;
     
-    DOOMDocumentBuilder(OMFactory factory, Schema schema) {
+    DOOMDocumentBuilder(OMFactory factory, boolean coalescing, Schema schema) {
         this.factory = factory;
+        this.coalescing = coalescing;
         this.schema = schema;
     }
 
@@ -97,7 +99,8 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
 
     public Document parse(InputSource inputSource) throws SAXException, IOException {
         OMXMLParserWrapper builder = factory.getMetaFactory().createOMBuilder(factory,
-                StAXParserConfiguration.DEFAULT, inputSource);
+                coalescing ? StAXParserConfiguration.DEFAULT : StAXParserConfiguration.PRESERVE_CDATA_SECTIONS,
+                inputSource);
         DocumentImpl doc = (DocumentImpl) builder.getDocument();
         doc.close(true);
         return doc;

@@ -81,6 +81,10 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         return value;
     }
 
+    public void setNodeValue(String nodeValue) throws DOMException {
+        value = nodeValue;
+    }
+
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeProcessingInstruction(target + " ", value);
     }

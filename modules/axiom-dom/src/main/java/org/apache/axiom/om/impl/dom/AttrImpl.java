@@ -169,6 +169,10 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         return getValue();
     }
 
+    public void setNodeValue(String nodeValue) throws DOMException {
+        setValue(nodeValue);
+    }
+
     /**
      * Returns the value of this attribute.
      *

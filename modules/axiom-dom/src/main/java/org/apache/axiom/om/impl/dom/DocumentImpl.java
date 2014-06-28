@@ -325,6 +325,9 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
             }
 
             case Node.CDATA_SECTION_NODE:
+                newNode = createCDATASection(importedNode.getNodeValue());
+                break;
+            
             case Node.ENTITY_REFERENCE_NODE:
             case Node.ENTITY_NODE:
             case Node.PROCESSING_INSTRUCTION_NODE:

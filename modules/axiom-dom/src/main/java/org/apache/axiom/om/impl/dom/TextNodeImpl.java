@@ -271,10 +271,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         return ((OMElement)parentNode()).resolveQName(getTextFromProperPlace());
     }
 
-    public String getNodeValue() throws DOMException {
-        return this.getText();
-    }
-
     public String getContentID() {
         if (contentID == null) {
             contentID = UIDGenerator.generateContentId();
