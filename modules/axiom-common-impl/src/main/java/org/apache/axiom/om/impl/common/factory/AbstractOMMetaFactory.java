@@ -54,11 +54,20 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     private static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, InputSource is) {
         try {
             if (is.getByteStream() != null) {
+                String systemId = is.getSystemId();
                 String encoding = is.getEncoding();
-                if (encoding == null) {
-                    return StAXUtils.createXMLStreamReader(configuration, is.getByteStream());
+                if (systemId != null) {
+                    if (encoding == null) {
+                        return StAXUtils.createXMLStreamReader(configuration, systemId, is.getByteStream());
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
                 } else {
-                    return StAXUtils.createXMLStreamReader(configuration, is.getByteStream(), encoding);
+                    if (encoding == null) {
+                        return StAXUtils.createXMLStreamReader(configuration, is.getByteStream());
+                    } else {
+                        return StAXUtils.createXMLStreamReader(configuration, is.getByteStream(), encoding);
+                    }
                 }
             } else if (is.getCharacterStream() != null) {
                 return StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());

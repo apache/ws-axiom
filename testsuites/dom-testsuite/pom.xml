@@ -59,8 +59,21 @@
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.4</version>
+        </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.build.directory}/w3c/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -74,6 +87,126 @@
                             <includeArtifactIds>xml-apis,xercesImpl</includeArtifactIds>
                             <outputDirectory>${project.build.directory}/endorsed</outputDirectory>
                             <stripVersion>true</stripVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>extract-domts-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <unzip dest="${project.build.directory}/w3c/java">
+                                    <fileset dir="src/w3c">
+                                        <include name="*.jar"/>
+                                    </fileset>
+                                    <patternset>
+                                        <include name="org/w3c/domts/DocumentBuilderSetting.java"/>
+                                        <include name="org/w3c/domts/DocumentBuilderSettingStrategy.java"/>
+                                        <include name="org/w3c/domts/DOMErrorImpl.java"/>
+                                        <include name="org/w3c/domts/DOMErrorMonitor.java"/>
+                                        <include name="org/w3c/domts/DOMLocatorImpl.java"/>
+                                        <include name="org/w3c/domts/DOMTest.java"/>
+                                        <include name="org/w3c/domts/DOMTestCase.java"/>
+                                        <include name="org/w3c/domts/DOMTestDocumentBuilderFactory.java"/>
+                                        <include name="org/w3c/domts/DOMTestFramework.java"/>
+                                        <include name="org/w3c/domts/DOMTestIncompatibleException.java"/>
+                                        <include name="org/w3c/domts/DOMTestInnerClass.java"/>
+                                        <include name="org/w3c/domts/DOMTestSink.java"/>
+                                        <include name="org/w3c/domts/DOMTestSuite.java"/>
+                                        <include name="org/w3c/domts/JAXPDOMTestDocumentBuilderFactory.java"/>
+                                        <include name="org/w3c/domts/JUnitTestCaseAdapter.java"/>
+                                        <include name="org/w3c/domts/JUnitTestSuiteAdapter.java"/>
+                                        <include name="org/w3c/domts/UserDataMonitor.java"/>
+                                        <include name="org/w3c/domts/UserDataNotification.java"/>
+                                        <include name="org/w3c/domts/level?/core/*.java"/>
+                                        <exclude name="org/w3c/domts/**/Test*.java"/>
+                                    </patternset>
+                                </unzip>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>extract-domts-resources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <unzip src="src/w3c/dom1-core-tests-20040405.jar" dest="${project.build.directory}/w3c/resources/org/w3c/domts/level1/core">
+                                    <patternset>
+                                        <include name="*.xml"/>
+                                        <exclude name="build.xml"/>
+                                        <include name="*.dtd"/>
+                                    </patternset>
+                                </unzip>
+                                <unzip src="src/w3c/dom2-core-tests-20040405.jar" dest="${project.build.directory}/w3c/resources/org/w3c/domts/level2/core">
+                                    <patternset>
+                                        <include name="*.xml"/>
+                                        <exclude name="build.xml"/>
+                                        <include name="*.dtd"/>
+                                    </patternset>
+                                </unzip>
+                                <unzip src="src/w3c/dom3-core-tests-20040405.jar" dest="${project.build.directory}/w3c/resources/org/w3c/domts/level3/core">
+                                    <patternset>
+                                        <include name="*.xml"/>
+                                        <exclude name="build.xml"/>
+                                        <include name="*.dtd"/>
+                                        <include name="*.xsd"/>
+                                        <include name="*.js"/>
+                                        <include name="*.ent"/>
+                                    </patternset>
+                                </unzip>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/w3c/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Use 1.5 instead of 1.6 to avoid an issue with JaCoCo -->
+                            <complianceLevel>1.5</complianceLevel>
                         </configuration>
                     </execution>
                 </executions>

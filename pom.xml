@@ -433,7 +433,7 @@
                              the data instead of loading it into memory). Obviously, the execution time of
                              these tests also are proportional to the heap size. To accelerate the execution
                              of the tests, we should use a heap size as small as possible. -->
-                        <argLine>-Xms16m -Xmx32m ${jacoco.surefireArgLine}</argLine>
+                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine}</argLine>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>

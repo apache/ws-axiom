@@ -117,11 +117,10 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
         }
     }
 
-    /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream, String) */
-    public Document parse(InputStream is, String systemId) throws SAXException,
-            IOException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+    public Document parse(InputStream is, String systemId) throws SAXException, IOException {
+        InputSource inputSource = new InputSource(is);
+        inputSource.setSystemId(systemId);
+        return parse(inputSource);
     }
 
     public Document parse(String uri) throws SAXException, IOException {
