@@ -40,8 +40,6 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
-import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.commons.logging.Log;
@@ -52,7 +50,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
 import javax.xml.XMLConstants;
@@ -457,44 +454,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     /** Returns whether this element contains any attribute or not. */
     public boolean hasAttributes() {
         return attributes != null && attributes.getLength() > 0;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#getElementsByTagNameNS(java.lang.String,
-     *      java.lang.String)
-     */
-    public NodeList getElementsByTagNameNS(String namespaceURI,
-                                           String localName) {
-        final QName qname = new QName(namespaceURI, localName);
-        return new NodeListImpl() {
-            protected Iterator getIterator() {
-                return new OMQNameFilterIterator(getDescendants(false), qname);
-            }
-        };
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#getElementsByTagName(java.lang.String)
-     */
-    public NodeList getElementsByTagName(final String name) {
-        if (name.equals("*")) {
-            return new NodeListImpl() {
-                protected Iterator getIterator() {
-                    return getDescendants(false);
-                }
-            };
-        } else {
-            return new NodeListImpl() {
-                protected Iterator getIterator() {
-                    return new OMQualifiedNameFilterIterator(
-                            getDescendants(false), name);
-                }
-            };
-        }
     }
 
     // /

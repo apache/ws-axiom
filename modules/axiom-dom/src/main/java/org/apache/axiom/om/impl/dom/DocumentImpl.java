@@ -50,7 +50,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
@@ -246,16 +245,6 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
 
         //If we reach this point then, there's no such attr 
         return null;
-    }
-
-    public NodeList getElementsByTagName(String tagname) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
     }
 
     public DOMImplementation getImplementation() {
