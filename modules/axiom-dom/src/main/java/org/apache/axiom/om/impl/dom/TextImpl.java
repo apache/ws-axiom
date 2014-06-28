@@ -81,7 +81,7 @@ public class TextImpl extends TextNodeImpl {
         return isWhitespace ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
     }
 
-    LeafNode createClone() {
+    ChildNode createClone() {
         return new TextImpl(this, factory);
     }
 }

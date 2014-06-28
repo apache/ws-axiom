@@ -89,7 +89,7 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         serializer.writeProcessingInstruction(target + " ", value);
     }
 
-    LeafNode createClone() {
+    ChildNode createClone() {
         return new ProcessingInstructionImpl(target, value, factory);
     }
 }

@@ -38,7 +38,7 @@ public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
         return Node.CDATA_SECTION_NODE;
     }
 
-    LeafNode createClone() {
+    ChildNode createClone() {
         return new CDATASectionImpl(textValue, factory);
     }
 }

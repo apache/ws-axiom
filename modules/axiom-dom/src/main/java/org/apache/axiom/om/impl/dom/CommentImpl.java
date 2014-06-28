@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Comment;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
 public class CommentImpl extends CharacterImpl implements Comment, OMComment {
@@ -58,7 +57,7 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
         serializer.writeComment(this.textValue);
     }
 
-    LeafNode createClone() {
+    ChildNode createClone() {
         return new CommentImpl(getData(), factory);
     }
 }

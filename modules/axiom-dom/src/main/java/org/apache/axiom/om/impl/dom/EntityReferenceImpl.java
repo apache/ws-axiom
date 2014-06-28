@@ -24,10 +24,12 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public class EntityReferenceImpl extends LeafNode implements OMEntityReference, EntityReference {
+public class EntityReferenceImpl extends ChildNode implements OMEntityReference, EntityReference {
     private final String name;
     private final String replacementText;
 
@@ -53,7 +55,7 @@ public class EntityReferenceImpl extends LeafNode implements OMEntityReference, 
         return replacementText;
     }
 
-    LeafNode createClone() {
+    ChildNode createClone() {
         return new EntityReferenceImpl(name, replacementText, factory);
     }
 
@@ -63,5 +65,25 @@ public class EntityReferenceImpl extends LeafNode implements OMEntityReference, 
 
     public short getNodeType() {
         return Node.ENTITY_REFERENCE_NODE;
+    }
+
+    public final NodeList getChildNodes() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final Node appendChild(Node newChild) throws DOMException {
+        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final Node removeChild(Node oldChild) throws DOMException {
+        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
+        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
 }
