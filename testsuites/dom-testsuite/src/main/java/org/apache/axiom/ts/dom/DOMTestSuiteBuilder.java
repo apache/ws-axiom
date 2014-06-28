@@ -217,12 +217,13 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             public void addTest(Class testClass) {
                 try {
                     if (!unsupportedFeatures.isEmpty()) {
+                        Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
+                        DOMFeature.matchFeatures(testClass, usedFeatures);
                         ClassReader classReader = new ClassReader(testClass.getResourceAsStream(testClass.getSimpleName() + ".class"));
-                        DOMTSClassVisitor cv = new DOMTSClassVisitor();
+                        DOMTSClassVisitor cv = new DOMTSClassVisitor(usedFeatures);
                         classReader.accept(cv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-                        Set<DOMFeature> features = cv.getUsedFeatures();
-                        features.retainAll(unsupportedFeatures);
-                        if (!features.isEmpty()) {
+                        usedFeatures.retainAll(unsupportedFeatures);
+                        if (!usedFeatures.isEmpty()) {
                             return;
                         }
                     }

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.dom;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.objectweb.asm.ClassVisitor;
@@ -26,18 +25,15 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 final class DOMTSClassVisitor extends ClassVisitor {
-    private final Set<DOMFeature> usedFeatures = new HashSet<DOMFeature>();
+    private final Set<DOMFeature> usedFeatures;
     
-    DOMTSClassVisitor() {
+    DOMTSClassVisitor(Set<DOMFeature> usedFeatures) {
         super(Opcodes.ASM5);
+        this.usedFeatures = usedFeatures;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         return name.equals("runTest") ? new DOMTSMethodVisitor(usedFeatures) : null;
-    }
-
-    public Set<DOMFeature> getUsedFeatures() {
-        return usedFeatures;
     }
 }
