@@ -35,17 +35,6 @@ public class SOAPFaultNodeTestBase extends SOAPFaultTestCase {
         soap12FaultNodeWithParser = soap12FaultWithParser.getNode();
     }
 
-    //SOAP 1.1 Fault Node Test (Programaticaly Created)
-    public void testSOAP11SetNodeValue() {
-        try {
-            soap11Factory.createSOAPFaultNode(soap11Fault);
-        } catch (UnsupportedOperationException e) {
-            // Good!
-            return;
-        }
-        fail("Unsupported SOAP 1.1 node was created");
-    }
-
     //SOAP 1.2 Fault Node Test (Programaticaly Created)
     public void testSOAP12SetFaultNodeValue() {
         soap12FaultNode.setFaultNodeValue("This is only a test");
