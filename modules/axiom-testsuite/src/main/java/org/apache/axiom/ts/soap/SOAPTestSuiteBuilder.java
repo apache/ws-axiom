@@ -192,20 +192,21 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
                     new SOAPFaultChild[] { SOAPFaultChild.CODE, SOAPFaultChild.REASON, SOAPFaultChild.DETAIL, SOAPFaultChild.REASON }, ss));
         }
-        addTest(new org.apache.axiom.ts.soap.fault.TestGetCode(metaFactory, spec));
+        for (SOAPElementType type : SOAPElementType.FAULT.getChildTypes()) {
+            if (type.getQName(spec) != null) {
+                addTest(new org.apache.axiom.ts.soap.fault.TestGetChild(metaFactory, spec, (SOAPFaultChild)type));
+                addTest(new org.apache.axiom.ts.soap.fault.TestSetChild(metaFactory, spec, (SOAPFaultChild)type));
+                if (type.getQName(spec.getAltSpec()) != null) {
+                    addTest(new org.apache.axiom.ts.soap.fault.TestSetChildVersionMismatch(metaFactory, spec, (SOAPFaultChild)type));
+                }
+            }
+        }
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestGetDetail(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetDetailWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetException(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestGetReason(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetReasonWithParser(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetRoleWithParser(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestSetCode(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestSetDetail(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestSetException(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestSetReason(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.fault.TestSetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent3(metaFactory, spec));

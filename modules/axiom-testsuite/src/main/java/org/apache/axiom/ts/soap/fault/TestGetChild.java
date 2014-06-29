@@ -18,29 +18,30 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.ts.soap.SOAPElementType;
+import org.apache.axiom.ts.soap.SOAPFaultChild;
+import org.apache.axiom.ts.soap.SOAPFaultChildAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestSetCode extends SOAPTestCase {
-    public TestSetCode(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestGetChild extends SOAPTestCase {
+    private final SOAPFaultChild type;
+
+    public TestGetChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
         super(metaFactory, spec);
+        this.type = type;
+        type.getAdapter(SOAPFaultChildAdapter.class).addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
-        SOAPFault soapFault = soapFactory.createSOAPFault();
-        soapFault.setCode(soapFactory.createSOAPFaultCode(soapFault));
-        assertNotNull(
-                "Fault Test:- After calling setCode method, Fault has no code",
-                soapFault.getCode());
-        assertEquals("Fault Test:- Code local name mismatch",
-                spec.getFaultCodeQName(), soapFault.getCode().getQName());
-        try {
-            soapFault.setCode(altSoapFactory.createSOAPFaultCode());
-            fail("SOAPFaultCode should not be set in to a SOAPFault for a different SOAP version");
-        } catch (Exception e) {
-            // Expected
-        }
+        SOAPFaultChildAdapter adapter = type.getAdapter(SOAPFaultChildAdapter.class);
+        SOAPFault fault = soapFactory.createSOAPFault();
+        assertNull(adapter.get(fault));
+        OMElement child = adapter.create(soapFactory, SOAPElementType.FAULT, fault);
+        assertSame(child, adapter.get(fault));
     }
 }

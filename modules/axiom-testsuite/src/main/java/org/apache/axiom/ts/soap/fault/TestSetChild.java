@@ -18,26 +18,30 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.ts.soap.SOAPFaultChild;
+import org.apache.axiom.ts.soap.SOAPFaultChildAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestGetCode extends SOAPTestCase {
-    public TestGetCode(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestSetChild extends SOAPTestCase {
+    private final SOAPFaultChild type;
+
+    public TestSetChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
         super(metaFactory, spec);
+        this.type = type;
+        type.getAdapter(SOAPFaultChildAdapter.class).addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
-        SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertNull(
-                "Fault Test:- After creating a SOAPFault, it has a code",
-                soapFault.getCode());
-        soapFault.setCode(soapFactory.createSOAPFaultCode(soapFault));
-        assertNotNull(
-                "Fault Test:- After calling setCode method, Fault has no code",
-                soapFault.getCode());
-        assertEquals("Fault Test:- Fault code local name mismatch",
-                spec.getFaultCodeQName(), soapFault.getCode().getQName());
+        SOAPFaultChildAdapter adapter = type.getAdapter(SOAPFaultChildAdapter.class);
+        SOAPFault fault = soapFactory.createSOAPFault();
+        OMElement child = adapter.create(soapFactory);
+        adapter.set(fault, child);
+        assertSame(child, adapter.get(fault));
+        assertSame(child, fault.getFirstOMChild());
     }
 }

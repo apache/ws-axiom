@@ -27,5 +27,6 @@ public abstract class SOAPFaultChildAdapter extends SOAPElementTypeAdapter {
         super(type);
     }
     
+    public abstract OMElement get(SOAPFault fault);
     public abstract void set(SOAPFault fault, OMElement element);
 }

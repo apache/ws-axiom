@@ -94,6 +94,11 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultCode((SOAPFault)parent);
                 }
                 
+                @Override
+                public OMElement get(SOAPFault fault) {
+                    return fault.getCode();
+                }
+
                 public void set(SOAPFault fault, OMElement element) {
                     fault.setCode((SOAPFaultCode)element);
                 }
@@ -141,6 +146,11 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultReason((SOAPFault)parent);
                 }
                 
+                @Override
+                public OMElement get(SOAPFault fault) {
+                    return fault.getReason();
+                }
+
                 public void set(SOAPFault fault, OMElement element) {
                     fault.setReason((SOAPFaultReason)element);
                 }
@@ -168,6 +178,11 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultNode((SOAPFault)parent);
                 }
                 
+                @Override
+                public OMElement get(SOAPFault fault) {
+                    return fault.getNode();
+                }
+
                 public void set(SOAPFault fault, OMElement element) {
                     fault.setNode((SOAPFaultNode)element);
                 }
@@ -183,6 +198,11 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultRole((SOAPFault)parent);
                 }
                 
+                @Override
+                public OMElement get(SOAPFault fault) {
+                    return fault.getRole();
+                }
+
                 public void set(SOAPFault fault, OMElement element) {
                     fault.setRole((SOAPFaultRole)element);
                 }
@@ -198,6 +218,11 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultDetail((SOAPFault)parent);
                 }
                 
+                @Override
+                public OMElement get(SOAPFault fault) {
+                    return fault.getDetail();
+                }
+
                 public void set(SOAPFault fault, OMElement element) {
                     fault.setDetail((SOAPFaultDetail)element);
                 }

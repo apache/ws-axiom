@@ -18,26 +18,34 @@
  */
 package org.apache.axiom.ts.soap.fault;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.ts.soap.SOAPFaultChild;
+import org.apache.axiom.ts.soap.SOAPFaultChildAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestGetReason extends SOAPTestCase {
-    public TestGetReason(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestSetChildVersionMismatch extends SOAPTestCase {
+    private final SOAPFaultChild type;
+
+    public TestSetChildVersionMismatch(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
         super(metaFactory, spec);
+        this.type = type;
+        type.getAdapter(SOAPFaultChildAdapter.class).addTestParameters(this);
     }
 
+    @Override
     protected void runTest() throws Throwable {
-        SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertNull(
-                "Fault Test:- After creating a SOAPFault, it has a reason",
-                soapFault.getReason());
-        soapFault.setReason(soapFactory.createSOAPFaultReason(soapFault));
-        assertNotNull(
-                "Fault Test:- After calling setReason method, Fault has no reason",
-                soapFault.getReason());
-        assertEquals("Fault Test:- Fault reason local name mismatch",
-                spec.getFaultReasonQName(), soapFault.getReason().getQName());
+        SOAPFaultChildAdapter adapter = type.getAdapter(SOAPFaultChildAdapter.class);
+        SOAPFault fault = soapFactory.createSOAPFault();
+        OMElement child = adapter.create(altSoapFactory);
+        try {
+            adapter.set(fault, child);
+            fail("Expected SOAPProcessingException");
+        } catch (SOAPProcessingException ex) {
+            // Expected
+        }
     }
 }
