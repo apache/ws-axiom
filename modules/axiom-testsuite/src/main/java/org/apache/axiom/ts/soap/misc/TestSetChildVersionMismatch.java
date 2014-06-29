@@ -16,32 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.fault;
+package org.apache.axiom.ts.soap.misc;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPElementType;
-import org.apache.axiom.ts.soap.SOAPFaultChild;
-import org.apache.axiom.ts.soap.SOAPFaultChildAdapter;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestGetChild extends SOAPTestCase {
-    private final SOAPFaultChild type;
-
-    public TestGetChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
-        super(metaFactory, spec);
-        this.type = type;
-        type.getAdapter(SOAPFaultChildAdapter.class).addTestParameters(this);
+public class TestSetChildVersionMismatch extends GetSetChildTestCase {
+    public TestSetChildVersionMismatch(OMMetaFactory metaFactory, SOAPSpec spec,
+            SOAPElementType type, SOAPElementType childType) {
+        super(metaFactory, spec, type, childType);
     }
 
     @Override
-    protected void runTest() throws Throwable {
-        SOAPFaultChildAdapter adapter = type.getAdapter(SOAPFaultChildAdapter.class);
-        SOAPFault fault = soapFactory.createSOAPFault();
-        assertNull(adapter.get(fault));
-        OMElement child = adapter.create(soapFactory, SOAPElementType.FAULT, fault);
-        assertSame(child, adapter.get(fault));
+    protected void runTest(OMElement parent, SOAPElementTypeAdapter adapter) {
+        OMElement child = adapter.create(altSoapFactory);
+        try {
+            adapter.getSetter().invoke(parent, child);
+            fail("Expected SOAPProcessingException");
+        } catch (SOAPProcessingException ex) {
+            // Expected
+        }
     }
 }

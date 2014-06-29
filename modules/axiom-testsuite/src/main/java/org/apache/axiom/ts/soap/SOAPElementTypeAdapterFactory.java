@@ -23,6 +23,7 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultNode;
@@ -32,11 +33,13 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter.Getter;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter.Setter;
 
 public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElementType> {
     public void createAdapters(SOAPElementType type, Adapters adapters) {
         if (type == SOAPElementType.ENVELOPE) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPEnvelope.class) {
+            adapters.add(new SOAPElementTypeAdapter(SOAPEnvelope.class, null, null) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPEnvelope();
                 }
@@ -48,7 +51,12 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPElementType.HEADER) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPHeader.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPEnvelope)parent).getHeader();
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPHeader.class, getter, null) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPHeader();
                 }
@@ -60,7 +68,12 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPElementType.BODY) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPBody.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPEnvelope)parent).getBody();
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPBody.class, getter, null) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPBody();
                 }
@@ -72,7 +85,12 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPElementType.FAULT) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPFault.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPBody)parent).getFault();
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFault.class, getter, null) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFault();
                 }
@@ -84,7 +102,17 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPFaultChild.CODE) {
-            adapters.add(new SOAPFaultChildAdapter(SOAPFaultCode.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFault)parent).getCode();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFault)parent).setCode((SOAPFaultCode)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultCode.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultCode();
                 }
@@ -93,18 +121,19 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                         OMElement parent) {
                     return factory.createSOAPFaultCode((SOAPFault)parent);
                 }
-                
-                @Override
-                public OMElement get(SOAPFault fault) {
-                    return fault.getCode();
-                }
-
-                public void set(SOAPFault fault, OMElement element) {
-                    fault.setCode((SOAPFaultCode)element);
-                }
             });
         } else if (type == SOAPElementType.VALUE) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPFaultValue.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFaultClassifier)parent).getValue();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFaultClassifier)parent).setValue((SOAPFaultValue)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultValue.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultValue();
                 }
@@ -120,7 +149,17 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPElementType.SUB_CODE) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPFaultSubCode.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFaultClassifier)parent).getSubCode();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFaultClassifier)parent).setSubCode((SOAPFaultSubCode)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultSubCode.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultSubCode();
                 }
@@ -136,7 +175,17 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPFaultChild.REASON) {
-            adapters.add(new SOAPFaultChildAdapter(SOAPFaultReason.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFault)parent).getReason();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFault)parent).setReason((SOAPFaultReason)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultReason.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultReason();
                 }
@@ -145,18 +194,9 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                         OMElement parent) {
                     return factory.createSOAPFaultReason((SOAPFault)parent);
                 }
-                
-                @Override
-                public OMElement get(SOAPFault fault) {
-                    return fault.getReason();
-                }
-
-                public void set(SOAPFault fault, OMElement element) {
-                    fault.setReason((SOAPFaultReason)element);
-                }
             });
         } else if (type == SOAPElementType.TEXT) {
-            adapters.add(new SOAPElementTypeAdapter(SOAPFaultText.class) {
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultText.class, null, null) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultText();
                 }
@@ -168,7 +208,17 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 }
             });
         } else if (type == SOAPFaultChild.NODE) {
-            adapters.add(new SOAPFaultChildAdapter(SOAPFaultNode.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFault)parent).getNode();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFault)parent).setNode((SOAPFaultNode)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultNode.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultNode();
                 }
@@ -177,18 +227,19 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                         OMElement parent) {
                     return factory.createSOAPFaultNode((SOAPFault)parent);
                 }
-                
-                @Override
-                public OMElement get(SOAPFault fault) {
-                    return fault.getNode();
-                }
-
-                public void set(SOAPFault fault, OMElement element) {
-                    fault.setNode((SOAPFaultNode)element);
-                }
             });
         } else if (type == SOAPFaultChild.ROLE) {
-            adapters.add(new SOAPFaultChildAdapter(SOAPFaultRole.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFault)parent).getRole();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFault)parent).setRole((SOAPFaultRole)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultRole.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultRole();
                 }
@@ -197,18 +248,19 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                         OMElement parent) {
                     return factory.createSOAPFaultRole((SOAPFault)parent);
                 }
-                
-                @Override
-                public OMElement get(SOAPFault fault) {
-                    return fault.getRole();
-                }
-
-                public void set(SOAPFault fault, OMElement element) {
-                    fault.setRole((SOAPFaultRole)element);
-                }
             });
         } else if (type == SOAPFaultChild.DETAIL) {
-            adapters.add(new SOAPFaultChildAdapter(SOAPFaultDetail.class) {
+            Getter getter = new Getter() {
+                public OMElement invoke(OMElement parent) {
+                    return ((SOAPFault)parent).getDetail();
+                }
+            };
+            Setter setter = new Setter() {
+                public void invoke(OMElement parent, OMElement child) {
+                    ((SOAPFault)parent).setDetail((SOAPFaultDetail)child);
+                }
+            };
+            adapters.add(new SOAPElementTypeAdapter(SOAPFaultDetail.class, getter, setter) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultDetail();
                 }
@@ -216,15 +268,6 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 public OMElement create(SOAPFactory factory, SOAPElementType parentType,
                         OMElement parent) {
                     return factory.createSOAPFaultDetail((SOAPFault)parent);
-                }
-                
-                @Override
-                public OMElement get(SOAPFault fault) {
-                    return fault.getDetail();
-                }
-
-                public void set(SOAPFault fault, OMElement element) {
-                    fault.setDetail((SOAPFaultDetail)element);
                 }
             });
         }

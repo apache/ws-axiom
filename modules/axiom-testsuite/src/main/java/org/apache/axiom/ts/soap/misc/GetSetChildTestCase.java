@@ -16,36 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.fault;
+package org.apache.axiom.ts.soap.misc;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.ts.soap.SOAPFaultChild;
-import org.apache.axiom.ts.soap.SOAPFaultChildAdapter;
+import org.apache.axiom.ts.soap.SOAPElementType;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestSetChildVersionMismatch extends SOAPTestCase {
-    private final SOAPFaultChild type;
+public abstract class GetSetChildTestCase extends SOAPTestCase {
+    protected final SOAPElementType type;
+    protected final SOAPElementType childType;
 
-    public TestSetChildVersionMismatch(OMMetaFactory metaFactory, SOAPSpec spec, SOAPFaultChild type) {
+    public GetSetChildTestCase(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type, SOAPElementType childType) {
         super(metaFactory, spec);
         this.type = type;
-        type.getAdapter(SOAPFaultChildAdapter.class).addTestParameters(this);
+        this.childType = childType;
+        addTestParameter("type", type.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
+        addTestParameter("childType", childType.getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
     }
 
     @Override
-    protected void runTest() throws Throwable {
-        SOAPFaultChildAdapter adapter = type.getAdapter(SOAPFaultChildAdapter.class);
-        SOAPFault fault = soapFactory.createSOAPFault();
-        OMElement child = adapter.create(altSoapFactory);
-        try {
-            adapter.set(fault, child);
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+    protected final void runTest() throws Throwable {
+        runTest(type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory),
+                childType.getAdapter(SOAPElementTypeAdapter.class));
     }
+    
+    protected abstract void runTest(OMElement parent, SOAPElementTypeAdapter adapter);
 }

@@ -192,15 +192,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
                     new SOAPFaultChild[] { SOAPFaultChild.CODE, SOAPFaultChild.REASON, SOAPFaultChild.DETAIL, SOAPFaultChild.REASON }, ss));
         }
-        for (SOAPElementType type : SOAPElementType.FAULT.getChildTypes()) {
-            if (type.getQName(spec) != null) {
-                addTest(new org.apache.axiom.ts.soap.fault.TestGetChild(metaFactory, spec, (SOAPFaultChild)type));
-                addTest(new org.apache.axiom.ts.soap.fault.TestSetChild(metaFactory, spec, (SOAPFaultChild)type));
-                if (type.getQName(spec.getAltSpec()) != null) {
-                    addTest(new org.apache.axiom.ts.soap.fault.TestSetChildVersionMismatch(metaFactory, spec, (SOAPFaultChild)type));
-                }
-            }
-        }
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetDetailWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetException(metaFactory, spec));
@@ -274,6 +265,23 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.message.TestGetOMFactoryWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.message.TestSetOMDocumentElement(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.message.TestSetOMDocumentElementNonSOAPEnvelope(metaFactory, spec));
+        for (SOAPElementType type : SOAPElementType.getAll()) {
+            if (type.getQName(spec) != null) {
+                for (SOAPElementType childType : type.getChildTypes()) {
+                    if (childType.getQName(spec) != null) {
+                        if (childType.getAdapter(SOAPElementTypeAdapter.class).getGetter() != null) {
+                            addTest(new org.apache.axiom.ts.soap.misc.TestGetChild(metaFactory, spec, type, childType));
+                        }
+                        if (childType.getAdapter(SOAPElementTypeAdapter.class).getSetter() != null) {
+                            addTest(new org.apache.axiom.ts.soap.misc.TestSetChild(metaFactory, spec, type, childType));
+                            if (childType.getQName(spec.getAltSpec()) != null) {
+                                addTest(new org.apache.axiom.ts.soap.misc.TestSetChildVersionMismatch(metaFactory, spec, type, childType));
+                            }
+                        }
+                    }
+                }
+            }
+        }
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, false));
     }

@@ -67,7 +67,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultValueImpl, got " + value.getClass());
         }
-        ElementHelper.setNewElement(this, value, value);
+        ElementHelper.setNewElement(this, getValue(), value);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

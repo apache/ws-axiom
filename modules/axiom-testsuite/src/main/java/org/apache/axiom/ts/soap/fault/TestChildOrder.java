@@ -31,8 +31,8 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPFaultChild;
-import org.apache.axiom.ts.soap.SOAPFaultChildAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
@@ -59,7 +59,7 @@ public class TestChildOrder extends SOAPTestCase {
             if (i>0) {
                 buffer.append(',');
             }
-            buffer.append(inputOrder[i].getAdapter(SOAPFaultChildAdapter.class).getType().getSimpleName());
+            buffer.append(inputOrder[i].getAdapter(SOAPElementTypeAdapter.class).getType().getSimpleName());
         }
         addTestParameter("inputOrder", buffer.toString());
         serializationStrategy.addTestParameters(this);
@@ -69,8 +69,8 @@ public class TestChildOrder extends SOAPTestCase {
         SOAPFault fault = soapFactory.createSOAPFault();
         // Add the elements in the specified order.
         for (int i=0; i<inputOrder.length; i++) {
-            SOAPFaultChildAdapter adapter = inputOrder[i].getAdapter(SOAPFaultChildAdapter.class);
-            adapter.set(fault, adapter.create(soapFactory));
+            SOAPElementTypeAdapter adapter = inputOrder[i].getAdapter(SOAPElementTypeAdapter.class);
+            adapter.getSetter().invoke(fault, adapter.create(soapFactory));
         }
         // Calculate the order in which we expect to see the children. Note that a given type
         // may be added multiple times. Therefore we need to use a Set.

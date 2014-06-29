@@ -16,17 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.ts.soap.misc;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.soap.SOAPElementType;
+import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
-@AdapterType
-public abstract class SOAPFaultChildAdapter extends SOAPElementTypeAdapter {
-    SOAPFaultChildAdapter(Class<? extends OMElement> type) {
-        super(type);
+public class TestSetChild extends GetSetChildTestCase {
+    public TestSetChild(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type,
+            SOAPElementType childType) {
+        super(metaFactory, spec, type, childType);
     }
-    
-    public abstract OMElement get(SOAPFault fault);
-    public abstract void set(SOAPFault fault, OMElement element);
+
+    @Override
+    protected void runTest(OMElement parent, SOAPElementTypeAdapter adapter) {
+        OMElement child = adapter.create(soapFactory);
+        adapter.getSetter().invoke(parent, child);
+        assertSame(child, adapter.getGetter().invoke(parent));
+        assertSame(child, parent.getFirstOMChild());
+    }
 }

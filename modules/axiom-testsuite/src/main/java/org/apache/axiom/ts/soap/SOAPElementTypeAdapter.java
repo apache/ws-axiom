@@ -25,10 +25,22 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 @AdapterType
 public abstract class SOAPElementTypeAdapter implements Dimension {
-    private final Class<? extends OMElement> type;
+    public interface Getter {
+        OMElement invoke(OMElement parent);
+    }
     
-    SOAPElementTypeAdapter(Class<? extends OMElement> type) {
+    public interface Setter {
+        void invoke(OMElement parent, OMElement child);
+    }
+    
+    private final Class<? extends OMElement> type;
+    private final Getter getter;
+    private final Setter setter;
+    
+    SOAPElementTypeAdapter(Class<? extends OMElement> type, Getter getter, Setter setter) {
         this.type = type;
+        this.getter = getter;
+        this.setter = setter;
     }
 
     public final void addTestParameters(MatrixTestCase testCase) {
@@ -39,6 +51,14 @@ public abstract class SOAPElementTypeAdapter implements Dimension {
         return type;
     }
     
+    public final Getter getGetter() {
+        return getter;
+    }
+
+    public final Setter getSetter() {
+        return setter;
+    }
+
     public abstract OMElement create(SOAPFactory factory);
     public abstract OMElement create(SOAPFactory factory, SOAPElementType parentType, OMElement parent);
 }

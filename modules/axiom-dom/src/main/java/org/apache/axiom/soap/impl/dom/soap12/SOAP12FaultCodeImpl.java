@@ -65,7 +65,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault Value. " +
                             "But received some other implementation");
         }
-        ElementHelper.setNewElement(this, value, value);
+        ElementHelper.setNewElement(this, getValue(), value);
     }
 
     // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
