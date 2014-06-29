@@ -18,61 +18,28 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.ts.soap.SOAPElementType;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Tests {@link SOAPFactory#createSOAPEnvelope()}, {@link SOAPFactory#createSOAPFaultCode()},
- * {@link SOAPFactory#createSOAPFaultValue()}, {@link SOAPFactory#createSOAPFaultSubCode()},
- * {@link SOAPFactory#createSOAPFaultReason()}, {@link SOAPFactory#createSOAPFaultText()},
+ * Tests {@link SOAPFactory#createSOAPEnvelope()}, {@link SOAPFactory#createSOAPHeader()},
+ * {@link SOAPFactory#createSOAPBody()}, {@link SOAPFactory#createSOAPFault()},
+ * {@link SOAPFactory#createSOAPFaultCode()}, {@link SOAPFactory#createSOAPFaultValue()},
+ * {@link SOAPFactory#createSOAPFaultSubCode()}, {@link SOAPFactory#createSOAPFaultReason()},
+ * {@link SOAPFactory#createSOAPFaultText()}, {@link SOAPFactory#createSOAPFaultNode()},
  * {@link SOAPFactory#createSOAPFaultRole()} and {@link SOAPFactory#createSOAPFaultDetail()}.
  */
-public class TestCreateSOAPElement extends SOAPTestCase {
-    private final SOAPElementType type;
-    
+public class TestCreateSOAPElement extends CreateSOAPElementWithoutParentTestCase {
     public TestCreateSOAPElement(OMMetaFactory metaFactory, SOAPSpec spec, SOAPElementType type) {
-        super(metaFactory, spec);
-        this.type = type;
-        type.getAdapter(SOAPElementTypeAdapter.class).addTestParameters(this);
+        super(metaFactory, spec, type);
     }
 
-    protected void runTest() throws Throwable {
-        QName expectedName = type.getQName(spec);
-        if (expectedName == null) {
-            try {
-                type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
-                fail("Expect UnsupportedOperationException");
-            } catch (UnsupportedOperationException ex) {
-                // Expected
-            }
-        } else {
-            String expectedPrefix = expectedName.getNamespaceURI().length() == 0 ? "" : SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX; 
-            OMElement child = type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
-            QName actualName = child.getQName();
-            assertEquals(expectedName, actualName);
-            assertEquals(expectedPrefix, actualName.getPrefix());
-            assertNull(child.getParent());
-            Iterator it = child.getAllDeclaredNamespaces();
-            if (expectedPrefix.length() != 0) {
-                assertTrue(it.hasNext());
-                OMNamespace ns = (OMNamespace)it.next();
-                assertEquals(expectedName.getNamespaceURI(), ns.getNamespaceURI());
-                assertEquals(expectedPrefix, ns.getPrefix());
-            }
-            assertFalse(it.hasNext());
-            assertFalse(child.getAllAttributes().hasNext());
-            assertNull(child.getFirstOMChild());
-        }
+    @Override
+    protected OMElement createSOAPElement() {
+        return type.getAdapter(SOAPElementTypeAdapter.class).create(soapFactory);
     }
 }

@@ -23,10 +23,14 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.factory.TestCreateSOAPElementWithNullParent;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false, false);
+        
+        // TODO: need to decide what the correct behavior is (other OMFactory methods allow null parents)
+        builder.exclude(TestCreateSOAPElementWithNullParent.class);
         
         return builder.build();
     }

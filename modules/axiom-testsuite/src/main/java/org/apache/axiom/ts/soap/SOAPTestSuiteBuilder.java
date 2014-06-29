@@ -172,6 +172,12 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
         for (SOAPElementType type : SOAPElementType.getAll()) {
             addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPElement(metaFactory, spec, type));
+            for (SOAPElementType childType : type.getChildTypes()) {
+                addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPElementWithNullParent(metaFactory, spec, childType, type));
+                if (type.getQName(spec) != null) {
+                    addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPElementWithParent(metaFactory, spec, childType, type));
+                }
+            }
         }
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithParent(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestFactoryIsSingleton(metaFactory, spec));

@@ -40,4 +40,5 @@ public abstract class SOAPElementTypeAdapter implements Dimension {
     }
     
     public abstract OMElement create(SOAPFactory factory);
+    public abstract OMElement create(SOAPFactory factory, SOAPElementType parentType, OMElement parent);
 }

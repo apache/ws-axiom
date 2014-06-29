@@ -40,11 +40,23 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPEnvelope();
                 }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    throw new UnsupportedOperationException();
+                }
             });
         } else if (type == SOAPElementType.HEADER) {
             adapters.add(new SOAPElementTypeAdapter(SOAPHeader.class) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPHeader();
+                }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPHeader((SOAPEnvelope)parent);
                 }
             });
         } else if (type == SOAPElementType.BODY) {
@@ -52,11 +64,23 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPBody();
                 }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPBody((SOAPEnvelope)parent);
+                }
             });
         } else if (type == SOAPElementType.FAULT) {
             adapters.add(new SOAPElementTypeAdapter(SOAPFault.class) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFault();
+                }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFault((SOAPBody)parent);
                 }
             });
         } else if (type == SOAPFaultChild.CODE) {
@@ -65,8 +89,9 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultCode();
                 }
                 
-                public OMElement create(SOAPFactory factory, SOAPFault parent) {
-                    return factory.createSOAPFaultCode(parent);
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFaultCode((SOAPFault)parent);
                 }
                 
                 public void set(SOAPFault fault, OMElement element) {
@@ -78,11 +103,31 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultValue();
                 }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    if (parentType == SOAPFaultChild.CODE) {
+                        return factory.createSOAPFaultValue((SOAPFaultCode)parent);
+                    } else {
+                        return factory.createSOAPFaultValue((SOAPFaultSubCode)parent);
+                    }
+                }
             });
         } else if (type == SOAPElementType.SUB_CODE) {
             adapters.add(new SOAPElementTypeAdapter(SOAPFaultSubCode.class) {
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultSubCode();
+                }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    if (parentType == SOAPFaultChild.CODE) {
+                        return factory.createSOAPFaultSubCode((SOAPFaultCode)parent);
+                    } else {
+                        return factory.createSOAPFaultSubCode((SOAPFaultSubCode)parent);
+                    }
                 }
             });
         } else if (type == SOAPFaultChild.REASON) {
@@ -91,8 +136,9 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultReason();
                 }
                 
-                public OMElement create(SOAPFactory factory, SOAPFault parent) {
-                    return factory.createSOAPFaultReason(parent);
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFaultReason((SOAPFault)parent);
                 }
                 
                 public void set(SOAPFault fault, OMElement element) {
@@ -104,6 +150,12 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                 public OMElement create(SOAPFactory factory) {
                     return factory.createSOAPFaultText();
                 }
+
+                @Override
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFaultText((SOAPFaultReason)parent);
+                }
             });
         } else if (type == SOAPFaultChild.NODE) {
             adapters.add(new SOAPFaultChildAdapter(SOAPFaultNode.class) {
@@ -111,8 +163,9 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultNode();
                 }
                 
-                public OMElement create(SOAPFactory factory, SOAPFault parent) {
-                    return factory.createSOAPFaultNode(parent);
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFaultNode((SOAPFault)parent);
                 }
                 
                 public void set(SOAPFault fault, OMElement element) {
@@ -125,8 +178,9 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultRole();
                 }
                 
-                public OMElement create(SOAPFactory factory, SOAPFault parent) {
-                    return factory.createSOAPFaultRole(parent);
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFaultRole((SOAPFault)parent);
                 }
                 
                 public void set(SOAPFault fault, OMElement element) {
@@ -139,8 +193,9 @@ public class SOAPElementTypeAdapterFactory implements AdapterFactory<SOAPElement
                     return factory.createSOAPFaultDetail();
                 }
                 
-                public OMElement create(SOAPFactory factory, SOAPFault parent) {
-                    return factory.createSOAPFaultDetail(parent);
+                public OMElement create(SOAPFactory factory, SOAPElementType parentType,
+                        OMElement parent) {
+                    return factory.createSOAPFaultDetail((SOAPFault)parent);
                 }
                 
                 public void set(SOAPFault fault, OMElement element) {

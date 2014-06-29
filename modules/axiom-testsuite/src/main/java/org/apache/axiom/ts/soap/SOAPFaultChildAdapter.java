@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 
 @AdapterType
@@ -28,6 +27,5 @@ public abstract class SOAPFaultChildAdapter extends SOAPElementTypeAdapter {
         super(type);
     }
     
-    public abstract OMElement create(SOAPFactory factory, SOAPFault parent);
     public abstract void set(SOAPFault fault, OMElement element);
 }

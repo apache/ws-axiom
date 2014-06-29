@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.envelope.TestClone;
+import org.apache.axiom.ts.soap.factory.TestCreateSOAPElementWithNullParent;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -31,6 +32,9 @@ public class SOAPImplementationTest extends TestCase {
         
         // TODO
         builder.exclude(TestClone.class, "(message=soap/soap11/soapfault2.xml)");
+        
+        // TODO: need to decide what the correct behavior is (other OMFactory methods allow null parents)
+        builder.exclude(TestCreateSOAPElementWithNullParent.class);
         
         return builder.build();
     }
