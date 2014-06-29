@@ -46,7 +46,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -1172,7 +1171,40 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         }
         // looking in ancestor
         ParentNode parent = parentNode();
-        return parent == null || parent instanceof Document ? null : parent.lookupNamespaceURI(specifiedPrefix);
+        return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
+    }
+
+    public final String lookupPrefix(String namespaceURI) {
+        return lookupPrefix(namespaceURI, this);
+    }
+    
+    final String lookupPrefix(String namespaceURI, Element originalElement) {
+        if (namespaceURI == null || namespaceURI.length() == 0) {
+            return null;
+        }
+        if (namespaceURI.equals(getNamespaceURI())) {
+            String prefix = getPrefix();
+            if (namespaceURI.equals(originalElement.lookupNamespaceURI(prefix))) {
+                return prefix;
+            }
+        }
+        if (this.hasAttributes()) {
+            NamedNodeMap map = this.getAttributes();
+            int length = map.getLength();
+            for (int i = 0; i < length; i++) {
+                Node attr = map.item(i);
+                String attrPrefix = attr.getPrefix();
+                if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_ATTRIBUTE)
+                        && attr.getNodeValue().equals(namespaceURI)) {
+                    String prefix = attr.getLocalName();
+                    if (namespaceURI.equals(originalElement.lookupNamespaceURI(prefix))) {
+                        return prefix;
+                    }
+                }
+            }
+        }
+        ParentNode parent = parentNode();
+        return parent instanceof Element ? ((ElementImpl)parent).lookupPrefix(namespaceURI, originalElement) : null;
     }
 
     public final void checkChild(OMNode child) {

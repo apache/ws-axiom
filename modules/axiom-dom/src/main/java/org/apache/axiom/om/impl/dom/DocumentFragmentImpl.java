@@ -129,6 +129,10 @@ public class DocumentFragmentImpl extends RootNode implements
         return null;
     }
 
+    public String lookupPrefix(String namespaceURI) {
+        return null;
+    }
+
     public final void checkChild(OMNode child) {
     }
 }

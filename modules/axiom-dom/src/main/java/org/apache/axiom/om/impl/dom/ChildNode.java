@@ -120,4 +120,9 @@ public abstract class ChildNode extends NodeImpl implements IChildNode {
         // references fully, we only check for elements.
         return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
     }
+    
+    public final String lookupPrefix(String namespaceURI) {
+        ParentNode parent = parentNode();
+        return parent instanceof Element ? parent.lookupPrefix(namespaceURI) : null;
+    }
 }

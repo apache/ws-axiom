@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument;
+import org.apache.axiom.ts.dom.document.TestLookupPrefixWithEmptyDocument;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
@@ -36,6 +37,7 @@ public class XercesTest extends TestCase {
         
         // XERCESJ-1582
         builder.exclude(TestLookupNamespaceURIWithEmptyDocument.class);
+        builder.exclude(TestLookupPrefixWithEmptyDocument.class);
         
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level2/core/createAttributeNS06)");

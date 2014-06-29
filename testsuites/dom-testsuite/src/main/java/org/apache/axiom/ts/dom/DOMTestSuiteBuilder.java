@@ -106,6 +106,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestGetOwnerDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestLookupPrefixWithEmptyDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
         for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
             XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
@@ -116,6 +117,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNodeDeep(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNodeShallow(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestLookupNamespaceURI(dbf));
+        addTest(new org.apache.axiom.ts.dom.documentfragment.TestLookupPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser1(dbf));
         addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser2(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChild(dbf));
@@ -142,6 +144,9 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBeforeWithDocumentFragment(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIExplicit(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIImplicit(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixEmptyNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixExplicitMasked(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixImplicitMasked(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNotOwner(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));

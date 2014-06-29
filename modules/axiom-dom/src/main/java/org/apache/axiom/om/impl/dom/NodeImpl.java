@@ -203,11 +203,6 @@ public abstract class NodeImpl implements Node {
         return this == node;
     }
 
-    public String lookupPrefix(String namespaceURI) {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
     public boolean isDefaultNamespace(String namespaceURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");

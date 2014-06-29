@@ -55,6 +55,7 @@ import org.w3c.dom.Text;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
+
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -632,6 +633,12 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
                 : documentElement.lookupNamespaceURI(specifiedPrefix);
     }
     
+    public final String lookupPrefix(String namespaceURI) {
+        Element documentElement = getDocumentElement();
+        return documentElement == null ? null
+                : getDocumentElement().lookupPrefix(namespaceURI);
+    }
+
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {
