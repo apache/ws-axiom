@@ -48,6 +48,16 @@ public final class TestMessageSet extends Adaptable {
      */
     public static final TestMessageSet SIMPLE_FAULT = new TestMessageSet("simple-fault");
     
+    /**
+     * A SOAP request having a header block with a custom role.
+     */
+    public static final TestMessageSet CUSTOM_ROLE_REQUEST = new TestMessageSet("custom-role-request");
+    
+    /**
+     * A SOAP fault response with a custom role (corresponding to {@link #CUSTOM_ROLE_REQUEST}).
+     */
+    public static final TestMessageSet CUSTOM_ROLE_FAULT = new TestMessageSet("custom-role-fault");
+    
     private final TestMessage soap11Message;
     private final TestMessage soap12Message;
     

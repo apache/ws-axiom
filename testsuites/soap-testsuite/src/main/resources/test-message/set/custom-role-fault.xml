@@ -1,0 +1,14 @@
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope">
+    <s:Body>
+        <s:Fault>
+            <s:Code>
+                <s:Value>s:Receiver</s:Value>
+            </s:Code>
+            <s:Reason>
+                <s:Text xml:lang="en">The backend service is unavailable and no cached response was found</s:Text>
+            </s:Reason>
+            <s:Node>http://gateway.corp.example.org/</s:Node>
+            <s:Role>http://www.example.org/gateway/cache</s:Role>
+        </s:Fault>
+    </s:Body>
+</s:Envelope>

@@ -1,0 +1,13 @@
+<SOAP:Envelope xmlns:SOAP="http://www.w3.org/2003/05/soap-envelope">
+    <SOAP:Header>
+        <CachePolicy xmlns="http://www.example.org/cache-policy" SOAP:role="http://www.example.org/gateway/cache" SOAP:mustUnderstand="true">
+            <RequestETag>686897696a7c876b7e</RequestETag>
+            <MaxAge>3600</MaxAge>
+        </CachePolicy>
+    </SOAP:Header>
+    <SOAP:Body>
+        <Lookup xmlns="http://www.acme.co.uk/postcode-lookup">
+            <Postcode>SW1A 1AA</Postcode>
+        </Lookup>
+    </SOAP:Body>
+</SOAP:Envelope>

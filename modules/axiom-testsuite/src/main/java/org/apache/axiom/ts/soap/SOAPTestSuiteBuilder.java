@@ -212,6 +212,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         if (spec.getFaultTextQName() != null) {
             addTest(new org.apache.axiom.ts.soap.faulttext.TestSetLang(metaFactory, spec));
         }
+        addTest(new org.apache.axiom.ts.soap.faultrole.TestGetRoleValueWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlock(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlockFromQName(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlockFromQNameWithoutNamespace(metaFactory, spec));

@@ -25,8 +25,6 @@ public class SOAPFaultRoleTestBase extends SOAPFaultTestCase {
 
     protected SOAPFaultRole soap11FaultRole;
     protected SOAPFaultRole soap12FaultRole;
-    protected SOAPFaultRole soap11FaultRoleWithParser;
-    protected SOAPFaultRole soap12FaultRoleWithParser;
 
     public SOAPFaultRoleTestBase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory);
@@ -36,8 +34,6 @@ public class SOAPFaultRoleTestBase extends SOAPFaultTestCase {
         super.setUp();
         soap11FaultRole = soap11Factory.createSOAPFaultRole(soap11Fault);
         soap12FaultRole = soap12Factory.createSOAPFaultRole(soap12Fault);
-        soap11FaultRoleWithParser = soap11FaultWithParser.getRole();
-        soap12FaultRoleWithParser = soap12FaultWithParser.getRole();
     }
 
     //SOAP 1.1 Fault Role Test (Programaticaly Created)
@@ -74,21 +70,5 @@ public class SOAPFaultRoleTestBase extends SOAPFaultTestCase {
         assertTrue(
                 "SOAP 1.2 Fault Role Test : - After calling setRoleValue method, getRoleValue method returns incorrect value",
                 soap12FaultRole.getRoleValue().trim().equals("This is only a test"));
-    }
-
-    //SOAP 1.1 Fault Role Test (With Parser)
-    public void testSOAP11GetRoleValueWithParser() {
-        assertTrue(
-                "SOAP 1.1 Fault Role Test With Parser : - getRoleValue method returns incorrect value",
-                soap11FaultRoleWithParser.getRoleValue().trim().equals(
-                        "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver"));
-    }
-
-    //SOAP 1.2 Fault Role Test (With Parser)
-    public void testSOAP12GetRoleValueWithParser() {
-        assertTrue(
-                "SOAP 1.2 Fault Role Test With Parser : - getRoleValue method returns incorrect value",
-                soap12FaultRoleWithParser.getRoleValue().trim().equals(
-                        "ultimateReceiver"));
     }
 }

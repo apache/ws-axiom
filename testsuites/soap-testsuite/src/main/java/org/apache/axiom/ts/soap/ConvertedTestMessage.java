@@ -69,6 +69,10 @@ final class ConvertedTestMessage extends TestMessage {
     }
     
     private static void processSOAPElement(Element element, SOAPElementType type) {
+        if (type == SOAPFaultChild.NODE) {
+            element.getParentNode().removeChild(element);
+            return;
+        }
         QName newName = type.getQName(SOAPSpec.SOAP11);
         String prefix = element.getPrefix();
         if (newName.getNamespaceURI().isEmpty()) {
