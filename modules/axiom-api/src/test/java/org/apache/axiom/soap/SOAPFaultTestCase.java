@@ -24,8 +24,6 @@ import org.apache.axiom.om.OMMetaFactory;
 public abstract class SOAPFaultTestCase extends SOAPBodyTestCase {
     protected SOAPFault soap11Fault;
     protected SOAPFault soap12Fault;
-    protected SOAPFault soap11FaultWithParser;
-    protected SOAPFault soap12FaultWithParser;
 
     public SOAPFaultTestCase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory);
@@ -35,7 +33,5 @@ public abstract class SOAPFaultTestCase extends SOAPBodyTestCase {
         super.setUp();
         soap11Fault = soap11Factory.createSOAPFault(soap11Body);
         soap12Fault = soap12Factory.createSOAPFault(soap12Body);
-        soap11FaultWithParser = soap11BodyWithParser.getFault();
-        soap12FaultWithParser = soap12BodyWithParser.getFault();
     }
 }

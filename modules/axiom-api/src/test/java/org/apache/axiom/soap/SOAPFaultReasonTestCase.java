@@ -25,8 +25,6 @@ public abstract class SOAPFaultReasonTestCase extends SOAPFaultTestCase {
 
     protected SOAPFaultReason soap11FaultReason;
     protected SOAPFaultReason soap12FaultReason;
-    protected SOAPFaultReason soap11FaultReasonWithParser;
-    protected SOAPFaultReason soap12FaultReasonWithParser;
 
     public SOAPFaultReasonTestCase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory);
@@ -36,8 +34,6 @@ public abstract class SOAPFaultReasonTestCase extends SOAPFaultTestCase {
         super.setUp();
         soap11FaultReason = soap11Factory.createSOAPFaultReason(soap11Fault);
         soap12FaultReason = soap12Factory.createSOAPFaultReason(soap12Fault);
-        soap11FaultReasonWithParser = soap11FaultWithParser.getReason();
-        soap12FaultReasonWithParser = soap12FaultWithParser.getReason();
     }
 
 }

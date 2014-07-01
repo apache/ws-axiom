@@ -36,12 +36,6 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     protected SOAPEnvelope soap11Envelope;
     protected SOAPEnvelope soap12Envelope;
 
-    protected SOAPEnvelope soap11EnvelopeWithParser;
-    protected SOAPEnvelope soap12EnvelopeWithParser;
-
-    protected static final String SOAP11_FILE_NAME = "soap/soap11/message.xml";
-    protected static final String SOAP12_FILE_NAME = "soap/soap12/message.xml";
-
     public SOAPTestCase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
     }
@@ -55,13 +49,6 @@ public abstract class SOAPTestCase extends AbstractTestCase {
         
         soap11Envelope = soap11Factory.createSOAPEnvelope();
         soap12Envelope = soap12Factory.createSOAPEnvelope();
-
-        soap11EnvelopeWithParser =
-                (SOAPEnvelope) this.getSOAPBuilder(SOAP11_FILE_NAME)
-                        .getDocumentElement();
-        soap12EnvelopeWithParser =
-                (SOAPEnvelope) this.getSOAPBuilder(SOAP12_FILE_NAME)
-                        .getDocumentElement();
     }
 
     protected void tearDown() throws Exception {
@@ -69,9 +56,6 @@ public abstract class SOAPTestCase extends AbstractTestCase {
         
         soap11Envelope.close(false);
         soap12Envelope.close(false);
-        
-        soap11EnvelopeWithParser.close(false);
-        soap12EnvelopeWithParser.close(false);
     }
 
     protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {

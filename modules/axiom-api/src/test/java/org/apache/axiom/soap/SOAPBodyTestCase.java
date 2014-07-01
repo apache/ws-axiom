@@ -25,9 +25,6 @@ public abstract class SOAPBodyTestCase extends SOAPTestCase {
     protected SOAPBody soap11Body;
     protected SOAPBody soap12Body;
 
-    protected SOAPBody soap11BodyWithParser;
-    protected SOAPBody soap12BodyWithParser;
-
     public SOAPBodyTestCase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory);
 
@@ -37,9 +34,6 @@ public abstract class SOAPBodyTestCase extends SOAPTestCase {
         super.setUp();
         soap11Body = soap11Factory.createSOAPBody(soap11Envelope);
         soap12Body = soap12Factory.createSOAPBody(soap12Envelope);
-
-        soap11BodyWithParser = soap11EnvelopeWithParser.getBody();
-        soap12BodyWithParser = soap12EnvelopeWithParser.getBody();
     }
 
 }
