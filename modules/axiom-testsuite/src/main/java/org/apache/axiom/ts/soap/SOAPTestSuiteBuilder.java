@@ -210,6 +210,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestSerialization(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestWSCommons202(metaFactory, spec));
         if (spec.getFaultTextQName() != null) {
+            addTest(new org.apache.axiom.ts.soap.faulttext.TestGetLang(metaFactory, spec));
+            addTest(new org.apache.axiom.ts.soap.faulttext.TestGetLangFromParser(metaFactory, spec));
             addTest(new org.apache.axiom.ts.soap.faulttext.TestSetLang(metaFactory, spec));
         }
         if (spec.getFaultNodeQName() != null) {

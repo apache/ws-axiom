@@ -16,14 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.faulttext;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.TestMessageSet;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPFaultTextTestBase;
+public class TestGetLangFromParser extends SOAPTestCase {
+    public TestGetLangFromParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
 
-public class SOAPFaultTextTest extends SOAPFaultTextTestBase {
-    public SOAPFaultTextTest() {
-        super(new OMLinkedListMetaFactory());
+    @Override
+    protected void runTest() throws Throwable {
+        SOAPEnvelope env = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        assertEquals("en", env.getBody().getFault().getReason().getFirstSOAPText().getLang());
     }
 }

@@ -16,24 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.faulttext;
 
-package org.apache.axiom.soap;
+import javax.xml.XMLConstants;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFaultText;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public abstract class SOAPFaultReasonTestCase extends SOAPFaultTestCase {
-
-    protected SOAPFaultReason soap11FaultReason;
-    protected SOAPFaultReason soap12FaultReason;
-
-    public SOAPFaultReasonTestCase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory);
+public class TestGetLang extends SOAPTestCase {
+    public TestGetLang(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        soap11FaultReason = soap11Factory.createSOAPFaultReason(soap11Fault);
-        soap12FaultReason = soap12Factory.createSOAPFaultReason(soap12Fault);
+    @Override
+    protected void runTest() throws Throwable {
+        SOAPFaultText faultText = soapFactory.createSOAPFaultText();
+        faultText.setText("test");
+        assertNull(faultText.getLang());
+        faultText.addAttribute("lang", "fr", soapFactory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX));
+        assertEquals("fr", faultText.getLang());
     }
-
 }
