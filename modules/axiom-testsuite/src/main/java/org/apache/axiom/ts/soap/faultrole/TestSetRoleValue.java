@@ -16,14 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.faultrole;
 
-package org.apache.axiom.soap.impl.dom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFaultRole;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAPFaultRoleTestBase;
+public class TestSetRoleValue extends SOAPTestCase {
+    public TestSetRoleValue(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
 
-public class SOAPFaultRoleTest extends SOAPFaultRoleTestBase {
-    public SOAPFaultRoleTest() {
-        super(new OMDOMMetaFactory());
+    @Override
+    protected void runTest() throws Throwable {
+        SOAPFaultRole role = soapFactory.createSOAPFaultRole();
+        role.setRoleValue("urn:some:role");
+        assertEquals("urn:some:role", role.getText());
     }
 }

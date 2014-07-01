@@ -16,14 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.faultnode;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFaultNode;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPFaultRoleTestBase;
+public class TestGetFaultNodeValue extends SOAPTestCase {
+    public TestGetFaultNodeValue(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
 
-public class SOAPFaultRoleTest extends SOAPFaultRoleTestBase {
-    public SOAPFaultRoleTest() {
-        super(new OMLinkedListMetaFactory());
+    @Override
+    protected void runTest() throws Throwable {
+        SOAPFaultNode node = soapFactory.createSOAPFaultNode();
+        assertEquals("", node.getFaultNodeValue());
+        node.setText("http://my.node");
+        assertEquals("http://my.node", node.getFaultNodeValue());
     }
 }
