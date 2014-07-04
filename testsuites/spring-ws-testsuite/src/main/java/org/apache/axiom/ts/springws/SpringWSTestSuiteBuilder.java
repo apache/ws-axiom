@@ -25,6 +25,7 @@ import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
 import org.apache.axiom.ts.springws.scenario.castor.CastorTest;
 import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
 import org.apache.axiom.ts.springws.scenario.jdom.ClientServerTest;
+import org.apache.axiom.ts.springws.scenario.validation.ValidationTest;
 import org.apache.axiom.ts.springws.scenario.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessage;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStream;
@@ -62,5 +63,6 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new JAXB2Test(config, spec));
         addTest(new CastorTest(config, spec));
         addTest(new BrokerScenarioTest(config, spec));
+        addTest(new ValidationTest(config, spec));
     }
 }

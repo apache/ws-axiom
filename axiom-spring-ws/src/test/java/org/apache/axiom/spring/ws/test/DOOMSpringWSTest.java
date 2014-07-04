@@ -23,6 +23,7 @@ import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
 import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
 import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
+import org.apache.axiom.ts.springws.scenario.validation.ValidationTest;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -32,6 +33,7 @@ public class DOOMSpringWSTest extends TestCase {
         SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(new AxiomMessageFactoryConfigurator(OMAbstractFactory.FEATURE_DOM), MessageFactoryConfigurator.SAAJ);
         
         builder.exclude(BrokerScenarioTest.class);
+        builder.exclude(ValidationTest.class);
         
         // TODO: Iteration 5
         builder.exclude(JAXB2Test.class);
