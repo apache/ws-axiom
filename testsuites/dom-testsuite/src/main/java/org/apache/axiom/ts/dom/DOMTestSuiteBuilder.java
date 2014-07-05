@@ -71,7 +71,6 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
-        addTest(new org.apache.axiom.ts.dom.attr.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestLookupNamespaceURIWithoutOwnerElement(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace(dbf));
@@ -190,7 +189,6 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeText(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithComment(dbf));
-        addTest(new org.apache.axiom.ts.dom.text.TestLookupNamespaceURIWithNSDeclInScope(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestLookupNamespaceURIWithoutParent(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));

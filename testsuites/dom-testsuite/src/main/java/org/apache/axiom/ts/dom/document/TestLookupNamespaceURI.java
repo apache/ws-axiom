@@ -41,10 +41,12 @@ public class TestLookupNamespaceURI extends DOMTestCase {
         Element documentElement = document.createElementNS("urn:test", "ns:root");
         documentElement.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:ns", "urn:test");
         document.appendChild(documentElement);
+        // Note: this part is also tested by the W3C test suite (see nodelookupnamespaceuri02)
         assertEquals("urn:test", document.lookupNamespaceURI("ns"));
         // The following assertion is important to check that there is no infinite recursion
         // (Document delegates the lookup to its document element, but the document element must
-        // not delegate to its parent if no matching declaration is found)
+        // not delegate to its parent if no matching declaration is found).
+        // This is not tested by the W3C test suite.
         assertNull(document.lookupNamespaceURI("p"));
     }
 }
