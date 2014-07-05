@@ -571,26 +571,34 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
     }
     
-    public final NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
-        final QName qname = new QName(namespaceURI, localName);
+    private NodeList getElementsWildcard() {
         return new NodeListImpl() {
             protected Iterator getIterator() {
-                return new OMQNameFilterIterator(getDescendants(false), qname);
+                return new OMFilterIterator(getDescendants(false)) {
+                    protected boolean matches(OMNode node) {
+                        return node.getType() == OMNode.ELEMENT_NODE;
+                    }
+                };
             }
         };
+    }
+    
+    public final NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
+        if ("*".equals(namespaceURI) && "*".equals(localName)) {
+            return getElementsWildcard();
+        } else {
+            final QName qname = new QName(namespaceURI, localName);
+            return new NodeListImpl() {
+                protected Iterator getIterator() {
+                    return new OMQNameFilterIterator(getDescendants(false), qname);
+                }
+            };
+        }
     }
 
     public final NodeList getElementsByTagName(final String name) {
         if (name.equals("*")) {
-            return new NodeListImpl() {
-                protected Iterator getIterator() {
-                    return new OMFilterIterator(getDescendants(false)) {
-                        protected boolean matches(OMNode node) {
-                            return node.getType() == OMNode.ELEMENT_NODE;
-                        }
-                    };
-                }
-            };
+            return getElementsWildcard();
         } else {
             return new NodeListImpl() {
                 protected Iterator getIterator() {

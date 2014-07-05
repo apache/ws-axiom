@@ -133,11 +133,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
             throws DOMException {
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
-        DOMUtil.validateAttrNamespace(namespaceURI, localName, prefix);
-
-        if (!XMLConstants.XMLNS_ATTRIBUTE.equals(localName)) {
-            this.checkQName(prefix, localName);
-        }
+        DOMUtil.validateAttrName(namespaceURI, localName, prefix);
 
         OMNamespace namespace;
         if (namespaceURI == null) {
@@ -172,24 +168,22 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         return element;
     }
 
-    public Element createElementNS(String ns, String qualifiedName)
+    public Element createElementNS(String namespaceURI, String qualifiedName)
             throws DOMException {
 
-        if (ns == null) ns = "";
+        if (namespaceURI != null && namespaceURI.length() == 0) {
+            namespaceURI = null;
+        }
 
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
-        checkQName(prefix, localName);
+        DOMUtil.validateElementName(namespaceURI, localName, prefix);
         
-        if(prefix == null) {
-            prefix = "";
-        }
-
         OMNamespaceImpl namespace;
-        if (ns.length() == 0) {
+        if (namespaceURI == null) {
             namespace = null;
         } else {
-            namespace = new OMNamespaceImpl(ns, prefix);
+            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
         ElementImpl element = new ElementImpl(null, localName, namespace, null, this.factory, false);
         element.setOwnerDocument(this);
@@ -450,21 +444,6 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     public Element getDocumentElement() {
 
         return (Element) this.getOMDocumentElement();
-    }
-
-    /**
-     * Borrowed from the Xerces impl. Checks if the given qualified name is legal with respect to
-     * the version of XML to which this document must conform.
-     *
-     * @param prefix prefix of qualified name
-     * @param local  local part of qualified name
-     */
-    protected final void checkQName(String prefix, String local) {
-        // check that both prefix and local part match NCName
-        if ((prefix != null && !XMLChar.isValidNCName(prefix))
-                || !XMLChar.isValidNCName(local)) {
-            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
-        }
     }
 
     protected void addIdAttr(Attr attr) {

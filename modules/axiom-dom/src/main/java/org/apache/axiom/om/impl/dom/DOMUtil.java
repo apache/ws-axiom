@@ -32,29 +32,27 @@ class DOMUtil {
         return true;
     }
 
-    public static void validateAttrNamespace(String namespaceURI, String localName, String prefix) {
-        // TODO check for valid namespace
-        /**
-         * if the qualifiedName has a prefix and the namespaceURI is null, if
-         * the qualifiedName has a prefix that is "xml" and the namespaceURI is
-         * different from " http://www.w3.org/XML/1998/namespace", or if the
-         * qualifiedName, or its prefix, is "xmlns" and the namespaceURI is
-         * different from " http://www.w3.org/2000/xmlns/".
-         */
+    private static void validateName(String namespaceURI, String localName, String prefix) {
+        if (prefix != null && !XMLChar.isValidNCName(prefix)
+                || !XMLChar.isValidNCName(localName)) {
+            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+        }
+        if (namespaceURI == null && prefix != null
+                || XMLConstants.XML_NS_PREFIX.equals(prefix) && !XMLConstants.XML_NS_URI.equals(namespaceURI)) {
+            throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+        }
+    }
+    
+    public static void validateElementName(String namespaceURI, String localName, String prefix) {
+        validateName(namespaceURI, localName, prefix);
+    }
+
+    public static void validateAttrName(String namespaceURI, String localName, String prefix) {
+        validateName(namespaceURI, localName, prefix);
         
-        if (namespaceURI == null) {
-            if (localName.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
-            }
-        } else if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            if (prefix != null && !prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)
-                    || prefix == null && !localName.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
-            }
-        } else {
-            if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
-            }
+        if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix != null ? prefix : localName)
+                != XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+            throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
     }
 
@@ -65,7 +63,13 @@ class DOMUtil {
      */
     public static String getLocalName(String qualifiedName) {
         int idx = qualifiedName.indexOf(':');
-        return idx == -1 ? qualifiedName : qualifiedName.substring(idx+1);
+        if (idx == -1) {
+            return qualifiedName;
+        } else if (qualifiedName.indexOf(':', idx+1) == -1) {
+            return qualifiedName.substring(idx+1);
+        } else {
+            throw newDOMException(DOMException.NAMESPACE_ERR);
+        }
     }
 
     /**
@@ -75,7 +79,13 @@ class DOMUtil {
      */
     public static String getPrefix(String qualifiedName) {
         int idx = qualifiedName.indexOf(':');
-        return idx == -1 ? null : qualifiedName.substring(0, idx);
+        if (idx == -1) {
+            return null;
+        } else if (idx == 0 || idx == qualifiedName.length()-1) {
+            throw newDOMException(DOMException.NAMESPACE_ERR);
+        } else {
+            return qualifiedName.substring(0, idx);
+        }
     }
     
     public static DOMException newDOMException(short code) {

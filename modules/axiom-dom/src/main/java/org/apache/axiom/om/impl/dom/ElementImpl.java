@@ -428,7 +428,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         }
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
-        DOMUtil.validateAttrNamespace(namespaceURI, localName, prefix);
+        DOMUtil.validateAttrName(namespaceURI, localName, prefix);
         
         AttrImpl attr = (AttrImpl)getAttributeNodeNS(namespaceURI, localName);
         if (attr != null) {
