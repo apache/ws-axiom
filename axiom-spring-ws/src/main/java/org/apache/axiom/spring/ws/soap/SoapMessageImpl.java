@@ -51,7 +51,7 @@ import org.w3c.dom.Document;
 final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServiceMessage {
     private static final Log log = LogFactory.getLog(SoapMessageImpl.class);
     
-    private final SOAPMessage axiomMessage;
+    private SOAPMessage axiomMessage;
     private final SourceExtractionStrategyStack extractionStrategyStack = new SourceExtractionStrategyStack();
     private SoapEnvelopeImpl envelope;
     
@@ -81,13 +81,21 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
     }
 
     public Document getDocument() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        if (axiomMessage instanceof Document) {
+            return (Document)axiomMessage;
+        } else {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException();
+        }
     }
 
     public void setDocument(Document document) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        if (document instanceof SOAPMessage) {
+            axiomMessage = (SOAPMessage)document;
+        } else {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException();
+        }
     }
 
     public boolean isXopPackage() {

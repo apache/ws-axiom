@@ -25,6 +25,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.transform.Result;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPHeader;
 import org.springframework.ws.soap.SoapHeader;
@@ -44,9 +45,11 @@ abstract class SoapHeaderImpl extends SoapElementImpl<SOAPHeader> implements Soa
         return new SoapHeaderElementImpl(getMessage(), axiomNode.addHeaderBlock(name));
     }
 
-    public void removeHeaderElement(QName name) throws SoapHeaderException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+    public final void removeHeaderElement(QName name) throws SoapHeaderException {
+        OMElement element = axiomNode.getFirstChildWithName(name);
+        if (element != null) {
+            element.detach();
+        }
     }
 
     public Iterator<SoapHeaderElement> examineMustUnderstandHeaderElements(String actorOrRole) throws SoapHeaderException {

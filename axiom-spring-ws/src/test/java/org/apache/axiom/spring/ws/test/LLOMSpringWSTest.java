@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
 import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
+import org.apache.axiom.ts.springws.scenario.secureecho.SecureEchoTest;
 import org.apache.axiom.ts.springws.scenario.validation.ValidationTest;
 
 import junit.framework.TestCase;
@@ -33,6 +34,7 @@ public class LLOMSpringWSTest extends TestCase {
         
         builder.exclude(BrokerScenarioTest.class);
         builder.exclude(ValidationTest.class);
+        builder.exclude(SecureEchoTest.class);
         
         return builder.build();
     }
