@@ -171,6 +171,8 @@ public aspect OMContainerSupport {
     }
     
     public void IContainer.removeChildren() {
+        // We need to call this first because if may modify the state (applies to OMSourcedElements)
+        CoreChildNode child = coreGetFirstChildIfAvailable();
         boolean updateState;
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
             OMNode lastKnownChild = getLastKnownOMChild();
@@ -182,7 +184,6 @@ public aspect OMContainerSupport {
         } else {
             updateState = false;
         }
-        CoreChildNode child = coreGetFirstChildIfAvailable();
         while (child != null) {
             CoreChildNode nextSibling = (CoreChildNode)child.getNextOMSiblingIfAvailable();
             ((INode)child).setPreviousOMSibling(null);

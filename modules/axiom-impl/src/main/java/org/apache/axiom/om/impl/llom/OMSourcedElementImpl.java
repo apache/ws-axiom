@@ -343,7 +343,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public Iterator getChildElements() {
-        forceExpand();
         return super.getChildElements();
     }
 
@@ -445,17 +444,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void setFirstChild(OMNode node) {
-        forceExpand();
         super.setFirstChild(node);
     }
 
     public void setLastChild(OMNode omNode) {
-        forceExpand();
         super.setLastChild(omNode);
     }
 
     public OMElement getFirstElement() {
-        forceExpand();
         return super.getFirstElement();
     }
 
@@ -493,17 +489,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void setText(String text) {
-        forceExpand();
         super.setText(text);
     }
 
     public void setText(QName text) {
-        forceExpand();
         super.setText(text);
     }
 
     public String getText() {
-        forceExpand();
         return super.getText();
     }
 
@@ -512,7 +505,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public QName getTextAsQName() {
-        forceExpand();
         return super.getTextAsQName();
     }
 
@@ -832,12 +824,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void addChild(OMNode omNode) {
-        forceExpand();
         super.addChild(omNode);
     }
 
     public void addChild(OMNode omNode, boolean fromBuilder) {
-        forceExpand();
         super.addChild(omNode, fromBuilder);
     }
 
@@ -846,37 +836,30 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public Iterator getChildrenWithName(QName elementQName) {
-        forceExpand();
         return super.getChildrenWithName(elementQName);
     }
     
     public Iterator getChildrenWithLocalName(String localName) {
-        forceExpand();
         return super.getChildrenWithLocalName(localName);
     }
 
     public Iterator getChildrenWithNamespaceURI(String uri) {
-        forceExpand();
         return super.getChildrenWithNamespaceURI(uri);
     }
 
     public OMElement getFirstChildWithName(QName elementQName) throws OMException {
-        forceExpand();
         return super.getFirstChildWithName(elementQName);
     }
 
     public Iterator getChildren() {
-        forceExpand();
         return super.getChildren();
     }
 
     public Iterator getDescendants(boolean includeSelf) {
-        forceExpand();
         return super.getDescendants(includeSelf);
     }
 
     public OMNode getFirstOMChild() {
-        forceExpand();
         return super.getFirstOMChild();
     }
 
@@ -1111,12 +1094,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void removeChildren() {
-        // One might think that if the element is not expanded, we don't need to expand it because
-        // we are going to remove the children anyway. However, this is not true for two reasons:
-        //  * The element may have attributes and they must be available after removeChildren().
-        //  * The local name, namespace URI and/or prefix of the element may be unknown. In that
-        //    case, we need to expand the element to make this information available.
-        forceExpand();
         super.removeChildren();
     }
     
@@ -1141,6 +1118,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public CoreChildNode coreGetFirstChildIfAvailable() {
+        forceExpand();
         return super.coreGetFirstChildIfAvailable();
     }
 
