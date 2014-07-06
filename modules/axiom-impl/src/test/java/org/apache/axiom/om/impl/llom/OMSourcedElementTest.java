@@ -33,7 +33,7 @@ public class OMSourcedElementTest extends TestCase {
         for (int i = 0; i < supmeths.length; i++) {
             Method supmeth = supmeths[i];
             Class[] params = supmeth.getParameterTypes();
-            if (!Modifier.isPrivate(supmeth.getModifiers())) {
+            if (!Modifier.isPrivate(supmeth.getModifiers()) && !supmeth.getName().startsWith("ajc$")) {
                 for (int j = 0; j < submeths.length; j++) {
                     Method submeth = submeths[j];
                     if (supmeth.getName().equals(submeth.getName())) {

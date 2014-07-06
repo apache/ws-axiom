@@ -22,6 +22,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.sax.SAXResult;
 
 import org.apache.axiom.om.NodeUnavailableException;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
@@ -38,23 +39,29 @@ import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public final class OMContainerHelper {
-    private static final Log log = LogFactory.getLog(OMContainerHelper.class);
+public aspect OMContainerSupport {
+    private static final Log log = LogFactory.getLog(OMContainerSupport.class);
     
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     
-    private OMContainerHelper() {}
-    
-    public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache) {
-        return getXMLStreamReader(container, cache, defaultReaderConfiguration);
+    public XMLStreamReader OMContainer.getXMLStreamReader() {
+        return getXMLStreamReader(true);
     }
     
-    public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        OMXMLParserWrapper builder = container.getBuilder();
-        if (builder != null && builder.isCompleted() && !cache && !container.isComplete()) {
+    public XMLStreamReader OMContainer.getXMLStreamReaderWithoutCaching() {
+        return getXMLStreamReader(false);
+    }
+
+    public XMLStreamReader OMContainer.getXMLStreamReader(boolean cache) {
+        return getXMLStreamReader(cache, defaultReaderConfiguration);
+    }
+    
+    public XMLStreamReader IContainer.getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+        OMXMLParserWrapper builder = getBuilder();
+        if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
         }
-        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(container, cache, configuration.isPreserveNamespaceContext()));
+        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(this, cache, configuration.isPreserveNamespaceContext()));
         
         if (configuration.isNamespaceURIInterning()) {
             reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
@@ -73,7 +80,7 @@ public final class OMContainerHelper {
         return reader;
     }
     
-    public static void addChild(IContainer container, OMNode omNode, boolean fromBuilder) {
+    public void IContainer.addChild(OMNode omNode, boolean fromBuilder) {
         OMNodeEx child;
         if (fromBuilder) {
             // If the new child was provided by the builder, we know that it was created by
@@ -82,35 +89,35 @@ public final class OMContainerHelper {
         } else {
             // Careful here: if the child was created by another Axiom implementation, it doesn't
             // necessarily implement OMNodeEx
-            if (omNode.getOMFactory().getMetaFactory().equals(container.getOMFactory().getMetaFactory())) {
+            if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
                 child = (OMNodeEx)omNode;
             } else {
-                child = (OMNodeEx)((OMFactoryEx)container.getOMFactory()).importNode(omNode);
+                child = (OMNodeEx)((OMFactoryEx)getOMFactory()).importNode(omNode);
             }
-            if (!container.isComplete()) {
-                container.build();
+            if (!isComplete()) {
+                build();
             }
-            if (child.getParent() == container && child == container.getLastKnownOMChild()) {
+            if (child.getParent() == this && child == getLastKnownOMChild()) {
                 // The child is already the last node. 
                 // We don't need to detach and re-add it.
                 return;
             }
-            container.checkChild(omNode);
+            checkChild(omNode);
         }
         if (child.getParent() != null) {
             child.detach();
         }
         
-        child.setParent(container);
+        child.setParent(this);
 
-        if (container.getFirstOMChildIfAvailable() == null) {
-            container.setFirstChild(child);
+        if (getFirstOMChildIfAvailable() == null) {
+            setFirstChild(child);
         } else {
-            OMNode lastChild = container.getLastKnownOMChild();
+            OMNode lastChild = getLastKnownOMChild();
             child.setPreviousOMSibling(lastChild);
             ((OMNodeEx)lastChild).setNextOMSibling(child);
         }
-        container.setLastChild(child);
+        setLastChild(child);
 
         // For a normal OMNode, the incomplete status is
         // propogated up the tree.  
@@ -120,33 +127,33 @@ public final class OMContainerHelper {
         // is a normal OMNode
         if (!fromBuilder && !child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
-            container.setComplete(false);
+            setComplete(false);
         }
     }
     
-    public static void build(IContainer container) {
-        OMXMLParserWrapper builder = container.getBuilder();
-        if (container.getState() == IContainer.DISCARDED) {
+    public void IContainer.defaultBuild() {
+        OMXMLParserWrapper builder = getBuilder();
+        if (getState() == IContainer.DISCARDED) {
             if (builder != null) {
-                ((StAXBuilder)builder).debugDiscarded(container);
+                ((StAXBuilder)builder).debugDiscarded(this);
             }
             throw new NodeUnavailableException();
         }
         if (builder != null && builder.isCompleted()) {
             log.debug("Builder is already complete.");
         }
-        while (!container.isComplete()) {
+        while (!isComplete()) {
 
             builder.next();    
-            if (builder.isCompleted() && !container.isComplete()) {
+            if (builder.isCompleted() && !isComplete()) {
                 log.debug("Builder is complete.  Setting OMObject to complete.");
-                container.setComplete(true);
+                setComplete(true);
             }
         }
     }
     
-    public static void buildNext(IParentNode that) {
-        OMXMLParserWrapper builder = that.getBuilder();
+    public void IParentNode.buildNext() {
+        OMXMLParserWrapper builder = getBuilder();
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
         } else if (((StAXOMBuilder)builder).isClosed()) {
@@ -160,36 +167,36 @@ public final class OMContainerHelper {
         }         
     }
     
-    public static OMNode getFirstOMChild(IParentNode that) {
-        OMNode firstChild = that.getFirstOMChildIfAvailable();
+    public OMNode IParentNode.getFirstOMChild() {
+        OMNode firstChild = getFirstOMChildIfAvailable();
         if (firstChild == null) {
-            switch (that.getState()) {
+            switch (getState()) {
                 case IParentNode.DISCARDED:
-                    ((StAXBuilder)that.getBuilder()).debugDiscarded(that);
+                    ((StAXBuilder)getBuilder()).debugDiscarded(this);
                     throw new NodeUnavailableException();
                 case IParentNode.INCOMPLETE:
                     do {
-                        buildNext(that);
-                    } while (that.getState() == IParentNode.INCOMPLETE
-                            && (firstChild = that.getFirstOMChildIfAvailable()) == null);
+                        buildNext();
+                    } while (getState() == IParentNode.INCOMPLETE
+                            && (firstChild = getFirstOMChildIfAvailable()) == null);
             }
         }
         return firstChild;
     }
     
-    public static void removeChildren(IContainer that) {
+    public void IContainer.removeChildren() {
         boolean updateState;
-        if (that.getState() == IParentNode.INCOMPLETE && that.getBuilder() != null) {
-            OMNode lastKnownChild = that.getLastKnownOMChild();
+        if (getState() == IParentNode.INCOMPLETE && getBuilder() != null) {
+            OMNode lastKnownChild = getLastKnownOMChild();
             if (lastKnownChild != null) {
                 lastKnownChild.build();
             }
-            ((StAXOMBuilder)that.getBuilder()).discard(that);
+            ((StAXOMBuilder)getBuilder()).discard(this);
             updateState = true;
         } else {
             updateState = false;
         }
-        IChildNode child = (IChildNode)that.getFirstOMChildIfAvailable();
+        IChildNode child = (IChildNode)getFirstOMChildIfAvailable();
         while (child != null) {
             IChildNode nextSibling = (IChildNode)child.getNextOMSiblingIfAvailable();
             child.setPreviousOMSibling(null);
@@ -197,15 +204,15 @@ public final class OMContainerHelper {
             child.setParent(null);
             child = nextSibling;
         }
-        that.setFirstChild(null);
-        that.setLastChild(null);
+        setFirstChild(null);
+        setLastChild(null);
         if (updateState) {
-            that.setComplete(true);
+            setComplete(true);
         }
     }
     
-    public static SAXResult getSAXResult(IContainer that) {
-        SAXResultContentHandler handler = new SAXResultContentHandler(that);
+    public SAXResult OMContainer.getSAXResult() {
+        SAXResultContentHandler handler = new SAXResultContentHandler(this);
         SAXResult result = new SAXResult();
         result.setHandler(handler);
         result.setLexicalHandler(handler);

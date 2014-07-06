@@ -31,7 +31,6 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IDocument;
-import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -595,17 +594,13 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     }
 
     public final void build() {
-        OMContainerHelper.build(this);
+        defaultBuild();
     }
 
     public final Node getNextSibling() {
         return null;
     }
     
-    public final void removeChildren() {
-        OMContainerHelper.removeChildren(this);
-    }
-
     public final String lookupNamespaceURI(String specifiedPrefix) {
         Element documentElement = getDocumentElement();
         return documentElement == null ? null

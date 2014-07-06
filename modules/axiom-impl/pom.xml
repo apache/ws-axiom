@@ -99,6 +99,35 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <complianceLevel>1.5</complianceLevel>
+                            <aspectLibraries>
+                                <aspectLibrary>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>axiom-common-impl</artifactId>
+                                </aspectLibrary>
+                            </aspectLibraries>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
@@ -122,6 +151,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>${project.groupId}:axiom-common-impl</include>
+                                    <include>org.aspectj:aspectjrt</include>
                                 </includes>
                             </artifactSet>
                             <transformers>

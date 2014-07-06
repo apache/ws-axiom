@@ -30,7 +30,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
@@ -40,12 +39,10 @@ import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
@@ -60,9 +57,7 @@ import org.xml.sax.InputSource;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.io.IOException;
@@ -203,10 +198,6 @@ public class OMElementImpl extends OMNodeImpl
 
     public void addChild(OMNode omNode) {
         addChild(omNode, false);
-    }
-
-    public void addChild(OMNode omNode, boolean fromBuilder) {
-        OMContainerHelper.addChild(this, omNode, fromBuilder);
     }
 
     public void checkChild(OMNode child) {
@@ -618,15 +609,6 @@ public class OMElementImpl extends OMNodeImpl
         return builder;
     }
 
-    /**
-     * Method getFirstOMChild.
-     *
-     * @return Returns child.
-     */
-    public OMNode getFirstOMChild() {
-        return OMContainerHelper.getFirstOMChild(this);
-    }
-
     public OMNode getFirstOMChildIfAvailable() {
         return firstChild;
     }
@@ -676,7 +658,7 @@ public class OMElementImpl extends OMNodeImpl
                 omNode.build();
             }
         } else {
-            OMContainerHelper.build(this);
+            defaultBuild();
         }
 
     }
@@ -704,22 +686,6 @@ public class OMElementImpl extends OMNodeImpl
 
     public void discarded() {
         state = DISCARDED;
-    }
-
-    public XMLStreamReader getXMLStreamReader() {
-        return getXMLStreamReader(true);
-    }
-
-    public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        return getXMLStreamReader(false);
-    }
-
-    public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader(this, cache);
-    }
-
-    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
     }
 
     public void setText(String text) {
@@ -998,14 +964,6 @@ public class OMElementImpl extends OMNodeImpl
 
     public SAXSource getSAXSource(boolean cache) {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
-    }
-
-    public SAXResult getSAXResult() {
-        return OMContainerHelper.getSAXResult(this);
-    }
-    
-    public void removeChildren() {
-        OMContainerHelper.removeChildren(this);
     }
 }
 

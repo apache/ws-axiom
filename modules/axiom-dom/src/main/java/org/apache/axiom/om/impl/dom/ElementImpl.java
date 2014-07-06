@@ -29,11 +29,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -108,7 +108,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         this.builder = builder;
         state = builder == null ? COMPLETE : INCOMPLETE;
         if (parentNode != null) {
-            parentNode.addChild(this, builder != null);
+            ((IContainer)parentNode).addChild(this, builder != null);
         }
         this.attributes = new AttributeMap(this);
         namespace = generateNSDecl ? OMNamedInformationItemHelper.handleNamespace(this, ns, false, true) : ns;
@@ -1118,7 +1118,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public final void build() {
-        OMContainerHelper.build(this);
+        defaultBuild();
     }
 
     public final OMNode getNextOMSibling() throws OMException {
@@ -1133,10 +1133,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         return parentNode();
     }
     
-    public final void removeChildren() {
-        OMContainerHelper.removeChildren(this);
-    }
-
     public final String lookupNamespaceURI(String specifiedPrefix) {
         String namespace = this.getNamespaceURI();
         String prefix = this.getPrefix();

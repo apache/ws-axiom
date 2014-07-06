@@ -1117,4 +1117,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         forceExpand();
         super.removeChildren();
     }
+    
+    public void defaultBuild() {
+        super.defaultBuild();
+    }
+    
+    public void buildNext() {
+        super.buildNext();
+    }
 }

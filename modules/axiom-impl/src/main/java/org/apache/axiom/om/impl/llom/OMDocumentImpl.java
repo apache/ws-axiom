@@ -28,12 +28,10 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.common.IDocument;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -43,8 +41,6 @@ import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
@@ -150,10 +146,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         addChild(child, false);
     }
 
-    public void addChild(OMNode omNode, boolean fromBuilder) {
-        OMContainerHelper.addChild(this, omNode, fromBuilder);
-    }
-
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {
@@ -203,14 +195,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     public Iterator getChildrenWithNamespaceURI(String uri) {
         return new OMChildrenNamespaceIterator(getFirstOMChild(),
                                                uri);
-    }
-    /**
-     * Method getFirstOMChild.
-     *
-     * @return Returns first om child.
-     */
-    public OMNode getFirstOMChild() {
-        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {
@@ -300,22 +284,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         OMDocumentHelper.internalSerialize(this, serializer, format, cache, includeXMLDeclaration);
     }
 
-    public XMLStreamReader getXMLStreamReader() {
-        return getXMLStreamReader(true);
-    }
-
-    public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        return getXMLStreamReader(false);
-    }
-
-    public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader(this, cache);
-    }
-
-    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
-    }
-
     void notifyChildComplete() {
         if (state == INCOMPLETE && builder == null) {
             Iterator iterator = getChildren();
@@ -333,18 +301,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
-    public SAXResult getSAXResult() {
-        return OMContainerHelper.getSAXResult(this);
-    }
-    
     public void build() {
-        OMContainerHelper.build(this);
+        defaultBuild();
     }
     
-    public void removeChildren() {
-        OMContainerHelper.removeChildren(this);
-    }
-
     public OMInformationItem clone(OMCloneOptions options) {
         OMDocument targetDocument;
         if (options.isPreserveModel()) {

@@ -47,6 +47,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -55,6 +59,31 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <complianceLevel>1.5</complianceLevel>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- Note: axiom-common-impl is not intended to be used as an OSGi bundle.
+                     We generate OSGi metadata only for the shading process in axiom-impl and axiom-dom. -->
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
@@ -62,7 +91,12 @@
                     <excludeDependencies>true</excludeDependencies>
                     <instructions>
                         <Export-Package>*;-noimport:=true</Export-Package>
-                        <Import-Package>*</Import-Package>
+                        <Import-Package>
+                            <!-- aspectjrt is not an OSGi bundle; we don't need to generate imports because
+                                 axiom-impl and axiom-dom include these classes into the final JARs -->
+                            !org.aspectj.*,
+                            *
+                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

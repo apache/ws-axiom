@@ -26,14 +26,12 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -47,8 +45,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
@@ -72,11 +68,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
     }
     
     public void addChild(OMNode omNode) {
-        addChild(omNode, false);
-    }
-
-    public void addChild(OMNode omNode, boolean fromBuilder) {
-        OMContainerHelper.addChild((IContainer)this, omNode, fromBuilder);
+        ((IContainer)this).addChild(omNode, false);
     }
 
     public Iterator getChildren() {
@@ -125,10 +117,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             }
         }
         return null;
-    }
-
-    public OMNode getFirstOMChild() {
-        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {
@@ -526,30 +514,10 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
     }
 
-    public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        return getXMLStreamReader(false);
-    }
-
-    public XMLStreamReader getXMLStreamReader() {
-        return getXMLStreamReader(true);
-    }
-
-    public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader((IContainer)this, cache);
-    }
-    
-    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        return OMContainerHelper.getXMLStreamReader((IContainer)this, cache, configuration);
-    }
-
     public SAXSource getSAXSource(boolean cache) {
         return new SAXSource(new XMLReaderImpl((IContainer)this, cache), new InputSource());
     }
 
-    public SAXResult getSAXResult() {
-        return OMContainerHelper.getSAXResult((IContainer)this);
-    }
-    
     void notifyChildComplete() {
         if (!this.isComplete() && getBuilder() == null) {
             Iterator iterator = getChildren();
