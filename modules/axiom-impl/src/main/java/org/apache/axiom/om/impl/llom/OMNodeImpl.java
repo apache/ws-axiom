@@ -72,7 +72,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      *
      * @param element
      */
-    public void setParent(OMContainer element) {
+    public void coreSetParent(CoreParentNode element) {
 
         if ((this.parent) == element) {
             return;
@@ -124,12 +124,12 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         // document or element being built.
         INode nextSibling = (INode)getNextOMSiblingIfAvailable();
         if (previousSibling == null) {
-            parent.setFirstChild(nextSibling);
+            parent.coreSetFirstChild(nextSibling);
         } else {
             previousSibling.setNextOMSibling(nextSibling);
         }
         if (nextSibling == null) {
-            parent.setLastChild(previousSibling);
+            parent.coreSetLastChild(previousSibling);
         } else {
             nextSibling.setPreviousOMSibling(previousSibling);
         }
@@ -155,7 +155,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         if (sibling.getParent() != null) {
             sibling.detach();
         }
-        ((INode)sibling).setParent(parent);
+        ((CoreChildNode)sibling).coreSetParent(parent);
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
             if (nextSibling == null) {
@@ -163,7 +163,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
             }
             siblingImpl.setPreviousOMSibling(this);
             if (nextSibling == null) {
-                parent.setLastChild(sibling);
+                parent.coreSetLastChild((CoreChildNode)sibling);
             } else {
                 nextSibling.setPreviousOMSibling(sibling);
             }
@@ -191,11 +191,11 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
             
             if (previousSibling == null) {
-                parent.setFirstChild(siblingImpl);
+                parent.coreSetFirstChild(siblingImpl);
                 siblingImpl.nextSibling = this;
                 siblingImpl.previousSibling = null;
             } else {
-                siblingImpl.setParent(parent);
+                siblingImpl.coreSetParent(parent);
                 siblingImpl.nextSibling = this;
                 previousSibling.setNextOMSibling(siblingImpl);
                 siblingImpl.setPreviousOMSibling(previousSibling);

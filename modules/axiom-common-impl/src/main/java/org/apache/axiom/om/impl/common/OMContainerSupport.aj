@@ -107,7 +107,7 @@ public aspect OMContainerSupport {
             if (!isComplete()) {
                 build();
             }
-            if (child.getParent() == this && child == getLastKnownOMChild()) {
+            if (child.getParent() == this && child == coreGetLastKnownChild()) {
                 // The child is already the last node. 
                 // We don't need to detach and re-add it.
                 return;
@@ -118,16 +118,16 @@ public aspect OMContainerSupport {
             child.detach();
         }
         
-        child.setParent(this);
+        child.coreSetParent(this);
 
         if (coreGetFirstChildIfAvailable() == null) {
-            setFirstChild(child);
+            coreSetFirstChild(child);
         } else {
-            OMNode lastChild = getLastKnownOMChild();
+            CoreChildNode lastChild = coreGetLastKnownChild();
             child.setPreviousOMSibling(lastChild);
             ((INode)lastChild).setNextOMSibling(child);
         }
-        setLastChild(child);
+        coreSetLastChild(child);
 
         // For a normal OMNode, the incomplete status is
         // propogated up the tree.  
@@ -175,7 +175,7 @@ public aspect OMContainerSupport {
         CoreChildNode child = coreGetFirstChildIfAvailable();
         boolean updateState;
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
-            OMNode lastKnownChild = getLastKnownOMChild();
+            CoreChildNode lastKnownChild = coreGetLastKnownChild();
             if (lastKnownChild != null) {
                 lastKnownChild.build();
             }
@@ -188,11 +188,11 @@ public aspect OMContainerSupport {
             CoreChildNode nextSibling = (CoreChildNode)child.getNextOMSiblingIfAvailable();
             ((INode)child).setPreviousOMSibling(null);
             ((INode)child).setNextOMSibling(null);
-            ((INode)child).setParent(null);
+            child.coreSetParent(null);
             child = nextSibling;
         }
-        setFirstChild(null);
-        setLastChild(null);
+        coreSetFirstChild(null);
+        coreSetLastChild(null);
         if (updateState) {
             setComplete(true);
         }

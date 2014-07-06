@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -71,8 +72,8 @@ public abstract class SOAPElement extends OMElementImpl {
     /** This has to be implemented by all the derived classes to check for the correct parent. */
     protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
-    public void setParent(OMContainer element) {
-        super.setParent(element);
+    public void coreSetParent(CoreParentNode element) {
+        super.coreSetParent(element);
 
         if (element instanceof OMElement) {
             checkParent((OMElement) element);

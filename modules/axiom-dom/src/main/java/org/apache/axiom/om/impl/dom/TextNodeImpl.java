@@ -36,7 +36,6 @@ import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import javax.activation.DataHandler;
@@ -194,7 +193,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
         ParentNode parentNode = parentNode();
         if (parentNode != null) {
-            newText.setParent((OMContainer)parentNode);
+            newText.coreSetParent(parentNode);
         }
 
         this.insertSiblingAfter(newText);

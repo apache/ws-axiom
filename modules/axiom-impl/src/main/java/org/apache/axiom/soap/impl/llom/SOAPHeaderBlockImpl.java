@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
@@ -65,8 +66,8 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
 
     protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
-    public void setParent(OMContainer element) {
-        super.setParent(element);
+    public void coreSetParent(CoreParentNode element) {
+        super.coreSetParent(element);
 
         if (element instanceof OMElement) {
             checkParent((OMElement) element);

@@ -443,12 +443,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getBuilder();
     }
 
-    public void setFirstChild(OMNode node) {
-        super.setFirstChild(node);
+    public void coreSetFirstChild(CoreChildNode firstChild) {
+        super.coreSetFirstChild(firstChild);
     }
 
-    public void setLastChild(OMNode omNode) {
-        super.setLastChild(omNode);
+    public void coreSetLastChild(CoreChildNode lastChild) {
+        super.coreSetLastChild(lastChild);
     }
 
     public OMElement getFirstElement() {
@@ -867,8 +867,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getFirstOMChildIfAvailable();
     }
 
-    public OMNode getLastKnownOMChild() {
-        return super.getLastKnownOMChild();
+    public CoreChildNode getLastKnownOMChild() {
+        return super.coreGetLastKnownChild();
     }
 
     public OMNode detach() throws OMException {
@@ -1109,6 +1109,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.coreGetParent();
     }
 
+    public void coreSetParent(CoreParentNode element) {
+        super.coreSetParent(element);
+    }
+
     public CoreChildNode coreGetNextSiblingIfAvailable() {
         return super.coreGetNextSiblingIfAvailable();
     }
@@ -1122,6 +1126,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.coreGetFirstChildIfAvailable();
     }
 
+    public CoreChildNode coreGetLastKnownChild() {
+        return super.coreGetLastKnownChild();
+    }
+    
     public void detachAndDiscardParent() {
         super.detachAndDiscardParent();
     }

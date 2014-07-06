@@ -19,12 +19,54 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.NodeUnavailableException;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 public aspect CoreParentNodeSupport {
+    private CoreChildNode CoreParentNode.firstChild;
+    private CoreChildNode CoreParentNode.lastChild;
+    
+    /**
+     * Get the first child if it is available. The child is available if it is complete or
+     * if the builder has started building the node. In the latter case,
+     * {@link OMNode#isComplete()} may return <code>false</code> when called on the child. 
+     * In contrast to {@link OMContainer#getFirstOMChild()}, this method will never modify
+     * the state of the underlying parser.
+     * 
+     * @return the first child or <code>null</code> if the container has no children or
+     *         the builder has not yet started to build the first child
+     */
+    public CoreChildNode CoreParentNode.coreGetFirstChildIfAvailable() {
+        return firstChild;
+    }
+
+    public CoreChildNode CoreParentNode.coreGetLastKnownChild() {
+        return lastChild;
+    }
+
+    /**
+     * forcefully set the first element in this parent element
+     * @param omNode
+     */
+    public void CoreParentNode.coreSetFirstChild(CoreChildNode firstChild) {
+        if (firstChild != null) {
+            firstChild.coreSetParent(this);
+        }
+        this.firstChild = firstChild;
+    }
+
+    /**
+     * forcefully set the last element in this parent element
+     * @param omNode
+     */
+    public void CoreParentNode.coreSetLastChild(CoreChildNode lastChild) {
+         this.lastChild = lastChild;
+    }
+
     public void CoreParentNode.buildNext() {
         OMXMLParserWrapper builder = getBuilder();
         if (builder == null) {

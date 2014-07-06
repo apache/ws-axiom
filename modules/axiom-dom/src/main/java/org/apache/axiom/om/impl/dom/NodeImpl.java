@@ -30,6 +30,8 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.common.CoreChildNode;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -540,7 +542,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
         return parentNode();
     }
 
-    public final void setParent(OMContainer element) {
+    public final void coreSetParent(CoreParentNode element) {
         setParent((ParentNode)element, false);
     }
     
@@ -567,10 +569,10 @@ public abstract class NodeImpl extends InformationItem implements Node {
             NodeImpl nextSibling = internalGetNextSibling();
             if (previousSibling == null) { // This is the first child
                 if (nextSibling != null) {
-                    parentNode.setFirstChild((OMNode)nextSibling);
+                    parentNode.coreSetFirstChild((CoreChildNode)nextSibling);
                 } else {
-                    parentNode.firstChild = null;
-                    parentNode.lastChild = null;
+                    parentNode.coreSetFirstChild(null);
+                    parentNode.coreSetLastChild(null);
                 }
             } else {
                 previousSibling.setNextOMSibling((OMNode)nextSibling);
@@ -579,8 +581,8 @@ public abstract class NodeImpl extends InformationItem implements Node {
                 nextSibling.setPreviousOMSibling((OMNode)previousSibling);
                 internalSetNextSibling(null);
             }
-            if (parentNode != null && parentNode.lastChild == this) {
-                parentNode.lastChild = previousSibling;
+            if (parentNode != null && parentNode.coreGetLastKnownChild() == this) {
+                parentNode.coreSetLastChild((CoreChildNode)previousSibling);
             }
             setParent(null, useDomSemantics);
             internalSetPreviousSibling(null);
@@ -599,13 +601,13 @@ public abstract class NodeImpl extends InformationItem implements Node {
         if (sibling.getParent() != null) {
             sibling.detach();
         }
-        ((INode)sibling).setParent((OMContainer)parentNode);
+        ((INode)sibling).coreSetParent(parentNode);
         if (sibling instanceof NodeImpl) {
             NodeImpl domSibling = (NodeImpl) sibling;
             domSibling.internalSetPreviousSibling(this);
             NodeImpl nextSibling = internalGetNextSibling();
             if (nextSibling == null) {
-                parentNode.setLastChild(sibling);
+                parentNode.coreSetLastChild((CoreChildNode)sibling);
             } else {
                 nextSibling.internalSetPreviousSibling(domSibling);
             }
@@ -642,7 +644,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
             siblingImpl.internalSetNextSibling(this);
             NodeImpl previousSibling = internalGetPreviousSibling();
             if (previousSibling == null) {
-                parentNode.setFirstChild((OMNode)siblingImpl);
+                parentNode.coreSetFirstChild((CoreChildNode)siblingImpl);
                 siblingImpl.internalSetPreviousSibling(null);
             } else {
                 siblingImpl.setParent(parentNode, false);

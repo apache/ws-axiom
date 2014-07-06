@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DocumentFragment;
@@ -37,16 +36,4 @@ public interface CoreParentNode {
     OMXMLParserWrapper getBuilder();
     int getState();
     boolean isComplete();
-
-    /**
-     * Get the first child if it is available. The child is available if it is complete or
-     * if the builder has started building the node. In the latter case,
-     * {@link OMNode#isComplete()} may return <code>false</code> when called on the child. 
-     * In contrast to {@link OMContainer#getFirstOMChild()}, this method will never modify
-     * the state of the underlying parser.
-     * 
-     * @return the first child or <code>null</code> if the container has no children or
-     *         the builder has not yet started to build the first child
-     */
-    public CoreChildNode coreGetFirstChildIfAvailable();
 }

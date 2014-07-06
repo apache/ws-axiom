@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -45,12 +44,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     protected OMXMLParserWrapper builder;
 
     protected int state;
-
-    /** Field firstChild */
-    protected OMNode firstChild;
-
-    /** Field lastChild */
-    protected OMNode lastChild;
 
     /** Field charSetEncoding Default : UTF-8 */
     protected String charSetEncoding = "UTF-8";
@@ -148,31 +141,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     }
 
     protected void checkDocumentElement(OMElement element) {
-    }
-
-    public CoreChildNode coreGetFirstChildIfAvailable() {
-        return (CoreChildNode)firstChild;
-    }
-
-    public OMNode getLastKnownOMChild() {
-        return lastChild;
-    }
-
-    /**
-     * Method setFirstChild.
-     *
-     * @param firstChild
-     */
-    public void setFirstChild(OMNode firstChild) {
-        this.firstChild = firstChild;
-    }
-
-    /**
-     * Forcefully set the last child
-     * @param omNode
-     */
-    public void setLastChild(OMNode omNode) {
-        this.lastChild = omNode;
     }
 
     public String getCharsetEncoding() {

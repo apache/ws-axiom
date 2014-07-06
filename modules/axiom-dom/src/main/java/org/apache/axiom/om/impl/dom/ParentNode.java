@@ -20,14 +20,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.CoreParentNode;
-import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -38,11 +35,6 @@ import org.xml.sax.InputSource;
 import javax.xml.transform.sax.SAXSource;
 
 public abstract class ParentNode extends NodeImpl implements NodeList, CoreParentNode {
-
-    protected NodeImpl firstChild;
-
-    protected NodeImpl lastChild;
-
     protected ParentNode(OMFactory factory) {
         super(factory);
     }
@@ -55,29 +47,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
         insertBefore(node, null, false);
     }
     
-    public CoreChildNode coreGetFirstChildIfAvailable() {
-        return (CoreChildNode)firstChild;
-    }
-
-    public OMNode getLastKnownOMChild() {
-        return (OMNode)lastChild;
-    }
-
-    public void setFirstChild(OMNode firstChild) {
-        if (firstChild != null) {
-            ((INode)firstChild).setParent((OMContainer)this);
-        }
-        this.firstChild = (NodeImpl) firstChild;
-    }
-
-    /**
-     * Forcefully set the last child
-     * @param omNode
-     */
-    public void setLastChild(OMNode omNode) {
-        this.lastChild = (NodeImpl) omNode;
-    }
-
     // /
     // /DOM Node methods
     // /
@@ -118,7 +87,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
         if (!this.isComplete()) {
             this.build();
         }
-        return this.lastChild;
+        return (Node)coreGetLastKnownChild();
     }
 
     public boolean hasChildNodes() {
@@ -176,16 +145,16 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                 build();
             }
             // if there are no children
-            if (this.lastChild == null && firstChild == null) {
-                this.lastChild = newDomChild;
-                this.firstChild = newDomChild;
-                this.firstChild.isFirstChild(true);
+            if (coreGetLastKnownChild() == null && coreGetFirstChildIfAvailable() == null) {
+                coreSetLastChild((CoreChildNode)newDomChild);
+                coreSetFirstChild((CoreChildNode)newDomChild);
+                ((NodeImpl)coreGetFirstChildIfAvailable()).isFirstChild(true);
                 newDomChild.setParent(this, useDomSemantics);
             } else {
-                this.lastChild.internalSetNextSibling(newDomChild);
-                newDomChild.internalSetPreviousSibling(this.lastChild);
-                this.lastChild = newDomChild;
-                this.lastChild.internalSetNextSibling(null);
+                ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(newDomChild);
+                newDomChild.internalSetPreviousSibling((NodeImpl)coreGetLastKnownChild());
+                coreSetLastChild((CoreChildNode)newDomChild);
+                ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(null);
             }
             if (newDomChild.parentNode() == null) {
                 newDomChild.setParent(this, useDomSemantics);
@@ -196,7 +165,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
             while (tempNode != null) {
                 if (tempNode.equals(refChild)) {
                     // RefChild found
-                    if (this.firstChild == tempNode) { // If the refChild is the
+                    if (coreGetFirstChildIfAvailable() == tempNode) { // If the refChild is the
                         // first child
 
                         if (newChild instanceof DocumentFragmentImpl) {
@@ -204,27 +173,27 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                             DocumentFragmentImpl docFrag =
                                     (DocumentFragmentImpl) newChild;
                             
-                            NodeImpl child = docFrag.firstChild;
+                            NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
                             while (child != null) {
                                 child.setParent(this, useDomSemantics);
                                 child = child.internalGetNextSibling();
                             }
                             
-                            this.firstChild = docFrag.firstChild;
-                            docFrag.lastChild.internalSetNextSibling(refDomChild);
-                            refDomChild.internalSetPreviousSibling(docFrag.lastChild.internalGetNextSibling());
+                            coreSetFirstChild(docFrag.coreGetFirstChildIfAvailable());
+                            ((NodeImpl)docFrag.coreGetLastKnownChild()).internalSetNextSibling(refDomChild);
+                            refDomChild.internalSetPreviousSibling(((NodeImpl)docFrag.coreGetLastKnownChild()).internalGetNextSibling());
 
-                            docFrag.firstChild = null;
-                            docFrag.lastChild = null;
+                            docFrag.coreSetFirstChild(null);
+                            docFrag.coreSetLastChild(null);
                         } else {
 
                             // Make the newNode the first Child
-                            this.firstChild = newDomChild;
+                            coreSetFirstChild((CoreChildNode)newDomChild);
 
                             newDomChild.internalSetNextSibling(refDomChild);
                             refDomChild.internalSetPreviousSibling(newDomChild);
 
-                            this.firstChild.isFirstChild(true);
+                            ((NodeImpl)coreGetFirstChildIfAvailable()).isFirstChild(true);
                             refDomChild.isFirstChild(false);
                             newDomChild.internalSetPreviousSibling(null); // Just to be
                             // sure :-)
@@ -238,20 +207,20 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                             DocumentFragmentImpl docFrag =
                                     (DocumentFragmentImpl) newChild;
 
-                            NodeImpl child = docFrag.firstChild;
+                            NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
                             while (child != null) {
                                 child.setParent(this, useDomSemantics);
                                 child = child.internalGetNextSibling();
                             }
                             
-                            previousNode.internalSetNextSibling(docFrag.firstChild);
-                            docFrag.firstChild.internalSetPreviousSibling(previousNode);
+                            previousNode.internalSetNextSibling((NodeImpl)docFrag.coreGetFirstChildIfAvailable());
+                            ((NodeImpl)docFrag.coreGetFirstChildIfAvailable()).internalSetPreviousSibling(previousNode);
 
-                            docFrag.lastChild.internalSetNextSibling(refDomChild);
-                            refDomChild.internalSetPreviousSibling(docFrag.lastChild);
+                            ((NodeImpl)docFrag.coreGetLastKnownChild()).internalSetNextSibling(refDomChild);
+                            refDomChild.internalSetPreviousSibling((NodeImpl)docFrag.coreGetLastKnownChild());
 
-                            docFrag.firstChild = null;
-                            docFrag.lastChild = null;
+                            docFrag.coreSetFirstChild(null);
+                            docFrag.coreSetLastChild(null);
                         } else {
 
                             previousNode.internalSetNextSibling(newDomChild);
@@ -320,8 +289,8 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                         child = child.internalGetNextSibling();
                     }
 
-                    docFrag.setFirstChild(null);
-                    docFrag.setLastChild(null);
+                    docFrag.coreSetFirstChild(null);
+                    docFrag.coreSetLastChild(null);
                 } else {
                     head = newDomChild;
                     tail = newDomChild;
@@ -338,13 +307,13 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                 if (previousSibling != null) {
                     previousSibling.internalSetNextSibling(head);
                 } else {
-                    this.firstChild = head;
+                    coreSetFirstChild((CoreChildNode)head);
                 }
 
                 if (nextSibling != null) {
                     nextSibling.internalSetPreviousSibling(tail);
                 } else {
-                    this.lastChild = tail;
+                    coreSetLastChild((CoreChildNode)tail);
                 }
                 
                 found = true;

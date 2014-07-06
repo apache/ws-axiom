@@ -156,7 +156,7 @@ public aspect OMElementSupport {
     }
     
     public void IElement.detachAndDiscardParent() {
-        setParent(null);
+        coreSetParent(null);
         setPreviousOMSibling(null);
         setNextOMSibling(null);
     }

@@ -32,18 +32,4 @@ public interface IContainer extends OMContainerEx, CoreParentNode, ISerializable
      *             if the node is not allowed as a child of the container
      */
     void checkChild(OMNode child);
-    
-    /**
-     * forcefully set the first element in this parent element
-     * @param omNode
-     */
-    public void setFirstChild(OMNode omNode);
-
-    /**
-     * forcefully set the last element in this parent element
-     * @param omNode
-     */
-    public void setLastChild(OMNode omNode);
-    
-    OMNode getLastKnownOMChild();
 }

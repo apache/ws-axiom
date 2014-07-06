@@ -30,10 +30,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
-import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
@@ -87,16 +85,12 @@ public class OMElementImpl extends OMNodeImpl
 
     protected QName qName;
 
-    /** Field firstChild */
-    protected OMNode firstChild;
-
     /** Field namespaces */
     protected HashMap namespaces = null;
     
     /** Field attributes */
     protected HashMap attributes = null;
 
-    protected OMNode lastChild;
     private int lineNumber;
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
@@ -513,27 +507,6 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMXMLParserWrapper getBuilder() {
         return builder;
-    }
-
-    public CoreChildNode coreGetFirstChildIfAvailable() {
-        return (CoreChildNode)firstChild;
-    }
-
-    public OMNode getLastKnownOMChild() {
-        return lastChild;
-    }
-
-    /** Method setFirstChild. */
-    public void setFirstChild(OMNode firstChild) {
-        if (firstChild != null) {
-            ((INode)firstChild).setParent(this);
-        }
-        this.firstChild = firstChild;
-    }
-
-
-    public void setLastChild(OMNode omNode) {
-         this.lastChild = omNode;
     }
 
     /**
