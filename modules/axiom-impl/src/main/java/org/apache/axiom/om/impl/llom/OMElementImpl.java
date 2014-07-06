@@ -35,18 +35,12 @@ import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
-import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
-import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
-import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
-import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
@@ -196,87 +190,7 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    public void addChild(OMNode omNode) {
-        addChild(omNode, false);
-    }
-
     public void checkChild(OMNode child) {
-    }
-
-    /**
-     * Searches for children with a given QName and returns an iterator to traverse through the
-     * OMNodes. This QName can contain any combination of prefix, localname and URI.
-     *
-     * @throws OMException
-     */
-    public Iterator getChildrenWithName(QName elementQName) {
-        OMNode firstChild = getFirstOMChild();
-        Iterator it =  new OMChildrenQNameIterator(firstChild, elementQName);
-        
-        // The getChidrenWithName method used to tolerate an empty namespace
-        // and interpret that as getting any element that matched the local
-        // name.  There are custmers of axiom that have hard-coded dependencies
-        // on this semantic.
-        // The following code falls back to this legacy behavior only if
-        // (a) elementQName has no namespace, (b) the new iterator finds no elements
-        // and (c) there are children.
-        if (elementQName.getNamespaceURI().length() == 0 &&
-            firstChild != null &&
-            !it.hasNext()) {
-            if (log.isTraceEnabled()) {
-                log.trace("There are no child elements that match the unqualifed name: " +
-                          elementQName);
-                log.trace("Now looking for child elements that have the same local name.");
-            }
-            it = new OMChildrenLegacyQNameIterator(getFirstOMChild(), elementQName);
-        }
-        
-        return it;
-    }
-    
-
-    public Iterator getChildrenWithLocalName(String localName) {
-        return new OMChildrenLocalNameIterator(getFirstOMChild(),
-                                               localName);
-    }
-
-
-    public Iterator getChildrenWithNamespaceURI(String uri) {
-        return new OMChildrenNamespaceIterator(getFirstOMChild(),
-                                               uri);
-    }
-
-
-    /**
-     * Method getFirstChildWithName.
-     *
-     * @throws OMException
-     */
-    public OMElement getFirstChildWithName(QName elementQName) throws OMException {
-        OMChildrenQNameIterator omChildrenQNameIterator =
-                new OMChildrenQNameIterator(getFirstOMChild(),
-                                            elementQName);
-        OMNode omNode = null;
-        if (omChildrenQNameIterator.hasNext()) {
-            omNode = (OMNode) omChildrenQNameIterator.next();
-        }
-
-        return ((omNode != null) && (OMNode.ELEMENT_NODE == omNode.getType())) ?
-                (OMElement) omNode : null;
-
-    }
-
-    /**
-     * Returns a collection of this element. Children can be of types OMElement, OMText.
-     *
-     * @return Returns children.
-     */
-    public Iterator getChildren() {
-        return new OMChildrenIterator(getFirstOMChild());
-    }
-
-    public Iterator getDescendants(boolean includeSelf) {
-        return new OMDescendantsIterator(this, includeSelf);
     }
 
     /**

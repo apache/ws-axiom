@@ -29,18 +29,13 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IDocument;
-import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
-import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
-import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.xml.sax.InputSource;
 
-import javax.xml.namespace.QName;
 import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
@@ -142,10 +137,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         state = DISCARDED;
     }
 
-    public void addChild(OMNode child) {
-        addChild(child, false);
-    }
-
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {
@@ -159,71 +150,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     protected void checkDocumentElement(OMElement element) {
     }
 
-    /**
-     * Returns a collection of this element. Children can be of types OMElement, OMText.
-     *
-     * @return Returns iterator.
-     */
-    public Iterator getChildren() {
-        return new OMChildrenIterator(getFirstOMChild());
-    }
-
-    public Iterator getDescendants(boolean includeSelf) {
-        return new OMDescendantsIterator(this, includeSelf);
-    }
-
-    /**
-     * Searches for children with a given QName and returns an iterator to traverse through the
-     * OMNodes. The QName can contain any combination of prefix, localname and URI.
-     *
-     * @param elementQName
-     * @return Returns Iterator.
-     * @throws org.apache.axiom.om.OMException
-     *
-     */
-    public Iterator getChildrenWithName(QName elementQName) {
-        return new OMChildrenQNameIterator(getFirstOMChild(),
-                                           elementQName);
-    }
-
-    public Iterator getChildrenWithLocalName(String localName) {
-        return new OMChildrenLocalNameIterator(getFirstOMChild(),
-                                               localName);
-    }
-
-
-    public Iterator getChildrenWithNamespaceURI(String uri) {
-        return new OMChildrenNamespaceIterator(getFirstOMChild(),
-                                               uri);
-    }
-
     public OMNode getFirstOMChildIfAvailable() {
         return firstChild;
     }
 
     public OMNode getLastKnownOMChild() {
         return lastChild;
-    }
-
-    /**
-     * Method getFirstChildWithName.
-     *
-     * @param elementQName
-     * @return Returns OMElement.
-     * @throws OMException
-     */
-    public OMElement getFirstChildWithName(QName elementQName) throws OMException {
-        OMChildrenQNameIterator omChildrenQNameIterator =
-                new OMChildrenQNameIterator(getFirstOMChild(),
-                                            elementQName);
-        OMNode omNode = null;
-        if (omChildrenQNameIterator.hasNext()) {
-            omNode = (OMNode) omChildrenQNameIterator.next();
-        }
-
-        return ((omNode != null) && (OMNode.ELEMENT_NODE == omNode.getType())) ?
-                (OMElement) omNode : null;
-
     }
 
     /**

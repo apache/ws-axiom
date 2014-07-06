@@ -1101,7 +1101,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             if (!complete) {
                 parentNode.setComplete(false);
             } else {
-                parentNode.notifyChildComplete();
+                ((DOMContainer)parentNode).notifyChildComplete();
             }
         }
     }

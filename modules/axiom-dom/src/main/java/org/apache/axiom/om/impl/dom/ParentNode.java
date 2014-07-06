@@ -21,33 +21,20 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IParentNode;
-import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
-import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
-import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
-import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
-import org.apache.axiom.om.impl.traverse.OMFilterIterator;
-import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
-import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import javax.xml.namespace.QName;
 import javax.xml.transform.sax.SAXSource;
-
-import java.util.Iterator;
 
 public abstract class ParentNode extends NodeImpl implements NodeList, IParentNode {
 
@@ -67,58 +54,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         insertBefore(node, null, false);
     }
     
-    public void addChild(OMNode omNode) {
-        ((IContainer)this).addChild(omNode, false);
-    }
-
-    public Iterator getChildren() {
-        return new OMChildrenIterator(getFirstOMChild());
-    }
-
-    public Iterator getDescendants(boolean includeSelf) {
-        return new OMDescendantsIterator((OMContainer)this, includeSelf);
-    }
-
-    /**
-     * Returns an iterator of child nodes having a given qname.
-     *
-     * @see org.apache.axiom.om.OMContainer#getChildrenWithName (javax.xml.namespace.QName)
-     */
-    public Iterator getChildrenWithName(QName elementQName) throws OMException {
-        return new OMChildrenQNameIterator(getFirstOMChild(), elementQName);
-    }
-    
-    public Iterator getChildrenWithLocalName(String localName) {
-        return new OMChildrenLocalNameIterator(getFirstOMChild(),
-                                               localName);
-    }
-
-
-    public Iterator getChildrenWithNamespaceURI(String uri) {
-        return new OMChildrenNamespaceIterator(getFirstOMChild(),
-                                               uri);
-    }
-
-    /**
-     * Returns the first OMElement child node.
-     *
-     * @see org.apache.axiom.om.OMContainer#getFirstChildWithName (javax.xml.namespace.QName)
-     */
-    public OMElement getFirstChildWithName(QName elementQName)
-            throws OMException {
-        Iterator children = new OMChildrenQNameIterator(getFirstOMChild(),
-                                                        elementQName);
-        while (children.hasNext()) {
-            OMNode node = (OMNode) children.next();
-
-            // Return the first OMElement node that is found
-            if (node instanceof OMElement) {
-                return (OMElement) node;
-            }
-        }
-        return null;
-    }
-
     public OMNode getFirstOMChildIfAvailable() {
         return (OMNode)firstChild;
     }
@@ -255,11 +190,9 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                 newDomChild.setParent(this, useDomSemantics);
             }
         } else {
-            Iterator children = this.getChildren();
+            NodeImpl tempNode = (NodeImpl)getFirstChild();
             boolean found = false;
-            while (children.hasNext()) {
-                NodeImpl tempNode = (NodeImpl) children.next();
-
+            while (tempNode != null) {
                 if (tempNode.equals(refChild)) {
                     // RefChild found
                     if (this.firstChild == tempNode) { // If the refChild is the
@@ -331,6 +264,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                     found = true;
                     break;
                 }
+                tempNode = (NodeImpl)tempNode.getNextSibling();
             }
 
             if (!found) {
@@ -365,10 +299,9 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
 
         checkSameOwnerDocument(newDomChild);
 
-        Iterator children = this.getChildren();
+        NodeImpl tempNode = (NodeImpl)getFirstChild();
         boolean found = false;
-        while (!found && children.hasNext()) {
-            NodeImpl tempNode = (NodeImpl) children.next();
+        while (!found && tempNode != null) {
             if (tempNode == oldChild) {
                 NodeImpl head; // The first child to insert
                 NodeImpl tail; // The last child to insert
@@ -420,6 +353,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                 oldDomChild.internalSetPreviousSibling(null);
                 oldDomChild.setParent(null, true);
             }
+            tempNode = (NodeImpl)tempNode.getNextSibling();
         }
 
         if (!found)
@@ -510,7 +444,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
         // create a Text node to hold the given content
         if (textContent != null && textContent.length() != 0) {
-            addChild(factory.createOMText(textContent));
+            insertBefore((NodeImpl)factory.createOMText(textContent), null, false);
         }
     }
 
@@ -518,61 +452,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         return new SAXSource(new XMLReaderImpl((IContainer)this, cache), new InputSource());
     }
 
-    void notifyChildComplete() {
-        if (!this.isComplete() && getBuilder() == null) {
-            Iterator iterator = getChildren();
-            while (iterator.hasNext()) {
-                OMNode node = (OMNode) iterator.next();
-                if (!node.isComplete()) {
-                    return;
-                }
-            }
-            this.setComplete(true);
-        }
-    }
-
     void normalize(DOMConfigurationImpl config) {
         OMNode child = getFirstOMChild();
         while (child != null) {
             ((NodeImpl)child).normalize(config);
             child = child.getNextOMSibling();
-        }
-    }
-    
-    private NodeList getElementsWildcard() {
-        return new NodeListImpl() {
-            protected Iterator getIterator() {
-                return new OMFilterIterator(getDescendants(false)) {
-                    protected boolean matches(OMNode node) {
-                        return node.getType() == OMNode.ELEMENT_NODE;
-                    }
-                };
-            }
-        };
-    }
-    
-    public final NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
-        if ("*".equals(namespaceURI) && "*".equals(localName)) {
-            return getElementsWildcard();
-        } else {
-            final QName qname = new QName(namespaceURI, localName);
-            return new NodeListImpl() {
-                protected Iterator getIterator() {
-                    return new OMQNameFilterIterator(getDescendants(false), qname);
-                }
-            };
-        }
-    }
-
-    public final NodeList getElementsByTagName(final String name) {
-        if (name.equals("*")) {
-            return getElementsWildcard();
-        } else {
-            return new NodeListImpl() {
-                protected Iterator getIterator() {
-                    return new OMQualifiedNameFilterIterator(getDescendants(false), name);
-                }
-            };
         }
     }
 }
