@@ -20,26 +20,23 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 
-public final class OMNodeHelper {
-    private OMNodeHelper() {}
-    
-    public static OMNode getNextOMSibling(IChildNode node) throws OMException {
-        OMNode nextSibling = node.getNextOMSiblingIfAvailable();
+public aspect CoreChildNodeSupport {
+    public CoreChildNode CoreChildNode.coreGetNextSibling() throws OMException {
+        CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
-            IParentNode parent = node.getIParentNode();
+            CoreParentNode parent = coreGetParent();
             if (parent != null && parent.getBuilder() != null) {
                 switch (parent.getState()) {
-                    case IParentNode.DISCARDED:
+                    case CoreParentNode.DISCARDED:
                         ((StAXBuilder)parent.getBuilder()).debugDiscarded(parent);
                         throw new NodeUnavailableException();
-                    case IParentNode.INCOMPLETE:
+                    case CoreParentNode.INCOMPLETE:
                         do {
                             parent.buildNext();
-                        } while (parent.getState() == IParentNode.INCOMPLETE
-                                && (nextSibling = node.getNextOMSiblingIfAvailable()) == null);
+                        } while (parent.getState() == CoreParentNode.INCOMPLETE
+                                && (nextSibling = coreGetNextSiblingIfAvailable()) == null);
                 }
             }
         }

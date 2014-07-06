@@ -27,14 +27,13 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
-import org.apache.axiom.om.impl.common.IChildNode;
+import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.IParentNode;
-import org.apache.axiom.om.impl.common.OMNodeHelper;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
-public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNode {
+public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
     
     /** Field parent */
     protected IContainer parent;
@@ -64,7 +63,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
         return parent;
     }
 
-    public IParentNode getIParentNode() {
+    public CoreParentNode coreGetParent() {
         return parent;
     }
 
@@ -92,18 +91,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
         }
     }
 
-    /**
-     * Returns the next sibling. This can be an OMAttribute or OMText or OMElement for others.
-     *
-     * @return Returns OMNode.
-     * @throws org.apache.axiom.om.OMException
-     *
-     */
-    public OMNode getNextOMSibling() throws OMException {
-        return OMNodeHelper.getNextOMSibling(this);
-    }
-
-    public OMNode getNextOMSiblingIfAvailable() {
+    public CoreChildNode coreGetNextSiblingIfAvailable() {
         return nextSibling;
     }
 

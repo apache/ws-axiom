@@ -21,15 +21,13 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.IChildNode;
-import org.apache.axiom.om.impl.common.IParentNode;
-import org.apache.axiom.om.impl.common.OMNodeHelper;
+import org.apache.axiom.om.impl.common.CoreChildNode;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public abstract class ChildNode extends NodeImpl implements IChildNode {
+public abstract class ChildNode extends NodeImpl implements CoreChildNode {
     private ParentNode ownerNode;
     
     private NodeImpl previousSibling;
@@ -64,6 +62,10 @@ public abstract class ChildNode extends NodeImpl implements IChildNode {
         this.nextSibling = nextSibling;
     }
     
+    public final CoreChildNode coreGetNextSiblingIfAvailable() {
+        return (CoreChildNode)nextSibling;
+    }
+
     final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
         beforeClone(options);
         ChildNode clone = createClone();
@@ -101,15 +103,11 @@ public abstract class ChildNode extends NodeImpl implements IChildNode {
         // Do nothing; a leaf node is always complete
     }
 
-    public final OMNode getNextOMSibling() throws OMException {
-        return OMNodeHelper.getNextOMSibling(this);
-    }
-
     public final Node getNextSibling() {
-        return (Node)getNextOMSibling();
+        return (Node)coreGetNextSibling();
     }
 
-    public final IParentNode getIParentNode() {
+    public final CoreParentNode coreGetParent() {
         return parentNode();
     }
 

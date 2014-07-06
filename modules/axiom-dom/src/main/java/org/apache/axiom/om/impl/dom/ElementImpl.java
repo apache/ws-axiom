@@ -29,15 +29,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
-import org.apache.axiom.om.impl.common.IParentNode;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -136,6 +136,10 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     
     final void internalSetNextSibling(NodeImpl nextSibling) {
         this.nextSibling = nextSibling;
+    }
+
+    public final CoreChildNode coreGetNextSiblingIfAvailable() {
+        return (CoreChildNode)nextSibling;
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
@@ -1121,15 +1125,11 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         defaultBuild();
     }
 
-    public final OMNode getNextOMSibling() throws OMException {
-        return OMNodeHelper.getNextOMSibling(this);
-    }
-
     public final Node getNextSibling() {
-        return (Node)getNextOMSibling();
+        return (Node)coreGetNextSibling();
     }
 
-    public final IParentNode getIParentNode() {
+    public final CoreParentNode coreGetParent() {
         return parentNode();
     }
     

@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
@@ -49,7 +50,7 @@ import java.util.Hashtable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public abstract class NodeImpl implements Node {
+public abstract class NodeImpl extends InformationItem implements Node {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
@@ -493,10 +494,6 @@ public abstract class NodeImpl implements Node {
 
     ParentNode parentNode() {
         return hasParent() ? internalGetOwnerNode() : null;
-    }
-
-    public final OMNode getNextOMSiblingIfAvailable() {
-        return (OMNode)internalGetNextSibling();
     }
 
     public final OMNode getPreviousOMSibling() {

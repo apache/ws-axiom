@@ -18,9 +18,6 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMElementEx;
+public class InformationItem {
 
-public interface IElement extends OMElementEx, IContainer, INode {
-    void addNamespaceDeclaration(OMNamespace ns);
 }

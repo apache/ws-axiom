@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
@@ -523,8 +524,8 @@ public class OMElementImpl extends OMNodeImpl
         return builder;
     }
 
-    public OMNode getFirstOMChildIfAvailable() {
-        return firstChild;
+    public CoreChildNode coreGetFirstChildIfAvailable() {
+        return (CoreChildNode)firstChild;
     }
 
     public OMNode getLastKnownOMChild() {

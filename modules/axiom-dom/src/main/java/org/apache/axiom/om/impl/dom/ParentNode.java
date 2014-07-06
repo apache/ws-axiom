@@ -25,8 +25,9 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.IParentNode;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -36,7 +37,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.transform.sax.SAXSource;
 
-public abstract class ParentNode extends NodeImpl implements NodeList, IParentNode {
+public abstract class ParentNode extends NodeImpl implements NodeList, CoreParentNode {
 
     protected NodeImpl firstChild;
 
@@ -54,8 +55,8 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         insertBefore(node, null, false);
     }
     
-    public OMNode getFirstOMChildIfAvailable() {
-        return (OMNode)firstChild;
+    public CoreChildNode coreGetFirstChildIfAvailable() {
+        return (CoreChildNode)firstChild;
     }
 
     public OMNode getLastKnownOMChild() {
@@ -110,7 +111,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
     }
 
     public Node getFirstChild() {
-        return (Node) this.getFirstOMChild();
+        return (Node)coreGetFirstChild();
     }
 
     public Node getLastChild() {
@@ -453,10 +454,10 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
     }
 
     void normalize(DOMConfigurationImpl config) {
-        OMNode child = getFirstOMChild();
+        CoreChildNode child = coreGetFirstChild();
         while (child != null) {
             ((NodeImpl)child).normalize(config);
-            child = child.getNextOMSibling();
+            child = child.coreGetNextSibling();
         }
     }
 }

@@ -148,7 +148,7 @@ public class OMElementHelper {
     }
     
     public static void discard(IElement that) {
-        if (that.getState() == IParentNode.INCOMPLETE && that.getBuilder() != null) {
+        if (that.getState() == CoreParentNode.INCOMPLETE && that.getBuilder() != null) {
             ((StAXOMBuilder)that.getBuilder()).discard((OMContainer)that);
         }
         that.detach();

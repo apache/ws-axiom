@@ -18,9 +18,16 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMElementEx;
+import org.apache.axiom.om.OMNode;
 
-public interface IElement extends OMElementEx, IContainer, INode {
-    void addNamespaceDeclaration(OMNamespace ns);
+public aspect OMNodeSupport {
+    declare parents: (InformationItem+ && OMNode+) implements INode;
+
+    public OMNode INode.getNextOMSiblingIfAvailable() {
+        return (OMNode)coreGetNextSiblingIfAvailable();
+    }
+
+    public OMNode INode.getNextOMSibling() {
+        return (OMNode)coreGetNextSibling();
+    }
 }

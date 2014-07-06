@@ -29,7 +29,7 @@ import org.w3c.dom.DocumentFragment;
  * as well as nodes that can have children, but that are not {@link OMContainer} implementations
  * (such as DOOM's {@link Attr} and {@link DocumentFragment} implementations).
  */
-public interface IParentNode {
+public interface CoreParentNode {
     int INCOMPLETE = 0;
     int COMPLETE = 1;
     int DISCARDED = 2;
@@ -48,5 +48,5 @@ public interface IParentNode {
      * @return the first child or <code>null</code> if the container has no children or
      *         the builder has not yet started to build the first child
      */
-    public OMNode getFirstOMChildIfAvailable();
+    public CoreChildNode coreGetFirstChildIfAvailable();
 }

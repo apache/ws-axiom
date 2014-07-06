@@ -45,6 +45,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public aspect OMContainerSupport {
+//    declare parents: (InformationItem+ && OMContainer+) implements IContainer;
+    
     private static final Log log = LogFactory.getLog(OMContainerSupport.class);
     
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
@@ -119,7 +121,7 @@ public aspect OMContainerSupport {
         
         child.setParent(this);
 
-        if (getFirstOMChildIfAvailable() == null) {
+        if (coreGetFirstChildIfAvailable() == null) {
             setFirstChild(child);
         } else {
             OMNode lastChild = getLastKnownOMChild();
@@ -161,41 +163,17 @@ public aspect OMContainerSupport {
         }
     }
     
-    public void IParentNode.buildNext() {
-        OMXMLParserWrapper builder = getBuilder();
-        if (builder == null) {
-            throw new IllegalStateException("The node has no builder");
-        } else if (((StAXOMBuilder)builder).isClosed()) {
-            throw new OMException("The builder has already been closed");
-        } else if (!builder.isCompleted()) {
-            builder.next();
-        } else {
-            // If the builder is suddenly complete, but the completion status of the node
-            // doesn't change, then this means that we built the wrong nodes
-            throw new IllegalStateException("Builder is already complete");
-        }         
+    public OMNode IContainer.getFirstOMChildIfAvailable() {
+        return (OMNode)coreGetFirstChildIfAvailable();
     }
     
-    public OMNode IParentNode.getFirstOMChild() {
-        OMNode firstChild = getFirstOMChildIfAvailable();
-        if (firstChild == null) {
-            switch (getState()) {
-                case IParentNode.DISCARDED:
-                    ((StAXBuilder)getBuilder()).debugDiscarded(this);
-                    throw new NodeUnavailableException();
-                case IParentNode.INCOMPLETE:
-                    do {
-                        buildNext();
-                    } while (getState() == IParentNode.INCOMPLETE
-                            && (firstChild = getFirstOMChildIfAvailable()) == null);
-            }
-        }
-        return firstChild;
+    public OMNode IContainer.getFirstOMChild() {
+        return (OMNode)coreGetFirstChild();
     }
     
     public void IContainer.removeChildren() {
         boolean updateState;
-        if (getState() == IParentNode.INCOMPLETE && getBuilder() != null) {
+        if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
             OMNode lastKnownChild = getLastKnownOMChild();
             if (lastKnownChild != null) {
                 lastKnownChild.build();
@@ -205,9 +183,9 @@ public aspect OMContainerSupport {
         } else {
             updateState = false;
         }
-        IChildNode child = (IChildNode)getFirstOMChildIfAvailable();
+        CoreChildNode child = coreGetFirstChildIfAvailable();
         while (child != null) {
-            IChildNode nextSibling = (IChildNode)child.getNextOMSiblingIfAvailable();
+            CoreChildNode nextSibling = (CoreChildNode)child.getNextOMSiblingIfAvailable();
             child.setPreviousOMSibling(null);
             child.setNextOMSibling(null);
             child.setParent(null);

@@ -36,6 +36,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.CoreChildNode;
+import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -1124,5 +1126,21 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     
     public void buildNext() {
         super.buildNext();
+    }
+
+    public CoreParentNode coreGetParent() {
+        return super.coreGetParent();
+    }
+
+    public CoreChildNode coreGetNextSiblingIfAvailable() {
+        return super.coreGetNextSiblingIfAvailable();
+    }
+
+    public CoreChildNode coreGetFirstChild() {
+        return super.coreGetFirstChild();
+    }
+
+    public CoreChildNode coreGetFirstChildIfAvailable() {
+        return super.coreGetFirstChildIfAvailable();
     }
 }

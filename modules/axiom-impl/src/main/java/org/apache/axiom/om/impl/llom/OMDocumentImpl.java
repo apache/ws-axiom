@@ -28,8 +28,8 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IDocument;
-import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -150,8 +150,8 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     protected void checkDocumentElement(OMElement element) {
     }
 
-    public OMNode getFirstOMChildIfAvailable() {
-        return firstChild;
+    public CoreChildNode coreGetFirstChildIfAvailable() {
+        return (CoreChildNode)firstChild;
     }
 
     public OMNode getLastKnownOMChild() {

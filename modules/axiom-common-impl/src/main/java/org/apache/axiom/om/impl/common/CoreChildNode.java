@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.impl.OMNodeEx;
 
-public interface IChildNode extends OMNodeEx, ISerializable {
-    IParentNode getIParentNode();
+public interface CoreChildNode extends OMNodeEx, ISerializable {
+    CoreParentNode coreGetParent();
+    CoreChildNode coreGetNextSiblingIfAvailable();
 }
