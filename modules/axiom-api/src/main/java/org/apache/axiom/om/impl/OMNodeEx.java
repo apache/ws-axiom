@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 /**
@@ -27,12 +26,6 @@ import org.apache.axiom.om.OMNode;
  * public API.
  */
 public interface OMNodeEx extends OMNode {
-    public void setNextOMSibling(OMNode node);
-
-    public void setPreviousOMSibling(OMNode previousSibling);
-
-    public void setParent(OMContainer element);
-
     public void setComplete(boolean state);
 
     /**

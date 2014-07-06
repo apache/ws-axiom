@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.commons.logging.Log;
@@ -572,10 +571,7 @@ public class StAXOMBuilder extends StAXBuilder {
     public OMElement getDocumentElement(boolean discardDocument) {
         OMElement element = getDocument().getOMDocumentElement();
         if (discardDocument) {
-            OMNodeEx nodeEx = (OMNodeEx)element;
-            nodeEx.setParent(null);
-            nodeEx.setPreviousOMSibling(null);
-            nodeEx.setNextOMSibling(null);
+            ((OMElementEx)element).detachAndDiscardParent();
             document = null;
         }
         return element;

@@ -33,7 +33,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -92,18 +91,18 @@ public aspect OMContainerSupport {
     }
 
     public void IContainer.addChild(OMNode omNode, boolean fromBuilder) {
-        OMNodeEx child;
+        INode child;
         if (fromBuilder) {
             // If the new child was provided by the builder, we know that it was created by
             // the same factory
-            child = (OMNodeEx)omNode;
+            child = (INode)omNode;
         } else {
             // Careful here: if the child was created by another Axiom implementation, it doesn't
-            // necessarily implement OMNodeEx
+            // necessarily implement INode
             if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
-                child = (OMNodeEx)omNode;
+                child = (INode)omNode;
             } else {
-                child = (OMNodeEx)((OMFactoryEx)getOMFactory()).importNode(omNode);
+                child = (INode)((OMFactoryEx)getOMFactory()).importNode(omNode);
             }
             if (!isComplete()) {
                 build();
@@ -126,7 +125,7 @@ public aspect OMContainerSupport {
         } else {
             OMNode lastChild = getLastKnownOMChild();
             child.setPreviousOMSibling(lastChild);
-            ((OMNodeEx)lastChild).setNextOMSibling(child);
+            ((INode)lastChild).setNextOMSibling(child);
         }
         setLastChild(child);
 
@@ -186,9 +185,9 @@ public aspect OMContainerSupport {
         CoreChildNode child = coreGetFirstChildIfAvailable();
         while (child != null) {
             CoreChildNode nextSibling = (CoreChildNode)child.getNextOMSiblingIfAvailable();
-            child.setPreviousOMSibling(null);
-            child.setNextOMSibling(null);
-            child.setParent(null);
+            ((INode)child).setPreviousOMSibling(null);
+            ((INode)child).setNextOMSibling(null);
+            ((INode)child).setParent(null);
             child = nextSibling;
         }
         setFirstChild(null);

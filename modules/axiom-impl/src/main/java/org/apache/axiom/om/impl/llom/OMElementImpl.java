@@ -30,10 +30,10 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
+import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
@@ -526,7 +526,7 @@ public class OMElementImpl extends OMNodeImpl
     /** Method setFirstChild. */
     public void setFirstChild(OMNode firstChild) {
         if (firstChild != null) {
-            ((OMNodeEx) firstChild).setParent(this);
+            ((INode)firstChild).setParent(this);
         }
         this.firstChild = firstChild;
     }

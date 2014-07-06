@@ -1143,4 +1143,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public CoreChildNode coreGetFirstChildIfAvailable() {
         return super.coreGetFirstChildIfAvailable();
     }
+
+    public void detachAndDiscardParent() {
+        super.detachAndDiscardParent();
+    }
 }

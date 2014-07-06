@@ -37,6 +37,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -152,6 +153,12 @@ public aspect OMElementSupport {
             ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
         }
         detach();
+    }
+    
+    public void IElement.detachAndDiscardParent() {
+        setParent(null);
+        setPreviousOMSibling(null);
+        setNextOMSibling(null);
     }
     
     public static void insertChild(OMElement parent, Class[] sequence, int pos, OMNode newChild) {

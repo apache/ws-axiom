@@ -25,11 +25,11 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.CoreParentNode;
+import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
@@ -122,7 +122,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         // Note that we don't need to force creation of the next sibling because the
         // builder will always add new nodes to the end of list of children of the
         // document or element being built.
-        OMNodeImpl nextSibling = (OMNodeImpl) getNextOMSiblingIfAvailable();
+        INode nextSibling = (INode)getNextOMSiblingIfAvailable();
         if (previousSibling == null) {
             parent.setFirstChild(nextSibling);
         } else {
@@ -155,7 +155,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         if (sibling.getParent() != null) {
             sibling.detach();
         }
-        ((OMNodeEx) sibling).setParent(parent);
+        ((INode)sibling).setParent(parent);
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
             if (nextSibling == null) {
@@ -167,7 +167,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
             } else {
                 nextSibling.setPreviousOMSibling(sibling);
             }
-            ((OMNodeEx) sibling).setNextOMSibling(nextSibling);
+            ((INode)sibling).setNextOMSibling(nextSibling);
             nextSibling = siblingImpl;
         }
     }

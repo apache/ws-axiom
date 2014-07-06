@@ -41,4 +41,6 @@ public interface OMElementEx extends OMElement, OMNodeEx, OMContainerEx {
      * @return the created namespace information item
      */
     OMNamespace addNamespaceDeclaration(String uri, String prefix);
+    
+    void detachAndDiscardParent();
 }

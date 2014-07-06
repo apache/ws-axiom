@@ -24,10 +24,10 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.CoreParentNode;
+import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -65,7 +65,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
 
     public void setFirstChild(OMNode firstChild) {
         if (firstChild != null) {
-            ((OMNodeEx) firstChild).setParent((OMContainer)this);
+            ((INode)firstChild).setParent((OMContainer)this);
         }
         this.firstChild = (NodeImpl) firstChild;
     }

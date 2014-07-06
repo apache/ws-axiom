@@ -29,8 +29,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -599,7 +599,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
         if (sibling.getParent() != null) {
             sibling.detach();
         }
-        ((OMNodeEx) sibling).setParent((OMContainer)parentNode);
+        ((INode)sibling).setParent((OMContainer)parentNode);
         if (sibling instanceof NodeImpl) {
             NodeImpl domSibling = (NodeImpl) sibling;
             domSibling.internalSetPreviousSibling(this);
