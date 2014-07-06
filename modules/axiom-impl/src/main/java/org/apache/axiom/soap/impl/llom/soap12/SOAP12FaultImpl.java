@@ -21,7 +21,7 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMElementHelper;
+import org.apache.axiom.om.impl.common.OMElementSupport;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -73,7 +73,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultCodeImpl, got " + soapFaultCode.getClass());
         }
-        OMElementHelper.insertChild(this, sequence, 0, soapFaultCode);
+        OMElementSupport.insertChild(this, sequence, 0, soapFaultCode);
     }
 
 
@@ -82,7 +82,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultReasonImpl, got " + reason.getClass());
         }
-        OMElementHelper.insertChild(this, sequence, 1, reason);
+        OMElementSupport.insertChild(this, sequence, 1, reason);
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
@@ -90,7 +90,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultNodeImpl, got " + node.getClass());
         }
-        OMElementHelper.insertChild(this, sequence, 2, node);
+        OMElementSupport.insertChild(this, sequence, 2, node);
     }
 
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
@@ -98,7 +98,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultRoleImpl, got " + role.getClass());
         }
-        OMElementHelper.insertChild(this, sequence, 3, role);
+        OMElementSupport.insertChild(this, sequence, 3, role);
     }
 
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
@@ -106,7 +106,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultDetailImpl, got " + detail.getClass());
         }
-        OMElementHelper.insertChild(this, sequence, 4, detail);
+        OMElementSupport.insertChild(this, sequence, 4, detail);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

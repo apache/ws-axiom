@@ -35,7 +35,6 @@ import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -52,14 +51,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -756,21 +751,9 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                  || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
     }
 
-    public String getText() {
-        return OMElementHelper.getText(this);
-    }
-
-    public Reader getTextAsStream(boolean cache) {
-        return OMElementHelper.getTextAsStream(this, cache);
-    }
-
     public QName getTextAsQName() {
         String childText = getText().trim();
         return childText.length() == 0 ? null : resolveQName(childText);
-    }
-
-    public void writeTextTo(Writer out, boolean cache) throws IOException {
-        OMElementHelper.writeTextTo(this, out, cache);
     }
 
     public void removeAttribute(OMAttribute attr) {
@@ -882,10 +865,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         return new NamespaceIterator(this);
     }
 
-    public NamespaceContext getNamespaceContext(boolean detached) {
-        return OMElementHelper.getNamespaceContext(this, detached);
-    }
-
     /** @see org.apache.axiom.om.OMElement#getAllAttributes() */
     public Iterator getAllAttributes() {
         if (attributes == null) {
@@ -985,10 +964,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     public String getNamespaceURI(String prefix) {
         OMNamespace ns = this.findNamespaceURI(prefix);
         return (ns != null) ? ns.getNamespaceURI() : null;
-    }
-
-    public void discard() throws OMException {
-        OMElementHelper.discard(this);
     }
 
     /*

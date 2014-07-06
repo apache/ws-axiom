@@ -45,7 +45,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public aspect OMContainerSupport {
-//    declare parents: (InformationItem+ && OMContainer+) implements IContainer;
+    declare parents: (InformationItem+ && OMContainer+) implements IContainer;
     
     private static final Log log = LogFactory.getLog(OMContainerSupport.class);
     

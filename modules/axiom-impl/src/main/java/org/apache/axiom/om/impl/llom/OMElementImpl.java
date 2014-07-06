@@ -36,7 +36,6 @@ import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMElementHelper;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -49,16 +48,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -396,10 +391,6 @@ public class OMElementImpl extends OMNodeImpl
         return new NamespaceIterator(this);
     }
 
-    public NamespaceContext getNamespaceContext(boolean detached) {
-        return OMElementHelper.getNamespaceContext(this, detached);
-    }
-
     /**
      * Returns a List of OMAttributes.
      *
@@ -627,21 +618,9 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    public String getText() {
-        return OMElementHelper.getText(this);
-    }
-
-    public Reader getTextAsStream(boolean cache) {
-        return OMElementHelper.getTextAsStream(this, cache);
-    }
-
     public QName getTextAsQName() {
         String childText = getText().trim();
         return childText.length() == 0 ? null : resolveQName(childText);
-    }
-
-    public void writeTextTo(Writer out, boolean cache) throws IOException {
-        OMElementHelper.writeTextTo(this, out, cache);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -782,15 +761,6 @@ public class OMElementImpl extends OMNodeImpl
             throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
         }
         return writer.toString();
-    }
-
-    /**
-     * Method discard.
-     *
-     * @throws OMException
-     */
-    public void discard() throws OMException {
-        OMElementHelper.discard(this);
     }
 
     public QName resolveQName(String qname) {

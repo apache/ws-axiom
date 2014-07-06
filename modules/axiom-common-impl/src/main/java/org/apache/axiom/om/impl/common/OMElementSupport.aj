@@ -45,26 +45,26 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMElement} interface.
  */
-public class OMElementHelper {
-    private OMElementHelper() {}
+public aspect OMElementSupport {
+    declare parents: (InformationItem+ && OMElement+) implements IElement;
     
-    public static NamespaceContext getNamespaceContext(OMElement element, boolean detached) {
+    public NamespaceContext OMElement.getNamespaceContext(boolean detached) {
         if (detached) {
             Map namespaces = new HashMap();
-            for (Iterator it = element.getNamespacesInScope(); it.hasNext(); ) {
+            for (Iterator it = getNamespacesInScope(); it.hasNext(); ) {
                 OMNamespace ns = (OMNamespace)it.next();
                 namespaces.put(ns.getPrefix(), ns.getNamespaceURI());
             }
             return new MapBasedNamespaceContext(namespaces);
         } else {
-            return new LiveNamespaceContext(element);
+            return new LiveNamespaceContext(this);
         }
     }
     
-    public static String getText(OMElement element) {
+    public String OMElement.getText() {
         String childText = null;
         StringBuffer buffer = null;
-        OMNode child = element.getFirstOMChild();
+        OMNode child = getFirstOMChild();
 
         while (child != null) {
             final int type = child.getType();
@@ -100,11 +100,11 @@ public class OMElementHelper {
         }
     }
     
-    public static Reader getTextAsStream(OMElement element, boolean cache) {
+    public Reader OMElement.getTextAsStream(boolean cache) {
         // If the element is not an OMSourcedElement and has not more than one child, then the most
         // efficient way to get the Reader is to build a StringReader
-        if (!(element instanceof OMSourcedElement) && (!cache || element.isComplete())) {
-            OMNode child = element.getFirstOMChild();
+        if (!(this instanceof OMSourcedElement) && (!cache || isComplete())) {
+            OMNode child = getFirstOMChild();
             if (child == null) {
                 return new StringReader("");
             } else if (child.getNextOMSibling() == null) {
@@ -113,7 +113,7 @@ public class OMElementHelper {
         }
         // In all other cases, extract the data from the XMLStreamReader
         try {
-            XMLStreamReader reader = element.getXMLStreamReader(cache);
+            XMLStreamReader reader = getXMLStreamReader(cache);
             if (reader.getEventType() == XMLStreamReader.START_DOCUMENT) {
                 reader.next();
             }
@@ -123,9 +123,9 @@ public class OMElementHelper {
         }
     }
     
-    public static void writeTextTo(OMElement element, Writer out, boolean cache) throws IOException {
+    public void OMElement.writeTextTo(Writer out, boolean cache) throws IOException {
         try {
-            XMLStreamReader reader = element.getXMLStreamReader(cache);
+            XMLStreamReader reader = getXMLStreamReader(cache);
             int depth = 0;
             while (reader.hasNext()) {
                 switch (reader.next()) {
@@ -147,11 +147,11 @@ public class OMElementHelper {
         }
     }
     
-    public static void discard(IElement that) {
-        if (that.getState() == CoreParentNode.INCOMPLETE && that.getBuilder() != null) {
-            ((StAXOMBuilder)that.getBuilder()).discard((OMContainer)that);
+    public void IElement.discard() {
+        if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
+            ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
         }
-        that.detach();
+        detach();
     }
     
     public static void insertChild(OMElement parent, Class[] sequence, int pos, OMNode newChild) {
