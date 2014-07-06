@@ -42,8 +42,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
@@ -267,17 +267,17 @@ public abstract class Serializer {
             throw new NodeUnavailableException();
         }
         if (cache) {
-            CoreChildNode child = (CoreChildNode)container.getFirstOMChild();
+            INode child = (INode)container.getFirstOMChild();
             while (child != null) {
                 child.internalSerialize(this, format, true);
-                child = (CoreChildNode)child.getNextOMSibling();
+                child = (INode)child.getNextOMSibling();
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
-            CoreChildNode child = (CoreChildNode)container.getFirstOMChildIfAvailable();
+            INode child = (INode)container.getFirstOMChildIfAvailable();
             while (child != null) {
                 child.internalSerialize(this, format, cache);
-                child = (CoreChildNode)child.getNextOMSiblingIfAvailable();
+                child = (INode)child.getNextOMSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)
             // and serialize the nodes that have not been built yet by copying the

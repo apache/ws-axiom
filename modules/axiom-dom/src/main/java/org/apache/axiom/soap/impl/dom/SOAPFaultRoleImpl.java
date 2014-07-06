@@ -44,8 +44,8 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
     }
 
     public void setRoleValue(String uri) {
-        if (coreGetFirstChildIfAvailable() != null) {
-            coreGetFirstChildIfAvailable().detach();
+        if (getFirstOMChildIfAvailable() != null) {
+            getFirstOMChildIfAvailable().detach();
         }
         this.setText(uri);
     }

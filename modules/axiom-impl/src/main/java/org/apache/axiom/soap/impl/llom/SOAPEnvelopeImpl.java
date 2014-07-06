@@ -137,7 +137,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                 // body and insert the header.  If the body is not found,
                 // this indicates that it has not been parsed yet...and
                 // the code will fall through to the super.addChild.
-                OMNode node = coreGetLastKnownChild();
+                OMNode node = (OMNode)coreGetLastKnownChild();
                 while (node != null) {
                     if (node instanceof SOAPBody) {
                         node.insertSiblingBefore(child);

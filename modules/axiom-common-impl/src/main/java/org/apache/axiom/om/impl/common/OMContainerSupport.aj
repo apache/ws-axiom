@@ -123,9 +123,9 @@ public aspect OMContainerSupport {
         if (coreGetFirstChildIfAvailable() == null) {
             coreSetFirstChild(child);
         } else {
-            CoreChildNode lastChild = coreGetLastKnownChild();
+            INode lastChild = (INode)coreGetLastKnownChild();
             child.setPreviousOMSibling(lastChild);
-            ((INode)lastChild).setNextOMSibling(child);
+            lastChild.setNextOMSibling(child);
         }
         coreSetLastChild(child);
 
@@ -176,8 +176,8 @@ public aspect OMContainerSupport {
         boolean updateState;
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
             CoreChildNode lastKnownChild = coreGetLastKnownChild();
-            if (lastKnownChild != null) {
-                lastKnownChild.build();
+            if (lastKnownChild instanceof IContainer) {
+                ((IContainer)lastKnownChild).build();
             }
             ((StAXOMBuilder)getBuilder()).discard(this);
             updateState = true;
@@ -185,7 +185,7 @@ public aspect OMContainerSupport {
             updateState = false;
         }
         while (child != null) {
-            CoreChildNode nextSibling = (CoreChildNode)child.getNextOMSiblingIfAvailable();
+            CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
             ((INode)child).setPreviousOMSibling(null);
             ((INode)child).setNextOMSibling(null);
             child.coreSetParent(null);

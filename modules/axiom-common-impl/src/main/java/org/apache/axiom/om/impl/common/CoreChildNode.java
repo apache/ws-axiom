@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.impl.OMNodeEx;
-
-public interface CoreChildNode extends OMNodeEx, ISerializable {
+public interface CoreChildNode {
     CoreParentNode coreGetParent();
     void coreSetParent(CoreParentNode parent);
     CoreChildNode coreGetNextSiblingIfAvailable();
