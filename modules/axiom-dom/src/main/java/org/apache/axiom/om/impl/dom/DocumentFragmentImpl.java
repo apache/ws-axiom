@@ -89,18 +89,10 @@ public class DocumentFragmentImpl extends RootNode implements
         return new DocumentFragmentImpl(factory);
     }
 
-    public final boolean isComplete() {
-        return true;
-    }
-
     public final void setComplete(boolean state) {
         if (state != true) {
             throw new IllegalStateException();
         }
-    }
-
-    public final void discarded() {
-        throw new UnsupportedOperationException();
     }
 
     public final void build() {

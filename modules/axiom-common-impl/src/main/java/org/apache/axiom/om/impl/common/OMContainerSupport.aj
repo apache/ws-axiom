@@ -23,6 +23,7 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
@@ -38,10 +39,12 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
+import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.InputSource;
 
 public aspect OMContainerSupport {
     declare parents: (InformationItem+ && OMContainer+) implements IContainer;
@@ -50,6 +53,14 @@ public aspect OMContainerSupport {
     
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     
+    public boolean IContainer.isComplete() {
+        return getState() == COMPLETE;
+    }
+
+    public final void IContainer.discarded() {
+        coreSetState(DISCARDED);
+    }
+
     public XMLStreamReader OMContainer.getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
@@ -251,6 +262,10 @@ public aspect OMContainerSupport {
 
         return ((omNode != null) && (OMNode.ELEMENT_NODE == omNode.getType())) ?
                 (OMElement) omNode : null;
+    }
+
+    public final SAXSource IContainer.getSAXSource(boolean cache) {
+        return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
     public SAXResult OMContainer.getSAXResult() {

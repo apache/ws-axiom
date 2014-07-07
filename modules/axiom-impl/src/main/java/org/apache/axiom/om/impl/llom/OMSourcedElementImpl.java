@@ -54,7 +54,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.sax.SAXSource;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -685,11 +684,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.detach();
     }
 
-    public int getType() {
-        // no need to expand the tree, just call base method directly
-        return super.getType();
-    }
-
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
             throws OutputException {
         if (isExpanded()) {
@@ -1005,15 +999,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    public void discarded() {
-        // TODO: will we ever get here?
-        super.discarded();
-    }
-
-    public SAXSource getSAXSource(boolean cache) {
-        return super.getSAXSource(cache);
-    }
-
     public SAXResult getSAXResult() {
         return super.getSAXResult();
     }

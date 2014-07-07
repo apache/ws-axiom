@@ -569,16 +569,8 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         return new DocumentImpl(factory);
     }
     
-    public final boolean isComplete() {
-        return getState() == COMPLETE;
-    }
-
     public final void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
-    }
-
-    public final void discarded() {
-        coreSetState(DISCARDED);
     }
 
     public final void build() {

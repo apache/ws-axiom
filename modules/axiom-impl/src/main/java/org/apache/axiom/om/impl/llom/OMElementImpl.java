@@ -38,18 +38,15 @@ import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xml.sax.InputSource;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.sax.SAXSource;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -509,10 +506,6 @@ public class OMElementImpl extends OMNodeImpl
         return this;
     }
 
-    public int getType() {
-        return OMNode.ELEMENT_NODE;
-    }
-
     public void build() throws OMException {
         /**
          * builder is null. Meaning this is a programatical created element but it has children which are not completed
@@ -529,10 +522,6 @@ public class OMElementImpl extends OMNodeImpl
 
     }
 
-    public boolean isComplete() {
-        return getState() == COMPLETE;
-    }
-
     public void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
         if (parent != null) {
@@ -544,10 +533,6 @@ public class OMElementImpl extends OMNodeImpl
                 ((OMDocumentImpl) parent).notifyChildComplete();
             }
         }
-    }
-
-    public void discarded() {
-        coreSetState(DISCARDED);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -772,10 +757,6 @@ public class OMElementImpl extends OMNodeImpl
             }
             this.setComplete(true);
         }
-    }
-
-    public SAXSource getSAXSource(boolean cache) {
-        return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 }
 

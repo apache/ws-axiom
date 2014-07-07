@@ -194,19 +194,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     // /
-    // /org.apache.axiom.om.OMNode methods
-    // /
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
-    public int getType() throws OMException {
-        return OMNode.ELEMENT_NODE;
-    }
-
-    // /
     // / org.w3c.dom.Element methods
     // /
 
@@ -1023,10 +1010,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         super.normalize(config);
     }
 
-    public final boolean isComplete() {
-        return getState() == COMPLETE;
-    }
-
     public final void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
         ParentNode parentNode = parentNode();
@@ -1037,10 +1020,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                 ((DOMContainer)parentNode).notifyChildComplete();
             }
         }
-    }
-
-    public final void discarded() {
-        coreSetState(DISCARDED);
     }
 
     OMNode detach(boolean useDomSemantics) {

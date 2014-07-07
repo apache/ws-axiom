@@ -49,6 +49,10 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 public aspect OMElementSupport {
     declare parents: (InformationItem+ && OMElement+) implements IElement;
     
+    public final int OMElement.getType() {
+        return OMNode.ELEMENT_NODE;
+    }
+    
     public NamespaceContext OMElement.getNamespaceContext(boolean detached) {
         if (detached) {
             Map namespaces = new HashMap();

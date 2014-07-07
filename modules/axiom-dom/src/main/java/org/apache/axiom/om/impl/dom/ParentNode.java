@@ -23,16 +23,11 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.impl.common.CoreChildNode;
-import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.CoreParentNode;
-import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import javax.xml.transform.sax.SAXSource;
 
 public abstract class ParentNode extends NodeImpl implements NodeList, CoreParentNode {
     protected ParentNode(OMFactory factory) {
@@ -416,10 +411,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
         if (textContent != null && textContent.length() != 0) {
             insertBefore((NodeImpl)factory.createOMText(textContent), null, false);
         }
-    }
-
-    public SAXSource getSAXSource(boolean cache) {
-        return new SAXSource(new XMLReaderImpl((IContainer)this, cache), new InputSource());
     }
 
     void normalize(DOMConfigurationImpl config) {

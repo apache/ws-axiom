@@ -32,10 +32,6 @@ import org.apache.axiom.om.impl.common.IDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
-import org.xml.sax.InputSource;
-
-import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
 
@@ -101,10 +97,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         }
     }
 
-    public boolean isComplete() {
-        return getState() == COMPLETE;
-    }
-
     /**
      * Method setComplete.
      *
@@ -112,10 +104,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
      */
     public void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
-    }
-
-    public void discarded() {
-        coreSetState(DISCARDED);
     }
 
     public final void checkChild(OMNode child) {
@@ -185,10 +173,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         }
     }
     
-    public SAXSource getSAXSource(boolean cache) {
-        return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
-    }
-
     public void build() {
         defaultBuild();
     }
