@@ -483,24 +483,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return getXMLStreamReader(false);
     }
 
-    public void setText(String text) {
-        super.setText(text);
-    }
-
-    public void setText(QName text) {
-        super.setText(text);
-    }
-
     public String getText() {
         return super.getText();
     }
 
     public Reader getTextAsStream(boolean cache) {
         return super.getTextAsStream(cache);
-    }
-
-    public QName getTextAsQName() {
-        return super.getTextAsQName();
     }
 
     public void writeTextTo(Writer out, boolean cache) throws IOException {

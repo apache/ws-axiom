@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -37,7 +38,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -101,6 +101,12 @@ public aspect OMElementSupport {
         }
     }
     
+    // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2
+    public QName OMElement.getTextAsQName() {
+        String childText = getText().trim();
+        return childText.length() == 0 ? null : resolveQName(childText);
+    }
+
     public Reader OMElement.getTextAsStream(boolean cache) {
         // If the element is not an OMSourcedElement and has not more than one child, then the most
         // efficient way to get the Reader is to build a StringReader
@@ -148,6 +154,30 @@ public aspect OMElementSupport {
         }
     }
     
+    public final void OMElement.setText(String text) {
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
+        }
+        // Add a new text node
+        if (text != null && text.length() > 0) {
+            getOMFactory().createOMText(this, text);
+        }
+    }
+
+    public final void OMElement.setText(QName qname) {
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
+        }
+        // Add a new text node
+        if (qname != null) {
+            getOMFactory().createOMText(this, qname);
+        }
+    }
+
     public void IElement.discard() {
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
             ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);

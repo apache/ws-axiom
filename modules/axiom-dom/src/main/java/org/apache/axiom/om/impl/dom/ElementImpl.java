@@ -747,11 +747,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                  || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
     }
 
-    public QName getTextAsQName() {
-        String childText = getText().trim();
-        return childText.length() == 0 ? null : resolveQName(childText);
-    }
-
     public void removeAttribute(OMAttribute attr) {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
@@ -782,35 +777,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         internalSetNamespace(namespace);
-    }
-
-    /**
-     * Creates a text node with the given value and adds it to the element.
-     *
-     * @see org.apache.axiom.om.OMElement#setText(String)
-     */
-    public void setText(String text) {
-        // Remove all existing children
-        OMNode child;
-        while ((child = getFirstOMChild()) != null) {
-            child.detach();
-        }
-        // Add a new text node
-        if (text != null && text.length() > 0) {
-            getOMFactory().createOMText(this, text);
-        }
-    }
-
-    public void setText(QName qname) {
-        // Remove all existing children
-        OMNode child;
-        while ((child = getFirstOMChild()) != null) {
-            child.detach();
-        }
-        // Add a new text node
-        if (qname != null) {
-            getOMFactory().createOMText(this, qname);
-        }
     }
 
     public void internalSerialize(Serializer serializer,

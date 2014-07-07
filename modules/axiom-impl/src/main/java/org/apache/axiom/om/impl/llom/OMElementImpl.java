@@ -550,35 +550,6 @@ public class OMElementImpl extends OMNodeImpl
         coreSetState(DISCARDED);
     }
 
-    public void setText(String text) {
-        // Remove all existing children
-        OMNode child;
-        while ((child = getFirstOMChild()) != null) {
-            child.detach();
-        }
-        // Add a new text node
-        if (text != null && text.length() > 0) {
-            getOMFactory().createOMText(this, text);
-        }
-    }
-
-    public void setText(QName qname) {
-        // Remove all existing children
-        OMNode child;
-        while ((child = getFirstOMChild()) != null) {
-            child.detach();
-        }
-        // Add a new text node
-        if (qname != null) {
-            getOMFactory().createOMText(this, qname);
-        }
-    }
-
-    public QName getTextAsQName() {
-        String childText = getText().trim();
-        return childText.length() == 0 ? null : resolveQName(childText);
-    }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
