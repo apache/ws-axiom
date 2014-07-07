@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMDocument;
-
-public interface IDocument extends OMDocument, IContainer, DeferringParentNode {
+/**
+ * Marker interface for {@link CoreParentNode} implementations that support deferred parsing.
+ */
+public interface DeferringParentNode extends CoreParentNode {
 
 }

@@ -41,10 +41,6 @@ import java.util.Iterator;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
-    protected OMXMLParserWrapper builder;
-
-    protected int state;
-
     /** Field charSetEncoding Default : UTF-8 */
     protected String charSetEncoding = "UTF-8";
 
@@ -62,7 +58,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
      */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-        state = COMPLETE;
+        coreSetState(COMPLETE);
     }
 
     /**
@@ -73,11 +69,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
      */
     public OMDocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
-        this.builder = parserWrapper;
-    }
-
-    public OMXMLParserWrapper getBuilder() {
-        return builder;
+        coreSetBuilder(parserWrapper);
     }
 
     public OMElement getOMDocumentElement() {
@@ -109,12 +101,8 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         }
     }
 
-    public int getState() {
-        return state;
-    }
-
     public boolean isComplete() {
-        return state == COMPLETE;
+        return getState() == COMPLETE;
     }
 
     /**
@@ -123,11 +111,11 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
      * @param state
      */
     public void setComplete(boolean complete) {
-        state = complete ? COMPLETE : INCOMPLETE;
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
     }
 
     public void discarded() {
-        state = DISCARDED;
+        coreSetState(DISCARDED);
     }
 
     public final void checkChild(OMNode child) {
@@ -185,7 +173,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     }
 
     void notifyChildComplete() {
-        if (state == INCOMPLETE && builder == null) {
+        if (getState() == INCOMPLETE && getBuilder() == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();

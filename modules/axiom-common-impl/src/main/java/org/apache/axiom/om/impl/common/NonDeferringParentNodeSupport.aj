@@ -18,8 +18,22 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
-public interface IDocument extends OMDocument, IContainer, DeferringParentNode {
+public aspect NonDeferringParentNodeSupport {
+    public final OMXMLParserWrapper NonDeferringParentNode.getBuilder() {
+        return null;
+    }
 
+    public final void NonDeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public final int NonDeferringParentNode.getState() {
+        return CoreParentNode.COMPLETE;
+    }
+
+    public final void NonDeferringParentNode.coreSetState(int state) {
+        throw new UnsupportedOperationException();
+    }
 }

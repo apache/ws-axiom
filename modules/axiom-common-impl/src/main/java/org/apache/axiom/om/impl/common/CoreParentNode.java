@@ -34,6 +34,8 @@ public interface CoreParentNode {
     int DISCARDED = 2;
     
     OMXMLParserWrapper getBuilder();
+    void coreSetBuilder(OMXMLParserWrapper builder);
     int getState();
+    void coreSetState(int state);
     boolean isComplete();
 }

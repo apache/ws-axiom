@@ -64,10 +64,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
-    protected OMXMLParserWrapper builder;
-
-    protected int state;
-
     private ParentNode ownerNode;
     
     private NodeImpl previousSibling;
@@ -100,8 +96,8 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                        OMFactory factory, boolean generateNSDecl) {
         super(factory);
         this.localName = localName;
-        this.builder = builder;
-        state = builder == null ? COMPLETE : INCOMPLETE;
+        coreSetBuilder(builder);
+        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parentNode != null) {
             ((IContainer)parentNode).addChild(this, builder != null);
         }
@@ -1034,7 +1030,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (state == INCOMPLETE) {
+        if (getState() == INCOMPLETE) {
             this.build();
         }
         Iterator iterator = getChildren();
@@ -1061,20 +1057,12 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         super.normalize(config);
     }
 
-    public final OMXMLParserWrapper getBuilder() {
-        return builder;
-    }
-
-    public final int getState() {
-        return state;
-    }
-
     public final boolean isComplete() {
-        return state == COMPLETE;
+        return getState() == COMPLETE;
     }
 
     public final void setComplete(boolean complete) {
-        state = complete ? COMPLETE : INCOMPLETE;
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
         ParentNode parentNode = parentNode();
         if (parentNode != null) {
             if (!complete) {
@@ -1086,11 +1074,11 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public final void discarded() {
-        state = DISCARDED;
+        coreSetState(DISCARDED);
     }
 
     OMNode detach(boolean useDomSemantics) {
-        if (state == INCOMPLETE) {
+        if (getState() == INCOMPLETE) {
             build();
         }
         return super.detach(useDomSemantics);

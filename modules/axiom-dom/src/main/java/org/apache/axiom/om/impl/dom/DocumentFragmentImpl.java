@@ -23,8 +23,8 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.NonDeferringParentNode;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
@@ -34,7 +34,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 // TODO: we should not implement IContainer here
 public class DocumentFragmentImpl extends RootNode implements
-        DocumentFragment, IContainer {
+        DocumentFragment, IContainer, NonDeferringParentNode {
 
     private ParentNode ownerNode;
     
@@ -87,14 +87,6 @@ public class DocumentFragmentImpl extends RootNode implements
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         return new DocumentFragmentImpl(factory);
-    }
-
-    public final OMXMLParserWrapper getBuilder() {
-        return null;
-    }
-
-    public final int getState() {
-        return COMPLETE;
     }
 
     public final boolean isComplete() {

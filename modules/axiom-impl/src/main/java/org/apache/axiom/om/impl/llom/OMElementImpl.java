@@ -62,10 +62,6 @@ public class OMElementImpl extends OMNodeImpl
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
-    protected OMXMLParserWrapper builder;
-
-    protected int state;
-
     /**
      * The namespace of this element. Possible values:
      * <ul>
@@ -101,8 +97,8 @@ public class OMElementImpl extends OMNodeImpl
             throw new OMException("localname can not be null or empty");
         }
         this.localName = localName;
-        this.builder = builder;
-        state = builder == null ? COMPLETE : INCOMPLETE;
+        coreSetBuilder(builder);
+        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parent != null) {
             ((IContainer)parent).addChild(this, builder != null);
         }
@@ -118,7 +114,7 @@ public class OMElementImpl extends OMNodeImpl
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
         super(factory);
-        state = COMPLETE;
+        coreSetState(COMPLETE);
         if (parent != null) {
             parent.addChild(this);
         }
@@ -133,7 +129,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     OMElementImpl(OMFactory factory) {
         super(factory);
-        state = COMPLETE;
+        coreSetState(COMPLETE);
     }
 
     /** Method handleNamespace. */
@@ -501,21 +497,12 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * Method getBuilder.
-     *
-     * @return Returns OMXMLParserWrapper.
-     */
-    public OMXMLParserWrapper getBuilder() {
-        return builder;
-    }
-
-    /**
      * Removes this information item and its children, from the model completely.
      *
      * @throws OMException
      */
     public OMNode detach() throws OMException {
-        if (state == INCOMPLETE) {
+        if (getState() == INCOMPLETE) {
             build();
         }
         super.detach();
@@ -531,7 +518,7 @@ public class OMElementImpl extends OMNodeImpl
          * builder is null. Meaning this is a programatical created element but it has children which are not completed
          * Build them all.
          */
-        if (builder == null && state == INCOMPLETE) {
+        if (getBuilder() == null && getState() == INCOMPLETE) {
             for (Iterator childrenIterator = this.getChildren(); childrenIterator.hasNext();) {
                 OMNode omNode = (OMNode) childrenIterator.next();
                 omNode.build();
@@ -542,16 +529,12 @@ public class OMElementImpl extends OMNodeImpl
 
     }
 
-    public int getState() {
-        return state;
-    }
-
     public boolean isComplete() {
-        return state == COMPLETE;
+        return getState() == COMPLETE;
     }
 
     public void setComplete(boolean complete) {
-        state = complete ? COMPLETE : INCOMPLETE;
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
         if (parent != null) {
             if (!complete) {
                 parent.setComplete(false);
@@ -564,7 +547,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void discarded() {
-        state = DISCARDED;
+        coreSetState(DISCARDED);
     }
 
     public void setText(String text) {
@@ -754,7 +737,7 @@ public class OMElementImpl extends OMNodeImpl
             log.debug("cloneOMElement start");
             log.debug("  element string =" + getLocalName());
             log.debug(" isComplete = " + isComplete());
-            log.debug("  builder = " + builder);
+            log.debug("  builder = " + getBuilder());
         }
         return (OMElement)clone(new OMCloneOptions());
     }
@@ -796,7 +779,7 @@ public class OMElementImpl extends OMNodeImpl
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (state == INCOMPLETE) {
+        if (getState() == INCOMPLETE) {
             this.build();
         }
         Iterator iterator = getChildren();
@@ -808,7 +791,7 @@ public class OMElementImpl extends OMNodeImpl
 
     /** This method will be called when one of the children becomes complete. */
     void notifyChildComplete() {
-        if (state == INCOMPLETE && builder == null) {
+        if (getState() == INCOMPLETE && getBuilder() == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();

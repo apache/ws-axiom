@@ -144,7 +144,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
             return lookAheadSuccessful;
         }
         lookAheadAttempted = true;
-        StAXSOAPModelBuilder soapBuilder = (StAXSOAPModelBuilder) this.builder;
+        StAXSOAPModelBuilder soapBuilder = (StAXSOAPModelBuilder)getBuilder();
         if (soapBuilder != null &&
             soapBuilder.isCache() &&
             !soapBuilder.isCompleted() &&

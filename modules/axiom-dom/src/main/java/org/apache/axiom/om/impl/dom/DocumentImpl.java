@@ -62,10 +62,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class DocumentImpl extends RootNode implements Document, IDocument {
-    protected OMXMLParserWrapper builder;
-
-    protected int state;
-
     private String xmlVersion;
 
     private String xmlEncoding;
@@ -82,12 +78,12 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
 
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
-        this.builder = parserWrapper;
+        coreSetBuilder(parserWrapper);
     }
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        state = COMPLETE;
+        coreSetState(COMPLETE);
     }
 
     ParentNode internalGetOwnerNode() {
@@ -573,24 +569,16 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         return new DocumentImpl(factory);
     }
     
-    public final OMXMLParserWrapper getBuilder() {
-        return builder;
-    }
-
-    public final int getState() {
-        return state;
-    }
-
     public final boolean isComplete() {
-        return state == COMPLETE;
+        return getState() == COMPLETE;
     }
 
     public final void setComplete(boolean complete) {
-        state = complete ? COMPLETE : INCOMPLETE;
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
     }
 
     public final void discarded() {
-        state = DISCARDED;
+        coreSetState(DISCARDED);
     }
 
     public final void build() {

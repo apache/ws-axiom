@@ -228,7 +228,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * Set parser for OM, if not previously set. Since the builder is what actually constructs the
      * tree on demand, this first creates a builder
      */
-    private void forceExpand() {
+    public void forceExpand() {
         // The dataSource != null is required because this method may be called indirectly
         // by the constructor before the data source is set. After the constructor has completed,
         // isExpanded is always true if dataSource is null.
@@ -283,7 +283,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 isExpanded = true;
                 StAXOMBuilder builder = new StAXOMBuilder(getOMFactory(), readerFromDS, this, characterEncoding);
                 builder.setAutoClose(true);
-                this.builder = builder;
+                coreSetBuilder(builder);
                 setComplete(false);
             }
         }
@@ -436,11 +436,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);
-    }
-
-    public OMXMLParserWrapper getBuilder() {
-        forceExpand();
-        return super.getBuilder();
     }
 
     public void coreSetFirstChild(CoreChildNode firstChild) {
@@ -935,7 +930,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void buildWithAttachments() {
         
         // If not done, force the parser to build the elements
-        if (state == INCOMPLETE) {
+        if (getState() == INCOMPLETE) {
             this.build();
         }
         
@@ -998,7 +993,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             this.dataSource = dataSource;
             setComplete(false);
             isExpanded = false;
-            builder = null;
+            coreSetBuilder(null);
             if (isLossyPrefix(dataSource)) {
                 // Create a deferred namespace that forces an expand to get the prefix
                 definedNamespace = new DeferredNamespace(definedNamespace.getNamespaceURI());
@@ -1013,7 +1008,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * parent (which may have a different builder or no builder).
      */
     public void setComplete(boolean complete) {
-        state = complete ? COMPLETE : INCOMPLETE;
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
         if (complete && dataSource != null) {
             if (dataSource instanceof OMDataSourceExt) {
                 ((OMDataSourceExt)dataSource).close();

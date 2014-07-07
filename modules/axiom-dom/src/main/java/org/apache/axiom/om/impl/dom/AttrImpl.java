@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMAttributeEx;
+import org.apache.axiom.om.impl.common.NonDeferringParentNode;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -42,7 +42,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode, NonDeferringParentNode {
     private String localName;
 
     private String type;
@@ -487,14 +487,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         // Note: targetParent is always null here
         return new AttrImpl(localName, namespace, type, factory);
-    }
-
-    public final OMXMLParserWrapper getBuilder() {
-        return null;
-    }
-
-    public final int getState() {
-        return COMPLETE;
     }
 
     public final boolean isComplete() {

@@ -121,7 +121,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
             // The SOAPHeader is added before the SOAPBody
             // We must be sensitive to the state of the parser.  It is possible that the
             // has not been processed yet.
-            if (state == COMPLETE) {
+            if (getState() == COMPLETE) {
                 // Parsing is complete, therefore it is safe to
                 // call getBody.
                 SOAPBody body = getBody();
@@ -204,6 +204,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
             // let's try to close the builder/parser here since we are now done with the
             // non-caching code block serializing the top-level SOAPEnvelope element
             // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
+            OMXMLParserWrapper builder = getBuilder();
             if ((builder != null) && (builder instanceof StAXBuilder)) {
                 try {
                     if (log.isDebugEnabled()) {

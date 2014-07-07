@@ -101,7 +101,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             // The SOAPHeader is added before the SOAPBody
             // We must be sensitive to the state of the parser.  It is possible that the
             // has not been processed yet.
-            if (state == COMPLETE) {
+            if (getState() == COMPLETE) {
                 // Parsing is complete, therefore it is safe to
                 // call getBody.
                 SOAPBody body = getBody();

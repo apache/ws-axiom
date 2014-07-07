@@ -21,6 +21,6 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMElementEx;
 
-public interface IElement extends OMElementEx, IContainer, INode {
+public interface IElement extends OMElementEx, IContainer, INode, DeferringParentNode {
     void addNamespaceDeclaration(OMNamespace ns);
 }
