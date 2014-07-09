@@ -905,6 +905,6 @@
         <module>apidocs</module>
         <module>distribution</module>
         <module>code-coverage</module>
-        <module>testsuites</module>
+        <module>testing</module>
     </modules>
 </project>
