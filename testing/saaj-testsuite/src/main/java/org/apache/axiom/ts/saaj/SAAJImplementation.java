@@ -33,7 +33,7 @@ public final class SAAJImplementation {
         try {
             newMessageFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newMessageFactory", String.class);
             newMessageFactoryMethod.setAccessible(true);
-            newSOAPFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newMessageFactory", String.class);
+            newSOAPFactoryMethod = SAAJMetaFactory.class.getDeclaredMethod("newSOAPFactory", String.class);
             newSOAPFactoryMethod.setAccessible(true);
         } catch (Exception ex) {
             throw new Error(ex);

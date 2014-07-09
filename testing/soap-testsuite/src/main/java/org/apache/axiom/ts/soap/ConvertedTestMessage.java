@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
@@ -31,6 +32,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -81,6 +83,14 @@ final class ConvertedTestMessage extends TestMessage {
         }
         element = (Element)element.getOwnerDocument().renameNode(element, newName.getNamespaceURI(),
                 prefix == null ? newName.getLocalPart() : prefix + ":" + newName.getLocalPart());
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i=0; i<attributes.getLength(); i++) {
+            Attr attr = (Attr)attributes.item(i);
+            if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())
+                    && attr.getValue().equals(SOAPSpec.SOAP12.getEnvelopeNamespaceURI())) {
+                attr.setValue(SOAPSpec.SOAP11.getEnvelopeNamespaceURI());
+            }
+        }
         if (type == SOAPElementType.HEADER) {
             NodeList children = element.getChildNodes();
             for (int i=0; i<children.getLength(); i++) {

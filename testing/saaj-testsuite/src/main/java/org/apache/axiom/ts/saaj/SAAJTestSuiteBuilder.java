@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.saaj;
 
 import javax.xml.soap.SAAJMetaFactory;
+import javax.xml.soap.SOAPConstants;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -36,5 +37,8 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP12, false));
         addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP11, true));
         addTest(new TestExamineMustUnderstandHeaderElements(saajImplementation, SOAPSpec.SOAP12, true));
+        addTest(new TestSetParentElement(saajImplementation, SOAPConstants.SOAP_1_1_PROTOCOL));
+        addTest(new TestSetParentElement(saajImplementation, SOAPConstants.SOAP_1_2_PROTOCOL));
+        addTest(new TestSetParentElement(saajImplementation, SOAPConstants.DYNAMIC_SOAP_PROTOCOL));
     }
 }
