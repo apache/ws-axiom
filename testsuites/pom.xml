@@ -24,8 +24,8 @@
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
-    <artifactId>testsuites</artifactId>
-    <name>Test Suites</name>
+    <artifactId>testing</artifactId>
+    <name>Testing</name>
     <packaging>pom</packaging>
     <modules>
         <module>dom-testsuite</module>
