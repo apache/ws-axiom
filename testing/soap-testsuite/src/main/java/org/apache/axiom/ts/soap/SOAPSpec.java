@@ -33,7 +33,9 @@ import javax.xml.validation.SchemaFactory;
  * Describes the characteristics of a given SOAP version.
  */
 public abstract class SOAPSpec extends Adaptable {
-    public static final SOAPSpec SOAP11 = new SOAPSpec("soap11", "http://schemas.xmlsoap.org/soap/envelope/",
+    public static final SOAPSpec SOAP11 = new SOAPSpec("soap11",
+            "text/xml",
+            "http://schemas.xmlsoap.org/soap/envelope/",
             new BooleanLiteral[] { BooleanLiteral.ONE, BooleanLiteral.ZERO },
             new QName("faultcode"),
             null,
@@ -56,7 +58,9 @@ public abstract class SOAPSpec extends Adaptable {
         }
     };
 
-    public static final SOAPSpec SOAP12 = new SOAPSpec("soap12", "http://www.w3.org/2003/05/soap-envelope",
+    public static final SOAPSpec SOAP12 = new SOAPSpec("soap12",
+            "application/soap+xml",
+            "http://www.w3.org/2003/05/soap-envelope",
             new BooleanLiteral[] { BooleanLiteral.TRUE, BooleanLiteral.FALSE, BooleanLiteral.ONE, BooleanLiteral.ZERO },
             new QName("http://www.w3.org/2003/05/soap-envelope", "Code"),
             new QName("http://www.w3.org/2003/05/soap-envelope", "Value"),
@@ -80,6 +84,7 @@ public abstract class SOAPSpec extends Adaptable {
     };
 
     private final String name;
+    private final String contentType;
     private final String envelopeNamespaceURI;
     private final BooleanLiteral[] booleanLiterals;
     private final QName envelopeQName;
@@ -100,12 +105,13 @@ public abstract class SOAPSpec extends Adaptable {
     private final String[] schemaResources;
     private Schema schema;
     
-    public SOAPSpec(String name, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
+    public SOAPSpec(String name, String contentType, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
             QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
             QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
             String nextRoleURI, QName senderFaultCode, QName receiverFaultCode,
             String[] schemaResources) {
         this.name = name;
+        this.contentType = contentType;
         this.envelopeNamespaceURI = envelopeNamespaceURI;
         this.booleanLiterals = booleanLiterals;
         envelopeQName = new QName(envelopeNamespaceURI, "Envelope");
@@ -138,6 +144,10 @@ public abstract class SOAPSpec extends Adaptable {
      */
     public abstract SOAPSpec getAltSpec();
     
+    public final String getContentType() {
+        return contentType;
+    }
+
     public final String getEnvelopeNamespaceURI() {
         return envelopeNamespaceURI;
     }

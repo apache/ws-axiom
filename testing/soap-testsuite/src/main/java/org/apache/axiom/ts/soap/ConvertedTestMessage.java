@@ -28,6 +28,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -80,7 +81,17 @@ final class ConvertedTestMessage extends TestMessage {
         }
         element = (Element)element.getOwnerDocument().renameNode(element, newName.getNamespaceURI(),
                 prefix == null ? newName.getLocalPart() : prefix + ":" + newName.getLocalPart());
-        if (type == SOAPFaultChild.CODE) {
+        if (type == SOAPElementType.HEADER) {
+            NodeList children = element.getChildNodes();
+            for (int i=0; i<children.getLength(); i++) {
+                Node child = children.item(i);
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                    Element headerBlock = (Element)child;
+                    processBooleanAttribute(headerBlock, BooleanAttribute.MUST_UNDERSTAND);
+                    processBooleanAttribute(headerBlock, BooleanAttribute.RELAY);
+                }
+            }
+        } else if (type == SOAPFaultChild.CODE) {
             Element value = getChild(element, SOAPFaultChild.VALUE);
             // TODO: should translate fault code as well
             element.setTextContent(value.getTextContent());
@@ -103,6 +114,28 @@ final class ConvertedTestMessage extends TestMessage {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    private static void processBooleanAttribute(Element headerBlock, BooleanAttribute booleanAttribute) {
+        String localName = booleanAttribute.getName();
+        Attr attr = headerBlock.getAttributeNodeNS(SOAPSpec.SOAP12.getEnvelopeNamespaceURI(), localName);
+        if (attr != null) {
+            if (booleanAttribute.isSupported(SOAPSpec.SOAP11)) {
+                String prefix = attr.getPrefix();
+                attr = (Attr)attr.getOwnerDocument().renameNode(attr, SOAPSpec.SOAP11.getEnvelopeNamespaceURI(), prefix + ":" + localName);
+                String stringValue = attr.getValue();
+                boolean value = false;
+                for (BooleanLiteral booleanLiteral : SOAPSpec.SOAP12.getBooleanLiterals()) {
+                    if (stringValue.equals(booleanLiteral.getLexicalRepresentation())) {
+                        value = booleanLiteral.getValue();
+                        break;
+                    }
+                }
+                attr.setValue(SOAPSpec.SOAP11.getCanonicalRepresentation(value));
+            } else {
+                headerBlock.removeAttributeNode(attr);
             }
         }
     }

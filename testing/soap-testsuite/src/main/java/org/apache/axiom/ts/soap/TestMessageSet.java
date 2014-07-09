@@ -58,6 +58,11 @@ public final class TestMessageSet extends Adaptable {
      */
     public static final TestMessageSet CUSTOM_ROLE_FAULT = new TestMessageSet("custom-role-fault");
     
+    /**
+     * A SOAP request with a single mustUnderstand header.
+     */
+    public static final TestMessageSet MUST_UNDERSTAND = new TestMessageSet("must-understand");
+    
     private final TestMessage soap11Message;
     private final TestMessage soap12Message;
     
