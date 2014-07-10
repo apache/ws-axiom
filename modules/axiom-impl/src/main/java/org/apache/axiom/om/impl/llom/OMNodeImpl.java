@@ -25,12 +25,10 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.INode;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
@@ -101,11 +99,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      * @param node
      */
     public void setNextOMSibling(OMNode node) {
-        if (node == null || node.getOMFactory() instanceof OMLinkedListImplFactory) {
-            this.nextSibling = (OMNodeImpl) node;
-        } else {
-            this.nextSibling = (OMNodeImpl) ((OMFactoryEx)factory).importNode(node);
-        }
         this.nextSibling = (OMNodeImpl) node;
     }
 
@@ -152,24 +145,19 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        if (sibling.getParent() != null) {
-            sibling.detach();
+        OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
+        siblingImpl.coreSetParent(parent);
+        if (nextSibling == null) {
+            getNextOMSibling();
         }
-        ((CoreChildNode)sibling).coreSetParent(parent);
-        if (sibling instanceof OMNodeImpl) {
-            OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
-            if (nextSibling == null) {
-                getNextOMSibling();
-            }
-            siblingImpl.setPreviousOMSibling(this);
-            if (nextSibling == null) {
-                parent.coreSetLastChild((CoreChildNode)sibling);
-            } else {
-                nextSibling.setPreviousOMSibling(sibling);
-            }
-            ((INode)sibling).setNextOMSibling(nextSibling);
-            nextSibling = siblingImpl;
+        siblingImpl.setPreviousOMSibling(this);
+        if (nextSibling == null) {
+            parent.coreSetLastChild((CoreChildNode)sibling);
+        } else {
+            nextSibling.setPreviousOMSibling(sibling);
         }
+        ((INode)sibling).setNextOMSibling(nextSibling);
+        nextSibling = siblingImpl;
     }
 
     /**
@@ -184,25 +172,18 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        if (sibling.getParent() != null) {
-            sibling.detach();
+        OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
+        if (previousSibling == null) {
+            parent.coreSetFirstChild(siblingImpl);
+            siblingImpl.nextSibling = this;
+            siblingImpl.previousSibling = null;
+        } else {
+            siblingImpl.coreSetParent(parent);
+            siblingImpl.nextSibling = this;
+            previousSibling.setNextOMSibling(siblingImpl);
+            siblingImpl.setPreviousOMSibling(previousSibling);
         }
-        if (sibling instanceof OMNodeImpl) {
-            OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
-            
-            if (previousSibling == null) {
-                parent.coreSetFirstChild(siblingImpl);
-                siblingImpl.nextSibling = this;
-                siblingImpl.previousSibling = null;
-            } else {
-                siblingImpl.coreSetParent(parent);
-                siblingImpl.nextSibling = this;
-                previousSibling.setNextOMSibling(siblingImpl);
-                siblingImpl.setPreviousOMSibling(previousSibling);
-            }
-            previousSibling = siblingImpl;
-
-        }
+        previousSibling = siblingImpl;
     }
 
     /**
@@ -220,12 +201,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      * @param previousSibling
      */
     public void setPreviousOMSibling(OMNode previousSibling) {
-        if (previousSibling == null ||
-                previousSibling.getOMFactory() instanceof OMLinkedListImplFactory) {
-            this.previousSibling = (OMNodeImpl) previousSibling;
-        } else {
-            this.previousSibling = (OMNodeImpl) ((OMFactoryEx)factory).importNode(previousSibling);
-        }
+        this.previousSibling = (OMNodeImpl) previousSibling;
     }
 
     /**

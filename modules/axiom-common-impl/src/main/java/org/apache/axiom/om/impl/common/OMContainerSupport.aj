@@ -101,6 +101,22 @@ public aspect OMContainerSupport {
         addChild(omNode, false);
     }
 
+    public final INode IContainer.prepareNewChild(OMNode omNode) {
+        INode child;
+        // Careful here: if the child was created by another Axiom implementation, it doesn't
+        // necessarily implement INode
+        if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
+            child = (INode)omNode;
+        } else {
+            child = (INode)((OMFactoryEx)getOMFactory()).importNode(omNode);
+        }
+        checkChild(omNode);
+        if (child.getParent() != null) {
+            child.detach();
+        }
+        return child;
+    }
+
     public void IContainer.addChild(OMNode omNode, boolean fromBuilder) {
         INode child;
         if (fromBuilder) {
@@ -123,10 +139,7 @@ public aspect OMContainerSupport {
                 // We don't need to detach and re-add it.
                 return;
             }
-            checkChild(omNode);
-        }
-        if (child.getParent() != null) {
-            child.detach();
+            child = prepareNewChild(omNode);
         }
         
         child.coreSetParent(this);
