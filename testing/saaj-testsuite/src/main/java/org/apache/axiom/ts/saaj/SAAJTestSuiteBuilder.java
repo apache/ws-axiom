@@ -40,5 +40,8 @@ public class SAAJTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestSetParentElement(saajImplementation, SOAPConstants.SOAP_1_1_PROTOCOL));
         addTest(new TestSetParentElement(saajImplementation, SOAPConstants.SOAP_1_2_PROTOCOL));
         addTest(new TestSetParentElement(saajImplementation, SOAPConstants.DYNAMIC_SOAP_PROTOCOL));
+        addTest(new TestGetOwnerDocument(saajImplementation, SOAPConstants.SOAP_1_1_PROTOCOL));
+        addTest(new TestGetOwnerDocument(saajImplementation, SOAPConstants.SOAP_1_2_PROTOCOL));
+        addTest(new TestGetOwnerDocument(saajImplementation, SOAPConstants.DYNAMIC_SOAP_PROTOCOL));
     }
 }
