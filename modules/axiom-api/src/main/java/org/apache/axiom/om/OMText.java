@@ -80,6 +80,7 @@ public interface OMText extends OMNode {
     Object getDataHandler();
 
     /** @return Returns boolean flag saying whether the node contains an optimized text or not. */
+    // TODO: inconsistent naming
     boolean isOptimized();
 
     /**
@@ -94,6 +95,9 @@ public interface OMText extends OMNode {
 
     /**
      * Sets the isBinary flag.
+     * Receiving binary can happen as either MTOM attachments or as Base64 Text In the case of
+     * Base64 user has to explicitly specify that the content is binary, before calling
+     * getDataHandler(), getInputStream()....
      *
      * @param value true if the content is binary
      */

@@ -54,10 +54,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
 
     protected String mimeType;
 
-    protected boolean optimize;
-
-    protected boolean isBinary;
-
     /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
     private String contentID;
 
@@ -116,9 +112,9 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         }
         
         // Copy the optimized related settings.
-        this.optimize = source.optimize;
+        setOptimize(source.isOptimized());
         this.mimeType = source.mimeType;
-        this.isBinary = source.isBinary;
+        setBinary(source.isBinary());
         
         // TODO
         // Do we need a deep copy of the data-handler 
@@ -173,8 +169,8 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
                       boolean optimize, OMFactory factory) {
         this(parent, s, factory);
         this.mimeType = mimeType;
-        this.optimize = optimize;
-        this.isBinary = true;
+        setOptimize(optimize);
+        setBinary(true);
     }
 
     /** @param dataHandler To send binary optimised content Created programatically. */
@@ -189,8 +185,8 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     public OMTextImpl(OMContainer parent, Object dataHandler, boolean optimize, OMFactory factory, boolean fromBuilder) {
         super(parent, factory, fromBuilder);
         this.dataHandlerObject = dataHandler;
-        this.isBinary = true;
-        this.optimize = optimize;
+        setBinary(true);
+        setOptimize(optimize);
         this.nodeType = TEXT_NODE;
     }
 
@@ -206,8 +202,8 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         super(factory);
         this.contentID = contentID;
         dataHandlerObject = dataHandlerProvider;
-        isBinary = true;
-        this.optimize = optimize;
+        setBinary(true);
+        setOptimize(optimize);
         nodeType = TEXT_NODE;
     }
 
@@ -269,32 +265,8 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
         }
     }
 
-    public boolean isOptimized() {
-        return optimize;
-    }
-
-    public void setOptimize(boolean value) {
-        this.optimize = value;
-        if (value) {
-            isBinary = true;
-        }
-    }
-
-    /**
-     * Receiving binary can happen as either MTOM attachments or as Base64 Text In the case of
-     * Base64 user has to explicitly specify that the content is binary, before calling
-     * getDataHandler(), getInputStream()....
-     */
-    public void setBinary(boolean value) {
-        isBinary = value;
-    }
-
-    public boolean isBinary() {
-        return isBinary;
-    }
-
     public Object getDataHandler() {
-        if ((value != null || charArray != null) && isBinary) {
+        if ((value != null || charArray != null) && isBinary()) {
             String text = getTextFromProperPlace();
             return org.apache.axiom.attachments.utils.DataHandlerUtils
                     .getDataHandlerFromText(text, mimeType);
@@ -322,12 +294,12 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
 
-        if (!this.isBinary) {
+        if (!isBinary()) {
             serializer.writeText(getType(), getText());
         } else if (dataHandlerObject instanceof DataHandlerProvider) {
-            serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, contentID, optimize);
+            serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, contentID, isOptimized());
         } else {
-            serializer.writeDataHandler((DataHandler)getDataHandler(), contentID, optimize);
+            serializer.writeDataHandler((DataHandler)getDataHandler(), contentID, isOptimized());
         }
     }
 
@@ -343,7 +315,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        if (isBinary && options.isFetchDataHandlers()) {
+        if (isBinary() && options.isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).
             ((DataHandler)getDataHandler()).getDataSource();

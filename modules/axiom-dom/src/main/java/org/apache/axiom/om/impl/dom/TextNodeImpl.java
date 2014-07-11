@@ -45,10 +45,6 @@ import java.io.IOException;
 public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText {
     private String mimeType;
 
-    private boolean optimize;
-
-    private boolean isBinary;
-
     private String contentID;
 
     protected char[] charArray;
@@ -96,9 +92,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         }
 
         // Copy the optimized related settings.
-        this.optimize = source.optimize;
+        setOptimize(source.isOptimized());
         this.mimeType = source.mimeType;
-        this.isBinary = source.isBinary;
+        setBinary(source.isBinary());
 
         // TODO
         // Do we need a deep copy of the data-handler 
@@ -115,8 +111,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                         boolean isBinary, OMFactory factory) {
         this(text, factory);
         this.mimeType = mimeType;
-        this.optimize = optimize;
-        this.isBinary = isBinary;
+        setOptimize(optimize);
+        setBinary(isBinary());
     }
 
     /**
@@ -127,8 +123,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                         OMFactory factory) {
         super(factory);
         this.dataHandlerObject = dataHandler;
-        this.isBinary = true;
-        this.optimize = optimize;
+        setBinary(true);
+        setOptimize(optimize);
     }
 
     /**
@@ -144,8 +140,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         super(factory);
         this.contentID = contentID;
         dataHandlerObject = dataHandlerProvider;
-        isBinary = true;
-        this.optimize = optimize;
+        setBinary(true);
+        setOptimize(optimize);
     }
 
     /**
@@ -205,17 +201,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     // /OMNode methods
     // /
 
-    public boolean isOptimized() {
-        return this.optimize;
-    }
-
-    public void setOptimize(boolean value) {
-        this.optimize = value;
-        if (value) {
-            isBinary = true;
-        }
-    }
-
     public String getText() {
         if (this.charArray != null || this.textValue != null) {
             return getTextFromProperPlace();
@@ -270,7 +255,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
          * this should return a DataHandler containing the binary data
          * reperesented by the Base64 strings stored in OMText
          */
-        if ((textValue != null || charArray != null) & isBinary) {
+        if ((textValue != null || charArray != null) & isBinary()) {
             return DataHandlerUtils.getDataHandlerFromText(getTextFromProperPlace(), mimeType);
         } else {
 
@@ -288,12 +273,12 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        if (!this.isBinary) {
+        if (!isBinary()) {
             serializer.writeText(getType(), getText());
         } else if (dataHandlerObject instanceof DataHandlerProvider) {
-            serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, contentID, optimize);
+            serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, contentID, isOptimized());
         } else {
-            serializer.writeDataHandler((DataHandler)getDataHandler(), contentID, optimize);
+            serializer.writeDataHandler((DataHandler)getDataHandler(), contentID, isOptimized());
         }
     }
 
@@ -347,20 +332,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         }
     }
 
-    public boolean isBinary() {
-        return isBinary;
-    }
-
-    /**
-     * Receiving binary can happen as either MTOM attachments or as Base64 Text In the case of Base64
-     * user has to explicitly specify that the content is binary, before calling getDataHandler(),
-     * getInputStream()....
-     */
-    public void setBinary(boolean value) {
-        this.isBinary = value;
-
-    }
-
     public OMNamespace getNamespace() {
         // Note: efficiency is not important here; the method is deprecated anyway
         QName qname = getTextAsQName();
@@ -377,7 +348,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     void beforeClone(OMCloneOptions options) {
-        if (isBinary && options.isFetchDataHandlers()) {
+        if (isBinary() && options.isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).
             ((DataHandler)getDataHandler()).getDataSource();
