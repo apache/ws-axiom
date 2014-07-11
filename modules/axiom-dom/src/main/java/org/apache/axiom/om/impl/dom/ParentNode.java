@@ -143,7 +143,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
             if (coreGetLastKnownChild() == null && coreGetFirstChildIfAvailable() == null) {
                 coreSetLastChild((CoreChildNode)newDomChild);
                 coreSetFirstChild((CoreChildNode)newDomChild);
-                ((NodeImpl)coreGetFirstChildIfAvailable()).isFirstChild(true);
                 newDomChild.setParent(this, useDomSemantics);
             } else {
                 ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(newDomChild);
@@ -188,8 +187,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                             newDomChild.internalSetNextSibling(refDomChild);
                             refDomChild.internalSetPreviousSibling(newDomChild);
 
-                            ((NodeImpl)coreGetFirstChildIfAvailable()).isFirstChild(true);
-                            refDomChild.isFirstChild(false);
                             newDomChild.internalSetPreviousSibling(null); // Just to be
                             // sure :-)
 

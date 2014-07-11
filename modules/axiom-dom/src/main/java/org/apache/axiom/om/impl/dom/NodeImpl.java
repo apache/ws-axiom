@@ -72,8 +72,6 @@ public abstract class NodeImpl extends InformationItem implements Node {
      */
     protected final static short HAS_PARENT = 0x1 << 1;
     
-    protected final static short FIRSTCHILD = 0x1 << 2;
-
     /**
      * Used by {@link AttrImpl} to determine whether the attribute has been specified explicitly
      * (flag unset) or has a default value (flag set).
@@ -168,14 +166,6 @@ public abstract class NodeImpl extends InformationItem implements Node {
 
     final void hasParent(boolean value) {
         flags = (short) (value ? flags | HAS_PARENT : flags & ~HAS_PARENT);
-    }
-
-    final boolean isFirstChild() {
-        return (flags & FIRSTCHILD) != 0;
-    }
-
-    final void isFirstChild(boolean value) {
-        flags = (short) (value ? flags | FIRSTCHILD : flags & ~FIRSTCHILD);
     }
 
     /*
