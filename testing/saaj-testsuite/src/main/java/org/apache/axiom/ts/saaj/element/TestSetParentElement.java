@@ -16,12 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj;
+package org.apache.axiom.ts.saaj.element;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPFactory;
 
+import org.apache.axiom.ts.saaj.SAAJImplementation;
+import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.w3c.dom.NodeList;
 
 public class TestSetParentElement extends SAAJTestCase {

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj;
+package org.apache.axiom.ts.saaj.element;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -28,6 +28,8 @@ import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPFactory;
 import javax.xml.soap.SOAPPart;
 
+import org.apache.axiom.ts.saaj.SAAJImplementation;
+import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

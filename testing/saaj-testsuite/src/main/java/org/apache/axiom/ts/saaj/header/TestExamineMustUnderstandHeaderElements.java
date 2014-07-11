@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.saaj;
+package org.apache.axiom.ts.saaj.header;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -27,6 +27,9 @@ import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.axiom.ts.saaj.FactorySelector;
+import org.apache.axiom.ts.saaj.SAAJImplementation;
+import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.TestMessageSet;
 
