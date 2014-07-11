@@ -503,10 +503,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode
         // An attribute node doesn't have a builder
     }
 
-    public final Node getNextSibling() {
-        return null;
-    }
-
     public final String lookupNamespaceURI(String specifiedPrefix) {
         Element ownerElement = getOwnerElement();
         return ownerElement == null ? null : ownerElement.lookupNamespaceURI(specifiedPrefix);

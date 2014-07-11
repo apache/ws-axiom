@@ -191,8 +191,8 @@ public aspect OMElementSupport {
     
     public void IElement.detachAndDiscardParent() {
         coreSetParent(null);
-        setPreviousOMSibling(null);
-        setNextOMSibling(null);
+        coreSetPreviousSibling(null);
+        coreSetNextSibling(null);
     }
     
     public static void insertChild(OMElement parent, Class[] sequence, int pos, OMNode newChild) {

@@ -25,15 +25,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-public abstract class ChildNode extends NodeImpl implements CoreChildNode {
+public abstract class ChildNode extends NodeImpl implements DOMChildNode {
     private ParentNode ownerNode;
     
-    private NodeImpl previousSibling;
-
-    private NodeImpl nextSibling;
-
     public ChildNode(OMFactory factory) {
         super(factory);
     }
@@ -47,23 +42,19 @@ public abstract class ChildNode extends NodeImpl implements CoreChildNode {
     }
 
     final NodeImpl internalGetPreviousSibling() {
-        return previousSibling;
+        return (NodeImpl)coreGetPreviousSibling();
     }
     
     final NodeImpl internalGetNextSibling() {
-        return nextSibling;
+        return (NodeImpl)coreGetNextSiblingIfAvailable();
     }
     
     final void internalSetPreviousSibling(NodeImpl previousSibling) {
-        this.previousSibling = previousSibling;
+        coreSetPreviousSibling((CoreChildNode)previousSibling);
     }
     
     final void internalSetNextSibling(NodeImpl nextSibling) {
-        this.nextSibling = nextSibling;
-    }
-    
-    public final CoreChildNode coreGetNextSiblingIfAvailable() {
-        return (CoreChildNode)nextSibling;
+        coreSetNextSibling((CoreChildNode)nextSibling);
     }
 
     final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
@@ -101,10 +92,6 @@ public abstract class ChildNode extends NodeImpl implements CoreChildNode {
 
     public final void build() {
         // Do nothing; a leaf node is always complete
-    }
-
-    public final Node getNextSibling() {
-        return (Node)coreGetNextSibling();
     }
 
     public final CoreParentNode coreGetParent() {

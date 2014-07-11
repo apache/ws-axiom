@@ -18,11 +18,8 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 
 public interface INode extends OMNodeEx, CoreChildNode, ISerializable {
-    public void setNextOMSibling(OMNode node);
 
-    public void setPreviousOMSibling(OMNode previousSibling);
 }

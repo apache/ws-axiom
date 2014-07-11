@@ -147,9 +147,9 @@ public aspect OMContainerSupport {
         if (coreGetFirstChildIfAvailable() == null) {
             coreSetFirstChild(child);
         } else {
-            INode lastChild = (INode)coreGetLastKnownChild();
-            child.setPreviousOMSibling(lastChild);
-            lastChild.setNextOMSibling(child);
+            CoreChildNode lastChild = coreGetLastKnownChild();
+            child.coreSetPreviousSibling(lastChild);
+            lastChild.coreSetNextSibling(child);
         }
         coreSetLastChild(child);
 
@@ -210,8 +210,8 @@ public aspect OMContainerSupport {
         }
         while (child != null) {
             CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
-            ((INode)child).setPreviousOMSibling(null);
-            ((INode)child).setNextOMSibling(null);
+            child.coreSetPreviousSibling(null);
+            child.coreSetNextSibling(null);
             child.coreSetParent(null);
             child = nextSibling;
         }

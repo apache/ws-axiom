@@ -23,6 +23,25 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 
 public aspect CoreChildNodeSupport {
+    private CoreChildNode CoreChildNode.nextSibling;
+    private CoreChildNode CoreChildNode.previousSibling;
+    
+    public final CoreChildNode CoreChildNode.coreGetNextSiblingIfAvailable() {
+        return nextSibling;
+    }
+
+    public final void CoreChildNode.coreSetNextSibling(CoreChildNode nextSibling) {
+        this.nextSibling = nextSibling;
+    }
+    
+    public final CoreChildNode CoreChildNode.coreGetPreviousSibling() {
+        return previousSibling;
+    }
+    
+    public final void CoreChildNode.coreSetPreviousSibling(CoreChildNode previousSibling) {
+        this.previousSibling = previousSibling;
+    }
+    
     public CoreChildNode CoreChildNode.coreGetNextSibling() throws OMException {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {

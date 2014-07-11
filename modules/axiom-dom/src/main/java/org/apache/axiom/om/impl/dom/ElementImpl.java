@@ -59,17 +59,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, IElement, NamedNode,
+public class ElementImpl extends ParentNode implements Element, IElement, NamedNode, DOMChildNode,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
     private ParentNode ownerNode;
     
-    private NodeImpl previousSibling;
-
-    private NodeImpl nextSibling;
-
     private int lineNumber;
 
     /**
@@ -114,23 +110,19 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     final NodeImpl internalGetPreviousSibling() {
-        return previousSibling;
+        return (NodeImpl)coreGetPreviousSibling();
     }
     
     final NodeImpl internalGetNextSibling() {
-        return nextSibling;
+        return (NodeImpl)coreGetNextSiblingIfAvailable();
     }
     
     final void internalSetPreviousSibling(NodeImpl previousSibling) {
-        this.previousSibling = previousSibling;
+        coreSetPreviousSibling((CoreChildNode)previousSibling);
     }
     
     final void internalSetNextSibling(NodeImpl nextSibling) {
-        this.nextSibling = nextSibling;
-    }
-
-    public final CoreChildNode coreGetNextSiblingIfAvailable() {
-        return (CoreChildNode)nextSibling;
+        coreSetNextSibling((CoreChildNode)nextSibling);
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
@@ -1031,10 +1023,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     public final void build() {
         defaultBuild();
-    }
-
-    public final Node getNextSibling() {
-        return (Node)coreGetNextSibling();
     }
 
     public final CoreParentNode coreGetParent() {

@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
+import org.w3c.dom.Node;
 
 public abstract class RootNode extends ParentNode {
     public RootNode(OMFactory factory) {
@@ -39,5 +40,13 @@ public abstract class RootNode extends ParentNode {
 
     final void internalSetNextSibling(NodeImpl nextSibling) {
         throw new UnsupportedOperationException();
+    }
+
+    public final Node getNextSibling() {
+        return null;
+    }
+
+    public final Node getPreviousSibling() {
+        return null;
     }
 }

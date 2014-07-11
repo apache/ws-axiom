@@ -30,4 +30,8 @@ public aspect OMNodeSupport {
     public OMNode INode.getNextOMSibling() {
         return (OMNode)coreGetNextSibling();
     }
+
+    public final OMNode INode.getPreviousOMSibling() {
+        return (OMNode)coreGetPreviousSibling();
+    }
 }

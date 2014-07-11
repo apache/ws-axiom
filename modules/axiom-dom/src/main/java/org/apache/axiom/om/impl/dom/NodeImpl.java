@@ -498,14 +498,6 @@ public abstract class NodeImpl extends InformationItem implements Node {
         return hasParent() ? internalGetOwnerNode() : null;
     }
 
-    public final OMNode getPreviousOMSibling() {
-        return (OMNode)internalGetPreviousSibling();
-    }
-
-    public final Node getPreviousSibling() {
-        return internalGetPreviousSibling();
-    }
-
     // /
     // /OMNode methods
     // /

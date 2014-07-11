@@ -577,10 +577,6 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         defaultBuild();
     }
 
-    public final Node getNextSibling() {
-        return null;
-    }
-    
     public final String lookupNamespaceURI(String specifiedPrefix) {
         Element documentElement = getDocumentElement();
         return documentElement == null ? null

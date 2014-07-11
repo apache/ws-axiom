@@ -1081,10 +1081,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.coreSetParent(element);
     }
 
-    public CoreChildNode coreGetNextSiblingIfAvailable() {
-        return super.coreGetNextSiblingIfAvailable();
-    }
-
     public CoreChildNode coreGetFirstChild() {
         return super.coreGetFirstChild();
     }

@@ -16,9 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.dom;
 
-public interface CoreChildNode {
-    CoreParentNode coreGetParent();
-    void coreSetParent(CoreParentNode parent);
+import org.apache.axiom.om.impl.common.CoreChildNode;
+import org.w3c.dom.Node;
+
+public interface DOMChildNode extends Node, CoreChildNode{
+
 }

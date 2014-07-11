@@ -36,12 +36,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
     /** Field parent */
     protected IContainer parent;
 
-    /** Field nextSibling */
-    protected OMNodeImpl nextSibling;
-
-    /** Field previousSibling */
-    protected OMNodeImpl previousSibling;
-
     /**
      * Constructor OMNodeImpl
      *
@@ -89,17 +83,13 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         }
     }
 
-    public CoreChildNode coreGetNextSiblingIfAvailable() {
-        return nextSibling;
-    }
-
     /**
      * Method setNextOMSibling.
      *
      * @param node
      */
     public void setNextOMSibling(OMNode node) {
-        this.nextSibling = (OMNodeImpl) node;
+        coreSetNextSibling((OMNodeImpl)node);
     }
 
     /**
@@ -116,19 +106,20 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         // builder will always add new nodes to the end of list of children of the
         // document or element being built.
         INode nextSibling = (INode)getNextOMSiblingIfAvailable();
+        INode previousSibling = (INode)coreGetPreviousSibling();
         if (previousSibling == null) {
             parent.coreSetFirstChild(nextSibling);
         } else {
-            previousSibling.setNextOMSibling(nextSibling);
+            previousSibling.coreSetNextSibling(nextSibling);
         }
         if (nextSibling == null) {
             parent.coreSetLastChild(previousSibling);
         } else {
-            nextSibling.setPreviousOMSibling(previousSibling);
+            nextSibling.coreSetPreviousSibling(previousSibling);
         }
 
-        this.previousSibling = null;
-        this.nextSibling = null;
+        coreSetPreviousSibling(null);
+        coreSetNextSibling(null);
         this.parent = null;
         return this;
     }
@@ -147,17 +138,18 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         }
         OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
         siblingImpl.coreSetParent(parent);
-        if (nextSibling == null) {
+        if (coreGetNextSiblingIfAvailable() == null) {
             getNextOMSibling();
         }
-        siblingImpl.setPreviousOMSibling(this);
+        siblingImpl.coreSetPreviousSibling(this);
+        OMNodeImpl nextSibling = (OMNodeImpl)coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
             parent.coreSetLastChild((CoreChildNode)sibling);
         } else {
-            nextSibling.setPreviousOMSibling(sibling);
+            nextSibling.coreSetPreviousSibling((CoreChildNode)sibling);
         }
-        ((INode)sibling).setNextOMSibling(nextSibling);
-        nextSibling = siblingImpl;
+        ((INode)sibling).coreSetNextSibling(nextSibling);
+        coreSetNextSibling(siblingImpl);
     }
 
     /**
@@ -173,26 +165,18 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
         OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
+        OMNodeImpl previousSibling = (OMNodeImpl)coreGetPreviousSibling();
         if (previousSibling == null) {
             parent.coreSetFirstChild(siblingImpl);
-            siblingImpl.nextSibling = this;
-            siblingImpl.previousSibling = null;
+            siblingImpl.coreSetNextSibling(this);
+            siblingImpl.coreSetPreviousSibling(null);
         } else {
             siblingImpl.coreSetParent(parent);
-            siblingImpl.nextSibling = this;
-            previousSibling.setNextOMSibling(siblingImpl);
-            siblingImpl.setPreviousOMSibling(previousSibling);
+            siblingImpl.coreSetNextSibling(this);
+            previousSibling.coreSetNextSibling(siblingImpl);
+            siblingImpl.coreSetPreviousSibling(previousSibling);
         }
-        previousSibling = siblingImpl;
-    }
-
-    /**
-     * Gets the previous sibling.
-     *
-     * @return boolean
-     */
-    public OMNode getPreviousOMSibling() {
-        return previousSibling;
+        coreSetPreviousSibling(siblingImpl);
     }
 
     /**
@@ -201,7 +185,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      * @param previousSibling
      */
     public void setPreviousOMSibling(OMNode previousSibling) {
-        this.previousSibling = (OMNodeImpl) previousSibling;
+        coreSetPreviousSibling((OMNodeImpl)previousSibling);
     }
 
     /**
