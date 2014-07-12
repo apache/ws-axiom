@@ -19,15 +19,15 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.INode;
 
 /** Class OMNodeImpl */

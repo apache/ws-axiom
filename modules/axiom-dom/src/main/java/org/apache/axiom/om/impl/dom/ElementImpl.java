@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -29,10 +32,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.CoreChildNode;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
-import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;

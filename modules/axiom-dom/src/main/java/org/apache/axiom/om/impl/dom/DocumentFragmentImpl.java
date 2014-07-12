@@ -19,12 +19,12 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.NonDeferringParentNode;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;

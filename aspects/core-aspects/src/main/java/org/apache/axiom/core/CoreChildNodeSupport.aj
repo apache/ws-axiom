@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;

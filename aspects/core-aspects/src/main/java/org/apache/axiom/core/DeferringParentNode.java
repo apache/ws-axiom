@@ -16,24 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
+/**
+ * Marker interface for {@link CoreParentNode} implementations that support deferred parsing.
+ */
+public interface DeferringParentNode extends CoreParentNode {
 
-public aspect NonDeferringParentNodeSupport {
-    public final OMXMLParserWrapper NonDeferringParentNode.getBuilder() {
-        return null;
-    }
-
-    public final void NonDeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
-        throw new UnsupportedOperationException();
-    }
-    
-    public final int NonDeferringParentNode.getState() {
-        return CoreParentNode.COMPLETE;
-    }
-
-    public final void NonDeferringParentNode.coreSetState(int state) {
-        throw new UnsupportedOperationException();
-    }
 }

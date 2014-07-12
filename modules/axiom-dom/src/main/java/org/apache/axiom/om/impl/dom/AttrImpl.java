@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -27,7 +28,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.OMAttributeEx;
-import org.apache.axiom.om.impl.common.NonDeferringParentNode;
 import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;

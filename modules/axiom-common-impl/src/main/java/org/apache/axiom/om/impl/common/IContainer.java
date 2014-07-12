@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;

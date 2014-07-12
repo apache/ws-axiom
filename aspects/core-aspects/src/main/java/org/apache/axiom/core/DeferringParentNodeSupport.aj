@@ -16,26 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DocumentFragment;
 
-/**
- * Interface for parent nodes. This interface is implemented by {@link OMContainer} implementations
- * as well as nodes that can have children, but that are not {@link OMContainer} implementations
- * (such as DOOM's {@link Attr} and {@link DocumentFragment} implementations).
- */
-public interface CoreParentNode {
-    int INCOMPLETE = 0;
-    int COMPLETE = 1;
-    int DISCARDED = 2;
+public aspect DeferringParentNodeSupport {
+    private OMXMLParserWrapper DeferringParentNode.builder;
+    private int DeferringParentNode.state;
+
+    public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
+        forceExpand();
+        return builder;
+    }
+
+    public void DeferringParentNode.forceExpand() {}
     
-    OMXMLParserWrapper getBuilder();
-    void coreSetBuilder(OMXMLParserWrapper builder);
-    int getState();
-    void coreSetState(int state);
-    boolean isComplete();
+    public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
+        this.builder = builder;
+    }
+    
+    public int DeferringParentNode.getState() {
+        return state;
+    }
+
+    public final void DeferringParentNode.coreSetState(int state) {
+        this.state = state;
+    }
 }

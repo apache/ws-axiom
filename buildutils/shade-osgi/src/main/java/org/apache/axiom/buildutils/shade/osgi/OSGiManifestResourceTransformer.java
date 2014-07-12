@@ -49,7 +49,9 @@ import org.osgi.framework.BundleException;
  * </ul>
  */
 public class OSGiManifestResourceTransformer implements ResourceTransformer {
-    private Manifest shadedManifest;
+    private Manifest originalManifest;
+    private final Set<String> importedPackages = new LinkedHashSet<String>();
+    private final Set<String> packagesExportedFromIncludedJARs = new LinkedHashSet<String>();
     
     public boolean canTransformResource(String resource) {
         return resource.equals(JarFile.MANIFEST_NAME);
@@ -75,30 +77,28 @@ public class OSGiManifestResourceTransformer implements ResourceTransformer {
     }
     
     public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
+        Manifest manifest = new Manifest(is);
+        Attributes attributes = manifest.getMainAttributes();
+        importedPackages.addAll(extractPackages(attributes, "Import-Package"));
         // We know that the first invocation of processResource is for the project's
         // manifest (see the existing ManifestResourceTransformer's source code)
-        if (shadedManifest == null) {
-            shadedManifest = new Manifest(is);
+        if (originalManifest == null) {
+            originalManifest = manifest;
         } else {
-            Manifest manifest = new Manifest(is);
-            Attributes includedAttributes = manifest.getMainAttributes();
-            Attributes shadedAttributes = shadedManifest.getMainAttributes();
-            Set<String> shadedImportPackages = new LinkedHashSet<String>(
-                    extractPackages(shadedAttributes, "Import-Package"));
-            shadedImportPackages.removeAll(extractPackages(includedAttributes, "Export-Package"));
-            shadedImportPackages.addAll(extractPackages(includedAttributes, "Import-Package"));
-            shadedAttributes.putValue("Import-Package",
-                    StringUtils.join(shadedImportPackages.iterator(), ","));
+            packagesExportedFromIncludedJARs.addAll(extractPackages(attributes, "Export-Package"));
         }
         is.close();
     }
 
     public boolean hasTransformedResource() {
-        return shadedManifest != null;
+        return originalManifest != null;
     }
 
     public void modifyOutputStream(JarOutputStream os) throws IOException {
+        importedPackages.removeAll(packagesExportedFromIncludedJARs);
+        originalManifest.getMainAttributes().putValue("Import-Package",
+                StringUtils.join(importedPackages.iterator(), ","));
         os.putNextEntry(new JarEntry(JarFile.MANIFEST_NAME));
-        shadedManifest.write(os);
+        originalManifest.write(os);
     }
 }

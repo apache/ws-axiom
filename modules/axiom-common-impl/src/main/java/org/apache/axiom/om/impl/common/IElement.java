@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.DeferringParentNode;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMElementEx;
 

@@ -19,11 +19,11 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.impl.common.CoreChildNode;
-import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

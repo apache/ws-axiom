@@ -906,5 +906,6 @@
         <module>distribution</module>
         <module>code-coverage</module>
         <module>testing</module>
+        <module>aspects</module>
     </modules>
 </project>

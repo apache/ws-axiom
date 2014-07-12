@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
@@ -36,8 +38,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.CoreChildNode;
-import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;

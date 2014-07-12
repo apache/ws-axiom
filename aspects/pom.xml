@@ -17,50 +17,20 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>axiom-common-impl</artifactId>
-    <name>Axiom Common Implementation Classes</name>
-    <!-- Although axiom-common-impl will never be used as a bundle itself, we still need the OSGi metadata
-         so that we can generate a correct manifest when the classes are included in axiom-impl and
-         axiom-dom by maven-shade-plugin. -->
-    <packaging>bundle</packaging>
-    <description>Contains implementation classes shared by LLOM and DOOM.</description>
-    <!-- This needs to be set explicitly because the project structure implies that the Maven calculated defaults are wrong -->
-    <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-common-impl</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-common-impl</developerConnection>
-        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-common-impl</url>
-    </scm>
-    <!-- This also needs to be set explicitly because the Maven calculated URL would point to nowhere -->
-    <url>http://ws.apache.org/axiom/</url>
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>core-aspects</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <artifactId>aspects</artifactId>
+    <name>Aspects</name>
+    <packaging>pom</packaging>
+    <modules>
+        <module>core-aspects</module>
+        <module>dom-aspects</module>
+    </modules>
     <build>
         <plugins>
             <plugin>
@@ -87,8 +57,8 @@
                 </executions>
             </plugin>
             <plugin>
-                <!-- Note: axiom-common-impl is not intended to be used as an OSGi bundle.
-                     We generate OSGi metadata only for the shading process in axiom-impl and axiom-dom. -->
+                <!-- Note: Aspect libraries are not intended to be used as an OSGi bundle.
+                     We generate OSGi metadata only for the shading process in the implementations. -->
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
@@ -98,7 +68,7 @@
                         <Export-Package>*;-noimport:=true</Export-Package>
                         <Import-Package>
                             <!-- aspectjrt is not an OSGi bundle; we don't need to generate imports because
-                                 axiom-impl and axiom-dom include these classes into the final JARs -->
+                                 the implementations include these classes into the final JARs -->
                             !org.aspectj.*,
                             *
                         </Import-Package>

@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
@@ -29,7 +30,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;

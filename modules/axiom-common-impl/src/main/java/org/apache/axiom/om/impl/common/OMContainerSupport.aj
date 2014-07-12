@@ -25,6 +25,8 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;

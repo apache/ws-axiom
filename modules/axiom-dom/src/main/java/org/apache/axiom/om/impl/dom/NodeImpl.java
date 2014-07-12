@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -30,8 +32,6 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.common.CoreChildNode;
-import org.apache.axiom.om.impl.common.CoreParentNode;
 import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;

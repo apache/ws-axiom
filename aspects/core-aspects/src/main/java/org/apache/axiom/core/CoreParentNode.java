@@ -16,30 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-public aspect DeferringParentNodeSupport {
-    private OMXMLParserWrapper DeferringParentNode.builder;
-    private int DeferringParentNode.state;
-
-    public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
-        forceExpand();
-        return builder;
-    }
-
-    public void DeferringParentNode.forceExpand() {}
+/**
+ * Interface for parent nodes.
+ */
+public interface CoreParentNode {
+    int INCOMPLETE = 0;
+    int COMPLETE = 1;
+    int DISCARDED = 2;
     
-    public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
-        this.builder = builder;
-    }
-    
-    public int DeferringParentNode.getState() {
-        return state;
-    }
-
-    public final void DeferringParentNode.coreSetState(int state) {
-        this.state = state;
-    }
+    OMXMLParserWrapper getBuilder();
+    void coreSetBuilder(OMXMLParserWrapper builder);
+    int getState();
+    void coreSetState(int state);
+    boolean isComplete();
 }

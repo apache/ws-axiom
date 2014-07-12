@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.core;
 
-import org.apache.axiom.om.impl.common.CoreChildNode;
-import org.w3c.dom.Node;
-
-public interface DOMChildNode extends Node, CoreChildNode{
+/**
+ * Marker interface for {@link CoreParentNode} implementations that don't support deferred parsing.
+ */
+public interface NonDeferringParentNode extends CoreParentNode {
 
 }
