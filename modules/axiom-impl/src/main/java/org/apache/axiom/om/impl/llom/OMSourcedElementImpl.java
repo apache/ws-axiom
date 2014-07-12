@@ -47,7 +47,6 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -57,7 +56,6 @@ import javax.xml.transform.sax.SAXResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -398,11 +396,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getNamespacesInScope();
     }
 
-    public NamespaceContext getNamespaceContext(boolean detached) {
-        forceExpand();
-        return super.getNamespaceContext(detached);
-    }
-
     public Iterator getAllAttributes() {
         forceExpand();
         return super.getAllAttributes();
@@ -484,14 +477,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public String getText() {
         return super.getText();
-    }
-
-    public Reader getTextAsStream(boolean cache) {
-        return super.getTextAsStream(cache);
-    }
-
-    public void writeTextTo(Writer out, boolean cache) throws IOException {
-        super.writeTextTo(out, cache);
     }
 
     private void ensureLocalNameSet() {

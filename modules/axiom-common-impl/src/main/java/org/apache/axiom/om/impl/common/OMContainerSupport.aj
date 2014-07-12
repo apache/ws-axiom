@@ -63,15 +63,15 @@ public aspect OMContainerSupport {
         coreSetState(DISCARDED);
     }
 
-    public XMLStreamReader OMContainer.getXMLStreamReader() {
+    public XMLStreamReader IContainer.getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
     
-    public XMLStreamReader OMContainer.getXMLStreamReaderWithoutCaching() {
+    public XMLStreamReader IContainer.getXMLStreamReaderWithoutCaching() {
         return getXMLStreamReader(false);
     }
 
-    public XMLStreamReader OMContainer.getXMLStreamReader(boolean cache) {
+    public XMLStreamReader IContainer.getXMLStreamReader(boolean cache) {
         return getXMLStreamReader(cache, defaultReaderConfiguration);
     }
     
@@ -266,7 +266,7 @@ public aspect OMContainerSupport {
         return new OMDescendantsIterator(this, includeSelf);
     }
 
-    public OMElement OMContainer.getFirstChildWithName(QName elementQName) throws OMException {
+    public OMElement IContainer.getFirstChildWithName(QName elementQName) throws OMException {
         OMChildrenQNameIterator omChildrenQNameIterator =
                 new OMChildrenQNameIterator(getFirstOMChild(),
                                             elementQName);
@@ -283,7 +283,7 @@ public aspect OMContainerSupport {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
-    public SAXResult OMContainer.getSAXResult() {
+    public SAXResult IContainer.getSAXResult() {
         SAXResultContentHandler handler = new SAXResultContentHandler(this);
         SAXResult result = new SAXResult();
         result.setHandler(handler);

@@ -50,11 +50,11 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 public aspect OMElementSupport {
     declare parents: (InformationItem+ && OMElement+) implements IElement;
     
-    public final int OMElement.getType() {
+    public final int IElement.getType() {
         return OMNode.ELEMENT_NODE;
     }
     
-    public NamespaceContext OMElement.getNamespaceContext(boolean detached) {
+    public NamespaceContext IElement.getNamespaceContext(boolean detached) {
         if (detached) {
             Map namespaces = new HashMap();
             for (Iterator it = getNamespacesInScope(); it.hasNext(); ) {
@@ -67,7 +67,7 @@ public aspect OMElementSupport {
         }
     }
     
-    public String OMElement.getText() {
+    public String IElement.getText() {
         String childText = null;
         StringBuffer buffer = null;
         OMNode child = getFirstOMChild();
@@ -107,12 +107,12 @@ public aspect OMElementSupport {
     }
     
     // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2
-    public QName OMElement.getTextAsQName() {
+    public QName IElement.getTextAsQName() {
         String childText = getText().trim();
         return childText.length() == 0 ? null : resolveQName(childText);
     }
 
-    public Reader OMElement.getTextAsStream(boolean cache) {
+    public Reader IElement.getTextAsStream(boolean cache) {
         // If the element is not an OMSourcedElement and has not more than one child, then the most
         // efficient way to get the Reader is to build a StringReader
         if (!(this instanceof OMSourcedElement) && (!cache || isComplete())) {
@@ -135,7 +135,7 @@ public aspect OMElementSupport {
         }
     }
     
-    public void OMElement.writeTextTo(Writer out, boolean cache) throws IOException {
+    public void IElement.writeTextTo(Writer out, boolean cache) throws IOException {
         try {
             XMLStreamReader reader = getXMLStreamReader(cache);
             int depth = 0;
@@ -159,7 +159,7 @@ public aspect OMElementSupport {
         }
     }
     
-    public final void OMElement.setText(String text) {
+    public final void IElement.setText(String text) {
         // Remove all existing children
         OMNode child;
         while ((child = getFirstOMChild()) != null) {
@@ -171,7 +171,7 @@ public aspect OMElementSupport {
         }
     }
 
-    public final void OMElement.setText(QName qname) {
+    public final void IElement.setText(QName qname) {
         // Remove all existing children
         OMNode child;
         while ((child = getFirstOMChild()) != null) {
