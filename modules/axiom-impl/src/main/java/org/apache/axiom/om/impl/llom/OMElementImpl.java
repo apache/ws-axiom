@@ -70,12 +70,12 @@ public class OMElementImpl extends OMNodeImpl
      * </ul>
      * </ul>
      */
-    protected OMNamespace ns;
+    private OMNamespace ns;
 
     /** Field localName */
-    protected String localName;
+    private String localName;
 
-    protected QName qName;
+    private QName qName;
 
     /** Field namespaces */
     protected HashMap namespaces = null;
@@ -608,6 +608,11 @@ public class OMElementImpl extends OMNodeImpl
         setNamespace(namespace, true);
     }
 
+    public final void internalSetNamespace(OMNamespace namespace) {
+        this.ns = namespace;
+        this.qName = null;
+    }
+
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         this.ns = namespace;
         this.qName = null;
@@ -756,6 +761,14 @@ public class OMElementImpl extends OMNodeImpl
             }
             this.setComplete(true);
         }
+    }
+
+    public final String internalGetLocalName() {
+        return localName;
+    }
+
+    public final void internalSetLocalName(String localName) {
+        this.localName = localName;
     }
 }
 

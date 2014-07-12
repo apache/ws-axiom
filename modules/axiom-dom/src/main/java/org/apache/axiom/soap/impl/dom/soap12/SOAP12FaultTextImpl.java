@@ -88,6 +88,6 @@ public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP12FaultTextImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
+        return new SOAP12FaultTextImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

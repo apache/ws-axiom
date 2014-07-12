@@ -61,6 +61,6 @@ public class SOAP11HeaderImpl extends SOAPHeaderImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP11HeaderImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
+        return new SOAP11HeaderImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

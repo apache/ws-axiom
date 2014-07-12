@@ -259,6 +259,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new SOAPEnvelopeImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
+        return new SOAPEnvelopeImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

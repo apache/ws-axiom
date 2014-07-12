@@ -82,6 +82,6 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP11FaultCodeImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
+        return new SOAP11FaultCodeImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

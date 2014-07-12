@@ -499,4 +499,12 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
         Element ownerElement = getOwnerElement();
         return ownerElement == null ? null : ownerElement.lookupPrefix(namespaceURI);
     }
+
+    public final String internalGetLocalName() {
+        return localName;
+    }
+
+    public final void internalSetLocalName(String localName) {
+        this.localName = localName;
+    }
 }

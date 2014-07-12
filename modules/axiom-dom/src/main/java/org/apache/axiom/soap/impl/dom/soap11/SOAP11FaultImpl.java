@@ -138,7 +138,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        SOAPFault clone = new SOAP11FaultImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
+        SOAPFault clone = new SOAP11FaultImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
         if (e != null) {
             clone.setException(e);
         }

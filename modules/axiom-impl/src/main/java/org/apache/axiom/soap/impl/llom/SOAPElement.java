@@ -48,7 +48,7 @@ public abstract class SOAPElement extends OMElementImpl {
         checkParent(parent);
 
         if (extractNamespaceFromParent) {
-            this.ns = parent.getNamespace();
+            internalSetNamespace(parent.getNamespace());
         }
     }
 

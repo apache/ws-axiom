@@ -49,6 +49,6 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new SOAP12BodyImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
+        return new SOAP12BodyImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

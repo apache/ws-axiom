@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
@@ -206,7 +205,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @return name
      */
     private String getPrintableName() {
-        if (isExpanded || (definedNamespaceSet && localName != null)) {
+        if (isExpanded || (definedNamespaceSet && internalGetLocalName() != null)) {
             String uri = null;
             if (getNamespace() != null) {
                 uri = getNamespace().getNamespaceURI();
@@ -298,14 +297,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @param staxNamespaceURI
      */
     void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
-        if (localName == null) {
+        if (internalGetLocalName() == null) {
             // The local name was not known in advance; initialize it from the reader
-            localName = staxLocalName;
+            internalSetLocalName(staxLocalName);
         } else {
             // Make sure element local name and namespace matches what was expected
-            if (!staxLocalName.equals(localName)) {
+            if (!staxLocalName.equals(internalGetLocalName())) {
                 throw new OMException("Element name from data source is " +
-                        staxLocalName + ", not the expected " + localName);
+                        staxLocalName + ", not the expected " + internalGetLocalName());
             }
         }
         if (definedNamespaceSet) {
@@ -430,14 +429,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.removeAttribute(attr);
     }
 
-    public void coreSetFirstChild(CoreChildNode firstChild) {
-        super.coreSetFirstChild(firstChild);
-    }
-
-    public void coreSetLastChild(CoreChildNode lastChild) {
-        super.coreSetLastChild(lastChild);
-    }
-
     public OMElement getFirstElement() {
         return super.getFirstElement();
     }
@@ -480,11 +471,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     private void ensureLocalNameSet() {
-        if (localName == null) {
+        if (internalGetLocalName() == null) {
             if (dataSource instanceof QNameAwareOMDataSource) {
-                localName = ((QNameAwareOMDataSource)dataSource).getLocalName();
+                internalSetLocalName(((QNameAwareOMDataSource)dataSource).getLocalName());
             }
-            if (localName == null) {
+            if (internalGetLocalName() == null) {
                 forceExpand();
             }
         }
@@ -631,7 +622,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             targetOMSE = (OMSourcedElementImpl)getOMFactory().createOMElement(targetDS);
         }
         
-        targetOMSE.localName = localName;
+        targetOMSE.internalSetLocalName(internalGetLocalName());
         targetOMSE.definedNamespaceSet = definedNamespaceSet;
         if (definedNamespace instanceof DeferredNamespace) {
             targetOMSE.definedNamespace = targetOMSE.new DeferredNamespace(definedNamespace.getNamespaceURI());
@@ -783,54 +774,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         } else {
             dataSource.serialize(writer, format); 
         }
-    }
-
-    public void addChild(OMNode omNode) {
-        super.addChild(omNode);
-    }
-
-    public void addChild(OMNode omNode, boolean fromBuilder) {
-        super.addChild(omNode, fromBuilder);
-    }
-
-    public void checkChild(OMNode child) {
-        super.checkChild(child);
-    }
-
-    public Iterator getChildrenWithName(QName elementQName) {
-        return super.getChildrenWithName(elementQName);
-    }
-    
-    public Iterator getChildrenWithLocalName(String localName) {
-        return super.getChildrenWithLocalName(localName);
-    }
-
-    public Iterator getChildrenWithNamespaceURI(String uri) {
-        return super.getChildrenWithNamespaceURI(uri);
-    }
-
-    public OMElement getFirstChildWithName(QName elementQName) throws OMException {
-        return super.getFirstChildWithName(elementQName);
-    }
-
-    public Iterator getChildren() {
-        return super.getChildren();
-    }
-
-    public Iterator getDescendants(boolean includeSelf) {
-        return super.getDescendants(includeSelf);
-    }
-
-    public OMNode getFirstOMChild() {
-        return super.getFirstOMChild();
-    }
-
-    public OMNode getFirstOMChildIfAvailable() {
-        return super.getFirstOMChildIfAvailable();
-    }
-
-    public CoreChildNode getLastKnownOMChild() {
-        return super.coreGetLastKnownChild();
     }
 
     public OMNode detach() throws OMException {
@@ -1046,40 +989,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public void removeChildren() {
-        super.removeChildren();
-    }
-    
-    public void defaultBuild() {
-        super.defaultBuild();
-    }
-    
-    public void buildNext() {
-        super.buildNext();
-    }
-
-    public CoreParentNode coreGetParent() {
-        return super.coreGetParent();
-    }
-
-    public void coreSetParent(CoreParentNode element) {
-        super.coreSetParent(element);
-    }
-
-    public CoreChildNode coreGetFirstChild() {
-        return super.coreGetFirstChild();
-    }
-
     public CoreChildNode coreGetFirstChildIfAvailable() {
         forceExpand();
         return super.coreGetFirstChildIfAvailable();
-    }
-
-    public CoreChildNode coreGetLastKnownChild() {
-        return super.coreGetLastKnownChild();
-    }
-    
-    public void detachAndDiscardParent() {
-        super.detachAndDiscardParent();
     }
 }

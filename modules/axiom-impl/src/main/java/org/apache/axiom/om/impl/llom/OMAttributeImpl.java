@@ -160,6 +160,11 @@ public class OMAttributeImpl implements IAttribute {
         this.type = type;
     }
 
+    public final void internalSetNamespace(OMNamespace namespace) {
+        this.namespace = namespace;
+        this.qName = null;
+    }
+
     public void setNamespace(OMNamespace namespace, boolean declare) {
         this.namespace = handleNamespace(owner, namespace, true, declare);
         this.qName = null;
@@ -249,5 +254,13 @@ public class OMAttributeImpl implements IAttribute {
 
     public OMInformationItem clone(OMCloneOptions options) {
         return new OMAttributeImpl(localName, namespace, value, factory);
+    }
+
+    public final String internalGetLocalName() {
+        return localName;
+    }
+
+    public final void internalSetLocalName(String localName) {
+        this.localName = localName;
     }
 }

@@ -19,7 +19,16 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.om.OMNamespace;
 
 public interface INamedInformationItem extends OMNamedInformationItem {
-
+    String internalGetLocalName();
+    void internalSetLocalName(String localName);
+    
+    /**
+     * Set the namespace of the node without adding a corresponding namespace declaration.
+     * 
+     * @param namespace
+     */
+    void internalSetNamespace(OMNamespace namespace);
 }

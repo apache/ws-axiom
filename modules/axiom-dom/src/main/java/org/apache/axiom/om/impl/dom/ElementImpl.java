@@ -80,9 +80,9 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
      * </ul>
      * </ul>
      */
-    protected OMNamespace namespace;
+    private OMNamespace namespace;
 
-    protected String localName;
+    private String localName;
 
     private AttributeMap attributes;
 
@@ -1087,5 +1087,13 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public final void checkChild(OMNode child) {
+    }
+
+    public final String internalGetLocalName() {
+        return localName;
+    }
+
+    public final void internalSetLocalName(String localName) {
+        this.localName = localName;
     }
 }

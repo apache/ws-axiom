@@ -44,9 +44,8 @@ public abstract class SOAPElement extends ElementImpl {
         checkParent(parent);
 
         if (extractNamespaceFromParent) {
-            this.namespace = parent.getNamespace();
+            internalSetNamespace(parent.getNamespace());
         }
-        this.localName = localName;
     }
 
     public SOAPElement(ParentNode parentNode, String localName, OMNamespace ns,
