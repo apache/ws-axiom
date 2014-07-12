@@ -320,6 +320,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
             // completely fetched into memory (or temporary storage).
             ((DataHandler)getDataHandler()).getDataSource();
         }
-        return factory.createOMText(targetParent, this);
+        return getOMFactory().createOMText(targetParent, this);
     }
 }

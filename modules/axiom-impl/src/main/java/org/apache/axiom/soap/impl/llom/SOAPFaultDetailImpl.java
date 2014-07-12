@@ -61,6 +61,6 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultDetail((SOAPFault)targetParent);
+        return ((SOAPFactory)getOMFactory()).createSOAPFaultDetail((SOAPFault)targetParent);
     }
 }

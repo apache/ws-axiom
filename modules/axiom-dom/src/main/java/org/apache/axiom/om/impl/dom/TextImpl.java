@@ -91,6 +91,6 @@ public class TextImpl extends TextNodeImpl {
     }
 
     ChildNode createClone() {
-        return new TextImpl(this, factory);
+        return new TextImpl(this, getOMFactory());
     }
 }

@@ -90,6 +90,6 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
     }
 
     ChildNode createClone() {
-        return new ProcessingInstructionImpl(target, value, factory);
+        return new ProcessingInstructionImpl(target, value, getOMFactory());
     }
 }

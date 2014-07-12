@@ -353,7 +353,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             this.declareDefaultNamespace(value);
         } else {
             this.setAttributeNode(new AttrImpl(ownerDocument(), name, value,
-                                               this.factory));
+                                               getOMFactory()));
         }
 
     }
@@ -410,7 +410,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             attr.setValue(value);
         } else {
             if (namespaceURI != null) {
-                attr = new AttrImpl(ownerDocument(), localName, value, this.factory);
+                attr = new AttrImpl(ownerDocument(), localName, value, getOMFactory());
                 attr.internalSetNamespace(new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix));
     
                 this.setAttributeNodeNS(attr);
@@ -475,7 +475,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                 }
             }
         }
-        return addAttribute(new AttrImpl(null, localName, namespace, value, factory));
+        return addAttribute(new AttrImpl(null, localName, namespace, value, getOMFactory()));
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
@@ -867,7 +867,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         if (options.isPreserveModel()) {
             clone = (ElementImpl)createClone(options, targetParent, namespaceRepairing);
         } else {
-            clone = new ElementImpl(targetParent, localName, namespace, null, factory, namespaceRepairing);
+            clone = new ElementImpl(targetParent, localName, namespace, null, getOMFactory(), namespaceRepairing);
         }
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
@@ -879,7 +879,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new ElementImpl(targetParent, localName, namespace, null, factory, generateNSDecl);
+        return new ElementImpl(targetParent, localName, namespace, null, getOMFactory(), generateNSDecl);
     }
     
     public void setLineNumber(int lineNumber) {

@@ -16,33 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.dom;
 
-package org.apache.axiom.om.impl.dom;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Node;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.ts.soapdom.SOAPDOMTestSuiteBuilder;
 
-public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
-    public CDATASectionImpl(String text, OMFactory factory) {
-        super(text, factory);
-    }
-
-    public int getType() throws OMException {
-        return OMNode.CDATA_SECTION_NODE;
-    }
-
-    public short getNodeType() {
-        return Node.CDATA_SECTION_NODE;
-    }
-
-    public String getNodeName() {
-        return "#cdata-section";
-    }
-
-    ChildNode createClone() {
-        return new CDATASectionImpl(textValue, getOMFactory());
+public class SOAPDOMImplementationTest extends TestCase {
+    public static TestSuite suite() {
+        SOAPDOMTestSuiteBuilder builder = new SOAPDOMTestSuiteBuilder(new OMDOMMetaFactory());
+        return builder.build();
     }
 }

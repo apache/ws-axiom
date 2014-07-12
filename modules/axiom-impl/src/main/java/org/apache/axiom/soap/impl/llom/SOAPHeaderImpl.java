@@ -88,7 +88,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         
         SOAPHeaderBlock soapHeaderBlock;
         try {
-            soapHeaderBlock = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, this);
+            soapHeaderBlock = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(localName, ns, this);
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
@@ -209,6 +209,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPHeader((SOAPEnvelope)targetParent);
+        return ((SOAPFactory)getOMFactory()).createSOAPHeader((SOAPEnvelope)targetParent);
     }
 }

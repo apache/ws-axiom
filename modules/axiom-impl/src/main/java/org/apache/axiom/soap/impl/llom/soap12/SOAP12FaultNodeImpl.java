@@ -69,6 +69,6 @@ public class SOAP12FaultNodeImpl extends SOAPElement implements SOAPFaultNode {
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultNode((SOAPFault)targetParent);
+        return ((SOAPFactory)getOMFactory()).createSOAPFaultNode((SOAPFault)targetParent);
     }
 }

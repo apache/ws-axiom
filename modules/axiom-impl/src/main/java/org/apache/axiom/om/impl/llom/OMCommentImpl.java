@@ -70,6 +70,6 @@ public class OMCommentImpl extends OMLeafNode implements OMComment {
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMComment(targetParent, value);
+        return getOMFactory().createOMComment(targetParent, value);
     }
 }

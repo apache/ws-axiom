@@ -91,6 +91,6 @@ public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcess
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMProcessingInstruction(targetParent, target, value);
+        return getOMFactory().createOMProcessingInstruction(targetParent, target, value);
     }
 }

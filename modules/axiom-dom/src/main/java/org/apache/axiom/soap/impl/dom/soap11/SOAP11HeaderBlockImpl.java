@@ -90,7 +90,7 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        SOAPHeaderBlock clone = new SOAP11HeaderBlockImpl(targetParent, getLocalName(), getNamespace(), null, factory, generateNSDecl);
+        SOAPHeaderBlock clone = new SOAP11HeaderBlockImpl(targetParent, getLocalName(), getNamespace(), null, getOMFactory(), generateNSDecl);
         copyData(options, clone);
         return clone;
     }

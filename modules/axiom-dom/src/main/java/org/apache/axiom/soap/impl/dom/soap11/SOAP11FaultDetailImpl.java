@@ -51,6 +51,6 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP11FaultDetailImpl(targetParent, namespace, null, factory, generateNSDecl);
+        return new SOAP11FaultDetailImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
     }
 }

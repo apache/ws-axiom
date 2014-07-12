@@ -58,6 +58,6 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     }
 
     ChildNode createClone() {
-        return new CommentImpl(getData(), factory);
+        return new CommentImpl(getData(), getOMFactory());
     }
 }

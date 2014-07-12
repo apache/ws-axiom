@@ -64,7 +64,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
             OMAttribute attribute = new AttrImpl((DocumentImpl)getOwnerDocument(), attributeName,
                                                  new OMNamespaceImpl(soapEnvelopeNamespaceURI,
                                                                    SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                                                 attrValue, this.factory);
+                                                 attrValue, getOMFactory());
             this.addAttribute(attribute);
         }
     }

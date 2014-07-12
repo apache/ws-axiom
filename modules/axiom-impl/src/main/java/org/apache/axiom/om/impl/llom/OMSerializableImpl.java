@@ -42,13 +42,13 @@ import org.apache.commons.logging.LogFactory;
 public abstract class OMSerializableImpl extends InformationItem implements ISerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
     
-    protected OMFactory factory;
+    private OMFactory factory;
 
     public OMSerializableImpl(OMFactory factory) {
         this.factory = factory;
     }
     
-    public OMFactory getOMFactory() {
+    public final OMFactory getOMFactory() {
         if (factory == null) {
             factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
         }

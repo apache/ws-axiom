@@ -91,7 +91,7 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
                                                         new OMNamespaceImpl(
                                                                 soapEnvelopeNamespaceURI,
                                                                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                                                        attrValue, this.factory);
+                                                        attrValue, getOMFactory());
             this.addAttribute(attribute);
         }
     }
@@ -146,13 +146,13 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
+        SOAPHeaderBlock clone = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
         copyData(options, clone);
         return clone;
     }
 
     protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
-        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(ds);
+        SOAPHeaderBlock clone = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(ds);
         copyData(options, clone);
         return clone;
     }

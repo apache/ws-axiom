@@ -121,7 +121,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         if (!DOMUtil.isQualifiedName(name)) {
             throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
-        return new AttrImpl(this, name, this.factory);
+        return new AttrImpl(this, name, getOMFactory());
     }
 
     public Attr createAttributeNS(String namespaceURI, String qualifiedName)
@@ -136,29 +136,29 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         } else {
             namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
-        return new AttrImpl(this, localName, namespace, this.factory);
+        return new AttrImpl(this, localName, namespace, getOMFactory());
     }
 
     public CDATASection createCDATASection(String data) throws DOMException {
-        CDATASectionImpl cdataSection = new CDATASectionImpl(data, factory);
+        CDATASectionImpl cdataSection = new CDATASectionImpl(data, getOMFactory());
         cdataSection.setOwnerDocument(this);
         return cdataSection;
     }
 
     public Comment createComment(String data) {
-        CommentImpl comment = new CommentImpl(data, this.factory);
+        CommentImpl comment = new CommentImpl(data, getOMFactory());
         comment.setOwnerDocument(this);
         return comment;
     }
 
     public DocumentFragment createDocumentFragment() {
-        DocumentFragmentImpl fragment = new DocumentFragmentImpl(this.factory);
+        DocumentFragmentImpl fragment = new DocumentFragmentImpl(getOMFactory());
         fragment.setOwnerDocument(this);
         return fragment;
     }
 
     public Element createElement(String tagName) throws DOMException {
-        ElementImpl element = new ElementImpl(null, tagName, null, null, this.factory, false);
+        ElementImpl element = new ElementImpl(null, tagName, null, null, getOMFactory(), false);
         element.setOwnerDocument(this);
         return element;
     }
@@ -180,26 +180,26 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         } else {
             namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
-        ElementImpl element = new ElementImpl(null, localName, namespace, null, this.factory, false);
+        ElementImpl element = new ElementImpl(null, localName, namespace, null, getOMFactory(), false);
         element.setOwnerDocument(this);
         return element;
     }
 
     public EntityReference createEntityReference(String name) throws DOMException {
-        EntityReferenceImpl node = new EntityReferenceImpl(name, null, factory);
+        EntityReferenceImpl node = new EntityReferenceImpl(name, null, getOMFactory());
         node.setOwnerDocument(this);
         return node;
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,
                                                              String data) throws DOMException {
-        ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, factory);
+        ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, getOMFactory());
         pi.setOwnerDocument(this);
         return pi;
     }
 
     public Text createTextNode(String value) {
-        TextImpl text = new TextImpl(value, this.factory);
+        TextImpl text = new TextImpl(value, getOMFactory());
         text.setOwnerDocument(this);
         return text;
     }
@@ -238,7 +238,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     }
 
     public DOMImplementation getImplementation() {
-        return ((DOMMetaFactory)factory.getMetaFactory()).getDOMImplementation();
+        return ((DOMMetaFactory)getOMFactory().getMetaFactory()).getDOMImplementation();
     }
 
     public Node importNode(Node importedNode, boolean deep) throws DOMException {
@@ -566,7 +566,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     }
 
     protected DocumentImpl createClone(OMCloneOptions options) {
-        return new DocumentImpl(factory);
+        return new DocumentImpl(getOMFactory());
     }
     
     public final void setComplete(boolean complete) {

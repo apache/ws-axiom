@@ -406,7 +406,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
         }
         // create a Text node to hold the given content
         if (textContent != null && textContent.length() != 0) {
-            insertBefore((NodeImpl)factory.createOMText(textContent), null, false);
+            insertBefore((NodeImpl)getOMFactory().createOMText(textContent), null, false);
         }
     }
 

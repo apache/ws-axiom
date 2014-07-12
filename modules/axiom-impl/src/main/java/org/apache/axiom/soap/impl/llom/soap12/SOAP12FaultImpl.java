@@ -63,7 +63,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     }
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault) {
-        return new SOAP12FaultDetailImpl(fault, (SOAPFactory) this.factory);
+        return new SOAP12FaultDetailImpl(fault, (SOAPFactory)getOMFactory());
 
     }
 

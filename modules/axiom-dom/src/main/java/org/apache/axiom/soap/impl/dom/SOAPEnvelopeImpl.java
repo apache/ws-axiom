@@ -57,7 +57,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     public SOAPVersion getVersion() {
-        return ((SOAPFactory)factory).getSOAPVersion();
+        return ((SOAPFactory)getOMFactory()).getSOAPVersion();
     }
 
     public SOAPHeader getHeader() {
@@ -72,7 +72,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 
     public SOAPHeader getOrCreateHeader() {
         SOAPHeader header = getHeader();
-        return header != null ? header : ((SOAPFactory)factory).createSOAPHeader(this);
+        return header != null ? header : ((SOAPFactory)getOMFactory()).createSOAPHeader(this);
     }
 
     /**
@@ -228,7 +228,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     public OMNamespace getSOAPBodyFirstElementNS() {
         QName payloadQName = this.getPayloadQName_Optimized();
         if (payloadQName != null) {
-            return this.factory.createOMNamespace(payloadQName.getNamespaceURI(), 
+            return getOMFactory().createOMNamespace(payloadQName.getNamespaceURI(), 
                                                   payloadQName.getPrefix());
         }
         SOAPBody body = this.getBody();
@@ -259,6 +259,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new SOAPEnvelopeImpl(targetParent, namespace, null, factory, generateNSDecl);
+        return new SOAPEnvelopeImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
     }
 }

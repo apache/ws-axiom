@@ -16,33 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soapdom;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.soap.SOAPSpec;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Node;
+public class SOAPDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
+    private final DOMMetaFactory metaFactory;
 
-public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
-    public CDATASectionImpl(String text, OMFactory factory) {
-        super(text, factory);
+    public SOAPDOMTestSuiteBuilder(DOMMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
     }
 
-    public int getType() throws OMException {
-        return OMNode.CDATA_SECTION_NODE;
+    protected void addTests() {
+        addTests(SOAPSpec.SOAP11);
+        addTests(SOAPSpec.SOAP12);
     }
-
-    public short getNodeType() {
-        return Node.CDATA_SECTION_NODE;
-    }
-
-    public String getNodeName() {
-        return "#cdata-section";
-    }
-
-    ChildNode createClone() {
-        return new CDATASectionImpl(textValue, getOMFactory());
+    
+    private void addTests(SOAPSpec spec) {
+        addTest(new org.apache.axiom.ts.soapdom.message.TestLazySOAPFactorySelection(metaFactory, spec));
     }
 }

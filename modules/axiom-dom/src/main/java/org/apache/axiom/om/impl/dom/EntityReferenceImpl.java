@@ -56,7 +56,7 @@ public class EntityReferenceImpl extends ChildNode implements OMEntityReference,
     }
 
     ChildNode createClone() {
-        return new EntityReferenceImpl(name, replacementText, factory);
+        return new EntityReferenceImpl(name, replacementText, getOMFactory());
     }
 
     public String getNodeName() {

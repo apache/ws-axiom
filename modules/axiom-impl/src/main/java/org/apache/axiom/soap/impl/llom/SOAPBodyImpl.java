@@ -157,7 +157,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
                     lookAheadNS = null;
                 } else {
                     String prefix = soapBuilder.getPrefix();
-                    lookAheadNS = factory.createOMNamespace(ns, prefix == null ? "" : prefix);
+                    lookAheadNS = getOMFactory().createOMNamespace(ns, prefix == null ? "" : prefix);
                 }
             }
         }
@@ -196,6 +196,6 @@ public abstract class SOAPBodyImpl extends SOAPElement
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPBody((SOAPEnvelope)targetParent);
+        return ((SOAPFactory)getOMFactory()).createSOAPBody((SOAPEnvelope)targetParent);
     }
 }

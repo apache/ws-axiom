@@ -124,9 +124,9 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements SOAPFaultSubC
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
         if (targetParent instanceof SOAPFaultSubCode) {
-            return ((SOAPFactory)factory).createSOAPFaultSubCode((SOAPFaultSubCode)targetParent);
+            return ((SOAPFactory)getOMFactory()).createSOAPFaultSubCode((SOAPFaultSubCode)targetParent);
         } else {
-            return ((SOAPFactory)factory).createSOAPFaultSubCode((SOAPFaultCode)targetParent);
+            return ((SOAPFactory)getOMFactory()).createSOAPFaultSubCode((SOAPFaultCode)targetParent);
         }
     }
 }

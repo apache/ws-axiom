@@ -114,6 +114,6 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements SOAPFaultSubC
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP12FaultSubCodeImpl(targetParent, namespace, null, factory, generateNSDecl);
+        return new SOAP12FaultSubCodeImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
     }
 }

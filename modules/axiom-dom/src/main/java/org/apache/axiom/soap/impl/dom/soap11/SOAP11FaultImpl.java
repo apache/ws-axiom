@@ -64,7 +64,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
             throws SOAPProcessingException {
-        return new SOAP11FaultDetailImpl(fault, (SOAPFactory) this.factory);
+        return new SOAP11FaultDetailImpl(fault, (SOAPFactory)getOMFactory());
     }
 
     public void setCode(SOAPFaultCode soapFaultCode)
@@ -138,7 +138,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        SOAPFault clone = new SOAP11FaultImpl(targetParent, namespace, null, factory, generateNSDecl);
+        SOAPFault clone = new SOAP11FaultImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
         if (e != null) {
             clone.setException(e);
         }

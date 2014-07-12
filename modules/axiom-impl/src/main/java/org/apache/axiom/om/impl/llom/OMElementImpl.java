@@ -490,7 +490,7 @@ public class OMElementImpl extends OMNodeImpl
                 }
             }
         }
-        return addAttribute(new OMAttributeImpl(localName, namespace, value, this.factory));
+        return addAttribute(new OMAttributeImpl(localName, namespace, value, getOMFactory()));
     }
 
     /**
@@ -703,7 +703,7 @@ public class OMElementImpl extends OMNodeImpl
         if (options.isPreserveModel()) {
             targetElement = createClone(options, targetParent);
         } else {
-            targetElement = factory.createOMElement(getLocalName(), getNamespace(), targetParent);
+            targetElement = getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
@@ -720,7 +720,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMElement(getLocalName(), getNamespace(), targetParent);
+        return getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
     }
     
     public void setLineNumber(int lineNumber) {

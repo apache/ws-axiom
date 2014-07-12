@@ -67,6 +67,6 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultCode((SOAPFault)targetParent);
+        return ((SOAPFactory)getOMFactory()).createSOAPFaultCode((SOAPFault)targetParent);
     }
 }

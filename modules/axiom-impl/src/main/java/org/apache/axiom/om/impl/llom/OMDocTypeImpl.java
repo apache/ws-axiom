@@ -68,6 +68,6 @@ public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMDocType(targetParent, rootName, publicId, systemId, internalSubset);
+        return getOMFactory().createOMDocType(targetParent, rootName, publicId, systemId, internalSubset);
     }
 }

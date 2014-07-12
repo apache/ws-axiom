@@ -486,7 +486,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         // Note: targetParent is always null here
-        return new AttrImpl(localName, namespace, type, factory);
+        return new AttrImpl(localName, namespace, type, getOMFactory());
     }
 
     public final boolean isComplete() {

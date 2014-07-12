@@ -58,7 +58,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
     private Hashtable userData; // Will be initialized in setUserData()
 
     /** Factory that created this node */
-    protected OMFactory factory;
+    private OMFactory factory;
 
     // data
 
@@ -413,7 +413,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
     }
 
     /** Returns the <code>OMFactory</code> that created this node */
-    public OMFactory getOMFactory() {
+    public final OMFactory getOMFactory() {
         if (factory == null) {
             factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
         }
@@ -448,7 +448,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
         if (ownerNode == null) {
             // As specified by DOMMetaFactory, the OMFactory for an implicitly created owner
             // document is always the OMFactory for plain XML.
-            DocumentImpl document = new DocumentImpl(factory.getMetaFactory().getOMFactory());
+            DocumentImpl document = new DocumentImpl(getOMFactory().getMetaFactory().getOMFactory());
             internalSetOwnerNode(document);
             return document;
         } else if (ownerNode instanceof DocumentImpl) {

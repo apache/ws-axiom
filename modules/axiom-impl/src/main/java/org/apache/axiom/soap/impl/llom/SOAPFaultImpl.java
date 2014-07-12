@@ -119,7 +119,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
         }
         OMElement faultDetailEnty = new OMElementImpl(detail,
                 SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, null,
-                factory, true);
+                getOMFactory(), true);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
@@ -138,7 +138,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
         return e == null ?
-                ((SOAPFactory)factory).createSOAPFault((SOAPBody) targetParent):
-                ((SOAPFactory)factory).createSOAPFault((SOAPBody) targetParent, e);
+                ((SOAPFactory)getOMFactory()).createSOAPFault((SOAPBody) targetParent):
+                ((SOAPFactory)getOMFactory()).createSOAPFault((SOAPBody) targetParent, e);
     }
 }

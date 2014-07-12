@@ -643,7 +643,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (options.isPreserveModel()) {
             targetOMSE = (OMSourcedElementImpl)createClone(options, targetDS);
         } else {
-            targetOMSE = (OMSourcedElementImpl)factory.createOMElement(targetDS);
+            targetOMSE = (OMSourcedElementImpl)getOMFactory().createOMElement(targetDS);
         }
         
         targetOMSE.localName = localName;
@@ -665,7 +665,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
     
     protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
-        return factory.createOMElement(ds);
+        return getOMFactory().createOMElement(ds);
     }
 
     public void setLineNumber(int lineNumber) {

@@ -52,6 +52,6 @@ public class SOAP11BodyImpl extends SOAPBodyImpl {
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
-        return ((SOAP11Factory) this.factory).createSOAPFault(this, e);
+        return ((SOAP11Factory)getOMFactory()).createSOAPFault(this, e);
     }
 }

@@ -70,7 +70,7 @@ public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
                 new AttrImpl((DocumentImpl)getOwnerDocument(),
                              SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
                              langNamespace,
-                             lang, this.factory);
+                             lang, getOMFactory());
         this.addAttribute(langAttr);
     }
 
@@ -88,6 +88,6 @@ public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP12FaultTextImpl(targetParent, namespace, null, factory, generateNSDecl);
+        return new SOAP12FaultTextImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
     }
 }

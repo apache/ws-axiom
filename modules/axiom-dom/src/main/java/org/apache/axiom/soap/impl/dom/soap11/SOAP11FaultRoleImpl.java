@@ -54,6 +54,6 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP11FaultRoleImpl(targetParent, namespace, null, factory, generateNSDecl);
+        return new SOAP11FaultRoleImpl(targetParent, namespace, null, getOMFactory(), generateNSDecl);
     }
 }

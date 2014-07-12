@@ -88,6 +88,6 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     }
 
     ChildNode createClone() {
-        return new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, factory);
+        return new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, getOMFactory());
     }
 }

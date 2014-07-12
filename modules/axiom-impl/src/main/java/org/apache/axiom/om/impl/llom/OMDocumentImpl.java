@@ -195,6 +195,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
     }
 
     protected OMDocument createClone(OMCloneOptions options) {
-        return factory.createOMDocument();
+        return getOMFactory().createOMDocument();
     }
 }

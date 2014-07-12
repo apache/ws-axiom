@@ -59,9 +59,9 @@ public class SOAP12FaultValueImpl extends SOAPElement implements SOAPFaultValue 
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
         if (targetParent instanceof SOAPFaultCode) {
-            return ((SOAPFactory)factory).createSOAPFaultValue((SOAPFaultCode)targetParent);
+            return ((SOAPFactory)getOMFactory()).createSOAPFaultValue((SOAPFaultCode)targetParent);
         } else {
-            return ((SOAPFactory)factory).createSOAPFaultValue((SOAPFaultSubCode)targetParent);
+            return ((SOAPFactory)getOMFactory()).createSOAPFaultValue((SOAPFaultSubCode)targetParent);
         }
     }
 }

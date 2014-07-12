@@ -61,6 +61,6 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultRole((SOAPFault)targetParent);
+        return ((SOAPFactory)getOMFactory()).createSOAPFaultRole((SOAPFault)targetParent);
     }
 }
