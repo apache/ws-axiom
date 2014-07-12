@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.OMAttributeEx;
-import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
+import org.apache.axiom.om.impl.common.IAttribute;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
@@ -42,7 +42,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode, NonDeferringParentNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Attr, NamedNode, NonDeferringParentNode {
     private String localName;
 
     private String type;
@@ -315,7 +315,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode
     }
 
     public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.namespace = OMNamedInformationItemHelper.handleNamespace(owner instanceof ElementImpl ? (ElementImpl)owner : null, namespace, true, declare);
+        this.namespace = handleNamespace(owner instanceof ElementImpl ? (ElementImpl)owner : null, namespace, true, declare);
     }
 
     /**
@@ -380,19 +380,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, Attr, NamedNode
      */
     public String getNamespaceURI() {
         return (this.namespace != null) ? namespace.getNamespaceURI() : null;
-    }
-
-    /**
-     * Returns the namespace prefix of this attr node.
-     *
-     * @see org.w3c.dom.Node#getPrefix()
-     */
-    public String getPrefix() {
-        return NamedNodeHelper.getPrefix(this);
-    }
-
-    public void setPrefix(String prefix) throws DOMException {
-        NamedNodeHelper.setPrefix(this, prefix);
     }
 
     /*

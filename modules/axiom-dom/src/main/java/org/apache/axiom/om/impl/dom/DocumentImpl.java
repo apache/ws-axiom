@@ -601,4 +601,12 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
 
     protected void checkDocumentElement(OMElement element) {
     }
+
+    public final String getPrefix() {
+        return null;
+    }
+
+    public final void setPrefix(String prefix) throws DOMException {
+        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+    }
 }

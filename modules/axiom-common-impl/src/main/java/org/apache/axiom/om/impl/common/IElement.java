@@ -22,6 +22,6 @@ import org.apache.axiom.core.DeferringParentNode;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMElementEx;
 
-public interface IElement extends OMElementEx, IContainer, INode, DeferringParentNode {
+public interface IElement extends OMElementEx, IContainer, INode, INamedInformationItem, DeferringParentNode {
     void addNamespaceDeclaration(OMNamespace ns);
 }

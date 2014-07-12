@@ -115,19 +115,8 @@ public abstract class NodeImpl extends InformationItem implements Node {
         return null;
     }
 
-    /*
-     * Overidden in ElementImpl and AttrImpl.
-     */
-    public String getPrefix() {
-        return null;
-    }
-
     public void setNodeValue(String nodeValue) throws DOMException {
         // Don't do anything, to be overridden in SOME Child classes
-    }
-
-    public void setPrefix(String prefix) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 
     /**

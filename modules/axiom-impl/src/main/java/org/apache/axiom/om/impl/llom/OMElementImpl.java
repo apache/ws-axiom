@@ -34,7 +34,6 @@ import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -99,7 +98,7 @@ public class OMElementImpl extends OMNodeImpl
         if (parent != null) {
             ((IContainer)parent).addChild(this, builder != null);
         }
-        this.ns = generateNSDecl ? OMNamedInformationItemHelper.handleNamespace(this, ns, false, true) : ns;
+        this.ns = generateNSDecl ? handleNamespace(this, ns, false, true) : ns;
     }
 
     /**
@@ -615,7 +614,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.ns = OMNamedInformationItemHelper.handleNamespace(this, namespace, false, declare);
+        this.ns = handleNamespace(this, namespace, false, declare);
         this.qName = null;
     }
 

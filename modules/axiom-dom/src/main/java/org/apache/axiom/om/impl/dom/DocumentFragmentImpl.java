@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -108,5 +109,13 @@ public class DocumentFragmentImpl extends RootNode implements
     }
 
     public final void checkChild(OMNode child) {
+    }
+
+    public final String getPrefix() {
+        return null;
+    }
+
+    public final void setPrefix(String prefix) throws DOMException {
+        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 }

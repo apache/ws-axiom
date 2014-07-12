@@ -22,11 +22,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.DOMException;
 
-final class NamedNodeHelper {
-    private NamedNodeHelper() {}
-
-    static String getPrefix(NamedNode node) {
-        OMNamespace ns = node.getNamespace();
+aspect NamedNodeSupport {
+    public final String NamedNode.getPrefix() {
+        OMNamespace ns = getNamespace();
         if (ns == null) {
             return null;
         } else {
@@ -35,11 +33,11 @@ final class NamedNodeHelper {
         }
     }
     
-    static void setPrefix(NamedNode node, String prefix) throws DOMException {
+    public final void NamedNode.setPrefix(String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";
         }
-        OMNamespace ns = node.getNamespace();
+        OMNamespace ns = getNamespace();
         if (ns == null) {
             if (prefix.length() > 0) {
                 throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
@@ -47,7 +45,7 @@ final class NamedNodeHelper {
                 // No need to set a new OMNamespace in this case
             }
         } else {
-            node.internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix == null ? "" : prefix));
+            internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix == null ? "" : prefix));
         }
     }
 }

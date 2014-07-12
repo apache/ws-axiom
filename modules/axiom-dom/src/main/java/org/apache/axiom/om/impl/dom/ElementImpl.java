@@ -36,7 +36,6 @@ import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -99,7 +98,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             ((IContainer)parentNode).addChild(this, builder != null);
         }
         this.attributes = new AttributeMap(this);
-        namespace = generateNSDecl ? OMNamedInformationItemHelper.handleNamespace(this, ns, false, true) : ns;
+        namespace = generateNSDecl ? handleNamespace(this, ns, false, true) : ns;
     }
 
     final ParentNode internalGetOwnerNode() {
@@ -748,7 +747,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.namespace = OMNamedInformationItemHelper.handleNamespace(this, namespace, false, declare);
+        this.namespace = handleNamespace(this, namespace, false, declare);
     }
 
     public void setNamespace(OMNamespace namespace) {
@@ -832,19 +831,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
      */
     public String getLocalName() {
         return this.localName;
-    }
-
-    /**
-     * Returns the namespace prefix of this element node
-     *
-     * @see org.w3c.dom.Node#getPrefix()
-     */
-    public String getPrefix() {
-        return NamedNodeHelper.getPrefix(this);
-    }
-
-    public void setPrefix(String prefix) throws DOMException {
-        NamedNodeHelper.setPrefix(this, prefix);
     }
 
     public QName resolveQName(String qname) {

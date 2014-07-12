@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.INamedInformationItem;
 
-interface NamedNode extends OMNamedInformationItem {
+interface NamedNode extends INamedInformationItem {
     /**
      * Set the namespace of the node without adding a corresponding namespace declaration.
      * 

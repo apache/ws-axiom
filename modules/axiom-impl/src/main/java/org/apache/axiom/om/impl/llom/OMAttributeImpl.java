@@ -26,12 +26,12 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.common.OMNamedInformationItemHelper;
+import org.apache.axiom.om.impl.common.IAttribute;
 
 import javax.xml.namespace.QName;
 
 /** Class OMAttributeImpl */
-public class OMAttributeImpl implements OMAttribute {
+public class OMAttributeImpl implements IAttribute {
     private String localName;
 
     private String value;
@@ -161,7 +161,7 @@ public class OMAttributeImpl implements OMAttribute {
     }
 
     public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.namespace = OMNamedInformationItemHelper.handleNamespace(owner, namespace, true, declare);
+        this.namespace = handleNamespace(owner, namespace, true, declare);
         this.qName = null;
     }
 

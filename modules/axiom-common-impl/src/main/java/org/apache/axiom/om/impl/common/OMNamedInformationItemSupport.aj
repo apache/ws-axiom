@@ -21,10 +21,8 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
-public final class OMNamedInformationItemHelper {
-    private OMNamedInformationItemHelper() {}
-
-    public static OMNamespace handleNamespace(IElement context, OMNamespace ns, boolean attr, boolean declare) {
+public aspect OMNamedInformationItemSupport {
+    public final OMNamespace INamedInformationItem.handleNamespace(IElement context, OMNamespace ns, boolean attr, boolean declare) {
         String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
         String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0) {
