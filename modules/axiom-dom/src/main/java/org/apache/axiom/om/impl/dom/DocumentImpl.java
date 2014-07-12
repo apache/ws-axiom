@@ -609,4 +609,8 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
+
+    public final String getLocalName() {
+        return null;
+    }
 }

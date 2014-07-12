@@ -102,10 +102,6 @@ public abstract class NodeImpl extends InformationItem implements Node {
         return false; // Override in ParentNode
     }
 
-    public String getLocalName() {
-        return null; // Override in AttrImpl and ElementImpl
-    }
-
     public String getNamespaceURI() {
         return null; // Override in AttrImpl and ElementImpl
     }

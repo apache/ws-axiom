@@ -118,4 +118,8 @@ public class DocumentFragmentImpl extends RootNode implements
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
+
+    public final String getLocalName() {
+        return null;
+    }
 }

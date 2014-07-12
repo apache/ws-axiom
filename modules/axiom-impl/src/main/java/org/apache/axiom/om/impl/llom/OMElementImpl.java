@@ -58,25 +58,6 @@ public class OMElementImpl extends OMNodeImpl
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
-    /**
-     * The namespace of this element. Possible values:
-     * <ul>
-     * <li><code>null</code> (if the element has no namespace)
-     * <li>any {@link OMNamespace} instance, with the following exceptions:
-     * <ul>
-     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
-     * <li>an {@link OMNamespace} instance with both prefix and namespace URI set to the empty
-     * string
-     * </ul>
-     * </ul>
-     */
-    private OMNamespace ns;
-
-    /** Field localName */
-    private String localName;
-
-    private QName qName;
-
     /** Field namespaces */
     protected HashMap namespaces = null;
     
@@ -92,13 +73,13 @@ public class OMElementImpl extends OMNodeImpl
         if (localName == null || localName.trim().length() == 0) {
             throw new OMException("localname can not be null or empty");
         }
-        this.localName = localName;
+        internalSetLocalName(localName);
         coreSetBuilder(builder);
         coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parent != null) {
             ((IContainer)parent).addChild(this, builder != null);
         }
-        this.ns = generateNSDecl ? handleNamespace(this, ns, false, true) : ns;
+        internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
     }
 
     /**
@@ -114,8 +95,8 @@ public class OMElementImpl extends OMNodeImpl
         if (parent != null) {
             parent.addChild(this);
         }
-        localName = qname.getLocalPart();
-        this.ns = handleNamespace(qname);
+        internalSetLocalName(qname.getLocalPart());
+        internalSetNamespace(handleNamespace(qname));
     }
     
     /**
@@ -194,8 +175,9 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMNamespace declareDefaultNamespace(String uri) {
-        if (ns == null && uri.length() > 0
-                || ns != null && ns.getPrefix().length() == 0 && !ns.getNamespaceURI().equals(uri)) {
+        OMNamespace elementNamespace = getNamespace();
+        if (elementNamespace == null && uri.length() > 0
+                || elementNamespace != null && elementNamespace.getPrefix().length() == 0 && !elementNamespace.getNamespaceURI().equals(uri)) {
             throw new OMException("Attempt to add a namespace declaration that conflicts with " +
             		"the namespace information of the element");
         }
@@ -565,35 +547,6 @@ public class OMElementImpl extends OMNodeImpl
         return null;
     }
 
-    /**
-     * Method getLocalName.
-     *
-     * @return Returns local name.
-     */
-    public String getLocalName() {
-        return localName;
-    }
-
-    /** Method setLocalName. */
-    public void setLocalName(String localName) {
-        this.localName = localName;
-        this.qName = null;
-    }
-
-    public OMNamespace getNamespace() {
-        return ns;
-    }
-
-    public String getPrefix() {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            return null;
-        } else {
-            String prefix = ns.getPrefix();
-            return prefix.length() == 0 ? null : prefix;
-        }
-    }
-
     public String getNamespaceURI() {
         OMNamespace ns = getNamespace();
         if (ns == null) {
@@ -606,49 +559,6 @@ public class OMElementImpl extends OMNodeImpl
 
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
-    }
-
-    public final void internalSetNamespace(OMNamespace namespace) {
-        this.ns = namespace;
-        this.qName = null;
-    }
-
-    public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
-        this.ns = namespace;
-        this.qName = null;
-    }
-
-    public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.ns = handleNamespace(this, namespace, false, declare);
-        this.qName = null;
-    }
-
-    /**
-     * Method getQName.
-     *
-     * @return Returns QName.
-     */
-    public QName getQName() {
-        if (qName != null) {
-            return qName;
-        }
-
-        if (ns != null) {
-            qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
-        } else {
-            qName = new QName(localName);
-        }
-        return qName;
-    }
-    
-    public boolean hasName(QName name) {
-        if (name.getLocalPart().equals(getLocalName())) {
-            OMNamespace ns = getNamespace();
-            return ns == null && name.getNamespaceURI().length() == 0
-                    || ns != null && name.getNamespaceURI().equals(ns.getNamespaceURI());
-        } else {
-            return false;
-        }
     }
 
     public String toStringWithConsume() throws XMLStreamException {
@@ -761,14 +671,6 @@ public class OMElementImpl extends OMNodeImpl
             }
             this.setComplete(true);
         }
-    }
-
-    public final String internalGetLocalName() {
-        return localName;
-    }
-
-    public final void internalSetLocalName(String localName) {
-        this.localName = localName;
     }
 }
 

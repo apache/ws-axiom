@@ -18,8 +18,14 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.om.OMNamespace;
 
-public interface INamedInformationItem extends OMNamedInformationItem {
-
+public aspect OMAttributeSupport {
+    public final void IAttribute.setNamespace(OMNamespace namespace, boolean decl) {
+        internalSetNamespace(handleNamespace((IElement)getOwner(), namespace, true, decl));
+    }
+    
+    public final void IAttribute.setOMNamespace(OMNamespace omNamespace) {
+        internalSetNamespace(omNamespace);
+    }
 }

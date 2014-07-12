@@ -28,31 +28,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.IAttribute;
 
-import javax.xml.namespace.QName;
-
 /** Class OMAttributeImpl */
 public class OMAttributeImpl implements IAttribute {
-    private String localName;
-
     private String value;
 
     private String type;
-
-    /**
-     * The namespace of this attribute. Possible values:
-     * <ul>
-     * <li><code>null</code> (if the attribute has no namespace)
-     * <li>any {@link OMNamespace} instance, with the following exceptions:
-     * <ul>
-     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
-     * <li>an {@link OMNamespace} instance with an empty prefix (because an unprefixed attribute
-     * never has a namespace)
-     * </ul>
-     * </ul>
-     */
-    private OMNamespace namespace;
-    
-    private QName qName;
 
     /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
     private OMFactory factory;
@@ -84,55 +64,14 @@ public class OMAttributeImpl implements IAttribute {
             }
         }
 
-        this.localName = localName;
+        internalSetLocalName(localName);
         this.value = value;
-        this.namespace = ns;
+        internalSetNamespace(ns);
         this.type = OMConstants.XMLATTRTYPE_CDATA;
         this.factory = factory;
     }
 
-    /** @return Returns QName. */
-    public QName getQName() {
-        if (qName != null) {
-            return qName;
-        }
-
-        if (namespace != null) {
-            this.qName =  new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
-        } else {
-            this.qName =  new QName(localName);
-        }
-        return this.qName;
-    }
-
-    public boolean hasName(QName name) {
-        return name.getLocalPart().equals(localName)
-                && (namespace == null && name.getNamespaceURI().length() == 0
-                 || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
-    }
-
     // -------- Getters and Setters
-
-    /**
-     * Method getLocalName.
-     *
-     * @return Returns local name.
-     */
-    public String getLocalName() {
-        return localName;
-    }
-
-    /**
-     * Method setLocalName.
-     *
-     * @param localName
-     */
-    public void setLocalName(String localName) {
-        if (localName == null || localName.trim().length() == 0)
-            throw new IllegalArgumentException("Local name may not be null or empty");
-        this.localName = localName;
-        this.qName = null;
-    }
 
     public String getAttributeValue() {
         return value;
@@ -158,45 +97,6 @@ public class OMAttributeImpl implements IAttribute {
      */
     public void setAttributeType(String type) {
         this.type = type;
-    }
-
-    public final void internalSetNamespace(OMNamespace namespace) {
-        this.namespace = namespace;
-        this.qName = null;
-    }
-
-    public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.namespace = handleNamespace(owner, namespace, true, declare);
-        this.qName = null;
-    }
-
-    /**
-     * Method setOMNamespace.
-     *
-     * @param omNamespace
-     */
-    public void setOMNamespace(OMNamespace omNamespace) {
-        this.namespace = omNamespace;
-        this.qName = null;
-    }
-
-    /**
-     * Method getNamespace.
-     *
-     * @return Returns namespace.
-     */
-    public OMNamespace getNamespace() {
-        return namespace;
-    }
-
-    public String getPrefix() {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            return null;
-        } else {
-            String prefix = ns.getPrefix();
-            return prefix.length() == 0 ? null : prefix;
-        }
     }
 
     public String getNamespaceURI() {
@@ -238,6 +138,8 @@ public class OMAttributeImpl implements IAttribute {
     public boolean equals(Object obj) {
         if (! (obj instanceof OMAttribute)) return false;
         OMAttribute other = (OMAttribute)obj;
+        OMNamespace namespace = getNamespace();
+        String localName = getLocalName();
         //first check namespace then localName then value to improve performance
         return (namespace == null ? other.getNamespace() == null :
                 namespace.equals(other.getNamespace()) &&
@@ -248,19 +150,13 @@ public class OMAttributeImpl implements IAttribute {
     }
 
     public int hashCode() {
+        OMNamespace namespace = getNamespace();
+        String localName = getLocalName();
         return localName.hashCode() ^ (value != null ? value.hashCode() : 0) ^
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
     public OMInformationItem clone(OMCloneOptions options) {
-        return new OMAttributeImpl(localName, namespace, value, factory);
-    }
-
-    public final String internalGetLocalName() {
-        return localName;
-    }
-
-    public final void internalSetLocalName(String localName) {
-        this.localName = localName;
+        return new OMAttributeImpl(getLocalName(), getNamespace(), value, factory);
     }
 }

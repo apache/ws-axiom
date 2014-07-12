@@ -54,6 +54,14 @@ public aspect OMElementSupport {
         return OMNode.ELEMENT_NODE;
     }
     
+    public void IElement.setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
+        internalSetNamespace(namespace);
+    }
+
+    public void IElement.setNamespace(OMNamespace namespace, boolean decl) {
+        internalSetNamespace(handleNamespace(this, namespace, false, decl));
+    }
+
     public NamespaceContext IElement.getNamespaceContext(boolean detached) {
         if (detached) {
             Map namespaces = new HashMap();

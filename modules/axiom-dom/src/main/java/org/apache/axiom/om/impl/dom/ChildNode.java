@@ -120,4 +120,8 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode {
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
+
+    public final String getLocalName() {
+        return null;
+    }
 }

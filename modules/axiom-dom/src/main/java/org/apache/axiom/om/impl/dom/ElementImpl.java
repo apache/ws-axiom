@@ -68,22 +68,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     
     private int lineNumber;
 
-    /**
-     * The namespace of this element. Possible values:
-     * <ul>
-     * <li><code>null</code> (if the element has no namespace)
-     * <li>any {@link OMNamespace} instance, with the following exceptions:
-     * <ul>
-     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
-     * <li>an {@link OMNamespace} instance with both prefix and namespace URI set to the empty
-     * string
-     * </ul>
-     * </ul>
-     */
-    private OMNamespace namespace;
-
-    private String localName;
-
     private AttributeMap attributes;
 
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
@@ -91,14 +75,14 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                        OMFactory factory, boolean generateNSDecl) {
         super(factory);
-        this.localName = localName;
+        internalSetLocalName(localName);
         coreSetBuilder(builder);
         coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parentNode != null) {
             ((IContainer)parentNode).addChild(this, builder != null);
         }
         this.attributes = new AttributeMap(this);
-        namespace = generateNSDecl ? handleNamespace(this, ns, false, true) : ns;
+        internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
     }
 
     final ParentNode internalGetOwnerNode() {
@@ -161,26 +145,29 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
      * @see org.w3c.dom.Node#getNodeName()
      */ 
     public String getNodeName() {
-        if (this.namespace != null) {
-            if (this.namespace.getPrefix() == null
-                    || "".equals(this.namespace.getPrefix())) {
-                return this.localName;
+        OMNamespace namespace = getNamespace();
+        String localName = getLocalName();
+        if (namespace != null) {
+            if (namespace.getPrefix() == null
+                    || "".equals(namespace.getPrefix())) {
+                return localName;
             } else {
-                return this.namespace.getPrefix() + ":" + this.localName;
+                return namespace.getPrefix() + ":" + localName;
             }
         } else {
-            return this.localName;
+            return localName;
         }
     }
 
     /** Returns the value of the namespace URI. */
     public String getNamespaceURI() {
-        if (this.namespace == null) {
+        OMNamespace namespace = getNamespace();
+        if (namespace == null) {
             return null;
         } else {
             // If the element has no namespace, the result should be null, not
             // an empty string.
-            String uri = this.namespace.getNamespaceURI();
+            String uri = namespace.getNamespaceURI();
             return uri.length() == 0 ? null : uri.intern();
         }
     }
@@ -527,6 +514,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public OMNamespace declareDefaultNamespace(String uri) {
+        OMNamespace namespace = getNamespace();
         if (namespace == null && uri.length() > 0
                 || namespace != null && namespace.getPrefix().length() == 0 && !namespace.getNamespaceURI().equals(uri)) {
             throw new OMException("Attempt to add a namespace declaration that conflicts with " +
@@ -695,37 +683,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         return null;
     }
 
-    /**
-     * Returns the namespace of this element.
-     *
-     * @see org.apache.axiom.om.OMElement#getNamespace()
-     */
-    public OMNamespace getNamespace() {
-        return namespace;
-    }
-
-    /**
-     * Returns the QName of this element.
-     *
-     * @see org.apache.axiom.om.OMElement#getQName()
-     */
-    public QName getQName() {
-        QName qName;
-        if (namespace != null) {
-            qName = new QName(namespace.getNamespaceURI(), this.localName,
-                              namespace.getPrefix());
-        } else {
-            qName = new QName(this.localName);
-        }
-        return qName;
-    }
-
-    public boolean hasName(QName name) {
-        return name.getLocalPart().equals(localName)
-                && (namespace == null && name.getNamespaceURI().length() == 0
-                 || namespace != null && name.getNamespaceURI().equals(namespace.getNamespaceURI()));
-    }
-
     public void removeAttribute(OMAttribute attr) {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
@@ -733,29 +690,8 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         attributes.remove((AttrImpl)attr, false);
     }
 
-    /**
-     * Sets the local name.
-     *
-     * @see org.apache.axiom.om.OMElement#setLocalName(String)
-     */
-    public void setLocalName(String localName) {
-        this.localName = localName;
-    }
-
-    public void internalSetNamespace(OMNamespace namespace) {
-        this.namespace = namespace;
-    }
-
-    public void setNamespace(OMNamespace namespace, boolean declare) {
-        this.namespace = handleNamespace(this, namespace, false, declare);
-    }
-
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
-    }
-
-    public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
-        internalSetNamespace(namespace);
     }
 
     public void internalSerialize(Serializer serializer,
@@ -824,15 +760,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         return list.iterator();
     }
 
-    /**
-     * Returns the local name of this element node
-     *
-     * @see org.w3c.dom.Node#getLocalName()
-     */
-    public String getLocalName() {
-        return this.localName;
-    }
-
     public QName resolveQName(String qname) {
         int idx = qname.indexOf(':');
         if (idx == -1) {
@@ -854,7 +781,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         if (options.isPreserveModel()) {
             clone = (ElementImpl)createClone(options, targetParent, namespaceRepairing);
         } else {
-            clone = new ElementImpl(targetParent, localName, namespace, null, getOMFactory(), namespaceRepairing);
+            clone = new ElementImpl(targetParent, getLocalName(), getNamespace(), null, getOMFactory(), namespaceRepairing);
         }
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
@@ -866,7 +793,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new ElementImpl(targetParent, localName, namespace, null, getOMFactory(), generateNSDecl);
+        return new ElementImpl(targetParent, getLocalName(), getNamespace(), null, getOMFactory(), generateNSDecl);
     }
     
     public void setLineNumber(int lineNumber) {
@@ -1087,13 +1014,5 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public final void checkChild(OMNode child) {
-    }
-
-    public final String internalGetLocalName() {
-        return localName;
-    }
-
-    public final void internalSetLocalName(String localName) {
-        this.localName = localName;
     }
 }

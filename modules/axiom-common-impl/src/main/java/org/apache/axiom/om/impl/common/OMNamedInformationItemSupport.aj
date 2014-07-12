@@ -18,18 +18,103 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public aspect OMNamedInformationItemSupport {
-    public final OMNamespace INamedInformationItem.handleNamespace(IElement context, OMNamespace ns, boolean attr, boolean declare) {
+    /**
+     * The namespace of the information item. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the information item has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>for elements: an {@link OMNamespace} instance with both prefix and namespace URI set to
+     * the empty string
+     * <li>for attributes: an {@link OMNamespace} instance with an empty prefix (because an
+     * unprefixed attribute never has a namespace)
+     * </ul>
+     * </ul>
+     */
+    private OMNamespace INamedInformationItem.namespace;
+    
+    private String INamedInformationItem.localName;
+    private QName INamedInformationItem.qName;
+    
+    /**
+     * Set the namespace of the node without adding a corresponding namespace declaration.
+     * 
+     * @param namespace
+     */
+    public final void INamedInformationItem.internalSetNamespace(OMNamespace namespace) {
+        this.namespace = namespace;
+        qName = null;
+    }
+
+    public final String INamedInformationItem.internalGetLocalName() {
+        return localName;
+    }
+
+    public final void INamedInformationItem.internalSetLocalName(String localName) {
+        this.localName = localName;
+    }
+
+    public OMNamespace INamedInformationItem.getNamespace() {
+        return namespace;
+    }
+
+    public final String INamedInformationItem.getPrefix() {
+        OMNamespace namespace = getNamespace();
+        if (namespace == null) {
+            return null;
+        } else {
+            String prefix = namespace.getPrefix();
+            return prefix.length() == 0 ? null : prefix;
+        }
+    }
+    
+    public String INamedInformationItem.getLocalName() {
+        return localName;
+    }
+
+    public void INamedInformationItem.setLocalName(String localName) {
+        this.localName = localName;
+        qName = null;
+    }
+
+    public QName INamedInformationItem.getQName() {
+        if (qName != null) {
+            return qName;
+        }
+
+        if (namespace != null) {
+            qName = new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
+        } else {
+            qName = new QName(localName);
+        }
+        return qName;
+    }
+    
+    public boolean INamedInformationItem.hasName(QName name) {
+        if (name.getLocalPart().equals(getLocalName())) {
+            OMNamespace ns = getNamespace();
+            return ns == null && name.getNamespaceURI().length() == 0
+                    || ns != null && name.getNamespaceURI().equals(ns.getNamespaceURI());
+        } else {
+            return false;
+        }
+    }
+
+    public final OMNamespace INamedInformationItem.handleNamespace(IElement context, OMNamespace ns, boolean attr, boolean decl) {
         String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
         String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0) {
             if (prefix != null && prefix.length() != 0) {
                 throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
             }
-            if (!attr && declare) {
+            if (!attr && decl) {
                 // Special case: no namespace; we need to generate a namespace declaration only if
                 // there is a conflicting namespace declaration (i.e. a declaration for the default
                 // namespace with a non empty URI) is in scope
@@ -43,12 +128,12 @@ public aspect OMNamedInformationItemSupport {
                 throw new IllegalArgumentException("An attribute with a namespace must be prefixed");
             }
             boolean addNSDecl = false;
-            if (context != null && (declare || prefix == null)) {
+            if (context != null && (decl || prefix == null)) {
                 OMNamespace existingNSDecl = context.findNamespace(namespaceURI, prefix);
                 if (existingNSDecl == null
                         || (prefix != null && !existingNSDecl.getPrefix().equals(prefix))
                         || (prefix == null && attr && existingNSDecl.getPrefix().length() == 0)) {
-                    addNSDecl = declare;
+                    addNSDecl = decl;
                 } else {
                     prefix = existingNSDecl.getPrefix();
                     ns = existingNSDecl;

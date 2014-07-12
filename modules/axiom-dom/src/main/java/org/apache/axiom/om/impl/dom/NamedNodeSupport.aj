@@ -23,16 +23,6 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.DOMException;
 
 aspect NamedNodeSupport {
-    public final String NamedNode.getPrefix() {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            return null;
-        } else {
-            String prefix = ns.getPrefix();
-            return prefix.length() == 0 ? null : prefix;
-        }
-    }
-    
     public final void NamedNode.setPrefix(String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";
