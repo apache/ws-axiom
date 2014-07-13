@@ -31,6 +31,13 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
@@ -51,5 +58,6 @@
         <module>jboss-tests</module>
         <module>osgi-tests</module>
         <module>spring-ws-tests</module>
+        <module>wss4j-tests</module>
     </modules>
 </project>

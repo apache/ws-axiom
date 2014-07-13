@@ -610,11 +610,11 @@ public abstract class NodeImpl extends InformationItem implements Node {
             NodeImpl siblingImpl = (NodeImpl) sibling;
             siblingImpl.internalSetNextSibling(this);
             NodeImpl previousSibling = internalGetPreviousSibling();
+            siblingImpl.setParent(parentNode, false);
             if (previousSibling == null) {
                 parentNode.coreSetFirstChild((CoreChildNode)siblingImpl);
                 siblingImpl.internalSetPreviousSibling(null);
             } else {
-                siblingImpl.setParent(parentNode, false);
                 previousSibling.setNextOMSibling((OMNode)siblingImpl);
                 siblingImpl.setPreviousOMSibling((OMNode)previousSibling);
             }

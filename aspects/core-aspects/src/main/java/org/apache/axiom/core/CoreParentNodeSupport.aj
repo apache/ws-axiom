@@ -53,9 +53,6 @@ public aspect CoreParentNodeSupport {
      * @param omNode
      */
     public void CoreParentNode.coreSetFirstChild(CoreChildNode firstChild) {
-        if (firstChild != null) {
-            firstChild.coreSetParent(this);
-        }
         this.firstChild = firstChild;
     }
 

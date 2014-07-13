@@ -166,12 +166,12 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         }
         OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
         OMNodeImpl previousSibling = (OMNodeImpl)coreGetPreviousSibling();
+        siblingImpl.coreSetParent(parent);
         if (previousSibling == null) {
             parent.coreSetFirstChild(siblingImpl);
             siblingImpl.coreSetNextSibling(this);
             siblingImpl.coreSetPreviousSibling(null);
         } else {
-            siblingImpl.coreSetParent(parent);
             siblingImpl.coreSetNextSibling(this);
             previousSibling.coreSetNextSibling(siblingImpl);
             siblingImpl.coreSetPreviousSibling(previousSibling);
