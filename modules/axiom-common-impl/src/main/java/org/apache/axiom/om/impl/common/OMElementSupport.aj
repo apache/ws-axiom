@@ -167,7 +167,8 @@ public aspect OMElementSupport {
         }
     }
     
-    public final void IElement.setText(String text) {
+    // Not final because overridden in Abdera
+    public void IElement.setText(String text) {
         // Remove all existing children
         OMNode child;
         while ((child = getFirstOMChild()) != null) {
