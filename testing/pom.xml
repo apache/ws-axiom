@@ -28,11 +28,13 @@
     <name>Testing</name>
     <packaging>pom</packaging>
     <modules>
+        <module>axiom-testsuite</module>
         <module>dom-testsuite</module>
         <module>jaxen-testsuite</module>
         <module>saaj-testsuite</module>
         <module>soap-testsuite</module>
         <module>spring-ws-testsuite</module>
+        <module>testutils</module>
     </modules>
     <build>
         <plugins>
@@ -52,6 +54,13 @@
                         <artifactId>java16</artifactId>
                         <version>1.0</version>
                     </signature>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
                 </configuration>
             </plugin>
         </plugins>

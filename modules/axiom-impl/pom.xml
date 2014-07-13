@@ -86,7 +86,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-testutils</artifactId>
+            <artifactId>testutils</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

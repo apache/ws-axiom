@@ -154,7 +154,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-tests</artifactId>
+            <artifactId>old-tests</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
             <type>exec</type>
@@ -162,7 +162,7 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-integration</artifactId>
+            <artifactId>integration-tests</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
             <type>exec</type>
