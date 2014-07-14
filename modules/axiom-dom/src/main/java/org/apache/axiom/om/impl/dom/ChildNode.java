@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
@@ -29,18 +28,8 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 
 public abstract class ChildNode extends NodeImpl implements DOMChildNode {
-    private ParentNode ownerNode;
-    
     public ChildNode(OMFactory factory) {
         super(factory);
-    }
-
-    final ParentNode internalGetOwnerNode() {
-        return ownerNode;
-    }
-
-    final void internalSetOwnerNode(ParentNode ownerNode) {
-        this.ownerNode = ownerNode;
     }
 
     final NodeImpl internalGetPreviousSibling() {
@@ -96,12 +85,8 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode {
         // Do nothing; a leaf node is always complete
     }
 
-    public final CoreParentNode coreGetParent() {
-        return parentNode();
-    }
-
     public final String lookupNamespaceURI(String specifiedPrefix) {
-        ParentNode parent = parentNode();
+        ParentNode parent = (ParentNode)coreGetParent();
         // Note: according to the DOM specs, we need to delegate the lookup if the parent
         // is an element or an entity reference. However, since we don't support entity
         // references fully, we only check for elements.
@@ -109,7 +94,7 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode {
     }
     
     public final String lookupPrefix(String namespaceURI) {
-        ParentNode parent = parentNode();
+        ParentNode parent = (ParentNode)coreGetParent();
         return parent instanceof Element ? parent.lookupPrefix(namespaceURI) : null;
     }
 

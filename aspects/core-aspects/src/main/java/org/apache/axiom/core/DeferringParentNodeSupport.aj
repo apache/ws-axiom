@@ -22,7 +22,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 public aspect DeferringParentNodeSupport {
     private OMXMLParserWrapper DeferringParentNode.builder;
-    private int DeferringParentNode.state;
 
     public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
         forceExpand();
@@ -35,11 +34,12 @@ public aspect DeferringParentNodeSupport {
         this.builder = builder;
     }
     
+    // TODO: rename & make final
     public int DeferringParentNode.getState() {
-        return state;
+        return flags & Flags.STATE_MASK;
     }
-
+    
     public final void DeferringParentNode.coreSetState(int state) {
-        this.state = state;
+        flags = (flags & ~Flags.STATE_MASK) | state;
     }
 }

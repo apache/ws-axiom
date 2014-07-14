@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
@@ -35,21 +36,11 @@ import javax.xml.stream.XMLStreamWriter;
 
 // TODO: we should not implement IContainer here
 public class DocumentFragmentImpl extends RootNode implements
-        DocumentFragment, IContainer, NonDeferringParentNode {
+        DocumentFragment, IContainer, CoreDocumentFragment, NonDeferringParentNode {
 
-    private ParentNode ownerNode;
-    
     /** @param ownerDocument  */
     public DocumentFragmentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    final ParentNode internalGetOwnerNode() {
-        return ownerNode;
-    }
-
-    final void internalSetOwnerNode(ParentNode ownerNode) {
-        this.ownerNode = ownerNode;
     }
 
     /*

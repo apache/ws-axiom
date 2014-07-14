@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 /**
  * Interface for parent nodes.
  */
-public interface CoreParentNode {
+public interface CoreParentNode extends CoreNode {
     int INCOMPLETE = 0;
     int COMPLETE = 1;
     int DISCARDED = 2;

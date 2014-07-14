@@ -18,6 +18,18 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreChildNode extends CoreNode {
-    
+public aspect CoreNodeSupport {
+    int CoreNode.flags;
+
+    final boolean CoreNode.getFlag(int flag) {
+        return (flags & flag) != 0;
+    }
+
+    final void CoreNode.setFlag(int flag, boolean value) {
+        if (value) {
+            flags |= flag;
+        } else {
+            flags &= ~flag;
+        }
+    }
 }

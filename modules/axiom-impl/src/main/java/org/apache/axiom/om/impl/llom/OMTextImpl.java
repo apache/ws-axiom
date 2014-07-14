@@ -251,7 +251,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     }
 
     public QName getTextAsQName() throws OMException {
-        return ((OMElement)parent).resolveQName(getTextFromProperPlace());
+        return ((OMElement)getParent()).resolveQName(getTextFromProperPlace());
     }
 
     public OMNamespace getNamespace() {

@@ -233,7 +233,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
                 throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
             }
 
-            if (newDomChild.parentNode() == null) {
+            if (!(newDomChild instanceof DocumentFragmentImpl) && newDomChild.parentNode() == null) {
                 newDomChild.setParent(this, useDomSemantics);
             }
 

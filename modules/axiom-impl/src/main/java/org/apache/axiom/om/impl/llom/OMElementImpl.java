@@ -196,6 +196,7 @@ public class OMElementImpl extends OMNodeImpl
         if (namespaces != null && (defaultNS = (OMNamespace) namespaces.get("")) != null) {
             return defaultNS.getNamespaceURI().length() == 0 ? null : defaultNS;
         }
+        OMContainer parent = getParent();
         if (parent instanceof OMElementImpl) {
             return ((OMElementImpl) parent).getDefaultNamespace();
 
@@ -254,6 +255,7 @@ public class OMElementImpl extends OMNodeImpl
         }
 
         // go up to check with ancestors
+        OMContainer parent = getParent();
         if (parent != null) {
             //For the OMDocumentImpl there won't be any explicit namespace
             //declarations, so going up the parent chain till the document
@@ -276,9 +278,10 @@ public class OMElementImpl extends OMNodeImpl
                 (OMNamespace) this.namespaces.get(prefix);
 
         if (ns == null) {
-            if (this.parent instanceof OMElement) {
+            OMContainer parent = getParent();
+            if (parent instanceof OMElement) {
                 // try with the parent
-                return ((OMElement) this.parent).findNamespaceURI(prefix);
+                return ((OMElement)parent).findNamespaceURI(prefix);
             } else {
                 return null;
             }
@@ -505,9 +508,10 @@ public class OMElementImpl extends OMNodeImpl
 
     public void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
+        OMContainer parent = getParent();
         if (parent != null) {
             if (!complete) {
-                parent.setComplete(false);
+                ((IContainer)parent).setComplete(false);
             } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
             } else if (parent instanceof OMDocumentImpl) {

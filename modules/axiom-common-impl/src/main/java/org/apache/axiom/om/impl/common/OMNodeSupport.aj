@@ -18,11 +18,18 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 public aspect OMNodeSupport {
     declare parents: (InformationItem+ && OMNode+) implements INode;
 
+    public final OMContainer INode.getParent() {
+        CoreParentNode parent = coreGetParent();
+        return parent instanceof OMContainer ? (OMContainer)parent : null;
+    }
+    
     public OMNode INode.getNextOMSiblingIfAvailable() {
         return (OMNode)coreGetNextSiblingIfAvailable();
     }

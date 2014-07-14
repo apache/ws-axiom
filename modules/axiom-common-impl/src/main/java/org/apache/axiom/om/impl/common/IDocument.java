@@ -18,9 +18,10 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.DeferringParentNode;
 import org.apache.axiom.om.OMDocument;
 
-public interface IDocument extends OMDocument, IContainer, DeferringParentNode {
+public interface IDocument extends OMDocument, IContainer, CoreDocument, DeferringParentNode {
 
 }

@@ -187,7 +187,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         TextImpl newText = (TextImpl) this.getOwnerDocument().createTextNode(
                 newValue);
 
-        ParentNode parentNode = parentNode();
+        ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode != null) {
             newText.coreSetParent(parentNode);
         }
@@ -240,7 +240,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public QName getTextAsQName() {
-        return ((OMElement)parentNode()).resolveQName(getTextFromProperPlace());
+        return ((OMElement)coreGetParent()).resolveQName(getTextFromProperPlace());
     }
 
     public String getContentID() {

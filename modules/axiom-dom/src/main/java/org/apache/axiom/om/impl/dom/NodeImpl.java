@@ -20,9 +20,10 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
@@ -32,7 +33,6 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.common.INode;
 import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -52,31 +52,13 @@ import java.util.Hashtable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public abstract class NodeImpl extends InformationItem implements Node {
+public abstract class NodeImpl extends InformationItem implements Node, CoreNode {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
 
     /** Factory that created this node */
     private OMFactory factory;
-
-    // data
-
-    protected short flags;
-
-    /**
-     * Used by {@link ChildNode} to determine the meaning of the <code>ownerNode</code> attribute.
-     * If the flag is set, then the attribute contains the reference to the parent node. If the flag
-     * is not set, then the node has no parent and the attribute stores a reference to the owner
-     * document (which may be <code>null</code> if the owner document has not been created yet).
-     */
-    protected final static short HAS_PARENT = 0x1 << 1;
-    
-    /**
-     * Used by {@link AttrImpl} to determine whether the attribute has been specified explicitly
-     * (flag unset) or has a default value (flag set).
-     */
-    protected final static short DEFAULT_ATTR = 0x1 << 4;
 
     //
     // Constructors
@@ -131,7 +113,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
         options.setPreserveModel(true);
         NodeImpl clone = clone(options, null, getNodeType() == Node.ATTRIBUTE_NODE ? true : deep, false);
         if (!(clone instanceof DocumentImpl)) {
-            clone.setOwnerDocument(ownerDocument());
+            clone.coreSetOwnerDocument(ownerDocument());
         }
         return clone;
     }
@@ -139,18 +121,6 @@ public abstract class NodeImpl extends InformationItem implements Node {
     public boolean isSupported(String feature, String version) {
         throw new UnsupportedOperationException();
         // TODO
-    }
-
-    /*
-     * Flags setters and getters
-     */
-
-    final boolean hasParent() {
-        return (flags & HAS_PARENT) != 0;
-    }
-
-    final void hasParent(boolean value) {
-        flags = (short) (value ? flags | HAS_PARENT : flags & ~HAS_PARENT);
     }
 
     /*
@@ -405,15 +375,6 @@ public abstract class NodeImpl extends InformationItem implements Node {
         return factory;
     }
 
-
-    /**
-     * Get the parent or the owner document of the node. The meaning of the return value depends on
-     * the {@link NodeImpl#HAS_PARENT} flag.
-     */
-    abstract ParentNode internalGetOwnerNode();
-    
-    abstract void internalSetOwnerNode(ParentNode ownerNode);
-    
     abstract NodeImpl internalGetPreviousSibling();
     
     abstract NodeImpl internalGetNextSibling();
@@ -429,20 +390,11 @@ public abstract class NodeImpl extends InformationItem implements Node {
      * @return the owner document
      */
     final DocumentImpl ownerDocument() {
-        ParentNode ownerNode = internalGetOwnerNode();
-        if (ownerNode == null) {
-            // As specified by DOMMetaFactory, the OMFactory for an implicitly created owner
-            // document is always the OMFactory for plain XML.
-            DocumentImpl document = new DocumentImpl(getOMFactory().getMetaFactory().getOMFactory());
-            internalSetOwnerNode(document);
-            return document;
-        } else if (ownerNode instanceof DocumentImpl) {
-            // Note: the value of the HAS_PARENT flag doesn't matter here. If the ownerNode is of
-            // type Document, it must be the owner document.
-            return (DocumentImpl)ownerNode;
-        } else {
-            return ownerNode.ownerDocument();
-        }
+        return (DocumentImpl)coreGetOwnerDocument(true);
+    }
+    
+    public final CoreDocument createOwnerDocument() {
+        return new DocumentImpl(getOMFactory().getMetaFactory().getOMFactory());
     }
     
     void checkSameOwnerDocument(Node otherNode) {
@@ -453,24 +405,17 @@ public abstract class NodeImpl extends InformationItem implements Node {
         }
     }
     
-    /**
-     * Sets the owner document.
-     *
-     * @param document
-     */
-    void setOwnerDocument(DocumentImpl document) {
-        if (hasParent()) {
-            throw new IllegalStateException();
-        }
-        internalSetOwnerNode(document);
-    }
-
     public Document getOwnerDocument() {
         return ownerDocument();
     }
 
     ParentNode parentNode() {
-        return hasParent() ? internalGetOwnerNode() : null;
+        // TODO: get rid of this
+        if (this instanceof CoreChildNode) {
+            return (ParentNode)((CoreChildNode)this).coreGetParent();
+        } else {
+            return null;
+        }
     }
 
     // /
@@ -500,26 +445,16 @@ public abstract class NodeImpl extends InformationItem implements Node {
         }
     }
 
-    public final OMContainer getParent() throws OMException {
-        Node parent = parentNode();
-        return parent instanceof OMContainer ? (OMContainer)parentNode() : null;
-    }
-
-    public Node getParentNode() {
-        return parentNode();
-    }
-
     public final void coreSetParent(CoreParentNode element) {
         setParent((ParentNode)element, false);
     }
     
     protected void setParent(ParentNode parent, boolean useDomSemantics) {
+        // TODO: this is not OO; clean up this mess
         if (parent == null) {
-            internalSetOwnerNode(useDomSemantics ? ownerDocument() : null);
-            hasParent(false);
+            ((CoreChildNode)this).internalUnsetParent(useDomSemantics ? ownerDocument() : null);
         } else {
-            internalSetOwnerNode(parent);
-            hasParent(true);
+            ((CoreChildNode)this).internalSetParent(parent);
         }
     }
 
@@ -568,7 +503,7 @@ public abstract class NodeImpl extends InformationItem implements Node {
         if (sibling.getParent() != null) {
             sibling.detach();
         }
-        ((INode)sibling).coreSetParent(parentNode);
+        ((NodeImpl)sibling).coreSetParent(parentNode);
         if (sibling instanceof NodeImpl) {
             NodeImpl domSibling = (NodeImpl) sibling;
             domSibling.internalSetPreviousSibling(this);

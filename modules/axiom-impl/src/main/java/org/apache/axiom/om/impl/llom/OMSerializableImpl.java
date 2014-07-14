@@ -25,6 +25,7 @@ import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -194,5 +195,9 @@ public abstract class OMSerializableImpl extends InformationItem implements ISer
         } finally {
             writer.close();
         }
+    }
+
+    public final CoreDocument createOwnerDocument() {
+        throw new UnsupportedOperationException();
     }
 }

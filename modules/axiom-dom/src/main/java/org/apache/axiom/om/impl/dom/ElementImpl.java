@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
@@ -59,12 +59,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, IElement, NamedNode, DOMChildNode,
+public class ElementImpl extends ParentNode implements Element, IElement, NamedNode, DOMChildNode, CoreElement,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
-    
-    private ParentNode ownerNode;
     
     private int lineNumber;
 
@@ -83,14 +81,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         }
         this.attributes = new AttributeMap(this);
         internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
-    }
-
-    final ParentNode internalGetOwnerNode() {
-        return ownerNode;
-    }
-
-    final void internalSetOwnerNode(ParentNode ownerNode) {
-        this.ownerNode = ownerNode;
     }
 
     final NodeImpl internalGetPreviousSibling() {
@@ -532,7 +522,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             return uri.length() == 0 ? null : new OMNamespaceImpl(uri, "");
         }
 
-        ParentNode parentNode = parentNode();
+        ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode instanceof ElementImpl) {
             ElementImpl element = (ElementImpl) parentNode;
             return element.getDefaultNamespace();
@@ -550,7 +540,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         }
 
         // go up to check with ancestors
-        ParentNode parentNode = parentNode();
+        ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode != null) {
             // For the OMDocumentImpl there won't be any explicit namespace
             // declarations, so going up the parent chain till the document
@@ -587,7 +577,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                 }
             }
         }
-        ParentNode parentNode = parentNode();
+        ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode instanceof OMElement) {
             // try with the parent
             return ((OMElement)parentNode).findNamespaceURI(prefix);
@@ -918,7 +908,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     public final void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
-        ParentNode parentNode = parentNode();
+        ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode != null) {
             if (!complete) {
                 parentNode.setComplete(false);
@@ -939,10 +929,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         defaultBuild();
     }
 
-    public final CoreParentNode coreGetParent() {
-        return parentNode();
-    }
-    
     public final String lookupNamespaceURI(String specifiedPrefix) {
         String namespace = this.getNamespaceURI();
         String prefix = this.getPrefix();
@@ -976,7 +962,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             }
         }
         // looking in ancestor
-        ParentNode parent = parentNode();
+        ParentNode parent = (ParentNode)coreGetParent();
         return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
     }
 
@@ -1009,7 +995,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                 }
             }
         }
-        ParentNode parent = parentNode();
+        ParentNode parent = (ParentNode)coreGetParent();
         return parent instanceof Element ? ((ElementImpl)parent).lookupPrefix(namespaceURI, originalElement) : null;
     }
 

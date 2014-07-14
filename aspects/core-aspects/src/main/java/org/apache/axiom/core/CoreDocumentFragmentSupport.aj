@@ -18,6 +18,17 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreChildNode extends CoreNode {
+public aspect CoreDocumentFragmentSupport {
+    private CoreDocument CoreDocumentFragment.ownerDocument;
     
+    public final CoreDocument CoreDocumentFragment.coreGetOwnerDocument(boolean create) {
+        if (create && ownerDocument == null) {
+            ownerDocument = createOwnerDocument();
+        }
+        return ownerDocument;
+    }
+
+    public final void CoreDocumentFragment.coreSetOwnerDocument(CoreDocument document) {
+        ownerDocument = document;
+    }
 }

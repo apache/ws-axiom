@@ -21,6 +21,10 @@ package org.apache.axiom.dom;
 import org.w3c.dom.Node;
 
 public aspect DOMChildNodeSupport {
+    public final Node DOMChildNode.getParentNode() {
+        return (Node)coreGetParent();
+    }
+    
     public final Node DOMChildNode.getNextSibling() {
         return (Node)coreGetNextSibling();
     }

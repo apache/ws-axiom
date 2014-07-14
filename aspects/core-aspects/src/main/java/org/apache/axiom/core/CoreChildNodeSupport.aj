@@ -23,8 +23,66 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 
 public aspect CoreChildNodeSupport {
+    private CoreParentNode CoreChildNode.owner;
     private CoreChildNode CoreChildNode.nextSibling;
     private CoreChildNode CoreChildNode.previousSibling;
+    
+    /**
+     * Check if this node has a parent.
+     * 
+     * @return <code>true</code> if and only if this node currently has a parent
+     */
+    public final boolean CoreChildNode.coreHasParent() {
+        return getFlag(Flags.HAS_PARENT);
+    }
+    
+    /**
+     * Get the parent of this node.
+     * 
+     * @return the parent of this node or <code>null</code> if this node doesn't have a parent
+     */
+    public final CoreParentNode CoreChildNode.coreGetParent() {
+        return getFlag(Flags.HAS_PARENT) ? owner : null;
+    }
+    
+    public void CoreChildNode.internalSetParent(CoreParentNode parent) {
+        if (parent == null) {
+            throw new IllegalArgumentException();
+        }
+        owner = parent;
+        setFlag(Flags.HAS_PARENT, true);
+    }
+    
+    public final void CoreChildNode.internalUnsetParent(CoreDocument newOwnerDocument) {
+        owner = newOwnerDocument;
+        setFlag(Flags.HAS_PARENT, false);
+    }
+    
+    public final CoreDocument CoreChildNode.coreGetOwnerDocument(boolean create) {
+        CoreNode root = this;
+        while (root.getFlag(Flags.HAS_PARENT)) {
+            root = ((CoreChildNode)root).owner;
+        }
+        if (root instanceof CoreChildNode) {
+            CoreChildNode rootChildNode = (CoreChildNode)root;
+            CoreDocument document = (CoreDocument)rootChildNode.owner;
+            if (document == null && create) {
+                document = createOwnerDocument();
+                rootChildNode.owner = document;
+            }
+            return document;
+        } else {
+            // We get here if the root node is a document or document fragment
+            return root.coreGetOwnerDocument(create);
+        }
+    }
+    
+    public final void CoreChildNode.coreSetOwnerDocument(CoreDocument document) {
+        if (getFlag(Flags.HAS_PARENT)) {
+            throw new IllegalStateException();
+        }
+        owner = document;
+    }
     
     public final CoreChildNode CoreChildNode.coreGetNextSiblingIfAvailable() {
         return nextSibling;
@@ -42,7 +100,7 @@ public aspect CoreChildNodeSupport {
         this.previousSibling = previousSibling;
     }
     
-    public CoreChildNode CoreChildNode.coreGetNextSibling() throws OMException {
+    public final CoreChildNode CoreChildNode.coreGetNextSibling() throws OMException {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
             CoreParentNode parent = coreGetParent();

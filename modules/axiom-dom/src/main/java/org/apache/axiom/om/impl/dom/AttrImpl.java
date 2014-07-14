@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import javax.xml.XMLConstants;
+
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
@@ -38,24 +41,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
-import javax.xml.XMLConstants;
-
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Attr, NamedNode, NonDeferringParentNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Attr, NamedNode, CoreAttribute, NonDeferringParentNode {
     private String type;
-
-    /**
-     * Owner of this attribute. This is either the owner element or the owner document (if the
-     * attribute doesn't have an owner element).
-     */
-    private ParentNode owner;
 
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
     private AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
-        owner = ownerDocument;
+        coreSetOwnerDocument(ownerDocument);
     }
 
     // TODO: copy isId?
@@ -112,14 +107,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
         internalSetLocalName(localName);
         internalSetNamespace(namespace);
         this.type = OMConstants.XMLATTRTYPE_CDATA;
-    }
-
-    final ParentNode internalGetOwnerNode() {
-        return owner;
-    }
-
-    final void internalSetOwnerNode(ParentNode ownerNode) {
-        this.owner = ownerNode;
     }
 
     // /
@@ -226,29 +213,23 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
      * @see org.w3c.dom.Attr#getOwnerElement()
      */
     public Element getOwnerElement() {
-        return owner instanceof ElementImpl ? (Element)owner : null;
+        return (Element)coreGetOwnerElement();
     }
 
     void setOwnerElement(ElementImpl element, boolean useDomSemantics) {
         if (element == null) {
-            if (owner instanceof ElementImpl) {
-                if (useDomSemantics) {
-                    owner = ((ElementImpl)owner).ownerDocument();
-                } else {
-                    owner = null;
-                }
-            }
+            internalUnsetOwnerElement(useDomSemantics ? coreGetOwnerDocument(true) : null);
         } else {
-            owner = element;
+            internalSetOwnerElement(element);
         }
     }
     
     public boolean getSpecified() {
-        return (flags & DEFAULT_ATTR) == 0;
+        return coreGetSpecified();
     }
 
     public void setSpecified(boolean specified) {
-        flags = (short) (specified ? flags & ~DEFAULT_ATTR : flags | DEFAULT_ATTR);
+        coreSetSpecified(specified);
     }
 
     public String getAttributeValue() {
@@ -278,7 +259,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
     }
 
     final void checkInUse() {
-        if (owner instanceof ElementImpl) {
+        if (coreGetOwnerElement() != null) {
             throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
         }
     }
@@ -294,11 +275,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
             removeChild(child);
         }
         internalAppendChild((TextImpl)getOwnerDocument().createTextNode(value));
-    }
-
-    public Node getParentNode() {
-        // For DOM, the owner element is not the parent
-        return null;
     }
 
     /**
@@ -332,7 +308,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
     }
 
     public OMElement getOwner() {
-        return owner instanceof ElementImpl ? (OMElement)owner : null;
+        return (OMElement)coreGetOwnerElement();
     }
 
     /**

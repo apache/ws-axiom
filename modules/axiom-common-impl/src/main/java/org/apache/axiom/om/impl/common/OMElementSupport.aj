@@ -200,7 +200,7 @@ public aspect OMElementSupport {
     }
     
     public void IElement.detachAndDiscardParent() {
-        coreSetParent(null);
+        internalUnsetParent(null);
         coreSetPreviousSibling(null);
         coreSetNextSibling(null);
     }

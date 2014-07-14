@@ -18,6 +18,21 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreChildNode extends CoreNode {
+final class Flags {
+    private Flags() {}
     
+    /**
+     * Defines the bit mask for the part of the flags that indicate the state of a
+     * {@link CoreParentNode}.
+     */
+    static final int STATE_MASK = 3;
+
+    /**
+     * Used by {@link CoreChildNode} instances to indicate whether the node has a parent or not.
+     * This is necessary to interpret the meaning of the <code>owner</code> attribute if it refers
+     * to a document node (which may be the parent or simply the owner document).
+     */
+    static final int HAS_PARENT = 4;
+    
+    static final int DEFAULT_ATTR = 8;
 }

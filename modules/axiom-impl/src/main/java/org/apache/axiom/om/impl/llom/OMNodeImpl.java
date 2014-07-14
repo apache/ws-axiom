@@ -32,10 +32,6 @@ import org.apache.axiom.om.impl.common.INode;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
-    
-    /** Field parent */
-    protected IContainer parent;
-
     /**
      * Constructor OMNodeImpl
      *
@@ -46,27 +42,14 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
     }
 
     /**
-     * Returns the immediate parent of the node. Parent is always an Element.
-     *
-     * @return Returns OMContainer.
-     * @throws OMException
-     */
-    public OMContainer getParent() {
-        return parent;
-    }
-
-    public CoreParentNode coreGetParent() {
-        return parent;
-    }
-
-    /**
      * Method setParent.
      *
      * @param element
      */
     public void coreSetParent(CoreParentNode element) {
+        CoreParentNode currentParent = coreGetParent();
 
-        if ((this.parent) == element) {
+        if (currentParent == element) {
             return;
         }
 
@@ -74,12 +57,12 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         //of an existing one. We should detach this node
         //from the previous parent.
         if (element != null) {
-            if (this.parent != null) {
+            if (currentParent != null) {
                 this.detach();
             }
-            this.parent = (IContainer) element;
+            internalSetParent(element);
         } else {
-            this.parent = null;
+            internalUnsetParent(null);
         }
     }
 
@@ -98,6 +81,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      * @throws OMException
      */
     public OMNode detach() throws OMException {
+        CoreParentNode parent = coreGetParent();
         if (parent == null) {
             throw new OMException(
                     "Nodes that don't have a parent can not be detached");
@@ -120,7 +104,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
 
         coreSetPreviousSibling(null);
         coreSetNextSibling(null);
-        this.parent = null;
+        internalUnsetParent(null);
         return this;
     }
 
@@ -131,6 +115,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      * @throws OMException
      */
     public void insertSiblingAfter(OMNode sibling) throws OMException {
+        IContainer parent = (IContainer)getParent();
         if (parent == null) {
             throw new OMException("Parent can not be null");
         } else if (this == sibling) {
@@ -159,6 +144,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
      * @throws OMException
      */
     public void insertSiblingBefore(OMNode sibling) throws OMException {
+        IContainer parent = (IContainer)getParent();
         if (parent == null) {
             throw new OMException("Parent can not be null");
         } else if (this == sibling) {

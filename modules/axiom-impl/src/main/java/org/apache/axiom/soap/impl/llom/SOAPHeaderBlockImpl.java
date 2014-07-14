@@ -66,8 +66,8 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
 
     protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
-    public void coreSetParent(CoreParentNode element) {
-        super.coreSetParent(element);
+    public void internalSetParent(CoreParentNode element) {
+        super.internalSetParent(element);
 
         if (element instanceof OMElement) {
             checkParent((OMElement) element);

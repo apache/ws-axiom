@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -86,15 +87,6 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         coreSetState(COMPLETE);
     }
 
-    ParentNode internalGetOwnerNode() {
-        return this;
-    }
-
-    void internalSetOwnerNode(ParentNode ownerNode) {
-        // The owner node of a document node cannot be set
-        throw new UnsupportedOperationException();
-    }
-
     public Document getOwnerDocument() {
         return null;
     }
@@ -141,25 +133,25 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
 
     public CDATASection createCDATASection(String data) throws DOMException {
         CDATASectionImpl cdataSection = new CDATASectionImpl(data, getOMFactory());
-        cdataSection.setOwnerDocument(this);
+        cdataSection.coreSetOwnerDocument(this);
         return cdataSection;
     }
 
     public Comment createComment(String data) {
         CommentImpl comment = new CommentImpl(data, getOMFactory());
-        comment.setOwnerDocument(this);
+        comment.coreSetOwnerDocument(this);
         return comment;
     }
 
     public DocumentFragment createDocumentFragment() {
         DocumentFragmentImpl fragment = new DocumentFragmentImpl(getOMFactory());
-        fragment.setOwnerDocument(this);
+        fragment.coreSetOwnerDocument(this);
         return fragment;
     }
 
     public Element createElement(String tagName) throws DOMException {
         ElementImpl element = new ElementImpl(null, tagName, null, null, getOMFactory(), false);
-        element.setOwnerDocument(this);
+        element.coreSetOwnerDocument(this);
         return element;
     }
 
@@ -181,26 +173,26 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
             namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
         ElementImpl element = new ElementImpl(null, localName, namespace, null, getOMFactory(), false);
-        element.setOwnerDocument(this);
+        element.coreSetOwnerDocument(this);
         return element;
     }
 
     public EntityReference createEntityReference(String name) throws DOMException {
         EntityReferenceImpl node = new EntityReferenceImpl(name, null, getOMFactory());
-        node.setOwnerDocument(this);
+        node.coreSetOwnerDocument(this);
         return node;
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,
                                                              String data) throws DOMException {
         ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, getOMFactory());
-        pi.setOwnerDocument(this);
+        pi.coreSetOwnerDocument(this);
         return pi;
     }
 
     public Text createTextNode(String value) {
         TextImpl text = new TextImpl(value, getOMFactory());
-        text.setOwnerDocument(this);
+        text.coreSetOwnerDocument(this);
         return text;
     }
 
@@ -470,10 +462,10 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     public Node adoptNode(Node node) throws DOMException {
         if (node instanceof NodeImpl) {
             NodeImpl childNode = (NodeImpl)node;
-            if (childNode.hasParent()) {
+            if (childNode instanceof CoreChildNode && ((CoreChildNode)childNode).coreHasParent()) {
                 childNode.detach();
             }
-            childNode.setOwnerDocument(this);
+            childNode.coreSetOwnerDocument(this);
             if (node instanceof AttrImpl) {
                 ((AttrImpl)node).setSpecified(true);
             }

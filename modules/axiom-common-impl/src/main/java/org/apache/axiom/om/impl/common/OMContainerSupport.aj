@@ -144,7 +144,7 @@ public aspect OMContainerSupport {
             child = prepareNewChild(omNode);
         }
         
-        child.coreSetParent(this);
+        child.internalSetParent(this);
 
         if (coreGetFirstChildIfAvailable() == null) {
             coreSetFirstChild(child);
@@ -214,7 +214,7 @@ public aspect OMContainerSupport {
             CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
             child.coreSetPreviousSibling(null);
             child.coreSetNextSibling(null);
-            child.coreSetParent(null);
+            child.internalUnsetParent(null); // NOTE: only valid for OM
             child = nextSibling;
         }
         coreSetFirstChild(null);

@@ -49,4 +49,8 @@ public abstract class RootNode extends ParentNode {
     public final Node getPreviousSibling() {
         return null;
     }
+    
+    public final Node getParentNode() {
+        return null;
+    }
 }
