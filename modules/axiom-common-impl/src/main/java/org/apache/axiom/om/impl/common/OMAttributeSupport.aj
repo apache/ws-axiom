@@ -18,9 +18,14 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
 public aspect OMAttributeSupport {
+    public final OMElement IAttribute.getOwner() {
+        return (OMElement)coreGetOwnerElement();
+    }
+
     public final void IAttribute.setNamespace(OMNamespace namespace, boolean decl) {
         internalSetNamespace(handleNamespace((IElement)getOwner(), namespace, true, decl));
     }

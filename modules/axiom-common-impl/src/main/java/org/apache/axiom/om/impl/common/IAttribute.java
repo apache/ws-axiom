@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.om.OMAttribute;
 
-public interface IAttribute extends OMAttribute, INamedInformationItem {
+public interface IAttribute extends OMAttribute, CoreAttribute, INamedInformationItem {
 
 }

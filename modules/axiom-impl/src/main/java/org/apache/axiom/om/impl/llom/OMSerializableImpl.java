@@ -25,14 +25,12 @@ import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.ISerializable;
-import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
@@ -40,7 +38,7 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class OMSerializableImpl extends InformationItem implements ISerializable {
+public abstract class OMSerializableImpl extends OMInformationItemImpl implements ISerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
     
     private OMFactory factory;
@@ -195,9 +193,5 @@ public abstract class OMSerializableImpl extends InformationItem implements ISer
         } finally {
             writer.close();
         }
-    }
-
-    public final CoreDocument createOwnerDocument() {
-        throw new UnsupportedOperationException();
     }
 }

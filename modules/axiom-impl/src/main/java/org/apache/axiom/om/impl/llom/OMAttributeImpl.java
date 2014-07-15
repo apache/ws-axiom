@@ -25,20 +25,16 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.IAttribute;
 
 /** Class OMAttributeImpl */
-public class OMAttributeImpl implements IAttribute {
+public class OMAttributeImpl extends OMInformationItemImpl implements IAttribute {
     private String value;
 
     private String type;
 
     /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
     private OMFactory factory;
-
-    // Keep track of the owner of the attribute
-    OMElementImpl owner;
 
     /**
      * Constructor OMAttributeImpl.
@@ -111,10 +107,6 @@ public class OMAttributeImpl implements IAttribute {
 
     public OMFactory getOMFactory() {
         return this.factory;
-    }
-
-    public OMElement getOwner() {
-        return owner;
     }
 
     /**

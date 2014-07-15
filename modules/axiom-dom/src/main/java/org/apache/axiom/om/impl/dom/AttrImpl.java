@@ -21,12 +21,10 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.XMLConstants;
 
-import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
@@ -42,7 +40,7 @@ import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Attr, NamedNode, CoreAttribute, NonDeferringParentNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Attr, NamedNode, NonDeferringParentNode {
     private String type;
 
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
@@ -305,10 +303,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
         return (namespace == null) ? localName : namespace
                 .getPrefix()
                 + ":" + localName;
-    }
-
-    public OMElement getOwner() {
-        return (OMElement)coreGetOwnerElement();
     }
 
     /**

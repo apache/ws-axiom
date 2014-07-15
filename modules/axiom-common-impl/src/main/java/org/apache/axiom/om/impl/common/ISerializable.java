@@ -18,14 +18,12 @@
  */
 package org.apache.axiom.om.impl.common;
 
-
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-public interface ISerializable extends CoreNode, OMSerializable {
+public interface ISerializable extends OMSerializable, IInformationItem {
     /**
      * Serializes the node.
      *

@@ -16,10 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.om.impl.common.IInformationItem;
+import org.apache.axiom.om.impl.common.InformationItem;
 
-public interface INamedInformationItem extends OMNamedInformationItem, IInformationItem {
-
+public abstract class OMInformationItemImpl extends InformationItem implements IInformationItem {
+    public final CoreDocument createOwnerDocument() {
+        throw new UnsupportedOperationException();
+    }
 }

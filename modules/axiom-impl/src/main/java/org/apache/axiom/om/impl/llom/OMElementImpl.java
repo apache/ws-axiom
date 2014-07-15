@@ -444,11 +444,11 @@ public class OMElementImpl extends OMNodeImpl
             this.attributes = new LinkedHashMap(5);
         }
         // Set the owner element of the attribute
-        ((OMAttributeImpl)attr).owner = this;
+        ((OMAttributeImpl)attr).internalSetOwnerElement(this);
         OMAttributeImpl oldAttr = (OMAttributeImpl)attributes.put(attr.getQName(), attr);
         // Did we replace an existing attribute?
         if (oldAttr != null) {
-            oldAttr.owner = null;
+            oldAttr.internalUnsetOwnerElement(null);
         }
     }
 
@@ -457,7 +457,7 @@ public class OMElementImpl extends OMNodeImpl
             throw new OMException("The attribute is not owned by this element");
         }
         // Remove the owner from this attribute
-        ((OMAttributeImpl)attr).owner = null;
+        ((OMAttributeImpl)attr).internalUnsetOwnerElement(null);
         attributes.remove(attr.getQName());
     }
 
