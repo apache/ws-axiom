@@ -126,17 +126,10 @@ public aspect OMContainerSupport {
             // the same factory
             child = (INode)omNode;
         } else {
-            // Careful here: if the child was created by another Axiom implementation, it doesn't
-            // necessarily implement INode
-            if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
-                child = (INode)omNode;
-            } else {
-                child = (INode)((OMFactoryEx)getOMFactory()).importNode(omNode);
-            }
             if (!isComplete()) {
                 build();
             }
-            if (child.getParent() == this && child == coreGetLastKnownChild()) {
+            if (omNode.getParent() == this && omNode == coreGetLastKnownChild()) {
                 // The child is already the last node. 
                 // We don't need to detach and re-add it.
                 return;
