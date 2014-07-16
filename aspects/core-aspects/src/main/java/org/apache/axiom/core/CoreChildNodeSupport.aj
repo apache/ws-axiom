@@ -24,8 +24,8 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 
 public aspect CoreChildNodeSupport {
     private CoreParentNode CoreChildNode.owner;
-    private CoreChildNode CoreChildNode.nextSibling;
-    private CoreChildNode CoreChildNode.previousSibling;
+    CoreChildNode CoreChildNode.nextSibling;
+    CoreChildNode CoreChildNode.previousSibling;
     
     /**
      * Check if this node has a parent.
@@ -128,12 +128,12 @@ public aspect CoreChildNodeSupport {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        // TODO: need to detach sibling (but the Axiom API impl already does this before calling us)
+        sibling.coreDetach(null);
         sibling.internalSetParent(parent);
         CoreChildNode nextSibling = coreGetNextSibling();
         sibling.previousSibling = this;
         if (nextSibling == null) {
-            parent.coreSetLastChild(sibling);
+            parent.lastChild = sibling;
         } else {
             nextSibling.previousSibling = sibling;
         }
@@ -149,16 +149,41 @@ public aspect CoreChildNodeSupport {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        // TODO: need to detach sibling (but the Axiom API impl already does this before calling us)
+        sibling.coreDetach(null);
         sibling.internalSetParent(parent);
         CoreChildNode previousSibling = this.previousSibling;
         sibling.nextSibling = this;
         if (previousSibling == null) {
-            parent.coreSetFirstChild(sibling);
+            parent.firstChild = sibling;
         } else {
             previousSibling.nextSibling = sibling;
         }
         sibling.previousSibling = previousSibling;
         this.previousSibling = sibling;
+    }
+    
+    public final void CoreChildNode.coreDetach(CoreDocument newOwnerDocument) {
+        CoreParentNode parent = coreGetParent();
+        if (parent != null) {
+            // TODO: ugly hack
+            if (this instanceof CoreParentNode) {
+                ((CoreParentNode)this).build();
+            }
+            
+            if (previousSibling == null) {
+                parent.firstChild = nextSibling;
+            } else {
+                previousSibling.nextSibling = nextSibling;
+            }
+            if (nextSibling == null) {
+                parent.lastChild = previousSibling;
+            } else {
+                nextSibling.previousSibling = previousSibling;
+            }
+            previousSibling = null;
+            nextSibling = null;
+            // TODO: what if parent == null? shouldn't we always set the new owner document?
+            internalUnsetParent(newOwnerDocument);
+        }
     }
 }

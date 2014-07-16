@@ -27,8 +27,8 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 public aspect CoreParentNodeSupport {
-    private CoreChildNode CoreParentNode.firstChild;
-    private CoreChildNode CoreParentNode.lastChild;
+    CoreChildNode CoreParentNode.firstChild;
+    CoreChildNode CoreParentNode.lastChild;
     
     /**
      * Get the first child if it is available. The child is available if it is complete or
@@ -94,5 +94,26 @@ public aspect CoreParentNodeSupport {
             }
         }
         return firstChild;
+    }
+
+    public final void CoreParentNode.coreAppendChild(CoreChildNode child, boolean fromBuilder) {
+        CoreParentNode parent = child.coreGetParent();
+        if (!fromBuilder) {
+            build();
+        }
+        if (parent == this && child == lastChild) {
+            // The child is already the last node. 
+            // We don't need to detach and re-add it.
+            return;
+        }
+        child.coreDetach(null);
+        child.internalSetParent(this);
+        if (firstChild == null) {
+            firstChild = child;
+        } else {
+            child.previousSibling = lastChild;
+            lastChild.nextSibling = child;
+        }
+        lastChild = child;
     }
 }

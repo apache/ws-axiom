@@ -113,9 +113,6 @@ public aspect OMContainerSupport {
             child = (INode)((OMFactoryEx)getOMFactory()).importNode(omNode);
         }
         checkChild(omNode);
-        if (child.getParent() != null) {
-            child.detach();
-        }
         return child;
     }
 
@@ -126,27 +123,10 @@ public aspect OMContainerSupport {
             // the same factory
             child = (INode)omNode;
         } else {
-            if (!isComplete()) {
-                build();
-            }
-            if (omNode.getParent() == this && omNode == coreGetLastKnownChild()) {
-                // The child is already the last node. 
-                // We don't need to detach and re-add it.
-                return;
-            }
             child = prepareNewChild(omNode);
         }
         
-        child.internalSetParent(this);
-
-        if (coreGetFirstChildIfAvailable() == null) {
-            coreSetFirstChild(child);
-        } else {
-            CoreChildNode lastChild = coreGetLastKnownChild();
-            child.coreSetPreviousSibling(lastChild);
-            lastChild.coreSetNextSibling(child);
-        }
-        coreSetLastChild(child);
+        coreAppendChild(child, fromBuilder);
 
         // For a normal OMNode, the incomplete status is
         // propogated up the tree.  
@@ -154,6 +134,7 @@ public aspect OMContainerSupport {
         // (it has an independent parser source).
         // So only propogate the incomplete setting if this
         // is a normal OMNode
+        // TODO: this is crap and needs to be reviewed
         if (!fromBuilder && !child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
             setComplete(false);

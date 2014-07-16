@@ -33,4 +33,5 @@ public interface CoreParentNode extends CoreNode {
     int getState();
     void coreSetState(int state);
     boolean isComplete();
+    void build();
 }
