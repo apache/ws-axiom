@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
 public aspect OMNodeSupport {
@@ -40,5 +41,21 @@ public aspect OMNodeSupport {
 
     public final OMNode INode.getPreviousOMSibling() {
         return (OMNode)coreGetPreviousSibling();
+    }
+
+    public final void INode.insertSiblingAfter(OMNode sibling) throws OMException {
+        IContainer parent = (IContainer)getParent();
+        if (parent == null) {
+            throw new OMException("Parent can not be null");
+        }
+        coreInsertSiblingAfter(parent.prepareNewChild(sibling));
+    }
+
+    public final void INode.insertSiblingBefore(OMNode sibling) throws OMException {
+        IContainer parent = (IContainer)getParent();
+        if (parent == null) {
+            throw new OMException("Parent can not be null");
+        }
+        coreInsertSiblingBefore(parent.prepareNewChild(sibling));
     }
 }

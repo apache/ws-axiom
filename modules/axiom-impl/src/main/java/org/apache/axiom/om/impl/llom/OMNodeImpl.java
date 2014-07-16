@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
@@ -27,7 +26,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.INode;
 
 /** Class OMNodeImpl */
@@ -106,63 +104,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         coreSetNextSibling(null);
         internalUnsetParent(null);
         return this;
-    }
-
-    /**
-     * Inserts a sibling just after the current information item.
-     *
-     * @param sibling
-     * @throws OMException
-     */
-    public void insertSiblingAfter(OMNode sibling) throws OMException {
-        IContainer parent = (IContainer)getParent();
-        if (parent == null) {
-            throw new OMException("Parent can not be null");
-        } else if (this == sibling) {
-            throw new OMException("Inserting self as the sibling is not allowed");
-        }
-        OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
-        siblingImpl.coreSetParent(parent);
-        if (coreGetNextSiblingIfAvailable() == null) {
-            getNextOMSibling();
-        }
-        siblingImpl.coreSetPreviousSibling(this);
-        OMNodeImpl nextSibling = (OMNodeImpl)coreGetNextSiblingIfAvailable();
-        if (nextSibling == null) {
-            parent.coreSetLastChild((CoreChildNode)sibling);
-        } else {
-            nextSibling.coreSetPreviousSibling((CoreChildNode)sibling);
-        }
-        ((INode)sibling).coreSetNextSibling(nextSibling);
-        coreSetNextSibling(siblingImpl);
-    }
-
-    /**
-     * Inserts a sibling just before the current information item.
-     *
-     * @param sibling
-     * @throws OMException
-     */
-    public void insertSiblingBefore(OMNode sibling) throws OMException {
-        IContainer parent = (IContainer)getParent();
-        if (parent == null) {
-            throw new OMException("Parent can not be null");
-        } else if (this == sibling) {
-            throw new OMException("Inserting self as the sibling is not allowed");
-        }
-        OMNodeImpl siblingImpl = (OMNodeImpl)parent.prepareNewChild(sibling);
-        OMNodeImpl previousSibling = (OMNodeImpl)coreGetPreviousSibling();
-        siblingImpl.coreSetParent(parent);
-        if (previousSibling == null) {
-            parent.coreSetFirstChild(siblingImpl);
-            siblingImpl.coreSetNextSibling(this);
-            siblingImpl.coreSetPreviousSibling(null);
-        } else {
-            siblingImpl.coreSetNextSibling(this);
-            previousSibling.coreSetNextSibling(siblingImpl);
-            siblingImpl.coreSetPreviousSibling(previousSibling);
-        }
-        coreSetPreviousSibling(siblingImpl);
     }
 
     /**

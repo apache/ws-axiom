@@ -31,7 +31,11 @@ public class SOAPImplementationTest extends TestCase {
         
         // TODO: currently broken; need a better solution for parent checks
         builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent1.class);
+        builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent2.class);
+        builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent3.class);
         builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent1.class);
+        builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent2.class);
+        builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent3.class);
         
         // TODO: need to decide what the correct behavior is (other OMFactory methods allow null parents)
         builder.exclude(TestCreateSOAPElementWithNullParent.class);

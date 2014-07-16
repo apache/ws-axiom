@@ -119,4 +119,46 @@ public aspect CoreChildNodeSupport {
         }
         return nextSibling;
     }
+
+    public final void CoreChildNode.coreInsertSiblingAfter(CoreChildNode sibling) {
+        CoreParentNode parent = coreGetParent();
+        // TODO: don't use OMException here
+        if (parent == null) {
+            throw new OMException("Parent can not be null");
+        } else if (this == sibling) {
+            throw new OMException("Inserting self as the sibling is not allowed");
+        }
+        // TODO: need to detach sibling (but the Axiom API impl already does this before calling us)
+        sibling.internalSetParent(parent);
+        CoreChildNode nextSibling = coreGetNextSibling();
+        sibling.previousSibling = this;
+        if (nextSibling == null) {
+            parent.coreSetLastChild(sibling);
+        } else {
+            nextSibling.previousSibling = sibling;
+        }
+        sibling.nextSibling = nextSibling;
+        this.nextSibling = sibling;
+    }
+    
+    public final void CoreChildNode.coreInsertSiblingBefore(CoreChildNode sibling) {
+        CoreParentNode parent = coreGetParent();
+        // TODO: don't use OMException here
+        if (parent == null) {
+            throw new OMException("Parent can not be null");
+        } else if (this == sibling) {
+            throw new OMException("Inserting self as the sibling is not allowed");
+        }
+        // TODO: need to detach sibling (but the Axiom API impl already does this before calling us)
+        sibling.internalSetParent(parent);
+        CoreChildNode previousSibling = this.previousSibling;
+        sibling.nextSibling = this;
+        if (previousSibling == null) {
+            parent.coreSetFirstChild(sibling);
+        } else {
+            previousSibling.nextSibling = sibling;
+        }
+        sibling.previousSibling = previousSibling;
+        this.previousSibling = sibling;
+    }
 }
