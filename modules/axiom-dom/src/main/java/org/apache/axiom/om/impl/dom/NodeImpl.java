@@ -68,10 +68,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         this.factory = factory;
     }
 
-    void normalize(DOMConfigurationImpl config) {
-        // Default: do nothing
-    }
-    
     public void normalize() {
         //Parent node should override this 
     }

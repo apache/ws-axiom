@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.dom.impl;
 
-abstract class RootNode extends NodeImpl {
+import org.apache.axiom.dom.DOMRootNode;
+
+abstract class RootNode extends NodeImpl implements DOMRootNode {
 
 }

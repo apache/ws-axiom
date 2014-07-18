@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
@@ -888,7 +889,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         }
     }
 
-    void normalize(DOMConfigurationImpl config) {
+    public void normalize(DOMConfigurationImpl config) {
         if (config.isEnabled(DOMConfigurationImpl.NAMESPACES)) {
             OMNamespace namespace = getNamespace();
             if (namespace == null) {

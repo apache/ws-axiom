@@ -41,7 +41,6 @@ import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
-import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -76,8 +75,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
 
     protected Hashtable identifiers;
     
-    private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
-
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         coreSetBuilder(parserWrapper);
@@ -470,10 +467,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public DOMConfiguration getDomConfig() {
-        return domConfig;
-    }
-
     public String getInputEncoding() {
         return charEncoding;
     }
@@ -493,15 +486,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
 
     public String getXmlVersion() {
         return getXMLVersion();
-    }
-
-    public void normalizeDocument() {
-        if (domConfig.isEnabled(DOMConfigurationImpl.SPLIT_CDATA_SECTIONS)
-                || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
-            throw new UnsupportedOperationException("TODO");
-        } else {
-            normalize(domConfig);
-        }
     }
 
     public Node renameNode(Node node, String namespaceURI, String qualifiedName)

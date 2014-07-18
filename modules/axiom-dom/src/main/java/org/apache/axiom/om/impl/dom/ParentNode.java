@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
@@ -29,7 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public abstract class ParentNode extends NodeImpl implements NodeList, CoreParentNode {
+public abstract class ParentNode extends NodeImpl implements NodeList, DOMParentNode {
     protected ParentNode(OMFactory factory) {
         super(factory);
     }
@@ -407,14 +407,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, CoreParen
         // create a Text node to hold the given content
         if (textContent != null && textContent.length() != 0) {
             insertBefore((NodeImpl)getOMFactory().createOMText(textContent), null, false);
-        }
-    }
-
-    void normalize(DOMConfigurationImpl config) {
-        CoreChildNode child = coreGetFirstChild();
-        while (child != null) {
-            ((NodeImpl)child).normalize(config);
-            child = child.coreGetNextSibling();
         }
     }
 }

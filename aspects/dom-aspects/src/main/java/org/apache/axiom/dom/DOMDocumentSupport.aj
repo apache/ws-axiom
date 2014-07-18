@@ -18,10 +18,13 @@
  */
 package org.apache.axiom.dom;
 
+import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public aspect DOMDocumentSupport {
+    private final DOMConfigurationImpl DOMDocument.domConfig = new DOMConfigurationImpl();
+
     public final String DOMDocument.getNodeName() {
         return "#document";
     }
@@ -48,5 +51,18 @@ public aspect DOMDocumentSupport {
         Element documentElement = getDocumentElement();
         return documentElement == null ? null
                 : getDocumentElement().lookupPrefix(namespaceURI);
+    }
+
+    public final DOMConfiguration DOMDocument.getDomConfig() {
+        return domConfig;
+    }
+
+    public final void DOMDocument.normalizeDocument() {
+        if (domConfig.isEnabled(DOMConfigurationImpl.SPLIT_CDATA_SECTIONS)
+                || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
+            throw new UnsupportedOperationException("TODO");
+        } else {
+            normalize(domConfig);
+        }
     }
 }

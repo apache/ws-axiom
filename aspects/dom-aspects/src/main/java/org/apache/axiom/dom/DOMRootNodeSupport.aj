@@ -18,9 +18,18 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.core.CoreDocument;
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
-public interface DOMDocument extends DOMRootNode, Document, CoreDocument {
+public aspect DOMRootNodeSupport {
+    public final Node DOMRootNode.getNextSibling() {
+        return null;
+    }
 
+    public final Node DOMRootNode.getPreviousSibling() {
+        return null;
+    }
+    
+    public final Node DOMRootNode.getParentNode() {
+        return null;
+    }
 }

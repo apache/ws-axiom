@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.core.CoreDocument;
-import org.w3c.dom.Document;
-
-public interface DOMDocument extends DOMRootNode, Document, CoreDocument {
-
+public aspect DOMNodeSupport {
+    // TODO: should eventually have package access
+    public void DOMNode.normalize(DOMConfigurationImpl config) {
+        // Default: do nothing
+    }
 }

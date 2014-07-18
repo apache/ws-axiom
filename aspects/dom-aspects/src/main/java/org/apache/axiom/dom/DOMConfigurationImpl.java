@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,8 @@ import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMStringList;
 
-public class DOMConfigurationImpl implements DOMConfiguration {
+// TODO: should eventually have package access
+public final class DOMConfigurationImpl implements DOMConfiguration {
     private static final String CANONICAL_FORM_PARAM = "canonical-form";
     private static final String CDATA_SECTIONS_PARAM ="cdata-sections";
     private static final String CHECK_CHAR_NORMALIZATION_PARAM  = "check-character-normalization";
