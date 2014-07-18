@@ -920,13 +920,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         }
     }
 
-    OMNode detach(boolean useDomSemantics) {
-        if (getState() == INCOMPLETE) {
-            build();
-        }
-        return super.detach(useDomSemantics);
-    }
-
     public final void build() {
         defaultBuild();
     }

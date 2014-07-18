@@ -477,19 +477,6 @@ public class OMElementImpl extends OMNodeImpl
         return addAttribute(new OMAttributeImpl(localName, namespace, value, getOMFactory()));
     }
 
-    /**
-     * Removes this information item and its children, from the model completely.
-     *
-     * @throws OMException
-     */
-    public OMNode detach() throws OMException {
-        if (getState() == INCOMPLETE) {
-            build();
-        }
-        super.detach();
-        return this;
-    }
-
     public void build() throws OMException {
         /**
          * builder is null. Meaning this is a programatical created element but it has children which are not completed

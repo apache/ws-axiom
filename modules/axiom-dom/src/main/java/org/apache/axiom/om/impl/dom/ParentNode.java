@@ -326,16 +326,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
         return oldChild;
     }
 
-    /** Removes the given child from the DOM Tree. */
-    public final Node removeChild(Node oldChild) throws DOMException {
-        if (oldChild.getParentNode() == this) {
-            ((NodeImpl)oldChild).detach(true);
-            return oldChild;
-        } else {
-            throw newDOMException(DOMException.NOT_FOUND_ERR);
-        }
-    }
-
     /**
      * Checks if the given node is an ancestor (or identical) to this node.
      * 

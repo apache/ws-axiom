@@ -452,7 +452,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
         if (node instanceof NodeImpl) {
             NodeImpl childNode = (NodeImpl)node;
             if (childNode instanceof CoreChildNode && ((CoreChildNode)childNode).coreHasParent()) {
-                childNode.detach();
+                ((OMNode)childNode).detach();
             }
             childNode.coreSetOwnerDocument(this);
             if (node instanceof AttrImpl) {

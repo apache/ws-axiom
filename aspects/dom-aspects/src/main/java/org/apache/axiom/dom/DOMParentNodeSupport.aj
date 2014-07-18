@@ -18,9 +18,22 @@
  */
 package org.apache.axiom.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 
 public aspect DOMParentNodeSupport {
+    public final Node DOMParentNode.removeChild(Node oldChild) throws DOMException {
+        if (oldChild.getParentNode() == this) {
+            ((CoreChildNode)oldChild).coreDetach(coreGetOwnerDocument(true));
+            return oldChild;
+        } else {
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
+        }
+    }
+
     public void DOMParentNode.normalize(DOMConfigurationImpl config) {
         CoreChildNode child = coreGetFirstChild();
         while (child != null) {

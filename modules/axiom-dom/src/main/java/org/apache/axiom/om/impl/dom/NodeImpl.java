@@ -456,40 +456,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         }
     }
 
-    public OMNode detach() throws OMException {
-        return detach(false);
-    }
-    
-    OMNode detach(boolean useDomSemantics) {
-        ParentNode parentNode = parentNode();
-        if (parentNode == null) {
-            throw new OMException("Parent level elements cannot be detached");
-        } else {
-            NodeImpl previousSibling = internalGetPreviousSibling();
-            NodeImpl nextSibling = internalGetNextSibling();
-            if (previousSibling == null) { // This is the first child
-                if (nextSibling != null) {
-                    parentNode.coreSetFirstChild((CoreChildNode)nextSibling);
-                } else {
-                    parentNode.coreSetFirstChild(null);
-                    parentNode.coreSetLastChild(null);
-                }
-            } else {
-                previousSibling.setNextOMSibling((OMNode)nextSibling);
-            }
-            if (nextSibling != null) {
-                nextSibling.setPreviousOMSibling((OMNode)previousSibling);
-                internalSetNextSibling(null);
-            }
-            if (parentNode != null && parentNode.coreGetLastKnownChild() == this) {
-                parentNode.coreSetLastChild((CoreChildNode)previousSibling);
-            }
-            setParent(null, useDomSemantics);
-            internalSetPreviousSibling(null);
-        }
-        return (OMNode)this;
-    }
-
     public abstract OMXMLParserWrapper getBuilder();
     
     public abstract void setComplete(boolean state);

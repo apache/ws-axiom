@@ -58,4 +58,13 @@ public aspect OMNodeSupport {
         }
         coreInsertSiblingBefore(parent.prepareNewChild(sibling));
     }
+    
+    public OMNode INode.detach() {
+        if (!coreHasParent()) {
+            throw new OMException(
+                    "Nodes that don't have a parent can not be detached");
+        }
+        coreDetach(null);
+        return this;
+    }
 }
