@@ -28,6 +28,8 @@
     <name>Implementations</name>
     <packaging>pom</packaging>
     <modules>
+        <module>axiom-impl</module>
+        <module>axiom-dom</module>
         <module>dom</module>
     </modules>
     <build>
@@ -64,6 +66,7 @@
                     <instructions>
                         <Private-Package>org.apache.axiom.*</Private-Package>
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+                        <Import-Package>!org.aspectj.*,*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
