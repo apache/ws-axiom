@@ -30,6 +30,7 @@
     <modules>
         <module>core-aspects</module>
         <module>dom-aspects</module>
+        <module>om-aspects</module>
     </modules>
     <build>
         <plugins>

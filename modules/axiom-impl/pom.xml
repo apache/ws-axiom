@@ -45,7 +45,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-common-impl</artifactId>
+            <artifactId>om-aspects</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -124,7 +124,7 @@
                                 </aspectLibrary>
                                 <aspectLibrary>
                                     <groupId>${project.groupId}</groupId>
-                                    <artifactId>axiom-common-impl</artifactId>
+                                    <artifactId>om-aspects</artifactId>
                                 </aspectLibrary>
                             </aspectLibraries>
                         </configuration>
@@ -155,7 +155,6 @@
                             <artifactSet>
                                 <includes>
                                     <include>${project.groupId}:*-aspects</include>
-                                    <include>${project.groupId}:axiom-common-impl</include>
                                     <include>org.aspectj:aspectjrt</include>
                                 </includes>
                             </artifactSet>

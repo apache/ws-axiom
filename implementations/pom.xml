@@ -73,7 +73,6 @@
                     <artifactSet>
                         <includes>
                             <include>${project.groupId}:*-aspects</include>
-                            <include>${project.groupId}:axiom-common-impl</include>
                             <include>org.aspectj:aspectjrt</include>
                         </includes>
                     </artifactSet>

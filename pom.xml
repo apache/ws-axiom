@@ -900,7 +900,6 @@
         <module>buildutils</module>
         <module>modules/axiom-buildutils</module>
         <module>modules/axiom-api</module>
-        <module>modules/axiom-common-impl</module>
         <module>modules/axiom-impl</module>
         <module>modules/axiom-dom</module>
         <module>modules/axiom-compat</module>
