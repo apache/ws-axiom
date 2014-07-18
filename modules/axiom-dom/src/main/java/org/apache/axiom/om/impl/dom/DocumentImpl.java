@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.OMCloneOptions;
@@ -98,7 +100,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
 
     public Attr createAttribute(String name) throws DOMException {
         if (!DOMUtil.isQualifiedName(name)) {
-            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+            throw newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         return new AttrImpl(this, name, getOMFactory());
     }
@@ -306,7 +308,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
 
             case Node.DOCUMENT_NODE: // Can't import document nodes
             default:
-                throw DOMUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
+                throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
         }
 
         // If deep, replicate and attach the kids.
@@ -557,6 +559,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
     }
 
     public final void setPrefix(String prefix) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+        throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 }

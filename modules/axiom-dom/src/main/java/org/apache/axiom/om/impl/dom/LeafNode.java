@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -41,19 +43,19 @@ public abstract class LeafNode extends ChildNode {
     }
 
     public final Node appendChild(Node newChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
     public final Node removeChild(Node oldChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+        throw newDOMException(DOMException.NOT_FOUND_ERR);
     }
 
     public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
     
     public final String getTextContent() throws DOMException {

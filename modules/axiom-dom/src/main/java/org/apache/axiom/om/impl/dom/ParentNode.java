@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.om.OMCloneOptions;
@@ -110,7 +112,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
         }
 
         if (isAncestorOrSelf(newChild)) {
-            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         if (newDomChild.parentNode() != null) {
@@ -122,7 +124,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             if (newDomChild instanceof ElementImpl) {
                 if (((DocumentImpl) this).getOMDocumentElement(false) != null) {
                     // Throw exception since there cannot be two document elements
-                    throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+                    throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
                 if (newDomChild.parentNode() == null) {
                     newDomChild.setParent(this, useDomSemantics);
@@ -131,7 +133,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                     || newDomChild instanceof ProcessingInstructionImpl
                     || newDomChild instanceof DocumentFragmentImpl
                     || newDomChild instanceof DocumentTypeImpl)) {
-                throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+                throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
             }
         }
         
@@ -230,7 +232,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             }
 
             if (!found) {
-                throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+                throw newDOMException(DOMException.NOT_FOUND_ERR);
             }
 
             if (!(newDomChild instanceof DocumentFragmentImpl) && newDomChild.parentNode() == null) {
@@ -256,7 +258,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
         }
 
         if (isAncestorOrSelf(newChild)) {
-            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         checkSameOwnerDocument(newDomChild);
@@ -319,7 +321,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
         }
 
         if (!found)
-            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
 
         return oldChild;
     }
@@ -330,7 +332,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             ((NodeImpl)oldChild).detach(true);
             return oldChild;
         } else {
-            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 

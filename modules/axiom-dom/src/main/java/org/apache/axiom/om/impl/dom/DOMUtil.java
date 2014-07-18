@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import javax.xml.XMLConstants;
 
 import org.w3c.dom.DOMException;
@@ -35,11 +37,11 @@ class DOMUtil {
     private static void validateName(String namespaceURI, String localName, String prefix) {
         if (prefix != null && !XMLChar.isValidNCName(prefix)
                 || !XMLChar.isValidNCName(localName)) {
-            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+            throw newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         if (namespaceURI == null && prefix != null
                 || XMLConstants.XML_NS_PREFIX.equals(prefix) && !XMLConstants.XML_NS_URI.equals(namespaceURI)) {
-            throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+            throw newDOMException(DOMException.NAMESPACE_ERR);
         }
     }
     
@@ -52,7 +54,7 @@ class DOMUtil {
         
         if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix != null ? prefix : localName)
                 != XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+            throw newDOMException(DOMException.NAMESPACE_ERR);
         }
     }
 
@@ -86,10 +88,5 @@ class DOMUtil {
         } else {
             return qualifiedName.substring(0, idx);
         }
-    }
-    
-    public static DOMException newDOMException(short code) {
-        return new DOMException(code, DOMMessageFormatter.formatMessage(
-                code, null));
     }
 }

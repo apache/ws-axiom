@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.CharacterData;
@@ -70,7 +72,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
 
         int length = this.textValue.length();
         if (offset < 0 || offset > length - 1 || count < 0) {
-            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
+            throw newDOMException(DOMException.INDEX_SIZE_ERR);
         } else {
 
             int end = Math.min(count + offset, length);
@@ -95,7 +97,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
         int length = this.getLength();
 
         if (offset < 0 || offset > length) {
-            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
+            throw newDOMException(DOMException.INDEX_SIZE_ERR);
         }
 
         this.textValue = (new StringBuilder(textValue)).insert(offset, data).toString();
@@ -114,7 +116,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
      */
     public String substringData(int offset, int count) throws DOMException {
         if (offset < 0 || offset > this.getLength() || count < 0) {
-            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
+            throw newDOMException(DOMException.INDEX_SIZE_ERR);
         }
 
         int end = Math.min(count + offset, textValue.length());

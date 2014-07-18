@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
@@ -80,19 +82,19 @@ public class EntityReferenceImpl extends ChildNode implements OMEntityReference,
     }
 
     public final Node appendChild(Node newChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
 
     public final Node removeChild(Node oldChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
 
     public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
 
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
 
     public String getTextContent() throws DOMException {

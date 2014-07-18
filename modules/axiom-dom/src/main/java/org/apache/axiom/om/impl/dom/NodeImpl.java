@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreParentNode;
@@ -132,7 +134,7 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         // This is not yet implemented. In the meantime, we throw a DOMException
         // and not an UnsupportedOperationException, since this works better with
         // some other libraries (such as Saxon 8.9).
-        throw DOMUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
+        throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
     }
 
     // internal method taking a StringBuffer in parameter
@@ -397,7 +399,7 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         if (ownerDocument() != (otherNode instanceof AttrImpl
                 ? ((AttrImpl)otherNode).getOwnerDocument()
                 : ((NodeImpl)otherNode).ownerDocument())) {
-            throw DOMUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+            throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
     }
     

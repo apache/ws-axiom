@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMCloneOptions;
@@ -103,7 +105,7 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode {
     }
 
     public final void setPrefix(String prefix) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+        throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 
     public final String getLocalName() {

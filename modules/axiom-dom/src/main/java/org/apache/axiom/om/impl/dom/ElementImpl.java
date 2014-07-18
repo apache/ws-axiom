@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMElement;
@@ -207,7 +209,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
      */
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
         if (oldAttr.getOwnerElement() != this) {
-            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
         }
         attributes.remove((AttrImpl)oldAttr, true);
         return oldAttr;
@@ -321,7 +323,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
     public void setAttribute(String name, String value) throws DOMException {
         // Check for invalid charaters
         if (!DOMUtil.isQualifiedName(name)) {
-            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+            throw newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         if (name.startsWith(XMLConstants.XMLNS_ATTRIBUTE + ":")) {
             // This is a ns declaration
@@ -819,7 +821,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNode(name);
         if (tempAttr == null) {
-            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         this.updateIsId(isId, tempAttr);
@@ -830,7 +832,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNodeNS(namespaceURI, localName);
         if (tempAttr == null) {
-            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         this.updateIsId(isId, tempAttr);
@@ -849,7 +851,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         }
 
         if (tempAttr == null) {
-            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         this.updateIsId(isId, tempAttr);

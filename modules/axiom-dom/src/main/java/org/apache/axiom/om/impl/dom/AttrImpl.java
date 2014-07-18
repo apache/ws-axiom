@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.NonDeferringParentNode;
@@ -258,7 +260,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
 
     final void checkInUse() {
         if (coreGetOwnerElement() != null) {
-            throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
+            throw newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
         }
     }
 

@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMCloneOptions;
@@ -106,7 +108,7 @@ public class DocumentFragmentImpl extends RootNode implements
     }
 
     public final void setPrefix(String prefix) throws DOMException {
-        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+        throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 
     public final String getLocalName() {

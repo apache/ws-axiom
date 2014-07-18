@@ -16,28 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.junit.Test;
 import org.w3c.dom.DOMException;
 
-aspect NamedNodeSupport {
-    public final void NamedNode.setPrefix(String prefix) throws DOMException {
-        if (prefix == null) {
-            prefix = "";
-        }
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            if (prefix.length() > 0) {
-                throw newDOMException(DOMException.NAMESPACE_ERR);
-            } else {
-                // No need to set a new OMNamespace in this case
-            }
-        } else {
-            internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix == null ? "" : prefix));
-        }
+public class DOMExceptionUtilTest {
+    @Test
+    public void testMessage() {
+        DOMException ex = DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+        assertThat(ex.getMessage(), is(equalTo(
+                "NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.")));
     }
 }

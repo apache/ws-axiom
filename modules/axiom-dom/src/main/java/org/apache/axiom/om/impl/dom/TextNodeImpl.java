@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
@@ -40,6 +42,7 @@ import org.w3c.dom.Text;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
+
 import java.io.IOException;
 
 public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText {
@@ -179,7 +182,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public Text splitText(int offset) throws DOMException {
         if (offset < 0 || offset > this.textValue.length()) {
-            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
+            throw newDOMException(DOMException.INDEX_SIZE_ERR);
         }
         String newValue = this.textValue.substring(offset);
         this.deleteData(offset, this.textValue.length());
