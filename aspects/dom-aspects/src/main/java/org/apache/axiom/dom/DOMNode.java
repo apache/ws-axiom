@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreNode;
+import org.w3c.dom.Node;
 
-public interface DOMChildNode extends DOMNode, CoreChildNode {
+public interface DOMNode extends Node, CoreNode {
 
 }

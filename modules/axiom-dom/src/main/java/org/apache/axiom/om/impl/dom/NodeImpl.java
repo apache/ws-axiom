@@ -21,8 +21,8 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -52,7 +52,7 @@ import java.util.Hashtable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public abstract class NodeImpl extends InformationItem implements Node, CoreNode {
+public abstract class NodeImpl extends InformationItem implements DOMNode {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()

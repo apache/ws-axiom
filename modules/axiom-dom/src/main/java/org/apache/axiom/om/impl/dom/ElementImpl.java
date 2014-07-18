@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.dom.DOMChildNode;
+import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -58,7 +58,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, IElement, NamedNode, DOMChildNode,
+public class ElementImpl extends ParentNode implements DOMElement, IElement, NamedNode,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);

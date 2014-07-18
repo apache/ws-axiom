@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl;
 
-import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.dom.DOMDocumentFragment;
 
-public interface DOMChildNode extends DOMNode, CoreChildNode {
+// TODO: will become final
+abstract class DocumentFragmentImpl extends RootNode implements DOMDocumentFragment {
 
 }

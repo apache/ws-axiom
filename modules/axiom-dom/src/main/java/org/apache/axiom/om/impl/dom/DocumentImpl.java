@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -62,7 +63,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends RootNode implements Document, IDocument {
+public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
     private String xmlVersion;
 
     private String xmlEncoding;
@@ -93,17 +94,6 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
-    }
-
-    // /
-    // /org.w3c.dom.Node methods
-    // /
-    public String getNodeName() {
-        return "#document";
-    }
-
-    public short getNodeType() {
-        return Node.DOCUMENT_NODE;
     }
 
     // /org.w3c.dom.Document methods
@@ -569,18 +559,6 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
         defaultBuild();
     }
 
-    public final String lookupNamespaceURI(String specifiedPrefix) {
-        Element documentElement = getDocumentElement();
-        return documentElement == null ? null
-                : documentElement.lookupNamespaceURI(specifiedPrefix);
-    }
-    
-    public final String lookupPrefix(String namespaceURI) {
-        Element documentElement = getDocumentElement();
-        return documentElement == null ? null
-                : getDocumentElement().lookupPrefix(namespaceURI);
-    }
-
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {
@@ -594,15 +572,7 @@ public class DocumentImpl extends RootNode implements Document, IDocument {
     protected void checkDocumentElement(OMElement element) {
     }
 
-    public final String getPrefix() {
-        return null;
-    }
-
     public final void setPrefix(String prefix) throws DOMException {
         throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
-    }
-
-    public final String getLocalName() {
-        return null;
     }
 }

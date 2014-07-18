@@ -16,10 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl;
 
-import org.apache.axiom.core.CoreChildNode;
-
-public interface DOMChildNode extends DOMNode, CoreChildNode {
+abstract class RootNode extends NodeImpl {
 
 }
