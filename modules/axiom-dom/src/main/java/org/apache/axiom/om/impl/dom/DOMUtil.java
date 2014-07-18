@@ -89,7 +89,7 @@ class DOMUtil {
     }
     
     public static DOMException newDOMException(short code) {
-        throw new DOMException(code, DOMMessageFormatter.formatMessage(
+        return new DOMException(code, DOMMessageFormatter.formatMessage(
                 code, null));
     }
 }
