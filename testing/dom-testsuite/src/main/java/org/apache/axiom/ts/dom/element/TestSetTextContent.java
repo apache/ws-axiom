@@ -38,10 +38,13 @@ public class TestSetTextContent extends DOMTestCase {
         Document doc = dbf.newDocumentBuilder().parse(new InputSource(
                 new StringReader("<a>1<!--c--><b>2</b>3</a>")));
         Element element = doc.getDocumentElement();
+        Node oldFirstChild = element.getFirstChild();
         element.setTextContent("test");
         Node firstChild = element.getFirstChild();
         assertTrue(firstChild instanceof Text);
         assertEquals("test", firstChild.getNodeValue());
         assertNull(firstChild.getNextSibling());
+        assertNull(oldFirstChild.getParentNode());
+        assertSame(doc, oldFirstChild.getOwnerDocument());
     }
 }

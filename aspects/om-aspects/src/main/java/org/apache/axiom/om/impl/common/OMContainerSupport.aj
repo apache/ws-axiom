@@ -25,8 +25,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -38,7 +36,6 @@ import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
@@ -171,31 +168,7 @@ public aspect OMContainerSupport {
     }
     
     public void IContainer.removeChildren() {
-        // We need to call this first because if may modify the state (applies to OMSourcedElements)
-        CoreChildNode child = coreGetFirstChildIfAvailable();
-        boolean updateState;
-        if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
-            CoreChildNode lastKnownChild = coreGetLastKnownChild();
-            if (lastKnownChild instanceof IContainer) {
-                ((IContainer)lastKnownChild).build();
-            }
-            ((StAXOMBuilder)getBuilder()).discard(this);
-            updateState = true;
-        } else {
-            updateState = false;
-        }
-        while (child != null) {
-            CoreChildNode nextSibling = child.coreGetNextSiblingIfAvailable();
-            child.coreSetPreviousSibling(null);
-            child.coreSetNextSibling(null);
-            child.internalUnsetParent(null); // NOTE: only valid for OM
-            child = nextSibling;
-        }
-        coreSetFirstChild(null);
-        coreSetLastChild(null);
-        if (updateState) {
-            setComplete(true);
-        }
+        coreRemoveChildren(null);
     }
     
     public Iterator OMContainer.getChildren() {

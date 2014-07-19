@@ -391,14 +391,10 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
     
     public void setTextContent(String textContent) throws DOMException {
         // get rid of any existing children
-        // TODO: there is probably a better way to remove all children
-        Node child;
-        while ((child = getFirstChild()) != null) {
-            removeChild(child);
-        }
+        coreRemoveChildren(coreGetOwnerDocument(true));
         // create a Text node to hold the given content
         if (textContent != null && textContent.length() != 0) {
-            insertBefore((NodeImpl)getOMFactory().createOMText(textContent), null, false);
+            coreAppendChild((CoreChildNode)getOMFactory().createOMText(textContent), false);
         }
     }
 }

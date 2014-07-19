@@ -116,4 +116,31 @@ public aspect CoreParentNodeSupport {
         }
         lastChild = child;
     }
+
+    public final void CoreParentNode.coreRemoveChildren(CoreDocument newOwnerDocument) {
+        // We need to call this first because if may modify the state (applies to OMSourcedElements)
+        CoreChildNode child = coreGetFirstChildIfAvailable();
+        boolean updateState;
+        if (getState() == INCOMPLETE && getBuilder() != null) {
+            if (lastChild instanceof CoreParentNode) {
+                ((CoreParentNode)lastChild).build();
+            }
+            ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
+            updateState = true;
+        } else {
+            updateState = false;
+        }
+        while (child != null) {
+            CoreChildNode nextSibling = child.nextSibling;
+            child.previousSibling = null;
+            child.nextSibling = null;
+            child.internalUnsetParent(newOwnerDocument);
+            child = nextSibling;
+        }
+        firstChild = null;
+        lastChild = null;
+        if (updateState) {
+            coreSetState(COMPLETE);
+        }
+    }
 }
