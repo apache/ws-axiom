@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl;
 import org.apache.axiom.dom.DOMDocument;
 
 // TODO: will become final
-abstract class DocumentImpl extends RootNode implements DOMDocument {
+// TODO: public only to make Javadoc happy
+public abstract class DocumentImpl extends RootNode implements DOMDocument {
 
 }
