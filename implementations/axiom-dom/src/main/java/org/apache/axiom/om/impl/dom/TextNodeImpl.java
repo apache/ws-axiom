@@ -192,10 +192,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
         ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode != null) {
-            newText.coreSetParent(parentNode);
+            this.insertSiblingAfter(newText);
         }
-
-        this.insertSiblingAfter(newText);
 
         return newText;
     }

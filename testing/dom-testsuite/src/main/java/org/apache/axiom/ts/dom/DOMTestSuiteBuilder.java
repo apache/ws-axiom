@@ -192,6 +192,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.text.TestLookupNamespaceURIWithoutParent(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestSplitTextWithoutParent(dbf));
         
         DOMTestDocumentBuilderFactory factory;
         try {
