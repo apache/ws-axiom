@@ -113,7 +113,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                     throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
                 if (newDomChild.parentNode() == null) {
-                    newDomChild.setParent(this, true);
+                    newDomChild.setParent(this);
                 }
             } else if (!(newDomChild instanceof CommentImpl
                     || newDomChild instanceof ProcessingInstructionImpl
@@ -131,7 +131,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             if (coreGetLastKnownChild() == null && coreGetFirstChildIfAvailable() == null) {
                 coreSetLastChild((CoreChildNode)newDomChild);
                 coreSetFirstChild((CoreChildNode)newDomChild);
-                newDomChild.setParent(this, true);
+                newDomChild.setParent(this);
             } else {
                 ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(newDomChild);
                 newDomChild.internalSetPreviousSibling((NodeImpl)coreGetLastKnownChild());
@@ -139,7 +139,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                 ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(null);
             }
             if (newDomChild.parentNode() == null) {
-                newDomChild.setParent(this, true);
+                newDomChild.setParent(this);
             }
         } else {
             NodeImpl tempNode = (NodeImpl)getFirstChild();
@@ -157,7 +157,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                             
                             NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
                             while (child != null) {
-                                child.setParent(this, true);
+                                child.setParent(this);
                                 child = child.internalGetNextSibling();
                             }
                             
@@ -189,7 +189,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
 
                             NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
                             while (child != null) {
-                                child.setParent(this, true);
+                                child.setParent(this);
                                 child = child.internalGetNextSibling();
                             }
                             
@@ -222,7 +222,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             }
 
             if (!(newDomChild instanceof DocumentFragmentImpl) && newDomChild.parentNode() == null) {
-                newDomChild.setParent(this, true);
+                newDomChild.setParent(this);
             }
 
         }
@@ -265,7 +265,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                     NodeImpl child = (NodeImpl) docFrag.getFirstChild();
                     //set the parent of all kids to me
                     while(child != null) {
-                        child.setParent(this, true);
+                        child.setParent(this);
                         child = child.internalGetNextSibling();
                     }
 
@@ -274,7 +274,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                 } else {
                     head = newDomChild;
                     tail = newDomChild;
-                    newDomChild.setParent(this, true);
+                    newDomChild.setParent(this);
                 }
                 
                 // We use getNextSibling here to force bulding the node if necessary
@@ -301,7 +301,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                 // remove the old child's references to this tree
                 oldDomChild.internalSetNextSibling(null);
                 oldDomChild.internalSetPreviousSibling(null);
-                oldDomChild.setParent(null, true);
+                oldDomChild.setParent(null);
             }
             tempNode = (NodeImpl)tempNode.getNextSibling();
         }

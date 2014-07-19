@@ -23,13 +23,10 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -417,38 +414,11 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
     // /
     // /OMNode methods
     // /
-    public final void setNextOMSibling(OMNode node) {
-        if (node == null) {
-            internalSetNextSibling(null);
-            return;
-        }
-        if (node instanceof NodeImpl) {
-            internalSetNextSibling((NodeImpl)node);
-        } else {
-            throw new OMException("The node is not a " + NodeImpl.class);
-        }
-    }
 
-    public final void setPreviousOMSibling(OMNode node) {
-        if (node == null) {
-            internalSetPreviousSibling(null);
-            return;
-        }
-        if (node instanceof NodeImpl) {
-            internalSetPreviousSibling((NodeImpl)node);
-        } else {
-            throw new OMException("The node is not a " + NodeImpl.class);
-        }
-    }
-
-    public final void coreSetParent(CoreParentNode element) {
-        setParent((ParentNode)element, false);
-    }
-    
-    protected void setParent(ParentNode parent, boolean useDomSemantics) {
+    protected void setParent(ParentNode parent) {
         // TODO: this is not OO; clean up this mess
         if (parent == null) {
-            ((CoreChildNode)this).internalUnsetParent(useDomSemantics ? ownerDocument() : null);
+            ((CoreChildNode)this).internalUnsetParent(ownerDocument());
         } else {
             ((CoreChildNode)this).internalSetParent(parent);
         }

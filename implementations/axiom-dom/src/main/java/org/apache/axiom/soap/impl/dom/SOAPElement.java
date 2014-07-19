@@ -56,12 +56,4 @@ public abstract class SOAPElement extends ElementImpl {
     /** This has to be implemented by all the derived classes to check for the correct parent. */
     protected abstract void checkParent(OMElement parent)
             throws SOAPProcessingException;
-
-    protected void setParent(ParentNode parent, boolean useDomSemantics) {
-        super.setParent(parent, useDomSemantics);
-
-        if (!useDomSemantics && parent instanceof OMElement) {
-            checkParent((OMElement) parent);
-        }
-    }
 }

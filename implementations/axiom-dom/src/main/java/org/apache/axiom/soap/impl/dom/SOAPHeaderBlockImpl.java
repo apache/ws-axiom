@@ -111,14 +111,6 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     protected abstract void checkParent(OMElement parent)
             throws SOAPProcessingException;
     
-    protected void setParent(ParentNode parent, boolean useDomSemantics) {
-        super.setParent(parent, useDomSemantics);
-    
-        if (!useDomSemantics && parent instanceof OMElement) {
-            checkParent((OMElement) parent);
-        }
-    }
-    
     protected final void copyData(OMCloneOptions options, SOAPHeaderBlock targetSHB) {
         // Copy the processed flag.  The other SOAPHeaderBlock information 
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
