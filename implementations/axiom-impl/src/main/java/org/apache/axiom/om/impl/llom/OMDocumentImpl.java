@@ -68,17 +68,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
         coreSetBuilder(parserWrapper);
     }
 
-    public OMElement getOMDocumentElement() {
-        OMNode child = getFirstOMChild();
-        while (child != null) {
-            if (child instanceof OMElement) {
-                return (OMElement)child;
-            }
-            child = child.getNextOMSibling();
-        }
-        return null;
-    }
-
     public void setOMDocumentElement(OMElement documentElement) {
         if (documentElement == null) {
             throw new IllegalArgumentException("documentElement must not be null");

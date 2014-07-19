@@ -29,9 +29,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public abstract class ParentNode extends NodeImpl implements NodeList, DOMParentNode {
+public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     protected ParentNode(OMFactory factory) {
         super(factory);
     }
@@ -39,49 +38,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
     // /
     // /DOM Node methods
     // /
-
-    public final NodeList getChildNodes() {
-        return this;
-    }
-
-    public final int getLength() {
-        int count = 0;
-        Node child = getFirstChild();
-        while (child != null) {
-            count++;
-            child = child.getNextSibling();
-        }
-        return count;
-    }
-
-    public final Node item(int index) {
-        int count = 0;
-        Node child = getFirstChild();
-        while (child != null) {
-            if (count == index) {
-                return child;
-            } else {
-                child = child.getNextSibling();
-            }
-            count++;
-        }
-        return null;
-    }
-
-    public Node getFirstChild() {
-        return (Node)coreGetFirstChild();
-    }
-
-    public Node getLastChild() {
-        if (!this.isComplete()) {
-            this.build();
-        }
-        return (Node)coreGetLastKnownChild();
-    }
-
-    public boolean hasChildNodes() {
-        return getFirstChild() != null;
-    }
 
     public final Node appendChild(Node newChild) throws DOMException {
         return insertBefore(newChild, null);

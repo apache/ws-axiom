@@ -16,25 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
-import org.apache.axiom.dom.DOMLeafNode;
-import org.apache.axiom.om.OMFactory;
-import org.w3c.dom.DOMException;
+public interface DOMLeafNode extends DOMChildNode {
 
-public abstract class LeafNode extends ChildNode implements DOMLeafNode {
-    public LeafNode(OMFactory factory) {
-        super(factory);
-    }
-
-    public final String getTextContent() throws DOMException {
-        return getNodeValue();
-    }
-
-    final void getTextContent(StringBuffer buf) {
-        String content = getNodeValue();
-        if (content != null) {
-            buf.append(content);
-        }
-    }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.dom.impl;
 
-abstract class LeafNode extends NodeImpl {
+import org.apache.axiom.dom.DOMLeafNode;
+
+abstract class LeafNode extends NodeImpl implements DOMLeafNode {
 
 }

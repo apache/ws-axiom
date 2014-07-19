@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-class EmptyNodeList implements NodeList {
+final class EmptyNodeList implements NodeList {
     static final EmptyNodeList INSTANCE = new EmptyNodeList();
     
     private EmptyNodeList() {}

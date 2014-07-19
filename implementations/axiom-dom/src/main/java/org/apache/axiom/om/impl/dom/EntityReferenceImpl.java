@@ -69,6 +69,10 @@ public class EntityReferenceImpl extends ChildNode implements OMEntityReference,
         return Node.ENTITY_REFERENCE_NODE;
     }
 
+    public final boolean hasChildNodes() {
+        throw new UnsupportedOperationException();
+    }
+
     public Node getFirstChild() {
         throw new UnsupportedOperationException();
     }

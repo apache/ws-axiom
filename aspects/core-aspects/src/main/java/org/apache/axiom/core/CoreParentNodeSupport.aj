@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.w3c.dom.Node;
 
 public aspect CoreParentNodeSupport {
     CoreChildNode CoreParentNode.firstChild;
@@ -94,6 +95,11 @@ public aspect CoreParentNodeSupport {
             }
         }
         return firstChild;
+    }
+
+    public final CoreChildNode CoreParentNode.coreGetLastChild() {
+        build();
+        return lastChild;
     }
 
     public final void CoreParentNode.coreAppendChild(CoreChildNode child, boolean fromBuilder) {

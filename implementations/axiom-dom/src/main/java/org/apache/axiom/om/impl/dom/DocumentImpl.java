@@ -33,7 +33,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -397,27 +396,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
         this.xmlEncoding = encoding;
     }
     
-    public OMElement getOMDocumentElement() {
-        OMNode child = getFirstOMChild();
-        while (child != null) {
-            if (child instanceof OMElement) {
-                return (OMElement)child;
-            }
-            child = child.getNextOMSibling();
-        }
-        return null;
-    }
-
-    /**
-     * Returns the document element.
-     *
-     * @see org.w3c.dom.Document#getDocumentElement()
-     */
-    public Element getDocumentElement() {
-
-        return (Element) this.getOMDocumentElement();
-    }
-
     protected void addIdAttr(Attr attr) {
         if (this.idAttrs == null) {
             this.idAttrs = new Vector();

@@ -41,6 +41,10 @@ public aspect DOMDocumentSupport {
         return null;
     }
 
+    public final Element DOMDocument.getDocumentElement() {
+        return (Element)coreGetDocumentElement();
+    }
+    
     public final String DOMDocument.lookupNamespaceURI(String specifiedPrefix) {
         Element documentElement = getDocumentElement();
         return documentElement == null ? null

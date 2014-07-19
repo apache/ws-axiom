@@ -28,4 +28,15 @@ public aspect CoreDocumentSupport {
             throw new IllegalArgumentException();
         }
     }
+    
+    public final CoreElement CoreDocument.coreGetDocumentElement() {
+        CoreChildNode child = coreGetFirstChild();
+        while (child != null) {
+            if (child instanceof CoreElement) {
+                return (CoreElement)child;
+            }
+            child = child.coreGetNextSibling();
+        }
+        return null;
+    }
 }

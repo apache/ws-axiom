@@ -75,10 +75,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         return false; // overridden in ElementImpl
     }
 
-    public boolean hasChildNodes() {
-        return false; // Override in ParentNode
-    }
-
     public String getNamespaceURI() {
         return null; // Override in AttrImpl and ElementImpl
     }

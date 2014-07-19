@@ -19,7 +19,8 @@
 package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreParentNode;
+import org.w3c.dom.NodeList;
 
-public interface DOMParentNode extends DOMNode, CoreParentNode {
+public interface DOMParentNode extends DOMNode, NodeList, CoreParentNode {
 
 }

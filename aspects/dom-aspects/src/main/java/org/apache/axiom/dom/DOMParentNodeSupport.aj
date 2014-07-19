@@ -23,8 +23,49 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import org.apache.axiom.core.CoreChildNode;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public aspect DOMParentNodeSupport {
+    public final NodeList DOMParentNode.getChildNodes() {
+        return this;
+    }
+
+    public final int DOMParentNode.getLength() {
+        int count = 0;
+        Node child = getFirstChild();
+        while (child != null) {
+            count++;
+            child = child.getNextSibling();
+        }
+        return count;
+    }
+
+    public final Node DOMParentNode.item(int index) {
+        int count = 0;
+        Node child = getFirstChild();
+        while (child != null) {
+            if (count == index) {
+                return child;
+            } else {
+                child = child.getNextSibling();
+            }
+            count++;
+        }
+        return null;
+    }
+
+    public final Node DOMParentNode.getFirstChild() {
+        return (Node)coreGetFirstChild();
+    }
+
+    public final Node DOMParentNode.getLastChild() {
+        return (Node)coreGetLastChild();
+    }
+
+    public final boolean DOMParentNode.hasChildNodes() {
+        return getFirstChild() != null;
+    }
+
     public final Node DOMParentNode.removeChild(Node oldChild) throws DOMException {
         if (oldChild.getParentNode() == this) {
             ((CoreChildNode)oldChild).coreDetach(coreGetOwnerDocument(true));
