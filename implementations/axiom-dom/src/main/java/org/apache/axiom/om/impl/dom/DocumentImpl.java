@@ -398,16 +398,12 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
     }
     
     public OMElement getOMDocumentElement() {
-        return getOMDocumentElement(true);
-    }
-
-    OMElement getOMDocumentElement(boolean build) {
-        OMNode child = build ? getFirstOMChild() : getFirstOMChildIfAvailable();
+        OMNode child = getFirstOMChild();
         while (child != null) {
             if (child instanceof OMElement) {
                 return (OMElement)child;
             }
-            child = build ? child.getNextOMSibling() : ((OMNodeEx)child).getNextOMSiblingIfAvailable();
+            child = child.getNextOMSibling();
         }
         return null;
     }
