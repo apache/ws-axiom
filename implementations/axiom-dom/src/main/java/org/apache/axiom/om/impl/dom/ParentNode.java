@@ -37,14 +37,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
     }
 
     // /
-    // /OMContainer methods
-    // /
-
-    void internalAppendChild(NodeImpl node) {
-        insertBefore(node, null, false);
-    }
-    
-    // /
     // /DOM Node methods
     // /
 
@@ -100,16 +92,10 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
      * last child.
      */
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        return insertBefore(newChild, refChild, true);
-    }
-    
-    private Node insertBefore(Node newChild, Node refChild, boolean useDomSemantics) {
         NodeImpl newDomChild = (NodeImpl) newChild;
         NodeImpl refDomChild = (NodeImpl) refChild;
 
-        if (useDomSemantics) {
-            checkSameOwnerDocument(newDomChild);
-        }
+        checkSameOwnerDocument(newDomChild);
 
         if (isAncestorOrSelf(newChild)) {
             throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
@@ -127,7 +113,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                     throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
                 if (newDomChild.parentNode() == null) {
-                    newDomChild.setParent(this, useDomSemantics);
+                    newDomChild.setParent(this, true);
                 }
             } else if (!(newDomChild instanceof CommentImpl
                     || newDomChild instanceof ProcessingInstructionImpl
@@ -145,7 +131,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             if (coreGetLastKnownChild() == null && coreGetFirstChildIfAvailable() == null) {
                 coreSetLastChild((CoreChildNode)newDomChild);
                 coreSetFirstChild((CoreChildNode)newDomChild);
-                newDomChild.setParent(this, useDomSemantics);
+                newDomChild.setParent(this, true);
             } else {
                 ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(newDomChild);
                 newDomChild.internalSetPreviousSibling((NodeImpl)coreGetLastKnownChild());
@@ -153,7 +139,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                 ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(null);
             }
             if (newDomChild.parentNode() == null) {
-                newDomChild.setParent(this, useDomSemantics);
+                newDomChild.setParent(this, true);
             }
         } else {
             NodeImpl tempNode = (NodeImpl)getFirstChild();
@@ -171,7 +157,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
                             
                             NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
                             while (child != null) {
-                                child.setParent(this, useDomSemantics);
+                                child.setParent(this, true);
                                 child = child.internalGetNextSibling();
                             }
                             
@@ -203,7 +189,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
 
                             NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
                             while (child != null) {
-                                child.setParent(this, useDomSemantics);
+                                child.setParent(this, true);
                                 child = child.internalGetNextSibling();
                             }
                             
@@ -236,7 +222,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, DOMParent
             }
 
             if (!(newDomChild instanceof DocumentFragmentImpl) && newDomChild.parentNode() == null) {
-                newDomChild.setParent(this, useDomSemantics);
+                newDomChild.setParent(this, true);
             }
 
         }

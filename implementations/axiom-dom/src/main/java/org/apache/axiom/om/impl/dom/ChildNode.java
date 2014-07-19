@@ -55,7 +55,7 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode, OMNode
         beforeClone(options);
         ChildNode clone = createClone();
         if (targetParent != null) {
-            targetParent.internalAppendChild(clone);
+            targetParent.coreAppendChild(clone, false);
         }
         return clone;
     }

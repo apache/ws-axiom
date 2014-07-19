@@ -76,7 +76,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
             }
         }
         internalSetLocalName(localName);
-        internalAppendChild(new TextImpl(value, factory));
+        coreAppendChild(new TextImpl(value, factory), false);
         this.type = OMConstants.XMLATTRTYPE_CDATA;
         internalSetNamespace(ns);
     }
@@ -85,7 +85,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
                     OMFactory factory) {
         this(ownerDocument, factory);
         internalSetLocalName(name);
-        internalAppendChild(new TextImpl(value, factory));
+        coreAppendChild(new TextImpl(value, factory), false);
         this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
 
@@ -270,11 +270,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Att
      * @see org.w3c.dom.Attr#setValue(String)
      */
     public void setValue(String value) throws DOMException {
-        Node child;
-        while ((child = getFirstChild()) != null) {
-            removeChild(child);
-        }
-        internalAppendChild((TextImpl)getOwnerDocument().createTextNode(value));
+        setTextContent(value);
     }
 
     /**
