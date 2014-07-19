@@ -396,9 +396,7 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
     }
     
     void checkSameOwnerDocument(Node otherNode) {
-        if (ownerDocument() != (otherNode instanceof AttrImpl
-                ? ((AttrImpl)otherNode).getOwnerDocument()
-                : ((NodeImpl)otherNode).ownerDocument())) {
+        if (!(otherNode instanceof NodeImpl && coreHasSameOwnerDocument((NodeImpl)otherNode))) {
             throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
     }

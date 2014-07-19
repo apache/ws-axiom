@@ -19,10 +19,10 @@
 package org.apache.axiom.core;
 
 public aspect CoreDocumentSupport {
-    public final CoreDocument CoreDocument.coreGetOwnerDocument(boolean create) {
+    final CoreNode CoreDocument.getRootOrOwnerDocument() {
         return this;
     }
-
+    
     public final void CoreDocument.coreSetOwnerDocument(CoreDocument document) {
         if (document != this) {
             throw new IllegalArgumentException();

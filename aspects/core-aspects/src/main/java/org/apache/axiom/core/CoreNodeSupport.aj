@@ -21,6 +21,34 @@ package org.apache.axiom.core;
 public aspect CoreNodeSupport {
     int CoreNode.flags;
 
+    abstract CoreNode CoreNode.getRootOrOwnerDocument();
+
+    /**
+     * Get the owner document to which this node belongs.
+     * 
+     * @param create
+     *            indicates whether the owner document should be created if it has not been created
+     *            yet
+     * @return the owner document or <code>null</code> if the owner document has not been created
+     *         yet and <code>create</code> is <code>false</code>
+     */
+    public final CoreDocument CoreNode.coreGetOwnerDocument(boolean create) {
+        CoreNode root = getRootOrOwnerDocument();
+        if (root instanceof CoreDocument) {
+            return (CoreDocument)root;
+        } else if (create) {
+            CoreDocument ownerDocument = createOwnerDocument();
+            root.coreSetOwnerDocument(ownerDocument);
+            return ownerDocument;
+        } else {
+            return null;
+        }
+    }
+    
+    public final boolean CoreNode.coreHasSameOwnerDocument(CoreNode other) {
+        return other.getRootOrOwnerDocument() == getRootOrOwnerDocument();
+    }
+
     final boolean CoreNode.getFlag(int flag) {
         return (flags & flag) != 0;
     }

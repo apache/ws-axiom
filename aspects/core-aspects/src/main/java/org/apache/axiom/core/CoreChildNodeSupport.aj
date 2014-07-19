@@ -58,22 +58,11 @@ public aspect CoreChildNodeSupport {
         setFlag(Flags.HAS_PARENT, false);
     }
     
-    public final CoreDocument CoreChildNode.coreGetOwnerDocument(boolean create) {
-        CoreNode root = this;
-        while (root.getFlag(Flags.HAS_PARENT)) {
-            root = ((CoreChildNode)root).owner;
-        }
-        if (root instanceof CoreChildNode) {
-            CoreChildNode rootChildNode = (CoreChildNode)root;
-            CoreDocument document = (CoreDocument)rootChildNode.owner;
-            if (document == null && create) {
-                document = createOwnerDocument();
-                rootChildNode.owner = document;
-            }
-            return document;
+    final CoreNode CoreChildNode.getRootOrOwnerDocument() {
+        if (owner == null) {
+            return this;
         } else {
-            // We get here if the root node is a document or document fragment
-            return root.coreGetOwnerDocument(create);
+            return owner.getRootOrOwnerDocument();
         }
     }
     

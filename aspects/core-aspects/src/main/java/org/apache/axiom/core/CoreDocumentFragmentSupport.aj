@@ -21,13 +21,14 @@ package org.apache.axiom.core;
 public aspect CoreDocumentFragmentSupport {
     private CoreDocument CoreDocumentFragment.ownerDocument;
     
-    public final CoreDocument CoreDocumentFragment.coreGetOwnerDocument(boolean create) {
-        if (create && ownerDocument == null) {
-            ownerDocument = createOwnerDocument();
+    final CoreNode CoreDocumentFragment.getRootOrOwnerDocument() {
+        if (ownerDocument == null) {
+            return this;
+        } else {
+            return ownerDocument;
         }
-        return ownerDocument;
     }
-
+    
     public final void CoreDocumentFragment.coreSetOwnerDocument(CoreDocument document) {
         ownerDocument = document;
     }

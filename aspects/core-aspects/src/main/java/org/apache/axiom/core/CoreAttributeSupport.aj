@@ -40,19 +40,11 @@ public aspect CoreAttributeSupport {
         owner = newOwnerDocument;
     }
     
-    public final CoreDocument CoreAttribute.coreGetOwnerDocument(boolean create) {
+    final CoreNode CoreAttribute.getRootOrOwnerDocument() {
         if (owner == null) {
-            if (create) {
-                CoreDocument document = createOwnerDocument();
-                owner = document;
-                return document;
-            } else {
-                return null;
-            }
-        } else if (owner instanceof CoreDocument) {
-            return (CoreDocument)owner;
+            return this;
         } else {
-            return ((CoreElement)owner).coreGetOwnerDocument(create);
+            return owner.getRootOrOwnerDocument();
         }
     }
 

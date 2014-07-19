@@ -19,17 +19,6 @@
 package org.apache.axiom.core;
 
 public interface CoreNode {
-    /**
-     * Get the owner document to which this node belongs.
-     * 
-     * @param create
-     *            indicates whether the owner document should be created if it has not been created
-     *            yet
-     * @return the owner document or <code>null</code> if the owner document has not been created
-     *         yet and <code>create</code> is <code>false</code>
-     */
-    CoreDocument coreGetOwnerDocument(boolean create);
-
     void coreSetOwnerDocument(CoreDocument document);
     
     CoreDocument createOwnerDocument();
