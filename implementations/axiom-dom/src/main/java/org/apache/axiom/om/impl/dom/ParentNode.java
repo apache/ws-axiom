@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
@@ -40,26 +41,24 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     // /
 
     public final Node appendChild(Node newChild) throws DOMException {
-        return insertBefore(newChild, null);
+        checkNewChild(newChild);
+        if (newChild instanceof CoreChildNode) {
+            coreAppendChild((CoreChildNode)newChild, false);
+        } else if (newChild instanceof CoreDocumentFragment) {
+            coreAppendChildren((CoreDocumentFragment)newChild);
+        } else {
+            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        }
+        return newChild;
     }
 
-    /**
-     * Inserts newChild before the refChild. If the refChild is null then the newChild is made the
-     * last child.
-     */
-    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
+    private void checkNewChild(Node newChild) {
         NodeImpl newDomChild = (NodeImpl) newChild;
-        NodeImpl refDomChild = (NodeImpl) refChild;
-
+        
         checkSameOwnerDocument(newDomChild);
 
         if (isAncestorOrSelf(newChild)) {
             throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
-        }
-
-        if (newDomChild.parentNode() != null) {
-            //If the newChild is already in the tree remove it
-            newDomChild.parentNode().removeChild(newDomChild);
         }
 
         if (this instanceof Document) {
@@ -79,6 +78,23 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
             }
         }
         
+    }
+    
+    /**
+     * Inserts newChild before the refChild. If the refChild is null then the newChild is made the
+     * last child.
+     */
+    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
+        NodeImpl newDomChild = (NodeImpl) newChild;
+        NodeImpl refDomChild = (NodeImpl) refChild;
+
+        checkNewChild(newDomChild);
+
+        if (newDomChild.parentNode() != null) {
+            //If the newChild is already in the tree remove it
+            newDomChild.parentNode().removeChild(newDomChild);
+        }
+
         if (refChild == null) { // Append the child to the end of the list
             if (!isComplete()) {
                 build();

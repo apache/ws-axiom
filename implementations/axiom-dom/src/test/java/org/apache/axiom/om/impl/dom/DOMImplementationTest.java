@@ -55,8 +55,6 @@ public class DOMImplementationTest extends TestCase {
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/elementsetattributenomodificationallowederr)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditem)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/namednodemapremovenameditemgetvalue)");
-        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/nodeappendchilddocfragment)");
-        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/nodeappendchildinvalidnodetype)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/nodeinsertbeforeinvalidnodetype)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/nodereplacechildinvalidnodetype)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/nodereplacechildnewchildexists)");
@@ -71,13 +69,10 @@ public class DOMImplementationTest extends TestCase {
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementnormalize2)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementremoveattributeaftercreate)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_elementreplaceattributewithself)");
-        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_nodeappendchilddocfragment)");
-        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_nodeappendchildinvalidnodetype)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_nodeinsertbeforeinvalidnodetype)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_nodereplacechildinvalidnodetype)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_nodereplacechildnewchildexists)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrappendchild2)");
-        builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrappendchild3)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrappendchild4)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrgetvalue2)");
         builder.exclude(W3CTestCase.class, "(id=http://www.w3.org/2001/DOM-Test-Suite/level1/core/hc_attrinsertbefore3)");

@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.w3c.dom.Node;
 
 public aspect CoreParentNodeSupport {
     CoreChildNode CoreParentNode.firstChild;
@@ -121,6 +120,29 @@ public aspect CoreParentNodeSupport {
             lastChild.nextSibling = child;
         }
         lastChild = child;
+    }
+
+    public final void CoreParentNode.coreAppendChildren(CoreDocumentFragment fragment) {
+        fragment.build();
+        if (fragment.firstChild == null) {
+            // Fragment is empty; nothing to do
+            return;
+        }
+        build();
+        CoreChildNode child = fragment.firstChild;
+        while (child != null) {
+            child.internalSetParent(this);
+            child = child.nextSibling;
+        }
+        if (firstChild == null) {
+            firstChild = fragment.firstChild;
+        } else {
+            fragment.firstChild.previousSibling = lastChild;
+            lastChild.nextSibling = fragment.firstChild;
+        }
+        lastChild = fragment.lastChild;
+        fragment.firstChild = null;
+        fragment.lastChild = null;
     }
 
     public final void CoreParentNode.coreRemoveChildren(CoreDocument newOwnerDocument) {
