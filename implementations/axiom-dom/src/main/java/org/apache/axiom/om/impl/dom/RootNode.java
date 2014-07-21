@@ -25,20 +25,4 @@ public abstract class RootNode extends ParentNode implements DOMRootNode {
     public RootNode(OMFactory factory) {
         super(factory);
     }
-
-    final NodeImpl internalGetPreviousSibling() {
-        return null;
-    }
-
-    final NodeImpl internalGetNextSibling() {
-        return null;
-    }
-
-    final void internalSetPreviousSibling(NodeImpl previousSibling) {
-        throw new UnsupportedOperationException();
-    }
-
-    final void internalSetNextSibling(NodeImpl nextSibling) {
-        throw new UnsupportedOperationException();
-    }
 }

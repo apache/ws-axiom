@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.om.OMAttribute;
@@ -83,22 +82,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         }
         this.attributes = new AttributeMap(this);
         internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
-    }
-
-    final NodeImpl internalGetPreviousSibling() {
-        return (NodeImpl)coreGetPreviousSibling();
-    }
-    
-    final NodeImpl internalGetNextSibling() {
-        return (NodeImpl)coreGetNextSiblingIfAvailable();
-    }
-    
-    final void internalSetPreviousSibling(NodeImpl previousSibling) {
-        coreSetPreviousSibling((CoreChildNode)previousSibling);
-    }
-    
-    final void internalSetNextSibling(NodeImpl nextSibling) {
-        coreSetNextSibling((CoreChildNode)nextSibling);
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {

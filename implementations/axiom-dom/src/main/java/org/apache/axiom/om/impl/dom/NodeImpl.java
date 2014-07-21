@@ -366,14 +366,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         return factory;
     }
 
-    abstract NodeImpl internalGetPreviousSibling();
-    
-    abstract NodeImpl internalGetNextSibling();
-    
-    abstract void internalSetPreviousSibling(NodeImpl previousSibling);
-    
-    abstract void internalSetNextSibling(NodeImpl nextSibling);
-    
     /**
      * Get the owner document of this node. In contrast to {@link Node#getOwnerDocument()}, this
      * method returns a non null value when invoked on a {@link Document} instance.

@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
@@ -33,22 +32,6 @@ import org.w3c.dom.Element;
 public abstract class ChildNode extends NodeImpl implements DOMChildNode, OMNode {
     public ChildNode(OMFactory factory) {
         super(factory);
-    }
-
-    final NodeImpl internalGetPreviousSibling() {
-        return (NodeImpl)coreGetPreviousSibling();
-    }
-    
-    final NodeImpl internalGetNextSibling() {
-        return (NodeImpl)coreGetNextSiblingIfAvailable();
-    }
-    
-    final void internalSetPreviousSibling(NodeImpl previousSibling) {
-        coreSetPreviousSibling((CoreChildNode)previousSibling);
-    }
-    
-    final void internalSetNextSibling(NodeImpl nextSibling) {
-        coreSetNextSibling((CoreChildNode)nextSibling);
     }
 
     final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
