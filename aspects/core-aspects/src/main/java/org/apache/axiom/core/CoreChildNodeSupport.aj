@@ -140,7 +140,6 @@ public aspect CoreChildNodeSupport {
         }
         sibling.coreDetach(null);
         sibling.internalSetParent(parent);
-        CoreChildNode previousSibling = this.previousSibling;
         sibling.nextSibling = this;
         if (previousSibling == null) {
             parent.firstChild = sibling;
@@ -148,7 +147,31 @@ public aspect CoreChildNodeSupport {
             previousSibling.nextSibling = sibling;
         }
         sibling.previousSibling = previousSibling;
-        this.previousSibling = sibling;
+        previousSibling = sibling;
+    }
+    
+    public final void CoreChildNode.coreInsertSiblingsBefore(CoreDocumentFragment fragment) {
+        if (fragment.firstChild == null) {
+            // Fragment is empty; nothing to do
+            return;
+        }
+        CoreParentNode parent = coreGetParent();
+        // TODO: check parent != null
+        CoreChildNode child = fragment.firstChild;
+        while (child != null) {
+            child.internalSetParent(parent);
+            child = child.nextSibling;
+        }
+        fragment.lastChild.nextSibling = this;
+        if (previousSibling == null) {
+            parent.firstChild = fragment.firstChild;
+        } else {
+            previousSibling.nextSibling = fragment.firstChild;
+        }
+        fragment.firstChild.previousSibling = previousSibling;
+        previousSibling = fragment.lastChild;
+        fragment.firstChild = null;
+        fragment.lastChild = null;
     }
     
     public final void CoreChildNode.coreDetach(CoreDocument newOwnerDocument) {

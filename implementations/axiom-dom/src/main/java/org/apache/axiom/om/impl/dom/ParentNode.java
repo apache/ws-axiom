@@ -26,7 +26,6 @@ import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMSourcedElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -85,125 +84,22 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
      * last child.
      */
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        NodeImpl newDomChild = (NodeImpl) newChild;
-        NodeImpl refDomChild = (NodeImpl) refChild;
-
-        checkNewChild(newDomChild);
-
-        if (newDomChild.parentNode() != null) {
-            //If the newChild is already in the tree remove it
-            newDomChild.parentNode().removeChild(newDomChild);
-        }
-
-        if (refChild == null) { // Append the child to the end of the list
-            if (!isComplete()) {
-                build();
-            }
-            // if there are no children
-            if (coreGetLastKnownChild() == null && coreGetFirstChildIfAvailable() == null) {
-                coreSetLastChild((CoreChildNode)newDomChild);
-                coreSetFirstChild((CoreChildNode)newDomChild);
-                newDomChild.setParent(this);
-            } else {
-                ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(newDomChild);
-                newDomChild.internalSetPreviousSibling((NodeImpl)coreGetLastKnownChild());
-                coreSetLastChild((CoreChildNode)newDomChild);
-                ((NodeImpl)coreGetLastKnownChild()).internalSetNextSibling(null);
-            }
-            if (newDomChild.parentNode() == null) {
-                newDomChild.setParent(this);
-            }
+        if (refChild == null) {
+            return appendChild(newChild);
         } else {
-            NodeImpl tempNode = (NodeImpl)getFirstChild();
-            boolean found = false;
-            while (tempNode != null) {
-                if (tempNode.equals(refChild)) {
-                    // RefChild found
-                    if (coreGetFirstChildIfAvailable() == tempNode) { // If the refChild is the
-                        // first child
-
-                        if (newChild instanceof DocumentFragmentImpl) {
-                            // The new child is a DocumentFragment
-                            DocumentFragmentImpl docFrag =
-                                    (DocumentFragmentImpl) newChild;
-                            
-                            NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
-                            while (child != null) {
-                                child.setParent(this);
-                                child = child.internalGetNextSibling();
-                            }
-                            
-                            coreSetFirstChild(docFrag.coreGetFirstChildIfAvailable());
-                            ((NodeImpl)docFrag.coreGetLastKnownChild()).internalSetNextSibling(refDomChild);
-                            refDomChild.internalSetPreviousSibling(((NodeImpl)docFrag.coreGetLastKnownChild()).internalGetNextSibling());
-
-                            docFrag.coreSetFirstChild(null);
-                            docFrag.coreSetLastChild(null);
-                        } else {
-
-                            // Make the newNode the first Child
-                            coreSetFirstChild((CoreChildNode)newDomChild);
-
-                            newDomChild.internalSetNextSibling(refDomChild);
-                            refDomChild.internalSetPreviousSibling(newDomChild);
-
-                            newDomChild.internalSetPreviousSibling(null); // Just to be
-                            // sure :-)
-
-                        }
-                    } else { // If the refChild is not the fist child
-                        NodeImpl previousNode = refDomChild.internalGetPreviousSibling();
-
-                        if (newChild instanceof DocumentFragmentImpl) {
-                            // the newChild is a document fragment
-                            DocumentFragmentImpl docFrag =
-                                    (DocumentFragmentImpl) newChild;
-
-                            NodeImpl child = (NodeImpl)docFrag.coreGetFirstChildIfAvailable();
-                            while (child != null) {
-                                child.setParent(this);
-                                child = child.internalGetNextSibling();
-                            }
-                            
-                            previousNode.internalSetNextSibling((NodeImpl)docFrag.coreGetFirstChildIfAvailable());
-                            ((NodeImpl)docFrag.coreGetFirstChildIfAvailable()).internalSetPreviousSibling(previousNode);
-
-                            ((NodeImpl)docFrag.coreGetLastKnownChild()).internalSetNextSibling(refDomChild);
-                            refDomChild.internalSetPreviousSibling((NodeImpl)docFrag.coreGetLastKnownChild());
-
-                            docFrag.coreSetFirstChild(null);
-                            docFrag.coreSetLastChild(null);
-                        } else {
-
-                            previousNode.internalSetNextSibling(newDomChild);
-                            newDomChild.internalSetPreviousSibling(previousNode);
-
-                            newDomChild.internalSetNextSibling(refDomChild);
-                            refDomChild.internalSetPreviousSibling(newDomChild);
-                        }
-
-                    }
-                    found = true;
-                    break;
-                }
-                tempNode = (NodeImpl)tempNode.getNextSibling();
-            }
-
-            if (!found) {
+            if (!(refChild instanceof CoreChildNode && ((CoreChildNode)refChild).coreGetParent() == this)) {
                 throw newDOMException(DOMException.NOT_FOUND_ERR);
             }
-
-            if (!(newDomChild instanceof DocumentFragmentImpl) && newDomChild.parentNode() == null) {
-                newDomChild.setParent(this);
+            checkNewChild(newChild);
+            if (newChild instanceof CoreChildNode) {
+                ((CoreChildNode)refChild).coreInsertSiblingBefore((CoreChildNode)newChild);
+            } else if (newChild instanceof CoreDocumentFragment) {
+                ((CoreChildNode)refChild).coreInsertSiblingsBefore((CoreDocumentFragment)newChild);
+            } else {
+                throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
             }
-
+            return newChild;
         }
-        
-        if (!newDomChild.isComplete() && !(newDomChild instanceof OMSourcedElement)) {
-            setComplete(false);
-        }
-        
-        return newChild;
     }
 
     /** Replaces the oldChild with the newChild. */
