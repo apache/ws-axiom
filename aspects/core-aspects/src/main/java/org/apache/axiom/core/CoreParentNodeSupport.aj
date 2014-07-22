@@ -48,22 +48,6 @@ public aspect CoreParentNodeSupport {
         return lastChild;
     }
 
-    /**
-     * forcefully set the first element in this parent element
-     * @param omNode
-     */
-    public void CoreParentNode.coreSetFirstChild(CoreChildNode firstChild) {
-        this.firstChild = firstChild;
-    }
-
-    /**
-     * forcefully set the last element in this parent element
-     * @param omNode
-     */
-    public void CoreParentNode.coreSetLastChild(CoreChildNode lastChild) {
-         this.lastChild = lastChild;
-    }
-
     public void CoreParentNode.buildNext() {
         OMXMLParserWrapper builder = getBuilder();
         if (builder == null) {
