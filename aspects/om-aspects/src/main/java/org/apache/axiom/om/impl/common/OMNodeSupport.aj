@@ -67,4 +67,10 @@ public aspect OMNodeSupport {
         coreDetach(null);
         return this;
     }
+    
+    public void INode.buildWithAttachments() {
+        if (!isComplete()) {
+            build();
+        }
+    }
 }

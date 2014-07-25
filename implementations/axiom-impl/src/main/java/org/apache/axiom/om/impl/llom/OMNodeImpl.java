@@ -62,20 +62,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         }
     }
 
-    /**
-     * Parses this node and builds the object structure in memory. AXIOM supports two levels of
-     * deffered building. First is deffered building of AXIOM using StAX. Second level is the
-     * deffered building of attachments. AXIOM reads in the attachements from the stream only when
-     * user asks by calling getDataHandler(). build() method builds the OM without the attachments.
-     * buildAll() builds the OM together with attachement data. This becomes handy when user wants
-     * to free the input stream.
-     */
-    public void buildWithAttachments() {
-        if (!isComplete()) {
-            this.build();
-        }
-    }
-
     public OMInformationItem clone(OMCloneOptions options) {
         return clone(options, null);
     }
