@@ -896,7 +896,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode != null) {
             if (!complete) {
-                parentNode.setComplete(false);
+                ((DOMContainer)parentNode).setComplete(false);
             } else {
                 ((DOMContainer)parentNode).notifyChildComplete();
             }

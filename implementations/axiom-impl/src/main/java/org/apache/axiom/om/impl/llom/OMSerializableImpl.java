@@ -27,9 +27,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.ISerializable;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
@@ -53,24 +51,6 @@ public abstract class OMSerializableImpl extends OMInformationItemImpl implement
         }
         return factory;
     }
-
-    public abstract OMXMLParserWrapper getBuilder();
-    
-    public void close(boolean build) {
-        OMXMLParserWrapper builder = getBuilder();
-        if (build) {
-            this.build();
-        }
-        setComplete(true);
-        
-        // If this is a StAXBuilder, close it.
-        if (builder instanceof StAXBuilder &&
-            !((StAXBuilder) builder).isClosed()) {
-            ((StAXBuilder) builder).close();
-        }
-    }
-    
-    public abstract void setComplete(boolean state);
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         serialize(xmlWriter, true);

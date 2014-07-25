@@ -18,24 +18,21 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 
-public interface ISerializable extends OMSerializable, IInformationItem {
-    OMXMLParserWrapper getBuilder();
-    
-    void setComplete(boolean state);
-
-    /**
-     * Serializes the node.
-     *
-     * @param serializer
-     * @param format
-     * @param cache indicates if caching should be enabled
-     * @throws OutputException 
-     */
-    void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException;
+public aspect OMSerializableSupport {
+    public void ISerializable.close(boolean build) {
+        OMXMLParserWrapper builder = getBuilder();
+        if (build) {
+            this.build();
+        }
+        setComplete(true);
+        
+        // If this is a StAXBuilder, close it.
+        if (builder instanceof StAXBuilder &&
+            !((StAXBuilder) builder).isClosed()) {
+            ((StAXBuilder) builder).close();
+        }
+    }
 }

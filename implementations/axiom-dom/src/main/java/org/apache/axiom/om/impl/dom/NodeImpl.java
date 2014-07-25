@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -414,23 +413,7 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
 
     public abstract OMXMLParserWrapper getBuilder();
     
-    public abstract void setComplete(boolean state);
-
     abstract void build();
-
-    public void close(boolean build) {
-        OMXMLParserWrapper builder = getBuilder();
-        if (build) {
-            this.build();
-        }
-        setComplete(true);
-        
-        // If this is a StAXBuilder, close it.
-        if (builder instanceof StAXBuilder &&
-            !((StAXBuilder) builder).isClosed()) {
-            ((StAXBuilder) builder).close();
-        }
-    }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         serialize(xmlWriter, true);
