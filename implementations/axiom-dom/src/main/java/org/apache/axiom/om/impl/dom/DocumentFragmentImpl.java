@@ -19,45 +19,21 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
-import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Node;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class DocumentFragmentImpl extends RootNode implements
-        DOMDocumentFragment, NonDeferringParentNode {
+public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragment {
 
     /** @param ownerDocument  */
     public DocumentFragmentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#getNodeType()
-     */
-    public short getNodeType() {
-        return Node.DOCUMENT_FRAGMENT_NODE;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#getNodeName()
-     */
-    public String getNodeName() {
-        return "#document-fragment";
     }
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) {
@@ -84,26 +60,6 @@ public class DocumentFragmentImpl extends RootNode implements
         // A document fragment doesn't have a builder
     }
 
-    public final String lookupNamespaceURI(String specifiedPrefix) {
-        return null;
-    }
-
-    public String lookupPrefix(String namespaceURI) {
-        return null;
-    }
-
     public final void checkChild(OMNode child) {
-    }
-
-    public final String getPrefix() {
-        return null;
-    }
-
-    public final void setPrefix(String prefix) throws DOMException {
-        throw newDOMException(DOMException.NAMESPACE_ERR);
-    }
-
-    public final String getLocalName() {
-        return null;
     }
 }
