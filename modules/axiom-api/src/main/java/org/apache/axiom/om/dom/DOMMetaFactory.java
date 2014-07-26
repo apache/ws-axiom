@@ -157,7 +157,7 @@ import org.w3c.dom.Text;
  * The implementation SHOULD instantiate the implicitly created owner documents lazily (typically
  * when explicitly requested using DOM's {@link Node#getOwnerDocument()} API) to avoid creating a
  * large number of temporary {@link Document} instances when the Axiom API is used. Note however
- * that this no impact on the behavior visible to the application code.
+ * that this has no impact on the behavior visible to the application code.
  */
 public interface DOMMetaFactory extends OMMetaFactory {
     /**
