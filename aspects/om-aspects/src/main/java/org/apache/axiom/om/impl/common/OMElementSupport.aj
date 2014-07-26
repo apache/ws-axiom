@@ -62,6 +62,26 @@ public aspect OMElementSupport {
         internalSetNamespace(handleNamespace(this, namespace, false, decl));
     }
 
+    public final OMElement IElement.getFirstElement() {
+        OMNode node = getFirstOMChild();
+        while (node != null) {
+            if (node.getType() == OMNode.ELEMENT_NODE) {
+                return (OMElement) node;
+            } else {
+                node = node.getNextOMSibling();
+            }
+        }
+        return null;
+    }
+
+    public final Iterator IElement.getChildElements() {
+        return new OMChildElementIterator(getFirstElement());
+    }
+
+    public final Iterator IElement.getNamespacesInScope() {
+        return new NamespaceIterator(this);
+    }
+
     public NamespaceContext IElement.getNamespaceContext(boolean detached) {
         if (detached) {
             Map namespaces = new HashMap();
@@ -75,6 +95,18 @@ public aspect OMElementSupport {
         }
     }
     
+    public final QName IElement.resolveQName(String qname) {
+        int idx = qname.indexOf(':');
+        if (idx == -1) {
+            OMNamespace ns = getDefaultNamespace();
+            return ns == null ? new QName(qname) : new QName(ns.getNamespaceURI(), qname, "");
+        } else {
+            String prefix = qname.substring(0, idx);
+            OMNamespace ns = findNamespace(null, prefix);
+            return ns == null ? null : new QName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
+        }
+    }
+
     public String IElement.getText() {
         String childText = null;
         StringBuffer buffer = null;

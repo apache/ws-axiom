@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
-import org.apache.axiom.om.impl.common.NamespaceIterator;
-import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -154,15 +152,6 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void checkChild(OMNode child) {
-    }
-
-    /**
-     * Returns a filtered list of children - just the elements.
-     *
-     * @return Returns an iterator of the child elements.
-     */
-    public Iterator getChildElements() {
-        return new OMChildElementIterator(getFirstElement());
     }
 
     public OMNamespace declareNamespace(String uri, String prefix) {
@@ -358,10 +347,6 @@ public class OMElementImpl extends OMNodeImpl
         return namespaces.values().iterator();
     }
 
-    public Iterator getNamespacesInScope() {
-        return new NamespaceIterator(this);
-    }
-
     /**
      * Returns a List of OMAttributes.
      *
@@ -521,23 +506,6 @@ public class OMElementImpl extends OMNodeImpl
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Gets first element.
-     *
-     * @return Returns element.
-     */
-    public OMElement getFirstElement() {
-        OMNode node = getFirstOMChild();
-        while (node != null) {
-            if (node.getType() == OMNode.ELEMENT_NODE) {
-                return (OMElement) node;
-            } else {
-                node = node.getNextOMSibling();
-            }
-        }
-        return null;
-    }
-
     public String getNamespaceURI() {
         OMNamespace ns = getNamespace();
         if (ns == null) {
@@ -578,18 +546,6 @@ public class OMElementImpl extends OMNodeImpl
             throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
         }
         return writer.toString();
-    }
-
-    public QName resolveQName(String qname) {
-        int idx = qname.indexOf(':');
-        if (idx == -1) {
-            OMNamespace ns = getDefaultNamespace();
-            return ns == null ? new QName(qname) : new QName(ns.getNamespaceURI(), qname, "");
-        } else {
-            String prefix = qname.substring(0, idx);
-            OMNamespace ns = findNamespace(null, prefix);
-            return ns == null ? null : new QName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
-        }
     }
 
     public OMElement cloneOMElement() {

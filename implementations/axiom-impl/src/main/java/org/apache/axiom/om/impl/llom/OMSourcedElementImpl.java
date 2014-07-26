@@ -338,10 +338,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return isExpanded;
     }
 
-    public Iterator getChildElements() {
-        return super.getChildElements();
-    }
-
     public OMNamespace declareNamespace(String uri, String prefix) {
         forceExpand();
         return super.declareNamespace(uri, prefix);
@@ -390,11 +386,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getAllDeclaredNamespaces();
     }
 
-    public Iterator getNamespacesInScope() throws OMException {
-        forceExpand();
-        return super.getNamespacesInScope();
-    }
-
     public Iterator getAllAttributes() {
         forceExpand();
         return super.getAllAttributes();
@@ -427,10 +418,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);
-    }
-
-    public OMElement getFirstElement() {
-        return super.getFirstElement();
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
@@ -572,11 +559,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    public QName resolveQName(String qname) {
-        forceExpand();
-        return super.resolveQName(qname);
-    }
-
     public OMElement cloneOMElement() {
         return super.cloneOMElement();
     }

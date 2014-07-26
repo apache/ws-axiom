@@ -35,8 +35,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.IElement;
-import org.apache.axiom.om.impl.common.NamespaceIterator;
-import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -46,10 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.TypeInfo;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -110,21 +105,7 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
     // /org.w3c.dom.Node methods
     // /
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#getNodeType()
-     */
-    public short getNodeType() {
-        return Node.ELEMENT_NODE;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#getNodeName()
-     */ 
-    public String getNodeName() {
+    public String getTagName() {
         OMNamespace namespace = getNamespace();
         String localName = getLocalName();
         if (namespace != null) {
@@ -155,15 +136,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
     // /
     // / org.w3c.dom.Element methods
     // /
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#getTagName()
-     */
-    public String getTagName() {
-        return this.getNodeName();
-    }
 
     /**
      * Removes an attribute by name.
@@ -646,23 +618,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         return (attr == null) ? null : attr.getAttributeValue();
     }
 
-    /**
-     * Returns the first Element node.
-     *
-     * @see org.apache.axiom.om.OMElement#getFirstElement()
-     */
-    public OMElement getFirstElement() {
-        OMNode node = getFirstOMChild();
-        while (node != null) {
-            if (node.getType() == Node.ELEMENT_NODE) {
-                return (OMElement) node;
-            } else {
-                node = node.getNextOMSibling();
-            }
-        }
-        return null;
-    }
-
     public void removeAttribute(OMAttribute attr) {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
@@ -704,22 +659,9 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         return new String(baos.toByteArray());
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMElement#getChildElements()
-     */
-    public Iterator getChildElements() {
-        return new OMChildElementIterator(getFirstElement());
-    }
-
     /** @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces() */
     public Iterator getAllDeclaredNamespaces() throws OMException {
         return new NSDeclIterator(attributes);
-    }
-
-    public Iterator getNamespacesInScope() {
-        return new NamespaceIterator(this);
     }
 
     /** @see org.apache.axiom.om.OMElement#getAllAttributes() */
@@ -738,18 +680,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         }
 
         return list.iterator();
-    }
-
-    public QName resolveQName(String qname) {
-        int idx = qname.indexOf(':');
-        if (idx == -1) {
-            OMNamespace ns = getDefaultNamespace();
-            return ns == null ? new QName(qname) : new QName(ns.getNamespaceURI(), qname, "");
-        } else {
-            String prefix = qname.substring(0, idx);
-            OMNamespace ns = findNamespace(null, prefix);
-            return ns == null ? null : new QName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
-        }
     }
 
     public OMElement cloneOMElement() {
@@ -860,11 +790,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         }
     }
 
-    public TypeInfo getSchemaTypeInfo() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
     /* (non-Javadoc)
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
@@ -910,76 +835,6 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
 
     public final void build() {
         defaultBuild();
-    }
-
-    public final String lookupNamespaceURI(String specifiedPrefix) {
-        String namespace = this.getNamespaceURI();
-        String prefix = this.getPrefix();
-        // First check for namespaces implicitly defined by the namespace prefix/URI of the element
-        // TODO: although the namespace != null condition conforms to the specs, it is likely incorrect; see XERCESJ-1586
-        if (namespace != null
-                && (prefix == null && specifiedPrefix == null
-                        || prefix != null && prefix.equals(specifiedPrefix))) {
-            return namespace;
-        }
-        // looking in attributes
-        if (this.hasAttributes()) {
-            NamedNodeMap map = this.getAttributes();
-            int length = map.getLength();
-            for (int i = 0; i < length; i++) {
-                Node attr = map.item(i);
-                namespace = attr.getNamespaceURI();
-                if (namespace != null && namespace.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-                    // At this point we know that either the prefix of the attribute is null and
-                    // the local name is "xmlns" or the prefix is "xmlns" and the local name is the
-                    // namespace prefix declared by the namespace declaration. We check that constraint
-                    // when the attribute is created.
-                    String attrPrefix = attr.getPrefix();
-                    if ((specifiedPrefix == null && attrPrefix == null)
-                            || (specifiedPrefix != null && attrPrefix != null
-                                    && attr.getLocalName().equals(specifiedPrefix))) {
-                        String value = attr.getNodeValue();
-                        return value.length() > 0 ? value : null;
-                    }
-                }
-            }
-        }
-        // looking in ancestor
-        ParentNode parent = (ParentNode)coreGetParent();
-        return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
-    }
-
-    public final String lookupPrefix(String namespaceURI) {
-        return lookupPrefix(namespaceURI, this);
-    }
-    
-    final String lookupPrefix(String namespaceURI, Element originalElement) {
-        if (namespaceURI == null || namespaceURI.length() == 0) {
-            return null;
-        }
-        if (namespaceURI.equals(getNamespaceURI())) {
-            String prefix = getPrefix();
-            if (namespaceURI.equals(originalElement.lookupNamespaceURI(prefix))) {
-                return prefix;
-            }
-        }
-        if (this.hasAttributes()) {
-            NamedNodeMap map = this.getAttributes();
-            int length = map.getLength();
-            for (int i = 0; i < length; i++) {
-                Node attr = map.item(i);
-                String attrPrefix = attr.getPrefix();
-                if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_ATTRIBUTE)
-                        && attr.getNodeValue().equals(namespaceURI)) {
-                    String prefix = attr.getLocalName();
-                    if (namespaceURI.equals(originalElement.lookupNamespaceURI(prefix))) {
-                        return prefix;
-                    }
-                }
-            }
-        }
-        ParentNode parent = (ParentNode)coreGetParent();
-        return parent instanceof Element ? ((ElementImpl)parent).lookupPrefix(namespaceURI, originalElement) : null;
     }
 
     public final void checkChild(OMNode child) {
