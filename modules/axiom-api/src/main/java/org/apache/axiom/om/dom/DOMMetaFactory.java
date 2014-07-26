@@ -43,6 +43,7 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
@@ -98,6 +99,10 @@ import org.w3c.dom.Text;
  * <tr>
  * <td>{@link OMEntityReference}</td>
  * <td>{@link EntityReference}</td>
+ * </tr>
+ * <tr>
+ * <td>-</td>
+ * <td>{@link DocumentFragment}</td>
  * </tr>
  * </table>
  * <dl>
@@ -158,6 +163,11 @@ import org.w3c.dom.Text;
  * when explicitly requested using DOM's {@link Node#getOwnerDocument()} API) to avoid creating a
  * large number of temporary {@link Document} instances when the Axiom API is used. Note however
  * that this has no impact on the behavior visible to the application code.
+ * <p>
+ * As indicated in the table above, although {@link Attr} and {@link DocumentFragment} nodes are
+ * parent nodes in the DOM API, they MUST NOT implement the {@link OMContainer} interface. Only
+ * {@link OMDocument} and {@link OMElement} instances can implement that interface.
+ * <!-- TODO: describe the implications for the getParent method -->
  */
 public interface DOMMetaFactory extends OMMetaFactory {
     /**

@@ -78,7 +78,12 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         coreSetBuilder(builder);
         coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parentNode != null) {
-            ((IContainer)parentNode).addChild(this, builder != null);
+            // TODO: dirty hack to get the correct semantics (reordering) if the parent is a SOAP envelope
+            if (parentNode instanceof IContainer) {
+                ((IContainer)parentNode).addChild(this, builder != null);
+            } else {
+                parentNode.coreAppendChild(this, builder != null);
+            }
         }
         this.attributes = new AttributeMap(this);
         internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);

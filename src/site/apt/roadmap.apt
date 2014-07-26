@@ -332,3 +332,14 @@ Miscellaneous
   A new major release would be the right moment to change this and make non coalescing mode the default.
   This enables a couple of optimizations (e.g. when reading and decoding base64 from a text node) and
   ensures that an XML document can be streamed with constant memory, even if it contains large text nodes.
+
+* Don't allow <<<addChild>>> to reorder children
+
+  The <<<SOAPEnvelope>>> implementations in LLOM and DOOM override the <<<addChild>>> method to
+  reorder the nodes if an attempt is made to add a <<<SOAPHeader>>> after the <<<SOAPBody>>>.
+  This introduces unnecessary complexity in the implementation and is questionable from an OO
+  design perspective because it breaks the general contract of the <<<addChild>>> method which is
+  to add the node as the last child.
+  
+  The <<<addChild>>> implementation for <<<SOAPEnvelope>>> should not do this. Instead it should
+  just throw an exception if a <<<SOAPHeader>>> is added at the wrong position.

@@ -32,6 +32,5 @@ public interface CoreParentNode extends CoreNode {
     void coreSetBuilder(OMXMLParserWrapper builder);
     int getState();
     void coreSetState(int state);
-    boolean isComplete();
     void build();
 }
