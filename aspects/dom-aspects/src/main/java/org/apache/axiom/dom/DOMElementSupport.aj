@@ -34,6 +34,15 @@ public aspect DOMElementSupport {
         return getTagName();
     }
 
+    // TODO: should be final
+    public String DOMElement.getNodeValue() {
+        return null;
+    }
+
+    // TODO: should be final
+    public void DOMElement.setNodeValue(String nodeValue) {
+    }
+
     public final TypeInfo DOMElement.getSchemaTypeInfo() {
         throw new UnsupportedOperationException();
     }

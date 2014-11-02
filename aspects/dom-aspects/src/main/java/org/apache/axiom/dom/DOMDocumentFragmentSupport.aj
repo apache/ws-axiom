@@ -32,6 +32,13 @@ public aspect DOMDocumentFragmentSupport {
         return "#document-fragment";
     }
 
+    public final String DOMDocumentFragment.getNodeValue() {
+        return null;
+    }
+
+    public final void DOMDocumentFragment.setNodeValue(String nodeValue) {
+    }
+
     public final String DOMDocumentFragment.lookupNamespaceURI(String specifiedPrefix) {
         return null;
     }

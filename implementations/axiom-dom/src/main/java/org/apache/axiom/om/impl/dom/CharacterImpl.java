@@ -21,16 +21,16 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.dom.DOMCharacterData;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
 /**
  * This implements the OMText operations which are to be inherited by TextImpl, CommentImpl,
  * CDATASectionImpl.
  */
-public abstract class CharacterImpl extends LeafNode implements CharacterData, OMNodeEx {
+public abstract class CharacterImpl extends LeafNode implements DOMCharacterData, OMNodeEx {
 
     protected String textValue;
 
@@ -41,14 +41,6 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
     public CharacterImpl(String value, OMFactory factory) {
         super(factory);
         this.textValue = (value != null) ? value : "";
-    }
-
-    public final String getNodeValue() throws DOMException {
-        return textValue;
-    }
-
-    public final void setNodeValue(String nodeValue) throws DOMException {
-        textValue = nodeValue;
     }
 
     ///

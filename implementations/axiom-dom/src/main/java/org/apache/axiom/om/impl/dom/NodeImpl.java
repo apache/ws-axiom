@@ -78,15 +78,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         return null; // Override in AttrImpl and ElementImpl
     }
 
-    // TODO: should disappear
-    public String getNodeValue() throws DOMException {
-        return null;
-    }
-
-    public void setNodeValue(String nodeValue) throws DOMException {
-        // Don't do anything, to be overridden in SOME Child classes
-    }
-
     /**
      * Returns the collection of attributes associated with this node, or null if none. At this
      * writing, Element is the only type of node which will ever have attributes.

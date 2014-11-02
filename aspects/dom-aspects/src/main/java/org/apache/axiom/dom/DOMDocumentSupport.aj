@@ -33,6 +33,13 @@ public aspect DOMDocumentSupport {
         return Node.DOCUMENT_NODE;
     }
 
+    public final String DOMDocument.getNodeValue() {
+        return null;
+    }
+
+    public final void DOMDocument.setNodeValue(String nodeValue) {
+    }
+
     public final String DOMDocument.getPrefix() {
         return null;
     }
