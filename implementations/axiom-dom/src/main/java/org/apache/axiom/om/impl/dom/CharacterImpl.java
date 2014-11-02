@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
 import org.apache.axiom.dom.DOMCharacterData;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -43,83 +41,13 @@ public abstract class CharacterImpl extends LeafNode implements DOMCharacterData
         this.textValue = (value != null) ? value : "";
     }
 
-    ///
-    ///org.w3c.dom.CharacterData mrthods
-    ///
-
-    public void appendData(String value) throws DOMException {
-        this.textValue += value;
-    }
-
-    /**
-     *
-     */
-    public void deleteData(int offset, int count) throws DOMException {
-        this.replaceData(offset, count, null);
-    }
-
-    /** If the given data is null the content will be deleted. */
-    public void replaceData(int offset, int count, String data) throws
-            DOMException {
-
-        int length = this.textValue.length();
-        if (offset < 0 || offset > length - 1 || count < 0) {
-            throw newDOMException(DOMException.INDEX_SIZE_ERR);
-        } else {
-
-            int end = Math.min(count + offset, length);
-
-            if (data == null) {
-                this.textValue = (new StringBuilder(textValue)).delete(offset, end).toString();
-            } else {
-                this.textValue = (new StringBuilder(textValue)).replace(offset, end, data).toString();
-            }
-        }
-
-    }
-
-
     /** Returns the value of the data. */
     public String getData() throws DOMException {
         return (this.textValue != null) ? this.textValue : "";
-    }
-
-    /** Inserts a string at the specified offset. */
-    public void insertData(int offset, String data) throws DOMException {
-        int length = this.getLength();
-
-        if (offset < 0 || offset > length) {
-            throw newDOMException(DOMException.INDEX_SIZE_ERR);
-        }
-
-        this.textValue = (new StringBuilder(textValue)).insert(offset, data).toString();
     }
 
     /** Sets the text value of data. */
     public void setData(String data) throws DOMException {
         this.textValue = data;
     }
-
-    /**
-     * Extracts a range of data from the node.
-     *
-     * @return Returns the specified substring. If the sum of offset and count exceeds the length, then
-     *         all 16-bit units to the end of the data are returned.
-     */
-    public String substringData(int offset, int count) throws DOMException {
-        if (offset < 0 || offset > this.getLength() || count < 0) {
-            throw newDOMException(DOMException.INDEX_SIZE_ERR);
-        }
-
-        int end = Math.min(count + offset, textValue.length());
-        return this.textValue.substring(offset, end);
-    }
-
-    /**
-     * Returns the length of the string value.
-     */
-    public int getLength() {
-        return (this.textValue != null) ? this.textValue.length() : 0;
-	}
-		
 }
