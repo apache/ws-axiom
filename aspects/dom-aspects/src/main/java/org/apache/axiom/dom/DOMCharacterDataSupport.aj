@@ -47,7 +47,7 @@ public aspect DOMCharacterDataSupport {
     public final void DOMCharacterData.replaceData(int offset, int count, String arg) {
         String data = getData();
         int length = data.length();
-        if (offset < 0 || offset > length - 1 || count < 0) {
+        if (offset < 0 || offset > length || count < 0) {
             throw newDOMException(DOMException.INDEX_SIZE_ERR);
         } else {
             int end = Math.min(count + offset, length);
