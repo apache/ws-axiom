@@ -23,6 +23,7 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.dom.DOMTextNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -45,7 +46,7 @@ import javax.xml.namespace.QName;
 
 import java.io.IOException;
 
-public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText {
+public abstract class TextNodeImpl extends CharacterImpl implements DOMTextNode, OMText {
     private String mimeType;
 
     private String contentID;
@@ -286,30 +287,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     /*
     * DOM-Level 3 methods
     */
-
-    public String getWholeText() {
-        // Locate the first sibling that we need to include in the concatenation
-        OMNode sibling = this;
-        OMNode previousSibling;
-        while ((previousSibling = sibling.getPreviousOMSibling()) instanceof OMText) {
-            sibling = previousSibling;
-        }
-        
-        String text = ((OMText)sibling).getText();
-        StringBuffer buffer = null;
-        while ((sibling = sibling.getNextOMSibling()) instanceof OMText) {
-            if (buffer == null) {
-                buffer = new StringBuffer(text);
-            }
-            buffer.append(((OMText)sibling).getText());
-        }
-
-        if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return text;
-        }
-    }
 
     public boolean isElementContentWhitespace() {
         // TODO TODO
