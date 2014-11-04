@@ -37,7 +37,7 @@ public aspect CoreNodeSupport {
         if (root instanceof CoreDocument) {
             return (CoreDocument)root;
         } else if (create) {
-            CoreDocument ownerDocument = createOwnerDocument();
+            CoreDocument ownerDocument = root.coreGetNodeFactory().createDocument();
             root.coreSetOwnerDocument(ownerDocument);
             return ownerDocument;
         } else {

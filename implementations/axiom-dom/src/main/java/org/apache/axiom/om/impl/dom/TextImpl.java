@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -28,7 +29,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.w3c.dom.Node;
 
-public class TextImpl extends TextNodeImpl {
+public class TextImpl extends TextNodeImpl implements DOMText {
     private boolean isWhitespace;
 
     public TextImpl(char[] value, OMFactory factory) {
@@ -92,5 +93,13 @@ public class TextImpl extends TextNodeImpl {
 
     ChildNode createClone() {
         return new TextImpl(this, getOMFactory());
+    }
+
+    public String coreGetData() {
+        return textValue;
+    }
+
+    public void coreSetData(String data) {
+        this.textValue = data;
     }
 }

@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
+import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -61,7 +64,7 @@ import javax.xml.namespace.QName;
  * OM factory implementation for DOOM. It creates nodes that implement
  * DOM as defined by the interfaces in {@link org.w3c.dom}.
  */
-public class OMDOMFactory implements OMFactoryEx {
+public class OMDOMFactory implements OMFactoryEx, NodeFactory {
     private final OMDOMMetaFactory metaFactory;
 
     public OMDOMFactory(OMDOMMetaFactory metaFactory) {
@@ -427,5 +430,13 @@ public class OMDOMFactory implements OMFactoryEx {
                         "Not Implemented Yet for the given node type");
             }
         }
+    }
+
+    public final CoreDocument createDocument() {
+        return new DocumentImpl(this);
+    }
+
+    public final CoreCharacterData createCharacterData() {
+        return new TextImpl(this);
     }
 }

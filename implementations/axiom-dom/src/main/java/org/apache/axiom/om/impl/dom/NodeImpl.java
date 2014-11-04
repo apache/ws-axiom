@@ -22,7 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
@@ -366,8 +366,8 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         return (DocumentImpl)coreGetOwnerDocument(true);
     }
     
-    public final CoreDocument createOwnerDocument() {
-        return new DocumentImpl(getOMFactory().getMetaFactory().getOMFactory());
+    public final NodeFactory coreGetNodeFactory() {
+        return (NodeFactory)getOMFactory();
     }
     
     void checkSameOwnerDocument(Node otherNode) {

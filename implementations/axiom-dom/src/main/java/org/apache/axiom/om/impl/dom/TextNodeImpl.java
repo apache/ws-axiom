@@ -293,11 +293,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements DOMTextNode,
         throw new UnsupportedOperationException("TODO");
     }
 
-    public Text replaceWholeText(String content) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
     public String toString() {
         return (this.textValue != null) ? textValue : "";
     }

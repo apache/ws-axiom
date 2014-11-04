@@ -16,14 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.dom;
 
-import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.impl.common.IInformationItem;
-import org.apache.axiom.om.impl.common.InformationItem;
+import org.apache.axiom.core.CoreCharacterData;
 
-public abstract class OMInformationItemImpl extends InformationItem implements IInformationItem {
-    public final NodeFactory coreGetNodeFactory() {
-        throw new UnsupportedOperationException();
-    }
+public interface DOMText extends DOMTextNode, CoreCharacterData {
+
 }

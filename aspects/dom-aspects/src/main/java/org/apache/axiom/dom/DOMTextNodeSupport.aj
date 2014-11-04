@@ -19,6 +19,9 @@
 package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Text;
 
 public aspect DOMTextNodeSupport {
     private DOMTextNode DOMTextNode.getWholeTextStartNode() {
@@ -65,5 +68,31 @@ public aspect DOMTextNodeSupport {
             }
             return buffer.toString();
         }
+    }
+
+    public final Text DOMTextNode.replaceWholeText(String content) throws DOMException {
+        DOMText newText;
+        if (content.length() > 0) {
+            newText = (DOMText)coreGetNodeFactory().createCharacterData();
+            newText.coreSetData(content);
+        } else {
+            newText = null;
+        }
+        if (coreHasParent()) {
+            DOMTextNode first = getWholeTextStartNode();
+            DOMTextNode last = getWholeTextEndNode();
+            if (newText != null) {
+                first.coreInsertSiblingBefore(newText);
+            }
+            CoreDocument document = coreGetOwnerDocument(true);
+            DOMTextNode current = first;
+            DOMTextNode next;
+            do {
+                next = current == last ? null : (DOMTextNode)current.coreGetNextSibling();
+                current.coreDetach(document);
+                current = next;
+            } while (next != null);
+        }
+        return newText;
     }
 }

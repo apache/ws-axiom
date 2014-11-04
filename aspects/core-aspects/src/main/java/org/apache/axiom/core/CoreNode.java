@@ -21,5 +21,5 @@ package org.apache.axiom.core;
 public interface CoreNode {
     void coreSetOwnerDocument(CoreDocument document);
     
-    CoreDocument createOwnerDocument();
+    NodeFactory coreGetNodeFactory();
 }

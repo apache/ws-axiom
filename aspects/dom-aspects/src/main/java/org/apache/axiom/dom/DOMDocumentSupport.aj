@@ -21,6 +21,7 @@ package org.apache.axiom.dom;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 public aspect DOMDocumentSupport {
     private final DOMConfigurationImpl DOMDocument.domConfig = new DOMConfigurationImpl();
@@ -75,5 +76,12 @@ public aspect DOMDocumentSupport {
         } else {
             normalize(domConfig);
         }
+    }
+    
+    public final Text DOMDocument.createTextNode(String data) {
+        DOMText text = (DOMText)coreGetNodeFactory().createCharacterData();
+        text.coreSetOwnerDocument(this);
+        text.coreSetData(data);
+        return text;
     }
 }

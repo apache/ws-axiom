@@ -52,7 +52,6 @@ import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
@@ -176,12 +175,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, IDocument {
         ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, getOMFactory());
         pi.coreSetOwnerDocument(this);
         return pi;
-    }
-
-    public Text createTextNode(String value) {
-        TextImpl text = new TextImpl(value, getOMFactory());
-        text.coreSetOwnerDocument(this);
-        return text;
     }
 
     public DocumentType getDoctype() {
