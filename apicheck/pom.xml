@@ -24,11 +24,18 @@
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
-    <artifactId>forbiddenapi-signatures</artifactId>
-    <name>Signature files for forbidden-api</name>
-    <description>Contains signature files for the forbidden-api Maven plugin. This can be used to check that a project doesn't use any forbidden or deprecated Axiom APIs.</description>
+    <artifactId>apicheck</artifactId>
+    <name>API Check</name>
+    <packaging>pom</packaging>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
                 <configuration>
@@ -38,4 +45,8 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>apicheck-maven-plugin</module>
+        <module>forbiddenapis-core</module>
+    </modules>
 </project>
