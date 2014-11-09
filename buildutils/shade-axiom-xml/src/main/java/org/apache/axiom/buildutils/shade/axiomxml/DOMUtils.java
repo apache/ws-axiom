@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.buildutils;
+package org.apache.axiom.buildutils.shade.axiomxml;
 
 import java.io.IOException;
 import java.io.InputStream;

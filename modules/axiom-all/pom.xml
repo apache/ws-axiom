@@ -86,7 +86,7 @@
                                 </includes>
                             </artifactSet>
                             <transformers>
-                                <transformer implementation="org.apache.axiom.buildutils.AxiomXmlResourceTransformer" />
+                                <transformer implementation="org.apache.axiom.buildutils.shade.axiomxml.AxiomXmlResourceTransformer" />
                             </transformers>
                         </configuration>
                     </execution>
@@ -94,7 +94,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>axiom-buildutils</artifactId>
+                        <artifactId>shade-axiom-xml</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
