@@ -98,6 +98,11 @@
             <version>1.6.15</version>
         </dependency>
         <dependency>
+            <!-- Need this because the SAAJ implementation in Java 1.6 has an issue (probably SAAJ-37). -->
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
             <scope>test</scope>
