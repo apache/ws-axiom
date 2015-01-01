@@ -54,9 +54,11 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
     private SOAPMessage axiomMessage;
     private final SourceExtractionStrategyStack extractionStrategyStack = new SourceExtractionStrategyStack();
     private SoapEnvelopeImpl envelope;
+    private String soapAction;
     
-    SoapMessageImpl(SOAPMessage axiomMessage, boolean autoCreateHeader) {
+    SoapMessageImpl(SOAPMessage axiomMessage, String soapAction, boolean autoCreateHeader) {
         this.axiomMessage = axiomMessage;
+        this.soapAction = soapAction;
         if (autoCreateHeader) {
             envelope = new SoapEnvelopeImpl(this, axiomMessage.getSOAPEnvelope(), true);
         }
@@ -70,14 +72,14 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
         return envelope;
     }
 
+    @Override
     public String getSoapAction() {
-        // TODO Auto-generated method stub
-        return "\"\"";
+        return SoapUtils.escapeAction(soapAction);
     }
 
+    @Override
     public void setSoapAction(String soapAction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        this.soapAction = SoapUtils.unescapeAction(soapAction);
     }
 
     public Document getDocument() {
@@ -125,12 +127,19 @@ final class SoapMessageImpl extends AbstractSoapMessage implements AxiomWebServi
 
     public void writeTo(OutputStream outputStream) throws IOException {
         OMOutputFormat outputFormat = new OMOutputFormat();
-        outputFormat.setSOAP11(((SOAPFactory)axiomMessage.getOMFactory()).getSOAPVersion() == SOAP11Version.getSingleton());
+        boolean soap11 = ((SOAPFactory)axiomMessage.getOMFactory()).getSOAPVersion() == SOAP11Version.getSingleton();
+        outputFormat.setSOAP11(soap11);
         if (outputStream instanceof TransportOutputStream) {
             TransportOutputStream transportOutputStream = (TransportOutputStream)outputStream;
             // TODO: ensure that charset is specified in content type
             // TODO: omit XML declaration
-            transportOutputStream.addHeader(TransportConstants.HEADER_CONTENT_TYPE, outputFormat.getContentType());
+            String contentType = outputFormat.getContentType();
+            if (soap11) {
+                transportOutputStream.addHeader(TransportConstants.HEADER_SOAP_ACTION, "\"" + soapAction + "\"");
+            } else {
+                contentType += "; action=\"" + soapAction + "\"";
+            }
+            transportOutputStream.addHeader(TransportConstants.HEADER_CONTENT_TYPE, contentType);
         }
         try {
             axiomMessage.serializeAndConsume(outputStream);

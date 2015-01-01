@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.Iterator;
 
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MediaType;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -73,11 +74,17 @@ public final class AxiomSoapMessageFactory implements SoapMessageFactory, Initia
     }
 
     public SoapMessage createWebServiceMessage() {
-        return new SoapMessageImpl(soapFactory.createDefaultSOAPMessage(), true);
+        return new SoapMessageImpl(soapFactory.createDefaultSOAPMessage(), null, true);
+    }
+
+    private static String getHeaderValue(TransportInputStream transportInputStream, String name) throws IOException {
+        Iterator<String> iterator = transportInputStream.getHeaders(name);
+        return iterator.hasNext() ? iterator.next() : null;
     }
 
     public SoapMessage createWebServiceMessage(InputStream inputStream) throws IOException {
         String charset;
+        String soapAction;
         if (inputStream instanceof TransportInputStream) {
             TransportInputStream transportInputStream = (TransportInputStream)inputStream;
             Iterator<String> it = transportInputStream.getHeaders(TransportConstants.HEADER_CONTENT_TYPE);
@@ -92,12 +99,19 @@ public final class AxiomSoapMessageFactory implements SoapMessageFactory, Initia
                 throw new SoapMessageCreationException("No Content-Type header found");
             }
             charset = contentType.getParameter("charset");
+            MediaType mediaType = contentType.getMediaType();
+            if (mediaType.equals(MediaType.TEXT_XML)) {
+                soapAction = SoapUtils.unescapeAction(getHeaderValue(transportInputStream, TransportConstants.HEADER_SOAP_ACTION));
+            } else {
+                soapAction = contentType.getParameter("action");
+            }
         } else {
             charset = null;
+            soapAction = null;
         }
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, inputStream, charset);
         // TODO: should SOAPModelBuilder have a getSOAPMessage() method?
         // TODO: need to check that the SOAP version matches the content type
-        return new SoapMessageImpl((SOAPMessage)builder.getDocument(), false);
+        return new SoapMessageImpl((SOAPMessage)builder.getDocument(), soapAction, false);
     }
 }
