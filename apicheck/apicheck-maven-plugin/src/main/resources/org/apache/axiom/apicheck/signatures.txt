@@ -16,8 +16,6 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-@defaultMessage Use OMXMLBuilderFactory to create a builder; use OMXMLParserWrapper to interact with the builder
-org.apache.axiom.om.impl.builder.StAXBuilder
-org.apache.axiom.om.impl.builder.StAXOMBuilder
-@defaultMessage Use OMXMLBuilderFactory to create a builder; use OMXMLParserWrapper or SOAPModelBuilder to interact with the builder
-org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder
+org/apache/axiom/om/impl/builder/StAXBuilder Use OMXMLBuilderFactory to create a builder; use OMXMLParserWrapper to interact with the builder
+org/apache/axiom/om/impl/builder/StAXOMBuilder Use OMXMLBuilderFactory to create a builder; use OMXMLParserWrapper to interact with the builder
+org/apache/axiom/soap/impl/builder/StAXSOAPModelBuilder Use OMXMLBuilderFactory to create a builder; use OMXMLParserWrapper or SOAPModelBuilder to interact with the builder

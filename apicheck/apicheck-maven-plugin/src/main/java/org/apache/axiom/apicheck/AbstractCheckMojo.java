@@ -18,15 +18,15 @@
  */
 package org.apache.axiom.apicheck;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.axiom.apicheck.checker.APIChecker;
+import org.apache.axiom.apicheck.checker.Element;
+import org.apache.axiom.apicheck.checker.ViolationListener;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -35,10 +35,6 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
-
-import de.thetaphi.forbiddenapis.Checker;
-import de.thetaphi.forbiddenapis.ForbiddenApiException;
-import de.thetaphi.forbiddenapis.ParseException;
 
 abstract class AbstractCheckMojo extends AbstractMojo {
     @Parameter(defaultValue="${project}", readonly=true, required=true)
@@ -71,64 +67,34 @@ abstract class AbstractCheckMojo extends AbstractMojo {
         if (files.length == 0) {
             return;
         }
-        
-        URL[] urls = new URL[classpathElements.size()];
-        int i = 0;
-        for (String classpathElement : classpathElements) {
-            try {
-                urls[i++] = new File(classpathElement).toURI().toURL();
-            } catch (MalformedURLException ex) {
-                throw new MojoExecutionException("Unexpected exception", ex);
+        final Log log = getLog();
+        APIChecker checker = new APIChecker(new ViolationListener() {
+            @Override
+            public void log(Element element, String msg) {
+                log.error(msg);
             }
-        }
-        URLClassLoader classLoader = new URLClassLoader(urls);
+        });
         try {
-            final Log log = getLog();
-            Checker checker = new Checker(classLoader, false, false, false) {
-                @Override
-                protected void logError(String msg) {
-                    log.error(msg);
-                }
-                
-                @Override
-                protected void logWarn(String msg) {
-                    log.warn(msg);
-                }
-                
-                @Override
-                protected void logInfo(String msg) {
-                    log.info(msg);
-                }
-            };
+            InputStream in = AbstractCheckMojo.class.getResourceAsStream("signatures.txt");
             try {
-                checker.parseSignaturesFile(AbstractCheckMojo.class.getResourceAsStream("signatures.txt"));
-            } catch (IOException ex) {
-                throw new MojoExecutionException("I/O error while reading signatures", ex);
-            } catch (ParseException ex) {
-                throw new MojoExecutionException("Failed to parse signatures", ex);
+                checker.loadSignatures(in);
+            } finally {
+                in.close();
             }
-            if (checker.hasNoSignatures()) {
-                // We get here if Axiom is not in the classpath
-                return;
-            }
-            for (String file : files) {
+        } catch (IOException ex) {
+            throw new MojoExecutionException("Failed to load signature file", ex);
+        }
+        for (String file : files) {
+            
+            try {
+                InputStream in = new FileInputStream(new File(outputDirectory, file));
                 try {
-                    checker.addClassToCheck(new FileInputStream(new File(outputDirectory, file)));
-                } catch (IOException ex) {
-                    throw new MojoExecutionException("Failed to load class file " + file, ex);
+                    checker.checkClass(in);
+                } finally {
+                    in.close();
                 }
-            }
-            log.info("Scanning for forbidden API invocations...");
-            try {
-                checker.run();
-            } catch (ForbiddenApiException ex) {
-                throw new MojoFailureException(ex.getMessage());
-            }
-        } finally {
-            if (classLoader instanceof Closeable) try {
-                ((Closeable)classLoader).close();
             } catch (IOException ex) {
-                // Ignore
+                throw new MojoExecutionException("Failed to load class file " + file, ex);
             }
         }
     }
