@@ -110,8 +110,7 @@ public final class AxiomSoapMessageFactory implements SoapMessageFactory, Initia
             soapAction = null;
         }
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, inputStream, charset);
-        // TODO: should SOAPModelBuilder have a getSOAPMessage() method?
         // TODO: need to check that the SOAP version matches the content type
-        return new SoapMessageImpl((SOAPMessage)builder.getDocument(), soapAction, false);
+        return new SoapMessageImpl(builder.getSOAPMessage(), soapAction, false);
     }
 }
