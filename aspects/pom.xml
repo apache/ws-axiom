@@ -19,19 +19,24 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>aspects</artifactId>
-    <name>Aspects</name>
     <packaging>pom</packaging>
+
+    <name>Aspects</name>
+
     <modules>
         <module>core-aspects</module>
         <module>dom-aspects</module>
         <module>om-aspects</module>
     </modules>
+
     <build>
         <plugins>
             <plugin>

@@ -19,14 +19,18 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>axiom-spring-ws</artifactId>
+
     <name>Axiom/Spring-WS Integration</name>
     <description>Axiom integration for Spring Web Services</description>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.ws</groupId>
@@ -77,6 +81,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>

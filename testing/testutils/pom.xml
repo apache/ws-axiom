@@ -19,16 +19,20 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>testing</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>testutils</artifactId>
+
     <name>Axiom Test Utilities</name>
     <description>
         Contains utility classes used by the test suites in Axiom.
     </description>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
@@ -77,6 +81,7 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+
     <build>
         <resources>
             <resource>
@@ -117,6 +122,7 @@
             </plugin>
         </plugins>
     </build>
+
     <profiles>
         <profile>
             <id>apache-release</id>

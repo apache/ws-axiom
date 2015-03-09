@@ -19,15 +19,24 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>systests</artifactId>
         <version>1.2.15-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
     <artifactId>jboss-tests</artifactId>
-    <name>JBoss Tests</name>
     <packaging>jar</packaging>
+
+    <name>JBoss Tests</name>
+
+    <properties>
+        <jboss.version>7.1.1.Final</jboss.version>
+        <jboss.home>${project.build.directory}/jboss-as-${jboss.version}</jboss.home>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -53,10 +62,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <properties>
-        <jboss.version>7.1.1.Final</jboss.version>
-        <jboss.home>${project.build.directory}/jboss-as-${jboss.version}</jboss.home>
-    </properties>
+
     <build>
         <testResources>
             <testResource>

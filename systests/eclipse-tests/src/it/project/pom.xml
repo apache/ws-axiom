@@ -19,14 +19,17 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>@project.groupId@</groupId>
         <artifactId>eclipse-tests</artifactId>
         <version>@project.version@</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
+
     <artifactId>eclipse-tests-project</artifactId>
     <packaging>eclipse-test-plugin</packaging>
+
     <repositories>
         <repository>
             <id>kepler</id>
@@ -38,6 +41,7 @@
             <url>http://download.eclipse.org/releases/kepler/201306260900</url>
         </repository>
     </repositories>
+
     <build>
         <plugins>
             <plugin>

@@ -19,18 +19,22 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>aspects</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>om-aspects</artifactId>
-    <name>OM Aspects</name>
     <!-- Although om-aspects will never be used as a bundle itself, we still need the OSGi metadata
          so that we can generate a correct manifest when the classes are included in axiom-impl and
          axiom-dom by maven-shade-plugin. -->
     <packaging>bundle</packaging>
+
+    <name>OM Aspects</name>
     <description>Contains aspects and implementation classes shared by LLOM and DOOM.</description>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

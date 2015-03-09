@@ -19,24 +19,29 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
+
     <artifactId>axiom-api</artifactId>
+    <packaging>bundle</packaging>
+
     <name>Axiom API</name>
     <description>The Axiom API</description>
-    <packaging>bundle</packaging>
+    <!-- This also needs to be set explicitly because the Maven calculated URL would point to nowhere -->
+    <url>http://ws.apache.org/axiom/</url>
+
     <!-- This needs to be set explicitly because the project structure implies that the Maven calculated defaults are wrong -->
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-api</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-api</developerConnection>
         <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-api</url>
     </scm>
-    <!-- This also needs to be set explicitly because the Maven calculated URL would point to nowhere -->
-    <url>http://ws.apache.org/axiom/</url>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
@@ -106,6 +111,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -250,6 +256,7 @@
             </plugin>
         </plugins>
     </build>
+
     <profiles>
         <profile>
             <!-- This profile adds IBM's XLXP StAX implementation to the dialect test suite

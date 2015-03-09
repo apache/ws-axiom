@@ -19,18 +19,22 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>systests</artifactId>
         <version>1.2.15-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
     <artifactId>spring-ws-tests</artifactId>
+    <packaging>jar</packaging>
+
     <name>Spring WS Tests</name>
     <description>
         Tests interoperability with recent Spring Web Services releases.
     </description>
-    <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.ws</groupId>

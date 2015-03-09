@@ -19,16 +19,20 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>systests</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>old-tests</artifactId>
+
     <name>Axiom Test Suite (old)</name>
     <description>
         Legacy test suite. The tests in this module will be moved to other places. See AXIOM-311.
     </description>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

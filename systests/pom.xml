@@ -19,15 +19,30 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
     <artifactId>systests</artifactId>
-    <name>System Tests</name>
     <packaging>pom</packaging>
+
+    <name>System Tests</name>
+
+    <modules>
+        <module>cross-om-tests</module>
+        <module>eclipse-tests</module>
+        <module>integration-tests</module>
+        <module>jboss-tests</module>
+        <module>old-tests</module>
+        <module>osgi-tests</module>
+        <module>spring-ws-tests</module>
+        <module>wss4j-tests</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
@@ -52,14 +67,4 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>cross-om-tests</module>
-        <module>eclipse-tests</module>
-        <module>integration-tests</module>
-        <module>jboss-tests</module>
-        <module>old-tests</module>
-        <module>osgi-tests</module>
-        <module>spring-ws-tests</module>
-        <module>wss4j-tests</module>
-    </modules>
 </project>

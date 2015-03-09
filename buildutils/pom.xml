@@ -19,14 +19,24 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>buildutils</artifactId>
-    <name>Build utilities</name>
     <packaging>pom</packaging>
+
+    <name>Build utilities</name>
+
+    <modules>
+        <module>paxexam-maven-plugin</module>
+        <module>shade-axiom-xml</module>
+        <module>shade-osgi</module>
+    </modules>
+
     <build>
         <plugins>
             <!-- The build requires Java 1.6; therefore we can use that version for the build utils as well -->
@@ -66,9 +76,4 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>paxexam-maven-plugin</module>
-        <module>shade-axiom-xml</module>
-        <module>shade-osgi</module>
-    </modules>
 </project>

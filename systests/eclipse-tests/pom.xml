@@ -19,18 +19,23 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>systests</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>eclipse-tests</artifactId>
+    <packaging>pom</packaging>
+
     <name>Eclipse Tests</name>
     <description>Contains test cases that verify that the Axiom OSGi bundles are usable out of the box by Eclipse plug-ins.</description>
-    <packaging>pom</packaging>
+
     <properties>
         <tycho-version>0.18.1</tycho-version>
     </properties>
+
     <dependencies>
         <!-- We declare dependencies here to guarantee that the build order is correct.
              The dependencies will be inherited by the test project (src/it/project). -->
@@ -56,6 +61,7 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>

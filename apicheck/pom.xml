@@ -19,14 +19,23 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
+
     <artifactId>apicheck</artifactId>
-    <name>API Check</name>
     <packaging>pom</packaging>
+
+    <name>API Check</name>
+
+    <modules>
+        <module>apicheck-maven-plugin</module>
+        <module>forbiddenapis-core</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
@@ -45,8 +54,4 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>apicheck-maven-plugin</module>
-        <module>forbiddenapis-core</module>
-    </modules>
 </project>

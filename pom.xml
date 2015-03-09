@@ -19,6 +19,7 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
@@ -26,18 +27,17 @@
                    that we don't need/want; don't use these versions -->
         <version>13</version>
     </parent>
+
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
-    <name>Axiom</name>
     <version>1.2.15-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <name>Axiom</name>
     <description>AXIOM API</description>
     <url>http://ws.apache.org/axiom/</url>
-    <issueManagement>
-        <system>JIRA</system>
-        <url>http://issues.apache.org/jira/browse/AXIOM</url>
-    </issueManagement>
     <inceptionYear>2004</inceptionYear>
+
     <developers>
         <developer>
             <name>Saminda Abeyruwan</name>
@@ -207,11 +207,78 @@
             <email>jochen.wiedmann AT gmail.com</email>
         </contributor>
     </contributors>
+
+    <modules>
+        <module>buildutils</module>
+        <module>modules/axiom-buildutils</module>
+        <module>modules/axiom-api</module>
+        <module>modules/axiom-compat</module>
+        <module>modules/axiom-jaxb</module>
+        <module>modules/axiom-c14n</module>
+        <module>modules/axiom-all</module>
+        <module>modules/axiom-samples</module>
+        <module>axiom-spring-ws</module>
+        <module>systests</module>
+        <module>apicheck</module>
+        <module>devguide</module>
+        <module>userguide</module>
+        <module>apidocs</module>
+        <module>distribution</module>
+        <module>code-coverage</module>
+        <module>testing</module>
+        <module>aspects</module>
+        <module>implementations</module>
+    </modules>
+
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
         <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom</url>
     </scm>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://issues.apache.org/jira/browse/AXIOM</url>
+    </issueManagement>
+    <distributionManagement>
+        <site>
+            <id>website</id>
+            <url>scpexe://people.apache.org/home/${user.name}/public_html/axiom</url>
+        </site>
+    </distributionManagement>
+
+    <properties>
+        <osgi.version>4.2.0</osgi.version>
+        <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
+        <stax.impl.artifact>woodstox-core-asl</stax.impl.artifact>
+        <stax.impl.version>4.2.0</stax.impl.version>
+        <failIfNoTests>false</failIfNoTests>
+        <!--
+        <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
+        <stax.impl.artifact>sjsxp</stax.impl.artifact>
+        <stax.impl.version>1.0.1</stax.impl.version>
+        -->
+        <!--
+        <stax.impl.groupid>stax</stax.impl.groupid>
+        <stax.impl.artifact>stax</stax.impl.artifact>
+        <stax.impl.version>1.2.0</stax.impl.version>
+        -->
+        <shade.plugin.version>1.6</shade.plugin.version>
+        <jacoco.version>0.6.3.201306030806</jacoco.version>
+    </properties>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>veithen-github-mvn-repo</id>
+            <url>https://raw.github.com/veithen/mvn-repo/master/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -384,45 +451,8 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <properties>
-        <osgi.version>4.2.0</osgi.version>
-        <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
-        <stax.impl.artifact>woodstox-core-asl</stax.impl.artifact>
-        <stax.impl.version>4.2.0</stax.impl.version>
-        <failIfNoTests>false</failIfNoTests>
-        <!--
-        <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
-        <stax.impl.artifact>sjsxp</stax.impl.artifact>
-        <stax.impl.version>1.0.1</stax.impl.version>
-        -->
-        <!--
-        <stax.impl.groupid>stax</stax.impl.groupid>
-        <stax.impl.artifact>stax</stax.impl.artifact>
-        <stax.impl.version>1.2.0</stax.impl.version>
-        -->
-        <shade.plugin.version>1.6</shade.plugin.version>
-        <jacoco.version>0.6.3.201306030806</jacoco.version>
-    </properties>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>veithen-github-mvn-repo</id>
-            <url>https://raw.github.com/veithen/mvn-repo/master/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>2.2</version>
-            </extension>
-        </extensions>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -798,8 +828,49 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tidy-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
+                <executions>
+                    <execution>
+                        <!-- The default binding to the verify phase doesn't work here because some
+                             modules transform their POMs. -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>2.2</version>
+            </extension>
+        </extensions>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.6</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>issue-tracking</report>
+                            <report>project-team</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <profiles>
         <profile>
             <id>apache-release</id>
@@ -864,48 +935,4 @@
             </build>
         </profile>
     </profiles>
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.6</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>issue-tracking</report>
-                            <report>project-team</report>
-                            <report>scm</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-    <distributionManagement>
-        <site>
-            <id>website</id>
-            <url>scpexe://people.apache.org/home/${user.name}/public_html/axiom</url>
-        </site>
-    </distributionManagement>
-    <modules>
-        <module>buildutils</module>
-        <module>modules/axiom-buildutils</module>
-        <module>modules/axiom-api</module>
-        <module>modules/axiom-compat</module>
-        <module>modules/axiom-jaxb</module>
-        <module>modules/axiom-c14n</module>
-        <module>modules/axiom-all</module>
-        <module>modules/axiom-samples</module>
-        <module>axiom-spring-ws</module>
-        <module>systests</module>
-        <module>apicheck</module>
-        <module>devguide</module>
-        <module>userguide</module>
-        <module>apidocs</module>
-        <module>distribution</module>
-        <module>code-coverage</module>
-        <module>testing</module>
-        <module>aspects</module>
-        <module>implementations</module>
-    </modules>
 </project>
