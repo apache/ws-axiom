@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -259,9 +260,7 @@ public class StAXDialectDetector {
                     "  Version:       " + versionString);
         }
         
-        // For the moment, the dialect detection is quite simple, but in the future we will probably
-        // have to differentiate by version number
-        if (vendor != null && vendor.toLowerCase().indexOf("woodstox") != -1) {
+        if (title != null && title.toLowerCase(Locale.ENGLISH).contains("woodstox")) {
             Version version = new Version(versionString);
             switch (version.getComponent(0)) {
                 case 3:
@@ -269,6 +268,8 @@ public class StAXDialectDetector {
                 case 4:
                     return new Woodstox4Dialect(version.getComponent(1) == 0 && version.getComponent(2) < 11
                             || version.getComponent(1) == 1 && version.getComponent(2) < 3);
+                case 5:
+                    return new Woodstox4Dialect(false);
                 default:
                     return null;
             }

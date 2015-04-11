@@ -179,6 +179,11 @@
                                     <version>4.2.0</version>
                                 </artifact>
                                 <artifact>
+                                    <groupId>com.fasterxml.woodstox</groupId>
+                                    <artifactId>woodstox-core</artifactId>
+                                    <version>5.0.1</version>
+                                </artifact>
+                                <artifact>
                                     <groupId>com.sun.xml.stream</groupId>
                                     <artifactId>sjsxp</artifactId>
                                     <version>1.0.1</version>
