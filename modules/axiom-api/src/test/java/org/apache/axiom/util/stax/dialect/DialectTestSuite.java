@@ -18,9 +18,12 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
 
@@ -56,7 +59,7 @@ public class DialectTestSuite extends TestSuite {
             builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
         }
         
-        addParsersFromDirectory(builder, new File("parsers"));
+        addParsersFromFile(builder, new File(targetDir, "parsers.list"));
         addParsersFromDirectory(builder, new File(targetDir, "parsers"));
         
         // SJSXP and XLXP don't report whitespace in prolog
@@ -65,6 +68,18 @@ public class DialectTestSuite extends TestSuite {
         return builder.build();
     }
 
+    private static void addParsersFromFile(DialectTestSuiteBuilder builder, File file) throws Exception {
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+        try {
+            String line;
+            while ((line = in.readLine()) != null) {
+                addParserJar(builder, new File(line));
+            }
+        } finally {
+            in.close();
+        }
+    }
+    
     private static void addParsersFromDirectory(DialectTestSuiteBuilder builder, File dir) throws Exception {
         if (dir.exists()) {
             File[] parserJars = dir.listFiles(jarFilter);
