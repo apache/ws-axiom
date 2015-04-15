@@ -268,8 +268,8 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>veithen-github-mvn-repo</id>
-            <url>https://raw.github.com/veithen/mvn-repo/master/snapshots/</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
