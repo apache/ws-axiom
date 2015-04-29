@@ -51,7 +51,7 @@
             <item name="Articles" href="articles.html"/>
             <item name="Javadocs" href="/apidocs/index.html"/>
             <item name="FAQ" href="faq.html"/>
-            <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
+            <item name="View Source" href="http://svn.apache.org/viewvc/webservices/axiom/trunk/?root=Apache-SVN"/>
             <item name="Code Coverage" href="code-coverage/index.html"/>
         </menu>
         <menu name="Apache">
