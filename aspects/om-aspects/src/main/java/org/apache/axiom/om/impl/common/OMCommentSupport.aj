@@ -16,20 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.common;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-import org.apache.axiom.dom.DOMComment;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.IComment;
-
-public class CommentImpl extends LeafNode implements DOMComment, IComment {
-    public CommentImpl(String value, OMFactory factory) {
-        super(factory);
-        coreSetData(value);
+public aspect OMCommentSupport {
+    public final int IComment.getType() {
+        return OMNode.COMMENT_NODE;
     }
 
-    ChildNode createClone() {
-        return new CommentImpl(getData(), getOMFactory());
+    public String IComment.getValue() {
+        return coreGetData();
+    }
+
+    public void IComment.setValue(String text) {
+        coreSetData(text);
+    }
+    
+    public final void IComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        serializer.writeComment(coreGetData());
     }
 }

@@ -20,17 +20,12 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.common.IComment;
 
-public class OMCommentImpl extends OMLeafNode implements OMComment {
-    protected String value;
-
+public class OMCommentImpl extends OMLeafNode implements IComment {
     /**
      * Constructor OMCommentImpl.
      *
@@ -40,36 +35,10 @@ public class OMCommentImpl extends OMLeafNode implements OMComment {
     public OMCommentImpl(OMContainer parentNode, String contentText,
                          OMFactory factory, boolean fromBuilder) {
         super(parentNode, factory, fromBuilder);
-        this.value = contentText;
-    }
-
-    public final int getType() {
-        return OMNode.COMMENT_NODE;
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeComment(this.value);
-    }
-
-    /**
-     * Gets the value of this comment.
-     *
-     * @return Returns String.
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * Sets the value of this comment.
-     *
-     * @param text
-     */
-    public void setValue(String text) {
-        this.value = text;
+        coreSetData(contentText);
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return getOMFactory().createOMComment(targetParent, value);
+        return getOMFactory().createOMComment(targetParent, coreGetData());
     }
 }

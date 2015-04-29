@@ -16,20 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.common;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.axiom.core.CoreComment;
+import org.apache.axiom.om.OMComment;
 
-import org.apache.axiom.dom.DOMComment;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.IComment;
+public interface IComment extends OMComment, INode, CoreComment {
 
-public class CommentImpl extends LeafNode implements DOMComment, IComment {
-    public CommentImpl(String value, OMFactory factory) {
-        super(factory);
-        coreSetData(value);
-    }
-
-    ChildNode createClone() {
-        return new CommentImpl(getData(), getOMFactory());
-    }
 }

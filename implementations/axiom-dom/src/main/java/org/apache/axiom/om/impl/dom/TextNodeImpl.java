@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -46,7 +47,9 @@ import javax.xml.namespace.QName;
 
 import java.io.IOException;
 
-public abstract class TextNodeImpl extends CharacterImpl implements DOMTextNode, OMText {
+public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, OMText, OMNodeEx {
+    protected String textValue;
+    
     private String mimeType;
 
     private String contentID;
@@ -171,6 +174,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements DOMTextNode,
         OMNamespace textNS =
                 ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
+    }
+
+    /** Sets the text value of data. */
+    public void setData(String data) throws DOMException {
+        this.textValue = data;
     }
 
     /**
