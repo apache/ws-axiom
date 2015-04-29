@@ -35,8 +35,6 @@ Welcome to Apache Axiom
   Apache Axiom, Axiom, Apache, the Apache feather logo, and the Apache Axiom project logo are
   trademarks of {{{http://apache.org/}The Apache Software Foundation}}.
   
-%{ohloh|project=6368|widgets=basic_stats,factoids}
-  
 Key Features
 
     * Full XML Infoset compliant XML object model
