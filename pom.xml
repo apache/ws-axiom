@@ -21,11 +21,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache</groupId>
-        <artifactId>apache</artifactId>
-        <!-- Note: versions 10 to 12 declare a reportSet with reports
-                   that we don't need/want; don't use these versions -->
-        <version>13</version>
+        <groupId>org.apache.ws</groupId>
+        <artifactId>ws-parent</artifactId>
+        <version>1-SNAPSHOT</version>
     </parent>
 
     <groupId>org.apache.ws.commons.axiom</groupId>
