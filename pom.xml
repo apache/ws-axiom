@@ -546,7 +546,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.2</version>
+                    <version>3.4</version>
                     <dependencies>
                         <dependency>
                             <groupId>${project.groupId}</groupId>
