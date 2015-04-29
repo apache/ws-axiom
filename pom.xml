@@ -264,6 +264,18 @@
         <jacoco.version>0.6.3.201306030806</jacoco.version>
     </properties>
 
+    <repositories>
+        <!-- Need to declare this here so that Maven can download snapshot versions of the parent POM -->
+        <repository>
+            <id>apache.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>http://repository.apache.org/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
