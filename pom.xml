@@ -266,19 +266,6 @@
         <jacoco.version>0.6.3.201306030806</jacoco.version>
     </properties>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -656,7 +643,7 @@
                 <plugin>
                     <groupId>com.github.veithen.alta</groupId>
                     <artifactId>alta-maven-plugin</artifactId>
-                    <version>0.1-SNAPSHOT</version>
+                    <version>0.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
