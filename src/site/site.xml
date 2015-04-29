@@ -22,17 +22,7 @@
         <src>images/logo.png</src>
         <href>http://ws.apache.org/axiom/index.html</href>
     </bannerLeft>
-    <bannerRight>
-        <name>Apache Software Foundation</name>
-        <src>images/ASF-logo.png</src>
-        <href>http://apache.org/</href>
-    </bannerRight>
     <body>
-        <links>
-            <item name="Apache" href="http://www.apache.org/"/>
-            <item name="WebServices" href="http://ws.apache.org/"/>
-            <item name="Axiom" href="http://ws.apache.org/axiom/index.html"/>
-        </links>
         <menu name="About">
             <item name="Introduction" href="index.html"/>
             <item name="Mailing Lists" href="/mail-lists.html"/>
@@ -53,12 +43,6 @@
             <item name="FAQ" href="faq.html"/>
             <item name="View Source" href="http://svn.apache.org/viewvc/webservices/axiom/trunk/?root=Apache-SVN"/>
             <item name="Code Coverage" href="code-coverage/index.html"/>
-        </menu>
-        <menu name="Apache">
-            <item name="License" href="http://www.apache.org/licenses/"/>
-            <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html"/>
-            <item name="Thanks" href="http://www.apache.org/foundation/thanks.html"/>
-            <item name="Security" href="http://apache.org/security/"/>
         </menu>
     </body>
 </project>
