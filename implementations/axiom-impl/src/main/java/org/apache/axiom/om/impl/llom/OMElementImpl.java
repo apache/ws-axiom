@@ -134,23 +134,6 @@ public class OMElementImpl extends OMNodeImpl
         return ns;
     }
 
-    OMNamespace handleNamespace(String namespaceURI, String prefix) {
-        if (prefix.length() == 0 && namespaceURI.length() == 0) {
-            OMNamespace namespace = getDefaultNamespace();
-            if (namespace != null) {
-                declareDefaultNamespace("");
-            }
-            return null;
-        } else {
-            OMNamespace namespace = findNamespace(namespaceURI,
-                                                  prefix);
-            if (namespace == null) {
-                namespace = declareNamespace(namespaceURI, prefix.length() > 0 ? prefix : null);
-            }
-            return namespace;
-        }
-    }
-
     public void checkChild(OMNode child) {
     }
 

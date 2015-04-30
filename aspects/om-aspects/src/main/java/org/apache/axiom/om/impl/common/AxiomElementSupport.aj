@@ -266,4 +266,21 @@ public aspect AxiomElementSupport {
         // Else, add the new child at the end
         parent.addChild(newChild);
     }
+
+    public final OMNamespace AxiomElement.handleNamespace(String namespaceURI, String prefix) {
+        if (prefix.length() == 0 && namespaceURI.length() == 0) {
+            OMNamespace namespace = getDefaultNamespace();
+            if (namespace != null) {
+                declareDefaultNamespace("");
+            }
+            return null;
+        } else {
+            OMNamespace namespace = findNamespace(namespaceURI,
+                                                  prefix);
+            if (namespace == null) {
+                namespace = declareNamespace(namespaceURI, prefix.length() > 0 ? prefix : null);
+            }
+            return namespace;
+        }
+    }
 }

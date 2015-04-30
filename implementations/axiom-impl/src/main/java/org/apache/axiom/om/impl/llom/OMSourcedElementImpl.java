@@ -840,12 +840,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.notifyChildComplete();
     }
 
-
-    OMNamespace handleNamespace(String namespaceURI, String prefix) {
-        return super.handleNamespace(namespaceURI,
-                                     prefix);  
-    }
-
     /**
      * Provide access to the data source encapsulated in OMSourcedElement. 
      * This is usesful when we want to access the raw data in the data source.
