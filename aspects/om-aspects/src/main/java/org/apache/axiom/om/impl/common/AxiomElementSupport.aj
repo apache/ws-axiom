@@ -201,11 +201,7 @@ public aspect AxiomElementSupport {
     
     // Not final because overridden in Abdera
     public void AxiomElement.setText(String text) {
-        // Remove all existing children
-        OMNode child;
-        while ((child = getFirstOMChild()) != null) {
-            child.detach();
-        }
+        removeChildren();
         // Add a new text node
         if (text != null && text.length() > 0) {
             getOMFactory().createOMText(this, text);
@@ -213,11 +209,7 @@ public aspect AxiomElementSupport {
     }
 
     public final void AxiomElement.setText(QName qname) {
-        // Remove all existing children
-        OMNode child;
-        while ((child = getFirstOMChild()) != null) {
-            child.detach();
-        }
+        removeChildren();
         // Add a new text node
         if (qname != null) {
             getOMFactory().createOMText(this, qname);
