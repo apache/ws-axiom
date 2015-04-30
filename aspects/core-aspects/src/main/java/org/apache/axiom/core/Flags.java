@@ -35,4 +35,9 @@ final class Flags {
     static final int HAS_PARENT = 4;
     
     static final int DEFAULT_ATTR = 8;
+    
+    /**
+     * Used to store the information returned by {@link CoreCharacterData#coreIsIgnorable()}.
+     */
+    static final int IGNORABLE = 16;
 }

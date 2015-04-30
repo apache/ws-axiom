@@ -21,4 +21,15 @@ package org.apache.axiom.core;
 public interface CoreCharacterData extends CoreChildNode {
     String coreGetData();
     void coreSetData(String data);
+    
+    /**
+     * Check whether this text node contains element content whitespace (also called
+     * "ignorable whitespace").
+     * 
+     * @return <code>true</code> if the text node contains ignorable whitespace, <code>false</code>
+     *         otherwise
+     */
+    boolean coreIsIgnorable();
+    
+    void coreSetIgnorable(boolean ignorable);
 }

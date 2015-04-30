@@ -24,14 +24,10 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.w3c.dom.Node;
+import org.apache.axiom.om.impl.common.AxiomCharacterData;
 
-public class TextImpl extends TextNodeImpl implements DOMText {
-    private boolean isWhitespace;
-
+public class TextImpl extends TextNodeImpl implements DOMText, AxiomCharacterData {
     public TextImpl(char[] value, OMFactory factory) {
         super(value, factory);
     }
@@ -51,7 +47,7 @@ public class TextImpl extends TextNodeImpl implements DOMText {
 
     public TextImpl(String value, int nodeType, OMFactory factory) {
         super(value, factory);
-        isWhitespace = nodeType == SPACE_NODE;
+        coreSetIgnorable(nodeType == SPACE_NODE);
     }
 
     public TextImpl(OMContainer parent, QName text, int nodeType, OMFactory factory) {
@@ -77,18 +73,6 @@ public class TextImpl extends TextNodeImpl implements DOMText {
 
     public TextImpl(String text, String mimeType, boolean optimize, OMFactory factory) {
         super(text, mimeType, optimize, factory);
-    }
-
-    public int getType() throws OMException {
-        return isWhitespace ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
-    }
-
-    public String getNodeName() {
-        return "#text";
-    }
-
-    public short getNodeType() {
-        return Node.TEXT_NODE;
     }
 
     ChildNode createClone() {

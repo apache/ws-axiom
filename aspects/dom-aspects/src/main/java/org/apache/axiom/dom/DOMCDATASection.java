@@ -16,19 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.dom;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.axiom.core.CoreCDATASection;
+import org.w3c.dom.CDATASection;
 
-import org.apache.axiom.dom.DOMCDATASection;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomCDATASection;
+public interface DOMCDATASection extends CoreCDATASection, CDATASection, DOMTextNode{
 
-public class CDATASectionImpl extends TextNodeImpl implements DOMCDATASection, AxiomCDATASection {
-    public CDATASectionImpl(String text, OMFactory factory) {
-        super(text, factory);
-    }
-
-    ChildNode createClone() {
-        return new CDATASectionImpl(textValue, getOMFactory());
-    }
 }

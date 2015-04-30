@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.dom.impl;
 
+import org.apache.axiom.dom.DOMText;
+
 // TODO: should be final
-abstract class TextImpl extends TextNodeImpl {
+abstract class TextImpl extends TextNodeImpl implements DOMText {
 
 }

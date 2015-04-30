@@ -16,19 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.core;
 
-package org.apache.axiom.om.impl.dom;
-
-import org.apache.axiom.dom.DOMCDATASection;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomCDATASection;
-
-public class CDATASectionImpl extends TextNodeImpl implements DOMCDATASection, AxiomCDATASection {
-    public CDATASectionImpl(String text, OMFactory factory) {
-        super(text, factory);
+public aspect CoreCharacterDataSupport {
+    public final boolean CoreCharacterData.coreIsIgnorable() {
+        return getFlag(Flags.IGNORABLE);
     }
-
-    ChildNode createClone() {
-        return new CDATASectionImpl(textValue, getOMFactory());
+    
+    public final void CoreCharacterData.coreSetIgnorable(boolean ignorable) {
+        setFlag(Flags.IGNORABLE, ignorable);
     }
 }
