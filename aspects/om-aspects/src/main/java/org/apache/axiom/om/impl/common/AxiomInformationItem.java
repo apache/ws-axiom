@@ -18,25 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMInformationItem;
 
-public aspect OMCommentSupport {
-    public final int IComment.getType() {
-        return OMNode.COMMENT_NODE;
-    }
+public interface AxiomInformationItem extends OMInformationItem, CoreNode {
 
-    public String IComment.getValue() {
-        return coreGetData();
-    }
-
-    public void IComment.setValue(String text) {
-        coreSetData(text);
-    }
-    
-    public final void IComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeComment(coreGetData());
-    }
 }

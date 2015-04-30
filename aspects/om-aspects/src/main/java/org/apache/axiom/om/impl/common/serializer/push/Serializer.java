@@ -42,8 +42,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.INode;
+import org.apache.axiom.om.impl.common.AxiomContainer;
+import org.apache.axiom.om.impl.common.AxiomChildNode;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
@@ -258,8 +258,8 @@ public abstract class Serializer {
         }
     }
     
-    public final void serializeChildren(IContainer container, OMOutputFormat format, boolean cache) throws OutputException {
-        if (container.getState() == IContainer.DISCARDED) {
+    public final void serializeChildren(AxiomContainer container, OMOutputFormat format, boolean cache) throws OutputException {
+        if (container.getState() == AxiomContainer.DISCARDED) {
             StAXBuilder builder = (StAXBuilder)container.getBuilder();
             if (builder != null) {
                 builder.debugDiscarded(container);
@@ -267,17 +267,17 @@ public abstract class Serializer {
             throw new NodeUnavailableException();
         }
         if (cache) {
-            INode child = (INode)container.getFirstOMChild();
+            AxiomChildNode child = (AxiomChildNode)container.getFirstOMChild();
             while (child != null) {
                 child.internalSerialize(this, format, true);
-                child = (INode)child.getNextOMSibling();
+                child = (AxiomChildNode)child.getNextOMSibling();
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
-            INode child = (INode)container.getFirstOMChildIfAvailable();
+            AxiomChildNode child = (AxiomChildNode)container.getFirstOMChildIfAvailable();
             while (child != null) {
                 child.internalSerialize(this, format, cache);
-                child = (INode)child.getNextOMSiblingIfAvailable();
+                child = (AxiomChildNode)child.getNextOMSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)
             // and serialize the nodes that have not been built yet by copying the

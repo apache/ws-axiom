@@ -55,7 +55,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -546,7 +546,7 @@ final class Navigator extends PullSerializerState
             node = rootNode;
             return true;
         } else if (node instanceof OMContainer && !visited) {
-            IContainer current = (IContainer)node;
+            AxiomContainer current = (AxiomContainer)node;
             OMNode firstChild = cache ? current.getFirstOMChild() : current.getFirstOMChildIfAvailable();
             if (firstChild != null) {
                 node = firstChild;

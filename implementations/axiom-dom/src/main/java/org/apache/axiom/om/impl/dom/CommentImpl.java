@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMComment;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.IComment;
+import org.apache.axiom.om.impl.common.AxiomComment;
 
-public class CommentImpl extends LeafNode implements DOMComment, IComment {
+public class CommentImpl extends LeafNode implements DOMComment, AxiomComment {
     public CommentImpl(String value, OMFactory factory) {
         super(factory);
         coreSetData(value);

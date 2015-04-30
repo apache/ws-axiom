@@ -18,8 +18,21 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 
-public interface IText extends OMText, INode {
-
+public aspect AxiomSerializableSupport {
+    public void AxiomSerializable.close(boolean build) {
+        OMXMLParserWrapper builder = getBuilder();
+        if (build) {
+            this.build();
+        }
+        setComplete(true);
+        
+        // If this is a StAXBuilder, close it.
+        if (builder instanceof StAXBuilder &&
+            !((StAXBuilder) builder).isClosed()) {
+            ((StAXBuilder) builder).close();
+        }
+    }
 }

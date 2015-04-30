@@ -31,7 +31,7 @@ import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 public class OMDocumentHelper {
     private OMDocumentHelper() {}
     
-    public static void internalSerialize(IDocument document, Serializer serializer,
+    public static void internalSerialize(AxiomDocument document, Serializer serializer,
             OMOutputFormat format, boolean cache, boolean includeXMLDeclaration) throws OutputException {
         
         if (includeXMLDeclaration) {

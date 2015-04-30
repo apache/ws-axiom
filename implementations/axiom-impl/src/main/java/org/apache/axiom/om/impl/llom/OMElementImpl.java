@@ -30,8 +30,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.IElement;
+import org.apache.axiom.om.impl.common.AxiomContainer;
+import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -52,7 +52,7 @@ import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
-        implements IElement, OMConstants {
+        implements AxiomElement, OMConstants {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
@@ -75,7 +75,7 @@ public class OMElementImpl extends OMNodeImpl
         coreSetBuilder(builder);
         coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parent != null) {
-            ((IContainer)parent).addChild(this, builder != null);
+            ((AxiomContainer)parent).addChild(this, builder != null);
         }
         internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
     }
@@ -483,7 +483,7 @@ public class OMElementImpl extends OMNodeImpl
         OMContainer parent = getParent();
         if (parent != null) {
             if (!complete) {
-                ((IContainer)parent).setComplete(false);
+                ((AxiomContainer)parent).setComplete(false);
             } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
             } else if (parent instanceof OMDocumentImpl) {

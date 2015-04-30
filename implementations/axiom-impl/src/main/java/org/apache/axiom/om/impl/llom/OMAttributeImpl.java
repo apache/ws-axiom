@@ -25,10 +25,10 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.IAttribute;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
 
 /** Class OMAttributeImpl */
-public class OMAttributeImpl extends OMInformationItemImpl implements IAttribute {
+public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttribute {
     private String value;
 
     private String type;

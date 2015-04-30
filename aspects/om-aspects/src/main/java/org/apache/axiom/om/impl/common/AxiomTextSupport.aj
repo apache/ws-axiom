@@ -18,10 +18,30 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.DeferringParentNode;
-import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMText;
 
-public interface IDocument extends OMDocument, IContainer, CoreDocument, DeferringParentNode {
+public aspect AxiomTextSupport {
+    declare parents: (InformationItem+ && OMText+) implements AxiomText;
 
+    private boolean AxiomText.optimize;
+    private boolean AxiomText.binary;
+
+    public final boolean AxiomText.isBinary() {
+        return binary;
+    }
+
+    public final void AxiomText.setBinary(boolean binary) {
+        this.binary = binary;
+    }
+
+    public final boolean AxiomText.isOptimized() {
+        return optimize;
+    }
+
+    public final void AxiomText.setOptimize(boolean optimize) {
+        this.optimize = optimize;
+        if (optimize) {
+            binary = true;
+        }
+    }
 }

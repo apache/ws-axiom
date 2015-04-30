@@ -23,9 +23,9 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.IComment;
+import org.apache.axiom.om.impl.common.AxiomComment;
 
-public class OMCommentImpl extends OMLeafNode implements IComment {
+public class OMCommentImpl extends OMLeafNode implements AxiomComment {
     /**
      * Constructor OMCommentImpl.
      *

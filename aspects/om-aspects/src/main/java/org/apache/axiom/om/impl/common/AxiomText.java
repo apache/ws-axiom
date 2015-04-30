@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMText;
 
-public interface IAttribute extends OMAttribute, CoreAttribute, INamedInformationItem {
+public interface AxiomText extends OMText, AxiomChildNode {
 
 }

@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.impl.common.INamedInformationItem;
+import org.apache.axiom.om.impl.common.AxiomNamedInformationItem;
 
-interface NamedNode extends INamedInformationItem {
+interface NamedNode extends AxiomNamedInformationItem {
 
 }

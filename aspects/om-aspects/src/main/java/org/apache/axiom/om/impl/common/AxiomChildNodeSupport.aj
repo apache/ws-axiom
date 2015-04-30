@@ -23,43 +23,43 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
-public aspect OMNodeSupport {
-    declare parents: (InformationItem+ && OMNode+) implements INode;
+public aspect AxiomChildNodeSupport {
+    declare parents: (InformationItem+ && OMNode+) implements AxiomChildNode;
 
-    public final OMContainer INode.getParent() {
+    public final OMContainer AxiomChildNode.getParent() {
         CoreParentNode parent = coreGetParent();
         return parent instanceof OMContainer ? (OMContainer)parent : null;
     }
     
-    public OMNode INode.getNextOMSiblingIfAvailable() {
+    public OMNode AxiomChildNode.getNextOMSiblingIfAvailable() {
         return (OMNode)coreGetNextSiblingIfAvailable();
     }
 
-    public OMNode INode.getNextOMSibling() {
+    public OMNode AxiomChildNode.getNextOMSibling() {
         return (OMNode)coreGetNextSibling();
     }
 
-    public final OMNode INode.getPreviousOMSibling() {
+    public final OMNode AxiomChildNode.getPreviousOMSibling() {
         return (OMNode)coreGetPreviousSibling();
     }
 
-    public final void INode.insertSiblingAfter(OMNode sibling) throws OMException {
-        IContainer parent = (IContainer)getParent();
+    public final void AxiomChildNode.insertSiblingAfter(OMNode sibling) throws OMException {
+        AxiomContainer parent = (AxiomContainer)getParent();
         if (parent == null) {
             throw new OMException("Parent can not be null");
         }
         coreInsertSiblingAfter(parent.prepareNewChild(sibling));
     }
 
-    public final void INode.insertSiblingBefore(OMNode sibling) throws OMException {
-        IContainer parent = (IContainer)getParent();
+    public final void AxiomChildNode.insertSiblingBefore(OMNode sibling) throws OMException {
+        AxiomContainer parent = (AxiomContainer)getParent();
         if (parent == null) {
             throw new OMException("Parent can not be null");
         }
         coreInsertSiblingBefore(parent.prepareNewChild(sibling));
     }
     
-    public OMNode INode.detach() {
+    public OMNode AxiomChildNode.detach() {
         if (!coreHasParent()) {
             throw new OMException(
                     "Nodes that don't have a parent can not be detached");
@@ -68,7 +68,7 @@ public aspect OMNodeSupport {
         return this;
     }
     
-    public void INode.buildWithAttachments() {
+    public void AxiomChildNode.buildWithAttachments() {
         if (!isComplete()) {
             build();
         }

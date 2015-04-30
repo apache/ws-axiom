@@ -21,16 +21,16 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
-public aspect OMAttributeSupport {
-    public final OMElement IAttribute.getOwner() {
+public aspect AxiomAttributeSupport {
+    public final OMElement AxiomAttribute.getOwner() {
         return (OMElement)coreGetOwnerElement();
     }
 
-    public final void IAttribute.setNamespace(OMNamespace namespace, boolean decl) {
-        internalSetNamespace(handleNamespace((IElement)getOwner(), namespace, true, decl));
+    public final void AxiomAttribute.setNamespace(OMNamespace namespace, boolean decl) {
+        internalSetNamespace(handleNamespace((AxiomElement)getOwner(), namespace, true, decl));
     }
     
-    public final void IAttribute.setOMNamespace(OMNamespace omNamespace) {
+    public final void AxiomAttribute.setOMNamespace(OMNamespace omNamespace) {
         internalSetNamespace(omNamespace);
     }
 }

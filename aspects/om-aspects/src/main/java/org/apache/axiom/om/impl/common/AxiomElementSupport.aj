@@ -47,22 +47,22 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  * Utility class with default implementations for some of the methods defined by the
  * {@link OMElement} interface.
  */
-public aspect OMElementSupport {
-    declare parents: (InformationItem+ && OMElement+) implements IElement;
+public aspect AxiomElementSupport {
+    declare parents: (InformationItem+ && OMElement+) implements AxiomElement;
     
-    public final int IElement.getType() {
+    public final int AxiomElement.getType() {
         return OMNode.ELEMENT_NODE;
     }
     
-    public void IElement.setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
+    public void AxiomElement.setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         internalSetNamespace(namespace);
     }
 
-    public void IElement.setNamespace(OMNamespace namespace, boolean decl) {
+    public void AxiomElement.setNamespace(OMNamespace namespace, boolean decl) {
         internalSetNamespace(handleNamespace(this, namespace, false, decl));
     }
 
-    public final OMElement IElement.getFirstElement() {
+    public final OMElement AxiomElement.getFirstElement() {
         OMNode node = getFirstOMChild();
         while (node != null) {
             if (node.getType() == OMNode.ELEMENT_NODE) {
@@ -74,15 +74,15 @@ public aspect OMElementSupport {
         return null;
     }
 
-    public final Iterator IElement.getChildElements() {
+    public final Iterator AxiomElement.getChildElements() {
         return new OMChildElementIterator(getFirstElement());
     }
 
-    public final Iterator IElement.getNamespacesInScope() {
+    public final Iterator AxiomElement.getNamespacesInScope() {
         return new NamespaceIterator(this);
     }
 
-    public NamespaceContext IElement.getNamespaceContext(boolean detached) {
+    public NamespaceContext AxiomElement.getNamespaceContext(boolean detached) {
         if (detached) {
             Map namespaces = new HashMap();
             for (Iterator it = getNamespacesInScope(); it.hasNext(); ) {
@@ -95,7 +95,7 @@ public aspect OMElementSupport {
         }
     }
     
-    public final QName IElement.resolveQName(String qname) {
+    public final QName AxiomElement.resolveQName(String qname) {
         int idx = qname.indexOf(':');
         if (idx == -1) {
             OMNamespace ns = getDefaultNamespace();
@@ -107,7 +107,7 @@ public aspect OMElementSupport {
         }
     }
 
-    public String IElement.getText() {
+    public String AxiomElement.getText() {
         String childText = null;
         StringBuffer buffer = null;
         OMNode child = getFirstOMChild();
@@ -147,12 +147,12 @@ public aspect OMElementSupport {
     }
     
     // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2
-    public QName IElement.getTextAsQName() {
+    public QName AxiomElement.getTextAsQName() {
         String childText = getText().trim();
         return childText.length() == 0 ? null : resolveQName(childText);
     }
 
-    public Reader IElement.getTextAsStream(boolean cache) {
+    public Reader AxiomElement.getTextAsStream(boolean cache) {
         // If the element is not an OMSourcedElement and has not more than one child, then the most
         // efficient way to get the Reader is to build a StringReader
         if (!(this instanceof OMSourcedElement) && (!cache || isComplete())) {
@@ -175,7 +175,7 @@ public aspect OMElementSupport {
         }
     }
     
-    public void IElement.writeTextTo(Writer out, boolean cache) throws IOException {
+    public void AxiomElement.writeTextTo(Writer out, boolean cache) throws IOException {
         try {
             XMLStreamReader reader = getXMLStreamReader(cache);
             int depth = 0;
@@ -200,7 +200,7 @@ public aspect OMElementSupport {
     }
     
     // Not final because overridden in Abdera
-    public void IElement.setText(String text) {
+    public void AxiomElement.setText(String text) {
         // Remove all existing children
         OMNode child;
         while ((child = getFirstOMChild()) != null) {
@@ -212,7 +212,7 @@ public aspect OMElementSupport {
         }
     }
 
-    public final void IElement.setText(QName qname) {
+    public final void AxiomElement.setText(QName qname) {
         // Remove all existing children
         OMNode child;
         while ((child = getFirstOMChild()) != null) {
@@ -224,14 +224,14 @@ public aspect OMElementSupport {
         }
     }
 
-    public void IElement.discard() {
+    public void AxiomElement.discard() {
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
             ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
         }
         detach();
     }
     
-    public void IElement.detachAndDiscardParent() {
+    public void AxiomElement.detachAndDiscardParent() {
         internalUnsetParent(null);
         coreSetPreviousSibling(null);
         coreSetNextSibling(null);

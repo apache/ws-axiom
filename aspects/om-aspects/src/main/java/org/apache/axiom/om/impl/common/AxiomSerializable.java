@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-public interface ISerializable extends OMSerializable, IInformationItem {
+public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {
     OMXMLParserWrapper getBuilder();
     
     void setComplete(boolean state);

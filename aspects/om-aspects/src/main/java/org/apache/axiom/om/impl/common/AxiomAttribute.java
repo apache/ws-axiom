@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.om.OMAttribute;
 
-public aspect OMDocumentSupport {
-    public final OMElement IDocument.getOMDocumentElement() {
-        return (OMElement)coreGetDocumentElement();
-    }
+public interface AxiomAttribute extends OMAttribute, CoreAttribute, AxiomNamedInformationItem {
+
 }

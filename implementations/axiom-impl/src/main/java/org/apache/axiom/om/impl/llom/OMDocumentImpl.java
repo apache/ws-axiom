@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.IDocument;
+import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -36,7 +36,7 @@ import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
-public class OMDocumentImpl extends OMSerializableImpl implements IDocument {
+public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument {
     /** Field charSetEncoding Default : UTF-8 */
     protected String charSetEncoding = "UTF-8";
 

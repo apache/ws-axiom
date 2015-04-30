@@ -45,34 +45,34 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
-public aspect OMContainerSupport {
-    declare parents: (InformationItem+ && OMContainer+) implements IContainer;
+public aspect AxiomContainerSupport {
+    declare parents: (InformationItem+ && OMContainer+) implements AxiomContainer;
     
-    private static final Log log = LogFactory.getLog(OMContainerSupport.class);
+    private static final Log log = LogFactory.getLog(AxiomContainerSupport.class);
     
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     
-    public boolean IContainer.isComplete() {
+    public boolean AxiomContainer.isComplete() {
         return getState() == COMPLETE;
     }
 
-    public final void IContainer.discarded() {
+    public final void AxiomContainer.discarded() {
         coreSetState(DISCARDED);
     }
 
-    public XMLStreamReader IContainer.getXMLStreamReader() {
+    public XMLStreamReader AxiomContainer.getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
     
-    public XMLStreamReader IContainer.getXMLStreamReaderWithoutCaching() {
+    public XMLStreamReader AxiomContainer.getXMLStreamReaderWithoutCaching() {
         return getXMLStreamReader(false);
     }
 
-    public XMLStreamReader IContainer.getXMLStreamReader(boolean cache) {
+    public XMLStreamReader AxiomContainer.getXMLStreamReader(boolean cache) {
         return getXMLStreamReader(cache, defaultReaderConfiguration);
     }
     
-    public XMLStreamReader IContainer.getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public XMLStreamReader AxiomContainer.getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = getBuilder();
         if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
@@ -96,29 +96,29 @@ public aspect OMContainerSupport {
         return reader;
     }
     
-    public void IContainer.addChild(OMNode omNode) {
+    public void AxiomContainer.addChild(OMNode omNode) {
         addChild(omNode, false);
     }
 
-    public final INode IContainer.prepareNewChild(OMNode omNode) {
-        INode child;
+    public final AxiomChildNode AxiomContainer.prepareNewChild(OMNode omNode) {
+        AxiomChildNode child;
         // Careful here: if the child was created by another Axiom implementation, it doesn't
-        // necessarily implement INode
+        // necessarily implement AxiomChildNode
         if (omNode.getOMFactory().getMetaFactory().equals(getOMFactory().getMetaFactory())) {
-            child = (INode)omNode;
+            child = (AxiomChildNode)omNode;
         } else {
-            child = (INode)((OMFactoryEx)getOMFactory()).importNode(omNode);
+            child = (AxiomChildNode)((OMFactoryEx)getOMFactory()).importNode(omNode);
         }
         checkChild(omNode);
         return child;
     }
 
-    public void IContainer.addChild(OMNode omNode, boolean fromBuilder) {
-        INode child;
+    public void AxiomContainer.addChild(OMNode omNode, boolean fromBuilder) {
+        AxiomChildNode child;
         if (fromBuilder) {
             // If the new child was provided by the builder, we know that it was created by
             // the same factory
-            child = (INode)omNode;
+            child = (AxiomChildNode)omNode;
         } else {
             child = prepareNewChild(omNode);
         }
@@ -138,9 +138,9 @@ public aspect OMContainerSupport {
         }
     }
     
-    public void IContainer.defaultBuild() {
+    public void AxiomContainer.defaultBuild() {
         OMXMLParserWrapper builder = getBuilder();
-        if (getState() == IContainer.DISCARDED) {
+        if (getState() == AxiomContainer.DISCARDED) {
             if (builder != null) {
                 ((StAXBuilder)builder).debugDiscarded(this);
             }
@@ -159,15 +159,15 @@ public aspect OMContainerSupport {
         }
     }
     
-    public OMNode IContainer.getFirstOMChildIfAvailable() {
+    public OMNode AxiomContainer.getFirstOMChildIfAvailable() {
         return (OMNode)coreGetFirstChildIfAvailable();
     }
     
-    public OMNode IContainer.getFirstOMChild() {
+    public OMNode AxiomContainer.getFirstOMChild() {
         return (OMNode)coreGetFirstChild();
     }
     
-    public void IContainer.removeChildren() {
+    public void AxiomContainer.removeChildren() {
         coreRemoveChildren(null);
     }
     
@@ -213,7 +213,7 @@ public aspect OMContainerSupport {
         return new OMDescendantsIterator(this, includeSelf);
     }
 
-    public OMElement IContainer.getFirstChildWithName(QName elementQName) throws OMException {
+    public OMElement AxiomContainer.getFirstChildWithName(QName elementQName) throws OMException {
         OMChildrenQNameIterator omChildrenQNameIterator =
                 new OMChildrenQNameIterator(getFirstOMChild(),
                                             elementQName);
@@ -226,11 +226,11 @@ public aspect OMContainerSupport {
                 (OMElement) omNode : null;
     }
 
-    public final SAXSource IContainer.getSAXSource(boolean cache) {
+    public final SAXSource AxiomContainer.getSAXSource(boolean cache) {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
-    public SAXResult IContainer.getSAXResult() {
+    public SAXResult AxiomContainer.getSAXResult() {
         SAXResultContentHandler handler = new SAXResultContentHandler(this);
         SAXResult result = new SAXResult();
         result.setHandler(handler);

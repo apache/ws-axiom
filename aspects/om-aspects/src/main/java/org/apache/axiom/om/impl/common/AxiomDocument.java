@@ -18,9 +18,10 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreComment;
-import org.apache.axiom.om.OMComment;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.DeferringParentNode;
+import org.apache.axiom.om.OMDocument;
 
-public interface IComment extends OMComment, INode, CoreComment {
+public interface AxiomDocument extends OMDocument, AxiomContainer, CoreDocument, DeferringParentNode {
 
 }

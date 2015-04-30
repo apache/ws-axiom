@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.w3c.dom.Node;
 
-public interface DOMContainer extends Node, IContainer {
+public interface DOMContainer extends Node, AxiomContainer {
 
 }

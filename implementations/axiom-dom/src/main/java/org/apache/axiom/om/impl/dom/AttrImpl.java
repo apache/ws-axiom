@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.OMAttributeEx;
-import org.apache.axiom.om.impl.common.IAttribute;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
@@ -42,7 +42,7 @@ import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, IAttribute, Attr, NamedNode, NonDeferringParentNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute, Attr, NamedNode, NonDeferringParentNode {
     private String type;
 
     /** Flag used to mark an attribute as per the DOM Level 3 specification */

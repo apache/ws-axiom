@@ -21,6 +21,6 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 
-public interface INode extends OMNodeEx, CoreChildNode, ISerializable {
+public interface AxiomChildNode extends OMNodeEx, CoreChildNode, AxiomSerializable {
 
 }

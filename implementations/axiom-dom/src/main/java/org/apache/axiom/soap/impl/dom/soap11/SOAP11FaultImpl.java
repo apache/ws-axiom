@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMElementSupport;
+import org.apache.axiom.om.impl.common.AxiomElementSupport;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -74,7 +74,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Code. " +
                             "But received some other implementation");
         }
-        OMElementSupport.insertChild(this, sequence, 0, soapFaultCode);
+        AxiomElementSupport.insertChild(this, sequence, 0, soapFaultCode);
     }
 
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
@@ -83,7 +83,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Reason. " +
                             "But received some other implementation");
         }
-        OMElementSupport.insertChild(this, sequence, 1, reason);
+        AxiomElementSupport.insertChild(this, sequence, 1, reason);
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
@@ -96,7 +96,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Role. " +
                             "But received some other implementation");
         }
-        OMElementSupport.insertChild(this, sequence, 2, role);
+        AxiomElementSupport.insertChild(this, sequence, 2, role);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -113,7 +113,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                     "Expecting SOAP 1.1 implementation of SOAP Fault Detail. " +
                             "But received some other implementation");
         }
-        OMElementSupport.insertChild(this, sequence, 3, detail);
+        AxiomElementSupport.insertChild(this, sequence, 3, detail);
     }
 
     public SOAPFaultRole getRole() {

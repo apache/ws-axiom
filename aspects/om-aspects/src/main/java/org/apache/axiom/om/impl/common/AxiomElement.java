@@ -18,30 +18,11 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMText;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.DeferringParentNode;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.OMElementEx;
 
-public aspect OMTextSupport {
-    declare parents: (InformationItem+ && OMText+) implements IText;
-
-    private boolean IText.optimize;
-    private boolean IText.binary;
-
-    public final boolean IText.isBinary() {
-        return binary;
-    }
-
-    public final void IText.setBinary(boolean binary) {
-        this.binary = binary;
-    }
-
-    public final boolean IText.isOptimized() {
-        return optimize;
-    }
-
-    public final void IText.setOptimize(boolean optimize) {
-        this.optimize = optimize;
-        if (optimize) {
-            binary = true;
-        }
-    }
+public interface AxiomElement extends OMElementEx, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreElement, DeferringParentNode {
+    void addNamespaceDeclaration(OMNamespace ns);
 }

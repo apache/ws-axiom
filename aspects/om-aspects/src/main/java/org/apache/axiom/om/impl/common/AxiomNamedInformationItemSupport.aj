@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
-public aspect OMNamedInformationItemSupport {
+public aspect AxiomNamedInformationItemSupport {
     /**
      * The namespace of the information item. Possible values:
      * <ul>
@@ -38,34 +38,34 @@ public aspect OMNamedInformationItemSupport {
      * </ul>
      * </ul>
      */
-    private OMNamespace INamedInformationItem.namespace;
+    private OMNamespace AxiomNamedInformationItem.namespace;
     
-    private String INamedInformationItem.localName;
-    private QName INamedInformationItem.qName;
+    private String AxiomNamedInformationItem.localName;
+    private QName AxiomNamedInformationItem.qName;
     
     /**
      * Set the namespace of the node without adding a corresponding namespace declaration.
      * 
      * @param namespace
      */
-    public final void INamedInformationItem.internalSetNamespace(OMNamespace namespace) {
+    public final void AxiomNamedInformationItem.internalSetNamespace(OMNamespace namespace) {
         this.namespace = namespace;
         qName = null;
     }
 
-    public final String INamedInformationItem.internalGetLocalName() {
+    public final String AxiomNamedInformationItem.internalGetLocalName() {
         return localName;
     }
 
-    public final void INamedInformationItem.internalSetLocalName(String localName) {
+    public final void AxiomNamedInformationItem.internalSetLocalName(String localName) {
         this.localName = localName;
     }
 
-    public OMNamespace INamedInformationItem.getNamespace() {
+    public OMNamespace AxiomNamedInformationItem.getNamespace() {
         return namespace;
     }
 
-    public final String INamedInformationItem.getPrefix() {
+    public final String AxiomNamedInformationItem.getPrefix() {
         OMNamespace namespace = getNamespace();
         if (namespace == null) {
             return null;
@@ -75,16 +75,16 @@ public aspect OMNamedInformationItemSupport {
         }
     }
     
-    public String INamedInformationItem.getLocalName() {
+    public String AxiomNamedInformationItem.getLocalName() {
         return localName;
     }
 
-    public void INamedInformationItem.setLocalName(String localName) {
+    public void AxiomNamedInformationItem.setLocalName(String localName) {
         this.localName = localName;
         qName = null;
     }
 
-    public QName INamedInformationItem.getQName() {
+    public QName AxiomNamedInformationItem.getQName() {
         if (qName != null) {
             return qName;
         }
@@ -97,7 +97,7 @@ public aspect OMNamedInformationItemSupport {
         return qName;
     }
     
-    public boolean INamedInformationItem.hasName(QName name) {
+    public boolean AxiomNamedInformationItem.hasName(QName name) {
         if (name.getLocalPart().equals(getLocalName())) {
             OMNamespace ns = getNamespace();
             return ns == null && name.getNamespaceURI().length() == 0
@@ -107,7 +107,7 @@ public aspect OMNamedInformationItemSupport {
         }
     }
 
-    public final OMNamespace INamedInformationItem.handleNamespace(IElement context, OMNamespace ns, boolean attr, boolean decl) {
+    public final OMNamespace AxiomNamedInformationItem.handleNamespace(AxiomElement context, OMNamespace ns, boolean attr, boolean decl) {
         String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
         String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0) {

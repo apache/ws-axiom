@@ -21,17 +21,17 @@ package org.apache.axiom.om.impl.common.serializer.push.sax;
 import java.io.IOException;
 
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XMLReaderImpl extends AbstractXMLReader {
-    private final IContainer root;
+    private final AxiomContainer root;
     private final boolean cache;
 
-    public XMLReaderImpl(IContainer root, boolean cache) {
+    public XMLReaderImpl(AxiomContainer root, boolean cache) {
         this.root = root;
         this.cache = cache;
     }

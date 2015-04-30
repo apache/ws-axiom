@@ -33,8 +33,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.IContainer;
-import org.apache.axiom.om.impl.common.IElement;
+import org.apache.axiom.om.impl.common.AxiomContainer;
+import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements DOMElement, IElement, NamedNode,
+public class ElementImpl extends ParentNode implements DOMElement, AxiomElement, NamedNode,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
@@ -74,8 +74,8 @@ public class ElementImpl extends ParentNode implements DOMElement, IElement, Nam
         coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parentNode != null) {
             // TODO: dirty hack to get the correct semantics (reordering) if the parent is a SOAP envelope
-            if (parentNode instanceof IContainer) {
-                ((IContainer)parentNode).addChild(this, builder != null);
+            if (parentNode instanceof AxiomContainer) {
+                ((AxiomContainer)parentNode).addChild(this, builder != null);
             } else {
                 parentNode.coreAppendChild(this, builder != null);
             }
