@@ -19,71 +19,12 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.dom.DOMText;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomCharacterData;
 
 public class TextImpl extends TextNodeImpl implements DOMText, AxiomCharacterData {
-    public TextImpl(char[] value, OMFactory factory) {
-        super(value, factory);
-    }
-
-    public TextImpl(Object dataHandler, boolean optimize, OMFactory factory) {
-        super(dataHandler, optimize, factory);
-    }
-
-    public TextImpl(String contentID,
-            DataHandlerProvider dataHandlerProvider, boolean optimize, OMFactory factory) {
-        super(contentID, dataHandlerProvider, optimize, factory);
-    }
-
     public TextImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public TextImpl(String value, int nodeType, OMFactory factory) {
-        super(value, factory);
-        coreSetIgnorable(nodeType == SPACE_NODE);
-    }
-
-    public TextImpl(OMContainer parent, QName text, int nodeType, OMFactory factory) {
-        super(parent, text, nodeType, factory);
-    }
-
-    public TextImpl(OMContainer parent, QName text, OMFactory factory) {
-        super(parent, text, factory);
-    }
-
-    public TextImpl(TextNodeImpl source, OMFactory factory) {
-        super(source, factory);
-    }
-
-    public TextImpl(String text, OMFactory factory) {
-        super(text, factory);
-    }
-
-    public TextImpl(String text, String mimeType, boolean optimize, boolean isBinary,
-            OMFactory factory) {
-        super(text, mimeType, optimize, isBinary, factory);
-    }
-
-    public TextImpl(String text, String mimeType, boolean optimize, OMFactory factory) {
-        super(text, mimeType, optimize, factory);
-    }
-
-    ChildNode createClone() {
-        return new TextImpl(this, getOMFactory());
-    }
-
-    public String coreGetData() {
-        return textValue;
-    }
-
-    public void coreSetData(String data) {
-        this.textValue = data;
     }
 }

@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
@@ -76,7 +77,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
             }
         }
         internalSetLocalName(localName);
-        coreAppendChild(new TextImpl(value, factory), false);
+        coreAppendChild((AxiomText)factory.createOMText(value), false);
         this.type = OMConstants.XMLATTRTYPE_CDATA;
         internalSetNamespace(ns);
     }
@@ -85,7 +86,7 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
                     OMFactory factory) {
         this(ownerDocument, factory);
         internalSetLocalName(name);
-        coreAppendChild(new TextImpl(value, factory), false);
+        coreAppendChild((AxiomText)factory.createOMText(value), false);
         this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
 

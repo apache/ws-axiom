@@ -21,5 +21,5 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMText;
 
 public interface AxiomText extends OMText, AxiomChildNode {
-
+    AxiomText createInstanceOfSameType();
 }

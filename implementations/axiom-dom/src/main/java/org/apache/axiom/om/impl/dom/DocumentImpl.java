@@ -40,7 +40,6 @@ import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.w3c.dom.Attr;
-import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -116,12 +115,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
             namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
         return new AttrImpl(this, localName, namespace, getOMFactory());
-    }
-
-    public CDATASection createCDATASection(String data) throws DOMException {
-        CDATASectionImpl cdataSection = new CDATASectionImpl(data, getOMFactory());
-        cdataSection.coreSetOwnerDocument(this);
-        return cdataSection;
     }
 
     public Comment createComment(String data) {

@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.dom;
 
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMConfiguration;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -83,5 +85,12 @@ public aspect DOMDocumentSupport {
         text.coreSetOwnerDocument(this);
         text.coreSetData(data);
         return text;
+    }
+
+    public final CDATASection DOMDocument.createCDATASection(String data) throws DOMException {
+        DOMCDATASection cdataSection = (DOMCDATASection)coreGetNodeFactory().createCDATASection();
+        cdataSection.coreSetOwnerDocument(this);
+        cdataSection.coreSetData(data);
+        return cdataSection;
     }
 }

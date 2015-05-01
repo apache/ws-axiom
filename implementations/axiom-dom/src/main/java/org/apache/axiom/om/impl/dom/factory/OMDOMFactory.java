@@ -19,10 +19,9 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
+import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -41,9 +40,9 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
@@ -55,7 +54,6 @@ import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
-import org.apache.axiom.om.impl.dom.TextNodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 import javax.xml.namespace.QName;
@@ -64,7 +62,7 @@ import javax.xml.namespace.QName;
  * OM factory implementation for DOOM. It creates nodes that implement
  * DOM as defined by the interfaces in {@link org.w3c.dom}.
  */
-public class OMDOMFactory implements OMFactoryEx, NodeFactory {
+public class OMDOMFactory implements AxiomNodeFactory {
     private final OMDOMMetaFactory metaFactory;
 
     public OMDOMFactory(OMDOMMetaFactory metaFactory) {
@@ -178,124 +176,13 @@ public class OMDOMFactory implements OMFactoryEx, NodeFactory {
         return new OMNamespaceImpl(uri, prefix);
     }
 
-    public OMText createOMText(OMContainer parent, String text) {
-        return createOMText(parent, text, OMNode.TEXT_NODE);
-    }
-
-    public OMText createOMText(OMContainer parent, QName text) {
-        return createOMText(parent, text, OMNode.TEXT_NODE);
-    }
-
-    public OMText createOMText(OMContainer parent, QName text, int type) {
-        TextImpl txt = new TextImpl(parent, text, type, this);
-        parent.addChild(txt);
-        return txt;
-    }
-
-    public OMText createOMText(OMContainer parent, String text, int type) {
-        return createOMText(parent, text, type, false);
-    }
-    
-    public OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
-        if (parent == null) {
-            return createOMText(text, type);
-        } else if (parent instanceof DocumentImpl) {
+    public final void validateOMTextParent(OMContainer parent) {
+        if (parent instanceof DocumentImpl) {
             throw new OMHierarchyException(
                     "DOM doesn't support text nodes as children of a document");
-        } else {
-            TextNodeImpl txt;
-            if (type == OMNode.CDATA_SECTION_NODE) {
-                txt = new CDATASectionImpl(text, this);
-            } else {
-                txt = new TextImpl(text, type, this);
-            }
-            ((OMContainerEx)parent).addChild(txt, fromBuilder);
-            return txt;
         }
     }
     
-    
-    public OMText createOMText(OMContainer parent, OMText source) {
-        TextImpl text = new TextImpl((TextImpl) source, this);
-        parent.addChild(text);
-        return text;
-    }
-
-    public OMText createOMText(OMContainer parent, char[] charArary, int type) {
-        TextImpl txt = new TextImpl(charArary, this);
-        parent.addChild(txt);
-        return txt;
-    }
-
-    /**
-     * Creates a OMDOM Text node carrying the given value.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMText(String)
-     */
-    public OMText createOMText(String s) {
-        return new TextImpl(s, this);
-    }
-
-    /**
-     * Creates a Character node of the given type.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMText(String, int)
-     */
-    public OMText createOMText(String text, int type) {
-        if (type == OMNode.CDATA_SECTION_NODE) {
-            return new CDATASectionImpl(text, this);
-        } else {
-            return new TextImpl(text, this);
-        }
-    }
-
-    /**
-     * Creates a new OMDOM Text node with the value of the given text value along with the MTOM
-     * optimization parameters and returns it.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMText(String, String, boolean)
-     */
-    public OMText createOMText(String text, String mimeType, boolean optimize) {
-        return new TextImpl(text, mimeType, optimize, this);
-    }
-
-    /**
-     * Creates a new OMDOM Text node with the given datahandler and the given MTOM optimization
-     * configuration and returns it.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMText(Object, boolean)
-     */
-    public OMText createOMText(Object dataHandler, boolean optimize) {
-        return createOMText(null, dataHandler, optimize, false);
-    }
-
-    public OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize,
-            boolean fromBuilder) {
-        TextImpl text = new TextImpl(dataHandler, optimize, this);
-        if (parent != null) {
-            ((OMContainerEx)parent).addChild(text, fromBuilder);
-        }
-        return text;
-    }
-
-    public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
-            boolean optimize) {
-        return new TextImpl(contentID, dataHandlerProvider, optimize, this);
-    }
-
-    /**
-     * Creates an OMDOM Text node, adds it to the give parent element and returns it.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMText(OMContainer, String,
-     *      String, boolean)
-     */
-    public OMText createOMText(OMContainer parent, String s, String mimeType,
-                               boolean optimize) {
-        TextImpl text = new TextImpl(s, mimeType, optimize, this);
-        parent.addChild(text);
-        return text;
-    }
-
     public OMAttribute createOMAttribute(String localName, OMNamespace ns,
                                          String value) {
         if (ns != null && ns.getPrefix() == null) {
@@ -391,9 +278,9 @@ public class OMDOMFactory implements OMFactoryEx, NodeFactory {
                     newText = createOMText(importedText
                             .getDataHandler(), isOptimize);
                 } else if (importedText.isCharacters()) {
-                    newText = new TextImpl(importedText.getTextCharacters(), this);
+                    newText = createOMText(null, importedText.getTextCharacters(), OMNode.TEXT_NODE);
                 } else {
-                    newText = new TextImpl(importedText.getText(), this);
+                    newText = createOMText(importedText.getText());
                 }
                 return newText;
             }
@@ -430,5 +317,9 @@ public class OMDOMFactory implements OMFactoryEx, NodeFactory {
 
     public final CoreCharacterData createCharacterData() {
         return new TextImpl(this);
+    }
+
+    public CoreCDATASection createCDATASection() {
+        return new CDATASectionImpl(this);
     }
 }

@@ -18,12 +18,9 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.impl.common.AxiomInformationItem;
 import org.apache.axiom.om.impl.common.InformationItem;
 
 public abstract class OMInformationItemImpl extends InformationItem implements AxiomInformationItem {
-    public final NodeFactory coreGetNodeFactory() {
-        throw new UnsupportedOperationException();
-    }
+
 }

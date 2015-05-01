@@ -24,11 +24,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 
 public class CDATASectionImpl extends TextNodeImpl implements DOMCDATASection, AxiomCDATASection {
-    public CDATASectionImpl(String text, OMFactory factory) {
-        super(text, factory);
-    }
-
-    ChildNode createClone() {
-        return new CDATASectionImpl(textValue, getOMFactory());
+    public CDATASectionImpl(OMFactory factory) {
+        super(factory);
     }
 }

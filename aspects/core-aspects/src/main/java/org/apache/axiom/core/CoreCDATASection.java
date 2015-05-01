@@ -19,5 +19,6 @@
 package org.apache.axiom.core;
 
 public interface CoreCDATASection {
-
+    String coreGetData();
+    void coreSetData(String data);
 }

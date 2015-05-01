@@ -16,16 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.common.AxiomCharacterData;
 
-public aspect AxiomCDATASectionSupport {
-    public final int AxiomCDATASection.getType() {
-        return OMNode.CDATA_SECTION_NODE;
-    }
-    
-    public final AxiomText AxiomCDATASection.createInstanceOfSameType() {
-        return (AxiomText)coreGetNodeFactory().createCDATASection();
+public class CharacterDataImpl extends OMTextImpl implements AxiomCharacterData {
+    public CharacterDataImpl(OMFactory factory) {
+        super(factory);
     }
 }

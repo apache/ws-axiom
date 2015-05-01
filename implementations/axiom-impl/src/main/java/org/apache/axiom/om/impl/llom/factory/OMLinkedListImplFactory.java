@@ -19,7 +19,9 @@
 
 package org.apache.axiom.om.impl.llom.factory;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.core.CoreCDATASection;
+import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -37,9 +39,11 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
+import org.apache.axiom.om.impl.llom.CDATASectionImpl;
+import org.apache.axiom.om.impl.llom.CharacterDataImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
@@ -48,14 +52,13 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMEntityReferenceImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
-import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 import javax.xml.namespace.QName;
 
 /** Class OMLinkedListImplFactory
  */
-public class OMLinkedListImplFactory implements OMFactoryEx {
+public class OMLinkedListImplFactory implements AxiomNodeFactory {
     private final OMLinkedListMetaFactory metaFactory;
     
     /**
@@ -184,103 +187,6 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
         return new OMNamespaceImpl(uri, prefix);
-    }
-
-    /**
-     * Method createOMText.
-     *
-     * @param parent
-     * @param text
-     * @return Returns OMText.
-     */
-    public OMText createOMText(OMContainer parent, String text) {
-        return new OMTextImpl(parent, text, this);
-    }
-
-    public OMText createOMText(OMContainer parent, QName text) {
-        return new OMTextImpl(parent, text, this);
-    }
-
-    public OMText createOMText(OMContainer parent, String text, int type) {
-        return createOMText(parent, text, type, false);
-    }
-
-    public OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
-        return new OMTextImpl(parent, text, type, this, fromBuilder);
-    }
-
-    public OMText createOMText(OMContainer parent, char[] charArary, int type) {
-        return new OMTextImpl(parent, charArary, type, this);
-    }
-
-    public OMText createOMText(OMContainer parent, QName text, int type) {
-        return new OMTextImpl(parent, text, type, this);
-    }
-
-    /**
-     * Method createOMText.
-     *
-     * @param s
-     * @return Returns OMText.
-     */
-    public OMText createOMText(String s) {
-        return new OMTextImpl(s, this);
-    }
-
-    public OMText createOMText(String s, int type) {
-        return new OMTextImpl(s, type, this);
-    }
-
-    /**
-     * Creates text.
-     *
-     * @param s
-     * @param mimeType
-     * @param optimize
-     * @return Returns OMText.
-     */
-    public OMText createOMText(String s, String mimeType, boolean optimize) {
-        return new OMTextImpl(s, mimeType, optimize, this);
-    }
-
-    /**
-     * Creates text.
-     *
-     * @param dataHandler
-     * @param optimize
-     * @return Returns OMText.
-     */
-    public OMText createOMText(Object dataHandler, boolean optimize) {
-        return createOMText(null, dataHandler, optimize, false);
-    }
-
-    public OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder) {
-        return new OMTextImpl(parent, dataHandler, optimize, this, fromBuilder);
-    }
-
-    public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
-            boolean optimize) {
-        return new OMTextImpl(contentID, dataHandlerProvider, optimize, this);
-    }
-
-    public OMText createOMText(OMContainer parent, OMText source) {
-        return new OMTextImpl(parent, (OMTextImpl) source, this);
-    }
-
-    /**
-     * Creates text.
-     *
-     * @param parent
-     * @param s
-     * @param mimeType
-     * @param optimize
-     * @return Returns OMText.
-     */
-    public OMText createOMText(OMContainer parent,
-                               String s,
-                               String mimeType,
-                               boolean optimize) {
-        return new OMTextImpl(parent, s, mimeType, optimize, this);
     }
 
     /**
@@ -424,5 +330,17 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
                         "Not Implemented Yet for the given node type");
             }
         }
+    }
+
+    public CoreDocument createDocument() {
+        return new OMDocumentImpl(this);
+    }
+
+    public CoreCharacterData createCharacterData() {
+        return new CharacterDataImpl(this);
+    }
+    
+    public CoreCDATASection createCDATASection() {
+        return new CDATASectionImpl(this);
     }
 }

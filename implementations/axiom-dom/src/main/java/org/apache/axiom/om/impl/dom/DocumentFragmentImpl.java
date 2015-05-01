@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
@@ -36,6 +37,10 @@ public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragmen
         super(factory);
     }
 
+    public final NodeFactory coreGetNodeFactory() {
+        return (NodeFactory)getOMFactory();
+    }
+    
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) {
         // TODO
         throw new UnsupportedOperationException("TODO");

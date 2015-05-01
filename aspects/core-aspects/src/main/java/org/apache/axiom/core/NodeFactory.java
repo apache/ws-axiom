@@ -21,4 +21,5 @@ package org.apache.axiom.core;
 public interface NodeFactory {
     CoreDocument createDocument();
     CoreCharacterData createCharacterData();
+    CoreCDATASection createCDATASection();
 }

@@ -16,16 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.factory;
 
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 
-public aspect AxiomCDATASectionSupport {
-    public final int AxiomCDATASection.getType() {
-        return OMNode.CDATA_SECTION_NODE;
-    }
-    
-    public final AxiomText AxiomCDATASection.createInstanceOfSameType() {
-        return (AxiomText)coreGetNodeFactory().createCDATASection();
-    }
+public interface AxiomNodeFactory extends NodeFactory, OMFactoryEx {
+
 }
