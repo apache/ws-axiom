@@ -23,7 +23,7 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.attachments.utils.DataHandlerUtils;
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -131,8 +131,8 @@ public aspect AxiomTextSupport {
     // TODO: should be final, but Abdera overrides this method
     public Object AxiomText.getDataHandler() {
         if ((value != null || charArray != null) && isBinary()) {
-            String text = getTextFromProperPlace();
-            return DataHandlerUtils.getDataHandlerFromText(text, mimeType);
+            return new DataHandler(new ByteArrayDataSource(
+                    Base64Utils.decode(getTextFromProperPlace()), mimeType));
         } else {
             if (dataHandlerObject == null) {
                 throw new OMException("No DataHandler available");

@@ -25,6 +25,9 @@ import javax.activation.DataHandler;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.util.base64.Base64Utils;
 
+/**
+ * @deprecated
+ */
 public class DataHandlerUtils {
 
     public static Object getDataHandlerFromText(String value, String mimeType) {
