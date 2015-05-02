@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.util;
+package org.apache.axiom.util.base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,9 +26,7 @@ import java.io.ObjectOutputStream;
 
 import junit.framework.TestCase;
 
-import org.apache.axiom.util.base64.Base64Utils;
-
-public class Base64Test extends TestCase {
+public class Base64UtilsTest extends TestCase {
 
     Object expectedObject;
 
