@@ -24,6 +24,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.commons.codec.binary.Base64;
+
 import junit.framework.TestCase;
 
 public class Base64UtilsTest extends TestCase {
@@ -32,18 +34,14 @@ public class Base64UtilsTest extends TestCase {
 
     ByteArrayInputStream byteStream;
 
-    /*
-     * Class under test for String encode(byte[])
-     */
-
-    public void testEncodebyteArray() throws Exception {
+    public void testDecode() throws Exception {
         Object actualObject;
         String expectedBase64;
         expectedObject = new String("Lanka Software Foundation");
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutStream = new ObjectOutputStream(byteStream);
         objectOutStream.writeObject(expectedObject);
-        expectedBase64 = Base64Utils.encode(byteStream.toByteArray());
+        expectedBase64 = Base64.encodeBase64String(byteStream.toByteArray());
         byte[] tempa = Base64Utils.decode(expectedBase64);
         ObjectInputStream objectInStream = new ObjectInputStream(
                 new ByteArrayInputStream(tempa));

@@ -129,7 +129,7 @@ public class Base64Utils {
     }
 
     /**
-     *
+     * @deprecated
      */
     public static byte[] decode(char[] data, int off, int len) {
         char[] ibuf = new char[4];
@@ -181,10 +181,7 @@ public class Base64Utils {
     }
 
     /**
-     * checks input string for invalid Base64 characters
-     *
-     * @param data
-     * @return true, if String contains only valid Base64 characters. false, otherwise
+     * @deprecated
      */
     public static boolean isValidBase64Encoding(String data) {
         for (int i = 0; i < data.length(); i++) {
@@ -204,7 +201,7 @@ public class Base64Utils {
 
 
     /**
-     *
+     * @deprecated
      */
     public static void decode(char[] data, int off, int len,
                               OutputStream ostream) throws IOException {
@@ -226,7 +223,7 @@ public class Base64Utils {
     }
 
     /**
-     *
+     * @deprecated
      */
     public static void decode(String data, OutputStream ostream)
             throws IOException {
@@ -247,12 +244,16 @@ public class Base64Utils {
         }
     }
 
-    /** Returns base64 representation of specified byte array. */
+    /**
+     * @deprecated
+     */
     public static String encode(byte[] data) {
         return encode(data, 0, data.length);
     }
 
-    /** Returns base64 representation of specified byte array. */
+    /**
+     * @deprecated
+     */
     public static String encode(byte[] data, int off, int len) {
         if (len <= 0)
             return "";
@@ -287,7 +288,9 @@ public class Base64Utils {
         return new String(out, 0, windex);
     }
 
-    /** Outputs base64 representation of the specified byte array to the specified String Buffer */
+    /**
+     * @deprecated
+     */
     public static void encode(byte[] data, int off, int len, StringBuffer buffer) {
         if (len <= 0) {
             return;
@@ -325,7 +328,9 @@ public class Base64Utils {
         }
     }
 
-    /** Outputs base64 representation of the specified byte array to a byte stream. */
+    /**
+     * @deprecated
+     */
     public static void encode(byte[] data, int off, int len,
                               OutputStream ostream) throws IOException {
         if (len <= 0)
@@ -362,7 +367,9 @@ public class Base64Utils {
         }
     }
 
-    /** Outputs base64 representation of the specified byte array to a character stream. */
+    /**
+     * @deprecated
+     */
     public static void encode(byte[] data, int off, int len, Writer writer)
             throws IOException {
         if (len <= 0)
