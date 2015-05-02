@@ -128,7 +128,8 @@ public aspect AxiomTextSupport {
         }
     }
 
-    public final Object AxiomText.getDataHandler() {
+    // TODO: should be final, but Abdera overrides this method
+    public Object AxiomText.getDataHandler() {
         if ((value != null || charArray != null) && isBinary()) {
             String text = getTextFromProperPlace();
             return DataHandlerUtils.getDataHandlerFromText(text, mimeType);
