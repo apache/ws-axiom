@@ -65,7 +65,7 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
             return -1;
         } else if (c < Base64Constants.S_DECODETABLE.length) {
             int result = Base64Constants.S_DECODETABLE[c];
-            if (result != Byte.MAX_VALUE) {
+            if (result >= 0) {
                 return result;
             }
         }

@@ -19,33 +19,74 @@
 
 package org.apache.axiom.util.base64;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
-import org.apache.commons.codec.binary.Base64;
+import java.util.Random;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.codec.binary.Base64;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
+
 public class Base64UtilsTest extends TestCase {
+    public void testDecode() {
+        Random random = new Random(43219876);
+        for (int len=0; len<20; len++) {
+            byte[] data = new byte[len];
+            random.nextBytes(data);
+            Assert.assertThat(
+                    Base64Utils.decode(Base64.encodeBase64String(data)),
+                    CoreMatchers.equalTo(data));
+        }
+    }
+    
+    public void testMissingPadding() {
+        try {
+            Base64Utils.decode("cw");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // Expected
+        }
+    }
 
-    Object expectedObject;
+    public void testTooMuchPadding() {
+        try {
+            Base64Utils.decode("cw===");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // Expected
+        }
+    }
+    
+    public void testNonZeroRemainder() {
+        try {
+            Base64Utils.decode("//==");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // Expected
+        }
+    }
+    
+    public void testSpace() throws Exception{
+        assertEquals(
+                "any carnal pleasure.",
+                new String(Base64Utils.decode(" YW55IG\tNhcm5hbC\r\nBwb  GVhc3VyZS4 = "), "utf-8"));
+    }
 
-    ByteArrayInputStream byteStream;
+    public void testInvalidCharacter() {
+        try {
+            Base64Utils.decode("//-/");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // Expected
+        }
+    }
 
-    public void testDecode() throws Exception {
-        Object actualObject;
-        String expectedBase64;
-        expectedObject = new String("Lanka Software Foundation");
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutStream = new ObjectOutputStream(byteStream);
-        objectOutStream.writeObject(expectedObject);
-        expectedBase64 = Base64.encodeBase64String(byteStream.toByteArray());
-        byte[] tempa = Base64Utils.decode(expectedBase64);
-        ObjectInputStream objectInStream = new ObjectInputStream(
-                new ByteArrayInputStream(tempa));
-        actualObject = objectInStream.readObject();
-        assertEquals("Base64 Encoding Check", expectedObject, actualObject);
+    public void testInvalidPadding() {
+        try {
+            Base64Utils.decode("//=/");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // Expected
+        }
     }
 }

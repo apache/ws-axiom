@@ -30,15 +30,36 @@ class Base64Constants {
 
     static final byte S_BASE64PAD = '=';
 
+    /**
+     * Used in {@link #S_DECODETABLE} to indicate that a character is the padding character.
+     */
+    static final byte PADDING = -1;
+    
+    /**
+     * Used in {@link #S_DECODETABLE} to indicate that a character is white space.
+     */
+    static final byte WHITE_SPACE = -2;
+    
+    /**
+     * Used in {@link #S_DECODETABLE} to indicate that a character is invalid.
+     */
+    static final byte INVALID = -3;
+
     static final byte[] S_DECODETABLE = new byte[128];
     
     static {
         for (int i = 0; i < S_DECODETABLE.length; i++) {
-            S_DECODETABLE[i] = Byte.MAX_VALUE; // 127
+            S_DECODETABLE[i] = INVALID;
         }
         for (int i = 0; i < S_BASE64CHAR.length; i++) {
             // 0 to 63
             S_DECODETABLE[S_BASE64CHAR[i]] = (byte) i;
         }
+        S_DECODETABLE[S_BASE64PAD] = PADDING;
+        // See http://www.w3.org/TR/2008/REC-xml-20081126/#white
+        S_DECODETABLE[' '] = WHITE_SPACE;
+        S_DECODETABLE['\t'] = WHITE_SPACE;
+        S_DECODETABLE['\r'] = WHITE_SPACE;
+        S_DECODETABLE['\n'] = WHITE_SPACE;
     }
 }

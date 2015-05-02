@@ -120,7 +120,7 @@ public class Base64Utils {
         for (int i = off; i < off + len; i++) {
             char ch = data[i];
             if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] != Byte.MAX_VALUE) {
+                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 ibuf[ibufcount++] = ch;
                 if (ibufcount == ibuf.length) {
                     ibufcount = 0;
@@ -136,29 +136,69 @@ public class Base64Utils {
     }
 
     /**
-     *
+     * Decodes a base64 encoded string into a byte array. This method is designed to conform to the
+     * <a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#base64Binary">XML Schema</a>
+     * specification. It can be used to decode the text content of an element (or the value of an
+     * attribute) of type <code>base64Binary</code>.
+     * 
+     * @param data
+     *            the base64 encoded data
+     * @return the decoded data
      */
     public static byte[] decode(String data) {
-        char[] ibuf = new char[4];
-        int ibufcount = 0;
-        byte[] obuf = new byte[data.length() / 4 * 3 + 3];
-        int obufcount = 0;
+        int symbols = 0;
+        int padding = 0;
         for (int i = 0; i < data.length(); i++) {
-            char ch = data.charAt(i);
-            if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] != Byte.MAX_VALUE) {
-                ibuf[ibufcount++] = ch;
-                if (ibufcount == ibuf.length) {
-                    ibufcount = 0;
-                    obufcount += decode0(ibuf, obuf, obufcount);
-                }
+            switch (Base64Constants.S_DECODETABLE[data.charAt(i)]) {
+                case Base64Constants.PADDING:
+                    if (padding == 2) {
+                        throw new IllegalArgumentException("Too much padding");
+                    }
+                    padding++;
+                    break;
+                case Base64Constants.WHITE_SPACE:
+                    break;
+                case Base64Constants.INVALID:
+                    throw new IllegalArgumentException("Invalid character encountered");
+                default:
+                    // Padding can only occur at the end
+                    if (padding > 0) {
+                        throw new IllegalArgumentException("Unexpected padding character");
+                    }
+                    symbols++;
             }
         }
-        if (obufcount == obuf.length)
-            return obuf;
-        byte[] ret = new byte[obufcount];
-        System.arraycopy(obuf, 0, ret, 0, obufcount);
-        return ret;
+        if ((symbols + padding) % 4 != 0) {
+            throw new IllegalArgumentException("Missing padding");
+        }
+        byte[] result = new byte[(symbols + padding) / 4 * 3 - padding];
+        int pos = 0;
+        int resultPos = 0;
+        byte accumulator = 0;
+        int bits = 0;
+        while (symbols > 0) {
+            byte b = Base64Constants.S_DECODETABLE[data.charAt(pos++)];
+            if (b == Base64Constants.WHITE_SPACE) {
+                continue;
+            }
+            if (bits == 0) {
+                accumulator = (byte)(b << 2);
+                bits = 6;
+            } else {
+                accumulator |= b >> (bits - 2);
+                result[resultPos++] = accumulator;
+                accumulator = (byte)(b << (10 - bits));
+                bits -= 2;
+            }
+            symbols--;
+        }
+        if (accumulator != 0) {
+            throw new IllegalArgumentException("Invalid base64 value");
+        }
+        if (resultPos != result.length) {
+            throw new Error("Oops. This is a bug.");
+        }
+        return result;
     }
 
     /**
@@ -169,7 +209,7 @@ public class Base64Utils {
             char ch = data.charAt(i);
 
             if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] != Byte.MAX_VALUE) {
+                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 //valid character.Do nothing
             } else if (ch == '\r' || ch == '\n') {
                 //do nothing
@@ -192,7 +232,7 @@ public class Base64Utils {
         for (int i = off; i < off + len; i++) {
             char ch = data[i];
             if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] != Byte.MAX_VALUE) {
+                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 ibuf[ibufcount++] = ch;
                 if (ibufcount == ibuf.length) {
                     ibufcount = 0;
@@ -214,7 +254,7 @@ public class Base64Utils {
         for (int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
             if (ch == Base64Constants.S_BASE64PAD || ch < Base64Constants.S_DECODETABLE.length
-                    && Base64Constants.S_DECODETABLE[ch] != Byte.MAX_VALUE) {
+                    && Base64Constants.S_DECODETABLE[ch] >= 0) {
                 ibuf[ibufcount++] = ch;
                 if (ibufcount == ibuf.length) {
                     ibufcount = 0;
