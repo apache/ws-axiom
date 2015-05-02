@@ -55,8 +55,14 @@ public interface OMText extends OMNode {
      */
     String getText();
 
+    /**
+     * @deprecated
+     */
     char[] getTextCharacters();
 
+    /**
+     * @deprecated
+     */
     boolean isCharacters();
 
     /**

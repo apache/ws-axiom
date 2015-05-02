@@ -85,9 +85,7 @@ public aspect AxiomNodeFactorySupport {
     }
     
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, char[] charArray, int type) {
-        AxiomText node = createAxiomText(parent, type, false);
-        node.internalSetCharArray(charArray);
-        return node;
+        return createOMText(parent, new String(charArray), type, false);
     }
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, QName text, int type) {

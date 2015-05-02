@@ -40,7 +40,6 @@ public aspect AxiomTextSupport {
 
     // TODO: should be private
     public String AxiomText.value;
-    private char[] AxiomText.charArray;
     
     private String AxiomText.mimeType;
     
@@ -75,46 +74,36 @@ public aspect AxiomTextSupport {
         }
     }
     
-    /**
-     * This OMText contains two data source:value and charArray. This method will return text from
-     * correct place.
-     */
-    private String AxiomText.getTextFromProperPlace() {
-        return charArray != null ? new String(charArray) : value;
-    }
-
     public final String AxiomText.getText() throws OMException {
-        if (charArray != null || value != null) {
-            return getTextFromProperPlace();
-        } else {
+        if (dataHandlerObject != null) {
             try {
                 return Base64Utils.encode((DataHandler)getDataHandler());
             } catch (Exception e) {
                 throw new OMException(e);
             }
+        } else {
+            return value;
         }
     }
 
     public final char[] AxiomText.getTextCharacters() {
-        if (charArray != null) {
-            return charArray;
-        } else if (value != null) {
-            return value.toCharArray();
-        } else {
+        if (dataHandlerObject != null) {
             try {
                 return Base64Utils.encodeToCharArray((DataHandler)getDataHandler());
             } catch (IOException ex) {
                 throw new OMException(ex);
             }
+        } else {
+            return value.toCharArray();
         }
     }
 
     public final boolean AxiomText.isCharacters() {
-        return charArray != null;
+        return false;
     }
 
     public final QName AxiomText.getTextAsQName() throws OMException {
-        return ((OMElement)getParent()).resolveQName(getTextFromProperPlace());
+        return ((OMElement)getParent()).resolveQName(getText());
     }
 
     public final OMNamespace AxiomText.getNamespace() {
@@ -130,13 +119,8 @@ public aspect AxiomTextSupport {
 
     // TODO: should be final, but Abdera overrides this method
     public Object AxiomText.getDataHandler() {
-        if ((value != null || charArray != null) && isBinary()) {
-            return new DataHandler(new ByteArrayDataSource(
-                    Base64Utils.decode(getTextFromProperPlace()), mimeType));
-        } else {
-            if (dataHandlerObject == null) {
-                throw new OMException("No DataHandler available");
-            } else if (dataHandlerObject instanceof DataHandlerProvider) {
+        if (dataHandlerObject != null) {
+            if (dataHandlerObject instanceof DataHandlerProvider) {
                 try {
                     dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
                 } catch (IOException ex) {
@@ -144,6 +128,11 @@ public aspect AxiomTextSupport {
                 }
             }
             return dataHandlerObject;
+        } else if (isBinary()) {
+            return new DataHandler(new ByteArrayDataSource(
+                    Base64Utils.decode(value), mimeType));
+        } else {
+            throw new OMException("No DataHandler available");
         }
     }
 
@@ -179,10 +168,6 @@ public aspect AxiomTextSupport {
         this.value = value;
     }
 
-    public final void AxiomText.internalSetCharArray(char[] charArray) {
-        this.charArray = charArray;
-    }
-
     public final void AxiomText.internalSetMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
@@ -202,12 +187,6 @@ public aspect AxiomTextSupport {
     public final AxiomText AxiomText.doClone() {
         AxiomText clone = createInstanceOfSameType();
         clone.value = value;
-        
-        // Clone the charArray (if it exists)
-        if (charArray != null) {
-            clone.charArray = new char[charArray.length];
-            System.arraycopy(charArray, 0, clone.charArray, 0, charArray.length);
-        }
         
         // Copy the optimized related settings.
         clone.optimize = optimize;

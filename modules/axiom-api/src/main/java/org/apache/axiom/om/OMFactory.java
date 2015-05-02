@@ -255,6 +255,9 @@ public interface OMFactory {
      */
     OMText createOMText(OMContainer parent, String text, int type);
 
+    /**
+     * @deprecated
+     */
     OMText createOMText(OMContainer parent, char[] charArary, int type);
 
     /**
