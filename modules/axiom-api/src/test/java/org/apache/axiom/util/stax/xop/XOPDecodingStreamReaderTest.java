@@ -30,7 +30,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
-import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.commons.codec.binary.Base64;
 
 public class XOPDecodingStreamReaderTest extends AbstractTestCase {
     private XMLStreamReader getXOPDecodingStreamReader() throws Exception {
@@ -58,7 +58,7 @@ public class XOPDecodingStreamReaderTest extends AbstractTestCase {
             reader.next();
         }
         String base64 = reader.getElementText();
-        byte[] data = Base64Utils.decode(base64);
+        byte[] data = Base64.decodeBase64(base64);
         // The data is actually a JPEG image. Try to decode it to check that the data is not
         // corrupted.
         ImageIO.read(new ByteArrayInputStream(data));

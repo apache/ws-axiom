@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Text;
 
 public class TestGetNodeValueBinary extends AxiomTestCase {
@@ -47,6 +47,6 @@ public class TestGetNodeValueBinary extends AxiomTestCase {
         String nodeValue = text.getNodeValue();
         assertThat(nodeValue, is(notNullValue()));
         IOTestUtils.compareStreams(ds.getInputStream(),
-                new ByteArrayInputStream(Base64Utils.decode(nodeValue)));
+                new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
     }
 }

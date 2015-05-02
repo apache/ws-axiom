@@ -23,7 +23,7 @@ import javax.activation.DataHandler;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Tests that {@link OMText#getTextCharacters()} returns the expected result for an {@link OMText}
@@ -39,7 +39,7 @@ public class TestGetTextCharactersFromDataHandler extends AxiomTestCase {
         DataHandler dh = new DataHandler("test content", "text/plain; charset=utf-8");
         OMText text = metaFactory.getOMFactory().createOMText(dh, true);
         char[] chars = text.getTextCharacters();
-        byte[] decoded = Base64Utils.decode(chars, 0, chars.length);
+        byte[] decoded = Base64.decodeBase64(new String(chars));
         assertEquals("test content", new String(decoded, "utf-8"));
     }
 }
