@@ -37,74 +37,74 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 public class XMLStreamWriterFilterTestCase extends AbstractTestCase {
-	
-	private char ILLEGAL_CHAR = 0x15;
-	private String ILLEGAL_ENTITY = "&#x15;";
-	
-	private char NULL_CHAR = 0x00;
-	private String NULL_ENTITY = "&#x00;";
-	
-	private final OMMetaFactory omMetaFactory;
+    
+    private char ILLEGAL_CHAR = 0x15;
+    private String ILLEGAL_ENTITY = "&#x15;";
+    
+    private char NULL_CHAR = 0x00;
+    private String NULL_ENTITY = "&#x00;";
+    
+    private final OMMetaFactory omMetaFactory;
     
     protected XMLStreamWriterFilterTestCase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
     }
-	
-	public void test01() throws Exception {
-		char[] chars = new char[] {ILLEGAL_CHAR};
-		String insert = new String(chars);
-		testInsert(insert);
-	}
-	
-	public void test02() throws Exception {
-		char[] chars = new char[] {NULL_CHAR};
-		String insert = new String(chars);
-		testInsert(insert);
-	}
-	
-	public void test03() throws Exception {
-		
-		testInsert(ILLEGAL_ENTITY);
-	}
-	
-	public void test04() throws Exception {
-		
-		testInsert(NULL_ENTITY);
-	}
-	
-	
-	
-	private void testInsert(String insert) throws Exception {
-		
-		// Read XML
-		InputStream is = getTestResource(TestConstants.TEST);
-		
-		// Build SOAP OM
-		SOAPEnvelope env1 = createEnvelope(is);
-		
-		// Add illegal character
-		SOAPBody body = env1.getBody();
-		OMElement omElement = body.getFirstElement();
-		String text = omElement.getText();
-		text = text + "[" + insert + "]";
-		System.out.println("New Text = " + text);
-		omElement.setText(text);
-		
-		// Serialize
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		OMOutputFormat omFormat = new OMOutputFormat();
-		omFormat.setXmlStreamWriterFilter(new XMLStreamWriterRemoveIllegalChars());
-		env1.serialize(baos, omFormat);
-		
-		String xmlText = baos.toString();
-		System.out.println("Serialized Text = " + xmlText);
-		
-		ByteArrayInputStream bais = new ByteArrayInputStream(xmlText.getBytes("UTF-8"));
-		
-		SOAPEnvelope env2 = createEnvelope(bais);
-		env2.build();
-	}
-	
+    
+    public void test01() throws Exception {
+        char[] chars = new char[] {ILLEGAL_CHAR};
+        String insert = new String(chars);
+        testInsert(insert);
+    }
+    
+    public void test02() throws Exception {
+        char[] chars = new char[] {NULL_CHAR};
+        String insert = new String(chars);
+        testInsert(insert);
+    }
+    
+    public void test03() throws Exception {
+        
+        testInsert(ILLEGAL_ENTITY);
+    }
+    
+    public void test04() throws Exception {
+        
+        testInsert(NULL_ENTITY);
+    }
+    
+    
+    
+    private void testInsert(String insert) throws Exception {
+        
+        // Read XML
+        InputStream is = getTestResource(TestConstants.TEST);
+        
+        // Build SOAP OM
+        SOAPEnvelope env1 = createEnvelope(is);
+        
+        // Add illegal character
+        SOAPBody body = env1.getBody();
+        OMElement omElement = body.getFirstElement();
+        String text = omElement.getText();
+        text = text + "[" + insert + "]";
+        System.out.println("New Text = " + text);
+        omElement.setText(text);
+        
+        // Serialize
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        OMOutputFormat omFormat = new OMOutputFormat();
+        omFormat.setXmlStreamWriterFilter(new XMLStreamWriterRemoveIllegalChars());
+        env1.serialize(baos, omFormat);
+        
+        String xmlText = baos.toString();
+        System.out.println("Serialized Text = " + xmlText);
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(xmlText.getBytes("UTF-8"));
+        
+        SOAPEnvelope env2 = createEnvelope(bais);
+        env2.build();
+    }
+    
     /**
      * Create SOAPEnvelope from the test in the indicated file
      * @param input stream
