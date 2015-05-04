@@ -39,10 +39,8 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 public class XMLStreamWriterFilterTestCase extends AbstractTestCase {
     
     private char ILLEGAL_CHAR = 0x15;
-    private String ILLEGAL_ENTITY = "&#x15;";
     
     private char NULL_CHAR = 0x00;
-    private String NULL_ENTITY = "&#x00;";
     
     private final OMMetaFactory omMetaFactory;
     
@@ -61,18 +59,6 @@ public class XMLStreamWriterFilterTestCase extends AbstractTestCase {
         String insert = new String(chars);
         testInsert(insert);
     }
-    
-    public void test03() throws Exception {
-        
-        testInsert(ILLEGAL_ENTITY);
-    }
-    
-    public void test04() throws Exception {
-        
-        testInsert(NULL_ENTITY);
-    }
-    
-    
     
     private void testInsert(String insert) throws Exception {
         
