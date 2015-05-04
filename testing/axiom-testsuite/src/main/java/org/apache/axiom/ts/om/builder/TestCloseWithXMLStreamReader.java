@@ -40,7 +40,7 @@ public class TestCloseWithXMLStreamReader extends AxiomTestCase {
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);
             OMXMLParserWrapper builder = metaFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);
-            WeakReference readerWeakRef = new WeakReference(reader);
+            WeakReference<XMLStreamReader> readerWeakRef = new WeakReference<XMLStreamReader>(reader);
             reader = null;
             builder.getDocument().build();
             builder.close();
