@@ -31,11 +31,11 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloseWithXMLStreamReader extends AxiomTestCase {
-	public TestCloseWithXMLStreamReader(OMMetaFactory metaFactory) {
-		super(metaFactory);
-	}
+    public TestCloseWithXMLStreamReader(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
 
-	protected void runTest() throws Throwable {
+    protected void runTest() throws Throwable {
         InputStream in = AbstractTestCase.getTestResource(TestConstants.TEST);
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);
@@ -55,5 +55,5 @@ public class TestCloseWithXMLStreamReader extends AxiomTestCase {
         } finally {
             in.close();
         }
-	}
+    }
 }

@@ -27,11 +27,11 @@ import org.apache.axiom.testutils.io.CloseSensorInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloseWithInputStream extends AxiomTestCase {
-	public TestCloseWithInputStream(OMMetaFactory metaFactory) {
-		super(metaFactory);
-	}
+    public TestCloseWithInputStream(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
 
-	protected void runTest() throws Throwable {
+    protected void runTest() throws Throwable {
         CloseSensorInputStream in = new CloseSensorInputStream(AbstractTestCase.getTestResource(TestConstants.TEST));
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in);
@@ -42,5 +42,5 @@ public class TestCloseWithInputStream extends AxiomTestCase {
         } finally {
             in.close();
         }
-	}
+    }
 }

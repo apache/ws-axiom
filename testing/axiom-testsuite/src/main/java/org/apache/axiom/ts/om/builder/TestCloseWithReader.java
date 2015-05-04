@@ -27,11 +27,11 @@ import org.apache.axiom.testutils.io.CloseSensorReader;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloseWithReader extends AxiomTestCase {
-	public TestCloseWithReader(OMMetaFactory metaFactory) {
-		super(metaFactory);
-	}
+    public TestCloseWithReader(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
 
-	protected void runTest() throws Throwable {
+    protected void runTest() throws Throwable {
         CloseSensorReader in = new CloseSensorReader(new StringReader("<root><child/></root>"));
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in);
@@ -42,5 +42,5 @@ public class TestCloseWithReader extends AxiomTestCase {
         } finally {
             in.close();
         }
-	}
+    }
 }
