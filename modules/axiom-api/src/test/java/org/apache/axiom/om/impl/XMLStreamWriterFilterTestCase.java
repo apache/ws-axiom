@@ -20,15 +20,10 @@ package org.apache.axiom.om.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.TransformerFactory;
-
-import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
