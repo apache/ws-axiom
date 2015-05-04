@@ -374,6 +374,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeConsumed(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumePartiallyBuilt(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSerializeWithXmlStreamWriterFilter(metaFactory, (char)0));
+        addTest(new org.apache.axiom.ts.om.element.TestSerializeWithXmlStreamWriterFilter(metaFactory, (char)0x15));
         for (int i=0; i<3; i++) {
             Boolean declare = i == 0 ? null : Boolean.valueOf(i==2);
             boolean implicitDeclare = declare == null || declare.booleanValue();
