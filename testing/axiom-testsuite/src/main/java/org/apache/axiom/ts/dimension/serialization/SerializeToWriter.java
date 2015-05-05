@@ -28,10 +28,10 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Serializes an {@link OMContainer} using {@link OMContainer#serialize(Writer)} or
  * {@link OMContainer#serializeAndConsume(Writer)}.
  */
-public class SerializeToWriter implements SerializationStrategy {
+public class SerializeToWriter extends SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToWriter(boolean cache) {
+    SerializeToWriter(boolean cache) {
         this.cache = cache;
     }
 

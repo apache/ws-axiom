@@ -29,6 +29,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axiom.testing.multiton.Instances;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -37,24 +39,23 @@ import org.xml.sax.InputSource;
 /**
  * A SOAP test message.
  */
-public abstract class TestMessage extends Adaptable {
-    private static final List<TestMessage> instances = new ArrayList<TestMessage>();
-    
-    static {
-        // Force instantiation of TestMessage objects related to TestMessageSets
-        TestMessageSet.getAll();
-    }
-    
+public abstract class TestMessage extends Multiton {
     private final SOAPSpec spec;
     private final String name;
     
     TestMessage(SOAPSpec spec, String name) {
         this.spec = spec;
         this.name = name;
-        instances.add(this);
     }
     
-    public static TestMessage[] getAll() {
+    @Instances
+    private static TestMessage[] instances() {
+        List<TestMessage> instances = new ArrayList<TestMessage>();
+        for (TestMessageSet set : getInstances(TestMessageSet.class)) {
+            for (SOAPSpec spec : getInstances(SOAPSpec.class)) {
+                instances.add(set.getMessage(spec));
+            }
+        }
         return instances.toArray(new TestMessage[instances.size()]);
     }
     

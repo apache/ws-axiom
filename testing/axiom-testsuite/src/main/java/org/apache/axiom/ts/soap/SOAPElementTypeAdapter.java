@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testing.multiton.AdapterType;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 

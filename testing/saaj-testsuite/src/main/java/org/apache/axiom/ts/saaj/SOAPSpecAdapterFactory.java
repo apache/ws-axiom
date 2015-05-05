@@ -22,8 +22,8 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPException;
 
-import org.apache.axiom.ts.soap.AdapterFactory;
-import org.apache.axiom.ts.soap.Adapters;
+import org.apache.axiom.testing.multiton.AdapterFactory;
+import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {

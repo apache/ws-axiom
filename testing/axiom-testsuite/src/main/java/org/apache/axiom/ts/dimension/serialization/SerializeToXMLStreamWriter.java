@@ -30,10 +30,10 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Serializes an {@link OMContainer} using {@link OMContainer#serialize(XMLStreamWriter)} or
  * {@link OMContainer#serializeAndConsume(XMLStreamWriter)}.
  */
-public class SerializeToXMLStreamWriter implements SerializationStrategy {
+public class SerializeToXMLStreamWriter extends SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToXMLStreamWriter(boolean cache) {
+    SerializeToXMLStreamWriter(boolean cache) {
         this.cache = cache;
     }
 

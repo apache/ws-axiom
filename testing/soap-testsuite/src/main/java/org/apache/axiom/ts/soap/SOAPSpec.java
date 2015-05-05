@@ -29,10 +29,12 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.apache.axiom.testing.multiton.Multiton;
+
 /**
  * Describes the characteristics of a given SOAP version.
  */
-public abstract class SOAPSpec extends Adaptable {
+public abstract class SOAPSpec extends Multiton {
     public static final SOAPSpec SOAP11 = new SOAPSpec("soap11",
             "text/xml",
             "http://schemas.xmlsoap.org/soap/envelope/",
@@ -105,7 +107,7 @@ public abstract class SOAPSpec extends Adaptable {
     private final String[] schemaResources;
     private Schema schema;
     
-    public SOAPSpec(String name, String contentType, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
+    private SOAPSpec(String name, String contentType, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
             QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
             QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
             String nextRoleURI, QName senderFaultCode, QName receiverFaultCode,

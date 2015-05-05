@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om;
 
+import static org.apache.axiom.testing.multiton.Multiton.getInstances;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -66,7 +68,7 @@ public class SAXResultSAXParserTest extends AbstractTestCase {
     }
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
-        for (ConformanceTestFile file : ConformanceTestFile.getConformanceTestFiles()) {
+        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
             suite.addTest(new SAXResultSAXParserTest(
                     file.getShortName() + " - " + name, factory, file));
         }

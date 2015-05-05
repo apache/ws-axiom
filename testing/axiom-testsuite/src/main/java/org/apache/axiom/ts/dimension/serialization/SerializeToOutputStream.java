@@ -28,10 +28,10 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Serializes an {@link OMContainer} using {@link OMContainer#serialize(OutputStream)} or
  * {@link OMContainer#serializeAndConsume(OutputStream)}.
  */
-public class SerializeToOutputStream implements SerializationStrategy {
+public class SerializeToOutputStream extends SerializationStrategy {
     private final boolean cache;
     
-    public SerializeToOutputStream(boolean cache) {
+    SerializeToOutputStream(boolean cache) {
         this.cache = cache;
     }
 

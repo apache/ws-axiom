@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.jaxp;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Iterator;
 
 import javax.xml.transform.stream.StreamSource;
 
@@ -27,6 +28,7 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
@@ -57,10 +59,9 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
 
     public static TestSuite suite() {
         TestSuite suite = new TestSuite();
-        ConformanceTestFile[] files = ConformanceTestFile.getConformanceTestFiles();
         for (int i=0; i<axiomImplementations.length; i++) {
-            for (int j=0; j<files.length; j++) {
-                suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], files[j]));
+            for (Iterator it = Multiton.getInstances(ConformanceTestFile.class).iterator(); it.hasNext(); ) {
+                suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], (ConformanceTestFile)it.next()));
             }
         }
         return suite;

@@ -29,10 +29,10 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Serializes an {@link OMContainer} by processing the result of
  * {@link OMContainer#getXMLStreamReader(boolean)}.
  */
-public class SerializeFromXMLStreamReader implements SerializationStrategy {
+public class SerializeFromXMLStreamReader extends SerializationStrategy {
     private final boolean cache;
     
-    public SerializeFromXMLStreamReader(boolean cache) {
+    SerializeFromXMLStreamReader(boolean cache) {
         this.cache = cache;
     }
 

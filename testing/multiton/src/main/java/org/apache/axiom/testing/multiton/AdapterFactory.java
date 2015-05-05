@@ -16,19 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws;
+package org.apache.axiom.testing.multiton;
 
-import org.apache.axiom.testing.multiton.AdapterType;
-
-@AdapterType
-public final class SOAPSpecAdapter {
-    private final String soapVersion;
-
-    SOAPSpecAdapter(String soapVersion) {
-        this.soapVersion = soapVersion;
-    }
-
-    public String getSoapVersion() {
-        return soapVersion;
-    }
+public interface AdapterFactory<T extends Multiton> {
+    void createAdapters(T instance, Adapters adapters);
 }

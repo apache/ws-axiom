@@ -33,6 +33,8 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.testing.multiton.AdapterFactory;
+import org.apache.axiom.testing.multiton.Adapters;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter.Getter;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter.Setter;
 

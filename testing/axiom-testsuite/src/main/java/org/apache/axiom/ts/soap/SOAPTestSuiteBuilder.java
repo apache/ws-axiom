@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import static org.apache.axiom.testing.multiton.Multiton.getInstances;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -28,7 +30,6 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
-import org.apache.axiom.ts.dimension.Strategies;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 
 public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
@@ -72,11 +73,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
         new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX) };
     
-    private static final BooleanAttribute[] booleanAttributes = {
-        BooleanAttribute.MUST_UNDERSTAND,
-        BooleanAttribute.RELAY,
-    };
-    
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
     private final boolean supportsBodyElementNameOptimization;
@@ -98,7 +94,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     }
     
     private void addTests(SOAPSpec spec) {
-        SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
         BooleanLiteral[] booleanLiterals = spec.getBooleanLiterals();
         String[] invalidBooleanLiterals = spec.getInvalidBooleanLiterals();
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
@@ -185,8 +180,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetMetaFactory(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetNamespace(metaFactory, spec));
-        for (int i=0; i<serializationStrategies.length; i++) {
-            SerializationStrategy ss = serializationStrategies[i];
+        for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
             addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
                     new SOAPFaultChild[] { SOAPFaultChild.REASON, SOAPFaultChild.CODE }, ss));
             addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
@@ -235,8 +229,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURI(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));
-        for (int i=0; i<booleanAttributes.length; i++) {
-            BooleanAttribute attribute = booleanAttributes[i];
+        for (BooleanAttribute attribute : getInstances(BooleanAttribute.class)) {
             if (attribute.isSupported(spec)) {
                 for (int j=0; j<booleanLiterals.length; j++) {
                     addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttribute(metaFactory, spec, attribute, booleanLiterals[j]));
@@ -299,8 +292,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     protected void addTests() {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);
-        SerializationStrategy[] serializationStrategies = Strategies.getSerializationStrategies();
-        ExpansionStrategy[] expansionStrategies = Strategies.getExpansionStrategies();
         for (int i=0; i<badSOAPFiles.length; i++) {
             addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFiles[i]));
         }
@@ -312,10 +303,10 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, msg));
         }
         for (int i=0; i<goodSOAPFiles.length; i++) {
-            for (int j=0; j<expansionStrategies.length; j++) {
-                for (int k=0; k<serializationStrategies.length; k++) {
-                    addTest(new org.apache.axiom.ts.soap.envelope.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategies[j], serializationStrategies[k]));
-                    addTest(new org.apache.axiom.ts.soap.message.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategies[j], serializationStrategies[k]));
+            for (ExpansionStrategy expansionStrategy : getInstances(ExpansionStrategy.class)) {
+                for (SerializationStrategy serializationStrategy : getInstances(SerializationStrategy.class)) {
+                    addTest(new org.apache.axiom.ts.soap.envelope.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategy, serializationStrategy));
+                    addTest(new org.apache.axiom.ts.soap.message.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategy, serializationStrategy));
                 }
             }
         }

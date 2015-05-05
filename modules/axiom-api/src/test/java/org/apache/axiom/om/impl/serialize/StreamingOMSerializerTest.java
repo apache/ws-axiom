@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.serialize;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Iterator;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -31,6 +32,7 @@ import javax.xml.transform.stream.StreamSource;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
@@ -66,9 +68,8 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
 
     public static TestSuite suite() throws Exception {
         TestSuite suite = new TestSuite();
-        ConformanceTestFile[] files = ConformanceTestFile.getConformanceTestFiles();
-        for (int i=0; i<files.length; i++) {
-            ConformanceTestFile file = files[i];
+        for (Iterator it = Multiton.getInstances(ConformanceTestFile.class).iterator(); it.hasNext(); ) {
+            ConformanceTestFile file = (ConformanceTestFile)it.next();
             suite.addTest(new StreamingOMSerializerTest(file.getShortName(), file));
         }
         return suite;

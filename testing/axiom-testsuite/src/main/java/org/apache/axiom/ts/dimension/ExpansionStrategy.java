@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
@@ -32,11 +33,11 @@ import org.junit.Assert;
  * Defines if and how an {@link OMContainer} is to be built or expanded during the execution of a
  * test case.
  */
-public interface ExpansionStrategy extends Dimension {
+public abstract class ExpansionStrategy extends Multiton implements Dimension {
     /**
      * Don't build the {@link OMContainer}.
      */
-    ExpansionStrategy DONT_EXPAND = new ExpansionStrategy() {
+    public static final ExpansionStrategy DONT_EXPAND = new ExpansionStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("expand", "no");
         }
@@ -62,7 +63,7 @@ public interface ExpansionStrategy extends Dimension {
     /**
      * Partially build the {@link OMContainer}.
      */
-    ExpansionStrategy PARTIAL = new ExpansionStrategy() {
+    public static final ExpansionStrategy PARTIAL = new ExpansionStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("expand", "partially");
         }
@@ -87,7 +88,7 @@ public interface ExpansionStrategy extends Dimension {
     /**
      * Fully build the {@link OMContainer}.
      */
-    ExpansionStrategy FULL = new ExpansionStrategy() {
+    public static final ExpansionStrategy FULL = new ExpansionStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("expand", "fully");
         }
@@ -110,12 +111,14 @@ public interface ExpansionStrategy extends Dimension {
         }
     };
 
+    private ExpansionStrategy() {}
+    
     /**
      * Apply the expansion strategy to the given {@link OMContainer}.
      * 
      * @param element
      */
-    void apply(OMContainer container);
+    public abstract void apply(OMContainer container);
     
     /**
      * Determines if serializing the {@link OMSourcedElement} after applying this expansion strategy
@@ -134,7 +137,7 @@ public interface ExpansionStrategy extends Dimension {
      * @return <code>true</code> if serializing the {@link OMSourcedElement} will consume it,
      *         <code>false</code> if the {@link OMSourcedElement} can be serialized multiple times
      */
-    boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy);
+    public abstract boolean isConsumedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy);
     
     /**
      * Determines if the {@link OMSourcedElement} to which this expansion strategy has been applied
@@ -152,5 +155,5 @@ public interface ExpansionStrategy extends Dimension {
      * 
      * @return the expected value of {@link OMSourcedElement#isExpanded()} after serialization
      */
-    boolean isExpandedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy);
+    public abstract boolean isExpandedAfterSerialization(boolean pushDS, boolean destructiveDS, SerializationStrategy serializationStrategy);
 }

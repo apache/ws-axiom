@@ -31,10 +31,10 @@ import org.xml.sax.XMLReader;
  * Serializes an {@link OMContainer} by processing the result of
  * {@link OMContainer#getSAXSource(boolean)}.
  */
-public class SerializeFromSAXSource implements SerializationStrategy {
+public class SerializeFromSAXSource extends SerializationStrategy {
     private final boolean cache;
     
-    public SerializeFromSAXSource(boolean cache) {
+    SerializeFromSAXSource(boolean cache) {
         this.cache = cache;
     }
 

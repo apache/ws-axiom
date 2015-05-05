@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.junit.Assert;
@@ -42,8 +43,8 @@ import org.xml.sax.InputSource;
  * this interface wraps an {@link OMElement} in a container of a specific type ({@link OMDocument}
  * or {@link OMElement}) in a specific state.
  */
-public interface ElementContext extends Dimension {
-    ElementContext ORPHAN = new ElementContext() {
+public abstract class ElementContext extends Multiton implements Dimension {
+    public static final ElementContext ORPHAN = new ElementContext() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("container", "none");
         }
@@ -60,7 +61,7 @@ public interface ElementContext extends Dimension {
     /**
      * The {@link OMElement} is a child of another (programmatically created) {@link OMElement}.
      */
-    ElementContext ELEMENT = new ElementContext() {
+    public static final ElementContext ELEMENT = new ElementContext() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("container", "element");
             testCase.addTestParameter("complete", true);
@@ -88,7 +89,7 @@ public interface ElementContext extends Dimension {
      * The {@link OMElement} is a child of another {@link OMElement} created from a parser and that
      * is incomplete.
      */
-    ElementContext INCOMPLETE_ELEMENT = new ElementContext() {
+    public static final ElementContext INCOMPLETE_ELEMENT = new ElementContext() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("container", "element");
             testCase.addTestParameter("complete", "false");
@@ -115,7 +116,9 @@ public interface ElementContext extends Dimension {
         }
     };
     
-    OMContainer wrap(OMElement element);
+    private ElementContext() {}
     
-    InputSource getControl(InputSource xml) throws Exception;
+    public abstract OMContainer wrap(OMElement element);
+    
+    public abstract InputSource getControl(InputSource xml) throws Exception;
 }

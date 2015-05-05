@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import static org.apache.axiom.testing.multiton.Multiton.getInstances;
+
 import javax.xml.transform.stream.StreamSource;
 
 import junit.framework.TestCase;
@@ -38,7 +40,7 @@ public class ValidationTest extends TestCase {
 
     public static TestSuite suite() {
         TestSuite suite = new TestSuite();
-        for (TestMessage message : TestMessage.getAll()) {
+        for (TestMessage message : getInstances(TestMessage.class)) {
             suite.addTest(new ValidationTest(message));
         }
         return suite;

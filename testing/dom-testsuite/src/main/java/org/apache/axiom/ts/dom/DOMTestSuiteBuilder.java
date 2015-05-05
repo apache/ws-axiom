@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom;
 
+import static org.apache.axiom.testing.multiton.Multiton.getInstances;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -65,7 +67,6 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     protected void addTests() {
         DocumentBuilderFactory dbf = dbff.newInstance();
         dbf.setNamespaceAware(true);
-        ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, true));
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
@@ -82,8 +83,8 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeWithParent(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAppendChildWrongDocument(dbf));
-        for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, conformanceFiles[i]));
+        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, file));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
         for (int i=0; i<validAttrQNames.length; i++) {

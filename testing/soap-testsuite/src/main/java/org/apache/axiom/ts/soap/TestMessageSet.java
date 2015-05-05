@@ -18,15 +18,12 @@
  */
 package org.apache.axiom.ts.soap;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.axiom.testing.multiton.Multiton;
 
 /**
  * A set of two equivalent SOAP messages, one for SOAP 1.1 and one for SOAP 1.2.
  */
-public final class TestMessageSet extends Adaptable {
-    private static final List<TestMessageSet> instances = new ArrayList<TestMessageSet>();
-    
+public final class TestMessageSet extends Multiton {
     /**
      * A simple SOAP message without header.
      */
@@ -69,13 +66,8 @@ public final class TestMessageSet extends Adaptable {
     private TestMessageSet(String name) {
         soap12Message = new SimpleTestMessage(SOAPSpec.SOAP12, "test-message/set/" + name + ".xml", "soap12/" + name);
         soap11Message = new ConvertedTestMessage(soap12Message, "soap11/" + name);
-        instances.add(this);
     }
 
-    public static TestMessageSet[] getAll() {
-        return instances.toArray(new TestMessageSet[instances.size()]);
-    }
-    
     /**
      * Get the test message for the given SOAP version.
      * 

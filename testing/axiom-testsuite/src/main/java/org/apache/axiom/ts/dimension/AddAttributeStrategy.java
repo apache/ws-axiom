@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
@@ -29,12 +30,12 @@ import org.apache.axiom.testutils.suite.MatrixTestCase;
  * Defines a strategy (in terms of usage of particular API methods) to add an attribute to an
  * element.
  */
-public interface AddAttributeStrategy extends Dimension {
+public abstract class AddAttributeStrategy extends Multiton implements Dimension {
     /**
      * Creates the attribute using {@link OMFactory#createOMAttribute(String, OMNamespace, String)}
      * and then adds it using {@link OMElement#addAttribute(OMAttribute)}.
      */
-    AddAttributeStrategy FACTORY = new AddAttributeStrategy() {
+    public static final AddAttributeStrategy FACTORY = new AddAttributeStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("addAttribute", "factory");
         }
@@ -49,7 +50,7 @@ public interface AddAttributeStrategy extends Dimension {
     /**
      * Adds the attribute using {@link OMElement#addAttribute(String, String, OMNamespace)}.
      */
-    AddAttributeStrategy DIRECT = new AddAttributeStrategy() {
+    public static final AddAttributeStrategy DIRECT = new AddAttributeStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("addAttribute", "direct");
         }
@@ -59,5 +60,7 @@ public interface AddAttributeStrategy extends Dimension {
         }
     };
     
-    OMAttribute addAttribute(OMElement element, String localName, OMNamespace ns, String value);
+    private AddAttributeStrategy() {}
+    
+    public abstract OMAttribute addAttribute(OMElement element, String localName, OMNamespace ns, String value);
 }

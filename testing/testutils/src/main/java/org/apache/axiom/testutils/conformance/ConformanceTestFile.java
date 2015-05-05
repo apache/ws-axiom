@@ -31,13 +31,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testing.multiton.Instances;
 import org.codehaus.stax2.DTDInfo;
 
 import com.ctc.wstx.stax.WstxInputFactory;
 
-public final class ConformanceTestFile {
-    private static ConformanceTestFile[] instances;
-    
+public final class ConformanceTestFile extends Multiton {
     private final String resourceName;
     private final String shortName;
     private final boolean hasDTD;
@@ -87,51 +87,41 @@ public final class ConformanceTestFile {
         return ConformanceTestFile.class.getClassLoader().getResource(resourceName);
     }
     
-    public static synchronized ConformanceTestFile[] getConformanceTestFiles() {
-        if (instances == null) {
-            try {
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        ConformanceTestFile.class.getResourceAsStream("filelist")));
-                List result = new ArrayList(10);
-                // We make use of Woodstox' DTDInfo interface here, but we want to be able to use system properties
-                // to specify the StAX implementation to be used by the tests. Therefore we need to create
-                // an instance of the Woodstox InputFactory implementation directly.
-                XMLInputFactory inputFactory = new WstxInputFactory();
-                inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
-                String name;
-                while ((name = in.readLine()) != null) {
-                    String resourceName = "org/apache/axiom/testutils/conformance/" + name;
-                    boolean hasDTD = false;
-                    boolean hasExternalSubset = false;
-                    boolean hasInternalSubset = false;
-                    boolean hasEntityReferences = false;
-                    try {
-                        XMLStreamReader reader = inputFactory.createXMLStreamReader(new StreamSource(
-                                ConformanceTestFile.class.getResource(name).toString()));
-                        while (reader.hasNext()) {
-                            switch (reader.next()) {
-                                case XMLStreamReader.DTD:
-                                    hasDTD = true;
-                                    hasInternalSubset = reader.getText().length() > 0;
-                                    hasExternalSubset = ((DTDInfo)reader).getDTDSystemId() != null;
-                                    break;
-                                case XMLStreamReader.ENTITY_REFERENCE:
-                                    hasEntityReferences = true;
-                                    break;
-                            }
-                        }
-                        reader.close();
-                    } catch (XMLStreamException ex) {
-                        throw new Error("Unable to parse " + resourceName);
-                    }
-                    result.add(new ConformanceTestFile(resourceName, name, hasDTD, hasExternalSubset, hasInternalSubset, hasEntityReferences));
+    @Instances
+    private static ConformanceTestFile[] instances() throws IOException, XMLStreamException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                ConformanceTestFile.class.getResourceAsStream("filelist")));
+        List<ConformanceTestFile> result = new ArrayList<ConformanceTestFile>(10);
+        // We make use of Woodstox' DTDInfo interface here, but we want to be able to use system properties
+        // to specify the StAX implementation to be used by the tests. Therefore we need to create
+        // an instance of the Woodstox InputFactory implementation directly.
+        XMLInputFactory inputFactory = new WstxInputFactory();
+        inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+        String name;
+        while ((name = in.readLine()) != null) {
+            String resourceName = "org/apache/axiom/testutils/conformance/" + name;
+            boolean hasDTD = false;
+            boolean hasExternalSubset = false;
+            boolean hasInternalSubset = false;
+            boolean hasEntityReferences = false;
+            XMLStreamReader reader = inputFactory.createXMLStreamReader(new StreamSource(
+                    ConformanceTestFile.class.getResource(name).toString()));
+            while (reader.hasNext()) {
+                switch (reader.next()) {
+                    case XMLStreamReader.DTD:
+                        hasDTD = true;
+                        hasInternalSubset = reader.getText().length() > 0;
+                        hasExternalSubset = ((DTDInfo)reader).getDTDSystemId() != null;
+                        break;
+                    case XMLStreamReader.ENTITY_REFERENCE:
+                        hasEntityReferences = true;
+                        break;
                 }
-                in.close();
-                return (ConformanceTestFile[])result.toArray(new ConformanceTestFile[result.size()]);
-            } catch (IOException ex) {
-                throw new Error("Unable to load file list: " + ex.getMessage());
             }
+            reader.close();
+            result.add(new ConformanceTestFile(resourceName, name, hasDTD, hasExternalSubset, hasInternalSubset, hasEntityReferences));
         }
-        return (ConformanceTestFile[])instances.clone();
+        in.close();
+        return result.toArray(new ConformanceTestFile[result.size()]);
     }
 }

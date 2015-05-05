@@ -16,19 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.springws;
+package org.apache.axiom.testing.multiton;
 
-import org.apache.axiom.testing.multiton.AdapterType;
+public class MultitonInstantiationException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
 
-@AdapterType
-public final class SOAPSpecAdapter {
-    private final String soapVersion;
-
-    SOAPSpecAdapter(String soapVersion) {
-        this.soapVersion = soapVersion;
+    public MultitonInstantiationException(String msg) {
+        super(msg);
     }
 
-    public String getSoapVersion() {
-        return soapVersion;
+    public MultitonInstantiationException(Throwable cause) {
+        super(cause);
     }
 }

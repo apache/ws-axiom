@@ -23,7 +23,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-public abstract class SOAPElementType extends Adaptable {
+import org.apache.axiom.testing.multiton.Multiton;
+
+public abstract class SOAPElementType extends Multiton {
     public static final SOAPElementType ENVELOPE = new SOAPElementType() {
         public QName getQName(SOAPSpec spec) {
             return spec.getEnvelopeQName();

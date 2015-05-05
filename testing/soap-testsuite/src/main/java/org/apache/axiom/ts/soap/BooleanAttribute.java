@@ -18,12 +18,14 @@
  */
 package org.apache.axiom.ts.soap;
 
+import org.apache.axiom.testing.multiton.Multiton;
+
 /**
  * Describes a boolean attribute that can appear on a SOAP header block. This includes the
  * <tt>mustUnderstand</tt> attribute in all SOAP versions as well as the <tt>relay</tt> attribute
  * defined by SOAP 1.2.
  */
-public abstract class BooleanAttribute extends Adaptable {
+public abstract class BooleanAttribute extends Multiton {
     public static final BooleanAttribute MUST_UNDERSTAND = new BooleanAttribute() {
         public String getName() {
             return "mustUnderstand";

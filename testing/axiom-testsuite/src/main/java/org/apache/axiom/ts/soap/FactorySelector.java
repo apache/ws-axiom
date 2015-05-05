@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testing.multiton.AdapterType;
 
 /**
  * {@link SOAPSpec} adapter that allows to retrieve the {@link SOAPFactory} corresponding to the

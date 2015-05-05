@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.testing.multiton;
 
 import java.util.HashMap;
 import java.util.HashSet;

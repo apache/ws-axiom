@@ -20,11 +20,12 @@ package org.apache.axiom.ts.dimension;
 
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public interface NoNamespaceStrategy extends Dimension {
-    NoNamespaceStrategy NULL = new NoNamespaceStrategy() {
+public abstract class NoNamespaceStrategy extends Multiton implements Dimension {
+    public static final NoNamespaceStrategy NULL = new NoNamespaceStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("ns", "null");
         }
@@ -34,7 +35,7 @@ public interface NoNamespaceStrategy extends Dimension {
         }
     };
     
-    NoNamespaceStrategy NULL_PREFIX = new NoNamespaceStrategy() {
+    public static final NoNamespaceStrategy NULL_PREFIX = new NoNamespaceStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("ns", "nullPrefix");
         }
@@ -44,7 +45,7 @@ public interface NoNamespaceStrategy extends Dimension {
         }
     };
     
-    NoNamespaceStrategy EMPTY = new NoNamespaceStrategy() {
+    public static final NoNamespaceStrategy EMPTY = new NoNamespaceStrategy() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("ns", "empty");
         }
@@ -54,5 +55,7 @@ public interface NoNamespaceStrategy extends Dimension {
         }
     };
     
-    OMNamespace createOMNamespace(OMFactory factory);
+    private NoNamespaceStrategy() {}
+    
+    public abstract OMNamespace createOMNamespace(OMFactory factory);
 }

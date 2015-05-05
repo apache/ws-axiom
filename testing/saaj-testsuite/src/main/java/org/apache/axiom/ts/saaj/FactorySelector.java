@@ -22,7 +22,7 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFactory;
 
-import org.apache.axiom.ts.soap.AdapterType;
+import org.apache.axiom.testing.multiton.AdapterType;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 /**

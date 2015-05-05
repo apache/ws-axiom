@@ -23,6 +23,8 @@ import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.testing.multiton.AdapterFactory;
+import org.apache.axiom.testing.multiton.Adapters;
 
 public class SOAPSpecAdapterFactory implements AdapterFactory<SOAPSpec> {
     public void createAdapters(SOAPSpec spec, Adapters adapters) {

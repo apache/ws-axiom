@@ -19,12 +19,16 @@
 package org.apache.axiom.ts.dimension.serialization;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testutils.suite.Dimension;
 
 /**
  * Defines a strategy to serialize an {@link OMContainer} instance to XML.
  */
-public interface SerializationStrategy extends Dimension {
+public abstract class SerializationStrategy extends Multiton implements Dimension {
+    SerializationStrategy() {}
+    
     /**
      * Serialize the given {@link OMContainer}.
      * 
@@ -33,7 +37,7 @@ public interface SerializationStrategy extends Dimension {
      * @return the serialized XML
      * @throws Exception
      */
-    XML serialize(OMContainer container) throws Exception;
+    public abstract XML serialize(OMContainer container) throws Exception;
 
     /**
      * Determine if this serialization strategy works in pull or push mode.
@@ -41,7 +45,7 @@ public interface SerializationStrategy extends Dimension {
      * @return <code>true</code> if the serialization is driven by Axiom, <code>false</code> if the
      *         serialization is driven by the application code
      */
-    boolean isPush();
+    public abstract boolean isPush();
     
     /**
      * Determine if this serialization strategy consumes the content of the {@link OMContainer}.
@@ -49,7 +53,7 @@ public interface SerializationStrategy extends Dimension {
      * @return <code>true</code> if the strategy preserves the content, <code>false</code> if it
      *         consumes the content
      */
-    boolean isCaching();
+    public abstract boolean isCaching();
     
     /**
      * Determine if this serialization strategy is able to correctly serialize the internal subset
@@ -58,5 +62,20 @@ public interface SerializationStrategy extends Dimension {
      * @return <code>true</code> if this strategy correctly serializes the internal subset of a DTD,
      *         <code>false</code> otherwise
      */
-    boolean supportsInternalSubset();
+    public abstract boolean supportsInternalSubset();
+    
+    @Instances
+    private static SerializationStrategy[] instances() {
+        return new SerializationStrategy[] {
+            new SerializeToOutputStream(true),
+            new SerializeToOutputStream(false),
+            new SerializeToWriter(true),
+            new SerializeToWriter(false),
+            new SerializeToXMLStreamWriter(true),
+            new SerializeToXMLStreamWriter(false),
+            new SerializeFromXMLStreamReader(true),
+            new SerializeFromXMLStreamReader(false),
+            new SerializeFromSAXSource(true),
+            new SerializeFromSAXSource(false) };
+    }
 }

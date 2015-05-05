@@ -24,6 +24,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.testing.multiton.AdapterType;
 import org.junit.Assert;
 import org.xml.sax.InputSource;
 

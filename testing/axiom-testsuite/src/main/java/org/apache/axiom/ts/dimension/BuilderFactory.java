@@ -26,6 +26,7 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
@@ -36,12 +37,12 @@ import org.xml.sax.InputSource;
 /**
  * Defines a strategy to create an {@link OMXMLParserWrapper} from a given test file.
  */
-public interface BuilderFactory extends Dimension {
+public abstract class BuilderFactory extends Multiton implements Dimension {
     /**
      * Creates an {@link OMXMLParserWrapper} directly from the given {@link InputSource}, i.e. let
      * instantiate an appropriate parser.
      */
-    BuilderFactory PARSER = new BuilderFactory() {
+    public static final BuilderFactory PARSER = new BuilderFactory() {
         public boolean isDeferredParsing() {
             return true;
         }
@@ -63,7 +64,7 @@ public interface BuilderFactory extends Dimension {
      * Creates an {@link OMXMLParserWrapper} by parsing the input using DOM and passing it as a DOM
      * tree to Axiom.
      */
-    BuilderFactory DOM = new BuilderFactory() {
+    public static final BuilderFactory DOM = new BuilderFactory() {
         public boolean isDeferredParsing() {
             return true;
         }
@@ -91,7 +92,7 @@ public interface BuilderFactory extends Dimension {
     /**
      * Creates an {@link OMXMLParserWrapper} by passing a {@link SAXSource} to Axiom.
      */
-    BuilderFactory SAX = new BuilderFactory() {
+    public static final BuilderFactory SAX = new BuilderFactory() {
         public boolean isDeferredParsing() {
             return false;
         }
@@ -116,6 +117,8 @@ public interface BuilderFactory extends Dimension {
         }
     };
     
+    private BuilderFactory() {}
+    
     /**
      * Determines if the builder created by this strategy supports deferred parsing.
      * 
@@ -123,9 +126,9 @@ public interface BuilderFactory extends Dimension {
      *         builder doesn't support deferred parsing and will build the document all in once
      *         (this is the case for SAX only)
      */
-    boolean isDeferredParsing();
+    public abstract boolean isDeferredParsing();
     
-    void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
+    public abstract void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
     
-    OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
+    public abstract OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception;
 }

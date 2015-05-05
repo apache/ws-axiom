@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
 
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
@@ -41,7 +42,6 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
     }
 
     private void addTests(StAXImplementation staxImpl) {
-        ConformanceTestFile[] conformanceTestFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new TestCloseInputStream(staxImpl));
         addTest(new TestCloseReader(staxImpl));
         addTest(new TestCreateXMLEventWriterWithNullEncoding(staxImpl));
@@ -94,8 +94,8 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceContextImplicitNamespaces(staxImpl));
-        for (int i=0; i<conformanceTestFiles.length; i++) {
-            ConformanceTestFile file = conformanceTestFiles[i];
+        for (Iterator it = Multiton.getInstances(ConformanceTestFile.class).iterator(); it.hasNext(); ) {
+            ConformanceTestFile file = (ConformanceTestFile)it.next();
             // Some parsers have problems with external subsets; anyway the test files with
             // DTDs are not essential for this test.
             if (!file.hasExternalSubset()) {

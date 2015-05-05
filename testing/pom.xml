@@ -35,6 +35,7 @@
         <module>axiom-testsuite</module>
         <module>dom-testsuite</module>
         <module>jaxen-testsuite</module>
+        <module>multiton</module>
         <module>saaj-testsuite</module>
         <module>soap-testsuite</module>
         <module>spring-ws-testsuite</module>

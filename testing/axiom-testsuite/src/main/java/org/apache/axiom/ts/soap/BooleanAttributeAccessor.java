@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testing.multiton.AdapterType;
 
 /**
  * {@link BooleanAttribute} adapter that allows to invoke the getter and setter methods for the

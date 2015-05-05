@@ -19,6 +19,8 @@
 package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.testing.multiton.AdapterFactory;
+import org.apache.axiom.testing.multiton.Adapters;
 
 public class BooleanAttributeAdapterFactory implements AdapterFactory<BooleanAttribute> {
     public void createAdapters(BooleanAttribute attribute, Adapters adapters) {
