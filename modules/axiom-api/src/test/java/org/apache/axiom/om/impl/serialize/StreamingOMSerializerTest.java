@@ -34,14 +34,14 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 public class StreamingOMSerializerTest extends AbstractTestCase {
-    private final ConformanceTestFile file;
+    private final XMLSample file;
 
-    public StreamingOMSerializerTest(String name, ConformanceTestFile file) {
+    public StreamingOMSerializerTest(String name, XMLSample file) {
         super(name);
         this.file = file;
     }
@@ -68,8 +68,8 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
 
     public static TestSuite suite() throws Exception {
         TestSuite suite = new TestSuite();
-        for (Iterator it = Multiton.getInstances(ConformanceTestFile.class).iterator(); it.hasNext(); ) {
-            ConformanceTestFile file = (ConformanceTestFile)it.next();
+        for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
+            XMLSample file = (XMLSample)it.next();
             suite.addTest(new StreamingOMSerializerTest(file.getShortName(), file));
         }
         return suite;

@@ -25,7 +25,6 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -42,6 +41,7 @@ import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
+import org.apache.axiom.ts.xml.XMLSample;
 
 public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final OMContainerFactory[] containerFactories = {
@@ -99,7 +99,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithInputStream(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithReader(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
-        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+        for (XMLSample file : getInstances(XMLSample.class)) {
             if (file.hasEntityReferences()) {
                 addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, Boolean.TRUE));
                 addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, Boolean.FALSE));
@@ -129,7 +129,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestReadAttachmentBeforeRootPartComplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
-        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+        for (XMLSample file : getInstances(XMLSample.class)) {
             for (int j=0; j<containerFactories.length; j++) {
                 OMContainerFactory cf = containerFactories[j];
                 for (BuilderFactory bf : getInstances(BuilderFactory.class)) {
@@ -150,7 +150,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestBuild(metaFactory));
-        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+        for (XMLSample file : getInstances(XMLSample.class)) {
             addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, file));
         }
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"));
@@ -163,7 +163,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
             XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
             if (xsltImplementation.supportsLexicalHandlerWithStreamSource()) {
-                for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+                for (XMLSample file : getInstances(XMLSample.class)) {
                     addTest(new org.apache.axiom.ts.om.document.TestGetSAXResult(metaFactory, xsltImplementation, file));
                 }
             }
@@ -213,7 +213,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestBuildDiscarded(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
-        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+        for (XMLSample file : getInstances(XMLSample.class)) {
             if (!file.hasEntityReferences()) {
                 addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement2(metaFactory, file));
             }

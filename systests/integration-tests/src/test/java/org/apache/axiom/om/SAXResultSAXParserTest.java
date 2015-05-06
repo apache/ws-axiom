@@ -32,7 +32,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -41,9 +41,9 @@ import org.xml.sax.XMLReader;
 
 public class SAXResultSAXParserTest extends AbstractTestCase {
     private final SAXParserFactory factory;
-    private final ConformanceTestFile file;
+    private final XMLSample file;
     
-    public SAXResultSAXParserTest(String name, SAXParserFactory factory, ConformanceTestFile file) {
+    public SAXResultSAXParserTest(String name, SAXParserFactory factory, XMLSample file) {
         super(name);
         this.factory = factory;
         this.file = file;
@@ -68,7 +68,7 @@ public class SAXResultSAXParserTest extends AbstractTestCase {
     }
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
-        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+        for (XMLSample file : getInstances(XMLSample.class)) {
             suite.addTest(new SAXResultSAXParserTest(
                     file.getShortName() + " - " + name, factory, file));
         }

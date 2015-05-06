@@ -20,16 +20,16 @@ package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
 public class TestCloneNode extends DOMTestCase {
-    private final ConformanceTestFile file;
+    private final XMLSample file;
 
-    public TestCloneNode(DocumentBuilderFactory dbf, ConformanceTestFile file) {
+    public TestCloneNode(DocumentBuilderFactory dbf, XMLSample file) {
         super(dbf);
         this.file = file;
         addTestParameter("file", file.getShortName());

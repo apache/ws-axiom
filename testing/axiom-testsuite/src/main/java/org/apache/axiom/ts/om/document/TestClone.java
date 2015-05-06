@@ -25,12 +25,12 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
 public class TestClone extends ConformanceTestCase {
-    public TestClone(OMMetaFactory metaFactory, ConformanceTestFile file) {
+    public TestClone(OMMetaFactory metaFactory, XMLSample file) {
         super(metaFactory, file);
     }
 

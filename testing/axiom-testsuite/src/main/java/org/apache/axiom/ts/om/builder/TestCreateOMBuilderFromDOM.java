@@ -29,14 +29,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     private final Boolean expandEntityReferences;
     
-    public TestCreateOMBuilderFromDOM(OMMetaFactory metaFactory, ConformanceTestFile file,
+    public TestCreateOMBuilderFromDOM(OMMetaFactory metaFactory, XMLSample file,
             Boolean expandEntityReferences) {
         super(metaFactory, file);
         this.expandEntityReferences = expandEntityReferences;

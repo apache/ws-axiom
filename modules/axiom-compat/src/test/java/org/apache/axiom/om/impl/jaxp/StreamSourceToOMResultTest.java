@@ -30,17 +30,17 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 
 public class StreamSourceToOMResultTest extends MatrixTestCase {
     private static final String[] axiomImplementations = { "default", "dom" };
     
     private final OMMetaFactory omMetaFactory;
-    private final ConformanceTestFile file;
+    private final XMLSample file;
     
-    private StreamSourceToOMResultTest(String axiomImplementation, ConformanceTestFile file) {
+    private StreamSourceToOMResultTest(String axiomImplementation, XMLSample file) {
         omMetaFactory = OMAbstractFactory.getMetaFactory(axiomImplementation);
         this.file = file;
         addTestParameter("axiomImplementation", axiomImplementation);
@@ -60,8 +60,8 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
     public static TestSuite suite() {
         TestSuite suite = new TestSuite();
         for (int i=0; i<axiomImplementations.length; i++) {
-            for (Iterator it = Multiton.getInstances(ConformanceTestFile.class).iterator(); it.hasNext(); ) {
-                suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], (ConformanceTestFile)it.next()));
+            for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
+                suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], (XMLSample)it.next()));
             }
         }
         return suite;

@@ -47,15 +47,6 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>${stax.impl.groupid}</groupId>
-            <artifactId>${stax.impl.artifact}</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>multiton</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -86,66 +77,4 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>${project.build.directory}/generated-resources</directory>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <source>
-                                <!-- This generates a list of the files in src/main/resources/org/apache/axiom/testutils/conformance.
-                                     This is useful when loading these files from the classpath. -->
-                                <![CDATA[
-                                    def filelist = new File(project.build.directory, "generated-resources/org/apache/axiom/testutils/conformance/filelist");
-                                    filelist.parentFile.mkdirs();
-                                    filelist.delete();
-                                    new File(project.basedir, "src/main/resources/org/apache/axiom/testutils/conformance").eachFile({
-                                        if (it.file && it.name.endsWith(".xml")) {
-                                            filelist.append("$it.name\n");
-                                        }
-                                    })
-                                ]]>
-                            </source>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>apache-release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.rat</groupId>
-                        <artifactId>apache-rat-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <!-- src/main/resources contains test files and they obviously cannot
-                                     all contain a valid license header -->
-                                <exclude>src/main/resources/**</exclude>
-                            </excludes>
-                        </configuration> 
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

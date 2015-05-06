@@ -55,6 +55,11 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>xml-testsuite</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>

@@ -28,15 +28,15 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetSAXResult extends ConformanceTestCase {
     private final XSLTImplementation xsltImplementation;
     
     public TestGetSAXResult(OMMetaFactory metaFactory,
-            XSLTImplementation xsltImplementation, ConformanceTestFile file) {
+            XSLTImplementation xsltImplementation, XMLSample file) {
         super(metaFactory, file);
         this.xsltImplementation = xsltImplementation;
         xsltImplementation.addTestParameters(this);

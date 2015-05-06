@@ -27,13 +27,13 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 
 public class TestGetNamespaceContext extends DialectTestCase {
-    private final ConformanceTestFile testResource;
+    private final XMLSample testResource;
     
-    public TestGetNamespaceContext(StAXImplementation staxImpl, ConformanceTestFile testResource) {
+    public TestGetNamespaceContext(StAXImplementation staxImpl, XMLSample testResource) {
         super(staxImpl);
         this.testResource = testResource;
         addTestParameter("file", testResource.getShortName());

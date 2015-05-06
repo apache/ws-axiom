@@ -30,9 +30,9 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.objectweb.asm.ClassReader;
 import org.w3c.domts.DOMTestCase;
 import org.w3c.domts.DOMTestDocumentBuilderFactory;
@@ -83,7 +83,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeWithParent(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAppendChildWrongDocument(dbf));
-        for (ConformanceTestFile file : getInstances(ConformanceTestFile.class)) {
+        for (XMLSample file : getInstances(XMLSample.class)) {
             addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, file));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));

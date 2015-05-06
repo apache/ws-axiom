@@ -27,10 +27,10 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.XMLAssertEx;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.XML;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.InputSource;
 
@@ -38,7 +38,7 @@ public class TestSerialize extends ConformanceTestCase {
     private final OMContainerFactory containerFactory;
     private final SerializationStrategy serializationStrategy;
     
-    public TestSerialize(OMMetaFactory metaFactory, ConformanceTestFile file,
+    public TestSerialize(OMMetaFactory metaFactory, XMLSample file,
             OMContainerFactory containerFactory, SerializationStrategy serializationStrategy) {
         super(metaFactory, file);
         this.containerFactory = containerFactory;
