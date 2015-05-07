@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.testutils.stax;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -33,8 +36,6 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
-import junit.framework.Assert;
-
 /**
  * Helper class that compares the events produced by two {@link XMLStreamReader} objects.
  * Note that this class is not meant to be used to compare two XML documents (the error
@@ -43,25 +44,25 @@ import junit.framework.Assert;
  * all methods (that don't modify the reader state) are called on both readers and the results
  * (return values or exceptions thrown) of these invocations are compared to each other.
  */
-public class XMLStreamReaderComparator extends Assert {
+public class XMLStreamReaderComparator {
     private final XMLStreamReader expected;
     private final XMLStreamReader actual;
     private boolean compareEntityReplacementValue = true;
     private boolean compareCharacterEncodingScheme = true;
     private boolean compareEncoding = true;
-    private final LinkedList path = new LinkedList();
+    private final LinkedList<QName> path = new LinkedList<QName>();
     
     /**
      * Set collecting all prefixes seen in the document to be able to test
      * {@link XMLStreamReader#getNamespaceURI(String)}.
      */
-    private final Set prefixes = new HashSet();
+    private final Set<String> prefixes = new HashSet<String>();
     
     /**
      * Set collecting all namespace URIs seen in the document to be able to
      * test {@link NamespaceContext#getPrefix(String)}.
      */
-    private final Set namespaceURIs = new HashSet();
+    private final Set<String> namespaceURIs = new HashSet<String>();
     
     public XMLStreamReaderComparator(XMLStreamReader expected, XMLStreamReader actual) {
         this.expected = expected;
@@ -73,14 +74,14 @@ public class XMLStreamReaderComparator extends Assert {
         buffer.append("event type ");
         buffer.append(expected.getEventType());
         buffer.append("; location ");
-        for (Iterator it = path.iterator(); it.hasNext(); ) {
+        for (QName qname : path) {
             buffer.append('/');
-            buffer.append(it.next());
+            buffer.append(qname);
         }
         return buffer.toString();
     }
     
-    private Object[] invoke(String methodName, Class[] paramTypes, Object[] args) throws Exception {
+    private Object[] invoke(String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
         Method method = XMLStreamReader.class.getMethod(methodName, paramTypes);
         
         Object expectedResult;
@@ -128,7 +129,7 @@ public class XMLStreamReaderComparator extends Assert {
         return invoke(methodName, new Class[0], new Object[0]);
     }
 
-    private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args,
+    private Object assertSameResult(String methodName, Class<?>[] paramTypes, Object[] args,
             Normalizer normalizer) throws Exception {
         
         Object[] results = invoke(methodName, paramTypes, args);
@@ -144,7 +145,7 @@ public class XMLStreamReaderComparator extends Assert {
         }
     }
     
-    private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args) throws Exception {
+    private Object assertSameResult(String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
         return assertSameResult(methodName, paramTypes, args, Normalizer.IDENTITY);
     }
     
@@ -156,8 +157,8 @@ public class XMLStreamReaderComparator extends Assert {
         return assertSameResult(methodName, Normalizer.IDENTITY);
     }
     
-    private Set toPrefixSet(Iterator it) {
-        Set set = new HashSet();
+    private Set<String> toPrefixSet(Iterator<?> it) {
+        Set<String> set = new HashSet<String>();
         while (it.hasNext()) {
             String prefix = (String)it.next();
             // TODO: Woodstox returns null instead of "" for the default namespace.
@@ -169,14 +170,12 @@ public class XMLStreamReaderComparator extends Assert {
     }
     
     private void compareNamespaceContexts(NamespaceContext expected, NamespaceContext actual) {
-        for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
-            String prefix = (String)it.next();
+        for (String prefix : prefixes) {
             if (prefix != null) {
                 assertEquals("Namespace URI for prefix '" + prefix + "' (" + getLocation() + ")", expected.getNamespaceURI(prefix), actual.getNamespaceURI(prefix));
             }
         }
-        for (Iterator it = namespaceURIs.iterator(); it.hasNext(); ) {
-            String namespaceURI = (String)it.next();
+        for (String namespaceURI : namespaceURIs) {
             if (namespaceURI != null && namespaceURI.length() > 0) {
                 assertEquals(
                         "Prefix for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
@@ -238,12 +237,12 @@ public class XMLStreamReaderComparator extends Assert {
             // to check that an appropriate exception is thrown for events other than
             // START_ELEMENT
             for (int i=0; i < (attributeCount == null ? 1 : attributeCount.intValue()); i++) {
-                Class[] paramTypes = { Integer.TYPE };
+                Class<?>[] paramTypes = { Integer.TYPE };
                 Object[] args = { new Integer(i) };
                 assertSameResult("getAttributeLocalName", paramTypes, args);
                 assertSameResult("getAttributeName", paramTypes, args);
-                namespaceURIs.add(assertSameResult("getAttributeNamespace", paramTypes, args));
-                prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args, Normalizer.EMPTY_STRING_TO_NULL));
+                namespaceURIs.add((String)assertSameResult("getAttributeNamespace", paramTypes, args));
+                prefixes.add((String)assertSameResult("getAttributePrefix", paramTypes, args, Normalizer.EMPTY_STRING_TO_NULL));
                 assertSameResult("getAttributeType", paramTypes, args);
                 assertSameResult("getAttributeValue", paramTypes, args);
                 assertSameResult("isAttributeSpecified", paramTypes, args);
@@ -259,8 +258,8 @@ public class XMLStreamReaderComparator extends Assert {
             assertSameResult("getName");
             Integer namespaceCount = (Integer)assertSameResult("getNamespaceCount");
             if (namespaceCount != null) {
-                Map expectedNamespaces = new HashMap();
-                Map actualNamespaces = new HashMap();
+                Map<String,String> expectedNamespaces = new HashMap<String,String>();
+                Map<String,String> actualNamespaces = new HashMap<String,String>();
                 for (int i=0; i<namespaceCount.intValue(); i++) {
                     String expectedPrefix = expected.getNamespacePrefix(i);
                     String expectedNamespaceURI = expected.getNamespaceURI(i);
@@ -279,10 +278,10 @@ public class XMLStreamReaderComparator extends Assert {
                 }
                 assertEquals(expectedNamespaces, actualNamespaces);
             }
-            namespaceURIs.add(assertSameResult("getNamespaceURI"));
+            namespaceURIs.add((String)assertSameResult("getNamespaceURI"));
             assertSameResult("getPIData");
             assertSameResult("getPITarget");
-            prefixes.add(assertSameResult("getPrefix"));
+            prefixes.add((String)assertSameResult("getPrefix"));
             if (eventType != XMLStreamReader.ENTITY_REFERENCE || compareEntityReplacementValue) {
                 assertSameResult("getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : Normalizer.IDENTITY);
             }
@@ -309,8 +308,7 @@ public class XMLStreamReaderComparator extends Assert {
             // only allows it for some states.
             if (eventType == XMLStreamReader.START_ELEMENT ||
                     eventType == XMLStreamReader.END_ELEMENT) {
-                for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
-                    String prefix = (String)it.next();
+                for (String prefix : prefixes) {
                     // The StAX specs are not clear about the expected result of getNamespaceURI
                     // when called with prefix "xml" (which doesn't require an explicit declaration)
                     if (prefix != null && !prefix.equals("xml")) {
