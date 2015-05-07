@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.testutils.stax;
 
+import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
@@ -177,14 +179,19 @@ public class XMLStreamReaderComparator {
         }
         for (String namespaceURI : namespaceURIs) {
             if (namespaceURI != null && namespaceURI.length() > 0) {
-                assertEquals(
-                        "Prefix for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
-                        expected.getPrefix(namespaceURI),
-                        actual.getPrefix(namespaceURI));
+                Set<String> prefixes = toPrefixSet(expected.getPrefixes(namespaceURI));
                 assertEquals(
                         "Prefixes for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
-                        toPrefixSet(expected.getPrefixes(namespaceURI)),
+                        prefixes,
                         toPrefixSet(actual.getPrefixes(namespaceURI)));
+                if (prefixes.size() <= 1) {
+                    assertEquals(
+                            "Prefix for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
+                            expected.getPrefix(namespaceURI),
+                            actual.getPrefix(namespaceURI));
+                } else {
+                    assertThat(actual.getPrefix(namespaceURI), isIn(prefixes));
+                }
             }
         }
     }
