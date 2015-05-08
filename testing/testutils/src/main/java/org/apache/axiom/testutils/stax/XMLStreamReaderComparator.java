@@ -47,11 +47,12 @@ import javax.xml.stream.XMLStreamReader;
  * (return values or exceptions thrown) of these invocations are compared to each other.
  */
 public class XMLStreamReaderComparator {
-    private final XMLStreamReader expected;
-    private final XMLStreamReader actual;
+    private XMLStreamReader expected;
+    private XMLStreamReader actual;
     private boolean compareEntityReplacementValue = true;
     private boolean compareCharacterEncodingScheme = true;
     private boolean compareEncoding = true;
+    private boolean sortAttributes = false;
     private final LinkedList<QName> path = new LinkedList<QName>();
     
     /**
@@ -227,7 +228,15 @@ public class XMLStreamReaderComparator {
         compareEncoding = value;
     }
 
+    public void setSortAttributes(boolean sortAttributes) {
+        this.sortAttributes = sortAttributes;
+    }
+
     public void compare() throws Exception {
+        if (sortAttributes) {
+            expected = new AttributeSortingXMLStreamReaderFilter(expected);
+            actual = new AttributeSortingXMLStreamReaderFilter(actual);
+        }
         while (true) {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
             if (eventType == XMLStreamReader.START_ELEMENT) {

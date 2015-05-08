@@ -74,6 +74,8 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
             // stores the unparsed replacement value. Therefore OMEntityReference#getReplacementText()
             // returns null for nodes created from a DOM tree.
             comparator.setCompareEntityReplacementValue(false);
+            // DOM (or at least Xerces) sorts attributes
+            comparator.setSortAttributes(true);
         }
 
         public void addTestParameters(MatrixTestCase testCase) {
