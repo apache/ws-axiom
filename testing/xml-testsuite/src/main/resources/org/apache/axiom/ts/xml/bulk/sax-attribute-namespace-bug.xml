@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<root xmlns:p="urn:test">
+  <!-- This used to trigger a bug in the SAX builder: the attribute was created
+       with the wrong prefix ("" instead of "p"). -->
+  <child xmlns="urn:test" p:attr="value"/>
+</root>

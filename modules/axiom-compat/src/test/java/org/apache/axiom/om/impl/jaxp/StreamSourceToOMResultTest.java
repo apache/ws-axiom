@@ -61,7 +61,10 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
         TestSuite suite = new TestSuite();
         for (int i=0; i<axiomImplementations.length; i++) {
             for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
-                suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], (XMLSample)it.next()));
+                XMLSample sample = (XMLSample)it.next();
+                if (!sample.getShortName().equals("sax-attribute-namespace-bug.xml")) {
+                    suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], sample));
+                }
             }
         }
         return suite;

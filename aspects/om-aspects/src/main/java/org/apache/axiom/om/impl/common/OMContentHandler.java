@@ -34,8 +34,6 @@ import org.xml.sax.ext.LexicalHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
-
 /**
  * For internal use only.
  */
@@ -257,25 +255,22 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     
             int j = atts.getLength();
             for (int i = 0; i < j; i++) {
+                String attrQName = atts.getQName(i);
                 // Note that some SAX parsers report namespace declarations as attributes in addition
                 // to calling start/endPrefixMapping.
                 // NOTE: This filter was introduced to make SAXOMBuilder work with some versions of
                 //       XMLBeans (2.3.0). It is not clear whether this is a bug in XMLBeans or not.
                 //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
                 //       If this test causes problems with other parsers, don't hesitate to remove it.
-                if (!atts.getQName(i).startsWith("xmlns")) {
+                if (!attrQName.startsWith("xmlns")) {
                     String attrNamespaceURI = atts.getURI(i);
+                    idx = attrQName.indexOf(':');
+                    String attrPrefix = idx == -1 ? "" : attrQName.substring(0, idx);
                     OMNamespace ns;
                     if (attrNamespaceURI.length() > 0) {
-                        ns = element.findNamespace(atts.getURI(i), null);
+                        ns = element.findNamespace(attrNamespaceURI, attrPrefix);
                         if (ns == null) {
-                            // The "xml" prefix is not necessarily declared explicitly; in this case,
-                            // create a new OMNamespace instance.
-                            if (attrNamespaceURI.equals(XMLConstants.XML_NS_URI)) {
-                                ns = element.getOMFactory().createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
-                            } else {
-                                throw new SAXException("Unbound namespace " + attrNamespaceURI);
-                            }
+                            throw new SAXException("Unbound namespace " + attrNamespaceURI);
                         }
                     } else {
                         ns = null;
