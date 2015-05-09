@@ -35,7 +35,6 @@ public abstract class WritableBlobTestBase extends TestCase {
     private final static Random random = new Random();
     
     protected abstract WritableBlob createBlob();
-    protected abstract void releaseBlob(WritableBlob blob);
     
     private void doTestRandomReadWrite(int size) throws IOException {
         byte[] data = new byte[size];
@@ -74,7 +73,7 @@ public abstract class WritableBlobTestBase extends TestCase {
             assertTrue(Arrays.equals(data, data2));
         }
         finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
     
@@ -108,7 +107,7 @@ public abstract class WritableBlobTestBase extends TestCase {
             assertTrue(Arrays.equals(sourceData1, data1));
             assertTrue(Arrays.equals(sourceData2, data2));
         } finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
     
@@ -127,7 +126,7 @@ public abstract class WritableBlobTestBase extends TestCase {
             }
         }
         finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
     
@@ -154,7 +153,7 @@ public abstract class WritableBlobTestBase extends TestCase {
                 out.close();
             }
         } finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
     
@@ -170,7 +169,7 @@ public abstract class WritableBlobTestBase extends TestCase {
                 // Expected
             }
         } finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
     
@@ -203,7 +202,7 @@ public abstract class WritableBlobTestBase extends TestCase {
                 }
             }
         } finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
     
@@ -234,7 +233,7 @@ public abstract class WritableBlobTestBase extends TestCase {
                 out.close();
             }
         } finally {
-            releaseBlob(blob);
+            blob.release();
         }
     }
 }

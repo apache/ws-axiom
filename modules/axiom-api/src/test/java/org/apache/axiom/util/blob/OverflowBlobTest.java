@@ -23,8 +23,4 @@ public class OverflowBlobTest extends WritableBlobTestBase {
     protected WritableBlob createBlob() {
         return new OverflowBlob(16, 1024, "test", ".dat");
     }
-
-    protected void releaseBlob(WritableBlob blob) {
-        ((OverflowBlob)blob).release();
-    }
 }

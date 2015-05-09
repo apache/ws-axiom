@@ -23,8 +23,4 @@ public class MemoryBlobTest extends WritableBlobTestBase {
     protected WritableBlob createBlob() {
         return new MemoryBlob();
     }
-
-    protected void releaseBlob(WritableBlob blob) {
-        // Nothing to do here
-    }
 }
