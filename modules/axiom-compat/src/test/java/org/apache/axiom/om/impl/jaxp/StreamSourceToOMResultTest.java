@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 
@@ -58,15 +59,16 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
     }
 
     public static TestSuite suite() {
-        TestSuite suite = new TestSuite();
-        for (int i=0; i<axiomImplementations.length; i++) {
-            for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
-                XMLSample sample = (XMLSample)it.next();
-                if (!sample.getShortName().equals("sax-attribute-namespace-bug.xml")) {
-                    suite.addTest(new StreamSourceToOMResultTest(axiomImplementations[i], sample));
+        MatrixTestSuiteBuilder builder = new MatrixTestSuiteBuilder() {
+            protected void addTests() {
+                for (int i=0; i<axiomImplementations.length; i++) {
+                    for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
+                        addTest(new StreamSourceToOMResultTest(axiomImplementations[i], (XMLSample)it.next()));
+                    }
                 }
             }
-        }
-        return suite;
+        };
+        builder.exclude("(|(file=sax-attribute-namespace-bug.xml)(file=large.xml))");
+        return builder.build();
     }
 }

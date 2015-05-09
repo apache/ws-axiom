@@ -114,7 +114,7 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
             factory.setNamespaceAware(true);
             factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
             SAXParser parser = factory.newSAXParser();
-            SAXSource source = new SAXSource(parser.getXMLReader(), inputSource);
+            SAXSource source = new SAXSource(new CoalescingXMLFilter(parser.getXMLReader()), inputSource);
             return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source, false);
         }
     };

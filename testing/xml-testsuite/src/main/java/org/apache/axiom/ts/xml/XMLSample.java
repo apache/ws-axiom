@@ -33,8 +33,7 @@ public final class XMLSample extends Multiton {
     /**
      * An XML document that is larger than the input buffer of typical XML parsers.
      */
-    // TODO: doesn't work yet; triggers a bug in the StAX and SAX builders
-//    public static final XMLSample LARGE = new XMLSample("large.xml");
+    public static final XMLSample LARGE = new XMLSample("large.xml");
     
     private final String resourceName;
     private final String shortName;
