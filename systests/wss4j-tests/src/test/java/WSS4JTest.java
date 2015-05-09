@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Vector;
 
@@ -67,7 +66,7 @@ public class WSS4JTest {
         Document signedDoc = sign.build(doc, crypto, secHeader);
         
         WSSecurityEngine secEngine = new WSSecurityEngine();
-        assertThat(secEngine.processSecurityHeader(signedDoc, null, null, crypto), hasSize(2));
+        assertThat(secEngine.processSecurityHeader(signedDoc, null, null, crypto)).hasSize(2);
     }
     
     @Test

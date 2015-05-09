@@ -18,11 +18,7 @@
  */
 package org.apache.axiom.ts.om.cross;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -38,7 +34,7 @@ public class TestAddChild extends CrossOMTestCase {
         OMElement orgChild = altMetaFactory.getOMFactory().createOMElement("child", null);
         parent.addChild(orgChild);
         OMElement child = (OMElement)parent.getFirstOMChild();
-        assertThat(child, is(not(sameInstance(orgChild))));
-        assertThat(child.getLocalName(), is(equalTo("child")));
+        assertThat(child).isNotSameAs(orgChild);
+        assertThat(child.getLocalName()).isEqualTo("child");
     }
 }

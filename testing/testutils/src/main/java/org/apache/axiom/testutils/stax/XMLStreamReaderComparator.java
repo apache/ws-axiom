@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.testutils.stax;
 
-import static org.hamcrest.Matchers.isIn;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
@@ -191,7 +190,7 @@ public class XMLStreamReaderComparator {
                             expected.getPrefix(namespaceURI),
                             actual.getPrefix(namespaceURI));
                 } else {
-                    assertThat(actual.getPrefix(namespaceURI), isIn(prefixes));
+                    assertThat(actual.getPrefix(namespaceURI)).isIn(prefixes);
                 }
             }
         }

@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.ts.dom.text;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -37,6 +35,6 @@ public class TestReplaceDataAppend extends DOMTestCase {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Text text = doc.createTextNode("AB");
         text.replaceData(2, 0, "CD");
-        assertThat(text.getData(), is(equalTo("ABCD")));
+        assertThat(text.getData()).isEqualTo("ABCD");
     }
 }

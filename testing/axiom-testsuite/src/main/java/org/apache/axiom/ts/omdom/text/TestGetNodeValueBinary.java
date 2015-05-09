@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.ts.omdom.text;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayInputStream;
 
@@ -45,7 +43,7 @@ public class TestGetNodeValueBinary extends AxiomTestCase {
         DataSource ds = new RandomDataSource(666L, 1000);
         Text text = (Text)factory.createOMText(new DataHandler(ds), false);
         String nodeValue = text.getNodeValue();
-        assertThat(nodeValue, is(notNullValue()));
+        assertThat(nodeValue).isNotNull();
         IOTestUtils.compareStreams(ds.getInputStream(),
                 new ByteArrayInputStream(Base64.decodeBase64(nodeValue)));
     }

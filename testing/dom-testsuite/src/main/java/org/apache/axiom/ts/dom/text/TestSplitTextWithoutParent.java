@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.ts.dom.text;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -41,7 +39,7 @@ public class TestSplitTextWithoutParent extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().newDocument();
         Text text = document.createTextNode("ABCD");
         Text newText = text.splitText(2);
-        assertThat(text.getData(), is(equalTo("AB")));
-        assertThat(newText.getData(), is(equalTo("CD")));
+        assertThat(text.getData()).isEqualTo("AB");
+        assertThat(newText.getData()).isEqualTo("CD");
     }
 }

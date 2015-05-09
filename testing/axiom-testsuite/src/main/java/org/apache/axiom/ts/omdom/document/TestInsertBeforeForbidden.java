@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.ts.omdom.document;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.StringReader;
 
@@ -54,7 +52,7 @@ public class TestInsertBeforeForbidden extends AxiomTestCase {
             document.insertBefore(document.createElementNS(null, "test"), comment);
             fail("Expected DOMException");
         } catch (DOMException ex) {
-            assertThat(ex.code, is(equalTo(DOMException.HIERARCHY_REQUEST_ERR)));
+            assertThat(ex.code).isEqualTo(DOMException.HIERARCHY_REQUEST_ERR);
         }
     }
 }

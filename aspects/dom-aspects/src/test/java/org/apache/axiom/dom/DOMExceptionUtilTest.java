@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.dom;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 import org.w3c.dom.DOMException;
@@ -29,7 +27,7 @@ public class DOMExceptionUtilTest {
     @Test
     public void testMessage() {
         DOMException ex = DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
-        assertThat(ex.getMessage(), is(equalTo(
-                "NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.")));
+        assertThat(ex.getMessage()).isEqualTo(
+                "NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.");
     }
 }

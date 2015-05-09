@@ -18,10 +18,7 @@
  */
 package org.apache.axiom.ts.saaj.element;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
@@ -50,8 +47,8 @@ public class TestGetOwnerDocument extends SAAJTestCase {
     protected void runTest() throws Throwable {
         SOAPFactory factory = saajImplementation.newSOAPFactory(protocol);
         Document doc = factory.createElement(new QName("test")).getOwnerDocument();
-        assertThat(doc, is(not(instanceOf(SOAPPart.class))));
-        assertThat(doc, is(not(instanceOf(javax.xml.soap.Node.class))));
-        assertThat(doc.createElementNS(null, "test"), is(instanceOf(SOAPElement.class)));
+        assertThat(doc).isNotInstanceOf(SOAPPart.class);
+        assertThat(doc).isNotInstanceOf(javax.xml.soap.Node.class);
+        assertThat(doc.createElementNS(null, "test")).isInstanceOf(SOAPElement.class);
     }
 }

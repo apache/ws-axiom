@@ -19,13 +19,13 @@
 
 package org.apache.axiom.util.base64;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.util.Random;
 
 import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 
 public class Base64UtilsTest extends TestCase {
     public void testDecode() {
@@ -33,9 +33,7 @@ public class Base64UtilsTest extends TestCase {
         for (int len=0; len<20; len++) {
             byte[] data = new byte[len];
             random.nextBytes(data);
-            Assert.assertThat(
-                    Base64Utils.decode(Base64.encodeBase64String(data)),
-                    CoreMatchers.equalTo(data));
+            assertThat(Base64Utils.decode(Base64.encodeBase64String(data))).isEqualTo(data);
         }
     }
     

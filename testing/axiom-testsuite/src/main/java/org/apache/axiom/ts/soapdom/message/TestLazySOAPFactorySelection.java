@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.ts.soapdom.message;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -50,6 +48,6 @@ public class TestLazySOAPFactorySelection extends SOAPTestCase {
         Element element = ((Document)message).createElementNS("urn:test", "p:test");
         
         SOAPFactory soapFactoryFromNewElement = (SOAPFactory)((OMElement)element).getOMFactory();
-        assertThat(soapFactoryFromNewElement, is(sameInstance(soapFactory)));
+        assertThat(soapFactoryFromNewElement).isSameAs(soapFactory);
     }
 }

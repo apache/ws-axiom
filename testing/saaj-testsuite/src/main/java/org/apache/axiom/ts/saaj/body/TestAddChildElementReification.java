@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.ts.saaj.body;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
@@ -46,6 +44,6 @@ public class TestAddChildElementReification extends SAAJTestCase {
         MessageFactory mf = spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation, false);
         SOAPBody body = mf.createMessage().getSOAPBody();
         SOAPElement child = body.addChildElement((SOAPElement)body.getOwnerDocument().createElementNS("urn:test", "p:test"));
-        assertThat(child, is(instanceOf(SOAPBodyElement.class)));
+        assertThat(child).isInstanceOf(SOAPBodyElement.class);
     }
 }

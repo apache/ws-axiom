@@ -18,11 +18,7 @@
  */
 package org.apache.axiom.ts.om.cross;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
@@ -51,7 +47,7 @@ public class TestInsertSibling extends CrossOMTestCase {
             child.insertSiblingAfter(orgSibling);
         }
         OMComment sibling = (OMComment)(before ? child.getPreviousOMSibling() : child.getNextOMSibling());
-        assertThat(sibling, is(not(sameInstance(orgSibling))));
-        assertThat(sibling.getValue(), is(equalTo("test")));
+        assertThat(sibling).isNotSameAs(orgSibling);
+        assertThat(sibling.getValue()).isEqualTo("test");
     }
 }

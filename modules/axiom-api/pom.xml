@@ -79,6 +79,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.truth</groupId>
+            <artifactId>truth</artifactId>
+        </dependency>
+        <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
             <scope>test</scope>
