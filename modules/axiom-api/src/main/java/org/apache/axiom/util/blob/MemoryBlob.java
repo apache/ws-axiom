@@ -64,7 +64,6 @@ public class MemoryBlob implements WritableBlob {
         }
 
         public void close() throws IOException {
-            outputStream = null;
             committed = true;
         }
     }
@@ -148,7 +147,6 @@ public class MemoryBlob implements WritableBlob {
     List data; // null here indicates the blob is in state NEW
     int index;
     byte[] currBuffer;
-    OutputStreamImpl outputStream;
     boolean committed;
     
     private void init() {
@@ -179,7 +177,7 @@ public class MemoryBlob implements WritableBlob {
             throw new IllegalStateException();
         } else {
             init();
-            return outputStream = new OutputStreamImpl();
+            return new OutputStreamImpl();
         }
     }
 
