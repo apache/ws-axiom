@@ -730,7 +730,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>1.4</source>
+                    <source>1.5</source>
                     <target>1.5</target>
                 </configuration>
             </plugin>
