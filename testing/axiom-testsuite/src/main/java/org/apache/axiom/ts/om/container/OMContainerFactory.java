@@ -24,7 +24,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.RootWhitespaceFilter;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.InputSource;

@@ -29,7 +29,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.DocumentElementExtractor;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.w3c.dom.Document;

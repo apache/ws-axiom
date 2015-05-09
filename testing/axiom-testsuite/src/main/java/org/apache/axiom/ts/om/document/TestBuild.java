@@ -18,13 +18,12 @@
  */
 package org.apache.axiom.ts.om.document;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.commons.io.input.CountingInputStream;
 
 public class TestBuild extends AxiomTestCase {
@@ -34,8 +33,7 @@ public class TestBuild extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        CountingInputStream in = new CountingInputStream(AbstractTestCase.getTestResource(
-                TestConstants.REALLY_BIG_MESSAGE));
+        CountingInputStream in = new CountingInputStream(XMLSample.LARGE.getAsStream());
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
         assertFalse(doc.isComplete());
         int countBeforeBuild = in.getCount();

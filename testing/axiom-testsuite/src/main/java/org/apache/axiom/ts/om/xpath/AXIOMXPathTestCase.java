@@ -26,10 +26,10 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.RootWhitespaceFilter;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.test.jaxen.JaxenXPathTestBase;
+import org.apache.axiom.ts.om.container.RootWhitespaceFilter;
 import org.jaxen.Navigator;
 
 public class AXIOMXPathTestCase extends JaxenXPathTestBase {

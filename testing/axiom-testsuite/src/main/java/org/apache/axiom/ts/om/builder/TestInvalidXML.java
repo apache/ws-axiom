@@ -20,7 +20,6 @@ package org.apache.axiom.ts.om.builder;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -34,7 +33,8 @@ public class TestInvalidXML extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(AbstractTestCase.getTestResource("invalid_xml.xml"));
+        XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(
+                TestInvalidXML.class.getResourceAsStream("invalid_xml.xml"));
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
         

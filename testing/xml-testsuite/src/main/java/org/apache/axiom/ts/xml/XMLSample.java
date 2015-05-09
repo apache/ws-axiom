@@ -31,6 +31,11 @@ import org.apache.axiom.testing.multiton.Multiton;
 
 public final class XMLSample extends Multiton {
     /**
+     * A simple XML document without any particular features.
+     */
+    public static final XMLSample SIMPLE = new XMLSample("simple.xml");
+    
+    /**
      * An XML document that is larger than the input buffer of typical XML parsers.
      */
     public static final XMLSample LARGE = new XMLSample("large.xml");

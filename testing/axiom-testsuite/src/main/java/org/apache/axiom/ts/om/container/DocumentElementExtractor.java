@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl;
+package org.apache.axiom.ts.om.container;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -25,13 +25,31 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 /**
- * {@link XMLStreamReader} wrapper that filters out any root level whitespace.
+ * {@link XMLStreamReader} wrapper that extracts the document element, i.e. that filters out any
+ * root level information items other than elements.
  */
-public class RootWhitespaceFilter extends XMLStreamReaderWrapper {
+public class DocumentElementExtractor extends XMLStreamReaderWrapper {
+    private int event = START_DOCUMENT;
     private int depth;
     
-    public RootWhitespaceFilter(XMLStreamReader parent) {
+    public DocumentElementExtractor(XMLStreamReader parent) {
         super(parent);
+    }
+
+    public String getCharacterEncodingScheme() {
+        if (event == START_DOCUMENT) {
+            return null;
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getEncoding() {
+        if (event == START_DOCUMENT) {
+            return null;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public int next() throws XMLStreamException {
@@ -45,15 +63,15 @@ public class RootWhitespaceFilter extends XMLStreamReaderWrapper {
                 case XMLStreamConstants.END_ELEMENT:
                     depth--;
                     break loop;
-                case XMLStreamConstants.CHARACTERS:
-                case XMLStreamConstants.SPACE:
+                case XMLStreamConstants.START_DOCUMENT:
+                case XMLStreamConstants.END_DOCUMENT:
+                    break loop;
+                default:
                     if (depth > 0) {
                         break loop;
                     } else {
                         continue loop;
                     }
-                default:
-                    break loop;
             }
         }
         return event;

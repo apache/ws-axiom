@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import java.io.StringReader;
 import java.util.Iterator;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /** Test the element iterator */
@@ -34,7 +34,8 @@ public class TestGetChildElements extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMElement elt = AbstractTestCase.getTestResourceAsElement(metaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                new StringReader("<root>a<b/><!--c--><d/>e</root>")).getDocumentElement();
         Iterator iter = elt.getChildElements();
         int counter = 0;
         while (iter.hasNext()) {
