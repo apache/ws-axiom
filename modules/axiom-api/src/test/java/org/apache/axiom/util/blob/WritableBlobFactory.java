@@ -18,15 +18,6 @@
  */
 package org.apache.axiom.util.blob;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class MemoryBlobTest extends TestCase {
-    public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
-            public WritableBlob createBlob() {
-                return new MemoryBlob();
-            }
-        }).build();
-    }
+public interface WritableBlobFactory {
+    WritableBlob createBlob();
 }

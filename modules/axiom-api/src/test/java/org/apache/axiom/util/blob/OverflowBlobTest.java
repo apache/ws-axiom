@@ -16,11 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.util.blob;
 
-public class OverflowBlobTest extends WritableBlobTestBase {
-    protected WritableBlob createBlob() {
-        return new OverflowBlob(16, 1024, "test", ".dat");
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+public class OverflowBlobTest extends TestCase {
+    public static TestSuite suite() {
+        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
+            public WritableBlob createBlob() {
+                return new OverflowBlob(16, 1024, "test", ".dat");
+            }
+        }).build();
     }
 }

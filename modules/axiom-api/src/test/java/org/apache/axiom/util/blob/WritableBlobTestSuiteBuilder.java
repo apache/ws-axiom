@@ -18,15 +18,25 @@
  */
 package org.apache.axiom.util.blob;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
-public class MemoryBlobTest extends TestCase {
-    public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
-            public WritableBlob createBlob() {
-                return new MemoryBlob();
-            }
-        }).build();
+public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
+    private final WritableBlobFactory factory;
+
+    public WritableBlobTestSuiteBuilder(WritableBlobFactory factory) {
+        this.factory = factory;
     }
+
+    @Override
+    protected void addTests() {
+        addTest(new TestGetInputStreamNew(factory));
+        addTest(new TestGetInputStreamUncommitted(factory));
+        addTest(new TestGetOutputStreamCommitted(factory));
+        addTest(new TestGetOutputStreamUncommitted(factory));
+        addTest(new TestMarkReset(factory));
+        addTest(new TestReadFrom(factory, 10000));
+        addTest(new TestReadFrom(factory, 100000));
+        addTest(new TestRandomReadWrite(factory, 10000));
+        addTest(new TestRandomReadWrite(factory, 100000));
+    };
 }

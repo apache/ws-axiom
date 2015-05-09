@@ -18,15 +18,22 @@
  */
 package org.apache.axiom.util.blob;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.OutputStream;
 
-public class MemoryBlobTest extends TestCase {
-    public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
-            public WritableBlob createBlob() {
-                return new MemoryBlob();
-            }
-        }).build();
+public class TestGetOutputStreamCommitted extends WritableBlobTestCase {
+    public TestGetOutputStreamCommitted(WritableBlobFactory factory) {
+        super(factory);
+    }
+
+    @Override
+    protected void runTest(WritableBlob blob) throws Throwable {
+        OutputStream out = blob.getOutputStream();
+        out.close();
+        try {
+            blob.getOutputStream();
+            fail("Expected IllegalStateException");
+        } catch (IllegalStateException ex) {
+            // Expected
+        }
     }
 }
