@@ -230,7 +230,7 @@ public class MemoryBlob implements WritableBlob {
         return readFrom(in, length, data == null);
     }
 
-    public InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() {
         return new InputStreamImpl();
     }
 
