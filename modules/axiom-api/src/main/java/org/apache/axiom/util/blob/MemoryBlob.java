@@ -182,6 +182,9 @@ public class MemoryBlob implements WritableBlob {
     }
 
     public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
+        if (committed) {
+            throw new IllegalStateException();
+        }
         if (data == null) {
             init();
         }
