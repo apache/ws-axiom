@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.util.blob;
+package org.apache.axiom.blob;
 
 import java.io.IOException;
 import java.io.InputStream;

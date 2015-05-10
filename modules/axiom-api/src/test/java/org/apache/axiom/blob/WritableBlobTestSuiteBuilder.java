@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.blob;
+package org.apache.axiom.blob;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 

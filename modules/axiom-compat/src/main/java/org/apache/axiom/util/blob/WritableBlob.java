@@ -42,6 +42,8 @@ import org.apache.axiom.ext.io.StreamCopyException;
  * return value of {@link #isSupportingReadUncommitted()}.
  * <p>
  * Blobs are not thread safe.
+ * 
+ * @deprecated Use {@link org.apache.axiom.blob.WritableBlob} instead.
  */
 public interface WritableBlob extends Blob {
     /**

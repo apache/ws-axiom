@@ -16,31 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.blob;
+package org.apache.axiom.blob;
 
-import org.apache.commons.io.input.NullInputStream;
+import static com.google.common.truth.Truth.assertThat;
 
-public class TestReadFromCommitted extends WritableBlobTestCase {
-    private final Boolean commit;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Random;
+
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.commons.io.IOUtils;
+
+public class TestReadFrom extends WritableBlobTestCase {
+    private final int size;
     
-    public TestReadFromCommitted(WritableBlobFactory factory, Boolean commit) {
+    public TestReadFrom(WritableBlobFactory factory, int size) {
         super(factory);
-        this.commit = commit;
-        addTestParameter("commit", String.valueOf(commit));
+        this.size = size;
+        addTestParameter("size", size);
     }
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        blob.getOutputStream().close();
+        Random random = new Random();
+        byte[] data = new byte[size];
+        random.nextBytes(data);
+        blob.readFrom(new ByteArrayInputStream(data), -1);
+        InputStream in = blob.getInputStream();
         try {
-            if (commit == null) {
-                blob.readFrom(new NullInputStream(0), -1);
-            } else {
-                blob.readFrom(new NullInputStream(0), -1, commit);
-            }
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
+            assertThat(IOUtils.toByteArray(in)).isEqualTo(data);
+        }
+        finally {
+            in.close();
         }
     }
 }

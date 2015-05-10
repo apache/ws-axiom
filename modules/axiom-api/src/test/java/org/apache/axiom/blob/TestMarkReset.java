@@ -16,46 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.blob;
+package org.apache.axiom.blob;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.io.InputStream;
+import java.io.DataInputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.axiom.blob.WritableBlob;
 
-public class TestGetInputStreamUncommitted extends WritableBlobTestCase {
-    public TestGetInputStreamUncommitted(WritableBlobFactory factory) {
+public class TestMarkReset extends WritableBlobTestCase {
+    public TestMarkReset(WritableBlobFactory factory) {
         super(factory);
     }
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
         Random random = new Random();
+        byte[] sourceData1 = new byte[2000];
+        byte[] sourceData2 = new byte[2000];
+        random.nextBytes(sourceData1);
+        random.nextBytes(sourceData2);
         OutputStream out = blob.getOutputStream();
-        try {
-            byte[] data = new byte[1000];
-            random.nextBytes(data);
-            out.write(data);
-            if (blob.isSupportingReadUncommitted()) {
-                InputStream in = blob.getInputStream();
-                try {
-                    assertThat(IOUtils.toByteArray(in)).isEqualTo(data);
-                } finally {
-                    in.close();
-                }
-            } else {
-                try {
-                    blob.getInputStream();
-                    fail("Expected IllegalStateException");
-                } catch (IllegalStateException ex) {
-                    // Expected
-                }
-            }
-        } finally {
-            out.close();
-        }
+        out.write(sourceData1);
+        out.write(sourceData2);
+        out.close();
+        DataInputStream in = new DataInputStream(blob.getInputStream());
+        byte[] data1 = new byte[sourceData1.length];
+        byte[] data2 = new byte[sourceData2.length];
+        in.readFully(data1);
+        in.mark(sourceData2.length);
+        in.readFully(data2);
+        in.reset();
+        in.readFully(data2);
+        assertThat(data1).isEqualTo(sourceData1);
+        assertThat(data2).isEqualTo(sourceData2);
     }
 }

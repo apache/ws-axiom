@@ -31,6 +31,8 @@ import org.apache.axiom.ext.io.StreamCopyException;
  * Not that blobs are not thread safe. While they support requesting multiple concurrent input
  * streams, these streams must be used in the same thread, unless appropriate synchronization or
  * locking is done.
+ * 
+ * @deprecated Use {@link org.apache.axiom.blob.Blob} instead.
  */
 public interface Blob {
     /**

@@ -33,6 +33,7 @@ import javax.xml.namespace.QName;
 import junit.framework.Assert;
 
 import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -40,7 +41,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.activation.TestDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.util.blob.MemoryBlob;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -16,8 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.blob;
+package org.apache.axiom.blob;
 
-public interface WritableBlobFactory {
-    WritableBlob createBlob();
+import org.apache.axiom.blob.MemoryBlob;
+import org.apache.axiom.blob.WritableBlob;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+public class MemoryBlobTest extends TestCase {
+    public static TestSuite suite() {
+        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
+            public WritableBlob createBlob() {
+                return new MemoryBlob();
+            }
+        }).build();
+    }
 }

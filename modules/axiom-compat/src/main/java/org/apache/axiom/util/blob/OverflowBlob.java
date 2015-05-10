@@ -37,6 +37,8 @@ import org.apache.commons.logging.LogFactory;
  * transferred to a temporary file. The buffer is divided into a given number of fixed size chunks
  * that are allocated on demand. Since a temporary file may be created it is mandatory to call
  * {@link #release()} to discard the blob.
+ * 
+ * @deprecated Use {@link org.apache.axiom.blob.OverflowBlob} instead.
  */
 public class OverflowBlob implements WritableBlob {
     private static final Log log = LogFactory.getLog(OverflowBlob.class);
@@ -312,9 +314,6 @@ public class OverflowBlob implements WritableBlob {
     }
     
     public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
-        if (state == STATE_COMMITTED) {
-            throw new IllegalStateException();
-        }
         // TODO: this will not work if the blob is in state UNCOMMITTED and we have already switched to a temporary file
         long read = 0;
         long toRead = length == -1 ? Long.MAX_VALUE : length;

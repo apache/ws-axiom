@@ -16,27 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.blob;
+package org.apache.axiom.blob;
 
-import java.io.OutputStream;
+import org.apache.axiom.blob.OverflowBlob;
+import org.apache.axiom.blob.WritableBlob;
 
-public class TestGetOutputStreamUncommitted extends WritableBlobTestCase {
-    public TestGetOutputStreamUncommitted(WritableBlobFactory factory) {
-        super(factory);
-    }
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-    @Override
-    protected void runTest(WritableBlob blob) throws Throwable {
-        OutputStream out = blob.getOutputStream();
-        try {
-            try {
-                blob.getOutputStream();
-                fail("Expected IllegalStateException");
-            } catch (IllegalStateException ex) {
-                // Expected
+public class OverflowBlobTest extends TestCase {
+    public static TestSuite suite() {
+        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
+            public WritableBlob createBlob() {
+                return new OverflowBlob(16, 1024, "test", ".dat");
             }
-        } finally {
-            out.close();
-        }
+        }).build();
     }
 }
