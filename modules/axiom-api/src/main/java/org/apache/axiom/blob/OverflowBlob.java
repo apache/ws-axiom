@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
  * that are allocated on demand. Since a temporary file may be created it is mandatory to call
  * {@link #release()} to discard the blob.
  */
-public class OverflowBlob implements WritableBlob {
+public final class OverflowBlob implements WritableBlob {
     private static final Log log = LogFactory.getLog(OverflowBlob.class);
     
     static final int STATE_NEW = 0;
