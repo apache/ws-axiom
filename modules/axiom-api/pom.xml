@@ -81,6 +81,7 @@
         <dependency>
             <groupId>com.google.truth</groupId>
             <artifactId>truth</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>xmlunit</groupId>
