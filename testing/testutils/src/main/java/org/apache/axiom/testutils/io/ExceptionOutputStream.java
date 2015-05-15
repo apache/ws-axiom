@@ -16,44 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.blob;
+package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.axiom.ext.activation.SizeAwareDataSource;
+public class ExceptionOutputStream extends OutputStream {
+    private int remaining;
+    private IOException exception;
 
-/**
- * Data source backed by a {@link Blob}.
- */
-public class BlobDataSource implements SizeAwareDataSource {
-    private final Blob blob;
-    private final String contentType;
-    
-    public BlobDataSource(Blob blob, String contentType) {
-        this.blob = blob;
-        this.contentType = contentType;
+    public ExceptionOutputStream(int maxBytes) {
+        remaining = maxBytes;
     }
 
-    public InputStream getInputStream() throws IOException {
-        return blob.getInputStream();
+    @Override
+    public void write(int b) throws IOException {
+        if (--remaining == 0) {
+            throw exception = new IOException("Maximum number of bytes written");
+        }
     }
 
-    public String getContentType() {
-        return contentType;
-    }
-
-    public String getName() {
-        return null;
-    }
-
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getSize() {
-        return blob.getSize();
+    public IOException getException() {
+        return exception;
     }
 }

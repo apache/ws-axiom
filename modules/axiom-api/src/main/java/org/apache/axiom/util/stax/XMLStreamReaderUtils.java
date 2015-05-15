@@ -29,8 +29,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.blob.BlobDataSource;
+import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
-import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -231,7 +231,7 @@ public class XMLStreamReaderUtils {
             reader.next();
             return dh;
         } else {
-            WritableBlob blob = new MemoryBlob();
+            MemoryBlob blob = Blobs.createMemoryBlob();
             Writer out = new Base64DecodingOutputStreamWriter(blob.getOutputStream());
             try {
                 writeTextTo(reader, out);

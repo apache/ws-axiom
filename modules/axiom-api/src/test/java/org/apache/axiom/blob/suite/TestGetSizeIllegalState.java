@@ -16,10 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.blob.suite;
 
 import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 
-public interface WritableBlobFactory {
-    WritableBlob createBlob();
+public class TestGetSizeIllegalState extends WritableBlobTestCase {
+    public TestGetSizeIllegalState(WritableBlobFactory factory, State state) {
+        super(factory, state);
+        state.addTestParameters(this);
+    }
+
+    @Override
+    protected void runTest(WritableBlob blob) throws Throwable {
+        try {
+            blob.getSize();
+            fail("Expected IllegalStateException");
+        } catch (IllegalStateException ex) {
+            // Expected
+        }
+    }
 }

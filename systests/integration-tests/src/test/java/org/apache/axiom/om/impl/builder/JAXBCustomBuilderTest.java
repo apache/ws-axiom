@@ -33,6 +33,7 @@ import javax.xml.namespace.QName;
 import junit.framework.Assert;
 
 import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
@@ -81,7 +82,7 @@ public class JAXBCustomBuilderTest {
     @Test
     public void testPlain() throws Exception {
         DataHandler dh = new DataHandler(new RandomDataSource(10000));
-        MemoryBlob blob = new MemoryBlob();
+        MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         createTestDocument(dh).serialize(out);
         out.close();
@@ -98,7 +99,7 @@ public class JAXBCustomBuilderTest {
     @Test
     public void testWithXOP() throws Exception {
         DataHandler dh = new DataHandler(new RandomDataSource(10000));
-        MemoryBlob blob = new MemoryBlob();
+        MemoryBlob blob = Blobs.createMemoryBlob();
         OutputStream out = blob.getOutputStream();
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);

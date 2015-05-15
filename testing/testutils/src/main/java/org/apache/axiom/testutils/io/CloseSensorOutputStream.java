@@ -16,44 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.blob;
+package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.commons.io.output.ProxyOutputStream;
 
-/**
- * Data source backed by a {@link Blob}.
- */
-public class BlobDataSource implements SizeAwareDataSource {
-    private final Blob blob;
-    private final String contentType;
+public class CloseSensorOutputStream extends ProxyOutputStream {
+    private boolean closed;
     
-    public BlobDataSource(Blob blob, String contentType) {
-        this.blob = blob;
-        this.contentType = contentType;
+    public CloseSensorOutputStream(OutputStream proxy) {
+        super(proxy);
     }
 
-    public InputStream getInputStream() throws IOException {
-        return blob.getInputStream();
+    public void close() throws IOException {
+        closed = true;
+        super.close();
     }
 
-    public String getContentType() {
-        return contentType;
-    }
-
-    public String getName() {
-        return null;
-    }
-
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getSize() {
-        return blob.getSize();
+    public boolean isClosed() {
+        return closed;
     }
 }

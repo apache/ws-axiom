@@ -27,7 +27,6 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMException;
 
@@ -40,14 +39,6 @@ class AttachmentSet extends AttachmentsDelegate {
 
     ContentType getContentType() {
         return null;
-    }
-
-    LifecycleManager getLifecycleManager() {
-        return null;
-    }
-
-    void setLifecycleManager(LifecycleManager manager) {
-        // Ignore; only stream based attachments need a lifecycle manager
     }
 
     DataHandler getDataHandler(String contentID) {

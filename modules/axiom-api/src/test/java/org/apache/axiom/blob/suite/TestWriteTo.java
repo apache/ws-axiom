@@ -16,41 +16,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.blob.suite;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.io.DataInputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
+import org.apache.axiom.testutils.io.CloseSensorOutputStream;
 
-public class TestMarkReset extends WritableBlobTestCase {
-    public TestMarkReset(WritableBlobFactory factory) {
-        super(factory);
+public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
+    private final boolean usesReadFromSupport;
+    
+    public TestWriteTo(WritableBlobFactory factory, int size, boolean usesReadFromSupport) {
+        super(factory, State.NEW, size);
+        this.usesReadFromSupport = usesReadFromSupport;
     }
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
         Random random = new Random();
-        byte[] sourceData1 = new byte[2000];
-        byte[] sourceData2 = new byte[2000];
-        random.nextBytes(sourceData1);
-        random.nextBytes(sourceData2);
+        byte[] data = new byte[size];
+        random.nextBytes(data);
         OutputStream out = blob.getOutputStream();
-        out.write(sourceData1);
-        out.write(sourceData2);
+        out.write(data);
         out.close();
-        DataInputStream in = new DataInputStream(blob.getInputStream());
-        byte[] data1 = new byte[sourceData1.length];
-        byte[] data2 = new byte[sourceData2.length];
-        in.readFully(data1);
-        in.mark(sourceData2.length);
-        in.readFully(data2);
-        in.reset();
-        in.readFully(data2);
-        assertThat(data1).isEqualTo(sourceData1);
-        assertThat(data2).isEqualTo(sourceData2);
+        ByteArrayOutputStreamWithReadFromSupport baos = new ByteArrayOutputStreamWithReadFromSupport();
+        CloseSensorOutputStream closeSensor = new CloseSensorOutputStream(baos);
+        blob.writeTo(baos);
+        assertThat(closeSensor.isClosed()).isFalse();
+        assertThat(baos.toByteArray()).isEqualTo(data);
+        if (usesReadFromSupport) {
+            assertThat(baos.isReadFromCalled()).isTrue();
+        }
     }
 }

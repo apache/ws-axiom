@@ -16,30 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.blob;
 
-package org.apache.axiom.util.blob;
+import org.apache.axiom.blob.suite.WritableBlobTestSuiteBuilder;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-import org.apache.axiom.ext.io.ReadFromSupport;
-import org.apache.axiom.ext.io.StreamCopyException;
-
-/**
- * Output stream that is used to write to a blob. Instances of this class are returned by the
- * {@link WritableBlob#getOutputStream()} method.
- * 
- * @deprecated
- */
-public abstract class BlobOutputStream extends OutputStream implements ReadFromSupport {
-    /**
-     * Get the blob to which this output stream belongs.
-     * 
-     * @return the blob
-     */
-    public abstract WritableBlob getBlob();
-
-    public long readFrom(InputStream inputStream, long length) throws StreamCopyException {
-        return getBlob().readFrom(inputStream, length);
+public class TempFileBlobTest extends TestCase {
+    public static TestSuite suite() {
+        return new WritableBlobTestSuiteBuilder(
+                new TempFileBlobFactory("test", ".dat", null),
+                new int[] { 10000 },
+                false, true).build();
     }
 }

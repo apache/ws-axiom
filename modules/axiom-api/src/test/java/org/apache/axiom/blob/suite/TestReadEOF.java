@@ -16,47 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.blob.suite;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.NullInputStream;
 
-public class TestGetInputStreamUncommitted extends WritableBlobTestCase {
-    public TestGetInputStreamUncommitted(WritableBlobFactory factory) {
-        super(factory);
+public class TestReadEOF extends WritableBlobTestCase {
+    public TestReadEOF(WritableBlobFactory factory) {
+        super(factory, State.NEW);
     }
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        Random random = new Random();
-        OutputStream out = blob.getOutputStream();
+        blob.readFrom(new NullInputStream(100));
+        InputStream in = blob.getInputStream();
         try {
-            byte[] data = new byte[1000];
-            random.nextBytes(data);
-            out.write(data);
-            if (blob.isSupportingReadUncommitted()) {
-                InputStream in = blob.getInputStream();
-                try {
-                    assertThat(IOUtils.toByteArray(in)).isEqualTo(data);
-                } finally {
-                    in.close();
-                }
-            } else {
-                try {
-                    blob.getInputStream();
-                    fail("Expected IllegalStateException");
-                } catch (IllegalStateException ex) {
-                    // Expected
-                }
-            }
+            IOUtils.toByteArray(in, 100);
+            assertThat(in.read()).isEqualTo(-1);
+            assertThat(in.read(new byte[10])).isEqualTo(-1);
         } finally {
-            out.close();
+            in.close();
         }
     }
 }

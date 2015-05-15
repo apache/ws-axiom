@@ -16,38 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
-
-import static com.google.common.truth.Truth.assertThat;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Random;
+package org.apache.axiom.blob.suite;
 
 import org.apache.axiom.blob.WritableBlob;
-import org.apache.commons.io.IOUtils;
+import org.apache.axiom.blob.WritableBlobFactory;
+import org.apache.axiom.testutils.suite.MatrixTestCase;
 
-public class TestReadFrom extends WritableBlobTestCase {
-    private final int size;
-    
-    public TestReadFrom(WritableBlobFactory factory, int size) {
-        super(factory);
-        this.size = size;
-        addTestParameter("size", size);
+public abstract class WritableBlobTestCase extends MatrixTestCase {
+    private final WritableBlobFactory factory;
+    private final State initialState;
+
+    public WritableBlobTestCase(WritableBlobFactory factory, State initialState) {
+        this.factory = factory;
+        this.initialState = initialState;
     }
 
     @Override
-    protected void runTest(WritableBlob blob) throws Throwable {
-        Random random = new Random();
-        byte[] data = new byte[size];
-        random.nextBytes(data);
-        blob.readFrom(new ByteArrayInputStream(data), -1);
-        InputStream in = blob.getInputStream();
+    protected final void runTest() throws Throwable {
+        WritableBlob blob = factory.createBlob();
+        CleanupCallback cleanupCallback = initialState.transition(blob);
         try {
-            assertThat(IOUtils.toByteArray(in)).isEqualTo(data);
-        }
-        finally {
-            in.close();
+            runTest(blob);
+        } finally {
+            if (cleanupCallback != null) {
+                cleanupCallback.cleanup();
+            }
         }
     }
+    
+    protected abstract void runTest(WritableBlob blob) throws Throwable;
 }

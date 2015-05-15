@@ -16,26 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
-
-import java.io.OutputStream;
+package org.apache.axiom.attachments;
 
 import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 
-public class TestGetOutputStreamCommitted extends WritableBlobTestCase {
-    public TestGetOutputStreamCommitted(WritableBlobFactory factory) {
-        super(factory);
+final class LegacyTempFileBlobFactory implements WritableBlobFactory {
+    private final Attachments attachments;
+    private final String attachmentDir;
+
+    LegacyTempFileBlobFactory(Attachments attachments, String attachmentDir) {
+        this.attachments = attachments;
+        this.attachmentDir = attachmentDir;
     }
 
-    @Override
-    protected void runTest(WritableBlob blob) throws Throwable {
-        OutputStream out = blob.getOutputStream();
-        out.close();
-        try {
-            blob.getOutputStream();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+    public WritableBlob createBlob() {
+        return new LegacyTempFileBlob(attachments.getLifecycleManager(), attachmentDir);
     }
 }

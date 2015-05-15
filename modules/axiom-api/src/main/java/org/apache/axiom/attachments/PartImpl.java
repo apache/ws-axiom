@@ -20,6 +20,10 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.blob.OverflowableBlob;
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
+import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.DetachableInputStream;
@@ -66,8 +70,7 @@ final class PartImpl implements Part {
 
     private static final Log log = LogFactory.getLog(PartImpl.class);
     
-    private final MIMEMessage message;
-    private final boolean isRootPart;
+    private final WritableBlobFactory blobFactory;
     
     private List/*<Header>*/ headers;
     
@@ -82,7 +85,7 @@ final class PartImpl implements Part {
     /**
      * The content of this part. This is only set if the state is {@link #STATE_BUFFERED}.
      */
-    private PartContent content;
+    private WritableBlob content;
     
     private final DataHandler dataHandler;
     
@@ -93,9 +96,8 @@ final class PartImpl implements Part {
      * @see org.apache.axiom.attachments.PartContentFactory
      * @param headers
      */
-    PartImpl(MIMEMessage message, boolean isRootPart, List headers, MimeTokenStream parser) {
-        this.message = message;
-        this.isRootPart = isRootPart;
+    PartImpl(WritableBlobFactory blobFactory, List headers, MimeTokenStream parser) {
+        this.blobFactory = blobFactory;;
         this.headers = headers;
         this.parser = parser;
         this.dataHandler = new PartDataHandler(this);
@@ -143,7 +145,7 @@ final class PartImpl implements Part {
         return getContent().getSize();
     }
 
-    private PartContent getContent() {
+    private WritableBlob getContent() {
         switch (state) {
             case STATE_UNREAD:
                 fetch();
@@ -176,13 +178,19 @@ final class PartImpl implements Part {
                 if (log.isDebugEnabled()) {
                     in = new DebugInputStream(in, log);
                 }
-                // The PartFactory will determine which Part implementation is most appropriate.
-                content = PartContentFactory.createPartContent(message.getLifecycleManager(),
-                                              in, 
-                                              isRootPart, 
-                                              message.getThreshold(),
-                                              message.getAttachmentRepoDir(),
-                                              message.getContentLengthIfKnown());  // content-length for the whole message
+                content = blobFactory.createBlob();
+                if (log.isDebugEnabled()) {
+                    log.debug("Using blob of type " + content.getClass().getName());
+                }
+                try {
+                    content.readFrom(in);
+                } catch (StreamCopyException ex) {
+                    if (ex.getOperation() == StreamCopyException.READ) {
+                        throw new OMException("Failed to fetch the MIME part content", ex.getCause());
+                    } else {
+                        throw new OMException("Failed to write the MIME part content to temporary storage", ex.getCause());
+                    }
+                }
                 moveToNextPart();
                 state = STATE_BUFFERED;
                 break;
@@ -225,7 +233,7 @@ final class PartImpl implements Part {
             detachableInputStream = new DetachableInputStream(parser.getDecodedInputStream());
             return detachableInputStream;
         } else {
-            PartContent content = getContent();
+            WritableBlob content = getContent();
             InputStream stream = content.getInputStream();
             if (!preserve) {
                 stream = new ReadOnceInputStreamWrapper(this, stream);
@@ -235,7 +243,18 @@ final class PartImpl implements Part {
     }
     
     DataSource getDataSource() {
-        return getContent().getDataSource(getDataSourceContentType());
+        WritableBlob blob = getContent();
+        if (blob instanceof OverflowableBlob) {
+            WritableBlob overflowBlob = ((OverflowableBlob)blob).getOverflowBlob();
+            if (overflowBlob != null) {
+                blob = overflowBlob;
+            }
+        }
+        if (blob instanceof LegacyTempFileBlob) {
+            return ((LegacyTempFileBlob)blob).getDataSource(getDataSourceContentType());
+        } else {
+            return null;
+        }
     }
 
     void writeTo(OutputStream out) throws IOException {
@@ -256,7 +275,7 @@ final class PartImpl implements Part {
                 state = STATE_DISCARDED;
                 break;
             case STATE_BUFFERED:
-                content.destroy();
+                content.release();
         }
     }
 }

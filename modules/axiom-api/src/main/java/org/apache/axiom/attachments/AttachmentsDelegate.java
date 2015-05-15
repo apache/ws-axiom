@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMException;
 
@@ -50,8 +49,6 @@ import org.apache.axiom.om.OMException;
  */
 abstract class AttachmentsDelegate {
     abstract ContentType getContentType();
-    abstract LifecycleManager getLifecycleManager();
-    abstract void setLifecycleManager(LifecycleManager manager);
     abstract DataHandler getDataHandler(String contentID);
     abstract void addDataHandler(String contentID, DataHandler dataHandler);
     abstract void removeDataHandler(String blobContentID);

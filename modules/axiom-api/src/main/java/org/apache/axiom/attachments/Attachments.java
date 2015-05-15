@@ -21,6 +21,10 @@ package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMAttachmentAccessor;
@@ -46,12 +50,17 @@ public class Attachments implements OMAttachmentAccessor {
      */
     private String applicationType;
 
+    private LifecycleManager manager;
+    
     public LifecycleManager getLifecycleManager() {
-        return delegate.getLifecycleManager();
+        if (manager == null) {
+            manager = new LifecycleManagerImpl();
+        }
+        return manager;
     }
 
     public void setLifecycleManager(LifecycleManager manager) {
-        delegate.setLifecycleManager(manager);
+        this.manager = manager;
     }
 
     /**
@@ -84,14 +93,35 @@ public class Attachments implements OMAttachmentAccessor {
      */
     public Attachments(LifecycleManager manager, InputStream inStream, String contentTypeString, boolean fileCacheEnable,
             String attachmentRepoDir, String fileThreshold, int contentLength) throws OMException {
-        int fileStorageThreshold;
+        this.manager = manager;
+        final int fileStorageThreshold;
         if (fileThreshold != null && (!"".equals(fileThreshold))) {
             fileStorageThreshold = Integer.parseInt(fileThreshold);
         } else {
-            fileStorageThreshold = 1;
+            fileStorageThreshold = 0;
         }
-        delegate = new MIMEMessage(manager, inStream, contentTypeString, fileCacheEnable,
-                attachmentRepoDir, fileStorageThreshold, contentLength);
+        WritableBlobFactory attachmentBlobFactory;
+        if (fileCacheEnable) {
+            final WritableBlobFactory tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
+            if (fileStorageThreshold > 0) {
+                attachmentBlobFactory = new WritableBlobFactory() {
+                    public WritableBlob createBlob() {
+                        return Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
+                    }
+                };
+            } else {
+                attachmentBlobFactory = tempFileBlobFactory;
+            }
+        } else {
+            attachmentBlobFactory = new WritableBlobFactory() {
+                public WritableBlob createBlob() {
+                    return Blobs.createMemoryBlob();
+                }
+            };
+        }
+        
+        delegate = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory,
+                contentLength);
     }
 
     /**

@@ -18,8 +18,7 @@
  */
 package org.apache.axiom.blob;
 
-import org.apache.axiom.blob.MemoryBlob;
-import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.suite.WritableBlobTestSuiteBuilder;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -28,8 +27,8 @@ public class MemoryBlobTest extends TestCase {
     public static TestSuite suite() {
         return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
             public WritableBlob createBlob() {
-                return new MemoryBlob();
+                return Blobs.createMemoryBlob();
             }
-        }).build();
+        }, new int[] { 10000 }, true, false).build();
     }
 }

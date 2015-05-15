@@ -30,6 +30,7 @@ import org.apache.commons.io.input.ProxyInputStream;
  */
 public class ExceptionInputStream extends ProxyInputStream {
     private int remaining;
+    private IOException exception;
     
     public ExceptionInputStream(InputStream in) {
         this(in, Integer.MAX_VALUE);
@@ -42,11 +43,11 @@ public class ExceptionInputStream extends ProxyInputStream {
 
     public int read() throws IOException {
         if (remaining == 0) {
-            throw new IOException("Maximum number of bytes read");
+            throw exception = new IOException("Maximum number of bytes read");
         }
         int b = super.read();
         if (b == -1) {
-            throw new IOException("End of stream reached");
+            throw exception = new IOException("End of stream reached");
         }
         remaining--;
         return b;
@@ -58,7 +59,7 @@ public class ExceptionInputStream extends ProxyInputStream {
 
     public int read(byte[] b, int off, int len) throws IOException {
         if (remaining == 0) {
-            throw new IOException("Maximum number of bytes read");
+            throw exception = new IOException("Maximum number of bytes read");
         }
         // Note: We use a sort of throttling mechanism here where we reduce the
         //       number of bytes read if we approach the point where we throw an
@@ -66,9 +67,13 @@ public class ExceptionInputStream extends ProxyInputStream {
         //       read too much in advance.
         int c = super.read(b, off, Math.min(Math.max(1, remaining/2), len));
         if (c == -1) {
-            throw new IOException("End of stream reached");
+            throw exception = new IOException("End of stream reached");
         }
         remaining -= c;
         return c;
+    }
+
+    public IOException getException() {
+        return exception;
     }
 }

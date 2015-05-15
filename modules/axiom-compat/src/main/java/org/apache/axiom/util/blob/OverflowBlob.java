@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
  * that are allocated on demand. Since a temporary file may be created it is mandatory to call
  * {@link #release()} to discard the blob.
  * 
- * @deprecated Use {@link org.apache.axiom.blob.OverflowBlob} instead.
+ * @deprecated Use {@link org.apache.axiom.blob.OverflowableBlob} instead.
  */
 public class OverflowBlob implements WritableBlob {
     private static final Log log = LogFactory.getLog(OverflowBlob.class);

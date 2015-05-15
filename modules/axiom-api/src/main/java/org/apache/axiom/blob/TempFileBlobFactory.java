@@ -18,27 +18,25 @@
  */
 package org.apache.axiom.blob;
 
-import java.io.OutputStream;
+import java.io.File;
+import java.io.IOException;
 
-import org.apache.axiom.blob.WritableBlob;
+final class TempFileBlobFactory implements WritableBlobFactory {
+    private final String tempPrefix;
+    private final String tempSuffix;
+    private final File tempDirectory;
 
-public class TestGetOutputStreamUncommitted extends WritableBlobTestCase {
-    public TestGetOutputStreamUncommitted(WritableBlobFactory factory) {
-        super(factory);
+    TempFileBlobFactory(String tempPrefix, String tempSuffix, File tempDirectory) {
+        this.tempPrefix = tempPrefix;
+        this.tempSuffix = tempSuffix;
+        this.tempDirectory = tempDirectory;
     }
 
-    @Override
-    protected void runTest(WritableBlob blob) throws Throwable {
-        OutputStream out = blob.getOutputStream();
-        try {
-            try {
-                blob.getOutputStream();
-                fail("Expected IllegalStateException");
-            } catch (IllegalStateException ex) {
-                // Expected
-            }
-        } finally {
-            out.close();
-        }
+    public WritableBlob createBlob() {
+        return new TempFileBlobImpl(this);
+    }
+    
+    File createTempFile() throws IOException {
+        return File.createTempFile(tempPrefix, tempSuffix, tempDirectory);
     }
 }

@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.blob;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 
 /**
  * A writable blob.
  * <p>
- * The behavior of the methods defined by this interface is described in terms of three logical
+ * The behavior of the methods defined by this interface is described in terms of four logical
  * states the blob can be in:
  * <dl>
  *   <dt>NEW
@@ -37,40 +37,21 @@ import org.apache.axiom.ext.io.StreamCopyException;
  *   <dd>Data is being written to the blob.
  *   <dt>COMMITTED
  *   <dd>All data has been written to the blob and the blob will no longer accept any new data.
+ *   <dt>RELEASED
+ *   <dd>The blob has been released, i.e. its data has been discarded.
  * </dl>
- * Whether or not reading data from the blob if is in state NEW or UNCOMMITTED depends on the
- * return value of {@link #isSupportingReadUncommitted()}.
+ * Reading data from a blob in state NEW or UNCOMMITTED is not supported: methods defined by the
+ * {@link Blob} interface will throw {@link IllegalStateException} if the blob is not in state
+ * COMMITTED.
  * <p>
- * Blobs are not thread safe.
+ * {@link WritableBlob} instances are generally not thread safe. However, for a blob in state
+ * COMMITTED, all methods defined by the {@link Blob} interface are thread safe.
  */
 public interface WritableBlob extends Blob {
     /**
-     * Determine whether the blob supports reading in state NEW or UNCOMMITTED. If this method
-     * returns <code>false</code> and the blob is in state NEW or UNCOMMITTED, any call to a method
-     * defined by the {@link Blob} superinterface will result in an {@link IllegalStateException}.
-     * If this method returns <code>true</code>, then any data written to the blob will be
-     * immediately available for reading. This is also true for an input stream obtained from
-     * {@link Blob#getInputStream()} before the data is written. This implies that it is possible
-     * for the input stream to first report the end of the stream and later allow reading additional
-     * data. Therefore, a pair of streams obtained from {@link #getOutputStream()} and
-     * {@link Blob#getInputStream()} behaves differently than a {@link java.io.PipedOutputStream}
-     * and {@link java.io.PipedInputStream} pair, because in this situation
-     * {@link java.io.PipedInputStream} would block.
-     * 
-     * @return <code>true</code> if the blob allows reading the data in state NEW or UNCOMMITTED;
-     *         <code>false</code> if the blob allows read operations only in state COMMITTED
-     */
-    boolean isSupportingReadUncommitted();
-    
-    /**
-     * Create an output stream to write data to the blob.
-     * <p>
-     * <em>Precondition:</em> The blob is in state NEW.
-     * <p>
-     * <em>Postcondition:</em> The blob is in state UNCOMMITTED.
-     * <p>
-     * Note that the pre- and postconditions imply that this method may be called at most once for
-     * a given blob instance.
+     * Create an output stream to write data to the blob. The blob must be in state NEW when this
+     * method is called. It will be in state UNCOMMITTED after this method completes successfully.
+     * Note that this implies that this method may be called at most once for a given blob instance.
      * <p>
      * Calls to methods of the returned output stream will modify the state of the blob
      * according to the following rules:
@@ -80,89 +61,44 @@ public interface WritableBlob extends Blob {
      *       an {@link IOException} if the state is COMMITTED, i.e. if the stream has already been
      *       closed.
      * </ul>
+     * <p>
+     * The returned stream may implement {@link ReadFromSupport}, especially if the blob stores its
+     * data in memory (in which case {@link ReadFromSupport#readFrom(InputStream, long)} would read
+     * data directly into the buffers managed by the blob).
      * 
      * @return an output stream that can be used to write data to the blob
      * 
      * @throws IllegalStateException if the blob is not in state NEW
+     * @throws IOException if an I/O error occurred
      */
-    BlobOutputStream getOutputStream();
+    OutputStream getOutputStream() throws IOException;
 
     /**
      * Read data from the given input stream and write it to the blob.
      * <p>
      * A call to this method has the same effect as requesting an output stream using
      * {@link #getOutputStream()} and copying the data from the input stream to that
-     * output stream, but the implementation will achieve this result in a more efficient way.
+     * output stream, but the implementation may achieve this result in a more efficient way.
      * <p>
-     * <em>Precondition:</em> The blob is in state NEW or UNCOMMITTED.
+     * The blob must be in state NEW when this method is called. It will be in state UNCOMMITTED
+     * after this method completes successfully.
      * <p>
-     * <em>Postcondition:</em> The blob is in state UNCOMMITTED if <code>commit</code> is
-     * <code>false</code>. It is in state COMMITTED if <code>commit</code> is <code>true</code>.
-     * <p>
-     * The precondition implies that this method may be used after a call to
-     * {@link #getOutputStream()}. In that case it is illegal to set <code>commit</code> to
-     * <code>true</code> (because this would invalidate the state of the output stream).
-     * <p>
-     * The method transfers data from the input stream to the blob until one of the following
-     * conditions is met:
-     * <ul>
-     *   <li>The end of the input stream is reached.
-     *   <li>The value of the <code>length</code> argument is different from <code>-1</code>
-     *       and the number of bytes transferred is equal to <code>length</code>.
-     * </ul>
+     * The method transfers data from the input stream to the blob until the end of the input
+     * stream is reached.
      * 
      * @param in An input stream to read data from. This method will not
      *           close the stream.
-     * @param length the number of bytes to transfer, or <code>-1</code> if the method should
-     *               transfer data until the end of the input stream is reached
-     * @param commit indicates whether the blob should be in state COMMITTED after the operation
      * @return the number of bytes transferred
      * @throws StreamCopyException
-     * @throws IllegalStateException if the blob is in state COMMITTED or if
-     *         {@link #getOutputStream()} has been called before and <code>commit</code> is
-     *         <code>true</code>
+     * @throws IllegalStateException if the blob is not in state NEW
      */
-    long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException;
-
-    /**
-     * Read data from the given input stream and write it to the blob.
-     * <p>
-     * This method is similar to {@link #readFrom(InputStream, long, boolean)}, except that the state
-     * of the blob after the invocation (i.e. the <code>commit</code> argument) is determined
-     * automatically:
-     * <p>
-     * <table border="2" rules="all" cellpadding="4" cellspacing="0">
-     *   <thead>
-     *     <tr><th>Precondition (state)</th><th>Postcondition (state)</th></tr>
-     *   </thead>
-     *   <tbody>
-     *     <tr><td>NEW</td><td>COMMITTED</td></tr>
-     *     <tr><td>UNCOMMITTED</td><td>UNCOMMITTED</td></tr>
-     *     <tr><td>COMMITTED</td><td><em>illegal</em></td></tr>
-     *   </tbody>
-     * </table>
-     * <p>
-     * There are thus two usage patterns for this method:
-     * <ol>
-     *   <li>The method is used to fill the blob with the data from an input stream, but no other
-     *       data is written to the blob.
-     *   <li>The method is used in parallel with the output stream returned by
-     *       {@link #getOutputStream()}: some data is written using the output stream and some
-     *       data is written using this method (for efficiency reasons).
-     * </ol>
-     * 
-     * @param in An input stream to read data from. This method will not
-     *           close the stream.
-     * @param length the number of bytes to transfer, or <code>-1</code> if the method should
-     *               transfer data until the end of the input stream is reached
-     * @return the number of bytes transferred
-     * @throws StreamCopyException
-     * @throws IllegalStateException if the blob is in state COMMITTED
-     */
-    long readFrom(InputStream in, long length) throws StreamCopyException;
+    long readFrom(InputStream in) throws StreamCopyException;
     
     /**
-     * Release all resources held by this blob.
+     * Release all resources held by this blob. This method will put the blob into the RELEASED
+     * state and the content will no longer be accessible.
+     *
+     * @throws IOException if the cleanup could not be completed because an I/O error occurred
      */
-    void release();
+    void release() throws IOException;
 }

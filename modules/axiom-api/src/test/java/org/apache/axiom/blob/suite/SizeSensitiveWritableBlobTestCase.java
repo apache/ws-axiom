@@ -16,20 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.blob.suite;
 
-import org.apache.axiom.blob.OverflowBlob;
-import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-public class OverflowBlobTest extends TestCase {
-    public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory() {
-            public WritableBlob createBlob() {
-                return new OverflowBlob(16, 1024, "test", ".dat");
-            }
-        }).build();
+public abstract class SizeSensitiveWritableBlobTestCase extends WritableBlobTestCase {
+    protected final int size;
+    
+    public SizeSensitiveWritableBlobTestCase(WritableBlobFactory factory, State initialState, int size) {
+        super(factory, initialState);
+        this.size = size;
+        addTestParameter("size", size);
     }
 }

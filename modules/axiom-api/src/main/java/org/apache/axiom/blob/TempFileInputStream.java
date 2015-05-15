@@ -16,44 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.blob;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-import org.apache.axiom.ext.activation.SizeAwareDataSource;
-
-/**
- * Data source backed by a {@link Blob}.
- */
-public class BlobDataSource implements SizeAwareDataSource {
-    private final Blob blob;
-    private final String contentType;
+final class TempFileInputStream extends FileInputStream {
+    private long markPosition;
     
-    public BlobDataSource(Blob blob, String contentType) {
-        this.blob = blob;
-        this.contentType = contentType;
+    TempFileInputStream(File file) throws FileNotFoundException {
+        super(file);
     }
 
-    public InputStream getInputStream() throws IOException {
-        return blob.getInputStream();
+    @Override
+    public boolean markSupported() {
+        return true;
     }
 
-    public String getContentType() {
-        return contentType;
+    @Override
+    public synchronized void mark(int readlimit) {
+        try {
+            markPosition = getChannel().position();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
-    public String getName() {
-        return null;
-    }
-
-    public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException();
-    }
-
-    public long getSize() {
-        return blob.getSize();
+    @Override
+    public synchronized void reset() throws IOException {
+        getChannel().position(markPosition);
     }
 }

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.blob.suite;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -25,14 +25,13 @@ import java.io.OutputStream;
 import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 
-public class TestRandomReadWrite extends WritableBlobTestCase {
-    private final int size;
-    
+import com.google.common.collect.Range;
+
+public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
     public TestRandomReadWrite(WritableBlobFactory factory, int size) {
-        super(factory);
-        this.size = size;
-        addTestParameter("size", size);
+        super(factory, State.NEW, size);
     }
 
     @Override
@@ -44,28 +43,41 @@ public class TestRandomReadWrite extends WritableBlobTestCase {
         // Write the test data in chunks with random size
         int offset = 0;
         while (offset < data.length) {
-            int c = Math.min(512 + random.nextInt(1024), data.length - offset);
-            out.write(data, offset, c);
-            offset += c;
+            if (random.nextBoolean()) {
+                out.write(data[offset++]);
+            } else {
+                int c = Math.min(512 + random.nextInt(1024), data.length - offset);
+                out.write(data, offset, c);
+                offset += c;
+            }
         }
         out.close();
-        assertThat(blob.getLength()).isEqualTo(size);
+        assertThat(blob.getSize()).isEqualTo(size);
         // Reread the test data, again in chunks with random size
         InputStream in = blob.getInputStream();
         offset = 0;
         byte[] data2 = new byte[data.length];
         byte[] buffer = new byte[2048];
         while (true) {
-            int bufferOffset = random.nextInt(512);
-            int c = 512 + random.nextInt(1024);
-            int read = in.read(buffer, bufferOffset, c);
-            if (read == -1) {
-                break;
+            if (random.nextBoolean()) {
+                int b = in.read();
+                if (b == -1) {
+                    break;
+                }
+                assertThat(b).isIn(Range.closedOpen(0, 256));
+                data2[offset++] = (byte)b;
+            } else {
+                int bufferOffset = random.nextInt(512);
+                int c = 512 + random.nextInt(1024);
+                int read = in.read(buffer, bufferOffset, c);
+                if (read == -1) {
+                    break;
+                }
+                int newOffset = offset + read;
+                assertThat(newOffset).isAtMost(data2.length);
+                System.arraycopy(buffer, bufferOffset, data2, offset, read);
+                offset = newOffset;
             }
-            int newOffset = offset + read;
-            assertThat(newOffset).isAtMost(data2.length);
-            System.arraycopy(buffer, bufferOffset, data2, offset, read);
-            offset = newOffset;
         }
         assertThat(offset).isEqualTo(data2.length);
         in.close();

@@ -16,30 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.blob;
 
-package org.apache.axiom.util.blob;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.axiom.ext.io.ReadFromSupport;
-import org.apache.axiom.ext.io.StreamCopyException;
+import org.apache.axiom.blob.WritableBlob;
 
 /**
- * Output stream that is used to write to a blob. Instances of this class are returned by the
- * {@link WritableBlob#getOutputStream()} method.
- * 
- * @deprecated
+ * A factory for {@link WritableBlob} instances.
  */
-public abstract class BlobOutputStream extends OutputStream implements ReadFromSupport {
+public interface WritableBlobFactory {
     /**
-     * Get the blob to which this output stream belongs.
+     * Create a new {@link WritableBlob} instance.
      * 
-     * @return the blob
+     * @return the newly created instance
      */
-    public abstract WritableBlob getBlob();
-
-    public long readFrom(InputStream inputStream, long length) throws StreamCopyException {
-        return getBlob().readFrom(inputStream, length);
-    }
+    WritableBlob createBlob();
 }

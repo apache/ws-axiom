@@ -18,25 +18,9 @@
  */
 package org.apache.axiom.blob;
 
-import org.apache.axiom.blob.WritableBlob;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
-
-public abstract class WritableBlobTestCase extends MatrixTestCase {
-    private final WritableBlobFactory factory;
-
-    public WritableBlobTestCase(WritableBlobFactory factory) {
-        this.factory = factory;
-    }
-
-    @Override
-    protected final void runTest() throws Throwable {
-        WritableBlob blob = factory.createBlob();
-        try {
-            runTest(blob);
-        } finally {
-            blob.release();
-        }
-    }
-    
-    protected abstract void runTest(WritableBlob blob) throws Throwable;
+enum State {
+    NEW,
+    UNCOMMITTED,
+    COMMITTED,
+    RELEASED
 }

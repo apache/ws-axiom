@@ -16,29 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.blob.suite;
 
 import org.apache.axiom.blob.WritableBlob;
-import org.apache.commons.io.input.NullInputStream;
+import org.apache.axiom.blob.WritableBlobFactory;
 
-public class TestReadFromCommitted extends WritableBlobTestCase {
-    private final Boolean commit;
-    
-    public TestReadFromCommitted(WritableBlobFactory factory, Boolean commit) {
-        super(factory);
-        this.commit = commit;
-        addTestParameter("commit", String.valueOf(commit));
+public class TestGetOutputStreamIllegalState extends WritableBlobTestCase {
+    public TestGetOutputStreamIllegalState(WritableBlobFactory factory, State state) {
+        super(factory, state);
+        state.addTestParameters(this);
     }
 
     @Override
     protected void runTest(WritableBlob blob) throws Throwable {
-        blob.getOutputStream().close();
         try {
-            if (commit == null) {
-                blob.readFrom(new NullInputStream(0), -1);
-            } else {
-                blob.readFrom(new NullInputStream(0), -1, commit);
-            }
+            blob.getOutputStream();
             fail("Expected IllegalStateException");
         } catch (IllegalStateException ex) {
             // Expected

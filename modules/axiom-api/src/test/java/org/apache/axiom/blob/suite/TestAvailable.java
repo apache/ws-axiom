@@ -16,30 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.blob.suite;
 
-package org.apache.axiom.util.blob;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
-import org.apache.axiom.ext.io.ReadFromSupport;
-import org.apache.axiom.ext.io.StreamCopyException;
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.NullInputStream;
 
-/**
- * Output stream that is used to write to a blob. Instances of this class are returned by the
- * {@link WritableBlob#getOutputStream()} method.
- * 
- * @deprecated
- */
-public abstract class BlobOutputStream extends OutputStream implements ReadFromSupport {
-    /**
-     * Get the blob to which this output stream belongs.
-     * 
-     * @return the blob
-     */
-    public abstract WritableBlob getBlob();
+public class TestAvailable extends WritableBlobTestCase {
+    public TestAvailable(WritableBlobFactory factory) {
+        super(factory, State.NEW);
+    }
 
-    public long readFrom(InputStream inputStream, long length) throws StreamCopyException {
-        return getBlob().readFrom(inputStream, length);
+    @Override
+    protected void runTest(WritableBlob blob) throws Throwable {
+        blob.readFrom(new NullInputStream(1000));
+        InputStream in = blob.getInputStream();
+        try {
+            IOUtils.toByteArray(in, 200);
+            assertThat(in.available()).isEqualTo(800);
+        } finally {
+            in.close();
+        }
     }
 }

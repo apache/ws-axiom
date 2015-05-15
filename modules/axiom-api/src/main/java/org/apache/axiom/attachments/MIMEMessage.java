@@ -31,8 +31,9 @@ import java.util.Set;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
-import org.apache.axiom.attachments.lifecycle.LifecycleManager;
-import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
@@ -53,6 +54,12 @@ import org.apache.james.mime4j.stream.RecursionMode;
  */
 class MIMEMessage extends AttachmentsDelegate {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
+    
+    private static final WritableBlobFactory rootPartBlobFactory = new WritableBlobFactory() {
+        public WritableBlob createBlob() {
+            return Blobs.createMemoryBlob();
+        }
+    };
 
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
@@ -88,24 +95,15 @@ class MIMEMessage extends AttachmentsDelegate {
 
     private String firstPartId;
 
-    private final boolean fileCacheEnable;
-
-    private final String attachmentRepoDir;
-
-    private final int fileStorageThreshold;
+    private final WritableBlobFactory attachmentBlobFactory;
     
-    private LifecycleManager manager;
-    
-    MIMEMessage(LifecycleManager manager, InputStream inStream, String contentTypeString, boolean fileCacheEnable,
-            String attachmentRepoDir, int fileStorageThreshold, int contentLength) throws OMException {
-        this.manager = manager;
+    MIMEMessage(InputStream inStream, String contentTypeString,
+            WritableBlobFactory attachmentBlobFactory, int contentLength) throws OMException {
         this.contentLength = contentLength;
-        this.attachmentRepoDir = attachmentRepoDir;
-        this.fileCacheEnable = fileCacheEnable;
+        this.attachmentBlobFactory = attachmentBlobFactory;
         if (log.isDebugEnabled()) {
             log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
         }
-        this.fileStorageThreshold = fileStorageThreshold;
         try {
             contentType = new ContentType(contentTypeString);
         } catch (ParseException e) {
@@ -151,17 +149,6 @@ class MIMEMessage extends AttachmentsDelegate {
 
     ContentType getContentType() {
         return contentType;
-    }
-
-    LifecycleManager getLifecycleManager() {
-        if(manager == null) {
-            manager = new LifecycleManagerImpl();   
-        }
-        return manager;
-    }
-
-    void setLifecycleManager(LifecycleManager manager) {
-        this.manager = manager;
     }
 
     DataHandler getDataHandler(String contentID) {
@@ -357,25 +344,13 @@ class MIMEMessage extends AttachmentsDelegate {
             List headers = readHeaders();
             
             partIndex++;
-            currentPart = new PartImpl(this, isRootPart, headers, parser);
+            currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
             return currentPart;
         } catch (IOException ex) {
             throw new OMException(ex);
         } catch (MimeException ex) {
             throw new OMException(ex);
         }
-    }
-    
-    int getThreshold() {
-        return fileCacheEnable ? fileStorageThreshold : 0;
-    }
-    
-    String getAttachmentRepoDir() {
-        return attachmentRepoDir;
-    }
-
-    int getContentLengthIfKnown() {
-        return contentLength;
     }
     
     private List readHeaders() throws IOException, MimeException {

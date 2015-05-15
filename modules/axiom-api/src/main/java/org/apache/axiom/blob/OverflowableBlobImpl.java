@@ -19,51 +19,31 @@
 
 package org.apache.axiom.blob;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-/**
- * Blob implementation that stores data in a temporary file if the size exceeds a configurable
- * threshold. The data is first stored into a fixed size buffer. Once this buffer overflows, it is
- * transferred to a temporary file. The buffer is divided into a given number of fixed size chunks
- * that are allocated on demand. Since a temporary file may be created it is mandatory to call
- * {@link #release()} to discard the blob.
- */
-public final class OverflowBlob implements WritableBlob {
-    private static final Log log = LogFactory.getLog(OverflowBlob.class);
-    
-    static final int STATE_NEW = 0;
-    static final int STATE_UNCOMMITTED = 1;
-    static final int STATE_COMMITTED = 2;
-    
-    class OutputStreamImpl extends BlobOutputStream {
+final class OverflowableBlobImpl implements OverflowableBlob {
+    class OutputStreamImpl extends OutputStream implements ReadFromSupport {
         
-        private FileOutputStream fileOutputStream;
+        private OutputStream overflowOutputStream;
         
-        public WritableBlob getBlob() {
-            return OverflowBlob.this;
-        }
-
         public void write(byte[] b, int off, int len) throws IOException {
-
-            if (fileOutputStream != null) {
-                fileOutputStream.write(b, off, len);
+            if (state != State.UNCOMMITTED) {
+                throw new IllegalStateException();
+            }
+            if (overflowOutputStream != null) {
+                overflowOutputStream.write(b, off, len);
             } else if (len > (chunks.length-chunkIndex)*chunkSize - chunkOffset) {
 
                 // The buffer will overflow. Switch to a temporary file.
-                fileOutputStream = switchToTempFile();
+                overflowOutputStream = switchToOverflowBlob();
                 
                 // Write the new data to the temporary file.
-                fileOutputStream.write(b, off, len);
+                overflowOutputStream.write(b, off, len);
 
             } else {
 
@@ -97,17 +77,15 @@ public final class OverflowBlob implements WritableBlob {
             write(new byte[] { (byte)b }, 0, 1);
         }
 
-        public void flush() throws IOException {
-            if (fileOutputStream != null) {
-                fileOutputStream.flush();
+        public void close() throws IOException {
+            if (overflowOutputStream != null) {
+                overflowOutputStream.close();
             }
+            state = State.COMMITTED;
         }
 
-        public void close() throws IOException {
-            if (fileOutputStream != null) {
-                fileOutputStream.close();
-            }
-            state = STATE_COMMITTED;
+        public long readFrom(InputStream in, long length) throws StreamCopyException {
+            return OverflowableBlobImpl.this.readFrom(in, length, false);
         }
     }
     
@@ -205,15 +183,7 @@ public final class OverflowBlob implements WritableBlob {
      */
     final int chunkSize;
     
-    /**
-     * The prefix to be used in generating the name of the temporary file.
-     */
-    final String tempPrefix;
-    
-    /**
-     * The suffix to be used in generating the name of the temporary file.
-     */
-    final String tempSuffix;
+    final WritableBlobFactory overflowBlobFactory;
     
     /**
      * Array of <code>byte[]</code> representing the chunks of the buffer.
@@ -234,28 +204,22 @@ public final class OverflowBlob implements WritableBlob {
     int chunkOffset;
     
     /**
-     * The handle of the temporary file. This is only set when the memory buffer
-     * overflows and is written out to a temporary file.
+     * The overflow blob. This is only set when the memory buffer overflows and is written to a
+     * different blob.
      */
-    File temporaryFile;
+    WritableBlob overflowBlob;
     
     /**
      * The state of the blob.
      */
-    int state = STATE_NEW;
+    State state = State.NEW;
     
-    public OverflowBlob(int numberOfChunks, int chunkSize, String tempPrefix, String tempSuffix) {
+    OverflowableBlobImpl(int numberOfChunks, int chunkSize, WritableBlobFactory overflowBlobFactory) {
         this.chunkSize = chunkSize;
-        this.tempPrefix = tempPrefix;
-        this.tempSuffix = tempSuffix;
+        this.overflowBlobFactory = overflowBlobFactory;
         chunks = new byte[numberOfChunks][];
     }
     
-    public boolean isSupportingReadUncommitted() {
-        // This is actually a limitation of the implementation, not an intrinsic limitation
-        return false;
-    }
-
     /**
      * Get the current chunk to write to, allocating it if necessary.
      * 
@@ -279,46 +243,42 @@ public final class OverflowBlob implements WritableBlob {
      * @return an open FileOutputStream to the temporary file
      * @throws IOException
      */
-    FileOutputStream switchToTempFile() throws IOException {
-        temporaryFile = File.createTempFile(tempPrefix, tempSuffix);
-        if (log.isDebugEnabled()) {
-            log.debug("Using temporary file " + temporaryFile);
-        }
-        temporaryFile.deleteOnExit();
+    OutputStream switchToOverflowBlob() throws IOException {
+        overflowBlob = overflowBlobFactory.createBlob();
 
-        FileOutputStream fileOutputStream = new FileOutputStream(temporaryFile);
+        OutputStream outputStream = overflowBlob.getOutputStream();
         // Write the buffer to the temporary file.
         for (int i=0; i<chunkIndex; i++) {
-            fileOutputStream.write(chunks[i]);
+            outputStream.write(chunks[i]);
         }
 
         if (chunkOffset > 0) {
-            fileOutputStream.write(chunks[chunkIndex], 0, chunkOffset);
+            outputStream.write(chunks[chunkIndex], 0, chunkOffset);
         }
 
         // Release references to the buffer so that it can be garbage collected.
         chunks = null;
         
-        return fileOutputStream;
+        return outputStream;
     }
     
-    public BlobOutputStream getOutputStream() {
-        if (state != STATE_NEW) {
+    public OutputStream getOutputStream() {
+        if (state != State.NEW) {
             throw new IllegalStateException();
         } else {
-            state = STATE_UNCOMMITTED;
+            state = State.UNCOMMITTED;
             return new OutputStreamImpl();
         }
     }
     
-    public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
-        if (state == STATE_COMMITTED) {
+    long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
+        if (state == State.COMMITTED) {
             throw new IllegalStateException();
         }
         // TODO: this will not work if the blob is in state UNCOMMITTED and we have already switched to a temporary file
         long read = 0;
         long toRead = length == -1 ? Long.MAX_VALUE : length;
-        while (true) {
+        while (toRead > 0) {
             int c;
             try {
                 int len = chunkSize-chunkOffset;
@@ -339,33 +299,15 @@ public final class OverflowBlob implements WritableBlob {
                 chunkIndex++;
                 chunkOffset = 0;
                 if (chunkIndex == chunks.length) {
-                    FileOutputStream fileOutputStream;
+                    OutputStream out;
                     try {
-                        fileOutputStream = switchToTempFile();
+                        out = switchToOverflowBlob();
                     } catch (IOException ex) {
                         throw new StreamCopyException(StreamCopyException.WRITE, ex);
                     }
-                    byte[] buf = new byte[4096];
-                    while (true) {
-                        int c2;
-                        try {
-                            c2 = in.read(buf, 0, (int)Math.min(toRead, 4096));
-                        } catch (IOException ex) {
-                            throw new StreamCopyException(StreamCopyException.READ, ex);
-                        }
-                        if (c2 == -1) {
-                            break;
-                        }
-                        try {
-                            fileOutputStream.write(buf, 0, c2);
-                        } catch (IOException ex) {
-                            throw new StreamCopyException(StreamCopyException.WRITE, ex);
-                        }
-                        read += c2;
-                        toRead -= c2;
-                    }
+                    read += IOUtil.copy(in, out, toRead);
                     try {
-                        fileOutputStream.close();
+                        out.close();
                     } catch (IOException ex) {
                         throw new StreamCopyException(StreamCopyException.WRITE, ex);
                     }
@@ -373,61 +315,33 @@ public final class OverflowBlob implements WritableBlob {
                 }
             }
         }
-        state = commit ? STATE_COMMITTED : STATE_UNCOMMITTED;
+        state = commit ? State.COMMITTED : State.UNCOMMITTED;
         return read;
     }
     
-    public long readFrom(InputStream in, long length) throws StreamCopyException {
-        return readFrom(in, length, state == STATE_NEW);
+    public long readFrom(InputStream in) throws StreamCopyException {
+        if (state != State.NEW) {
+            throw new IllegalStateException();
+        }
+        return readFrom(in, -1, true);
     }
 
     public InputStream getInputStream() throws IOException {
-        if (state != STATE_COMMITTED) {
+        if (state != State.COMMITTED) {
             throw new IllegalStateException();
-        } else if (temporaryFile != null) {
-            return new FileInputStream(temporaryFile);
+        } else if (overflowBlob != null) {
+            return overflowBlob.getInputStream();
         } else {
             return new InputStreamImpl();
         }
     }
     
     public void writeTo(OutputStream out) throws StreamCopyException {
-        if (temporaryFile != null) {
-            FileInputStream in;
-            try {
-                in = new FileInputStream(temporaryFile);
-            } catch (IOException ex) {
-                throw new StreamCopyException(StreamCopyException.READ, ex);
-            }
-            try {
-                if (out instanceof ReadFromSupport) {
-                    ((ReadFromSupport)out).readFrom(in, -1);
-                } else {
-                    byte[] buf = new byte[4096];
-                    while (true) {
-                        int c;
-                        try {
-                            c = in.read(buf);
-                        } catch (IOException ex) {
-                            throw new StreamCopyException(StreamCopyException.READ, ex);
-                        }
-                        if (c == -1) {
-                            break;
-                        }
-                        try {
-                            out.write(buf, 0, c);
-                        } catch (IOException ex) {
-                            throw new StreamCopyException(StreamCopyException.WRITE, ex);
-                        }
-                    }
-                }
-            } finally {
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                    throw new StreamCopyException(StreamCopyException.READ, ex);
-                }
-            }
+        if (state != State.COMMITTED) {
+            throw new IllegalStateException();
+        }
+        if (overflowBlob != null) {
+            overflowBlob.writeTo(out);
         } else {
             try {
                 for (int i=0; i<chunkIndex; i++) {
@@ -442,27 +356,26 @@ public final class OverflowBlob implements WritableBlob {
         }
     }
     
-    public long getLength() {
-        if (temporaryFile != null) {
-            return temporaryFile.length();
+    public long getSize() {
+        if (state != State.COMMITTED) {
+            throw new IllegalStateException();
+        }
+        if (overflowBlob != null) {
+            return overflowBlob.getSize();
         } else {
             return chunkIndex*chunkSize + chunkOffset;
         }
     }
     
-    public void release() {
-        if (temporaryFile != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Deleting temporary file " + temporaryFile);
-            }
-            temporaryFile.delete();
+    public void release() throws IOException {
+        if (overflowBlob != null) {
+            overflowBlob.release();
+            overflowBlob = null;
         }
+        state = State.RELEASED;
     }
 
-    protected void finalize() throws Throwable {
-        if (temporaryFile != null) {
-            log.warn("Cleaning up unreleased temporary file " + temporaryFile);
-            temporaryFile.delete();
-        }
+    public WritableBlob getOverflowBlob() {
+        return overflowBlob;
     }
 }

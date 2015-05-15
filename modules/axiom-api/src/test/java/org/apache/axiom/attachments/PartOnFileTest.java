@@ -19,12 +19,14 @@
 
 package org.apache.axiom.attachments;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.TestConstants;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.FileDataSource;
+
 import java.io.File;
 import java.io.InputStream;
 
@@ -60,9 +62,9 @@ public class PartOnFileTest extends AbstractTestCase {
 
         DataSource ds = dh.getDataSource();
         assertNotNull(ds);
-        if (!(ds instanceof FileDataSource)) {
-            fail("Expected FileDataSource, but got " + ds.getClass().getName());
-        }
+        // The attachment cleanup code in Axis2 relies on the assumption that attachments written
+        // to disk produce CachedFileDataSource instances.
+        assertThat(ds).isInstanceOf(CachedFileDataSource.class);
 
         assertEquals("image/jpeg", dh.getContentType());
     }
