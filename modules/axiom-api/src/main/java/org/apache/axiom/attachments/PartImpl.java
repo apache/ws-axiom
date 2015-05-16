@@ -20,6 +20,7 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
@@ -234,11 +235,13 @@ final class PartImpl implements Part {
             return detachableInputStream;
         } else {
             WritableBlob content = getContent();
-            InputStream stream = content.getInputStream();
-            if (!preserve) {
-                stream = new ReadOnceInputStreamWrapper(this, stream);
+            if (preserve) {
+                return content.getInputStream();
+            } else if (content instanceof MemoryBlob) {
+                return ((MemoryBlob)content).readOnce();
+            } else {
+                return new ReadOnceInputStreamWrapper(this, content.getInputStream());
             }
-            return stream;
         }
     }
     

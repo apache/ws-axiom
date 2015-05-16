@@ -35,4 +35,12 @@ public interface MemoryBlob extends WritableBlob {
     OutputStream getOutputStream();
     long getSize();
     void release();
+
+    /**
+     * Get an input stream that consumes the content of this blob. The memory held by this blob will
+     * be gradually released as data is read from the stream.
+     * 
+     * @return the input stream to read the data from
+     */
+    InputStream readOnce();
 }
