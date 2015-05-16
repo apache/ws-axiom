@@ -1419,6 +1419,12 @@ while (iterator.hasNext()) {
                         Projects that use other build tools must explicity add the <filename>apache-mime4j-core</filename>
                         library to the list of dependencies.
                     </para>
+                    <para>
+                        Axiom uses Mime4J in strict mode. This means that some non conforming MIME messages
+                        that would have been processed successfully by previous Axiom versions may be rejected by
+                        Axiom 1.2.13. Please note that Axiom doesn't make any guarantees about its ability to process
+                        invalid messages.
+                    </para>
                 </section>
                 <section>
                     <title>Support for MIME part streaming</title>
