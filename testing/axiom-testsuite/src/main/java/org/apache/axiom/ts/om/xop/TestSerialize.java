@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.MIMEResource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -32,6 +31,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.soap.MIMEResource;
 
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;

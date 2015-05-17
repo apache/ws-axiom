@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.ts.soap.MIMEResource;
+
 /** All the various files created 03-Nov-2005 12:02:12 */
 
 public class TestConstants {

@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om;
+package org.apache.axiom.ts.soap;
 
 import java.io.InputStream;
-import java.text.ParseException;
 
-import org.apache.axiom.mime.ContentType;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.ParseException;
 
 public class MIMEResource {
     private final String name;
