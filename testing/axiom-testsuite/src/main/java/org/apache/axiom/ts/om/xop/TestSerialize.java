@@ -31,7 +31,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.soap.MIMEResource;
+import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestSerialize extends AxiomTestCase {
     private final boolean base64;
@@ -43,7 +43,7 @@ public class TestSerialize extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        MIMEResource testMessage = TestConstants.MTOM_MESSAGE;
+        MTOMSample testMessage = TestConstants.MTOM_MESSAGE;
 
         // Read in message: SOAPPart and 2 image attachments
         InputStream inStream = testMessage.getInputStream();

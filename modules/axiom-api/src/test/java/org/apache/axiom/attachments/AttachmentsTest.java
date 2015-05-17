@@ -51,7 +51,7 @@ import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.ts.soap.MIMEResource;
+import org.apache.axiom.ts.soap.MIMESample;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -665,7 +665,7 @@ public class AttachmentsTest extends AbstractTestCase {
         testTurkishLocale("content-id");
     }
     
-    private void testGetAttachmentSpecType(MIMEResource resource, String expectedResult) throws Exception {
+    private void testGetAttachmentSpecType(MIMESample resource, String expectedResult) throws Exception {
         InputStream in = resource.getInputStream();
         try {
             Attachments attachments = new Attachments(in, resource.getContentType());

@@ -23,11 +23,11 @@ import java.io.InputStream;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 
-public class MIMEResource {
+public abstract class MIMESample {
     private final String name;
     private final String contentType;
     
-    public MIMEResource(String name, String contentType) {
+    MIMESample(String name, String contentType) {
         this.name = name;
         this.contentType = contentType;
     }
@@ -38,7 +38,7 @@ public class MIMEResource {
      * @return an input stream with the content of this message
      */
     public InputStream getInputStream() {
-        return MIMEResource.class.getClassLoader().getResourceAsStream(name);
+        return MIMESample.class.getClassLoader().getResourceAsStream(name);
     }
 
     public String getContentType() {

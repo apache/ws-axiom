@@ -19,7 +19,8 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.ts.soap.MIMEResource;
+import org.apache.axiom.ts.soap.MTOMSample;
+import org.apache.axiom.ts.soap.SwASample;
 
 /** All the various files created 03-Nov-2005 12:02:12 */
 
@@ -31,7 +32,7 @@ public class TestConstants {
     public static final String REALLY_BIG_MESSAGE = "soap/soap11/reallyReallyBigMessage.xml";
     public static final String EMPTY_BODY_MESSAGE = "soap/soap11/emtyBodymessage.xml";
 
-    public static final MIMEResource MTOM_MESSAGE = new MIMEResource("mtom/MTOMAttachmentStream.bin",
+    public static final MTOMSample MTOM_MESSAGE = new MTOMSample("mtom/MTOMAttachmentStream.bin",
             "multipart/related; " +
             "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
             "type=\"application/xop+xml\"; " +
@@ -43,11 +44,11 @@ public class TestConstants {
     public static final String MTOM_MESSAGE_IMAGE1 = "mtom/img/test.jpg";
     public static final String MTOM_MESSAGE_IMAGE2 = "mtom/img/test2.jpg";
     
-    public static final MIMEResource MTOM_MESSAGE_2 = new MIMEResource("mtom/MTOMBuilderTestIn.txt",
+    public static final MTOMSample MTOM_MESSAGE_2 = new MTOMSample("mtom/MTOMBuilderTestIn.txt",
             "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; " +
             "boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"");
     
-    public static final MIMEResource SWA_MESSAGE = new MIMEResource(
+    public static final SwASample SWA_MESSAGE = new SwASample(
             "soap/soap11/SWAAttachmentStream.txt",
             "multipart/related; " +
             "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
