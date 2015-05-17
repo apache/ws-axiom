@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.MIMEResource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
@@ -47,7 +46,7 @@ public class TestSerialize extends AxiomTestCase {
         MIMEResource testMessage = TestConstants.MTOM_MESSAGE;
 
         // Read in message: SOAPPart and 2 image attachments
-        InputStream inStream = AbstractTestCase.getTestResource(testMessage.getName());
+        InputStream inStream = testMessage.getInputStream();
         Attachments attachments = new Attachments(inStream, testMessage.getContentType());
         
         OMOutputFormat oof = new OMOutputFormat();

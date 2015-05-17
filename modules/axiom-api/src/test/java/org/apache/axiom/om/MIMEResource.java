@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om;
 
+import java.io.InputStream;
 import java.text.ParseException;
 
 import org.apache.axiom.mime.ContentType;
@@ -31,8 +32,13 @@ public class MIMEResource {
         this.contentType = contentType;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Get the content of this message.
+     * 
+     * @return an input stream with the content of this message
+     */
+    public InputStream getInputStream() {
+        return MIMEResource.class.getClassLoader().getResourceAsStream(name);
     }
 
     public String getContentType() {

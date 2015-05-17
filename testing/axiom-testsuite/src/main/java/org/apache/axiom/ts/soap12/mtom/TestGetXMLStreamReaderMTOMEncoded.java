@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -47,7 +46,7 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream inStream = AbstractTestCase.getTestResource(TestConstants.MTOM_MESSAGE_2.getName());
+        InputStream inStream = TestConstants.MTOM_MESSAGE_2.getInputStream();
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_2.getContentType());
         OMElement root = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getDocumentElement();
         

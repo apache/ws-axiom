@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.mtom;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
@@ -45,14 +44,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
+import junit.framework.TestCase;
+
+public class MTOMStAXSOAPModelBuilderTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
     }
 
     private Attachments createAttachmentsForTestMTOMMessage() throws Exception {
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE_2.getName());
+        InputStream inStream = TestConstants.MTOM_MESSAGE_2.getInputStream();
         return new Attachments(inStream, TestConstants.MTOM_MESSAGE_2.getContentType());
     }
 

@@ -34,7 +34,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public class XOPDecodingStreamReaderTest extends AbstractTestCase {
     private XMLStreamReader getXOPDecodingStreamReader() throws Exception {
-        Attachments attachments = new Attachments(getTestResource(TestConstants.MTOM_MESSAGE.getName()),
+        Attachments attachments = new Attachments(TestConstants.MTOM_MESSAGE.getInputStream(),
                 TestConstants.MTOM_MESSAGE.getContentType());
         return new XOPDecodingStreamReader(
                 StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),

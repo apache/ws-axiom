@@ -19,7 +19,6 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -31,11 +30,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-public class AttachmentsTest extends AbstractTestCase {
+import junit.framework.TestCase;
+
+public class AttachmentsTest extends TestCase {
     public void testSWAWriteWithIncomingOrder() throws Exception {
 
         // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = getTestResource(TestConstants.SWA_MESSAGE.getName());
+        InputStream inStream = TestConstants.SWA_MESSAGE.getInputStream();
         Attachments attachments = new Attachments(inStream, TestConstants.SWA_MESSAGE.getContentType());
 
         // Get the contentIDs to force the reading

@@ -21,7 +21,6 @@ package org.apache.axiom.attachments;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.TestConstants;
 
 import javax.activation.DataHandler;
@@ -30,10 +29,11 @@ import javax.activation.DataSource;
 import java.io.File;
 import java.io.InputStream;
 
+import junit.framework.TestCase;
 
 /** Test the PartOnFile class */
 
-public class PartOnFileTest extends AbstractTestCase {
+public class PartOnFileTest extends TestCase {
 
     public PartOnFileTest(String testName) {
         super(testName);
@@ -51,7 +51,7 @@ public class PartOnFileTest extends AbstractTestCase {
 
     public void testHeaderGetSet() throws Exception {
 
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE.getName());
+        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
         Attachments attachments =
                 new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType(), true, temp.getPath(), "1");
 
