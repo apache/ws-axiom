@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -52,12 +54,12 @@ public class TestAddAttributeReplace extends AxiomTestCase {
         OMAttribute att1 = strategy.addAttribute(element, "test", ns1, "value1");
         OMAttribute att2 = strategy.addAttribute(element, "test", ns2, "value2");
         Iterator it = element.getAllAttributes();
-        assertTrue(it.hasNext());
-        assertSame(att2, it.next());
-        assertFalse(it.hasNext());
-        assertNull(att1.getOwner());
-        assertSame(element, att2.getOwner());
-        assertEquals("value1", att1.getAttributeValue());
-        assertEquals("value2", att2.getAttributeValue());
+        ASSERT.that(it.hasNext()).isTrue();
+        ASSERT.that(it.next()).isSameAs(att2);
+        ASSERT.that(it.hasNext()).isFalse();
+        ASSERT.that(att1.getOwner()).isNull();
+        ASSERT.that(att2.getOwner()).isSameAs(element);
+        ASSERT.that(att1).hasValue("value1");
+        ASSERT.that(att2).hasValue("value2");
     }
 }

@@ -33,6 +33,7 @@
 
     <modules>
         <module>axiom-testsuite</module>
+        <module>axiom-truth</module>
         <module>dom-testsuite</module>
         <module>jaxen-testsuite</module>
         <module>multiton</module>

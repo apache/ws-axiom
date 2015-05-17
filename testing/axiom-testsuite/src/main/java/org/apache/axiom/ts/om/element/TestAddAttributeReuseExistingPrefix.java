@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -41,7 +43,7 @@ public class TestAddAttributeReuseExistingPrefix extends AxiomTestCase {
         OMElement element = factory.createOMElement("element", null, parent);
         parent.declareNamespace("urn:test", "p");
         OMAttribute attr = element.addAttribute("attr", "test", factory.createOMNamespace("urn:test", null));
-        assertEquals("p", attr.getPrefix());
-        assertFalse(element.getAllDeclaredNamespaces().hasNext());
+        ASSERT.that(attr).hasPrefix("p");
+        ASSERT.that(element).hasNoNamespaceDeclarations();
     }
 }
