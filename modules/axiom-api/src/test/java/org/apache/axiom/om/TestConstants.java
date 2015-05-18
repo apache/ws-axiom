@@ -40,7 +40,6 @@ public class TestConstants {
             "start-info=\"application/soap+xml\"; " +
             "charset=UTF-8;" +
             "action=\"mtomSample\"");
-    public static final String MTOM_MESSAGE_INLINED = "mtom/MTOMAttachmentStream_inlined.xml";
     public static final String MTOM_MESSAGE_IMAGE1 = "mtom/img/test.jpg";
     public static final String MTOM_MESSAGE_IMAGE2 = "mtom/img/test2.jpg";
     

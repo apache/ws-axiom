@@ -43,7 +43,7 @@ public class XOPDecodingStreamReaderTest extends AbstractTestCase {
     
     public void testCompareToInlined() throws Exception {
         XMLStreamReader expected = StAXUtils.createXMLStreamReader(
-                getTestResource(TestConstants.MTOM_MESSAGE_INLINED));
+                TestConstants.MTOM_MESSAGE.getInlinedMessage());
         XMLStreamReader actual = getXOPDecodingStreamReader();
         XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(expected, actual);
         comparator.addPrefix("xop");
