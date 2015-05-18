@@ -24,15 +24,16 @@ import java.io.ByteArrayInputStream;
 import javax.imageio.ImageIO;
 import javax.xml.stream.XMLStreamReader;
 
+import junit.framework.TestCase;
+
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.commons.codec.binary.Base64;
 
-public class XOPDecodingStreamReaderTest extends AbstractTestCase {
+public class XOPDecodingStreamReaderTest extends TestCase {
     private XMLStreamReader getXOPDecodingStreamReader() throws Exception {
         Attachments attachments = new Attachments(TestConstants.MTOM_MESSAGE.getInputStream(),
                 TestConstants.MTOM_MESSAGE.getContentType());
