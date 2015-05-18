@@ -18,14 +18,20 @@
  */
 package org.apache.axiom.ts.soap;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.ParseException;
 
 public abstract class MIMESample {
     private final String name;
     private final String contentType;
+    private MimeMultipart multipart;
     
     MIMESample(String name, String contentType) {
         this.name = name;
@@ -66,5 +72,48 @@ public abstract class MIMESample {
     
     public String getBoundary() {
         return getParameter("boundary");
+    }
+    
+    protected final synchronized MimeMultipart getMultipart() {
+        if (multipart == null) {
+            try {
+                multipart = new MimeMultipart(new DataSource() {
+                    @Override
+                    public OutputStream getOutputStream() throws IOException {
+                        throw new UnsupportedOperationException();
+                    }
+                    
+                    @Override
+                    public String getName() {
+                        return null;
+                    }
+                    
+                    @Override
+                    public InputStream getInputStream() throws IOException {
+                        return MIMESample.this.getInputStream();
+                    }
+                    
+                    @Override
+                    public String getContentType() {
+                        return MIMESample.this.getContentType();
+                    }
+                });
+                // Force the implementation to parse the message
+                multipart.getCount();
+            } catch (MessagingException ex) {
+                throw new Error(ex);
+            }
+        }
+        return multipart;
+    }
+    
+    public final InputStream getPart(int part) {
+        try {
+            return getMultipart().getBodyPart(part).getInputStream();
+        } catch (IOException ex) {
+            throw new Error(ex);
+        } catch (MessagingException ex) {
+            throw new Error(ex);
+        }
     }
 }

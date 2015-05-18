@@ -52,6 +52,7 @@ import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.soap.MIMESample;
+import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -71,7 +72,7 @@ public class AttachmentsTest extends AbstractTestCase {
                 .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
-        InputStream expectedDataIs = getTestResource(TestConstants.MTOM_MESSAGE_IMAGE2);
+        InputStream expectedDataIs = TestConstants.MTOM_MESSAGE.getPart(2);
 
         // Compare data across streams
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
@@ -253,12 +254,13 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetIncomingAttachmentStreams2() throws Exception {
+        MTOMSample sample = TestConstants.MTOM_MESSAGE;
 
         IncomingAttachmentInputStream dataIs;
         InputStream expectedDataIs;
 
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = sample.getInputStream();
+        Attachments attachments = new Attachments(inStream, sample.getContentType());
 
         // Since SOAP part operated independently of other streams, access it
         // directly, and then get to the streams. If this sequence throws an
@@ -270,11 +272,11 @@ public class AttachmentsTest extends AbstractTestCase {
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
 
         dataIs = ias.getNextStream();
-        expectedDataIs = getTestResource(TestConstants.MTOM_MESSAGE_IMAGE1);
+        expectedDataIs = sample.getPart(1);
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         dataIs = ias.getNextStream();
-        expectedDataIs = getTestResource(TestConstants.MTOM_MESSAGE_IMAGE2);
+        expectedDataIs = sample.getPart(2);
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         // Confirm that no more streams are left

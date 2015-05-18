@@ -24,7 +24,6 @@ import java.util.Iterator;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
@@ -33,6 +32,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.soap.MTOMSample;
 
 public class TestBuildWithAttachments extends AxiomTestCase {
     public TestBuildWithAttachments(OMMetaFactory metaFactory) {
@@ -40,8 +40,9 @@ public class TestBuildWithAttachments extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream in = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(in, TestConstants.MTOM_MESSAGE.getContentType());
+        MTOMSample sample = TestConstants.MTOM_MESSAGE;
+        InputStream in = sample.getInputStream();
+        Attachments attachments = new Attachments(in, sample.getContentType());
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
         envelope.buildWithAttachments();
         in.close();
@@ -50,9 +51,9 @@ public class TestBuildWithAttachments extends AxiomTestCase {
         OMElement image2 = (OMElement)it.next();
         
         IOTestUtils.compareStreams(((DataHandler)((OMText)image1.getFirstOMChild()).getDataHandler()).getInputStream(),
-                AbstractTestCase.getTestResource(TestConstants.MTOM_MESSAGE_IMAGE1));
+                sample.getPart(1));
 
         IOTestUtils.compareStreams(((DataHandler)((OMText)image2.getFirstOMChild()).getDataHandler()).getInputStream(),
-                AbstractTestCase.getTestResource(TestConstants.MTOM_MESSAGE_IMAGE2));
+                sample.getPart(2));
     }
 }

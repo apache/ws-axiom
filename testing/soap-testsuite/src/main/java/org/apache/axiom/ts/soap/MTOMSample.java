@@ -20,11 +20,8 @@ package org.apache.axiom.ts.soap;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
-import javax.activation.DataSource;
 import javax.mail.BodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,27 +42,7 @@ public class MTOMSample extends MIMESample {
     
     public InputStream getInlinedMessage() {
         try {
-            MimeMultipart mp = new MimeMultipart(new DataSource() {
-                @Override
-                public OutputStream getOutputStream() throws IOException {
-                    throw new UnsupportedOperationException();
-                }
-                
-                @Override
-                public String getName() {
-                    return null;
-                }
-                
-                @Override
-                public InputStream getInputStream() throws IOException {
-                    return MTOMSample.this.getInputStream();
-                }
-                
-                @Override
-                public String getContentType() {
-                    return MTOMSample.this.getContentType();
-                }
-            });
+            MimeMultipart mp = getMultipart();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             Document rootPart = documentBuilderFactory.newDocumentBuilder().parse(
