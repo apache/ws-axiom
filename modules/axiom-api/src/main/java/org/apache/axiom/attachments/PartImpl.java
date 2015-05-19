@@ -165,6 +165,21 @@ final class PartImpl implements Part {
         }
     }
     
+    private InputStream getDecodedInputStream() {
+        InputStream in;
+        if ("quoted-printable".equalsIgnoreCase(getHeader("Content-Transfer-Encoding"))) {
+            // Temporary workaround for AXIOM-467 while waiting for MIME4J 0.7.3:
+            // use a copy of QuotedPrintableInputStream from the 0.7 branch.
+            in = new QuotedPrintableInputStream(parser.getInputStream(), true);
+        } else {
+            in = parser.getDecodedInputStream();
+        }
+        if (log.isDebugEnabled()) {
+            in = new DebugInputStream(in, log);
+        }
+        return in;
+    }
+    
     /**
      * Make sure that the MIME part has been fully read from the parser. If the part has not been
      * read yet, then it will be buffered. This method prepares the parser for reading the next part
@@ -174,17 +189,13 @@ final class PartImpl implements Part {
         switch (state) {
             case STATE_UNREAD:
                 checkParserState(parser.getState(), EntityState.T_BODY);
-                
-                InputStream in = parser.getDecodedInputStream();
-                if (log.isDebugEnabled()) {
-                    in = new DebugInputStream(in, log);
-                }
+
                 content = blobFactory.createBlob();
                 if (log.isDebugEnabled()) {
                     log.debug("Using blob of type " + content.getClass().getName());
                 }
                 try {
-                    content.readFrom(in);
+                    content.readFrom(getDecodedInputStream());
                 } catch (StreamCopyException ex) {
                     if (ex.getOperation() == StreamCopyException.READ) {
                         throw new OMException("Failed to fetch the MIME part content", ex.getCause());
@@ -231,7 +242,7 @@ final class PartImpl implements Part {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
             state = STATE_STREAMING;
-            detachableInputStream = new DetachableInputStream(parser.getDecodedInputStream());
+            detachableInputStream = new DetachableInputStream(getDecodedInputStream());
             return detachableInputStream;
         } else {
             WritableBlob content = getContent();

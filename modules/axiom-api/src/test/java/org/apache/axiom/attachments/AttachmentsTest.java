@@ -754,4 +754,17 @@ public class AttachmentsTest extends AbstractTestCase {
             in.close();
         }
     }
+
+    /**
+     * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-467">AXIOM-467</a>.
+     */
+    public void testQuotedPrintable() throws Exception {
+        Attachments attachments = new Attachments(
+                MTOMSample.QUOTED_PRINTABLE.getInputStream(),
+                MTOMSample.QUOTED_PRINTABLE.getContentType());
+        DataHandler dh = attachments.getDataHandler("SDESS_COREP_00000_KO_SNG.xml");
+        IOTestUtils.compareStreams(
+                MTOMSample.QUOTED_PRINTABLE.getPart(1),
+                dh.getInputStream());
+    }
 }
