@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -40,7 +39,7 @@ public class TestBuildWithAttachments extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        MTOMSample sample = TestConstants.MTOM_MESSAGE;
+        MTOMSample sample = MTOMSample.SAMPLE1;
         InputStream in = sample.getInputStream();
         Attachments attachments = new Attachments(in, sample.getContentType());
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();

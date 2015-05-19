@@ -27,9 +27,9 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReader;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
@@ -53,8 +53,8 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
     }
 
     private Attachments createAttachmentsForTestMTOMMessage() throws Exception {
-        InputStream inStream = TestConstants.MTOM_MESSAGE_2.getInputStream();
-        return new Attachments(inStream, TestConstants.MTOM_MESSAGE_2.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
+        return new Attachments(inStream, MTOMSample.SAMPLE2.getContentType());
     }
 
     private OMElement createTestMTOMMessage() throws Exception {

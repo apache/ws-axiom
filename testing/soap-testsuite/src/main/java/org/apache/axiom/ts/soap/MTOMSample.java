@@ -36,8 +36,21 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class MTOMSample extends MIMESample {
-    public MTOMSample(String name, String contentType) {
-        super(name, contentType);
+    public static final MTOMSample SAMPLE1 = new MTOMSample("sample1.msg",
+            "multipart/related; " +
+            "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
+            "type=\"application/xop+xml\"; " +
+            "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; " +
+            "start-info=\"application/soap+xml\"; " +
+            "charset=UTF-8;" +
+            "action=\"mtomSample\"");
+    
+    public static final MTOMSample SAMPLE2 = new MTOMSample("sample2.msg",
+            "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; " +
+            "boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"");
+
+    private MTOMSample(String name, String contentType) {
+        super("mtom/" + name, contentType);
     }
     
     public InputStream getInlinedMessage() {

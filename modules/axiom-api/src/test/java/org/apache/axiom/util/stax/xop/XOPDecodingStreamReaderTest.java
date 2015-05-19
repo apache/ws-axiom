@@ -27,16 +27,16 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
+import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.commons.codec.binary.Base64;
 
 public class XOPDecodingStreamReaderTest extends TestCase {
     private XMLStreamReader getXOPDecodingStreamReader() throws Exception {
-        Attachments attachments = new Attachments(TestConstants.MTOM_MESSAGE.getInputStream(),
-                TestConstants.MTOM_MESSAGE.getContentType());
+        Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(),
+                MTOMSample.SAMPLE1.getContentType());
         return new XOPDecodingStreamReader(
                 StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
                 new OMAttachmentAccessorMimePartProvider(attachments));
@@ -44,7 +44,7 @@ public class XOPDecodingStreamReaderTest extends TestCase {
     
     public void testCompareToInlined() throws Exception {
         XMLStreamReader expected = StAXUtils.createXMLStreamReader(
-                TestConstants.MTOM_MESSAGE.getInlinedMessage());
+                MTOMSample.SAMPLE1.getInlinedMessage());
         XMLStreamReader actual = getXOPDecodingStreamReader();
         XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(expected, actual);
         comparator.addPrefix("xop");

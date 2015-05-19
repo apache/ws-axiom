@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -43,7 +42,7 @@ public class TestSerialize extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        MTOMSample testMessage = TestConstants.MTOM_MESSAGE;
+        MTOMSample testMessage = MTOMSample.SAMPLE1;
 
         // Read in message: SOAPPart and 2 image attachments
         InputStream inStream = testMessage.getInputStream();

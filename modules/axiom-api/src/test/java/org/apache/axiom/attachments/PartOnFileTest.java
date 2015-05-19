@@ -21,7 +21,7 @@ package org.apache.axiom.attachments;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.ts.soap.MTOMSample;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -51,9 +51,9 @@ public class PartOnFileTest extends TestCase {
 
     public void testHeaderGetSet() throws Exception {
 
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments =
-                new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType(), true, temp.getPath(), "1");
+                new Attachments(inStream, MTOMSample.SAMPLE1.getContentType(), true, temp.getPath(), "1");
 
         DataHandler dh = attachments
                 .getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");

@@ -46,13 +46,13 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.soap.MIMESample;
 import org.apache.axiom.ts.soap.MTOMSample;
+import org.apache.axiom.ts.soap.SwASample;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
@@ -65,22 +65,22 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetDataHandler() throws Exception {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
         DataHandler dh = attachments
                 .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
-        InputStream expectedDataIs = TestConstants.MTOM_MESSAGE.getPart(2);
+        InputStream expectedDataIs = MTOMSample.SAMPLE1.getPart(2);
 
         // Compare data across streams
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
     }
 
     public void testGetDataHandlerNonExistingMIMEPart() throws Exception {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
         DataHandler dh = attachments.getDataHandler("ThisShouldReturnNull");
         assertNull(dh);
@@ -93,8 +93,8 @@ public class AttachmentsTest extends AbstractTestCase {
     }
 
     public void testGetAllContentIDs() throws Exception {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
         String[] contentIDs = attachments.getAllContentIDs();
         assertEquals(3, contentIDs.length);
@@ -118,8 +118,8 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetContentIDSet() {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
         Set idSet = attachments.getContentIDSet();
         assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
@@ -140,12 +140,12 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetContentLength() throws IOException {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
         
         // Make sure the length is correct
         long length = attachments.getContentLength();
-        long fileSize = IOUtils.toByteArray(TestConstants.MTOM_MESSAGE.getInputStream()).length;
+        long fileSize = IOUtils.toByteArray(MTOMSample.SAMPLE1.getInputStream()).length;
         assertEquals("Return value of getContentLength()", fileSize, length);
     }
     
@@ -164,9 +164,9 @@ public class AttachmentsTest extends AbstractTestCase {
     private void testGetRootPartContentID(String contentTypeStartParam, String contentId)
             throws Exception {
         // It doesn't actually matter what the stream *is* it just needs to exist
-        String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE.getBoundary() +
+        String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
                 "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments = new Attachments(inStream, contentType);
         assertEquals("Did not obtain correct content ID", contentId,
                 attachments.getRootPartContentID());
@@ -208,9 +208,9 @@ public class AttachmentsTest extends AbstractTestCase {
      * is unable to determine the content type.
      */
     public void testGetRootPartContentTypeWithContentIDMismatch() {
-        String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE.getBoundary() +
+        String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
                 "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
-        Attachments attachments = new Attachments(TestConstants.MTOM_MESSAGE.getInputStream(), contentType);
+        Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
         try {
             attachments.getRootPartContentType();
             fail("Expected OMException");
@@ -222,8 +222,8 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetIncomingAttachmentStreams() throws Exception {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
         // Get the inputstream container
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
@@ -254,7 +254,7 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetIncomingAttachmentStreams2() throws Exception {
-        MTOMSample sample = TestConstants.MTOM_MESSAGE;
+        MTOMSample sample = MTOMSample.SAMPLE1;
 
         IncomingAttachmentInputStream dataIs;
         InputStream expectedDataIs;
@@ -292,8 +292,8 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream;
         Attachments attachments;
     
-        inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        inStream = MTOMSample.SAMPLE1.getInputStream();
+        attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
     
         attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
     
@@ -308,8 +308,8 @@ public class AttachmentsTest extends AbstractTestCase {
         inStream.close();
     
         // Try the other way around.
-        inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        inStream = MTOMSample.SAMPLE1.getInputStream();
+        attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
     
         attachments.getIncomingAttachmentStreams();
     
@@ -357,8 +357,8 @@ public class AttachmentsTest extends AbstractTestCase {
     }
 
     public void testRemoveDataHandlerAfterParsing() {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
         Collection list = attachments.getContentIDSet();
         assertEquals(3, list.size());
@@ -381,8 +381,8 @@ public class AttachmentsTest extends AbstractTestCase {
      * not yet been processed.
      */
     public void testRemoveDataHandlerBeforeParsing() {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
         attachments.removeDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
         Set idSet = attachments.getContentIDSet();
         assertEquals(2, idSet.size());
@@ -396,8 +396,8 @@ public class AttachmentsTest extends AbstractTestCase {
      * doesn't contain a MIME part with the specified content ID.
      */
     public void testRemoveDataHandlerNonExistingWithStream() {
-        InputStream inStream = TestConstants.MTOM_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
         attachments.removeDataHandler("non-existing@apache.org");
         assertEquals(3, attachments.getContentIDSet().size());
     }
@@ -678,11 +678,11 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testGetAttachmentSpecTypeMTOM() throws Exception {
-        testGetAttachmentSpecType(TestConstants.MTOM_MESSAGE, MTOMConstants.MTOM_TYPE);
+        testGetAttachmentSpecType(MTOMSample.SAMPLE1, MTOMConstants.MTOM_TYPE);
     }
     
     public void testGetAttachmentSpecTypeSWA() throws Exception {
-        testGetAttachmentSpecType(TestConstants.SWA_MESSAGE, MTOMConstants.SWA_TYPE);
+        testGetAttachmentSpecType(SwASample.SAMPLE1, MTOMConstants.SWA_TYPE);
     }
     
     public void testGetAttachmentSpecTypeWithoutStream() {
@@ -695,14 +695,14 @@ public class AttachmentsTest extends AbstractTestCase {
     }
 
     private void testGetSizeOnDataSource(boolean useFiles) throws Exception {
-        InputStream in = TestConstants.MTOM_MESSAGE.getInputStream();
+        InputStream in = MTOMSample.SAMPLE1.getInputStream();
         try {
             Attachments attachments;
             if (useFiles) {
-                attachments = new Attachments(in, TestConstants.MTOM_MESSAGE.getContentType(),
+                attachments = new Attachments(in, MTOMSample.SAMPLE1.getContentType(),
                         true, getAttachmentsDir(), "4096");
             } else {
-                attachments = new Attachments(in, TestConstants.MTOM_MESSAGE.getContentType());
+                attachments = new Attachments(in, MTOMSample.SAMPLE1.getContentType());
             }
             DataHandler dh = attachments
                     .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
@@ -723,9 +723,9 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testIOExceptionInPartHeaders() throws Exception {
-        InputStream in = TestConstants.MTOM_MESSAGE.getInputStream();
+        InputStream in = MTOMSample.SAMPLE1.getInputStream();
         try {
-            Attachments attachments = new Attachments(new ExceptionInputStream(in, 1050), TestConstants.MTOM_MESSAGE.getContentType());
+            Attachments attachments = new Attachments(new ExceptionInputStream(in, 1050), MTOMSample.SAMPLE1.getContentType());
             // TODO: decide what exception should be thrown exactly here
             try {
                 attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
@@ -739,9 +739,9 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     public void testIOExceptionInPartContent() throws Exception {
-        InputStream in = TestConstants.MTOM_MESSAGE.getInputStream();
+        InputStream in = MTOMSample.SAMPLE1.getInputStream();
         try {
-            Attachments attachments = new Attachments(new ExceptionInputStream(in, 1500), TestConstants.MTOM_MESSAGE.getContentType());
+            Attachments attachments = new Attachments(new ExceptionInputStream(in, 1500), MTOMSample.SAMPLE1.getContentType());
             DataHandler dh = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
             // TODO: decide what exception should be thrown exactly here
             try {

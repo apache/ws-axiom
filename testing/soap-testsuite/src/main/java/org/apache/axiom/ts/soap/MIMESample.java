@@ -44,7 +44,7 @@ public abstract class MIMESample {
      * @return an input stream with the content of this message
      */
     public InputStream getInputStream() {
-        return MIMESample.class.getClassLoader().getResourceAsStream(name);
+        return MIMESample.class.getResourceAsStream(name);
     }
 
     public String getContentType() {

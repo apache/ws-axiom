@@ -19,7 +19,13 @@
 package org.apache.axiom.ts.soap;
 
 public class SwASample extends MIMESample {
-    public SwASample(String name, String contentType) {
-        super(name, contentType);
+    public static final SwASample SAMPLE1 = new SwASample("sample1.msg",
+            "multipart/related; " +
+            "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
+            "type=\"text/xml\"; " +
+            "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"");
+
+    private SwASample(String name, String contentType) {
+        super("swa/" + name, contentType);
     }
 }

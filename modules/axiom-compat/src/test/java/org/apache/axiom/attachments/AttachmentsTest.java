@@ -22,9 +22,9 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MIMEOutputUtils;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.ts.soap.SwASample;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -36,8 +36,8 @@ public class AttachmentsTest extends TestCase {
     public void testSWAWriteWithIncomingOrder() throws Exception {
 
         // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = TestConstants.SWA_MESSAGE.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.SWA_MESSAGE.getContentType());
+        InputStream inStream = SwASample.SAMPLE1.getInputStream();
+        Attachments attachments = new Attachments(inStream, SwASample.SAMPLE1.getContentType());
 
         // Get the contentIDs to force the reading
         String[] contentIDs = attachments.getAllContentIDs();

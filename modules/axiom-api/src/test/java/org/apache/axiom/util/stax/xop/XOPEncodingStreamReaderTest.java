@@ -24,10 +24,10 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
+import org.apache.axiom.ts.soap.MTOMSample;
 
 public class XOPEncodingStreamReaderTest extends TestCase {
     private static ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
@@ -43,8 +43,8 @@ public class XOPEncodingStreamReaderTest extends TestCase {
         Attachments[] attachments = new Attachments[2];
         XMLStreamReader[] soapPartReader = new XMLStreamReader[2];
         for (int i=0; i<2; i++) {
-            attachments[i] = new Attachments(TestConstants.MTOM_MESSAGE.getInputStream(),
-                    TestConstants.MTOM_MESSAGE.getContentType());
+            attachments[i] = new Attachments(MTOMSample.SAMPLE1.getInputStream(),
+                    MTOMSample.SAMPLE1.getContentType());
             soapPartReader[i] = StAXUtils.createXMLStreamReader(attachments[i].getRootPartInputStream());
         }
         XMLStreamReader actual = new XOPEncodingStreamReader(new XOPDecodingStreamReader(soapPartReader[1], new OMAttachmentAccessorMimePartProvider(attachments[1])), contentIDGenerator, OptimizationPolicy.DEFAULT);

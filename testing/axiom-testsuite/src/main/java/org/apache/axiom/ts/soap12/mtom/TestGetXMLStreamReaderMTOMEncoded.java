@@ -28,8 +28,8 @@ import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
@@ -46,8 +46,8 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream inStream = TestConstants.MTOM_MESSAGE_2.getInputStream();
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_2.getContentType());
+        InputStream inStream = MTOMSample.SAMPLE2.getInputStream();
+        Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE2.getContentType());
         OMElement root = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getDocumentElement();
         
         // Use tree as input to XMLStreamReader
