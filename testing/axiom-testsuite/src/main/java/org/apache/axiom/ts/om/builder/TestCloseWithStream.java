@@ -18,23 +18,27 @@
  */
 package org.apache.axiom.ts.om.builder;
 
-import java.io.StringReader;
-
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.io.InstrumentedReader;
+import org.apache.axiom.testutils.io.InstrumentedStream;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.StreamTypeAdapter;
+import org.apache.axiom.ts.xml.StreamType;
+import org.apache.axiom.ts.xml.XMLSample;
 
-public class TestCloseWithReader extends AxiomTestCase {
-    public TestCloseWithReader(OMMetaFactory metaFactory) {
+public class TestCloseWithStream extends AxiomTestCase {
+    private final StreamType streamType;
+    
+    public TestCloseWithStream(OMMetaFactory metaFactory, StreamType streamType) {
         super(metaFactory);
+        this.streamType = streamType;
+        addTestParameter("type", streamType.getType().getSimpleName());
     }
 
     protected void runTest() throws Throwable {
-        InstrumentedReader in = new InstrumentedReader(new StringReader("<root><child/></root>"));
+        InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
         try {
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in);
+            OMXMLParserWrapper builder = streamType.getAdapter(StreamTypeAdapter.class).createOMBuilder(metaFactory.getOMFactory(), in);
             builder.getDocument().build();
             builder.close();
             // OMXMLParserWrapper#close() does _not_ close the underlying input stream

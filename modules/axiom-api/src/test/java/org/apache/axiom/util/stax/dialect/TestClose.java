@@ -18,24 +18,27 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.testutils.io.InstrumentedInputStream;
+import org.apache.axiom.testutils.io.InstrumentedStream;
+import org.apache.axiom.ts.xml.StreamType;
+import org.apache.axiom.ts.xml.XMLSample;
 
 /**
- * Tests that {@link XMLStreamReader#close()} doesn't close the underlying {@link InputStream}.
+ * Tests that {@link XMLStreamReader#close()} doesn't close the underlying stream.
  */
-public class TestCloseInputStream extends DialectTestCase {
-    public TestCloseInputStream(StAXImplementation staxImpl) {
+public class TestClose extends DialectTestCase {
+    private final StreamType streamType;
+    
+    public TestClose(StAXImplementation staxImpl, StreamType streamType) {
         super(staxImpl);
+        this.streamType = streamType;
+        addTestParameter("type", streamType.getType().getSimpleName());
     }
 
     protected void runTest() throws Throwable {
-        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream("<root/>".getBytes("UTF-8")));
-        XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory().createXMLStreamReader(in);
+        InstrumentedStream in = streamType.instrumentStream(streamType.getStream(XMLSample.SIMPLE));
+        XMLStreamReader reader = streamType.createXMLStreamReader(staxImpl.newNormalizedXMLInputFactory(), in);
         reader.close();
         assertFalse(in.isClosed());
     }

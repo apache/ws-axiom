@@ -16,27 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.stax.dialect;
+package org.apache.axiom.ts;
 
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.Closeable;
 
-import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testing.multiton.AdapterType;
 
-import org.apache.axiom.testutils.io.InstrumentedReader;
-
-/**
- * Tests that {@link XMLStreamReader#close()} doesn't close the underlying {@link Reader}.
- */
-public class TestCloseReader extends DialectTestCase {
-    public TestCloseReader(StAXImplementation staxImpl) {
-        super(staxImpl);
-    }
-
-    protected void runTest() throws Throwable {
-        InstrumentedReader in = new InstrumentedReader(new StringReader("<root/>"));
-        XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory().createXMLStreamReader(in);
-        reader.close();
-        assertFalse(in.isClosed());
-    }
+@AdapterType
+public interface StreamTypeAdapter {
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Closeable stream);
 }

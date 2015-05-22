@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
@@ -42,8 +43,9 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
     }
 
     private void addTests(StAXImplementation staxImpl) {
-        addTest(new TestCloseInputStream(staxImpl));
-        addTest(new TestCloseReader(staxImpl));
+        for (StreamType streamType : Multiton.getInstances(StreamType.class)) {
+            addTest(new TestClose(staxImpl, streamType));
+        }
         addTest(new TestCreateXMLEventWriterWithNullEncoding(staxImpl));
         addTest(new TestCreateXMLStreamReaderThreadSafety(staxImpl));
         addTest(new TestCreateXMLStreamWriterThreadSafety(staxImpl));

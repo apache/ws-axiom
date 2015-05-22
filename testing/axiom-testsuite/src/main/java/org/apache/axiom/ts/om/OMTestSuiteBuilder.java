@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -41,6 +42,7 @@ import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.push.PushOMDataSourceScenario;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
+import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
@@ -96,8 +98,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.attribute.TestSetNamespace(metaFactory, "urn:test", "", declare, owner, null, true, null, false));
             addTest(new org.apache.axiom.ts.om.attribute.TestSetNamespace(metaFactory, "", "p", declare, owner, null, true, null, false));
         }
-        addTest(new org.apache.axiom.ts.om.builder.TestCloseWithInputStream(metaFactory));
-        addTest(new org.apache.axiom.ts.om.builder.TestCloseWithReader(metaFactory));
+        for (StreamType streamType : Multiton.getInstances(StreamType.class)) {
+            addTest(new org.apache.axiom.ts.om.builder.TestCloseWithStream(metaFactory, streamType));
+        }
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
             if (file.hasEntityReferences()) {
