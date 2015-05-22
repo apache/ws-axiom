@@ -18,27 +18,13 @@
  */
 package org.apache.axiom.testutils.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.io.input.ProxyInputStream;
+import java.io.Closeable;
 
 /**
- * {@link InputStream} wrapper that remembers if {@link InputStream#close()} has been called.
+ * Stream that counts the number of bytes/characters read/written and that remembers if
+ * {@link Closeable#close()} has been called.
  */
-public class CloseSensorInputStream extends ProxyInputStream {
-    private boolean closed;
-    
-    public CloseSensorInputStream(InputStream parent) {
-        super(parent);
-    }
-
-    public void close() throws IOException {
-        closed = true;
-        super.close();
-    }
-
-    public boolean isClosed() {
-        return closed;
-    }
+public interface InstrumentedStream extends Closeable {
+    long getCount();
+    boolean isClosed();
 }

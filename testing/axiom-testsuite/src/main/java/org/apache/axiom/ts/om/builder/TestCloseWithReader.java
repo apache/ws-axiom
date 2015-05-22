@@ -23,7 +23,7 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.io.CloseSensorReader;
+import org.apache.axiom.testutils.io.InstrumentedReader;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestCloseWithReader extends AxiomTestCase {
@@ -32,7 +32,7 @@ public class TestCloseWithReader extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        CloseSensorReader in = new CloseSensorReader(new StringReader("<root><child/></root>"));
+        InstrumentedReader in = new InstrumentedReader(new StringReader("<root><child/></root>"));
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in);
             builder.getDocument().build();

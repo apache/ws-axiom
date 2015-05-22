@@ -26,7 +26,7 @@ import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.testutils.io.CloseSensorInputStream;
+import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.commons.io.IOUtils;
 
 public class TestReadFrom extends SizeSensitiveWritableBlobTestCase {
@@ -39,7 +39,7 @@ public class TestReadFrom extends SizeSensitiveWritableBlobTestCase {
         Random random = new Random();
         byte[] data = new byte[size];
         random.nextBytes(data);
-        CloseSensorInputStream in = new CloseSensorInputStream(new ByteArrayInputStream(data));
+        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(data));
         assertThat(blob.readFrom(in)).isEqualTo(size);
         assertThat(in.isClosed()).isFalse();
         InputStream in2 = blob.getInputStream();

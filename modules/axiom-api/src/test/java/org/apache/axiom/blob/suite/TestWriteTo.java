@@ -25,7 +25,7 @@ import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.testutils.io.CloseSensorOutputStream;
+import org.apache.axiom.testutils.io.InstrumentedOutputStream;
 
 public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
     private final boolean usesReadFromSupport;
@@ -44,7 +44,7 @@ public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
         out.write(data);
         out.close();
         ByteArrayOutputStreamWithReadFromSupport baos = new ByteArrayOutputStreamWithReadFromSupport();
-        CloseSensorOutputStream closeSensor = new CloseSensorOutputStream(baos);
+        InstrumentedOutputStream closeSensor = new InstrumentedOutputStream(baos);
         blob.writeTo(baos);
         assertThat(closeSensor.isClosed()).isFalse();
         assertThat(baos.toByteArray()).isEqualTo(data);

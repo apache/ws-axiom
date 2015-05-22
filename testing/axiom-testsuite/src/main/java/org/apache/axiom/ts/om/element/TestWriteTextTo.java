@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.testutils.io.CloseSensorWriter;
+import org.apache.axiom.testutils.io.InstrumentedWriter;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -45,7 +45,7 @@ public class TestWriteTextTo extends AxiomTestCase {
         OMElement element = factory.createOMElement(new QName("a"));
         factory.createOMText(element, "test");
         StringWriter sw = new StringWriter();
-        CloseSensorWriter out = new CloseSensorWriter(sw);
+        InstrumentedWriter out = new InstrumentedWriter(sw);
         element.writeTextTo(out, true);
         assertEquals(element.getText(), sw.toString());
         assertFalse(out.isClosed());

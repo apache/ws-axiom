@@ -31,8 +31,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.commons.io.input.CountingInputStream;
 
 /**
  * Tests that the content of the root part of an XOP/MTOM message is not buffered (i.e. read
@@ -60,17 +60,17 @@ public class TestRootPartStreaming extends AxiomTestCase {
         orgRoot.serialize(baos, format);
         
         // Parse the message and monitor the number of bytes read
-        CountingInputStream in = new CountingInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(factory,
                 StAXParserConfiguration.DEFAULT,
                 new Attachments(in, format.getContentType()));
         OMElement root = builder.getDocumentElement();
-        int count1 = in.getCount();
+        long count1 = in.getCount();
         XMLStreamReader reader = root.getXMLStreamReader(false);
         while (reader.hasNext()) {
             reader.next();
         }
-        int count2 = in.getCount();
+        long count2 = in.getCount();
         
         // We expect that after requesting the document element, only a small part (corresponding to
         // the size of the parser buffer) should have been read:

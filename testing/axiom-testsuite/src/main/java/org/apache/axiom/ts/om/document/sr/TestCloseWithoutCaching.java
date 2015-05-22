@@ -29,8 +29,8 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.commons.io.input.CountingInputStream;
 
 /**
  * Tests the behavior of {@link XMLStreamReader#close()} on the {@link XMLStreamReader} returned by
@@ -52,12 +52,12 @@ public class TestCloseWithoutCaching extends AxiomTestCase {
         }
         writer.write("</a></root>");
         writer.close();
-        CountingInputStream in = new CountingInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream(baos.toByteArray()));
         OMDocument doc = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocument();
         XMLStreamReader reader = doc.getXMLStreamReaderWithoutCaching();
         reader.next();
         reader.next();
-        int count = in.getCount();
+        long count = in.getCount();
         reader.close();
         assertEquals(count, in.getCount());
     }

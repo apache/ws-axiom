@@ -23,7 +23,7 @@ import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.testutils.io.CloseSensorReader;
+import org.apache.axiom.testutils.io.InstrumentedReader;
 
 /**
  * Tests that {@link XMLStreamReader#close()} doesn't close the underlying {@link Reader}.
@@ -34,7 +34,7 @@ public class TestCloseReader extends DialectTestCase {
     }
 
     protected void runTest() throws Throwable {
-        CloseSensorReader in = new CloseSensorReader(new StringReader("<root/>"));
+        InstrumentedReader in = new InstrumentedReader(new StringReader("<root/>"));
         XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory().createXMLStreamReader(in);
         reader.close();
         assertFalse(in.isClosed());

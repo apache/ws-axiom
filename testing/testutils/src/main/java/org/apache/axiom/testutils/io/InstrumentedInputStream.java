@@ -19,18 +19,30 @@
 package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 
-import org.apache.commons.io.input.ProxyReader;
+import org.apache.commons.io.input.ProxyInputStream;
 
 /**
- * {@link Reader} wrapper that remembers if {@link Reader#close()} has been called.
+ * {@link InputStream} wrapper that implements {@link InstrumentedStream}.
  */
-public class CloseSensorReader extends ProxyReader {
+public final class InstrumentedInputStream extends ProxyInputStream implements InstrumentedStream {
+    private long count;
     private boolean closed;
     
-    public CloseSensorReader(Reader parent) {
+    public InstrumentedInputStream(InputStream parent) {
         super(parent);
+    }
+
+    @Override
+    protected void afterRead(int n) {
+        if (n != -1) {
+            count += n;
+        }
+    }
+    
+    public long getCount() {
+        return count;
     }
 
     public void close() throws IOException {

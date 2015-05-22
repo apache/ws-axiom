@@ -21,7 +21,7 @@ package org.apache.axiom.ts.om.builder;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.io.CloseSensorInputStream;
+import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 
@@ -31,7 +31,7 @@ public class TestCloseWithInputStream extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        CloseSensorInputStream in = new CloseSensorInputStream(XMLSample.SIMPLE.getAsStream());
+        InstrumentedInputStream in = new InstrumentedInputStream(XMLSample.SIMPLE.getAsStream());
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in);
             builder.getDocument().build();

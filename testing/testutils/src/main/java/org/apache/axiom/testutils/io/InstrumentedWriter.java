@@ -16,27 +16,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.stax.dialect;
+package org.apache.axiom.testutils.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.io.Writer;
 
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.testutils.io.InstrumentedInputStream;
+import org.apache.commons.io.output.ProxyWriter;
 
 /**
- * Tests that {@link XMLStreamReader#close()} doesn't close the underlying {@link InputStream}.
+ * {@link Writer} wrapper that implements {@link InstrumentedStream}.
  */
-public class TestCloseInputStream extends DialectTestCase {
-    public TestCloseInputStream(StAXImplementation staxImpl) {
-        super(staxImpl);
+public final class InstrumentedWriter extends ProxyWriter implements InstrumentedStream {
+    private long count;
+    private boolean closed;
+    
+    public InstrumentedWriter(Writer parent) {
+        super(parent);
     }
 
-    protected void runTest() throws Throwable {
-        InstrumentedInputStream in = new InstrumentedInputStream(new ByteArrayInputStream("<root/>".getBytes("UTF-8")));
-        XMLStreamReader reader = staxImpl.newNormalizedXMLInputFactory().createXMLStreamReader(in);
-        reader.close();
-        assertFalse(in.isClosed());
+    @Override
+    protected void beforeWrite(int n) {
+        count += n;
+    }
+    
+    public long getCount() {
+        return count;
+    }
+
+    public void close() throws IOException {
+        closed = true;
+        super.close();
+    }
+
+    public boolean isClosed() {
+        return closed;
     }
 }

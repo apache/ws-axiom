@@ -19,18 +19,28 @@
 package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
-import org.apache.commons.io.output.ProxyWriter;
+import org.apache.commons.io.output.ProxyOutputStream;
 
 /**
- * {@link Writer} wrapper that remembers if {@link Writer#close()} has been called.
+ * {@link OutputStream} wrapper that implements {@link InstrumentedStream}.
  */
-public class CloseSensorWriter extends ProxyWriter {
+public final class InstrumentedOutputStream extends ProxyOutputStream implements InstrumentedStream {
+    private long count;
     private boolean closed;
     
-    public CloseSensorWriter(Writer parent) {
-        super(parent);
+    public InstrumentedOutputStream(OutputStream proxy) {
+        super(proxy);
+    }
+
+    @Override
+    protected void beforeWrite(int n) {
+        count += n;
+    }
+    
+    public long getCount() {
+        return count;
     }
 
     public void close() throws IOException {
