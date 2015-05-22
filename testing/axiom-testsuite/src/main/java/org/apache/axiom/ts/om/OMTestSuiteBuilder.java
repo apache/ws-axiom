@@ -101,6 +101,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (StreamType streamType : Multiton.getInstances(StreamType.class)) {
             addTest(new org.apache.axiom.ts.om.builder.TestCloseWithStream(metaFactory, streamType));
         }
+        addTest(new org.apache.axiom.ts.om.builder.TestCloseWithSystemId(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
             if (file.hasEntityReferences()) {
