@@ -38,6 +38,7 @@ final class XMLSampleProperties {
         inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
     }
     
+    private final String encoding;
     private final boolean hasDTD;
     private final boolean hasExternalSubset;
     private final boolean hasInternalSubset;
@@ -51,6 +52,7 @@ final class XMLSampleProperties {
         try {
             XMLStreamReader reader = inputFactory.createXMLStreamReader(new StreamSource(
                     sample.getUrl().toString()));
+            encoding = reader.getEncoding();
             while (reader.hasNext()) {
                 switch (reader.next()) {
                     case XMLStreamReader.DTD:
@@ -71,6 +73,10 @@ final class XMLSampleProperties {
         this.hasExternalSubset = hasExternalSubset;
         this.hasInternalSubset = hasInternalSubset;
         this.hasEntityReferences = hasEntityReferences;
+    }
+
+    String getEncoding() {
+        return encoding;
     }
 
     boolean hasDTD() {

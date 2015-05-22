@@ -61,6 +61,10 @@ public final class XMLSample extends Multiton {
         return properties;
     }
 
+    public String getEncoding() {
+        return getProperties().getEncoding();
+    }
+
     public boolean hasDTD() {
         return getProperties().hasDTD();
     }
