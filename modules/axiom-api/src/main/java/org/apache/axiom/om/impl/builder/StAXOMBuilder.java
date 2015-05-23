@@ -101,8 +101,9 @@ public class StAXOMBuilder extends StAXBuilder {
     /**
      * For internal use only.
      */
-    public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser, Closeable closeable) {
-        super(ombuilderFactory, parser, closeable);
+    public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser, Detachable detachable,
+            Closeable closeable) {
+        super(ombuilderFactory, parser, detachable, closeable);
     }
     
     /**

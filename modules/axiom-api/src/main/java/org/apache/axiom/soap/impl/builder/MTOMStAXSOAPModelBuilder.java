@@ -23,7 +23,8 @@ import java.io.Closeable;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
+import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
+import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
@@ -40,7 +41,7 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
     public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
                                     SOAPFactory factory, Attachments attachments,
                                     String soapVersion) {
-        super(new XOPDecodingStreamReader(parser, new OMAttachmentAccessorMimePartProvider(
+        super(new XOPDecodingStreamReader(parser, new AttachmentsMimePartProvider(
                 attachments)), factory, soapVersion);
         this.attachments = attachments;
     }
@@ -51,14 +52,14 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
      */
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
                                     Attachments attachments, String soapVersion) {
-        super(new XOPDecodingStreamReader(reader, new OMAttachmentAccessorMimePartProvider(
+        super(new XOPDecodingStreamReader(reader, new AttachmentsMimePartProvider(
                 attachments)), soapVersion);
         this.attachments = attachments;
     }
 
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
                                     Attachments attachments) {
-        super(new XOPDecodingStreamReader(reader, new OMAttachmentAccessorMimePartProvider(
+        super(new XOPDecodingStreamReader(reader, new AttachmentsMimePartProvider(
                 attachments)));
         this.attachments = attachments;
     }
@@ -67,9 +68,9 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
      * For internal use only.
      */
     public MTOMStAXSOAPModelBuilder(SOAPFactory soapFactory, XMLStreamReader reader,
-            MimePartProvider mimePartProvider, Closeable closeable) {
+            MimePartProvider mimePartProvider, Detachable detachable, Closeable closeable) {
         super(new XOPDecodingStreamReader(reader, mimePartProvider), soapFactory,
-                soapFactory.getSoapVersionURI(), closeable);
+                soapFactory.getSoapVersionURI(), detachable, closeable);
         attachments = null;
     }
 

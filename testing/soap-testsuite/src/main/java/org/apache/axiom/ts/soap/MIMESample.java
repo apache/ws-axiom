@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.activation.DataSource;
+import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.MimeMultipart;
@@ -110,6 +111,24 @@ public abstract class MIMESample {
     public final InputStream getPart(int part) {
         try {
             return getMultipart().getBodyPart(part).getInputStream();
+        } catch (IOException ex) {
+            throw new Error(ex);
+        } catch (MessagingException ex) {
+            throw new Error(ex);
+        }
+    }
+    
+    public final InputStream getPart(String cid) {
+        try {
+            MimeMultipart mp = getMultipart();
+            BodyPart part = mp.getBodyPart(cid);
+            if (part == null) {
+                part = mp.getBodyPart("<" + cid + ">");
+            }
+            if (part == null) {
+                throw new IllegalArgumentException("Part " + cid + " not found");
+            }
+            return part.getInputStream();
         } catch (IOException ex) {
             throw new Error(ex);
         } catch (MessagingException ex) {

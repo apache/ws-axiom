@@ -506,4 +506,8 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     public void close() {
         // This is a no-op
     }
+
+    public void detach() {
+        throw new UnsupportedOperationException();
+    }
 }

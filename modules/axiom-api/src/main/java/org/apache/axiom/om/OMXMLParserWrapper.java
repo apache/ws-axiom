@@ -19,6 +19,16 @@
 
 package org.apache.axiom.om;
 
+import java.io.InputStream;
+import java.io.Reader;
+
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.axiom.attachments.Attachments;
+import org.w3c.dom.Node;
+
 /** Interface OMXMLParserWrapper */
 public interface OMXMLParserWrapper {
     /**
@@ -152,4 +162,39 @@ public interface OMXMLParserWrapper {
      * <b>not</b> close the underlying input source.
      */
     void close();
+    
+    /**
+     * Detach this builder from its underlying source, so that the state of the source object can be
+     * changed without impact on the object model produced by this builder. The effect of this
+     * method depends on the type of source object passed to {@link OMXMLBuilderFactory} to create
+     * the builder:
+     * <p>
+     * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <tr>
+     * <th>Source object type</th>
+     * <th>Action performed by this method</th>
+     * </tr>
+     * <tr>
+     * <td>{@link InputStream}, {@link Reader}, {@link StreamSource} with {@link InputStream} or
+     * {@link Reader}</td>
+     * <td>The remaining unprocessed content of the stream is read into memory so that it can be
+     * safely closed. Note that this method doesn't close the stream; this is the responsibility of
+     * the caller.</td>
+     * </tr>
+     * <tr>
+     * <td>{@link StreamSource} with system ID and no stream</td>
+     * <td>The remaining unprocessed content of the document is read into memory and the associated
+     * stream is closed.</td>
+     * <tr>
+     * <td>{@link Node}, {@link DOMSource}, {@link SAXSource}</td>
+     * <td>The object model is built completely.</td>
+     * </tr>
+     * <tr>
+     * <td>{@link Attachments}</td>
+     * <td>All MIME parts are fetched so that the stream from which the {@link Attachments} object
+     * has been created can safely be closed.</td>
+     * </tr>
+     * </table>
+     */
+    void detach();
 }

@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
+import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.soap.MTOMSample;
@@ -39,7 +39,7 @@ public class XOPDecodingStreamReaderTest extends TestCase {
                 MTOMSample.SAMPLE1.getContentType());
         return new XOPDecodingStreamReader(
                 StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
-                new OMAttachmentAccessorMimePartProvider(attachments));
+                new AttachmentsMimePartProvider(attachments));
     }
     
     public void testCompareToInlined() throws Exception {

@@ -51,7 +51,7 @@ public class XOPAwareStAXOMBuilder
     public XOPAwareStAXOMBuilder(OMFactory ombuilderFactory,
                                  XMLStreamReader parser, Attachments attachments) {
         super(ombuilderFactory, new XOPDecodingStreamReader(parser,
-                new OMAttachmentAccessorMimePartProvider(attachments)));
+                new AttachmentsMimePartProvider(attachments)));
         this.attachments = attachments;
     }
 
@@ -65,7 +65,7 @@ public class XOPAwareStAXOMBuilder
     public XOPAwareStAXOMBuilder(OMFactory factory, XMLStreamReader parser,
                                  OMElement element, Attachments attachments) {
         super(factory, new XOPDecodingStreamReader(parser,
-                new OMAttachmentAccessorMimePartProvider(attachments)), element);
+                new AttachmentsMimePartProvider(attachments)), element);
         this.attachments = attachments;
     }
 
@@ -78,7 +78,7 @@ public class XOPAwareStAXOMBuilder
             throws XMLStreamException,
             FileNotFoundException {
         super(new XOPDecodingStreamReader(StAXUtils.createXMLStreamReader(new FileInputStream(
-                filePath)), new OMAttachmentAccessorMimePartProvider(attachments)));
+                filePath)), new AttachmentsMimePartProvider(attachments)));
         this.attachments = attachments;
     }
 
@@ -89,7 +89,7 @@ public class XOPAwareStAXOMBuilder
     public XOPAwareStAXOMBuilder(InputStream inStream, Attachments attachments)
             throws XMLStreamException {
         super(new XOPDecodingStreamReader(StAXUtils.createXMLStreamReader(inStream),
-                new OMAttachmentAccessorMimePartProvider(attachments)));
+                new AttachmentsMimePartProvider(attachments)));
         this.attachments = attachments;
     }
 
@@ -99,7 +99,7 @@ public class XOPAwareStAXOMBuilder
      * @param parser
      */
     public XOPAwareStAXOMBuilder(XMLStreamReader parser, Attachments attachments) {
-        super(new XOPDecodingStreamReader(parser, new OMAttachmentAccessorMimePartProvider(
+        super(new XOPDecodingStreamReader(parser, new AttachmentsMimePartProvider(
                 attachments)));
         this.attachments = attachments;
     }
@@ -108,8 +108,8 @@ public class XOPAwareStAXOMBuilder
      * For internal use only.
      */
     public XOPAwareStAXOMBuilder(OMFactory omFactory, XMLStreamReader reader,
-            MimePartProvider mimePartProvider, Closeable closeable) {
-        super(omFactory, new XOPDecodingStreamReader(reader, mimePartProvider), closeable);
+            MimePartProvider mimePartProvider, Detachable detachable, Closeable closeable) {
+        super(omFactory, new XOPDecodingStreamReader(reader, mimePartProvider), detachable, closeable);
         attachments = null;
     }
 

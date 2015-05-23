@@ -181,4 +181,9 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
             String replacementText) {
         factory.createOMEntityReference(parent, name, replacementText, true);
     }
+    
+    public void detach() {
+        // Force processing of the SAX source
+        getDocument();
+    }
 }

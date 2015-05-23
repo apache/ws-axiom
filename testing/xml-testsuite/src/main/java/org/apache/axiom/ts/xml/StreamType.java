@@ -27,6 +27,7 @@ import java.nio.charset.Charset;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.io.InstrumentedInputStream;
@@ -49,6 +50,11 @@ public abstract class StreamType extends Multiton {
         public XMLStreamReader createXMLStreamReader(XMLInputFactory factory, Closeable stream) throws XMLStreamException {
             return factory.createXMLStreamReader((InputStream)stream);
         }
+
+        @Override
+        public StreamSource createStreamSource(Closeable stream) {
+            return new StreamSource((InputStream)stream);
+        }
     };
     
     public static final StreamType CHARACTER_STREAM = new StreamType(Reader.class) {
@@ -66,6 +72,11 @@ public abstract class StreamType extends Multiton {
         public XMLStreamReader createXMLStreamReader(XMLInputFactory factory, Closeable stream) throws XMLStreamException {
             return factory.createXMLStreamReader((Reader)stream);
         }
+
+        @Override
+        public StreamSource createStreamSource(Closeable stream) {
+            return new StreamSource((Reader)stream);
+        }
     };
     
     private final Class<? extends Closeable> type;
@@ -81,4 +92,5 @@ public abstract class StreamType extends Multiton {
     public abstract Closeable getStream(XMLSample sample);
     public abstract InstrumentedStream instrumentStream(Closeable stream);
     public abstract XMLStreamReader createXMLStreamReader(XMLInputFactory factory, Closeable stream) throws XMLStreamException;
+    public abstract StreamSource createStreamSource(Closeable stream);
 }

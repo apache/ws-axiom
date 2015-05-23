@@ -66,6 +66,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     /** Field omfactory */
     protected OMFactoryEx omfactory;
     
+    private final Detachable detachable;
     private final Closeable closeable;
 
     /** Field lastNode */
@@ -132,8 +133,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * For internal use only.
      */
     protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser, String encoding,
-            Closeable closeable) {
+            Detachable detachable, Closeable closeable) {
         omfactory = (OMFactoryEx)omFactory;
+        this.detachable = detachable;
         this.closeable = closeable;
         charEncoding = encoding;
         initParser(parser);
@@ -142,9 +144,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     /**
      * For internal use only.
      */
-    protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser, Closeable closeable) {
+    protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser, Detachable detachable,
+            Closeable closeable) {
         // The getEncoding information is only available at the START_DOCUMENT event.
-        this(omFactory, parser, parser.getEncoding(), closeable);
+        this(omFactory, parser, parser.getEncoding(), detachable, closeable);
     }
     
     /**
@@ -155,7 +158,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param parser
      */
     protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        this(omFactory, parser, (Closeable)null);
+        this(omFactory, parser, null, null);
     }
     
     /**
@@ -169,7 +172,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory omFactory, 
                           XMLStreamReader parser, 
                           String encoding) {
-        this(omFactory, parser, encoding, null);
+        this(omFactory, parser, encoding, null, null);
     }
 
     private void initParser(XMLStreamReader parser) {
@@ -193,6 +196,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @deprecated
      */
     protected StAXBuilder() {
+        detachable = null;
         closeable = null;
     }
 
@@ -819,5 +823,15 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @deprecated As of Axiom 1.2.15, the builder always releases the parser.
      */
     public void releaseParserOnClose(boolean value) {
+    }
+
+    public void detach() throws OMException {
+        if (detachable != null) {
+            detachable.detach();
+        } else {
+            while (!done) {
+                next();
+            }
+        }
     }
 }

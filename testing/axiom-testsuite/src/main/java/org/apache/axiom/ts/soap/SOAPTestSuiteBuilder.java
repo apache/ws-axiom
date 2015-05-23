@@ -363,6 +363,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.mtom.TestBuilderDetach(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.mtom.TestGetXMLStreamReaderMTOMEncoded(metaFactory, true));
         addTest(new org.apache.axiom.ts.soap12.mtom.TestGetXMLStreamReaderMTOMEncoded(metaFactory, false));
     }

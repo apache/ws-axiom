@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.factory;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 
 import javax.xml.stream.XMLStreamException;
@@ -34,6 +35,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -56,10 +58,12 @@ import org.xml.sax.InputSource;
 public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     private final static class SourceInfo {
         private final XMLStreamReader reader;
+        private final Detachable detachable;
         private final Closeable closeable;
         
-        SourceInfo(XMLStreamReader reader, Closeable closeable) {
+        SourceInfo(XMLStreamReader reader, Detachable detachable, Closeable closeable) {
             this.reader = reader;
+            this.detachable = detachable;
             this.closeable = closeable;
         }
 
@@ -67,38 +71,67 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
             return reader;
         }
 
+        Detachable getDetachable() {
+            return detachable;
+        }
+
         Closeable getCloseable() {
             return closeable;
         }
     }
     
-    private static SourceInfo createXMLStreamReader(StAXParserConfiguration configuration, InputSource is) {
+    private static SourceInfo createXMLStreamReader(StAXParserConfiguration configuration,
+            InputSource is, boolean makeDetachable) {
         XMLStreamReader reader;
+        Detachable detachable;
         Closeable closeable;
         try {
             if (is.getByteStream() != null) {
                 String systemId = is.getSystemId();
                 String encoding = is.getEncoding();
+                InputStream in = is.getByteStream();
+                if (makeDetachable) {
+                    DetachableInputStream detachableInputStream = new DetachableInputStream(in, false);
+                    in = detachableInputStream;
+                    detachable = detachableInputStream;
+                } else {
+                    detachable = null;
+                }
                 if (systemId != null) {
                     if (encoding == null) {
-                        reader = StAXUtils.createXMLStreamReader(configuration, systemId, is.getByteStream());
+                        reader = StAXUtils.createXMLStreamReader(configuration, systemId, in);
                     } else {
                         throw new UnsupportedOperationException();
                     }
                 } else {
                     if (encoding == null) {
-                        reader = StAXUtils.createXMLStreamReader(configuration, is.getByteStream());
+                        reader = StAXUtils.createXMLStreamReader(configuration, in);
                     } else {
-                        reader = StAXUtils.createXMLStreamReader(configuration, is.getByteStream(), encoding);
+                        reader = StAXUtils.createXMLStreamReader(configuration, in, encoding);
                     }
                 }
                 closeable = null;
             } else if (is.getCharacterStream() != null) {
-                reader = StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());
+                Reader in = is.getCharacterStream();
+                if (makeDetachable) {
+                    DetachableReader detachableReader = new DetachableReader(in);
+                    in = detachableReader;
+                    detachable = detachableReader;
+                } else {
+                    detachable = null;
+                }
+                reader = StAXUtils.createXMLStreamReader(configuration, in);
                 closeable = null;
             } else {
                 String systemId = is.getSystemId();
                 InputStream in = new URL(systemId).openConnection().getInputStream();
+                if (makeDetachable) {
+                    DetachableInputStream detachableInputStream = new DetachableInputStream(in, true);
+                    in = detachableInputStream;
+                    detachable = detachableInputStream;
+                } else {
+                    detachable = null;
+                }
                 reader = StAXUtils.createXMLStreamReader(configuration, systemId, in);
                 closeable = in;
             }
@@ -107,7 +140,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
         } catch (IOException ex) {
             throw new OMException(ex);
         }
-        return new SourceInfo(reader, closeable);
+        return new SourceInfo(reader, detachable, closeable);
     }
     
     private static XMLStreamReader getXMLStreamReader(XMLStreamReader originalReader) {
@@ -128,9 +161,9 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
-        SourceInfo sourceInfo = createXMLStreamReader(configuration, is);
+        SourceInfo sourceInfo = createXMLStreamReader(configuration, is, true);
         StAXOMBuilder builder = new StAXOMBuilder(omFactory, sourceInfo.getReader(),
-                sourceInfo.getCloseable());
+                sourceInfo.getDetachable(), sourceInfo.getCloseable());
         builder.setAutoClose(true);
         return builder;
     }
@@ -173,30 +206,38 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
             OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
-        SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart);
-        XOPAwareStAXOMBuilder builder = new XOPAwareStAXOMBuilder(omFactory, sourceInfo.getReader(),
-                mimePartProvider, sourceInfo.getCloseable());
+        SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
+        XOPAwareStAXOMBuilder builder = new XOPAwareStAXOMBuilder(
+                omFactory,
+                sourceInfo.getReader(),
+                mimePartProvider,
+                mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null,
+                sourceInfo.getCloseable());
         builder.setAutoClose(true);
         return builder;
     }
 
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
-        return new StAXSOAPModelBuilder(this, getXMLStreamReader(parser));
+        return new StAXSOAPModelBuilder(this, getXMLStreamReader(parser), null, null);
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
-        SourceInfo sourceInfo = createXMLStreamReader(configuration, is);
+        SourceInfo sourceInfo = createXMLStreamReader(configuration, is, true);
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(this, sourceInfo.getReader(),
-                sourceInfo.getCloseable());
+                sourceInfo.getDetachable(), sourceInfo.getCloseable());
         builder.setAutoClose(true);
         return builder;
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
-        SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart);
-        MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(soapFactory,
-                sourceInfo.getReader(), mimePartProvider, sourceInfo.getCloseable());
+        SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
+        MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(
+                soapFactory,
+                sourceInfo.getReader(),
+                mimePartProvider,
+                mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null,
+                sourceInfo.getCloseable());
         builder.setAutoClose(true);
         return builder;
     }

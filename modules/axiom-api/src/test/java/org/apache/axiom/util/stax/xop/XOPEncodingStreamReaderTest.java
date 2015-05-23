@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
+import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.soap.MTOMSample;
@@ -47,7 +47,7 @@ public class XOPEncodingStreamReaderTest extends TestCase {
                     MTOMSample.SAMPLE1.getContentType());
             soapPartReader[i] = StAXUtils.createXMLStreamReader(attachments[i].getRootPartInputStream());
         }
-        XMLStreamReader actual = new XOPEncodingStreamReader(new XOPDecodingStreamReader(soapPartReader[1], new OMAttachmentAccessorMimePartProvider(attachments[1])), contentIDGenerator, OptimizationPolicy.DEFAULT);
+        XMLStreamReader actual = new XOPEncodingStreamReader(new XOPDecodingStreamReader(soapPartReader[1], new AttachmentsMimePartProvider(attachments[1])), contentIDGenerator, OptimizationPolicy.DEFAULT);
         new XMLStreamReaderComparator(soapPartReader[0], actual).compare();
         for (int i=0; i<2; i++) {
             soapPartReader[i].close();

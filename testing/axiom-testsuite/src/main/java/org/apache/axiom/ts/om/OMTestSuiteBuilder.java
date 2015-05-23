@@ -119,6 +119,13 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderIncorrectState(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestDetachWithDOM(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.builder.TestDetachWithDOM(metaFactory, true));
+        for (StreamType streamType : Multiton.getInstances(StreamType.class)) {
+            addTest(new org.apache.axiom.ts.om.builder.TestDetachWithStream(metaFactory, streamType, false));
+            addTest(new org.apache.axiom.ts.om.builder.TestDetachWithStream(metaFactory, streamType, true));
+        }
+        addTest(new org.apache.axiom.ts.om.builder.TestDetachWithSAXSource(metaFactory));
         for (BuilderFactory bf : getInstances(BuilderFactory.class)) {
             addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory, bf, null));
             addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory, bf, Boolean.FALSE));

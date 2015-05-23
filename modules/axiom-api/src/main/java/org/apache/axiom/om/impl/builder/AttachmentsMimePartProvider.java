@@ -23,21 +23,23 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
 
 /**
- * Adapts an {@link OMAttachmentAccessor} instance to the {@link MimePartProvider} interface.
+ * Adapts an {@link Attachments} instance to the {@link MimePartProvider} interface.
+ * <p>
+ * For internal use only.
  */
-public class OMAttachmentAccessorMimePartProvider implements MimePartProvider {
-    private final OMAttachmentAccessor attachments;
+public class AttachmentsMimePartProvider implements MimePartProvider, Detachable {
+    private final Attachments attachments;
 
-    public OMAttachmentAccessorMimePartProvider(OMAttachmentAccessor attachments) {
+    public AttachmentsMimePartProvider(Attachments attachments) {
         this.attachments = attachments;
     }
 
     public boolean isLoaded(String contentID) {
-        // TODO: probably we can only determine this for an Attachments object
+        // TODO: implement this
         return false;
     }
 
@@ -48,5 +50,9 @@ public class OMAttachmentAccessorMimePartProvider implements MimePartProvider {
         } else {
             return dh;
         }
+    }
+
+    public void detach() {
+        attachments.getAllContentIDs();
     }
 }

@@ -29,7 +29,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
+import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -454,7 +454,7 @@ public class OMXMLBuilderFactory {
         }
         InputSource rootPart = getRootPartInputSource(attachments, contentType);
         return omFactory.getMetaFactory().createOMBuilder(configuration, omFactory,
-                rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
+                rootPart, new AttachmentsMimePartProvider(attachments));
     }
     
     /**
@@ -610,7 +610,7 @@ public class OMXMLBuilderFactory {
         }
         InputSource rootPart = getRootPartInputSource(attachments, contentType);
         return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
-                rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
+                rootPart, new AttachmentsMimePartProvider(attachments));
     }
     
     private static InputSource getRootPartInputSource(Attachments attachments, ContentType contentType) {

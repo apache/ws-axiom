@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
+import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -130,8 +131,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      * For internal use only.
      */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
-            Closeable closeable) {
-        super(metaFactory.getOMFactory(), parser, closeable);
+            Detachable detachable, Closeable closeable) {
+        super(metaFactory.getOMFactory(), parser, detachable, closeable);
         this.metaFactory = metaFactory;
     }
     
@@ -143,15 +144,15 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      * @param parser the parser to read the SOAP message from
      */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
-        this(metaFactory, parser, (Closeable)null);
+        this(metaFactory, parser, null, null);
     }
 
     /**
      * For internal use only.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion,
-            Closeable closeable) {
-        super(factory, parser, closeable);
+            Detachable detachable, Closeable closeable) {
+        super(factory, parser, detachable, closeable);
         soapFactory = (SOAPFactoryEx)factory;
         identifySOAPVersion(soapVersion);
     }
@@ -165,7 +166,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      *                    of the message
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
-        this(parser, factory, soapVersion, null);
+        this(parser, factory, soapVersion, null, null);
     }
 
     /** @param soapVersionURIFromTransport  */
