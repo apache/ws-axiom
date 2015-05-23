@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 
 /**
@@ -34,7 +35,7 @@ public class TestParseURI extends DOMTestCase {
 
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Document document = builder.parse(TestParseURI.class.getResource("test.xml").toString());
+        Document document = builder.parse(XMLSample.SIMPLE.getUrl().toString());
         assertEquals("root", document.getDocumentElement().getLocalName());
     }
 }
