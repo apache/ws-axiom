@@ -214,7 +214,6 @@
         <module>modules/axiom-c14n</module>
         <module>modules/axiom-all</module>
         <module>modules/axiom-samples</module>
-        <module>axiom-spring-ws</module>
         <module>systests</module>
         <module>apicheck</module>
         <module>devguide</module>
