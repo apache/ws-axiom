@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.builder;
 
+import java.io.Closeable;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -125,6 +127,15 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
     
     /**
+     * For internal use only.
+     */
+    public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
+            Closeable closeable) {
+        super(metaFactory.getOMFactory(), parser, closeable);
+        this.metaFactory = metaFactory;
+    }
+    
+    /**
      * Constructor.
      * 
      * @param metaFactory the meta factory used to get the appropriate {@link SOAPFactory}
@@ -132,10 +143,19 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      * @param parser the parser to read the SOAP message from
      */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
-        super(metaFactory.getOMFactory(), parser);
-        this.metaFactory = metaFactory;
+        this(metaFactory, parser, (Closeable)null);
     }
 
+    /**
+     * For internal use only.
+     */
+    public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion,
+            Closeable closeable) {
+        super(factory, parser, closeable);
+        soapFactory = (SOAPFactoryEx)factory;
+        identifySOAPVersion(soapVersion);
+    }
+    
     /**
      * Constructor.
      * 
@@ -145,9 +165,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      *                    of the message
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
-        super(factory, parser);
-        soapFactory = (SOAPFactoryEx)factory;
-        identifySOAPVersion(soapVersion);
+        this(parser, factory, soapVersion, null);
     }
 
     /** @param soapVersionURIFromTransport  */

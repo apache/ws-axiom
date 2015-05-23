@@ -45,6 +45,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -64,6 +65,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /** Field omfactory */
     protected OMFactoryEx omfactory;
+    
+    private final Closeable closeable;
 
     /** Field lastNode */
     protected OMContainerEx target;
@@ -126,35 +129,47 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     private final Map/*<OMContainer,Throwable>*/ discardTracker = log.isDebugEnabled() ? new LinkedHashMap() : null;
     
     /**
+     * For internal use only.
+     */
+    protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser, String encoding,
+            Closeable closeable) {
+        omfactory = (OMFactoryEx)omFactory;
+        this.closeable = closeable;
+        charEncoding = encoding;
+        initParser(parser);
+    }
+    
+    /**
+     * For internal use only.
+     */
+    protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser, Closeable closeable) {
+        // The getEncoding information is only available at the START_DOCUMENT event.
+        this(omFactory, parser, parser.getEncoding(), closeable);
+    }
+    
+    /**
      * Constructor StAXBuilder.
      * This constructor is used if the parser is at the beginning (START_DOCUMENT).
      *
-     * @param ombuilderFactory
+     * @param omFactory
      * @param parser
      */
-    protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
-        omfactory = (OMFactoryEx)ombuilderFactory;
-        
-        // The getEncoding information is only available at the START_DOCUMENT event.
-        charEncoding = parser.getEncoding();
-
-        initParser(parser);
+    protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser) {
+        this(omFactory, parser, (Closeable)null);
     }
     
     /**
      * Constructor StAXBuilder.
      * This constructor is used if the parser is not at the START_DOCUMENT.
      *
-     * @param ombuilderFactory
+     * @param omFactory
      * @param parser
-     * @param characterEncoding
+     * @param encoding
      */
-    protected StAXBuilder(OMFactory ombuilderFactory, 
+    protected StAXBuilder(OMFactory omFactory, 
                           XMLStreamReader parser, 
-                          String characterEncoding) {
-        omfactory = (OMFactoryEx)ombuilderFactory;
-        charEncoding = characterEncoding;
-        initParser(parser);
+                          String encoding) {
+        this(omFactory, parser, encoding, null);
     }
 
     private void initParser(XMLStreamReader parser) {
@@ -178,6 +193,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @deprecated
      */
     protected StAXBuilder() {
+        closeable = null;
     }
 
     /**
@@ -738,6 +754,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         try {
             if (!isClosed()) {
                 parser.close();
+                if (closeable != null) {
+                    closeable.close();
+                }
             }
         } catch (Throwable e) {
             // Can't see a reason why we would want to surface an exception

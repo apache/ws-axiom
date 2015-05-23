@@ -41,6 +41,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.Location;
+
+import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -95,6 +97,13 @@ public class StAXOMBuilder extends StAXBuilder {
     private boolean namespaceURIInterning = false;
     
     private int lookAheadToken = -1;
+    
+    /**
+     * For internal use only.
+     */
+    public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser, Closeable closeable) {
+        super(ombuilderFactory, parser, closeable);
+    }
     
     /**
      * Constructor StAXOMBuilder.

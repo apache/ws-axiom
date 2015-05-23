@@ -31,6 +31,7 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -103,9 +104,12 @@ public class XOPAwareStAXOMBuilder
         this.attachments = attachments;
     }
 
+    /**
+     * For internal use only.
+     */
     public XOPAwareStAXOMBuilder(OMFactory omFactory, XMLStreamReader reader,
-            MimePartProvider mimePartProvider) {
-        super(omFactory, new XOPDecodingStreamReader(reader, mimePartProvider));
+            MimePartProvider mimePartProvider, Closeable closeable) {
+        super(omFactory, new XOPDecodingStreamReader(reader, mimePartProvider), closeable);
         attachments = null;
     }
 

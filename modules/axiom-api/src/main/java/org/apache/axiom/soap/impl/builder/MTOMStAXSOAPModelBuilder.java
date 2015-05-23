@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.builder;
 
+import java.io.Closeable;
+
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
@@ -61,9 +63,13 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
         this.attachments = attachments;
     }
     
+    /**
+     * For internal use only.
+     */
     public MTOMStAXSOAPModelBuilder(SOAPFactory soapFactory, XMLStreamReader reader,
-            MimePartProvider mimePartProvider) {
-        super(new XOPDecodingStreamReader(reader, mimePartProvider), soapFactory, soapFactory.getSoapVersionURI());
+            MimePartProvider mimePartProvider, Closeable closeable) {
+        super(new XOPDecodingStreamReader(reader, mimePartProvider), soapFactory,
+                soapFactory.getSoapVersionURI(), closeable);
         attachments = null;
     }
 
