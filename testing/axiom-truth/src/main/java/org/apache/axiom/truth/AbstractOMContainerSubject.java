@@ -37,7 +37,7 @@ public abstract class AbstractOMContainerSubject<S extends AbstractOMContainerSu
             child = child.getNextOMSibling();
         }
         if (actual != expected) {
-            failWithRawMessage("number of children is %d instead of %d", actual, expected);
+            failWithRawMessage("number of children is %s instead of %s", actual, expected);
         }
     }
 }
