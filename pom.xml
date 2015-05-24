@@ -719,7 +719,7 @@
                     </execution>
                     <execution>
                         <id>check-jacoco-exec</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
