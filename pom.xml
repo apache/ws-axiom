@@ -213,7 +213,7 @@
         <module>modules/axiom-jaxb</module>
         <module>modules/axiom-c14n</module>
         <module>modules/axiom-all</module>
-        <module>modules/axiom-samples</module>
+        <module>samples</module>
         <module>systests</module>
         <module>apicheck</module>
         <module>devguide</module>

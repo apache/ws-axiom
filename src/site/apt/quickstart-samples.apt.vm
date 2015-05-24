@@ -63,14 +63,14 @@ Parsing and processing an XML document
   The following sample shows how to parse and process an XML document using Axiom.
   It is pretty much self-explaining:
 
-%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ParseSample.java}
+%{snippet|id=main|file=samples/src/test/java/org/apache/axiom/samples/ParseSample.java}
 
 Schema validation using javax.xml.validation
 
   This sample demonstrates how to validate a part of an Axiom tree (actually the body of a SOAP message)
   using the <<<javax.xml.validation>>> API:
 
-%{snippet|id=sax|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
+%{snippet|id=sax|file=samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
 
   It leverages the fact that Axiom is capable of constructing a <<<SAXSource>>> from an <<<OMDocument>>>
   or <<<OMElement>>>.
@@ -78,7 +78,7 @@ Schema validation using javax.xml.validation
   Alternatively, one can use a DOM compliant Axiom implementation and use a
   <<<DOMSource>>> to pass the XML fragment to the validator:
 
-%{snippet|id=dom|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
+%{snippet|id=dom|file=samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
 
 Loading local chunks from a large XML document
 
@@ -96,7 +96,7 @@ Loading local chunks from a large XML document
   chunks in memory) by scanning the document using the StAX API and switching to Axiom when a
   matching element is found:
 
-%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/FragmentsSample.java}
+%{snippet|id=main|file=samples/src/test/java/org/apache/axiom/samples/FragmentsSample.java}
 
   The code leverages the fact that <<<createStAXOMBuilder>>> can be used to build a fragment
   (corresponding to a given element) from a StAX stream reader, simply by passing an
@@ -107,11 +107,11 @@ Processing MTOM messages
   This sample shows how to process MTOM messages with Axiom. The code actually sends a request to
   the following JAX-WS service:
 
-%{snippet|id=class|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMService.java}
+%{snippet|id=class|file=samples/src/test/java/org/apache/axiom/samples/MTOMService.java}
 
   It then extracts the binary content from the response and writes it to a given <<<OutputStream>>>:
 
-%{snippet|id=retrieveContent|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMSample.java}
+%{snippet|id=retrieveContent|file=samples/src/test/java/org/apache/axiom/samples/MTOMSample.java}
 
   The sample code shows that in order to parse an MTOM message one first needs to construct an
   <<<Attachments>>> object that is then passed to the relevant method in <<<OMXMLBuilderFactory>>>.
@@ -136,7 +136,7 @@ Logging MTOM messages without inlining optimized binary data
   the MIME parts for the binary data is not meaningful and is therefore not directly supported by
   the Axiom API. However the following simple trick can be used to implement this:
 
-%{snippet|id=variant1|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
+%{snippet|id=variant1|file=samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
   
   It relies on the <<<XOPEncodingStreamWriter>>> class which is used by Axiom internally to perform the
   XOP/MTOM encoding. This class is implemented as an <<<XMLStreamWriter>>> wrapper and is responsible for
@@ -155,8 +155,8 @@ Logging MTOM messages without inlining optimized binary data
   that bypasses the serialization of the <<<DataHandler>>> objects, e.g. by replacing them by some
   placeholder text:
 
-%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/LogWriter.java}
+%{snippet|id=main|file=samples/src/test/java/org/apache/axiom/samples/LogWriter.java}
 
   The following code shows how this class would be used to log the MTOM message:
 
-%{snippet|id=variant2|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
+%{snippet|id=variant2|file=samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
