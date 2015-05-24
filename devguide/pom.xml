@@ -24,7 +24,6 @@
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>devguide</artifactId>
