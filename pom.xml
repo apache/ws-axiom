@@ -888,12 +888,10 @@
                             <execution>
                                 <!-- Skip the execution configured in org.apache:apache. We use our own configuration. -->
                                 <id>attach-sources</id>
+                                <phase>none</phase>
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
-                                <configuration>
-                                    <skipSource>true</skipSource>
-                                </configuration>
                             </execution>
                         </executions>
                         <configuration>
@@ -906,9 +904,7 @@
                             <execution>
                                 <!-- The source release is built by the distribution module -->
                                 <id>source-release-assembly</id>
-                                <configuration>
-                                    <skipAssembly>true</skipAssembly>
-                                </configuration>
+                                <phase>none</phase>
                             </execution>
                         </executions>
                     </plugin>
