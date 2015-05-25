@@ -41,16 +41,16 @@ public final class XMLSample extends Multiton {
     public static final XMLSample LARGE = new XMLSample("large.xml");
     
     private final String resourceName;
-    private final String shortName;
+    private final String name;
     private XMLSampleProperties properties;
     
     private XMLSample(String relativeResourceName) {
         resourceName = "org/apache/axiom/ts/xml/" + relativeResourceName;
-        shortName = resourceName.substring(resourceName.lastIndexOf('/')+1);
+        name = resourceName.substring(resourceName.lastIndexOf('/')+1);
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getName() {
+        return name;
     }
 
     private synchronized XMLSampleProperties getProperties() {

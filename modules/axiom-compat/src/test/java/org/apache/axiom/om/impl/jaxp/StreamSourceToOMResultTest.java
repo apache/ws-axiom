@@ -45,7 +45,7 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
         omMetaFactory = OMAbstractFactory.getMetaFactory(axiomImplementation);
         this.file = file;
         addTestParameter("axiomImplementation", axiomImplementation);
-        addTestParameter("file", file.getShortName());
+        addTestParameter("file", file.getName());
     }
     
     protected void runTest() throws Throwable {

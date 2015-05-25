@@ -70,7 +70,7 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         TestSuite suite = new TestSuite();
         for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
             XMLSample file = (XMLSample)it.next();
-            suite.addTest(new StreamingOMSerializerTest(file.getShortName(), file));
+            suite.addTest(new StreamingOMSerializerTest(file.getName(), file));
         }
         return suite;
     }

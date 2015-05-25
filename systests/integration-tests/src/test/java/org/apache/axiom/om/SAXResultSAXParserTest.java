@@ -70,7 +70,7 @@ public class SAXResultSAXParserTest extends AbstractTestCase {
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
         for (XMLSample file : getInstances(XMLSample.class)) {
             suite.addTest(new SAXResultSAXParserTest(
-                    file.getShortName() + " - " + name, factory, file));
+                    file.getName() + " - " + name, factory, file));
         }
     }
     

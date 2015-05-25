@@ -32,7 +32,7 @@ public class TestCloneNode extends DOMTestCase {
     public TestCloneNode(DocumentBuilderFactory dbf, XMLSample file) {
         super(dbf);
         this.file = file;
-        addTestParameter("file", file.getShortName());
+        addTestParameter("file", file.getName());
     }
 
     protected void runTest() throws Throwable {
