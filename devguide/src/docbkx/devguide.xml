@@ -1118,16 +1118,6 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
   ...
 </servers>]]></screen>
                 </listitem>
-                <listitem>
-                    <para>
-                        The build is configured to use <literal>wagon-ssh-external</literal> to deploy the Maven site
-                        to your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
-                        On Unix systems this will work out of the box if you have SSH installed, a public key installed
-                        on <literal>people.apache.org</literal> and your user name is the same on your local system and
-                        <literal>people.apache.org</literal>. If this is not the case, some additional configuration will be
-                        required, as described in <link xlink:href="http://maven.apache.org/plugins/maven-deploy-plugin/examples/deploy-ssh-external.html"/>.
-                    </para>
-                </listitem>
             </itemizedlist>
         </section>
         <section>
@@ -1196,26 +1186,23 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Generate and deploy the Maven site to your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
-                        If you have all the necessary configurations for <literal>wagon-ssh-external</literal> in place, and your local user name matches
-                        your Apache ID, then a single command should be enough to do that:
+                        Delete <link xlink:href="https://svn.apache.org/repos/asf/webservices/website/axiom-staging/"/> if it exists.
+                        Create a new staging area for the site:
                     </para>
-                    <screen>mvn site-deploy</screen>
-                    <para>
-                        Execute this command in a fresh checkout of the tag for the release or use the existing checkout created
-                        by maven-release-plugin. If your local user name is not the same as your Apache ID, then set <literal>user.name</literal>
-                        to your Apache ID.
-                    </para>
-                    <para>
-                        Note that before deploying the site you should remove any previously generated Axiom site from
-                        your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
-                    </para>
-                    <important>
+<screen>svn copy \
+ https://svn.apache.org/repos/asf/webservices/website/axiom \
+ https://svn.apache.org/repos/asf/webservices/website/axiom-staging</screen>
+                    <tip>
                         <para>
-                            When generating the site, please use a recent JDK version, because some older versions
-                            generate broken links.
+                            This step can be skipped if the staging area already exists and is in a state where it can cleanly be merged.
                         </para>
-                    </important>
+                    </tip>
+                </step>
+                <step>
+                    <para>
+                        Stage the site as described <link xlink:href="http://ws.apache.org/dev.html#Republishing_the_site_for_a_subproject">here</link>.
+                        Note that the commands must be executed in the <filename>target/checkout</filename> directory.
+                    </para>
                 </step>
                 <step>
                     <para>
@@ -1242,7 +1229,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         </listitem>
                         <listitem>
                             <para>
-                                A link to the preview of the Maven site.
+                                A link to the preview of the Maven site: <link xlink:href="http://ws.apache.org/axiom-staging/"/>.
                             </para>
                         </listitem>
                     </itemizedlist>
@@ -1276,20 +1263,11 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Log in to <literal>people.apache.org</literal> and check out the current Maven site:
+                        Publish the site:
                     </para>
-<screen>svn co https://svn.apache.org/repos/asf/webservices\
-/website/axiom axiom-site</screen>
-                    <para>
-                        The existing site needs to be overwritten with the site generated for the new
-                        release (which should already be in your <literal>public_html</literal> directory).
-                        This can be done easily using the <filename>etc/syncsite.py</filename> script
-                        (requires Python 2.6). It will copy the files and execute any necessary Subversion
-                        commands to add new files and to delete files that no longer exist. After executing the
-                        script, commit the changes to Subversion.
-                        The live site will be automatically updated by svnpubsub. This should not take longer
-                        than a few minutes.
-                    </para>
+<screen>svn merge \
+ https://svn.apache.org/repos/asf/webservices/website/axiom-staging \
+ https://svn.apache.org/repos/asf/webservices/website/axiom</screen>
                 </step>
             </procedure>
             <para>
@@ -1397,6 +1375,17 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     <para>
                         Remove archived releases from <link xlink:href="https://dist.apache.org/repos/dist/release/ws/axiom/"/>.
                     </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Delete <link xlink:href="https://svn.apache.org/repos/asf/webservices/website/axiom-staging/"/>.
+                    </para>
+                    <note>
+                        <para>
+                            This step is optional. The staging area may be reused during the next release. It may also be used
+                            to publish a snapshot version of the site.
+                        </para>
+                    </note>
                 </listitem>
             </itemizedlist>
         </section>
