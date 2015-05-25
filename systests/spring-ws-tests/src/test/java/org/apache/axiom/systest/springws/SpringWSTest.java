@@ -28,7 +28,6 @@ import org.apache.axiom.ts.springws.scenario.castor.CastorTest;
 import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
 import org.apache.axiom.ts.springws.scenario.jdom.ClientServerTest;
 import org.apache.axiom.ts.springws.scenario.secureecho.SecureEchoTest;
-import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStream;
 
 public class SpringWSTest extends TestCase {
     public static TestSuite suite() {
@@ -37,7 +36,6 @@ public class SpringWSTest extends TestCase {
                 MessageFactoryConfigurator.SAAJ);
         
         // TODO: investigate
-        builder.exclude(TestCreateWebServiceMessageFromInputStream.class);
         builder.exclude(ClientServerTest.class);
         builder.exclude(JAXB2Test.class);
         builder.exclude(CastorTest.class);
