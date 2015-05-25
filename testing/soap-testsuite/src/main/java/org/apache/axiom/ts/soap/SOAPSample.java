@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.testing.multiton.Instances;
-import org.apache.axiom.testing.multiton.Multiton;
+import org.apache.axiom.ts.xml.MessageContent;
+import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -39,13 +39,12 @@ import org.xml.sax.InputSource;
 /**
  * A SOAP test message.
  */
-public abstract class SOAPSample extends Multiton {
+public class SOAPSample extends XMLSample {
     private final SOAPSpec spec;
-    private final String name;
     
-    SOAPSample(SOAPSpec spec, String name) {
+    SOAPSample(SOAPSpec spec, MessageContent content, String name) {
+        super(content, name);
         this.spec = spec;
-        this.name = name;
     }
     
     @Instances
@@ -67,22 +66,6 @@ public abstract class SOAPSample extends Multiton {
     public final SOAPSpec getSOAPSpec() {
         return spec;
     }
-    
-    /**
-     * Get the name of this message (for use in test case naming e.g.).
-     * 
-     * @return the name of this test message
-     */
-    public final String getName() {
-        return name;
-    }
-    
-    /**
-     * Get the content of this message.
-     * 
-     * @return an input stream with the content of this message
-     */
-    public abstract InputStream getInputStream();
     
     public final Element getEnvelope() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

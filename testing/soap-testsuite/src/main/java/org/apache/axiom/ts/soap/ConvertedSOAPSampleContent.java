@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -29,6 +28,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axiom.ts.xml.ComputedMessageContent;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,39 +36,28 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-final class ConvertedSOAPSample extends SOAPSample {
+final class ConvertedSOAPSampleContent extends ComputedMessageContent {
     private final SOAPSample soap12Message;
-    private byte[] content;
 
-    ConvertedSOAPSample(SOAPSample soap12Message, String name) {
-        super(SOAPSpec.SOAP11, name);
+    ConvertedSOAPSampleContent(SOAPSample soap12Message) {
         this.soap12Message = soap12Message;
     }
 
     @Override
-    public synchronized InputStream getInputStream() {
-        if (content == null) {
-            try {
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setNamespaceAware(true);
-                Document document;
-                InputStream in = soap12Message.getInputStream();
-                try {
-                    document = factory.newDocumentBuilder().parse(in);
-                } finally {
-                    in.close();
-                }
-                processSOAPElement(document.getDocumentElement(), SOAPElementType.ENVELOPE);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                TransformerFactory.newInstance().newTransformer().transform(
-                        new DOMSource(document),
-                        new StreamResult(baos));
-                content = baos.toByteArray();
-            } catch (Exception ex) {
-                throw new Error("Error converting SOAP message", ex);
-            }
+    protected void buildContent(OutputStream out) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        Document document;
+        InputStream in = soap12Message.getInputStream();
+        try {
+            document = factory.newDocumentBuilder().parse(in);
+        } finally {
+            in.close();
         }
-        return new ByteArrayInputStream(content);
+        processSOAPElement(document.getDocumentElement(), SOAPElementType.ENVELOPE);
+        TransformerFactory.newInstance().newTransformer().transform(
+                new DOMSource(document),
+                new StreamResult(out));
     }
     
     private static void processSOAPElement(Element element, SOAPElementType type) {

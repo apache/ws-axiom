@@ -16,17 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.ts.xml;
 
-import org.apache.axiom.ts.xml.MessageContent;
+import java.io.InputStream;
+import java.net.URL;
 
-// TODO: this should eventually have package access
-public final class SimpleSOAPSample extends SOAPSample {
-    public SimpleSOAPSample(SOAPSpec spec, String resourceName) {
-        this(spec, resourceName, resourceName);
+import org.apache.axiom.testing.multiton.Multiton;
+
+public abstract class MessageSample extends Multiton {
+    private final MessageContent content;
+
+    public MessageSample(MessageContent content) {
+        this.content = content;
+    }
+
+    /**
+     * Get the content of this message.
+     * 
+     * @return an input stream with the content of this message
+     */
+    public final InputStream getInputStream() {
+        return content.getInputStream();
     }
     
-    SimpleSOAPSample(SOAPSpec spec, String resourceName, String name) {
-        super(spec, MessageContent.fromClasspath(SimpleSOAPSample.class.getClassLoader(), resourceName), name);
+    public final URL getUrl() {
+        return content.getURL();
     }
 }

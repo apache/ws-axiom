@@ -29,23 +29,16 @@ import javax.mail.internet.ContentType;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.ParseException;
 
-public abstract class MIMESample {
-    private final String name;
+import org.apache.axiom.ts.xml.MessageContent;
+import org.apache.axiom.ts.xml.MessageSample;
+
+public abstract class MIMESample extends MessageSample {
     private final String contentType;
     private MimeMultipart multipart;
     
     MIMESample(String name, String contentType) {
-        this.name = name;
+        super(MessageContent.fromClasspath(MIMESample.class, name));
         this.contentType = contentType;
-    }
-
-    /**
-     * Get the content of this message.
-     * 
-     * @return an input stream with the content of this message
-     */
-    public InputStream getInputStream() {
-        return MIMESample.class.getResourceAsStream(name);
     }
 
     public String getContentType() {

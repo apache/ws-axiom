@@ -16,17 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.ts.xml;
 
-import org.apache.axiom.ts.xml.MessageContent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
-// TODO: this should eventually have package access
-public final class SimpleSOAPSample extends SOAPSample {
-    public SimpleSOAPSample(SOAPSpec spec, String resourceName) {
-        this(spec, resourceName, resourceName);
+final class URLMessageContent extends MessageContent {
+    private final URL url;
+
+    URLMessageContent(URL url) {
+        this.url = url;
     }
-    
-    SimpleSOAPSample(SOAPSpec spec, String resourceName, String name) {
-        super(spec, MessageContent.fromClasspath(SimpleSOAPSample.class.getClassLoader(), resourceName), name);
+
+    @Override
+    public InputStream getInputStream() {
+        try {
+            return url.openStream();
+        } catch (IOException ex) {
+            throw new MessageContentLoadingException(ex);
+        }
+    }
+
+    @Override
+    public URL getURL() {
+        return url;
     }
 }

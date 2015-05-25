@@ -20,16 +20,13 @@ package org.apache.axiom.ts.xml;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.axiom.testing.multiton.Instances;
-import org.apache.axiom.testing.multiton.Multiton;
 
-public final class XMLSample extends Multiton {
+public class XMLSample extends MessageSample {
     /**
      * A simple XML document without any particular features.
      */
@@ -40,16 +37,25 @@ public final class XMLSample extends Multiton {
      */
     public static final XMLSample LARGE = new XMLSample("large.xml");
     
-    private final String resourceName;
     private final String name;
     private XMLSampleProperties properties;
     
+    protected XMLSample(MessageContent content, String name) {
+        super(content);
+        this.name = name;
+    }
+    
     private XMLSample(String relativeResourceName) {
-        resourceName = "org/apache/axiom/ts/xml/" + relativeResourceName;
-        name = resourceName.substring(resourceName.lastIndexOf('/')+1);
+        this(MessageContent.fromClasspath(XMLSample.class, relativeResourceName),
+                relativeResourceName.substring(relativeResourceName.lastIndexOf('/')+1));
     }
 
-    public String getName() {
+    /**
+     * Get the name of this message (for use in test case naming e.g.).
+     * 
+     * @return the name of this test message
+     */
+    public final String getName() {
         return name;
     }
 
@@ -61,34 +67,26 @@ public final class XMLSample extends Multiton {
         return properties;
     }
 
-    public String getEncoding() {
+    public final String getEncoding() {
         return getProperties().getEncoding();
     }
 
-    public boolean hasDTD() {
+    public final boolean hasDTD() {
         return getProperties().hasDTD();
     }
 
-    public boolean hasExternalSubset() {
+    public final boolean hasExternalSubset() {
         return getProperties().hasExternalSubset();
     }
 
-    public boolean hasInternalSubset() {
+    public final boolean hasInternalSubset() {
         return getProperties().hasInternalSubset();
     }
 
-    public boolean hasEntityReferences() {
+    public final boolean hasEntityReferences() {
         return getProperties().hasEntityReferences();
     }
 
-    public InputStream getInputStream() {
-        return XMLSample.class.getClassLoader().getResourceAsStream(resourceName);
-    }
-    
-    public URL getUrl() {
-        return XMLSample.class.getClassLoader().getResource(resourceName);
-    }
-    
     @Instances
     private static XMLSample[] instances() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(

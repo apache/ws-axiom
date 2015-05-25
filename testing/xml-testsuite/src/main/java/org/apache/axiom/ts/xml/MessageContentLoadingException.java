@@ -16,17 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.ts.xml;
 
-import org.apache.axiom.ts.xml.MessageContent;
+public class MessageContentLoadingException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
 
-// TODO: this should eventually have package access
-public final class SimpleSOAPSample extends SOAPSample {
-    public SimpleSOAPSample(SOAPSpec spec, String resourceName) {
-        this(spec, resourceName, resourceName);
-    }
-    
-    SimpleSOAPSample(SOAPSpec spec, String resourceName, String name) {
-        super(spec, MessageContent.fromClasspath(SimpleSOAPSample.class.getClassLoader(), resourceName), name);
+    public MessageContentLoadingException(Throwable cause) {
+        super(cause);
     }
 }
