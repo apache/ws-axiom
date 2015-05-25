@@ -53,7 +53,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     }
     
     protected final void runTest() throws Throwable {
-        InputStream in = file.getAsStream();
+        InputStream in = file.getInputStream();
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
             try {

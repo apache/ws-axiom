@@ -38,7 +38,7 @@ public abstract class StreamType extends Multiton {
     public static final StreamType BYTE_STREAM = new StreamType(InputStream.class) {
         @Override
         public Closeable getStream(XMLSample sample) {
-            return sample.getAsStream();
+            return sample.getInputStream();
         }
         
         @Override
@@ -60,7 +60,7 @@ public abstract class StreamType extends Multiton {
     public static final StreamType CHARACTER_STREAM = new StreamType(Reader.class) {
         @Override
         public Closeable getStream(XMLSample sample) {
-            return new InputStreamReader(sample.getAsStream(), Charset.forName(sample.getEncoding()));
+            return new InputStreamReader(sample.getInputStream(), Charset.forName(sample.getEncoding()));
         }
         
         @Override

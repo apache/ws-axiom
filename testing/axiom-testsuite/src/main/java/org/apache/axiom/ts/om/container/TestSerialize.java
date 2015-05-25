@@ -54,7 +54,7 @@ public class TestSerialize extends ConformanceTestCase {
             OMContainer container = containerFactory.getContainer(builder);
             // We need to clone the InputSource objects so that we can dump their contents
             // if the test fails
-            InputSource control[] = duplicateInputSource(containerFactory.getControl(file.getAsStream()));
+            InputSource control[] = duplicateInputSource(containerFactory.getControl(file.getInputStream()));
             XML actual = serializationStrategy.serialize(container);
             try {
                 // Configure the InputSources such that external entities can be resolved

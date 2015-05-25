@@ -54,7 +54,7 @@ public class TestGetNamespaceContext extends DialectTestCase {
     
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        InputStream in = testResource.getAsStream();
+        InputStream in = testResource.getInputStream();
         Set/*<String>*/ prefixes = new HashSet();
         Set/*<String>*/ namespaceURIs = new HashSet();
         prefixes.add("");

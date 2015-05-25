@@ -81,7 +81,7 @@ public final class XMLSample extends Multiton {
         return getProperties().hasEntityReferences();
     }
 
-    public InputStream getAsStream() {
+    public InputStream getInputStream() {
         return XMLSample.class.getClassLoader().getResourceAsStream(resourceName);
     }
     

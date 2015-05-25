@@ -35,7 +35,7 @@ public class TestCloseWithXMLStreamReader extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream in = XMLSample.SIMPLE.getAsStream();
+        InputStream in = XMLSample.SIMPLE.getInputStream();
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);
             OMXMLParserWrapper builder = metaFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);

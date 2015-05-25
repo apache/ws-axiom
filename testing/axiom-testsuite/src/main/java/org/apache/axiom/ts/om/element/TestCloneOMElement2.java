@@ -36,7 +36,7 @@ public class TestCloneOMElement2 extends ConformanceTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        InputStream in = file.getAsStream();
+        InputStream in = file.getInputStream();
         try {
             OMElement original = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
             OMElement clone = original.cloneOMElement();
