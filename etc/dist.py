@@ -17,16 +17,29 @@
 # under the License.
 #
 
-from sys import *
 from os import *
 from os.path import *
-from urllib import *
+from shutil import copyfile
+from shutil import rmtree
+from subprocess import call
+from xml.etree.ElementTree import parse
 
-release = argv[1]
-mkdir(release)
+axiom_dir = realpath(join(dirname(__file__), ".."))
+pom = parse(join(axiom_dir, "pom.xml"))
+release = pom.getroot().find("{http://maven.apache.org/POM/4.0.0}version").text
+dist_root = join(axiom_dir, "target", "dist")
+dist_dir = join(dist_root, release)
 
+if exists(dist_root):
+    rmtree(dist_root)
+call(["svn", "checkout", "https://dist.apache.org/repos/dist/dev/ws/axiom/", dist_root])
+mkdir(dist_dir)
 for classifier in [ "bin", "source-release" ]:
     for suffix in [ "zip", "zip.asc", "zip.md5"]:
         file = "axiom-" + release + "-" + classifier + "." + suffix
-        urlretrieve("http://repository.apache.org/content/repositories/releases/org/apache/ws/commons/axiom/axiom/" + release + "/" + file, join(release, file))
-
+        copyfile(join(axiom_dir, "distribution", "target", file), join(dist_dir, file))
+call(["svn", "add", dist_dir])
+if release.endswith("-SNAPSHOT"):
+    print "Skipping commit because version is a snapshot."
+else:
+    call(["svn", "commit", dist_dir])

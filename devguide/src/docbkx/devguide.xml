@@ -1185,6 +1185,17 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
+                        Execute the <filename>target/checkout/etc/dist.py</filename> script to upload the source and binary distributions to
+                        the development area of the <link xlink:href="https://dist.apache.org/repos/dist/"/> repository.
+                    </para>
+                    <para>
+                        If not yet done, export your public key and append it to <link xlink:href="https://dist.apache.org/repos/dist/release/ws/axiom/KEYS"/>.
+                        The command to export a public key is as follows:
+                    </para>
+                    <screen>gpg --armor --export <replaceable>key_id</replaceable></screen>
+                </step>
+                <step>
+                    <para>
                         Generate and deploy the Maven site to your <literal>public_html</literal> directory on <literal>people.apache.org</literal>.
                         If you have all the necessary configurations for <literal>wagon-ssh-external</literal> in place, and your local user name matches
                         your Apache ID, then a single command should be enough to do that:
@@ -1225,8 +1236,8 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         </listitem>
                         <listitem>
                             <para>
-                                The location where source and binary packages may be downloaded.
-                                This can be a reference to the location inside the staging repository.
+                                The link to the source and binary distributions:
+                                <literal>https://dist.apache.org/repos/dist/dev/ws/axiom/<replaceable>version</replaceable></literal>.
                             </para>
                         </listitem>
                         <listitem>
@@ -1255,22 +1266,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Log in to <literal>people.apache.org</literal> and publish the release
-                        distributions to <literal>www.apache.org</literal>. The <filename>etc/dist.py</filename>
-                        script can be used for that:
+                        Publish the distributions:
                     </para>
-<screen>cd /www/www.apache.org/dist/ws/axiom
-umask 0002
-python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</replaceable></screen>
+<screen>svn mv https://dist.apache.org/repos/dist/dev/ws/axiom/<replaceable>version</replaceable> \
+       https://dist.apache.org/repos/dist/release/ws/axiom/</screen>
                     <para>
                         <replaceable>version</replaceable> is the release version, e.g. <literal>1.2.9</literal>.
                     </para>
-                    <para>
-                        If not yet done, export your public key and append it to the <filename>KEYS</filename>
-                        file located in <filename>/www/www.apache.org/dist/ws/axiom</filename>. The command
-                        to export a public key is as follows:
-                    </para>
-                    <screen>gpg --armor --export <replaceable>key_id</replaceable></screen>
                 </step>
                 <step>
                     <para>
@@ -1393,8 +1395,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                 </listitem>
                 <listitem>
                     <para>
-                        Remove archived releases from <filename>/www/www.apache.org/dist/ws/axiom</filename>
-                        on <literal>people.apache.org</literal>.
+                        Remove archived releases from <link xlink:href="https://dist.apache.org/repos/dist/release/ws/axiom/"/>.
                     </para>
                 </listitem>
             </itemizedlist>
