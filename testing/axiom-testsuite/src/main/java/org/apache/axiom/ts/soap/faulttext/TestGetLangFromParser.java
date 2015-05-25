@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestGetLangFromParser extends SOAPTestCase {
     public TestGetLangFromParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -32,7 +32,7 @@ public class TestGetLangFromParser extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPEnvelope env = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        SOAPEnvelope env = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
         assertEquals("en", env.getBody().getFault().getReason().getFirstSOAPText().getLang());
     }
 }

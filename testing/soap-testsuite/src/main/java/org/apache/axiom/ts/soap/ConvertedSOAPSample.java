@@ -36,11 +36,11 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-final class ConvertedTestMessage extends TestMessage {
-    private final TestMessage soap12Message;
+final class ConvertedSOAPSample extends SOAPSample {
+    private final SOAPSample soap12Message;
     private byte[] content;
 
-    ConvertedTestMessage(TestMessage soap12Message, String name) {
+    ConvertedSOAPSample(SOAPSample soap12Message, String name) {
         super(SOAPSpec.SOAP11, name);
         this.soap12Message = soap12Message;
     }

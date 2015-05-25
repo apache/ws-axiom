@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestGetFaultNodeValueWithParser extends SOAPTestCase {
     public TestGetFaultNodeValueWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -32,7 +32,7 @@ public class TestGetFaultNodeValueWithParser extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPEnvelope env = TestMessageSet.CUSTOM_ROLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        SOAPEnvelope env = SOAPSampleSet.CUSTOM_ROLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
         assertEquals("http://gateway.corp.example.org/", env.getBody().getFault().getNode().getFaultNodeValue());
     }
 }

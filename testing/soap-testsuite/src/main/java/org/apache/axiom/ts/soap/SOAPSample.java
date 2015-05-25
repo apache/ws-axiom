@@ -39,24 +39,24 @@ import org.xml.sax.InputSource;
 /**
  * A SOAP test message.
  */
-public abstract class TestMessage extends Multiton {
+public abstract class SOAPSample extends Multiton {
     private final SOAPSpec spec;
     private final String name;
     
-    TestMessage(SOAPSpec spec, String name) {
+    SOAPSample(SOAPSpec spec, String name) {
         this.spec = spec;
         this.name = name;
     }
     
     @Instances
-    private static TestMessage[] instances() {
-        List<TestMessage> instances = new ArrayList<TestMessage>();
-        for (TestMessageSet set : getInstances(TestMessageSet.class)) {
+    private static SOAPSample[] instances() {
+        List<SOAPSample> instances = new ArrayList<SOAPSample>();
+        for (SOAPSampleSet set : getInstances(SOAPSampleSet.class)) {
             for (SOAPSpec spec : getInstances(SOAPSpec.class)) {
                 instances.add(set.getMessage(spec));
             }
         }
-        return instances.toArray(new TestMessage[instances.size()]);
+        return instances.toArray(new SOAPSample[instances.size()]);
     }
     
     /**

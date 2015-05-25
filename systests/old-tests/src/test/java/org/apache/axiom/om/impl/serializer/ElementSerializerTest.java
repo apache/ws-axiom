@@ -32,7 +32,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.commons.io.output.NullOutputStream;
 
 import javax.xml.stream.XMLStreamReader;
@@ -46,7 +46,7 @@ public class ElementSerializerTest extends TestCase {
     private OMXMLParserWrapper builder;
 
     protected void setUp() throws Exception {
-        reader = StAXUtils.createXMLStreamReader(TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
+        reader = StAXUtils.createXMLStreamReader(SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream());
         writer = StAXUtils.createXMLStreamWriter(new NullOutputStream(),
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builder =

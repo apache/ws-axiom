@@ -23,8 +23,8 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestGetFaultWithParser extends SOAPTestCase {
     public TestGetFaultWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -32,7 +32,7 @@ public class TestGetFaultWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPBody body = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody();
+        SOAPBody body = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody();
         assertNotNull(
                 "Body Test With parser :- getFault method returns null",
                 body.getFault());

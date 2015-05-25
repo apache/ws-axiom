@@ -24,8 +24,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /**
  * Tests that {@link OMInformationItem#getOMFactory()} returns the expected {@link SOAPFactory}
@@ -38,7 +38,7 @@ public class TestGetOMFactoryWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPMessage(metaFactory);
+        SOAPMessage message = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
         assertSame(soapFactory, message.getOMFactory());
     }
 }

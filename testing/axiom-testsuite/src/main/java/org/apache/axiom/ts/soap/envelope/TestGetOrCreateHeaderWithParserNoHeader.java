@@ -24,8 +24,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getOrCreateHeader()} on a message that has no header.
@@ -38,7 +38,7 @@ public class TestGetOrCreateHeaderWithParserNoHeader extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = TestMessageSet.NO_HEADER.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        SOAPEnvelope envelope = SOAPSampleSet.NO_HEADER.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
         SOAPHeader header = envelope.getOrCreateHeader();
         assertNotNull(header);
         assertSame(envelope.getFirstElement(), header);

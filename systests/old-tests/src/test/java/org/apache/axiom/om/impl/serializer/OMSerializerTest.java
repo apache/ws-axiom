@@ -29,7 +29,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -40,7 +40,7 @@ import java.io.ByteArrayOutputStream;
 public class OMSerializerTest extends AbstractTestCase {
     public void testElementPullStream1() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
+                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -56,7 +56,7 @@ public class OMSerializerTest extends AbstractTestCase {
     public void testElementPullStream1WithCacheOff() throws Exception {
 
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
+                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
@@ -83,7 +83,7 @@ public class OMSerializerTest extends AbstractTestCase {
 
     public void testElementPullStream2() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
+                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 

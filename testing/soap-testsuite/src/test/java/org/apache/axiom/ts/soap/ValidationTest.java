@@ -26,9 +26,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 public class ValidationTest extends TestCase {
-    private final TestMessage message;
+    private final SOAPSample message;
     
-    public ValidationTest(TestMessage message) {
+    public ValidationTest(SOAPSample message) {
         super(message.getName());
         this.message = message;
     }
@@ -40,7 +40,7 @@ public class ValidationTest extends TestCase {
 
     public static TestSuite suite() {
         TestSuite suite = new TestSuite();
-        for (TestMessage message : getInstances(TestMessage.class)) {
+        for (SOAPSample message : getInstances(SOAPSample.class)) {
             suite.addTest(new ValidationTest(message));
         }
         return suite;

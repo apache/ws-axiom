@@ -22,12 +22,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.soap.TestMessage;
+import org.apache.axiom.ts.soap.SOAPSample;
 
 public class MessageTest extends AxiomTestCase {
-    private final TestMessage message;
+    private final SOAPSample message;
 
-    public MessageTest(OMMetaFactory metaFactory, TestMessage message) {
+    public MessageTest(OMMetaFactory metaFactory, SOAPSample message) {
         super(metaFactory);
         this.message = message;
         addTestParameter("message", message.getName());

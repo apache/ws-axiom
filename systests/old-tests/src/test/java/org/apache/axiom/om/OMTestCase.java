@@ -25,7 +25,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public abstract class OMTestCase extends AbstractTestCase {
     protected SOAPModelBuilder builder;
@@ -52,7 +52,7 @@ public abstract class OMTestCase extends AbstractTestCase {
     protected SOAPModelBuilder getOMBuilder(String fileName) throws Exception {
         InputStream in;
         if ("".equals(fileName) || fileName == null) {
-            in = TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream();
+            in = SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream();
         } else {
             in = getTestResource(fileName);
         }

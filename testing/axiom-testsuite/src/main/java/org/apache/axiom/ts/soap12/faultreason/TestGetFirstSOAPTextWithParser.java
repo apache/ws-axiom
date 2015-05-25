@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestGetFirstSOAPTextWithParser extends SOAPTestCase {
     public TestGetFirstSOAPTextWithParser(OMMetaFactory metaFactory) {
@@ -31,7 +31,7 @@ public class TestGetFirstSOAPTextWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultReason faultReason = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getReason();
+        SOAPFaultReason faultReason = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getReason();
         assertFalse(
                 "SOAP 1.2 FaultReason Test With Parser : - getFirstSOAPText method returns null",
                 faultReason.getFirstSOAPText() == null);

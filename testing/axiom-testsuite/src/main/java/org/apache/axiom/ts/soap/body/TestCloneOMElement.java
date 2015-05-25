@@ -24,8 +24,8 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.custommonkey.xmlunit.XMLAssert;
 
 public class TestCloneOMElement extends SOAPTestCase {
@@ -34,7 +34,7 @@ public class TestCloneOMElement extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope soapEnvelope = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        SOAPEnvelope soapEnvelope = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
         SOAPBody body = soapEnvelope.getBody();
 
         OMElement firstClonedBodyElement = body.cloneOMElement();

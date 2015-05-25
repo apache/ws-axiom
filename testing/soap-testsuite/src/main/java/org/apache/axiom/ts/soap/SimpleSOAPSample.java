@@ -21,20 +21,20 @@ package org.apache.axiom.ts.soap;
 import java.io.InputStream;
 
 // TODO: this should eventually have package access
-public final class SimpleTestMessage extends TestMessage {
+public final class SimpleSOAPSample extends SOAPSample {
     private final String resourceName;
 
-    public SimpleTestMessage(SOAPSpec spec, String resourceName) {
+    public SimpleSOAPSample(SOAPSpec spec, String resourceName) {
         this(spec, resourceName, resourceName);
     }
     
-    SimpleTestMessage(SOAPSpec spec, String resourceName, String name) {
+    SimpleSOAPSample(SOAPSpec spec, String resourceName, String name) {
         super(spec, name);
         this.resourceName = resourceName;
     }
 
     @Override
     public InputStream getInputStream() {
-        return SimpleTestMessage.class.getClassLoader().getResourceAsStream(resourceName);
+        return SimpleSOAPSample.class.getClassLoader().getResourceAsStream(resourceName);
     }
 }

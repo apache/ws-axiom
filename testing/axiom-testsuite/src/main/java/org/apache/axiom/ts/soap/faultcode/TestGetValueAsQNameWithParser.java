@@ -25,8 +25,8 @@ import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link SOAPFaultCode}.
@@ -37,7 +37,7 @@ public class TestGetValueAsQNameWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultCode faultCode = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getCode();
+        SOAPFaultCode faultCode = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getCode();
         assertEquals(new QName(spec.getEnvelopeNamespaceURI(), "Receiver"), faultCode.getValueAsQName());
     }
 }

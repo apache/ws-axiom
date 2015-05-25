@@ -29,19 +29,19 @@ import org.junit.Assert;
 import org.xml.sax.InputSource;
 
 /**
- * {@link TestMessage} adapter that adds some Axiom specific methods to retrieve the content of the
+ * {@link SOAPSample} adapter that adds some Axiom specific methods to retrieve the content of the
  * test message.
  */
 @AdapterType
-public final class TestMessageAdapter {
-    private final TestMessage testMessage;
+public final class SOAPSampleAdapter {
+    private final SOAPSample sample;
 
-    TestMessageAdapter(TestMessage testMessage) {
-        this.testMessage = testMessage;
+    SOAPSampleAdapter(SOAPSample sample) {
+        this.sample = sample;
     }
     
     public SOAPModelBuilder getBuilder(OMMetaFactory metaFactory) {
-        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(testMessage.getInputStream()));
+        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(sample.getInputStream()));
     }
     
     public SOAPMessage getSOAPMessage(OMMetaFactory metaFactory) {
@@ -51,7 +51,7 @@ public final class TestMessageAdapter {
     public SOAPEnvelope getSOAPEnvelope(OMMetaFactory metaFactory) {
         SOAPEnvelope envelope = getBuilder(metaFactory).getSOAPEnvelope();
         // TODO: this is not the right place to assert this
-        Assert.assertSame(testMessage.getSOAPSpec().getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
+        Assert.assertSame(sample.getSOAPSpec().getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
         return envelope;
     }
 }

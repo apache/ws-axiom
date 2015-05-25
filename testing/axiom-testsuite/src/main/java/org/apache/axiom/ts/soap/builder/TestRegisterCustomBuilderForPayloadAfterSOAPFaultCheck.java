@@ -28,8 +28,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /**
  * Tests that a custom builder registered with
@@ -44,7 +44,7 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends SOAP
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        SOAPEnvelope envelope = SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
         StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)envelope.getBuilder();
         
         // Do a fault check.  This is normally done in the engine (Axiom) and should

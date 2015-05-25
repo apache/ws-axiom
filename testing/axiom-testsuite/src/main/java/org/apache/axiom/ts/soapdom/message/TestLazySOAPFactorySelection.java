@@ -27,7 +27,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,7 +40,7 @@ public class TestLazySOAPFactorySelection extends SOAPTestCase {
     protected void runTest() throws Throwable {
         // Create a SOAP model builder without specifying the SOAP version.
         SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                TestMessageSet.NO_HEADER.getMessage(spec).getInputStream(), null).getSOAPMessage();
+                SOAPSampleSet.NO_HEADER.getMessage(spec).getInputStream(), null).getSOAPMessage();
         
         // At this stage, the SOAPFactory instance has not yet been determined.
         // However, if we cast the SOAPMessage to a Document and use it to create e new Element,

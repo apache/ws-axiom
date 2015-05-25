@@ -23,49 +23,49 @@ import org.apache.axiom.testing.multiton.Multiton;
 /**
  * A set of two equivalent SOAP messages, one for SOAP 1.1 and one for SOAP 1.2.
  */
-public final class TestMessageSet extends Multiton {
+public final class SOAPSampleSet extends Multiton {
     /**
      * A simple SOAP message without header.
      */
-    public static final TestMessageSet NO_HEADER = new TestMessageSet("no-header");
+    public static final SOAPSampleSet NO_HEADER = new SOAPSampleSet("no-header");
     
     /**
      * A SOAP request with WS-Addressing headers.
      */
-    public static final TestMessageSet WSA = new TestMessageSet("wsa");
+    public static final SOAPSampleSet WSA = new SOAPSampleSet("wsa");
     
     /**
      * A simple SOAP request with a comment in the XML prolog.
      */
-    public static final TestMessageSet COMMENT_IN_PROLOG = new TestMessageSet("comment-in-prolog");
+    public static final SOAPSampleSet COMMENT_IN_PROLOG = new SOAPSampleSet("comment-in-prolog");
     
     /**
      * A SOAP response with a simple SOAP fault containing a fault code (without subcode), reason
      * (English only) and detail.
      */
-    public static final TestMessageSet SIMPLE_FAULT = new TestMessageSet("simple-fault");
+    public static final SOAPSampleSet SIMPLE_FAULT = new SOAPSampleSet("simple-fault");
     
     /**
      * A SOAP request having a header block with a custom role.
      */
-    public static final TestMessageSet CUSTOM_ROLE_REQUEST = new TestMessageSet("custom-role-request");
+    public static final SOAPSampleSet CUSTOM_ROLE_REQUEST = new SOAPSampleSet("custom-role-request");
     
     /**
      * A SOAP fault response with a custom role (corresponding to {@link #CUSTOM_ROLE_REQUEST}).
      */
-    public static final TestMessageSet CUSTOM_ROLE_FAULT = new TestMessageSet("custom-role-fault");
+    public static final SOAPSampleSet CUSTOM_ROLE_FAULT = new SOAPSampleSet("custom-role-fault");
     
     /**
      * A SOAP request with a single mustUnderstand header.
      */
-    public static final TestMessageSet MUST_UNDERSTAND = new TestMessageSet("must-understand");
+    public static final SOAPSampleSet MUST_UNDERSTAND = new SOAPSampleSet("must-understand");
     
-    private final TestMessage soap11Message;
-    private final TestMessage soap12Message;
+    private final SOAPSample soap11Message;
+    private final SOAPSample soap12Message;
     
-    private TestMessageSet(String name) {
-        soap12Message = new SimpleTestMessage(SOAPSpec.SOAP12, "test-message/set/" + name + ".xml", "soap12/" + name);
-        soap11Message = new ConvertedTestMessage(soap12Message, "soap11/" + name);
+    private SOAPSampleSet(String name) {
+        soap12Message = new SimpleSOAPSample(SOAPSpec.SOAP12, "test-message/set/" + name + ".xml", "soap12/" + name);
+        soap11Message = new ConvertedSOAPSample(soap12Message, "soap11/" + name);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class TestMessageSet extends Multiton {
      *            the SOAP specification version
      * @return the test message
      */
-    public TestMessage getMessage(SOAPSpec spec) {
+    public SOAPSample getMessage(SOAPSpec spec) {
         return spec == SOAPSpec.SOAP11 ? soap11Message : soap12Message;
     }
 }

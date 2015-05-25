@@ -29,15 +29,15 @@ import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.soap.TestMessage;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
+import org.apache.axiom.ts.soap.SOAPSample;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.xml.sax.InputSource;
 
 public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
-    private final TestMessage message;
+    private final SOAPSample message;
 
-    public TestRegisterCustomBuilderForPayload(OMMetaFactory metaFactory, TestMessage message) {
+    public TestRegisterCustomBuilderForPayload(OMMetaFactory metaFactory, SOAPSample message) {
         super(metaFactory);
         this.message = message;
         addTestParameter("message", message.getName());
@@ -45,7 +45,7 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        SOAPModelBuilder builder = message.getAdapter(TestMessageAdapter.class).getBuilder(metaFactory);
+        SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
         ((StAXSOAPModelBuilder)builder).registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
         OMElement payload = builder.getSOAPEnvelope().getBody().getFirstElement();
         if (message.getPayload() == null) {

@@ -29,8 +29,8 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestRegisterCustomBuilder extends SOAPTestCase {
     public TestRegisterCustomBuilder(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -39,7 +39,7 @@ public class TestRegisterCustomBuilder extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getBuilder(metaFactory);
+        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
         builder.registerCustomBuilder(new QName("http://www.w3.org/2005/08/addressing", "To"), 3,
                 new ByteArrayCustomBuilder("utf-8"));
         SOAPHeader header = builder.getSOAPEnvelope().getHeader();

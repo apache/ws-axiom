@@ -31,7 +31,7 @@ import org.apache.axiom.ts.saaj.FactorySelector;
 import org.apache.axiom.ts.saaj.SAAJImplementation;
 import org.apache.axiom.ts.saaj.SAAJTestCase;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
     private final SOAPSpec spec;
@@ -50,7 +50,7 @@ public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
         MessageFactory messageFactory = spec.getAdapter(FactorySelector.class).newMessageFactory(saajImplementation, dynamic);
         MimeHeaders mimeHeaders = new MimeHeaders();
         mimeHeaders.addHeader("Content-Type", spec.getContentType());
-        InputStream in = TestMessageSet.MUST_UNDERSTAND.getMessage(spec).getInputStream();
+        InputStream in = SOAPSampleSet.MUST_UNDERSTAND.getMessage(spec).getInputStream();
         try {
             SOAPMessage message = messageFactory.createMessage(mimeHeaders, in);
             SOAPHeader header = message.getSOAPHeader();

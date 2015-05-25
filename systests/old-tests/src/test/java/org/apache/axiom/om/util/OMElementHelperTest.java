@@ -25,12 +25,12 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class OMElementHelperTest extends TestCase {
     public void testImportOMElement() throws Exception {
         OMElement documentElement =
-                OMXMLBuilderFactory.createOMBuilder(OMAbstractFactory.getOMFactory(), TestMessageSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream())
+                OMXMLBuilderFactory.createOMBuilder(OMAbstractFactory.getOMFactory(), SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream())
                         .getDocumentElement();
 
         // first lets try to import an element created from llom in to llom factory. This should return the same element

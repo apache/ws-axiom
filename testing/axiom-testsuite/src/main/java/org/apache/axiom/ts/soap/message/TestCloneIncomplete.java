@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 /**
  * Tests that {@link OMInformationItem#clone(OMCloneOptions)} correctly clones a {@link SOAPMessage}
@@ -43,7 +43,7 @@ public class TestCloneIncomplete extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPMessage(metaFactory);
+        SOAPMessage message = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPMessage(metaFactory);
         OMCloneOptions options = new OMCloneOptions();
         options.setPreserveModel(preserveModel);
         OMInformationItem clone = message.clone(options);

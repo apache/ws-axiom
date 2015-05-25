@@ -24,34 +24,34 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
-import org.apache.axiom.ts.soap.TestMessage;
+import org.apache.axiom.ts.soap.SOAPSample;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestSerialize extends AxiomTestCase {
-    private final TestMessage testMessage;
+    private final SOAPSample message;
     private final ExpansionStrategy expansionStrategy;
     private final SerializationStrategy serializationStrategy;
 
-    public TestSerialize(OMMetaFactory metaFactory, TestMessage testMessage,
+    public TestSerialize(OMMetaFactory metaFactory, SOAPSample message,
             ExpansionStrategy expansionStrategy, SerializationStrategy serializationStrategy) {
         super(metaFactory);
-        this.testMessage = testMessage;
+        this.message = message;
         this.expansionStrategy = expansionStrategy;
         this.serializationStrategy = serializationStrategy;
-        addTestParameter("message", testMessage.getName());
+        addTestParameter("message", message.getName());
         expansionStrategy.addTestParameters(this);
         serializationStrategy.addTestParameters(this);
     }
 
     protected void runTest() throws Throwable {
-        SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                testMessage.getInputStream(), null).getSOAPMessage();
-        expansionStrategy.apply(message);
+        SOAPMessage soapMessage = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
+                message.getInputStream(), null).getSOAPMessage();
+        expansionStrategy.apply(soapMessage);
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                new InputSource(testMessage.getInputStream()),
-                serializationStrategy.serialize(message).getInputSource()), true);
-        message.close(false);
+                new InputSource(message.getInputStream()),
+                serializationStrategy.serialize(soapMessage).getInputSource()), true);
+        soapMessage.close(false);
     }
 }

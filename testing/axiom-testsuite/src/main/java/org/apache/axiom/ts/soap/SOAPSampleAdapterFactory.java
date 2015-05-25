@@ -21,8 +21,8 @@ package org.apache.axiom.ts.soap;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
-public class TestMessageAdapterFactory implements AdapterFactory<TestMessage> {
-    public void createAdapters(TestMessage testMessage, Adapters adapters) {
-        adapters.add(new TestMessageAdapter(testMessage));
+public class SOAPSampleAdapterFactory implements AdapterFactory<SOAPSample> {
+    public void createAdapters(SOAPSample sample, Adapters adapters) {
+        adapters.add(new SOAPSampleAdapter(sample));
     }
 }

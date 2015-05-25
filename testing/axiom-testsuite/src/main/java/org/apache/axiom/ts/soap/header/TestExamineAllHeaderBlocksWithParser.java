@@ -25,8 +25,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestExamineAllHeaderBlocksWithParser extends SOAPTestCase {
     public TestExamineAllHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -34,7 +34,7 @@ public class TestExamineAllHeaderBlocksWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = TestMessageSet.WSA.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory);
+        SOAPEnvelope envelope = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
         Iterator iterator = envelope.getHeader().examineAllHeaderBlocks();
         iterator.hasNext();
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)iterator.next();

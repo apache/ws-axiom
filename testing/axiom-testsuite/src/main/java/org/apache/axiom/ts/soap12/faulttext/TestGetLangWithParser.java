@@ -24,8 +24,8 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.TestMessageAdapter;
-import org.apache.axiom.ts.soap.TestMessageSet;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 public class TestGetLangWithParser extends SOAPTestCase {
     public TestGetLangWithParser(OMMetaFactory metaFactory) {
@@ -33,7 +33,7 @@ public class TestGetLangWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultText faultText = TestMessageSet.SIMPLE_FAULT.getMessage(spec).getAdapter(TestMessageAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getReason().getFirstSOAPText();
+        SOAPFaultText faultText = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getReason().getFirstSOAPText();
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - getLang method returns incorrect string",
                 faultText.getLang().equals("en"));
