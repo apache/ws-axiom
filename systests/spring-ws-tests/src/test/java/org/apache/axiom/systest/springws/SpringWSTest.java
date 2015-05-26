@@ -33,8 +33,10 @@ public class SpringWSTest extends TestCase {
                 new AxiomMessageFactoryConfigurator(),
                 MessageFactoryConfigurator.SAAJ);
         
-        // TODO: investigate
+        // TODO: AXIOM-463
         builder.exclude(JAXB2Test.class);
+        
+        // TODO: investigate
         builder.exclude(BrokerScenarioTest.class);
         builder.exclude(SecureEchoTest.class);
         
