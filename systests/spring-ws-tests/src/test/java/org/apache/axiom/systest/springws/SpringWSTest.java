@@ -23,7 +23,6 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.scenario.broker.BrokerScenarioTest;
 import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
 import org.apache.axiom.ts.springws.scenario.secureecho.SecureEchoTest;
 
@@ -37,7 +36,6 @@ public class SpringWSTest extends TestCase {
         builder.exclude(JAXB2Test.class);
         
         // TODO: investigate
-        builder.exclude(BrokerScenarioTest.class);
         builder.exclude(SecureEchoTest.class);
         
         return builder.build();

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.springws.scenario.broker;
 
+import java.util.Locale;
+
 import javax.xml.transform.Source;
 
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -66,12 +68,17 @@ public class BrokerScenarioTest extends ScenarioTestCase {
         assertEquals(order.getItems()[0].getCount(), receivedOrder.getItems()[0].getCount());
         
         order.setCustomer(23629);
+        // SOAP 1.2 fault processing is locale dependent
+        Locale oldLocale = Locale.getDefault();
+        Locale.setDefault(Locale.ENGLISH);
         try {
             client.order(order);
             fail("Expected SoapFaultClientException");
         } catch (SoapFaultClientException ex) {
             assertEquals(spec.getSenderFaultCode(), ex.getFaultCode());
             assertEquals("Customer 23629 unknown", ex.getMessage());
+        } finally {
+            Locale.setDefault(oldLocale);
         }
     }
 }
