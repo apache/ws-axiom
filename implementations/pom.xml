@@ -86,6 +86,8 @@
                     <transformers>
                         <transformer implementation="org.apache.axiom.buildutils.shade.osgi.OSGiManifestResourceTransformer" />
                     </transformers>
+                    <!-- This removes most of the AspectJ runtime classes from the shaded JAR -->
+                    <minimizeJar>true</minimizeJar>
                     <createSourcesJar>true</createSourcesJar>
                 </configuration>
                 <dependencies>
