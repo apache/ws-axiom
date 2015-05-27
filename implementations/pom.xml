@@ -39,6 +39,14 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <configuration>
+                    <properties>
+                        <containsAspectJ>true</containsAspectJ>
+                    </properties>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>
                     <execution>

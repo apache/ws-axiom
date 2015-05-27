@@ -16,11 +16,19 @@
 ## specific language governing permissions and limitations
 ## under the License.
 ##
-  Apache Axiom
+   Apache Axiom
 
-  Copyright ${projectTimespan} The Apache Software Foundation
+   Copyright ${projectTimespan} The Apache Software Foundation
 
-  This product includes software developed at
-  The Apache Software Foundation (http://www.apache.org/).
+   This product includes software developed at
+   The Apache Software Foundation (http://www.apache.org/).
 
-  Portions Copyright 2006 International Business Machines Corp.
+   Portions Copyright 2006 International Business Machines Corp.
+#if ($containsAspectJ)
+
+   This product includes unmodified, binary redistributions of software (AspectJ)
+   developed for the Eclipse Foundation (http://www.eclipse.org/aspectj), which
+   is licensed under the Eclipse Public License 1.0. Source code for this project
+   can be found at http://git.eclipse.org/c/aspectj/org.aspectj.git. An original
+   copy of the license can be found at http://eclipse.org/legal/epl-v10.html.
+#end
