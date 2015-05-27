@@ -24,7 +24,6 @@ import junit.framework.TestSuite;
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
 import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
-import org.apache.axiom.ts.springws.scenario.secureecho.SecureEchoTest;
 
 public class SpringWSTest extends TestCase {
     public static TestSuite suite() {
@@ -34,9 +33,6 @@ public class SpringWSTest extends TestCase {
         
         // TODO: AXIOM-463
         builder.exclude(JAXB2Test.class);
-        
-        // TODO: investigate
-        builder.exclude(SecureEchoTest.class);
         
         return builder.build();
     }

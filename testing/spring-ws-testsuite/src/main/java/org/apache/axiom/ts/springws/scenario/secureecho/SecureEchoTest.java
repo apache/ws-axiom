@@ -27,6 +27,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.springws.scenario.ScenarioConfig;
 import org.apache.axiom.ts.springws.scenario.ScenarioTestCase;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -43,7 +44,9 @@ public class SecureEchoTest extends ScenarioTestCase {
         request.setTextContent("Hello");
         Document responseDocument = documentBuilder.newDocument();
         context.getBean(WebServiceTemplate.class).sendSourceAndReceiveToResult(
-                new DOMSource(request), new DOMResult(responseDocument));
+                new DOMSource(request),
+                new SoapActionCallback("http://www.example.com/echo"),
+                new DOMResult(responseDocument));
         Element response = responseDocument.getDocumentElement();
         assertEquals("urn:test", response.getNamespaceURI());
         assertEquals("Echo", response.getLocalName());

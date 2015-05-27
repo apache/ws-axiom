@@ -19,14 +19,14 @@
 package org.apache.axiom.ts.springws.scenario.secureecho;
 
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
-import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import org.springframework.ws.soap.server.endpoint.annotation.SoapAction;
 import org.w3c.dom.Element;
 
 @Endpoint
 public class EchoEndpoint {
-    @PayloadRoot(namespace="urn:test", localPart="Echo")
+    @SoapAction("http://www.example.com/echo")
     @ResponsePayload
     public Element echo(@RequestPayload Element request) {
         return request;
