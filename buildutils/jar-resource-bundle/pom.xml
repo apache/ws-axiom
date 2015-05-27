@@ -22,58 +22,36 @@
 
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom</artifactId>
+        <artifactId>buildutils</artifactId>
         <version>1.2.15-SNAPSHOT</version>
     </parent>
 
-    <artifactId>buildutils</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>jar-resource-bundle</artifactId>
+    <packaging>jar</packaging>
 
-    <name>Build utilities</name>
-
-    <modules>
-        <module>jar-resource-bundle</module>
-        <module>paxexam-maven-plugin</module>
-        <module>shade-axiom-xml</module>
-        <module>shade-osgi</module>
-    </modules>
+    <name>JAR Resource Bundle</name>
 
     <build>
         <plugins>
-            <!-- The build requires Java 1.6; therefore we can use that version for the build utils as well -->
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>check</id>
-                        <phase>verify</phase>
+                        <!-- Skip process to avoid chicken and egg problem -->
                         <goals>
-                            <goal>check</goal>
+                            <goal>process</goal>
                         </goals>
                         <configuration>
-                            <signature>
-                                <groupId>org.codehaus.mojo.signature</groupId>
-                                <artifactId>java16</artifactId>
-                                <version>1.0</version>
-                            </signature>
+                            <skip>true</skip>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>bundle</id>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                    <skipDeploy>true</skipDeploy>
-                </configuration>
             </plugin>
         </plugins>
     </build>
