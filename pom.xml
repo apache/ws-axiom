@@ -725,6 +725,11 @@
                             <source>
                                 import java.io.File
                                 
+                                <!-- Avoid chicken and egg problem with jar-resource-bundle -->
+                                if (project.packaging == 'pom') {
+                                    project.properties['skipRemoteResources'] = 'true'
+                                }
+                                
                                 <!-- Create the temporary directory specified in the surefire configuration -->
                                 new File(project.build.directory, 'tmp').mkdirs()
                                 
@@ -763,6 +768,7 @@
                             <goal>process</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipRemoteResources}</skip>
                             <resourceBundles>
                                 <resourceBundle>org.apache.ws.commons.axiom:jar-resource-bundle:${project.version}</resourceBundle>
                             </resourceBundles>
