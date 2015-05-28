@@ -30,6 +30,7 @@
     <packaging>maven-plugin</packaging>
 
     <name>Pax Exam Maven plugin</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <properties>
         <maven.version>2.0.11</maven.version>

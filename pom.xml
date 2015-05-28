@@ -262,6 +262,8 @@
         <jacoco.version>0.6.3.201306030806</jacoco.version>
         <spring.version>4.0.5.RELEASE</spring.version>
         <springws.version>2.2.0.RELEASE</springws.version>
+        
+        <skipDeploy>false</skipDeploy>
     </properties>
 
     <repositories>
@@ -730,6 +732,13 @@
                                     project.properties['skipRemoteResources'] = 'true'
                                 }
                                 
+                                <!-- Since we don't generate Maven sites for submodules the project URLs computed by Maven
+                                     (parent project URL + artifact ID) are wrong. Make sure that the URL is explicitly set
+                                     to the right location, at least for modules that deploy artifacts. -->
+                                if (project.properties['skipDeploy'] == 'false' &amp;&amp; project.url != 'http://ws.apache.org/axiom/') {
+                                    throw new Error('Invalid project URL')
+                                }
+                                
                                 <!-- Create the temporary directory specified in the surefire configuration -->
                                 new File(project.build.directory, 'tmp').mkdirs()
                                 
@@ -876,6 +885,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>${skipDeploy}</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
 
     <name>Build utilities</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <modules>
         <module>jar-resource-bundle</module>

@@ -32,7 +32,6 @@
 
     <name>Axiom C14N</name>
     <description />
-    <!-- This needs to be set explicitly because the Maven calculated URL would point to nowhere -->
     <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>

@@ -30,6 +30,7 @@
     <packaging>bundle</packaging>
 
     <name>Core Aspects</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>

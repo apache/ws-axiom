@@ -31,8 +31,14 @@
 
     <name>Axiom Uber-JAR</name>
     <description>Combines all Axiom artifacts into a single one.</description>
-    <!-- This needs to be set explicitly because the Maven calculated URL would point to nowhere -->
-    <url>http://ws.apache.org/axiom/</url>
+
+    <properties>
+        <!-- If we deploy the uber-JAR to the Maven repositories, then we will end up with
+             some projects depending on the uber-JAR while others depend on the
+             individual artifacts. To avoid a dependency hell, we must not allow this.
+             All Maven projects should depend on individual artifacts, not the uber-JAR. -->
+        <skipDeploy>true</skipDeploy>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -104,16 +110,6 @@
                         <version>${project.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <!-- If we deploy the uber-JAR to the Maven repositories, then we will end up with
-                     some projects depending on the uber-JAR while others depend on the
-                     individual artifacts. To avoid a dependency hell, we must not allow this.
-                     All Maven projects should depend on individual artifacts, not the uber-JAR. -->
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>

@@ -29,6 +29,7 @@
     <artifactId>spring-ws-testsuite</artifactId>
 
     <name>Spring-WS Test Suite</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>

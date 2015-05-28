@@ -31,7 +31,6 @@
 
     <name>Axiom Compatibility Classes</name>
     <description>Contains deprecated classes that will disappear in the next major release.</description>
-    <!-- This needs to be set explicitly because the Maven calculated URL would point to nowhere -->
     <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>

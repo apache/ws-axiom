@@ -29,6 +29,7 @@
     <artifactId>shade-axiom-xml</artifactId>
 
     <name>Resource Transformer for META-INF/axiom.xml files</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>

@@ -34,6 +34,10 @@
         is to validate that every published sample executes correctly.
     </description>
 
+    <properties>
+        <skipDeploy>true</skipDeploy>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -88,12 +92,6 @@
                     <includes>
                         <include>**/*Sample.java</include>
                     </includes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>

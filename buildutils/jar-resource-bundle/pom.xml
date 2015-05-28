@@ -30,6 +30,7 @@
     <packaging>jar</packaging>
 
     <name>JAR Resource Bundle</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <build>
         <plugins>

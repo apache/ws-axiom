@@ -31,6 +31,10 @@
 
     <name>Javadoc</name>
 
+    <properties>
+        <skipDeploy>true</skipDeploy>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -129,12 +133,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>

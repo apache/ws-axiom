@@ -30,6 +30,7 @@
     <packaging>jar</packaging>
 
     <name>Forbidden API Core (Shaded JAR)</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>

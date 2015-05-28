@@ -31,6 +31,10 @@
 
     <name>Code Coverage Report</name>
 
+    <properties>
+        <skipDeploy>true</skipDeploy>
+    </properties>
+
     <dependencies>
         <!--
           For each project that should appear in the coverage report, add the following dependencies:

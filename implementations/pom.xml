@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
 
     <name>Implementations</name>
+    <url>http://ws.apache.org/axiom/</url>
 
     <modules>
         <module>axiom-impl</module>
