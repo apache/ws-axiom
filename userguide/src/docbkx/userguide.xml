@@ -1515,6 +1515,15 @@ while (iterator.hasNext()) {
                         For more information, see <link xlink:href="https://issues.apache.org/jira/browse/AXIOM-430">AXIOM-430</link>.
                     </para>
                 </section>
+                <section>
+                    <title>Introduction of AspectJ</title>
+                    <para>
+                        The implementation JARs (<filename>axiom-impl</filename> and <filename>axiom-dom</filename>) are now built with
+                        <link xlink:href="https://eclipse.org/aspectj/">AspectJ</link> (to reduce source code duplication) and contain a
+                        small subset of classes from the AspectJ runtime library. There is a small risk that this may cause conflicts with
+                        other code that uses AspectJ.
+                    </para>
+                </section>
             </section>
         </section>
     </chapter>
