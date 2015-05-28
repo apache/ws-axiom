@@ -28,7 +28,9 @@ Introduction
 
   The overall goals for the 1.3 are:
   
-   * Upgrade the API to Java 5, i.e. make use of generics.
+   * Upgrade the API to use Java 5 features, in particular generics. Make Java 6 the minimum
+     supported version and get rid of the dependencies on Activation and the StAX API (which
+     are included in the JRE in Java 6).
    
    * Eliminate deprecated APIs and utility classes.
    
