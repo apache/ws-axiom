@@ -183,7 +183,7 @@ Classes to be moved from <<<axiom-api>>> to <<<om-aspects>>>
   classes has become somewhat blurred over time. In Axiom 1.2.13 a new module
   called <<<axiom-common-impl>>> was introduced with the specific goal of separating the
   shared implementation classes from the public API; with the introduction of AspectJ
-  in Axiom 1.2.14 this module is now called <<<om-aspects>>>.
+  in Axiom 1.2.15 this module is now called <<<om-aspects>>>.
   
   However, in Axiom 1.2.x it is generally not possible to move classes from
   <<<axiom-api>>> to <<<om-aspects>>> without the risk of breaking existing code.
