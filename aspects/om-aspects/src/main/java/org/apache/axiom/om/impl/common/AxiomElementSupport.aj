@@ -212,7 +212,9 @@ public aspect AxiomElementSupport {
         removeChildren();
         // Add a new text node
         if (qname != null) {
-            getOMFactory().createOMText(this, qname);
+            OMNamespace ns = handleNamespace(qname.getNamespaceURI(), qname.getPrefix());
+            getOMFactory().createOMText(this,
+                    ns == null ? qname.getLocalPart() : ns.getPrefix() + ":" + qname.getLocalPart());
         }
     }
 

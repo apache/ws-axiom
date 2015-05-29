@@ -240,8 +240,9 @@ public interface OMFactory {
     public OMText createOMText(OMContainer parent, OMText source);
     
     /**
-     * @param parent
-     * @param text   - This text itself can contain a namespace inside it.
+     * @deprecated This method is only meaningful if it is used to create a text node that is the
+     *             single child of an {@link OMElement}. However, for that purpose
+     *             {@link OMElement#setText(QName)} should be used.
      */
     OMText createOMText(OMContainer parent, QName text);
 
@@ -261,9 +262,8 @@ public interface OMFactory {
     OMText createOMText(OMContainer parent, char[] charArary, int type);
 
     /**
-     * @param parent
-     * @param text   - This text itself can contain a namespace inside it.
-     * @param type
+     * @deprecated Creating a text node containing a QName and having a type other than
+     *             {@link OMNode#TEXT_NODE} is not meaningful.
      */
     OMText createOMText(OMContainer parent, QName text, int type);
 
