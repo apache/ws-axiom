@@ -66,7 +66,7 @@
         <plugins>
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
+                <artifactId>groovy-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <!-- Need this to pass information to the hook scripts. Once maven-invoker-plugin 1.9 is released,
