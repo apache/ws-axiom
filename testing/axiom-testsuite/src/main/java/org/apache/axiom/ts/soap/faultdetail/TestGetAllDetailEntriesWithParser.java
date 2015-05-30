@@ -22,8 +22,9 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -34,31 +35,22 @@ public class TestGetAllDetailEntriesWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultDetail soapFaultDetail = getTestMessage(MESSAGE).getBody().getFault().getDetail();
+        SOAPFaultDetail soapFaultDetail = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getDetail();
         Iterator iterator = soapFaultDetail.getAllDetailEntries();
-        OMText textEntry = (OMText) iterator.next();
-        assertNotNull(
-                "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns empty iterator",
-                textEntry);
-        assertEquals(
-                "SOAP Fault Detail Test With Parser : - text value mismatch",
-                "Details of error", textEntry.getText().trim());
         OMElement detailEntry1 = (OMElement) iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator without detail entries",
                 detailEntry1);
         assertEquals(
                 "SOAP Fault Detail Test With Parser : - detailEntry1 localname mismatch",
-                "MaxTime", detailEntry1.getLocalName());
-        iterator.next();
+                "ErrorCode", detailEntry1.getLocalName());
         OMElement detailEntry2 = (OMElement) iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with only one detail entries",
                 detailEntry2);
         assertEquals(
                 "SOAP Fault Detail Test With Parser : - detailEntry2 localname mismatch",
-                "AveTime", detailEntry2.getLocalName());
-        iterator.next();
+                "Message", detailEntry2.getLocalName());
         assertFalse(
                 "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with more than two detail entries",
                 iterator.hasNext());

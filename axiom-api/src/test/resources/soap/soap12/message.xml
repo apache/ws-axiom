@@ -62,7 +62,6 @@
                 ultimateReceiver
             </env:Role>
             <env:Detail>
-                Details of error
                 <m:MaxTime m:detail="This is only a test">
                     P5M\n
                 </m:MaxTime>

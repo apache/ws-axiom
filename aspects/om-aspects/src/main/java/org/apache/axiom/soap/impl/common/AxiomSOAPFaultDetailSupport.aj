@@ -28,6 +28,6 @@ public aspect AxiomSOAPFaultDetailSupport {
     }
 
     public final Iterator AxiomSOAPFaultDetail.getAllDetailEntries() {
-        return getChildren();
+        return getChildElements();
     }
 }
