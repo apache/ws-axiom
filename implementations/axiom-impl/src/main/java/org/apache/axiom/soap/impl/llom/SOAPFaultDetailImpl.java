@@ -26,12 +26,10 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPFaultDetail;
 
-import java.util.Iterator;
-
-public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
+public abstract class SOAPFaultDetailImpl extends SOAPElement implements AxiomSOAPFaultDetail {
 
     protected SOAPFaultDetailImpl(OMNamespace ns, SOAPFactory factory) {
         super(factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), ns, factory);
@@ -50,14 +48,6 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
                                   SOAPFactory factory) {
         super(parent, factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), builder,
                 factory);
-    }
-
-    public void addDetailEntry(OMElement detailElement) {
-        this.addChild(detailElement);
-    }
-
-    public Iterator getAllDetailEntries() {
-        return this.getChildren();
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
