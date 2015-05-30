@@ -19,7 +19,10 @@
 package org.apache.axiom.testutils.suite;
 
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.

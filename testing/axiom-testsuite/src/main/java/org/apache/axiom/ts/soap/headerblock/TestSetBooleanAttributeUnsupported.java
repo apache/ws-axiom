@@ -27,10 +27,6 @@ import org.apache.axiom.ts.soap.BooleanAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-/**
- * Tests that {@link SOAPHeaderBlock#setRelay()} throws {@link UnsupportedOperationException} for
- * SOAP 1.1 messages.
- */
 public class TestSetBooleanAttributeUnsupported extends BooleanAttributeTestCase {
     public TestSetBooleanAttributeUnsupported(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute) {
         super(metaFactory, spec, attribute);

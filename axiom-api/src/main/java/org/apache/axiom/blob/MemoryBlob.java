@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.blob;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 

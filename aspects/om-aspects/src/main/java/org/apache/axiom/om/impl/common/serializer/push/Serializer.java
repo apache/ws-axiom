@@ -381,7 +381,7 @@ public abstract class Serializer {
     /**
      * Prepare to write an element start tag. A call to this method will be followed by zero or more
      * calls to {@link #addNamespace(String, String)} and
-     * {@link #addAttribute(String, String, String, String)} and a single call to
+     * {@link #addAttribute(String, String, String, String, String)} and a single call to
      * {@link #finishStartElement()}.
      * 
      * @param prefix

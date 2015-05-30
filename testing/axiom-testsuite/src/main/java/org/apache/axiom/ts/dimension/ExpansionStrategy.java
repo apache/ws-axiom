@@ -116,7 +116,7 @@ public abstract class ExpansionStrategy extends Multiton implements Dimension {
     /**
      * Apply the expansion strategy to the given {@link OMContainer}.
      * 
-     * @param element
+     * @param container
      */
     public abstract void apply(OMContainer container);
     

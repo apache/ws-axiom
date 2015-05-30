@@ -32,7 +32,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragment {
 
-    /** @param ownerDocument  */
     public DocumentFragmentImpl(OMFactory factory) {
         super(factory);
     }

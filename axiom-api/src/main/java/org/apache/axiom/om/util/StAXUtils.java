@@ -374,7 +374,7 @@ public class StAXUtils {
      * All other values are returned as strings.
      * 
      * @param name
-     * @return
+     * @return the factory properties
      */
     // This has package access since it is used from within anonymous inner classes
     static Map loadFactoryProperties(String name) {

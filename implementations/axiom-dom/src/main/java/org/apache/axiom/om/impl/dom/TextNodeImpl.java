@@ -32,9 +32,6 @@ import org.w3c.dom.Text;
 import javax.activation.DataHandler;
 
 public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, OMText, OMNodeEx {
-    /**
-     * @param ownerNode
-     */
     public TextNodeImpl(OMFactory factory) {
         super(factory);
     }

@@ -30,7 +30,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Checks the content of the SOAP envelope returned by {@link SOAPFactory#createDefaultEnvelope()}.
+ * Checks the content of the SOAP envelope returned by
+ * {@link SOAPFactory#createDefaultSOAPMessage()}.
  */
 public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
     public TestCreateDefaultSOAPMessage(OMMetaFactory metaFactory, SOAPSpec spec) {

@@ -20,6 +20,7 @@ package org.apache.axiom.ts.springws;
 
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.SoapVersion;
 
 /**

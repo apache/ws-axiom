@@ -86,11 +86,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
         }
     }
 
-    /**
-     * Method setComplete.
-     *
-     * @param state
-     */
     public void setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
     }

@@ -30,7 +30,7 @@ import org.osgi.framework.InvalidSyntaxException;
 /**
  * Builds a matrix test suite. This is an abstract class. Subclasses are expected to implement the
  * {@link #addTests()} method to generate a set of {@link MatrixTestCase} instances. For each type
- * of {@link MatrixTextCase}, the {@link #addTests()} method should add instances for all allowed
+ * of {@link MatrixTestCase}, the {@link #addTests()} method should add instances for all allowed
  * parameter values. The resulting set can then be filtered using LDAP filter expressions.
  */
 public abstract class MatrixTestSuiteBuilder {

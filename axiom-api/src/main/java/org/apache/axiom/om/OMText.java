@@ -74,7 +74,7 @@ public interface OMText extends OMNode {
 
     /**
      * @deprecated This API is going away. Please use {@link OMElement#getTextAsQName()} instead.
-     * @see {@link #getTextAsQName()}
+     * @see #getTextAsQName()
      */
     OMNamespace getNamespace();
 
