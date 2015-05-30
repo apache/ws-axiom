@@ -2,7 +2,7 @@
     <soapenv:Body>
         <soapenv:Fault>
             <soapenv:Code>
-                <soapenv:Value>soapenv:Server</soapenv:Value>
+                <soapenv:Value>soapenv:Receiver</soapenv:Value>
             </soapenv:Code>
             <soapenv:Reason>
                 <soapenv:Text xml:lang="en">overflow</soapenv:Text>

@@ -60,6 +60,11 @@ public final class SOAPSampleSet extends Multiton {
      */
     public static final SOAPSampleSet MUST_UNDERSTAND = new SOAPSampleSet("must-understand");
     
+    /**
+     * A SOAP fault response with a detail entry that uses a default namespace.
+     */
+    public static final SOAPSampleSet FAULT_DETAIL_DEFAULT_NAMESPACE = new SOAPSampleSet("fault-detail-default-namespace");
+    
     private final SOAPSample soap11Message;
     private final SOAPSample soap12Message;
     

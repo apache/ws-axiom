@@ -22,6 +22,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -34,7 +36,7 @@ public class TestDetailEntriesUsingDefaultNamespaceWithParser extends SOAPTestCa
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultDetail soapFaultDetail = getTestMessage("fault-detail-default-namespace.xml").getBody().getFault().getDetail();
+        SOAPFaultDetail soapFaultDetail = SOAPSampleSet.FAULT_DETAIL_DEFAULT_NAMESPACE.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getDetail();
         OMElement detailElement = soapFaultDetail.getFirstElement();
         assertEquals("AddNumbersHandlerFault", detailElement.getLocalName());
         OMNamespace ns = detailElement.getNamespace();
