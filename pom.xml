@@ -743,7 +743,7 @@
                                 new File(project.build.directory, 'tmp').mkdirs()
                                 
                                 <!-- Skip Jacoco if necessary -->
-                                if (project.properties['skipTests'] == 'true') {
+                                if (System.properties['skipTests'] == 'true') {
                                     println 'Disabling JaCoCo because tests are skipped'
                                     project.properties['skipJacoco'] = 'true'
                                 } else if (System.properties['java.specification.version'] == '1.8') {
