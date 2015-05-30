@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -29,7 +31,7 @@ public class TestGetRoleWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
+        SOAPFault soapFaultWithParser = SOAPSampleSet.CUSTOM_ROLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault();
         assertNotNull(
                 "Fault Test with parser: - getRole method returns null",
                 soapFaultWithParser.getRole());
