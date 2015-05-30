@@ -77,7 +77,7 @@
                         <id>distribution-javadoc</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>javadoc</goal>
+                            <goal>javadoc-no-fork</goal>
                         </goals>
                         <configuration>
                             <reportOutputDirectory>${project.build.directory}/apidocs</reportOutputDirectory>
@@ -87,7 +87,7 @@
                         <id>site-javadoc</id>
                         <phase>site</phase>
                         <goals>
-                            <goal>javadoc</goal>
+                            <goal>javadoc-no-fork</goal>
                         </goals>
                         <configuration>
                             <reportOutputDirectory>${project.reporting.outputDirectory}</reportOutputDirectory>
