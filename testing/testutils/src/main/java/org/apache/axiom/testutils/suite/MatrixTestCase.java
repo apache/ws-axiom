@@ -27,7 +27,7 @@ import junit.framework.TestCase;
  * A test case that can be executed multiple times with different parameters.
  */
 public abstract class MatrixTestCase extends TestCase {
-    private final Dictionary/*<String,String>*/ parameters = new Hashtable();
+    private final Dictionary<String,String> parameters = new Hashtable<String,String>();
 
     public MatrixTestCase() {
         setName(getClass().getName());
@@ -46,7 +46,7 @@ public abstract class MatrixTestCase extends TestCase {
         addTestParameter(name, String.valueOf(value));
     }
     
-    public final Dictionary getTestParameters() {
+    public final Dictionary<String,String> getTestParameters() {
         return parameters;
     }
 

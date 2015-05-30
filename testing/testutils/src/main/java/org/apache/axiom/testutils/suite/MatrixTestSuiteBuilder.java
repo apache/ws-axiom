@@ -19,7 +19,6 @@
 package org.apache.axiom.testutils.suite;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestSuite;
@@ -36,10 +35,10 @@ import org.osgi.framework.InvalidSyntaxException;
  */
 public abstract class MatrixTestSuiteBuilder {
     private static class Exclude {
-        private final Class testClass;
+        private final Class<? extends MatrixTestCase> testClass;
         private final Filter filter;
         
-        public Exclude(Class testClass, Filter filter) {
+        public Exclude(Class<? extends MatrixTestCase> testClass, Filter filter) {
             this.testClass = testClass;
             this.filter = filter;
         }
@@ -50,10 +49,10 @@ public abstract class MatrixTestSuiteBuilder {
         }
     }
     
-    private final List/*<Exclude>*/ excludes = new ArrayList();
+    private final List<Exclude> excludes = new ArrayList<Exclude>();
     private TestSuite suite;
     
-    public final void exclude(Class testClass, String filter) {
+    public final void exclude(Class<? extends MatrixTestCase> testClass, String filter) {
         try {
             excludes.add(new Exclude(testClass, filter == null ? null : FrameworkUtil.createFilter(filter)));
         } catch (InvalidSyntaxException ex) {
@@ -61,7 +60,7 @@ public abstract class MatrixTestSuiteBuilder {
         }
     }
     
-    public final void exclude(Class testClass) {
+    public final void exclude(Class<? extends MatrixTestCase> testClass) {
         exclude(testClass, null);
     }
     
@@ -78,8 +77,8 @@ public abstract class MatrixTestSuiteBuilder {
     }
     
     protected final void addTest(MatrixTestCase test) {
-        for (Iterator it = excludes.iterator(); it.hasNext(); ) {
-            if (((Exclude)it.next()).accept(test)) {
+        for (Exclude exclude : excludes) {
+            if (exclude.accept(test)) {
                 return;
             }
         }
