@@ -21,6 +21,7 @@ package org.apache.axiom.test;
 import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemPackages;
 import static org.ops4j.pax.exam.CoreOptions.url;
 
 import java.io.StringReader;
@@ -53,6 +54,9 @@ public class SJSXPTest {
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
+                // For whatever reason, these packages are no longer exported by the system bundle
+                // in Felix >= 4.0.0
+                systemPackages("org.w3c.dom.html", "org.w3c.dom.ranges", "org.w3c.dom.traversal"),
                 junitBundles());
     }
     
