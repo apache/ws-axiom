@@ -40,6 +40,11 @@ import org.xml.sax.InputSource;
  * A SOAP test message.
  */
 public class SOAPSample extends XMLSample {
+    /**
+     * A SOAP fault response that uses some SOAP 1.2 specific features.
+     */
+    public static final SOAPSample SOAP12_FAULT = new SimpleSOAPSample(SOAPSpec.SOAP12, "test-message/soap12/fault.xml", "soap12/fault.xml");
+    
     private final SOAPSpec spec;
     
     SOAPSample(SOAPSpec spec, MessageContent content, String name) {

@@ -20,17 +20,18 @@ package org.apache.axiom.ts.soap12.faultcode;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.SOAPSample;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetSubCodeWithParser extends SOAPTestCase {
+public class TestGetSubCodeWithParser extends SampleBasedSOAPTestCase {
     public TestGetSubCodeWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+        super(metaFactory, SOAPSample.SOAP12_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFaultCode faultCode = getTestMessage(MESSAGE).getBody().getFault().getCode();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFaultCode faultCode = envelope.getBody().getFault().getCode();
         assertNotNull(
                 "SOAP 1.2 Fault Code Test with parser :- getSubCode method returns null",
                 faultCode.getSubCode());

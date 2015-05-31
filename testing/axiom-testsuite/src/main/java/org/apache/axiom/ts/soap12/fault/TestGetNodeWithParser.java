@@ -20,17 +20,18 @@ package org.apache.axiom.ts.soap12.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.SOAPSample;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetNodeWithParser extends SOAPTestCase {
+public class TestGetNodeWithParser extends SampleBasedSOAPTestCase {
     public TestGetNodeWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+        super(metaFactory, SOAPSample.SOAP12_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFault soapFaultWithParser = envelope.getBody().getFault();
         assertNotNull(
                 "SOAP 1.2 Fault Test with parser: - getNode method returns null",
                 soapFaultWithParser.getNode());

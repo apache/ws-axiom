@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.soap;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 
@@ -32,9 +30,8 @@ public abstract class SampleBasedSOAPTestCase extends SOAPTestCase {
         sample = sampleSet.getMessage(spec);
     }
 
-    public SampleBasedSOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec, SOAPSample sample) {
-        super(metaFactory, spec);
-        ASSERT.that(sample.getSOAPSpec()).isSameAs(spec);
+    public SampleBasedSOAPTestCase(OMMetaFactory metaFactory, SOAPSample sample) {
+        super(metaFactory, sample.getSOAPSpec());
         this.sample = sample;
     }
     

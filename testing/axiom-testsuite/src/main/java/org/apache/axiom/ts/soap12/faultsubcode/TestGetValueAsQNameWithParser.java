@@ -21,21 +21,22 @@ package org.apache.axiom.ts.soap12.faultsubcode;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.SOAPSample;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link SOAPFaultSubCode}.
  */
-public class TestGetValueAsQNameWithParser extends SOAPTestCase {
+public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     public TestGetValueAsQNameWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+        super(metaFactory, SOAPSample.SOAP12_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFaultSubCode subCode = getTestMessage(MESSAGE).getBody().getFault().getCode().getSubCode();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFaultSubCode subCode = envelope.getBody().getFault().getCode().getSubCode();
         assertEquals(new QName("http:www.sample.org", "MessageTimeout_In_First_Subcode"), subCode.getValueAsQName());
     }
 }
