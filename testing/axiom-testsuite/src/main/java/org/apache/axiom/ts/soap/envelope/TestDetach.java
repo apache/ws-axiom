@@ -22,23 +22,21 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests {@link OMNode#detach()} when used on a {@link SOAPEnvelope}. Older Axiom versions threw an
  * exception in that case. This is not correct because obviously one may want to detach a SOAP
  * envelope from its containing document.
  */
-public class TestDetach extends SOAPTestCase {
+public class TestDetach extends SampleBasedSOAPTestCase {
     public TestDetach(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.NO_HEADER.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         OMDocument document = (OMDocument)envelope.getParent();
         envelope.detach();
         assertNull(envelope.getParent());

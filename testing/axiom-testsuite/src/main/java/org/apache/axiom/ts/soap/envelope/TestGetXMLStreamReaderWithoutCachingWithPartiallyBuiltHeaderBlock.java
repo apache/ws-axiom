@@ -28,10 +28,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests the behavior of {@link OMContainer#getXMLStreamReaderWithoutCaching()} on a
@@ -40,13 +39,12 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
  * behave like a plain {@link OMElement}. For {@link OMContainer#getXMLStreamReaderWithoutCaching()}
  * this means that consuming the reader should not build the {@link SOAPHeaderBlock}.
  */
-public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock extends SOAPTestCase {
+public class TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock extends SampleBasedSOAPTestCase {
     public TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)envelope.getHeader().getFirstChildWithName(
                 new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         headerBlock.getFirstElement().getFirstOMChild();

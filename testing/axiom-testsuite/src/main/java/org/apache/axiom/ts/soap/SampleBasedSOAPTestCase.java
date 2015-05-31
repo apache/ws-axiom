@@ -16,22 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.faultrole;
+package org.apache.axiom.ts.soap;
+
+import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.soap.SOAPSampleSet;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetRoleValueWithParser extends SampleBasedSOAPTestCase {
-    public TestGetRoleValueWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.CUSTOM_ROLE_FAULT);
+public abstract class SampleBasedSOAPTestCase extends SOAPTestCase {
+    private final SOAPSample sample;
+    
+    public SampleBasedSOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec,
+            SOAPSampleSet sampleSet) {
+        super(metaFactory, spec);
+        sample = sampleSet.getMessage(spec);
     }
 
+    public SampleBasedSOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec, SOAPSample sample) {
+        super(metaFactory, spec);
+        ASSERT.that(sample.getSOAPSpec()).isSameAs(spec);
+        this.sample = sample;
+    }
+    
     @Override
-    protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        assertEquals("http://www.example.org/gateway/cache",
-                envelope.getBody().getFault().getRole().getRoleValue());
+    protected final void runTest() throws Throwable {
+        runTest(sample.getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory));
     }
+    
+    protected abstract void runTest(SOAPEnvelope envelope) throws Throwable;
 }

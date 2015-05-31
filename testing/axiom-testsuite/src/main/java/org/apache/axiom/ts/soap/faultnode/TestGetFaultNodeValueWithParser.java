@@ -20,19 +20,18 @@ package org.apache.axiom.ts.soap.faultnode;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetFaultNodeValueWithParser extends SOAPTestCase {
+public class TestGetFaultNodeValueWithParser extends SampleBasedSOAPTestCase {
     public TestGetFaultNodeValueWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.CUSTOM_ROLE_FAULT);
     }
 
     @Override
-    protected void runTest() throws Throwable {
-        SOAPEnvelope env = SOAPSampleSet.CUSTOM_ROLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
-        assertEquals("http://gateway.corp.example.org/", env.getBody().getFault().getNode().getFaultNodeValue());
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        assertEquals("http://gateway.corp.example.org/",
+                envelope.getBody().getFault().getNode().getFaultNodeValue());
     }
 }

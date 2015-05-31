@@ -19,23 +19,23 @@
 package org.apache.axiom.ts.soap.faultcode;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests the behavior of {@link SOAPFaultClassifier#getValueAsQName()} on a {@link SOAPFaultCode}.
  */
-public class TestGetValueAsQNameWithParser extends SOAPTestCase {
+public class TestGetValueAsQNameWithParser extends SampleBasedSOAPTestCase {
     public TestGetValueAsQNameWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFaultCode faultCode = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getCode();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFaultCode faultCode = envelope.getBody().getFault().getCode();
         assertEquals(spec.getReceiverFaultCode(), faultCode.getValueAsQName());
     }
 }

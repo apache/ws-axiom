@@ -26,10 +26,9 @@ import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests that a custom builder registered with
@@ -38,13 +37,12 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
  * supports the optimization described by <a
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>.
  */
-public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends SOAPTestCase {
+public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends SampleBasedSOAPTestCase {
     public TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)envelope.getBuilder();
         
         // Do a fault check.  This is normally done in the engine (Axiom) and should

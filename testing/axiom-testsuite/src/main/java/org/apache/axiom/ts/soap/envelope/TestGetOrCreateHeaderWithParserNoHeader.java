@@ -22,23 +22,21 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests the behavior of {@link SOAPEnvelope#getOrCreateHeader()} on a message that has no header.
  * It checks that the call creates a new {@link SOAPHeader} and that it doesn't build the
  * {@link SOAPBody}.
  */
-public class TestGetOrCreateHeaderWithParserNoHeader extends SOAPTestCase {
+public class TestGetOrCreateHeaderWithParserNoHeader extends SampleBasedSOAPTestCase {
     public TestGetOrCreateHeaderWithParserNoHeader(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.NO_HEADER.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getOrCreateHeader();
         assertNotNull(header);
         assertSame(envelope.getFirstElement(), header);

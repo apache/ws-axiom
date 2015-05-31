@@ -23,18 +23,16 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestExamineAllHeaderBlocksWithParser extends SOAPTestCase {
+public class TestExamineAllHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
     public TestExamineAllHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         Iterator iterator = envelope.getHeader().examineAllHeaderBlocks();
         iterator.hasNext();
         SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)iterator.next();

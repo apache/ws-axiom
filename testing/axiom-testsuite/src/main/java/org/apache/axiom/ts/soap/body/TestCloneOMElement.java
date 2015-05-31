@@ -22,20 +22,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 
-public class TestCloneOMElement extends SOAPTestCase {
+public class TestCloneOMElement extends SampleBasedSOAPTestCase {
     public TestCloneOMElement(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope soapEnvelope = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
-        SOAPBody body = soapEnvelope.getBody();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPBody body = envelope.getBody();
 
         OMElement firstClonedBodyElement = body.cloneOMElement();
         OMElement secondClonedBodyElement = body.cloneOMElement();
@@ -56,6 +54,6 @@ public class TestCloneOMElement extends SOAPTestCase {
         assertNull(firstClonedBodyElement.getParent());
         assertNull(secondClonedBodyElement.getParent());
 
-        soapEnvelope.close(false);
+        envelope.close(false);
     }
 }

@@ -21,18 +21,18 @@ package org.apache.axiom.ts.soap.body;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetFaultWithParser extends SOAPTestCase {
+public class TestGetFaultWithParser extends SampleBasedSOAPTestCase {
     public TestGetFaultWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPBody body = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPBody body = envelope.getBody();
         assertNotNull(
                 "Body Test With parser :- getFault method returns null",
                 body.getFault());

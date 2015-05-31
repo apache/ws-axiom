@@ -22,20 +22,20 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 //SOAP Fault Detail Test (With Parser)
-public class TestGetAllDetailEntriesWithParser extends SOAPTestCase {
+public class TestGetAllDetailEntriesWithParser extends SampleBasedSOAPTestCase {
     public TestGetAllDetailEntriesWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFaultDetail soapFaultDetail = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getDetail();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFaultDetail soapFaultDetail = envelope.getBody().getFault().getDetail();
         Iterator iterator = soapFaultDetail.getAllDetailEntries();
         OMElement detailEntry1 = (OMElement) iterator.next();
         assertNotNull(

@@ -26,23 +26,21 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on a {@link SOAPHeader} that is partially built,
  * more precisely in a situation where the builder is building a descendant that is not an immediate
  * child of the header.
  */
-public class TestDiscardPartiallyBuilt extends SOAPTestCase {
+public class TestDiscardPartiallyBuilt extends SampleBasedSOAPTestCase {
     public TestDiscardPartiallyBuilt(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.WSA);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         SOAPHeader header = envelope.getHeader();
         OMElement from = header.getFirstChildWithName(new QName("http://www.w3.org/2005/08/addressing", "ReplyTo"));
         from.getFirstElement().getFirstOMChild();

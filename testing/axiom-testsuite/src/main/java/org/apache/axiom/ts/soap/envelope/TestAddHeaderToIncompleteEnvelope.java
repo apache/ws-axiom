@@ -21,22 +21,20 @@ package org.apache.axiom.ts.soap.envelope;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Test the behavior when adding a header to an envelope that has not yet been built completely.
  * This is a regression test for AXIOM-127.
  */
-public class TestAddHeaderToIncompleteEnvelope extends SOAPTestCase {
+public class TestAddHeaderToIncompleteEnvelope extends SampleBasedSOAPTestCase {
     public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.NO_HEADER);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = SOAPSampleSet.NO_HEADER.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory);
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
         assertNull(envelope.getHeader());
         SOAPHeader header = soapFactory.createSOAPHeader(envelope);
         assertSame(header, envelope.getHeader());

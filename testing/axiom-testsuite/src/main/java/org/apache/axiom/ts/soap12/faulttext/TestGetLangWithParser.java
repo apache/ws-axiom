@@ -21,19 +21,19 @@ package org.apache.axiom.ts.soap12.faulttext;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetLangWithParser extends SOAPTestCase {
+public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
     public TestGetLangWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+        super(metaFactory, SOAPSpec.SOAP12, SOAPSampleSet.SIMPLE_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFaultText faultText = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getReason().getFirstSOAPText();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFaultText faultText = envelope.getBody().getFault().getReason().getFirstSOAPText();
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - getLang method returns incorrect string",
                 faultText.getLang().equals("en"));

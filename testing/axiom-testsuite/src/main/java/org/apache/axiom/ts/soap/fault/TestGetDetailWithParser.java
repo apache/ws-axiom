@@ -19,19 +19,19 @@
 package org.apache.axiom.ts.soap.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.SOAPSampleAdapter;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestGetDetailWithParser extends SOAPTestCase {
+public class TestGetDetailWithParser extends SampleBasedSOAPTestCase {
     public TestGetDetailWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec);
+        super(metaFactory, spec, SOAPSampleSet.SIMPLE_FAULT);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPFault soapFaultWithParser = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPFault soapFaultWithParser = envelope.getBody().getFault();
         assertNotNull(
                 "Fault Test with parser: - getDetail method returns null",
                 soapFaultWithParser.getDetail());
