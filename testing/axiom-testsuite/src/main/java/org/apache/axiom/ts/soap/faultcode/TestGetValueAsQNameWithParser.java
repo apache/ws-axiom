@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.ts.soap.faultcode;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -38,6 +36,6 @@ public class TestGetValueAsQNameWithParser extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFaultCode faultCode = SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getSOAPEnvelope(metaFactory).getBody().getFault().getCode();
-        assertEquals(new QName(spec.getEnvelopeNamespaceURI(), "Receiver"), faultCode.getValueAsQName());
+        assertEquals(spec.getReceiverFaultCode(), faultCode.getValueAsQName());
     }
 }

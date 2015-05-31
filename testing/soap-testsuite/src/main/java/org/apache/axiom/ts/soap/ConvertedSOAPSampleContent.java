@@ -20,6 +20,8 @@ package org.apache.axiom.ts.soap;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -37,6 +39,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 final class ConvertedSOAPSampleContent extends ComputedMessageContent {
+    private static Map<String,String> faultCodeMap = new HashMap<String,String>();
+    
+    static {
+        faultCodeMap.put(
+                SOAPSpec.SOAP12.getSenderFaultCode().getLocalPart(),
+                SOAPSpec.SOAP11.getSenderFaultCode().getLocalPart());
+        faultCodeMap.put(
+                SOAPSpec.SOAP12.getReceiverFaultCode().getLocalPart(),
+                SOAPSpec.SOAP11.getReceiverFaultCode().getLocalPart());
+    }
+    
     private final SOAPSample soap12Message;
 
     ConvertedSOAPSampleContent(SOAPSample soap12Message) {
@@ -91,9 +104,25 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
                 }
             }
         } else if (type == SOAPFaultChild.CODE) {
-            Element value = getChild(element, SOAPFaultChild.VALUE);
-            // TODO: should translate fault code as well
-            element.setTextContent(value.getTextContent());
+            final Element value = getChild(element, SOAPFaultChild.VALUE);
+            element.setTextContent(transform(value.getTextContent(), new TextTransformer() {
+                @Override
+                public String transform(String in) {
+                    int idx = in.indexOf(':');
+                    if (idx == -1) {
+                        return in;
+                    }
+                    String prefix = in.substring(0, idx);
+                    if (!SOAPSpec.SOAP12.getEnvelopeNamespaceURI().equals(value.lookupNamespaceURI(prefix))) {
+                        return in;
+                    }
+                    String newCode = faultCodeMap.get(in.substring(idx+1));
+                    if (newCode == null) {
+                        return in;
+                    }
+                    return prefix + ":" + newCode;
+                }
+            }));
         } else if (type == SOAPFaultChild.REASON) {
             Element text = getChild(element, SOAPFaultChild.TEXT);
             element.setTextContent(text.getTextContent());
@@ -159,5 +188,25 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
             }
         }
         return null;
+    }
+    
+    private static boolean isWhitespace(char c) {
+        return " \r\n\t".indexOf(c) != -1;
+    }
+    
+    private static String transform(String text, TextTransformer transformer) {
+        int start = 0;
+        while (isWhitespace(text.charAt(start))) {
+            if (++start == text.length()) {
+                return text;
+            }
+        }
+        int end = text.length();
+        while (isWhitespace(text.charAt(end-1))) {
+            end--;
+        }
+        return text.substring(0, start)
+                + transformer.transform(text.substring(start, end))
+                + text.substring(end);
     }
 }
