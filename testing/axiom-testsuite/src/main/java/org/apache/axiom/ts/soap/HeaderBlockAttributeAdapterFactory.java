@@ -22,9 +22,9 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.testing.multiton.AdapterFactory;
 import org.apache.axiom.testing.multiton.Adapters;
 
-public class BooleanAttributeAdapterFactory implements AdapterFactory<BooleanAttribute> {
-    public void createAdapters(BooleanAttribute attribute, Adapters adapters) {
-        if (attribute == BooleanAttribute.MUST_UNDERSTAND) {
+public class HeaderBlockAttributeAdapterFactory implements AdapterFactory<HeaderBlockAttribute> {
+    public void createAdapters(HeaderBlockAttribute attribute, Adapters adapters) {
+        if (attribute == HeaderBlockAttribute.MUST_UNDERSTAND) {
             adapters.add(new BooleanAttributeAccessor() {
                 public boolean getValue(SOAPHeaderBlock headerBlock) {
                     return headerBlock.getMustUnderstand();
@@ -34,7 +34,7 @@ public class BooleanAttributeAdapterFactory implements AdapterFactory<BooleanAtt
                     headerBlock.setMustUnderstand(value);
                 }
             });
-        } else if (attribute == BooleanAttribute.RELAY) {
+        } else if (attribute == HeaderBlockAttribute.RELAY) {
             adapters.add(new BooleanAttributeAccessor() {
                 public boolean getValue(SOAPHeaderBlock headerBlock) {
                     return headerBlock.getRelay();

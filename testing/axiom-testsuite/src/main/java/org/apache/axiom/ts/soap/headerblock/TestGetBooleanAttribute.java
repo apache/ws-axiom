@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.BooleanLiteral;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -31,7 +31,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
     private final BooleanLiteral literal;
     
-    public TestGetBooleanAttribute(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute, BooleanLiteral literal) {
+    public TestGetBooleanAttribute(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute, BooleanLiteral literal) {
         super(metaFactory, spec, attribute);
         this.literal = literal;
         addTestParameter("literal", literal.getLexicalRepresentation());
@@ -40,7 +40,7 @@ public class TestGetBooleanAttribute extends BooleanAttributeTestCase {
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("http://example.org", "test", "h"));
-        headerBlock.addAttribute(attribute.getName(), literal.getLexicalRepresentation(), header.getNamespace());
+        headerBlock.addAttribute(attribute.getName(spec), literal.getLexicalRepresentation(), header.getNamespace());
         assertEquals(literal.getValue(), attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock));
     }
 }

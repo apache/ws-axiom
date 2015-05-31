@@ -21,14 +21,17 @@ package org.apache.axiom.ts.soap;
 import org.apache.axiom.testing.multiton.Multiton;
 
 /**
- * Describes a boolean attribute that can appear on a SOAP header block. This includes the
- * <tt>mustUnderstand</tt> attribute in all SOAP versions as well as the <tt>relay</tt> attribute
- * defined by SOAP 1.2.
+ * Describes an attribute that can appear on a SOAP header block.
  */
-public abstract class BooleanAttribute extends Multiton {
-    public static final BooleanAttribute MUST_UNDERSTAND = new BooleanAttribute() {
-        public String getName() {
+public abstract class HeaderBlockAttribute extends Multiton {
+    public static final HeaderBlockAttribute MUST_UNDERSTAND = new HeaderBlockAttribute() {
+        public String getName(SOAPSpec spec) {
             return "mustUnderstand";
+        }
+
+        @Override
+        public boolean isBoolean() {
+            return true;
         }
 
         public boolean isSupported(SOAPSpec spec) {
@@ -36,9 +39,29 @@ public abstract class BooleanAttribute extends Multiton {
         }
     };
     
-    public static final BooleanAttribute RELAY = new BooleanAttribute() {
-        public String getName() {
+    public static final HeaderBlockAttribute ROLE = new HeaderBlockAttribute() {
+        public String getName(SOAPSpec spec) {
+            return spec == SOAPSpec.SOAP11 ? "actor" : "role";
+        }
+
+        @Override
+        public boolean isBoolean() {
+            return false;
+        }
+
+        public boolean isSupported(SOAPSpec spec) {
+            return true;
+        }
+    };
+    
+    public static final HeaderBlockAttribute RELAY = new HeaderBlockAttribute() {
+        public String getName(SOAPSpec spec) {
             return "relay";
+        }
+
+        @Override
+        public boolean isBoolean() {
+            return true;
         }
 
         public boolean isSupported(SOAPSpec spec) {
@@ -49,9 +72,18 @@ public abstract class BooleanAttribute extends Multiton {
     /**
      * Get the name of the attribute.
      * 
-     * @return the name of the attribute (<tt>mustUnderstand</tt> or <tt>relay</tt>)
+     * @param spec
+     *            identifies the SOAP version
+     * @return the name of the attribute in the given SOAP version
      */
-    public abstract String getName();
+    public abstract String getName(SOAPSpec spec);
+    
+    /**
+     * Determine if the attribute is a boolean attribute.
+     * 
+     * @return <code>true</code> if this is a boolean attribute
+     */
+    public abstract boolean isBoolean();
     
     /**
      * Determine if the attribute is supported by the given SOAP version.

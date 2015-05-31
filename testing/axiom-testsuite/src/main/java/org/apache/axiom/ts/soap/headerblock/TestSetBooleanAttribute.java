@@ -24,14 +24,14 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
     private final boolean value;
     
-    public TestSetBooleanAttribute(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute, boolean value) {
+    public TestSetBooleanAttribute(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute, boolean value) {
         super(metaFactory, spec, attribute);
         addTestParameter("value", value);
         this.value = value;
@@ -47,7 +47,7 @@ public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
         OMAttribute att = (OMAttribute)it.next();
         OMNamespace ns = att.getNamespace();
         assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
-        assertEquals(attribute.getName(), att.getLocalName());
+        assertEquals(attribute.getName(spec), att.getLocalName());
         assertEquals(spec.getCanonicalRepresentation(value), att.getAttributeValue());
         assertFalse(it.hasNext());
     }

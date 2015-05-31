@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
@@ -36,7 +36,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
     private final String value;
     
-    public TestGetBooleanAttributeInvalid(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute, String value) {
+    public TestGetBooleanAttributeInvalid(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute, String value) {
         super(metaFactory, spec, attribute);
         this.value = value;
         addTestParameter("value", value);
@@ -45,7 +45,7 @@ public class TestGetBooleanAttributeInvalid extends BooleanAttributeTestCase {
     protected void runTest() throws Throwable {
         SOAPHeader header = soapFactory.getDefaultEnvelope().getOrCreateHeader();
         SOAPHeaderBlock headerBlock = header.addHeaderBlock(new QName("urn:test", "test", "p"));
-        headerBlock.addAttribute(attribute.getName(), value, header.getNamespace());
+        headerBlock.addAttribute(attribute.getName(spec), value, header.getNamespace());
         try {
             attribute.getAdapter(BooleanAttributeAccessor.class).getValue(headerBlock);
             fail("Expected SOAPProcessingException");

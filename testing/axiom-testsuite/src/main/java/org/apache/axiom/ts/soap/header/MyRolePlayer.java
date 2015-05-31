@@ -24,8 +24,6 @@ import java.util.List;
 import org.apache.axiom.soap.RolePlayer;
 
 public final class MyRolePlayer implements RolePlayer {
-    public static final String CUSTOM_ROLE = "http://example.org/myCustomRole";
-
     boolean ultimateReceiver;
     List roles;
     public MyRolePlayer(boolean ultimateReceiver) {

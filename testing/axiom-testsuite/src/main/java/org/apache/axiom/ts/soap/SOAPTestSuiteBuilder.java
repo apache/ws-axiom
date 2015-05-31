@@ -229,20 +229,23 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURI(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));
-        for (BooleanAttribute attribute : getInstances(BooleanAttribute.class)) {
-            if (attribute.isSupported(spec)) {
-                for (int j=0; j<booleanLiterals.length; j++) {
-                    addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttribute(metaFactory, spec, attribute, booleanLiterals[j]));
+        addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithParser(metaFactory, spec));
+        for (HeaderBlockAttribute attribute : getInstances(HeaderBlockAttribute.class)) {
+            if (attribute.isBoolean()) {
+                if (attribute.isSupported(spec)) {
+                    for (int j=0; j<booleanLiterals.length; j++) {
+                        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttribute(metaFactory, spec, attribute, booleanLiterals[j]));
+                    }
+                    addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(metaFactory, spec, attribute));
+                    for (int j=0; j<invalidBooleanLiterals.length; j++) {
+                        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, invalidBooleanLiterals[j]));
+                    }
+                    addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, true));
+                    addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, false));
+                } else {
+                    addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeUnspported(metaFactory, spec, attribute));
+                    addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttributeUnsupported(metaFactory, spec, attribute));
                 }
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeDefault(metaFactory, spec, attribute));
-                for (int j=0; j<invalidBooleanLiterals.length; j++) {
-                    addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeInvalid(metaFactory, spec, attribute, invalidBooleanLiterals[j]));
-                }
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, true));
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttribute(metaFactory, spec, attribute, false));
-            } else {
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestGetBooleanAttributeUnspported(metaFactory, spec, attribute));
-                addTest(new org.apache.axiom.ts.soap.headerblock.TestSetBooleanAttributeUnsupported(metaFactory, spec, attribute));
             }
         }
         if (supportsOMSourcedElement) {
@@ -323,7 +326,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.header.TestGetHeadersToProcessWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetRoleWithParser(metaFactory));
         if (supportsOMSourcedElement) {
@@ -359,7 +361,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocks(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.header.TestGetHeadersToProcessWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRelayWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.headerblock.TestGetRoleWithParser(metaFactory));

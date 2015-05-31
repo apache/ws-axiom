@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.ts.soap12.header;
+package org.apache.axiom.ts.soap.header;
 
 import java.util.Iterator;
 
@@ -25,21 +25,20 @@ import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.apache.axiom.ts.soap.header.MyRolePlayer;
+import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 
-public class TestGetHeadersToProcessWithParser extends SOAPTestCase {
-    public TestGetHeadersToProcessWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
+    public TestGetHeadersToProcessWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec, SOAPSampleSet.ROLES);
     }
 
-    protected void runTest() throws Throwable {
-        SOAPEnvelope env = getTestMessage("roleMessage.xml");
-        SOAPHeader soapHeader = env.getHeader();
+    protected void runTest(SOAPEnvelope envelope) throws Throwable {
+        SOAPHeader soapHeader = envelope.getHeader();
 
-        String roles [] = { MyRolePlayer.CUSTOM_ROLE };
+        String roles [] = { "http://example.org/myCustomRole" };
         RolePlayer rp = new MyRolePlayer(true, roles);
 
         Iterator headers = soapHeader.getHeadersToProcess(rp);
@@ -79,7 +78,5 @@ public class TestGetHeadersToProcessWithParser extends SOAPTestCase {
         }
 
         assertEquals("Didn't get right number of headers (no custom role)", 1, numHeaders);
-        
-        env.close(false);
     }
 }

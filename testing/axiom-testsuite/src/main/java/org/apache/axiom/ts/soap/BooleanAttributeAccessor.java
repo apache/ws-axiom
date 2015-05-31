@@ -22,7 +22,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.testing.multiton.AdapterType;
 
 /**
- * {@link BooleanAttribute} adapter that allows to invoke the getter and setter methods for the
+ * {@link HeaderBlockAttribute} adapter that allows to invoke the getter and setter methods for the
  * attribute on a given {@link SOAPHeaderBlock}.
  */
 @AdapterType

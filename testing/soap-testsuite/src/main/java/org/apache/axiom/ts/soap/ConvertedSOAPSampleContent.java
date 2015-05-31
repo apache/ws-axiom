@@ -30,6 +30,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.xml.ComputedMessageContent;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -94,14 +95,21 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
             }
         }
         if (type == SOAPElementType.HEADER) {
-            NodeList children = element.getChildNodes();
-            for (int i=0; i<children.getLength(); i++) {
-                Node child = children.item(i);
+            Node child = element.getFirstChild();
+            while (child != null) {
+                Node nextChild = child.getNextSibling();
                 if (child.getNodeType() == Node.ELEMENT_NODE) {
                     Element headerBlock = (Element)child;
-                    processBooleanAttribute(headerBlock, BooleanAttribute.MUST_UNDERSTAND);
-                    processBooleanAttribute(headerBlock, BooleanAttribute.RELAY);
+                    Attr roleAttr = headerBlock.getAttributeNodeNS(SOAPSpec.SOAP12.getEnvelopeNamespaceURI(), HeaderBlockAttribute.ROLE.getName(SOAPSpec.SOAP12));
+                    if (roleAttr != null && roleAttr.getValue().equals("http://www.w3.org/2003/05/soap-envelope/role/none")) {
+                        element.removeChild(headerBlock);
+                    } else {
+                        for (HeaderBlockAttribute attribute : Multiton.getInstances(HeaderBlockAttribute.class)) {
+                            processAttribute(headerBlock, attribute);
+                        }
+                    }
                 }
+                child = nextChild;
             }
         } else if (type == SOAPFaultChild.CODE) {
             final Element value = getChild(element, SOAPFaultChild.VALUE);
@@ -146,22 +154,30 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
         }
     }
     
-    private static void processBooleanAttribute(Element headerBlock, BooleanAttribute booleanAttribute) {
-        String localName = booleanAttribute.getName();
-        Attr attr = headerBlock.getAttributeNodeNS(SOAPSpec.SOAP12.getEnvelopeNamespaceURI(), localName);
+    private static void processAttribute(Element headerBlock, HeaderBlockAttribute attribute) {
+        Attr attr = headerBlock.getAttributeNodeNS(SOAPSpec.SOAP12.getEnvelopeNamespaceURI(), attribute.getName(SOAPSpec.SOAP12));
         if (attr != null) {
-            if (booleanAttribute.isSupported(SOAPSpec.SOAP11)) {
+            if (attribute.isSupported(SOAPSpec.SOAP11)) {
                 String prefix = attr.getPrefix();
-                attr = (Attr)attr.getOwnerDocument().renameNode(attr, SOAPSpec.SOAP11.getEnvelopeNamespaceURI(), prefix + ":" + localName);
-                String stringValue = attr.getValue();
-                boolean value = false;
-                for (BooleanLiteral booleanLiteral : SOAPSpec.SOAP12.getBooleanLiterals()) {
-                    if (stringValue.equals(booleanLiteral.getLexicalRepresentation())) {
-                        value = booleanLiteral.getValue();
-                        break;
+                attr = (Attr)attr.getOwnerDocument().renameNode(attr, SOAPSpec.SOAP11.getEnvelopeNamespaceURI(), prefix + ":" + attribute.getName(SOAPSpec.SOAP11));
+                if (attribute.isBoolean()) {
+                    String stringValue = attr.getValue();
+                    boolean value = false;
+                    for (BooleanLiteral booleanLiteral : SOAPSpec.SOAP12.getBooleanLiterals()) {
+                        if (stringValue.equals(booleanLiteral.getLexicalRepresentation())) {
+                            value = booleanLiteral.getValue();
+                            break;
+                        }
+                    }
+                    attr.setValue(SOAPSpec.SOAP11.getCanonicalRepresentation(value));
+                } else if (attribute == HeaderBlockAttribute.ROLE) {
+                    String value = attr.getValue();
+                    if (value.equals(SOAPSpec.SOAP12.getNextRoleURI())) {
+                        attr.setValue(SOAPSpec.SOAP11.getNextRoleURI());
+                    } else if (value.equals("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver")) {
+                        headerBlock.removeAttributeNode(attr);
                     }
                 }
-                attr.setValue(SOAPSpec.SOAP11.getCanonicalRepresentation(value));
             } else {
                 headerBlock.removeAttributeNode(attr);
             }

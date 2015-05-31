@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.ts.soap.BooleanAttribute;
+import org.apache.axiom.ts.soap.HeaderBlockAttribute;
 import org.apache.axiom.ts.soap.BooleanAttributeAccessor;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
@@ -32,7 +32,7 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  * SOAP 1.1 messages.
  */
 public class TestGetBooleanAttributeUnspported extends BooleanAttributeTestCase {
-    public TestGetBooleanAttributeUnspported(OMMetaFactory metaFactory, SOAPSpec spec, BooleanAttribute attribute) {
+    public TestGetBooleanAttributeUnspported(OMMetaFactory metaFactory, SOAPSpec spec, HeaderBlockAttribute attribute) {
         super(metaFactory, spec, attribute);
     }
 
