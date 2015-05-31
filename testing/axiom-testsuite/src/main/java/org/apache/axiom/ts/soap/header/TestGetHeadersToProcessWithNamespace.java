@@ -27,11 +27,12 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests the behavior of {@link SOAPHeader#getHeadersToProcess(RolePlayer, String)}
  */
-public class TestGetHeadersToProcessWithNamespace extends SOAPRoleTest {
+public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
     public TestGetHeadersToProcessWithNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }

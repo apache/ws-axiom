@@ -26,10 +26,11 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.header.SOAPRoleTest;
+import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.soap.header.MyRolePlayer;
 import org.apache.axiom.om.OMMetaFactory;
 
-public class TestGetHeadersToProcessWithParser extends SOAPRoleTest {
+public class TestGetHeadersToProcessWithParser extends SOAPTestCase {
     public TestGetHeadersToProcessWithParser(OMMetaFactory metaFactory) {
         super(metaFactory, SOAPSpec.SOAP12);
     }
@@ -38,7 +39,7 @@ public class TestGetHeadersToProcessWithParser extends SOAPRoleTest {
         SOAPEnvelope env = getTestMessage("roleMessage.xml");
         SOAPHeader soapHeader = env.getHeader();
 
-        String roles [] = { CUSTOM_ROLE };
+        String roles [] = { MyRolePlayer.CUSTOM_ROLE };
         RolePlayer rp = new MyRolePlayer(true, roles);
 
         Iterator headers = soapHeader.getHeadersToProcess(rp);
