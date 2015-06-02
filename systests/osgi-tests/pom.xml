@@ -80,6 +80,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-link-assembly</artifactId>
+            <version>${exam.version}</version>
+        </dependency>
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
@@ -109,8 +114,7 @@
                             <goal>generate-test-resources</goal>
                         </goals>
                         <configuration>
-                            <name>%paxexam.linkName%</name>
-                            <altName>%bundle.symbolicName%.link</altName>
+                            <name>%bundle.symbolicName%.link</name>
                             <value>%url%</value>
                             <dependencySet>
                                 <scope>test</scope>
@@ -138,7 +142,6 @@
                                     <version>2.1.13_2</version>
                                 </artifact>
                             </artifacts>
-                            <paxExam>${exam.version}</paxExam>
                         </configuration>
                     </execution>
                 </executions>
