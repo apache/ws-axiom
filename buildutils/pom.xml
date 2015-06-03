@@ -34,7 +34,6 @@
 
     <modules>
         <module>jar-resource-bundle</module>
-        <module>paxexam-maven-plugin</module>
         <module>shade-axiom-xml</module>
         <module>shade-osgi</module>
     </modules>
