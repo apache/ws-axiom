@@ -87,7 +87,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
         super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder, factory);
     }
 
-
     protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
             throws SOAPProcessingException;
 
@@ -108,7 +107,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
         return null;
     }
 
-    protected void putExceptionToSOAPFault(Exception e) throws SOAPProcessingException {
+    protected void putExceptionToSOAPFault(Exception e)
+            throws SOAPProcessingException {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         sw.flush();

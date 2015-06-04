@@ -66,11 +66,11 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
 
     }
 
-    public void setCode(SOAPFaultCode soapFaultCode)
-            throws SOAPProcessingException {
+    public void setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException {
         if (!(soapFaultCode instanceof SOAP12FaultCodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultCodeImpl, got " + soapFaultCode.getClass());
+                    "Expecting SOAP 1.2 implementation of SOAP Fault Code. " +
+                            "But received some other implementation");
         }
         insertChild(sequence, 0, soapFaultCode);
     }
@@ -79,7 +79,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
         if (!(reason instanceof SOAP12FaultReasonImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultReasonImpl, got " + reason.getClass());
+                    "Expecting SOAP 1.2 implementation of SOAP Fault Reason. But received some other implementation");
         }
         insertChild(sequence, 1, reason);
     }
@@ -87,7 +87,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
         if (!(node instanceof SOAP12FaultNodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultNodeImpl, got " + node.getClass());
+                    "Expecting SOAP 1.2 implementation of SOAP Fault Node. But received some other implementation");
         }
         insertChild(sequence, 2, node);
     }
@@ -95,7 +95,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
         if (!(role instanceof SOAP12FaultRoleImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultRoleImpl, got " + role.getClass());
+                    "Expecting SOAP 1.2 implementation of SOAP Fault Role. But received some other implementation");
         }
         insertChild(sequence, 3, role);
     }
@@ -103,7 +103,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
         if (!(detail instanceof SOAP12FaultDetailImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultDetailImpl, got " + detail.getClass());
+                    "Expecting SOAP 1.2 implementation of SOAP Fault Detail. But received some other implementation");
         }
         insertChild(sequence, 4, detail);
     }
@@ -111,24 +111,24 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12BodyImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP12BodyImpl, got " + parent.getClass());
+                    "Expecting SOAP 1.2 implementation of SOAP Body as the parent. But received some other implementation");
         }
     }
 
-    public SOAPFaultNode getNode() {
-        return (SOAPFaultNode) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_NODE);
-    }
-
     public SOAPFaultCode getCode() {
-        return (SOAPFaultCode) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_CODE);
+        return (SOAPFaultCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_CODE);
     }
 
     public SOAPFaultReason getReason() {
-        return (SOAPFaultReason) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
+        return (SOAPFaultReason)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
+    }
+
+    public SOAPFaultNode getNode() {
+        return (SOAPFaultNode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_NODE);
     }
 
     public SOAPFaultRole getRole() {
-        return (SOAPFaultRole) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
+        return (SOAPFaultRole)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
     }
 
     public SOAPFaultDetail getDetail() {

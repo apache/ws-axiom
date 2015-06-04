@@ -59,7 +59,6 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     public SOAP11FaultImpl(SOAPBody parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, factory);
-
     }
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
@@ -71,7 +70,8 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
             throws SOAPProcessingException {
         if (!(soapFaultCode instanceof SOAP11FaultCodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP11FaultCodeImpl, got " + soapFaultCode.getClass());
+                    "Expecting SOAP 1.1 implementation of SOAP Fault Code. " +
+                            "But received some other implementation");
         }
         insertChild(sequence, 0, soapFaultCode);
     }
@@ -79,7 +79,8 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
         if (!(reason instanceof SOAP11FaultReasonImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP11FaultReasonImpl, got " + reason.getClass());
+                    "Expecting SOAP 1.1 implementation of SOAP Fault Reason. " +
+                            "But received some other implementation");
         }
         insertChild(sequence, 1, reason);
     }
@@ -91,7 +92,8 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
         if (!(role instanceof SOAP11FaultRoleImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP11FaultRoleImpl, got " + role.getClass());
+                    "Expecting SOAP 1.1 implementation of SOAP Fault Role. " +
+                            "But received some other implementation");
         }
         insertChild(sequence, 2, role);
     }
@@ -99,24 +101,26 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11BodyImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP11BodyImpl, got " + parent.getClass());
+                    "Expecting SOAP 1.1 implementation of SOAP Body as the " +
+                            "parent. But received some other implementation");
         }
     }
 
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
         if (!(detail instanceof SOAP11FaultDetailImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP11FaultDetailImpl, got " + detail.getClass());
+                    "Expecting SOAP 1.1 implementation of SOAP Fault Detail. " +
+                            "But received some other implementation");
         }
         insertChild(sequence, 3, detail);
     }
 
     public SOAPFaultCode getCode() {
-        return (SOAPFaultCode) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_CODE);
+        return (SOAPFaultCode)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_CODE);
     }
 
     public SOAPFaultReason getReason() {
-        return (SOAPFaultReason) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_REASON);
+        return (SOAPFaultReason)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_REASON);
     }
 
     public SOAPFaultNode getNode() {
@@ -124,10 +128,10 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     }
 
     public SOAPFaultRole getRole() {
-        return (SOAPFaultRole) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
+        return (SOAPFaultRole)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
     }
 
     public SOAPFaultDetail getDetail() {
-        return (SOAPFaultDetail) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
+        return (SOAPFaultDetail)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
     }
 }

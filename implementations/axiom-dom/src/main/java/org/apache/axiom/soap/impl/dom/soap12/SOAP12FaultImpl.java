@@ -36,7 +36,6 @@ import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
-import org.apache.axiom.soap.impl.dom.SOAPFaultRoleImpl;
 
 public class SOAP12FaultImpl extends SOAPFaultImpl {
     private static final Class[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
@@ -116,16 +115,12 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
         }
     }
 
-    public SOAPFaultReason getReason() {
-        return (SOAPFaultReason)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
-    }
-
-    public SOAPFaultDetail getDetail() {
-        return (SOAPFaultDetail)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_DETAIL);
-    }
-
     public SOAPFaultCode getCode() {
         return (SOAPFaultCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_CODE);
+    }
+
+    public SOAPFaultReason getReason() {
+        return (SOAPFaultReason)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
     }
 
     public SOAPFaultNode getNode() {
@@ -133,7 +128,11 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     }
 
     public SOAPFaultRole getRole() {
-        return (SOAPFaultRoleImpl)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
+        return (SOAPFaultRole)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
+    }
+
+    public SOAPFaultDetail getDetail() {
+        return (SOAPFaultDetail)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_DETAIL);
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,

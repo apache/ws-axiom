@@ -115,10 +115,6 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         insertChild(sequence, 3, detail);
     }
 
-    public SOAPFaultRole getRole() {
-        return (SOAP11FaultRoleImpl)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
-    }
-
     public SOAPFaultCode getCode() {
         return (SOAPFaultCode)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_CODE);
     }
@@ -127,12 +123,16 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         return (SOAPFaultReason)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_REASON);
     }
 
-    public SOAPFaultDetail getDetail() {
-        return (SOAPFaultDetail)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
-    }
-
     public SOAPFaultNode getNode() {
         return null;
+    }
+
+    public SOAPFaultRole getRole() {
+        return (SOAPFaultRole)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
+    }
+
+    public SOAPFaultDetail getDetail() {
+        return (SOAPFaultDetail)getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
