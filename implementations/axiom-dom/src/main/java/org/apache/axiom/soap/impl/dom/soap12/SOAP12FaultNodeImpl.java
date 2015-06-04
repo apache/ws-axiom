@@ -28,11 +28,11 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 
-public class SOAP12FaultNodeImpl extends SOAPElement implements SOAPFaultNode {
+public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
     public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true, factory);

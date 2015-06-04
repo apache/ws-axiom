@@ -28,11 +28,12 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultCode;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 
 import javax.xml.namespace.QName;
 
-public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
+public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP12FaultCode {
     public SOAP12FaultCodeImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }

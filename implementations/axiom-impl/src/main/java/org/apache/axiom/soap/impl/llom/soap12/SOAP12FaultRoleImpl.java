@@ -24,9 +24,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultRole;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
 
-public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl {
+public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP12FaultRole {
 
     public SOAP12FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {

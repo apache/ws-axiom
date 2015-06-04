@@ -26,11 +26,11 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
-public class SOAP12FaultNodeImpl extends SOAPElement implements SOAPFaultNode {
+public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
 
     public SOAP12FaultNodeImpl(SOAPFactory factory) {
         super(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, factory.getNamespace(), factory);

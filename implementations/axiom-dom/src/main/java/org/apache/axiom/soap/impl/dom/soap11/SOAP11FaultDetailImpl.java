@@ -28,9 +28,10 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultDetail;
 import org.apache.axiom.soap.impl.dom.SOAPFaultDetailImpl;
 
-public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
+public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomSOAP11FaultDetail {
     public SOAP11FaultDetailImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);

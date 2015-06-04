@@ -24,19 +24,12 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12Fault;
 import org.apache.axiom.soap.impl.llom.SOAPFaultImpl;
 
-public class SOAP12FaultImpl extends SOAPFaultImpl {
-    private static final Class[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
-            SOAPFaultNode.class, SOAPFaultRole.class, SOAPFaultDetail.class };
-    
+public class SOAP12FaultImpl extends SOAPFaultImpl implements AxiomSOAP12Fault {
     public SOAP12FaultImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }
@@ -66,72 +59,10 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
 
     }
 
-    public void setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException {
-        if (!(soapFaultCode instanceof SOAP12FaultCodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Code. " +
-                            "But received some other implementation");
-        }
-        insertChild(sequence, 0, soapFaultCode);
-    }
-
-
-    public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
-        if (!(reason instanceof SOAP12FaultReasonImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Reason. But received some other implementation");
-        }
-        insertChild(sequence, 1, reason);
-    }
-
-    public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
-        if (!(node instanceof SOAP12FaultNodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Node. But received some other implementation");
-        }
-        insertChild(sequence, 2, node);
-    }
-
-    public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
-        if (!(role instanceof SOAP12FaultRoleImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Role. But received some other implementation");
-        }
-        insertChild(sequence, 3, role);
-    }
-
-    public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
-        if (!(detail instanceof SOAP12FaultDetailImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Detail. But received some other implementation");
-        }
-        insertChild(sequence, 4, detail);
-    }
-
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12BodyImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Body as the parent. But received some other implementation");
         }
-    }
-
-    public SOAPFaultCode getCode() {
-        return (SOAPFaultCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_CODE);
-    }
-
-    public SOAPFaultReason getReason() {
-        return (SOAPFaultReason)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
-    }
-
-    public SOAPFaultNode getNode() {
-        return (SOAPFaultNode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_NODE);
-    }
-
-    public SOAPFaultRole getRole() {
-        return (SOAPFaultRole)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
-    }
-
-    public SOAPFaultDetail getDetail() {
-        return (SOAPFaultDetail)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_DETAIL);
     }
 }
