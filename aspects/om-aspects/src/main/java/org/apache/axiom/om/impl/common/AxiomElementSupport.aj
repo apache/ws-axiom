@@ -231,11 +231,11 @@ public aspect AxiomElementSupport {
         coreSetNextSibling(null);
     }
     
-    public static void insertChild(OMElement parent, Class[] sequence, int pos, OMNode newChild) {
+    public void AxiomElement.insertChild(Class[] sequence, int pos, OMNode newChild) {
         if (!sequence[pos].isInstance(newChild)) {
             throw new IllegalArgumentException();
         }
-        OMNode child = parent.getFirstOMChild();
+        OMNode child = getFirstOMChild();
         while (child != null) {
             if (child instanceof OMElement) {
                 if (child == newChild) {
@@ -266,7 +266,7 @@ public aspect AxiomElementSupport {
             child = child.getNextOMSibling();
         }
         // Else, add the new child at the end
-        parent.addChild(newChild);
+        addChild(newChild);
     }
 
     public final OMNamespace AxiomElement.handleNamespace(String namespaceURI, String prefix) {

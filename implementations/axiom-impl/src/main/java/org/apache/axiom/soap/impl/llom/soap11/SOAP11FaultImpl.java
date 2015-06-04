@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.AxiomElementSupport;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
@@ -74,7 +73,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP11FaultCodeImpl, got " + soapFaultCode.getClass());
         }
-        AxiomElementSupport.insertChild(this, sequence, 0, soapFaultCode);
+        insertChild(sequence, 0, soapFaultCode);
     }
 
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
@@ -82,7 +81,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP11FaultReasonImpl, got " + reason.getClass());
         }
-        AxiomElementSupport.insertChild(this, sequence, 1, reason);
+        insertChild(sequence, 1, reason);
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
@@ -94,7 +93,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP11FaultRoleImpl, got " + role.getClass());
         }
-        AxiomElementSupport.insertChild(this, sequence, 2, role);
+        insertChild(sequence, 2, role);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -109,7 +108,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP11FaultDetailImpl, got " + detail.getClass());
         }
-        AxiomElementSupport.insertChild(this, sequence, 3, detail);
+        insertChild(sequence, 3, detail);
     }
 
     public SOAPFaultCode getCode() {
