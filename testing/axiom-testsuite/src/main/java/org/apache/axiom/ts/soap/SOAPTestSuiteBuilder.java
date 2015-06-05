@@ -20,6 +20,10 @@ package org.apache.axiom.ts.soap;
 
 import static org.apache.axiom.testing.multiton.Multiton.getInstances;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -28,6 +32,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
@@ -39,25 +44,26 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             "soap12/header-bad-case.xml", "soap12/header-no-namespace.xml", "soap12/processing-instruction.xml", "soap12/entity-reference.xml",
             "soap12/additional-element-after-body.xml"};
     
-    private static final SOAPSample[] goodSOAPFiles = {
-        new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.WHITESPACE_MESSAGE),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.MINIMAL_MESSAGE),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.REALLY_BIG_MESSAGE),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.EMPTY_BODY_MESSAGE),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault2.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/message.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP12, "soap/soap12/message.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/faultelements-with-comment.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/additional-element-after-body.xml"),
-        SOAPSampleSet.NO_HEADER.getMessage(SOAPSpec.SOAP11),
-        SOAPSampleSet.NO_HEADER.getMessage(SOAPSpec.SOAP12),
-        new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),
-        new SimpleSOAPSample(SOAPSpec.SOAP12, "soap/soap12/empty-header.xml"),
-        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11),
-        SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP12),
-    };
+    private static final List<SOAPSample> goodSOAPFiles;
+    
+    static {
+        goodSOAPFiles = new ArrayList<SOAPSample>();
+        goodSOAPFiles.addAll(Arrays.asList(
+                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.WHITESPACE_MESSAGE),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.MINIMAL_MESSAGE),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.REALLY_BIG_MESSAGE),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, TestConstants.EMPTY_BODY_MESSAGE),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/soapfault2.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/bodyNotQualified.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/message.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP12, "soap/soap12/message.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/faultelements-with-comment.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/additional-element-after-body.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP11, "soap/soap11/empty-header.xml"),
+                new SimpleSOAPSample(SOAPSpec.SOAP12, "soap/soap12/empty-header.xml")));
+        goodSOAPFiles.addAll(Multiton.getInstances(SOAPSample.class));
+    }
     
     private static final QName[] generalQNames = {
         new QName("root"),
@@ -304,12 +310,10 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayload(metaFactory, msg));
             }
             addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, msg));
-        }
-        for (int i=0; i<goodSOAPFiles.length; i++) {
             for (ExpansionStrategy expansionStrategy : getInstances(ExpansionStrategy.class)) {
                 for (SerializationStrategy serializationStrategy : getInstances(SerializationStrategy.class)) {
-                    addTest(new org.apache.axiom.ts.soap.envelope.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategy, serializationStrategy));
-                    addTest(new org.apache.axiom.ts.soap.message.TestSerialize(metaFactory, goodSOAPFiles[i], expansionStrategy, serializationStrategy));
+                    addTest(new org.apache.axiom.ts.soap.envelope.TestSerialize(metaFactory, msg, expansionStrategy, serializationStrategy));
+                    addTest(new org.apache.axiom.ts.soap.message.TestSerialize(metaFactory, msg, expansionStrategy, serializationStrategy));
                 }
             }
         }
