@@ -24,11 +24,6 @@ import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragment {
 
@@ -38,22 +33,6 @@ public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragmen
 
     public final NodeFactory coreGetNodeFactory() {
         return (NodeFactory)getOMFactory();
-    }
-    
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void serializeAndConsume(XMLStreamWriter xmlWriter)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {

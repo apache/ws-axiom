@@ -24,10 +24,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
@@ -61,7 +61,7 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
     protected void internalSerialize(Serializer serializer, OMOutputFormat format,
                                      boolean cache, boolean includeXMLDeclaration) throws OutputException {
-        ((NodeImpl)getDocumentElement()).internalSerialize(serializer, format, cache);
+        ((AxiomElement)getDocumentElement()).internalSerialize(serializer, format, cache);
     }
 
     protected DocumentImpl createClone(OMCloneOptions options) {

@@ -29,12 +29,10 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -369,10 +367,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
         String attrValue = getValue();
         return localName.hashCode() ^ (attrValue != null ? attrValue.toString().hashCode() : 0) ^
                 (namespace != null ? namespace.hashCode() : 0);
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) {
-        throw new UnsupportedOperationException();
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {

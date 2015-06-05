@@ -26,11 +26,8 @@ import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.InformationItem;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -391,10 +388,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
     public abstract OMXMLParserWrapper getBuilder();
     
     abstract void build();
-
-    // This method is actually defined by ISerializable, but ISerializable is only implemented
-    // by certain subclasses (for the reason, see AXIOM-385).
-    public abstract void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException;
     
     public final OMInformationItem clone(OMCloneOptions options) {
         return (OMInformationItem)clone(options, null, true, true);
