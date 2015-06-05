@@ -27,14 +27,10 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -400,131 +396,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
     public abstract OMXMLParserWrapper getBuilder();
     
     abstract void build();
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, true);
-    }
-
-    public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, false);
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        try {
-            internalSerialize(new StAXSerializer((OMSerializable)this, writer), writer.getOutputFormat(), cache);
-        } catch (OutputException ex) {
-            throw (XMLStreamException)ex.getCause();
-        }
-        writer.flush();
-    }
-
-    public void serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output)
-            throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
-        try {
-            try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, true);
-            } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
-            }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serialize(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
-                .createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, true);
-            } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
-            }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
-        try {
-            try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, false);
-            } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
-            }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
-                .createXMLStreamWriter(writer2));
-        try {
-            writer.setOutputFormat(format);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            try {
-                internalSerialize(new StAXSerializer((OMSerializable)this, writer), format, false);
-            } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
-            }
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
 
     // This method is actually defined by ISerializable, but ISerializable is only implemented
     // by certain subclasses (for the reason, see AXIOM-385).

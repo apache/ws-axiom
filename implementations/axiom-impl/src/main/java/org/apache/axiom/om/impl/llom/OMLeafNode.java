@@ -23,8 +23,9 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.common.AxiomLeafNode;
 
-public abstract class OMLeafNode extends OMNodeImpl {
+public abstract class OMLeafNode extends OMNodeImpl implements AxiomLeafNode {
     public OMLeafNode(OMContainer parent, OMFactory factory, boolean fromBuilder) {
         super(factory);
         if (parent != null) {

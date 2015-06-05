@@ -41,7 +41,6 @@ import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,9 +53,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXResult;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Iterator;
 
 /**
@@ -647,106 +644,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             }
         } else {
             serializer.serialize(dataSource); 
-        }
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        // The contract is to serialize with caching
-        try {
-            internalSerialize(new StAXSerializer(this, xmlWriter), new OMOutputFormat(), true);
-        } catch (OutputException ex) {
-            throw (XMLStreamException)ex.getCause();
-        }
-    }
-
-    public void serialize(OutputStream output) throws XMLStreamException {
-        OMOutputFormat format = new OMOutputFormat();
-        serialize(output, format);
-    }
-
-    public void serialize(Writer writer) throws XMLStreamException {
-        OMOutputFormat format = new OMOutputFormat();
-        serialize(writer, format);
-    }
-
-    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        if (isExpanded) {
-            super.serialize(output, format);
-        } else if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
-            forceExpand();
-            super.serialize(output, format);
-        } else {
-            dataSource.serialize(output, format);
-        }
-    }
-
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        if (isExpanded) {
-            super.serialize(writer, format);
-        } else if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
-            forceExpand();
-            super.serialize(writer, format);
-        } else {
-            dataSource.serialize(writer, format);
-        }
-    }
-
-    public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
-            throws XMLStreamException {
-        try {
-            internalSerialize(new StAXSerializer(this, xmlWriter), new OMOutputFormat(), false);
-        } catch (OutputException ex) {
-            throw (XMLStreamException)ex.getCause();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
-            log.debug("serialize " + getPrintableName() + " to output stream");
-        }
-        OMOutputFormat format = new OMOutputFormat();
-        if (isExpanded()) {
-            super.serializeAndConsume(output, format);
-        } else {
-            dataSource.serialize(output, format);
-        }
-    }
-
-    public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
-            log.debug("serialize " + getPrintableName() + " to writer");
-        }
-        if (isExpanded()) {
-            super.serializeAndConsume(writer);
-        } else {
-            OMOutputFormat format = new OMOutputFormat();
-            dataSource.serialize(writer, format); 
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        if (log.isDebugEnabled()) {
-            log.debug("serialize formatted " + getPrintableName() +
-                    " to output stream");
-        }
-        if (isExpanded()) {
-            super.serializeAndConsume(output, format);
-        } else {
-            dataSource.serialize(output, format); 
-        }
-    }
-
-    public void serializeAndConsume(Writer writer, OMOutputFormat format)
-            throws XMLStreamException {
-        if (log.isDebugEnabled()) {
-            log.debug("serialize formatted " + getPrintableName() +
-                    " to writer");
-        }
-        if (isExpanded()) {
-            super.serializeAndConsume(writer, format);
-        } else {
-            dataSource.serialize(writer, format); 
         }
     }
 

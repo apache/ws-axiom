@@ -32,13 +32,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
@@ -347,27 +345,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
 
     public void setStandalone(String isStandalone) {
         this.xmlStandalone = "yes".equalsIgnoreCase(isStandalone);
-    }
-
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        try {
-            internalSerialize(new StAXSerializer(this, writer), format, false);
-        } catch (OutputException ex) {
-            throw (XMLStreamException)ex.getCause();
-        }
-        writer.flush();
-    }
-
-    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        try {
-            internalSerialize(new StAXSerializer(this, writer), format, true);
-        } catch (OutputException ex) {
-            throw (XMLStreamException)ex.getCause();
-        }
-        writer.flush();
     }
 
     public void setXMLVersion(String version) {

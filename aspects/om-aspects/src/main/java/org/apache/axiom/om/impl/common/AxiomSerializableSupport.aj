@@ -18,10 +18,37 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 
 public aspect AxiomSerializableSupport {
+    public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+        serialize(xmlWriter, true);
+    }
+
+    public final void AxiomSerializable.serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
+        serialize(xmlWriter, false);
+    }
+
+    public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
+        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
+        try {
+            internalSerialize(new StAXSerializer(this, writer), writer.getOutputFormat(), cache);
+        } catch (OutputException ex) {
+            throw (XMLStreamException)ex.getCause();
+        }
+        writer.flush();
+    }
+
     public void AxiomSerializable.close(boolean build) {
         OMXMLParserWrapper builder = getBuilder();
         if (build) {

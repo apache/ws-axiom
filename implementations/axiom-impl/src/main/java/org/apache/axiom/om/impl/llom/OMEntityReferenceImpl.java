@@ -20,14 +20,14 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReference {
+public class OMEntityReferenceImpl extends OMLeafNode implements AxiomEntityReference {
     private final String name;
     private final String replacementText;
 

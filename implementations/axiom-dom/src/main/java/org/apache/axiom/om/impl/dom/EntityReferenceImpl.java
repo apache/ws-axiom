@@ -21,17 +21,17 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.dom.DOMEntityReference;
-import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class EntityReferenceImpl extends ChildNode implements OMEntityReference, DOMEntityReference {
+public class EntityReferenceImpl extends ChildNode implements AxiomEntityReference, DOMEntityReference {
     private final String name;
     private final String replacementText;
 

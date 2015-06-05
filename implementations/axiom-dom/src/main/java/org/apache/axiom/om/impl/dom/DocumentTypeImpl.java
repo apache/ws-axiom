@@ -20,15 +20,14 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMDocumentType;
-import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.NamedNodeMap;
 
-public class DocumentTypeImpl extends LeafNode implements DOMDocumentType, OMDocType, OMNodeEx {
+public class DocumentTypeImpl extends LeafNode implements DOMDocumentType, AxiomDocType {
     private final String rootName;
     private final String publicId;
     private final String systemId;

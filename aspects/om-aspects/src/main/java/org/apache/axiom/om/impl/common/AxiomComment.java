@@ -21,6 +21,6 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.om.OMComment;
 
-public interface AxiomComment extends OMComment, AxiomChildNode, CoreComment {
+public interface AxiomComment extends OMComment, AxiomLeafNode, CoreComment {
 
 }

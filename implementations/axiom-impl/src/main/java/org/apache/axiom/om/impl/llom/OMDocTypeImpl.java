@@ -21,14 +21,14 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
+public class OMDocTypeImpl extends OMLeafNode implements AxiomDocType {
     private final String rootName;
     private final String publicId;
     private final String systemId;

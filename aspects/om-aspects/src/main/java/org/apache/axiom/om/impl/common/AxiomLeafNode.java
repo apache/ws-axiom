@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMText;
+public interface AxiomLeafNode extends AxiomChildNode {
 
-public interface AxiomText extends OMText, AxiomLeafNode {
-    AxiomText createInstanceOfSameType();
 }
