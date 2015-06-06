@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -33,8 +36,6 @@ import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.XML;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 /**
@@ -119,7 +120,9 @@ public class TestSerialize extends AxiomTestCase {
             if (serializeParent) {
                 expectedXML = elementContext.getControl(expectedXML);
             }
-            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(expectedXML, result.getInputSource()), true);
+            assertAbout(xml())
+                    .that(xml(result.getInputSource()))
+                    .hasSameContentAs(xml(expectedXML));
             // If the underlying OMDataSource is non destructive, the expansion status should not have been
             // changed during serialization. If it is destructive and caching is enabled, then
             // the sourced element should be expanded.

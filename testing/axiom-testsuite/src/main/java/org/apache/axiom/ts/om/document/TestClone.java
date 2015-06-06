@@ -18,13 +18,12 @@
  */
 package org.apache.axiom.ts.om.document;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
@@ -38,9 +37,8 @@ public class TestClone extends ConformanceTestCase {
         OMDocument original = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
                 TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString())).getDocument();
         OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        clone.serialize(baos);
-        XMLAssertEx.assertXMLIdentical(file.getUrl(),
-                new ByteArrayInputStream(baos.toByteArray()), false);
+        assertAbout(xml())
+                .that(xml(clone))
+                .hasSameContentAs(xml(original));
     }
 }

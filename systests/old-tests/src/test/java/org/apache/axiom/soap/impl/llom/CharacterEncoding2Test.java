@@ -19,17 +19,21 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.custommonkey.xmlunit.XMLTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 
-public class CharacterEncoding2Test extends XMLTestCase {
+import junit.framework.TestCase;
+
+public class CharacterEncoding2Test extends TestCase {
     String xml = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>" +
             "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
             "<soap:Body>" +
@@ -39,7 +43,7 @@ public class CharacterEncoding2Test extends XMLTestCase {
             "<tipo>C</tipo>" +
             "<dono>lucia</dono>" +
             "<posicao>177</posicao>" +
-            "<nome>Abricó Gimarães</nome>" +
+            "<nome>Abricï¿½ Gimarï¿½es</nome>" +
             "<email></email>" +
             "</ListaContatosPesquisa>" +
             "</AgendaPesquisa>" +
@@ -62,8 +66,9 @@ public class CharacterEncoding2Test extends XMLTestCase {
         outputFormat.setCharSetEncoding("iso-8859-1");
         envelope.serialize(byteOutStr, outputFormat);
 
-        assertXMLEqual(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1"),
-                new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1"));
+        assertAbout(xml())
+                .that(xml(new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1")))
+                .hasSameContentAs(xml(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1")));
         
         builder.close();
     }

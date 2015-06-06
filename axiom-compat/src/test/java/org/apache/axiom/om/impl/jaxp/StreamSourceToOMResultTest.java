@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.jaxp;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
@@ -29,11 +32,11 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.xalan.processor.TransformerFactoryImpl;
+import org.xml.sax.InputSource;
 
 public class StreamSourceToOMResultTest extends MatrixTestCase {
     private static final String[] axiomImplementations = { "default", "dom" };
@@ -54,8 +57,14 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
         new TransformerFactoryImpl().newTransformer().transform(source, result);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         result.getDocument().serialize(out);
-        XMLAssertEx.assertXMLIdentical(file.getUrl(),
-                new ByteArrayInputStream(out.toByteArray()), true);
+        InputSource actual = new InputSource();
+        actual.setByteStream(new ByteArrayInputStream(out.toByteArray()));
+        actual.setSystemId(file.getUrl().toString());
+        assertAbout(xml())
+                .that(xml(actual))
+                .ignoringWhitespaceInPrologAndEpilog()
+                .expandingEntityReferences()
+                .hasSameContentAs(xml(file.getUrl()));
     }
 
     public static TestSuite suite() {

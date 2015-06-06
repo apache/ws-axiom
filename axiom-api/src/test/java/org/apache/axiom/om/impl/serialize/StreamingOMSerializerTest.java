@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.serialize;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
@@ -33,10 +36,10 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.testing.multiton.Multiton;
-import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
+import org.xml.sax.InputSource;
 
 public class StreamingOMSerializerTest extends AbstractTestCase {
     private final XMLSample file;
@@ -63,7 +66,12 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         serializer.serialize(reader, writer, false);
         writer.writeEndDocument();
         writer.flush();
-        XMLAssertEx.assertXMLIdentical(file.getUrl(), new ByteArrayInputStream(out.toByteArray()), false);
+        InputSource actual = new InputSource();
+        actual.setByteStream(new ByteArrayInputStream(out.toByteArray()));
+        actual.setSystemId(file.getUrl().toString());
+        assertAbout(xml())
+                .that(xml(actual))
+                .hasSameContentAs(xml(file.getUrl()));
     }
 
     public static TestSuite suite() throws Exception {

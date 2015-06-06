@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.ts.om.document;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
@@ -27,7 +27,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -48,9 +47,11 @@ public class TestGetSAXResult extends ConformanceTestCase {
         OMDocument document = metaFactory.getOMFactory().createOMDocument();
         SAXResult result = document.getSAXResult();
         transformerFactory.newTransformer().transform(source, result);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        document.serialize(out);
-        XMLAssertEx.assertXMLIdentical(file.getUrl(),
-                new ByteArrayInputStream(out.toByteArray()), true);
+        assertAbout(xml())
+                .that(xml(document))
+                .ignoringWhitespaceInPrologAndEpilog()
+                .ignoringRedundantNamespaceDeclarations()
+                .expandingEntityReferences()
+                .hasSameContentAs(xml(file.getUrl()));
     }
 }

@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -26,8 +29,6 @@ import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 
 import java.util.Iterator;
 
@@ -51,10 +52,9 @@ public abstract class CloneTestCase extends SOAPTestCase {
         
         identityCheck(sourceEnv, targetEnv, "");
         
-        String sourceText = sourceEnv.toString();
-        String targetText = targetEnv.toString();
-        
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(sourceText, targetText), true);
+        assertAbout(xml())
+                .that(xml(targetEnv.toString()))
+                .hasSameContentAs(xml(sourceEnv.toString()));
         
         sourceEnv.close(false);
     }

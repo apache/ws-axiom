@@ -19,8 +19,8 @@
 
 package org.apache.axiom.om;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
-import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -58,6 +58,8 @@ public class SAXResultJAXBTest {
         OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
         marshaller.marshal(order, document.getSAXResult().getHandler());
         
-        assertXMLIdentical(compareXML(out.toString(), document.getOMDocumentElement().toString()), true);
+        assertAbout(xml())
+                .that(xml(document))
+                .hasSameContentAs(xml(out.toString()));
     }
 }

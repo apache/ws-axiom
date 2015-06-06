@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
@@ -25,7 +28,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
 
 public class TestCloneOMElement extends SampleBasedSOAPTestCase {
     public TestCloneOMElement(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -43,12 +45,17 @@ public class TestCloneOMElement extends SampleBasedSOAPTestCase {
         assertFalse(secondClonedBodyElement instanceof SOAPBody);
         
         // first check whether both have the same information
-        XMLAssert.assertXMLEqual(body.toString(),
-                                 firstClonedBodyElement.toString());
-        XMLAssert.assertXMLEqual(body.toString(),
-                                 secondClonedBodyElement.toString());
-        XMLAssert.assertXMLEqual(firstClonedBodyElement.toString(),
-                                 secondClonedBodyElement.toString());
+        assertAbout(xml())
+                .that(xml(firstClonedBodyElement))
+                .ignoringNamespaceDeclarations()
+                .hasSameContentAs(xml(body));
+        assertAbout(xml())
+                .that(xml(secondClonedBodyElement))
+                .ignoringNamespaceDeclarations()
+                .hasSameContentAs(xml(body));
+        assertAbout(xml())
+                .that(xml(secondClonedBodyElement))
+                .hasSameContentAs(xml(firstClonedBodyElement));
 
         // The clone is expected to be orphaned
         assertNull(firstClonedBodyElement.getParent());

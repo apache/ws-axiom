@@ -25,11 +25,10 @@ import java.net.URL;
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
 
-import org.custommonkey.xmlunit.XMLTestCase;
+import junit.framework.TestCase;
 
 /** Abstract base class for test cases. */
-public abstract class AbstractTestCase
-        extends XMLTestCase {
+public abstract class AbstractTestCase extends TestCase {
     public AbstractTestCase() {
         this(null);
     }

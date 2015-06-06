@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.ByteArrayInputStream;
 
 import org.apache.axiom.om.OMElement;
@@ -31,7 +34,6 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.SOAPSample;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
-import org.custommonkey.xmlunit.XMLAssert;
 import org.xml.sax.InputSource;
 
 public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
@@ -56,7 +58,10 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
             assertNotNull(byteArray);
             InputSource is = new InputSource(new ByteArrayInputStream(byteArray.bytes));
             is.setEncoding(byteArray.encoding);
-            XMLAssert.assertXMLEqual(message.getPayloadInputSource(), is);
+            assertAbout(xml())
+                    .that(xml(is))
+                    .ignoringNamespaceDeclarations()
+                    .hasSameContentAs(xml(message.getPayloadInputSource()));
         }
     }
 }

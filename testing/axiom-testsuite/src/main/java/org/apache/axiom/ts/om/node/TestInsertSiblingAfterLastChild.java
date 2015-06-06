@@ -18,12 +18,14 @@
  */
 package org.apache.axiom.ts.om.node;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-153">AXIOM-153</a>.
@@ -49,7 +51,10 @@ public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
         c1.insertSiblingAfter(c2);
         // Now add c3 to parent using parent.addChild()
         parent.addChild(c3);
-        XMLAssert.assertXMLEqual("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
-                "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>", parent.toString());
+        assertAbout(xml())
+                .that(xml(parent))
+                .ignoringRedundantNamespaceDeclarations()
+                .hasSameContentAs(xml("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
+                        "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>"));
     }
 }

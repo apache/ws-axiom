@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -25,9 +28,6 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.soap.SOAPSample;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.xml.sax.InputSource;
 
 public class TestSerialize extends AxiomTestCase {
     private final SOAPSample message;
@@ -49,9 +49,11 @@ public class TestSerialize extends AxiomTestCase {
         SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 message.getInputStream(), null).getSOAPEnvelope();
         expansionStrategy.apply(soapEnvelope);
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                new InputSource(message.getInputStream()),
-                serializationStrategy.serialize(soapEnvelope).getInputSource()), true);
+        assertAbout(xml())
+                .that(xml(serializationStrategy.serialize(soapEnvelope).getInputSource()))
+                .ignoringRedundantNamespaceDeclarations()
+                .ignoringPrologAndEpilog()
+                .hasSameContentAs(xml(message.getInputStream()));
         soapEnvelope.close(false);
     }
 }

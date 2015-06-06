@@ -19,21 +19,26 @@
 
 package org.apache.axiom.om;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.StAXUtils;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 
-public class NamespaceTest extends XMLTestCase {
+import junit.framework.TestCase;
+
+public class NamespaceTest extends TestCase {
 
     public void testNoPrefixNamespaces()
             throws IOException, ParserConfigurationException, SAXException {
@@ -122,7 +127,10 @@ public class NamespaceTest extends XMLTestCase {
             OMElement documentElement = OMXMLBuilderFactory.createOMBuilder(new StringReader(xml))
                     .getDocumentElement();
             String actualXML = documentElement.toString();
-            assertXMLEqual(xml, actualXML);
+            assertAbout(xml())
+                    .that(xml(actualXML))
+                    .ignoringRedundantNamespaceDeclarations()
+                    .hasSameContentAs(xml(xml));
             documentElement.close(false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,7 +170,9 @@ public class NamespaceTest extends XMLTestCase {
         String result = personElem.toString();
 
 
-        assertXMLEqual(expectedString, result);
+        assertAbout(xml())
+                .that(xml(result))
+                .hasSameContentAs(xml(expectedString));
     }
 
     /**
@@ -190,7 +200,9 @@ public class NamespaceTest extends XMLTestCase {
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);
 
-        assertXMLEqual(expectedXML, personElem.toString());
+        assertAbout(xml())
+                .that(xml(personElem.toString()))
+                .hasSameContentAs(xml(expectedXML));
     }
 
     public void testOMElementSerialize() throws Exception {

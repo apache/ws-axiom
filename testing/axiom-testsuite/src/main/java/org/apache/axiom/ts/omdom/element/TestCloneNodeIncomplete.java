@@ -18,12 +18,14 @@
  */
 package org.apache.axiom.ts.omdom.element;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -39,6 +41,6 @@ public class TestCloneNodeIncomplete extends AxiomTestCase {
         Element element = (Element)OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root><child1/><child2/></root>")).getDocumentElement();
         Element clone = (Element)element.cloneNode(true);
-        XMLAssert.assertXMLEqual(element.toString(), clone.toString());
+        assertAbout(xml()).that(xml(clone)).hasSameContentAs(xml(element));
     }
 }

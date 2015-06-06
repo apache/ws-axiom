@@ -18,15 +18,12 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.InputStream;
-import java.io.StringWriter;
 
 import javax.xml.transform.Transformer;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -60,13 +57,10 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         OMDocument outputDocument = factory.createOMDocument();
         transformer.transform(element.getSAXSource(cache), outputDocument.getSAXResult());
         
-        StreamSource streamSource = new StreamSource(getInput());
-        StringWriter out = new StringWriter();
-        StreamResult streamResult = new StreamResult(out);
-        transformer.transform(streamSource, streamResult);
-        
-        System.out.println(outputDocument.getOMDocumentElement().toString());
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(out.toString(), outputDocument.getOMDocumentElement().toString()), true);
+        assertAbout(xml())
+                .that(xml(outputDocument))
+                .ignoringWhitespaceInPrologAndEpilog()
+                .hasSameContentAs(xml(getInput()));
         
         element.close(false);
     }

@@ -19,8 +19,8 @@
 
 package org.apache.axiom.om;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
-import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.StringWriter;
 
@@ -29,9 +29,12 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order.Item;
+import org.apache.axiom.truth.xml.XMLTruth;
 import org.junit.Test;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
+
+import com.google.common.truth.Truth;
 
 public class SAXResultXMLBeansTest {
     @Test
@@ -52,6 +55,8 @@ public class SAXResultXMLBeansTest {
         ContentHandler handler = omDocument.getSAXResult().getHandler();
         document.save(handler, (LexicalHandler)handler);
         
-        assertXMLIdentical(compareXML(out.toString(), omDocument.getOMDocumentElement().toString()), true);
+        assertAbout(xml())
+                .that(xml(omDocument))
+                .hasSameContentAs(xml(out.toString()));
     }
 }

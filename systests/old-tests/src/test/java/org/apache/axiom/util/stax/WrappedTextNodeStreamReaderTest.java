@@ -19,6 +19,9 @@
 
 package org.apache.axiom.util.stax;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -26,14 +29,15 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import junit.framework.TestCase;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
-import org.custommonkey.xmlunit.XMLTestCase;
 
-public class WrappedTextNodeStreamReaderTest extends XMLTestCase {
+public class WrappedTextNodeStreamReaderTest extends TestCase {
     //
     // Tests that construct the Axiom tree and check the result
     //
@@ -95,7 +99,9 @@ public class WrappedTextNodeStreamReaderTest extends XMLTestCase {
         XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
         new StreamingOMSerializer().serialize(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.flush();
-        assertXMLEqual(expectedXML, writer.toString());
+        assertAbout(xml())
+                .that(xml(writer.toString()))
+                .hasSameContentAs(xml(expectedXML));
     }
 
     public void testShortStringUsingSerializer() throws Exception {
@@ -139,7 +145,9 @@ public class WrappedTextNodeStreamReaderTest extends XMLTestCase {
         OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
-        assertXMLEqual(expectedXML, writer.toString());
+        assertAbout(xml())
+                .that(xml(writer.toString()))
+                .hasSameContentAs(xml(expectedXML));
     }
     
     public void testShortStringUsingSerializeAndConsume() throws Exception {

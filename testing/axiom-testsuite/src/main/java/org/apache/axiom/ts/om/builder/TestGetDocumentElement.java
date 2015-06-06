@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMComment;
@@ -26,7 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
-import org.custommonkey.xmlunit.XMLAssert;
 import org.xml.sax.InputSource;
 
 /**
@@ -69,7 +71,9 @@ public class TestGetDocumentElement extends AxiomTestCase {
                 assertFalse(element.isComplete());
                 assertFalse(builder.isCompleted());
             }
-            XMLAssert.assertXMLEqual("<newParent><root/></newParent>", newParent.toString());
+            assertAbout(xml())
+                    .that(xml(newParent))
+                    .hasSameContentAs(xml("<newParent><root/></newParent>"));
             assertTrue(element.isComplete());
             // Since we discarded the document, the nodes in the epilog will not be accessible.
             // Therefore we expect that when the document element changes its completion status,

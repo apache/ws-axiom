@@ -43,6 +43,7 @@
         <module>spring-ws-testsuite</module>
         <module>testutils</module>
         <module>xml-testsuite</module>
+        <module>xml-truth</module>
     </modules>
 
     <build>

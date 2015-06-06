@@ -56,17 +56,6 @@
             <artifactId>truth</artifactId>
         </dependency>
         <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-        </dependency>
-        <dependency>
-            <!-- This should not be necessary, but XMLAssertEx contains code that fails on some Java runtimes,
-                 presumably because of a bug in the DOM implementation. Therefore we use a well defined
-                 version of Xerces. -->
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-        </dependency>
-        <dependency>
             <!-- We use this only for LDAP like filters -->
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>

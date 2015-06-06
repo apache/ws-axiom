@@ -22,11 +22,12 @@ package org.apache.axiom.om.impl.serializer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.custommonkey.xmlunit.XMLTestCase;
 
 import java.io.StringReader;
 
-public class PreserveEnvelopeTest extends XMLTestCase {
+import junit.framework.TestCase;
+
+public class PreserveEnvelopeTest extends TestCase {
 
 
     private String originalXML =

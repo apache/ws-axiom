@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.document;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -27,7 +30,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Tests that {@link OMDocument#serializeAndConsume(java.io.Writer)} consumes incomplete descendants,
@@ -50,7 +52,9 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         root.addChild(incompleteElement);
         StringWriter out = new StringWriter();
         document.serializeAndConsume(out);
-        XMLAssert.assertXMLEqual("<root><elem>text</elem></root>", out.toString());
+        assertAbout(xml())
+                .that(xml(out.toString()))
+                .hasSameContentAs(xml("<root><elem>text</elem></root>"));
         assertConsumed(incompleteElement);
     }
 }

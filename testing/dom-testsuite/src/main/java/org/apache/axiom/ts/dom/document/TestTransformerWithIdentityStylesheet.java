@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -25,8 +28,6 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.testutils.suite.XSLTImplementation;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -41,7 +42,7 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         
         Document document = builder.newDocument();
-        Element root = document.createElement("root");
+        Element root = document.createElementNS("", "root");
         Element element = document.createElementNS("urn:mynamespace", "element1");
         element.setAttribute("att", "testValue");
         element.appendChild(document.createTextNode("test"));
@@ -53,6 +54,9 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         Document output = builder.newDocument();
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(document), new DOMResult(output));
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, output), true);
+        assertAbout(xml())
+                .that(xml(output))
+                .ignoringNamespaceDeclarations()
+                .hasSameContentAs(xml(document));
     }
 }

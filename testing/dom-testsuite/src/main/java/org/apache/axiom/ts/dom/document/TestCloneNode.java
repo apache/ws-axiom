@@ -18,12 +18,13 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
 public class TestCloneNode extends DOMTestCase {
@@ -38,6 +39,9 @@ public class TestCloneNode extends DOMTestCase {
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().parse(file.getUrl().toString());
         Document document2 = (Document)document.cloneNode(true);
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, document2), true);
+        assertAbout(xml())
+                .that(xml(document2))
+                .treatingElementContentWhitespaceAsText()
+                .hasSameContentAs(xml(document));
     }
 }

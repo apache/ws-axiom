@@ -20,11 +20,17 @@ package org.apache.axiom.ts.xml;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.axiom.testing.multiton.Instances;
+import org.w3c.dom.Document;
 
 public class XMLSample extends MessageSample {
     /**
@@ -36,6 +42,20 @@ public class XMLSample extends MessageSample {
      * An XML document that is larger than the input buffer of typical XML parsers.
      */
     public static final XMLSample LARGE = new XMLSample("large.xml");
+    
+    public static final XMLSample ENTITY_REFERENCE_NESTED = new XMLSample("entity-reference-nested.xml");
+    
+    private static final DocumentBuilder documentBuilder;
+    
+    static {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        try {
+            documentBuilder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException ex) {
+            throw new Error(ex);
+        }
+    }
     
     private final String name;
     private XMLSampleProperties properties;
@@ -87,6 +107,19 @@ public class XMLSample extends MessageSample {
         return getProperties().hasEntityReferences();
     }
 
+    public final Document getDocument() {
+        try {
+            InputStream in = getInputStream();
+            try {
+                return documentBuilder.parse(in);
+            } finally {
+                in.close();
+            }
+        } catch (Exception ex) {
+            throw new Error(ex);
+        }
+    }
+    
     @Instances
     private static XMLSample[] instances() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(

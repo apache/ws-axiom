@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -25,8 +28,6 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.testutils.suite.XSLTImplementation;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
 public class TestTransformerWithStylesheet extends TransformerTestCase {
@@ -43,12 +44,9 @@ public class TestTransformerWithStylesheet extends TransformerTestCase {
         Document actual = builder.newDocument();
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(input), new DOMResult(actual));
-        boolean oldIgnoreWhitespace = XMLUnit.getIgnoreWhitespace();
-        XMLUnit.setIgnoreWhitespace(true);
-        try {
-            XMLAssert.assertXMLEqual(expected, actual);
-        } finally {
-            XMLUnit.setIgnoreWhitespace(oldIgnoreWhitespace);
-        }
+        assertAbout(xml())
+                .that(xml(actual))
+                .ignoringWhitespace()
+                .hasSameContentAs(xml(expected));
     }
 }

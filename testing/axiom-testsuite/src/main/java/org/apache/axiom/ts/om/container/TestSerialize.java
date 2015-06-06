@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.container;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +29,6 @@ import java.net.URL;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.dimension.serialization.XML;
@@ -62,7 +64,10 @@ public class TestSerialize extends ConformanceTestCase {
                 control[0].setSystemId(systemId);
                 InputSource actualIS = actual.getInputSource();
                 actualIS.setSystemId(systemId);
-                XMLAssertEx.assertXMLIdentical(control[0], actualIS, false);
+                assertAbout(xml())
+                        .that(xml(actualIS))
+                        .ignoringElementContentWhitespace()  // TODO: shouldn't be necessary
+                        .hasSameContentAs(xml(control[0]));
             } catch (Throwable ex) {
                 System.out.println("Control:");
                 dumpInputSource(control[1]);

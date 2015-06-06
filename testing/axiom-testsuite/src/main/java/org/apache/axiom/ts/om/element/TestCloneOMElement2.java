@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.InputStream;
 
 import org.apache.axiom.om.OMElement;
@@ -26,8 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 
 public class TestCloneOMElement2 extends ConformanceTestCase {
     public TestCloneOMElement2(OMMetaFactory metaFactory, XMLSample file) {
@@ -38,9 +39,11 @@ public class TestCloneOMElement2 extends ConformanceTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         InputStream in = file.getInputStream();
         try {
-            OMElement original = OMXMLBuilderFactory.createOMBuilder(factory, in).getDocumentElement();
+            OMElement original = OMXMLBuilderFactory.createOMBuilder(factory, TEST_PARSER_CONFIGURATION, in).getDocumentElement();
             OMElement clone = original.cloneOMElement();
-            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(original.toString(), clone.toString()), true);
+            assertAbout(xml())
+                    .that(xml(clone))
+                    .hasSameContentAs(xml(original));
         } finally {
             in.close();
         }

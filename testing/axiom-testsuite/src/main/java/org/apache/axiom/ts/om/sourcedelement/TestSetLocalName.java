@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -25,7 +28,6 @@ import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
-import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Tests that the effect of {@link OMNamedInformationItem#setLocalName(String)} on a
@@ -51,6 +53,8 @@ public class TestSetLocalName extends AxiomTestCase {
             element.getFirstOMChild();
         }
         element.setLocalName("newroot");
-        XMLAssert.assertXMLEqual("<p:newroot xmlns:p='urn:test'><child/></p:newroot>", element.toString());
+        assertAbout(xml())
+                .that(xml(element.toString()))
+                .hasSameContentAs(xml("<p:newroot xmlns:p='urn:test'><child/></p:newroot>"));
     }
 }

@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -28,10 +31,10 @@ import javax.xml.transform.dom.DOMSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     private final Boolean expandEntityReferences;
@@ -62,9 +65,13 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         builder.getDocument().serialize(baos);
-        XMLAssertEx.assertXMLIdentical(
-                file.getUrl(),
-                new ByteArrayInputStream(baos.toByteArray()),
-                expandEntityReferences == null ? false : expandEntityReferences.booleanValue());
+        InputSource actual = new InputSource();
+        actual.setByteStream(new ByteArrayInputStream(baos.toByteArray()));
+        actual.setSystemId(file.getUrl().toString());
+        assertAbout(xml())
+                .that(xml(actual))
+                .ignoringWhitespaceInPrologAndEpilog()
+                .expandingEntityReferences(expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
+                .hasSameContentAs(xml(file.getUrl()));
     }
 }

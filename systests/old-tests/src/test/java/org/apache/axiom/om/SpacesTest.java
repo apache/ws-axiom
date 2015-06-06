@@ -19,7 +19,9 @@
 
 package org.apache.axiom.om;
 
-import org.custommonkey.xmlunit.Diff;
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -27,6 +29,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,8 +63,9 @@ public class SpacesTest extends AbstractTestCase {
 
         Document dom1 = newDocument(new InputSource(getTestResource(file)));
         Document dom2 = newDocument(resultXML);
-        Diff diff = compareXML(dom1, dom2);
-        assertXMLEqual(diff, true);
+        assertAbout(xml())
+                .that(xml(dom2))
+                .hasSameContentAs(xml(dom1));
         rootElement.close(false);
     }
 

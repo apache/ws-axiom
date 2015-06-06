@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMContainer;
@@ -26,7 +29,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Tests {@link OMContainer#removeChildren()} on an {@link OMElement}.
@@ -63,6 +65,8 @@ public class TestRemoveChildren extends AxiomTestCase {
         // Check that the element is in a clean state and that we are able to add
         // new children.
         element.addChild(factory.createOMElement("c", null));
-        XMLAssert.assertXMLEqual("<root><c/></root>", element.toString());
+        assertAbout(xml())
+                .that(xml(element))
+                .hasSameContentAs(xml("<root><c/></root>"));
     }
 }

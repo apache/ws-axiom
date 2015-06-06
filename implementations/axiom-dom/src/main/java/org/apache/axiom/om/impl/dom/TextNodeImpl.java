@@ -81,7 +81,7 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, OMTe
 
     public boolean isElementContentWhitespace() {
         // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return false;
     }
 
     public String toString() {

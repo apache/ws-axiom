@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertAbout;
+import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
 import java.io.StringReader;
 
 import org.apache.axiom.om.OMElement;
@@ -27,7 +30,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Tests the behavior of {@link OMNode#discard()} on an element that is partially built, more
@@ -51,7 +53,9 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
         assertEquals("text", text.getText());
         
         element.discard();
-        XMLAssert.assertXMLEqual("<root><sibling/></root>", root.toString());
+        assertAbout(xml())
+                .that(xml(root))
+                .hasSameContentAs(xml("<root><sibling/></root>"));
         
         // Force the builder to complete the document. If the discard method didn't adjust the
         // element depth correctly, then an exception will occur here
