@@ -328,6 +328,11 @@ APIs that need to be overhauled
   The argument order of the <<<addAttribute(String, String, OMNamespace)>>> method is inconsistent with that
   of the <<<createOMAttribute>>> method in <<<OMFactory>>>.
 
+* <<<OMOutputFormat>>>
+
+  This class should be made immutable (which would require introducing a builder class) so that instances
+  are safe to reuse.
+
 Miscellaneous
 
 * Make non coalescing mode the default
