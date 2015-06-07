@@ -25,25 +25,18 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Iterator;
 
 /** Class SOAPFaultImpl */
 public abstract class SOAPFaultImpl extends SOAPElement
@@ -121,19 +114,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
                 SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, null,
                 getOMFactory(), true);
         faultDetailEnty.setText(sw.getBuffer().toString());
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
-            throws OutputException {
-        serializer.serializeStartpart(this);
-        for (Iterator it = getChildren(); it.hasNext(); ) {
-            OMNodeImpl child = (OMNodeImpl)it.next();
-            // TODO: AXIOM-392
-            if (!((child instanceof SOAPFaultRole || child instanceof SOAPFaultNode) && ((OMElement)child).getText().length() == 0)) {
-                child.internalSerialize(serializer, format, cache);
-            }
-        }
-        serializer.writeEndElement();
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
