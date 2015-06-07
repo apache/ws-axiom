@@ -248,12 +248,7 @@ public aspect AxiomContainerSupport {
     }
 
     public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serialize(output, new OMOutputFormat());
     }
 
     public final void AxiomContainer.serialize(Writer writer) throws XMLStreamException {
@@ -266,12 +261,7 @@ public aspect AxiomContainerSupport {
     }
 
     public final void AxiomContainer.serializeAndConsume(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serializeAndConsume(output, new OMOutputFormat());
     }
 
     public final void AxiomContainer.serializeAndConsume(Writer writer) throws XMLStreamException {

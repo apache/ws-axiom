@@ -569,6 +569,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 }
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource(metaFactory));
+            for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeOMDataSourceWritingToOutputStream(metaFactory, ss, false));
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeOMDataSourceWritingToOutputStream(metaFactory, ss, true));
+            }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, false));
