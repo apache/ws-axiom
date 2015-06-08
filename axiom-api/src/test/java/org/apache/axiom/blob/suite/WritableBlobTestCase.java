@@ -34,13 +34,17 @@ public abstract class WritableBlobTestCase extends MatrixTestCase {
     @Override
     protected final void runTest() throws Throwable {
         WritableBlob blob = factory.createBlob();
-        CleanupCallback cleanupCallback = initialState.transition(blob);
         try {
-            runTest(blob);
-        } finally {
-            if (cleanupCallback != null) {
-                cleanupCallback.cleanup();
+            CleanupCallback cleanupCallback = initialState.transition(blob);
+            try {
+                runTest(blob);
+            } finally {
+                if (cleanupCallback != null) {
+                    cleanupCallback.cleanup();
+                }
             }
+        } finally {
+            blob.release();
         }
     }
     

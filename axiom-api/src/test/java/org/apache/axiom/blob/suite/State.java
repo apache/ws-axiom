@@ -40,7 +40,6 @@ public abstract class State implements Dimension {
             return new CleanupCallback() {
                 public void cleanup() throws IOException {
                     out.close();
-                    blob.release();
                 }
             };
         }
@@ -50,11 +49,7 @@ public abstract class State implements Dimension {
         @Override
         public CleanupCallback transition(final WritableBlob blob) throws IOException {
             blob.getOutputStream().close();
-            return new CleanupCallback() {
-                public void cleanup() throws IOException {
-                    blob.release();
-                }
-            };
+            return null;
         }
     };
 
