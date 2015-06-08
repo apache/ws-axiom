@@ -36,18 +36,16 @@
                     implements both the Axiom API and DOM. It is provided by the <code>axiom-dom</code>
                     artifact. You can use this implementation to integrate with DOM based code.
                     Note however that the DOM implementation provided by DOOM is not perfect. In
-                    particular it doesn't implement DOM 3.</li>
-                    <li>Starting with version 1.2.8, Axiom has
-                    <a href="apidocs/org/apache/axiom/om/impl/jaxp/OMSource.html"><code>OMSource</code></a> and
-                    <a href="apidocs/org/apache/axiom/om/impl/jaxp/OMResult.html"><code>OMResult</code></a>
-                    classes which are implementations of JAXP's
-                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/Source.html"><code>Source</code></a> and
-                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/Result.html"><code>Result</code></a>
+                    particular it doesn't implement (all of) DOM 3.</li>
+                    <li>The Axiom API now has
+                    <a href="apidocs/org/apache/axiom/om/OMContainer.html#getSAXSource(boolean)"><code>getSAXSource</code></a> and
+                    <a href="apidocs/org/apache/axiom/om/impl/jaxp/OMResult.html"><code>getSAXResult</code></a>
+                    methods that (as their names imply) return instances of JAXP's
+                    <a href="http://docs.oracle.com/javase/7/docs/api/javax/xml/transform/sax/SAXSource.html"><code>SAXSource</code></a> and
+                    <a href="http://docs.oracle.com/javase/7/docs/api/javax/xml/transform/sax/SAXResult.html"><code>SAXResult</code></a>
                     classes. You can use these to transform an Axiom tree into DOM (using
-                    a standard implementation of DOM) and vice-versa. These two classes are based on
-                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/sax/SAXSource.html">SAXSource</a> and
-                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/sax/SAXResult.html">SAXResult</a>,
-                    which means that you loose the deferred parsing capabilities of Axiom, but in many cases this will be
+                    a standard implementation of DOM) and vice-versa. Note that since they use the SAX API,
+                    you will loose the deferred parsing capabilities of Axiom, but in many cases this will be
                     acceptable.</li>
                 </ol>
             </answer>
