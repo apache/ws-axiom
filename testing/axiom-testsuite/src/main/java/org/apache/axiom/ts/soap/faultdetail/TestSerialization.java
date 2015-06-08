@@ -48,7 +48,6 @@ public class TestSerialization extends SOAPTestCase {
         StringWriter out = new StringWriter();
         soapFaultDetail.serialize(out);
         String msg = out.toString();
-        System.out.println(msg);
         assertTrue(msg.indexOf("DetailEntry1") != -1);
         assertTrue(msg.indexOf("DetailEntry2") != -1);
     }
