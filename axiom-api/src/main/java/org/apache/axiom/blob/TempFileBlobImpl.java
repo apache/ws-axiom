@@ -31,11 +31,13 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
     private static final Log log = LogFactory.getLog(TempFileBlobImpl.class);
     
     private final TempFileBlobFactory factory;
+    private final Throwable trace;
     private File file;
     private State state = State.NEW;
 
     TempFileBlobImpl(TempFileBlobFactory factory) {
         this.factory = factory;
+        trace = log.isDebugEnabled() ? new Throwable() : null;
     }
 
     public OutputStream getOutputStream() throws IOException {
@@ -91,6 +93,9 @@ final class TempFileBlobImpl extends AbstractWritableBlob {
     protected void finalize() throws Throwable {
         if (file != null) {
             log.warn("Cleaning up unreleased temporary file " + file);
+            if (log.isDebugEnabled()) {
+                log.debug("Blob was created here", trace);
+            }
             file.delete();
         }
     }
