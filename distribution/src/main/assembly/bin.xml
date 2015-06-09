@@ -54,13 +54,11 @@
             <source>../README.txt</source>
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>0644</fileMode>
         </file>
         <file>
             <source>../RELEASE-NOTE.txt</source>
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>0644</fileMode>
         </file>
     </files>
     <dependencySets>
