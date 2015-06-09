@@ -95,6 +95,11 @@
                     <transformers>
                         <transformer implementation="org.apache.axiom.buildutils.shade.osgi.OSGiManifestResourceTransformer" />
                     </transformers>
+                    <!-- Avoid dependency reduced POMs because the artifacts are used as dependencies by other modules
+                         in the project and this causes recurring problems. E.g. in Maven 3.3, downstream modules in the
+                         same build still see the original dependencies of the unshaded JAR. Instead of producing
+                         dependency reduced POMs, we simply declare the relevant dependencies as optional. -->
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <!-- This removes most of the AspectJ runtime classes from the shaded JAR -->
                     <minimizeJar>true</minimizeJar>
                     <createSourcesJar>true</createSourcesJar>
