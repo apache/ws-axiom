@@ -32,7 +32,7 @@
     <packaging>pom</packaging>
 
     <name>Axiom</name>
-    <description>AXIOM API</description>
+    <description>The root/parent POM for Apache Axiom</description>
     <url>http://ws.apache.org/axiom/</url>
     <inceptionYear>2004</inceptionYear>
 
