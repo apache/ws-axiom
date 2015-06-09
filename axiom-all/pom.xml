@@ -100,6 +100,9 @@
                             <transformers>
                                 <transformer implementation="org.apache.axiom.buildutils.shade.axiomxml.AxiomXmlResourceTransformer" />
                             </transformers>
+                            <!-- Since the artifact is only included in the binary distribution but not
+                                 deployed to Maven repositories, we don't need a dependency reduced POM. -->
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
