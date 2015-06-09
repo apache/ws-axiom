@@ -22,6 +22,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.FeatureKeys;
+
 import org.xml.sax.ext.LexicalHandler;
 
 /**
@@ -48,7 +50,11 @@ public interface XSLTImplementation extends Dimension {
             }
             
             public TransformerFactory newTransformerFactory() {
-                return new net.sf.saxon.TransformerFactoryImpl();
+                TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
+                // Suppress the "Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor"
+                // message.
+                factory.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
+                return factory;
             }
 
             public boolean supportsLexicalHandlerWithStreamSource() {
