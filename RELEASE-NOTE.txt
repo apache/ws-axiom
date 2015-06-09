@@ -1,26 +1,19 @@
 
 ===========================================
 
-     Apache Axiom 1.2.14 Release Note
+     Apache Axiom 1.2.15 Release Note
 
 ===========================================
 
-  Axiom 1.2.14 contains fixes for more than twenty JIRA issues [1] as well as lots of other
-  improvements.
-  
-  Users upgrading to 1.2.14 should take into account the following changes:
-  
-    * Axiom now uses Woodstox 4.1.x as StAX implementation (although 3.2.x and 4.0.x are still
-      supported).
-    
-    * OMFactory implementations for DOOM are now stateless.
-    
-    * Several deprecated classes have been moved to a new JAR file named axiom-compat and are no
-      longer included in the core artifacts (axiom-api, axiom-impl and axiom-dom).
-  
-  For more information about the possible impact on existing application code of these changes,
-  please refer to the user guide.
+  Axiom 1.2.15 ships fixes for over a dozen JIRA issues [1] and contains many other improvements,
+  mainly related to consistency between the LLOM and DOOM implementations and how serialization is
+  performed. In particular the builder is now able to continue building the Axiom tree after an
+  element has been consumed (see AXIOM-288).
 
-  [1] https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318340
+  For information about other changes and their potential impact, please refer to the user
+  guide [2].
+
+  [1] https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318876
+  [2] http://ws.apache.org/axiom/userguide/ch04.html#changes-1.2.15
 
 - The Apache Axiom Team.

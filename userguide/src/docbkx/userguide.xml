@@ -1508,7 +1508,8 @@ while (iterator.hasNext()) {
                     </para>
                     <para>
                         To avoid producing empty <tag class="element">Header</tag> elements, projects should switch from using
-                        <methodname>getDefaultEnvelope()</methodname> and <methodname>getHeader()</methodname> (in <classname>SOAPEnvelope</classname>)
+                        <methodname>getDefaultEnvelope()</methodname> (in <classname>SOAPFactory</classname>)
+                        and <methodname>getHeader()</methodname> (in <classname>SOAPEnvelope</classname>)
                         to using <methodname>createDefaultSOAPMessage()</methodname> and <methodname>getOrCreateHeader()</methodname>.
                     </para>
                     <para>

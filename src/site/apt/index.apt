@@ -55,7 +55,20 @@ Key Features
 
 Latest Release
 
-  <<2nd December 2012 - Apache Axiom Verson 1.2.14 Released!>>
+  \[{{{./download.cgi}Download Axiom 1.2.15}}\]
+
+  <<XXX June 2015 - Apache Axiom Version 1.2.15 Released!>>
+  
+  Axiom 1.2.15 ships fixes for over a dozen {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318876}JIRA issues}}
+  and contains many other improvements, mainly related to consistency between the LLOM and DOOM implementations and how serialization is performed.
+  In particular the builder is now able to continue building the Axiom tree after an element has been consumed
+  (see {{{https://issues.apache.org/jira/browse/AXIOM-288}AXIOM-288}}).
+
+  For information about other changes and their potential impact, please refer to the {{{./userguide/ch04.html#changes-1.2.15}user guide}}.
+
+Previous Releases
+
+  <<2nd December 2012 - Apache Axiom Version 1.2.14 Released!>>
   
   Axiom 1.2.14 contains fixes for more than twenty {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318340}JIRA issues}}
   as well as lots of other improvements.
@@ -72,11 +85,7 @@ Latest Release
   For more information about the possible impact on existing application code of these changes,
   please refer to the {{{./userguide/ch04.html#changes-1.2.14}user guide}}.
   
-Previous Releases
-
   <<2nd April 2012 - Apache Axiom Version 1.2.13 Released!>>
-
-  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.13}}\]
   
   Axiom 1.2.13 contains fixes for over thirty {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12316677}JIRA issues}}
   as well as lots of other improvements, mainly related to XOP/MTOM processing, namespace handling, DOM support, documentation
