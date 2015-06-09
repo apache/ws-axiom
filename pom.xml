@@ -257,7 +257,7 @@
         <stax.impl.artifact>stax</stax.impl.artifact>
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
-        <shade.plugin.version>1.6</shade.plugin.version>
+        <shade.plugin.version>2.3</shade.plugin.version>
         <jacoco.version>0.6.3.201306030806</jacoco.version>
         <spring.version>4.0.5.RELEASE</spring.version>
         <springws.version>2.2.0.RELEASE</springws.version>
