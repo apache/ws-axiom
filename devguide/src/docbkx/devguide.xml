@@ -964,12 +964,6 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <itemizedlist>
                 <listitem>
                     <para>
-                        Check for the latest Apache parent POM version (artifact <literal>org.apache:apache</literal>)
-                        and if necessary, change the parent of the Axiom root POM.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
                         Check the dependencies between Java packages in the <filename>axiom-api</filename> module.
                         The <package>org.apache.axiom.util</package> package (including its subpackages) is specified
                         to contain utility classes that don't depend on higher level APIs. More precisely,
@@ -1011,10 +1005,9 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </listitem>
                 <listitem>
                     <para>
-                        Check that the generated Javadoc contains the appropriate set of packages.
-                        In particular, unit test related classes should be excluded, except for the test suite
-                        classes in <package>org.apache.axiom.ts</package> (we don't need to hide the fact that we have
-                        a reusable test suite...).
+                        Check that the generated Javadoc contains the appropriate set of packages, i.e. only the public API.
+                        This excludes classes from <filename>axiom-impl</filename> and <filename>axiom-dom</filename> as well as classes
+                        related to unit tests.
                     </para>
                 </listitem>
                 <listitem>
@@ -1027,7 +1020,8 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <listitem>
                     <para>
                         Check that the set of license files in the <filename>legal</filename> directory
-                        is complete and accurate.
+                        is complete and accurate (by checking that in the binary distribution, there is a license file
+                        for every third party JAR in the <filename>lib</filename> folder).
                     </para>
                 </listitem>
                 <listitem>
