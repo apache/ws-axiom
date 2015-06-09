@@ -49,20 +49,36 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td><a name="1_2_15"/>1.2.15</td>
+                            <td>
+                                Source Distribution
+                                <a href="[preferred]/ws/axiom/1.2.15/axiom-1.2.15-source-release.zip">zip</a> |
+                                <a href="http://www.apache.org/dist/ws/axiom/1.2.15/axiom-1.2.15-source-release.zip.md5">MD5</a> |
+                                <a href="http://www.apache.org/dist/ws/axiom/1.2.15/axiom-1.2.15-source-release.zip.asc">PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="[preferred]/ws/axiom/1.2.15/axiom-1.2.15-bin.zip">zip</a> |
+                                <a href="http://www.apache.org/dist/ws/axiom/1.2.15/axiom-1.2.15-bin.zip.md5">MD5</a> |
+                                <a href="http://www.apache.org/dist/ws/axiom/1.2.15/axiom-1.2.15-bin.zip.asc">PGP</a>
+                            </td>
+                            <td>XX - Jun - 2015</td>
+                            <td>Mirrored</td>
+                        </tr>
+                        <tr>
                             <td><a name="1_2_14"/>1.2.14</td>
                             <td>
                                 Source Distribution
-                                <a href="[preferred]/ws/axiom/1.2.14/axiom-1.2.14-source-release.zip">zip</a> |
-                                <a href="http://www.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-source-release.zip.md5">MD5</a> |
-                                <a href="http://www.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-source-release.zip.asc">PGP</a>
+                                <a href="http://archive.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-source-release.zip">zip</a> |
+                                <a href="http://archive.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-source-release.zip.md5">MD5</a> |
+                                <a href="http://archive.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-source-release.zip.asc">PGP</a>
                                 <br/>
                                 Binary Distribution
-                                <a href="[preferred]/ws/axiom/1.2.14/axiom-1.2.14-bin.zip">zip</a> |
-                                <a href="http://www.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-bin.zip.md5">MD5</a> |
-                                <a href="http://www.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-bin.zip.asc">PGP</a>
+                                <a href="http://archive.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-bin.zip">zip</a> |
+                                <a href="http://archive.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-bin.zip.md5">MD5</a> |
+                                <a href="http://archive.apache.org/dist/ws/axiom/1.2.14/axiom-1.2.14-bin.zip.asc">PGP</a>
                             </td>
                             <td>02 - Dec - 2012</td>
-                            <td>Mirrored</td>
+                            <td>Archived</td>
                         </tr>
                         <tr>
                             <td><a name="1_2_13"/>1.2.13</td>
