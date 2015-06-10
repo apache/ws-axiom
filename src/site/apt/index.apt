@@ -57,7 +57,7 @@ Latest Release
 
   \[{{{./download.cgi}Download Axiom 1.2.15}}\]
 
-  <<XXX June 2015 - Apache Axiom Version 1.2.15 Released!>>
+  <<10th June 2015 - Apache Axiom Version 1.2.15 Released!>>
   
   Axiom 1.2.15 ships fixes for over a dozen {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318876}JIRA issues}}
   and contains many other improvements, mainly related to consistency between the LLOM and DOOM implementations and how serialization is performed.
