@@ -28,7 +28,7 @@
 
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
-    <version>1.2.15</version>
+    <version>1.2.16-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Axiom</name>
@@ -226,9 +226,9 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.15</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.15</developerConnection>
-        <url>http://svn.apache.org/viewvc/webservices/commons/tags/axiom/1.2.15</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/axiom/trunk</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/axiom/trunk</developerConnection>
+        <url>http://svn.apache.org/viewvc/webservices/axiom/trunk</url>
     </scm>
     <issueManagement>
         <system>JIRA</system>
