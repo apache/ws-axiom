@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.2.15-SNAPSHOT</version>
+        <version>1.2.15</version>
     </parent>
 
     <artifactId>apidocs</artifactId>
@@ -113,7 +113,7 @@
                          of changes between releases (to avoid mass changes when committing the site for a new release) -->
                     <notimestamp>true</notimestamp>
                     <windowtitle>Apache Axiom</windowtitle>
-                    <bottom>Copyright &#169; {organizationName}. All Rights Reserved.</bottom>
+                    <bottom>Copyright © {organizationName}. All Rights Reserved.</bottom>
                     <!-- doctitle only appears in the summary and we should include the version there -->
                     <doctitle>Apache Axiom ${project.version}</doctitle>
                 </configuration>
