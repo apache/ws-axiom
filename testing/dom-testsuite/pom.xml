@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>testing</artifactId>
-        <version>1.2.16-SNAPSHOT</version>
+        <version>1.2.15-SNAPSHOT</version>
     </parent>
 
     <artifactId>dom-testsuite</artifactId>
@@ -120,26 +120,26 @@
                             <target>
                                 <unzip dest="${project.build.directory}/w3c/java">
                                     <fileset dir="src/w3c">
-                                        <include name="*.jar" />
+                                        <include name="*.jar"/>
                                     </fileset>
                                     <patternset>
-                                        <include name="org/w3c/domts/DocumentBuilderSetting.java" />
-                                        <include name="org/w3c/domts/DocumentBuilderSettingStrategy.java" />
-                                        <include name="org/w3c/domts/DOMErrorImpl.java" />
-                                        <include name="org/w3c/domts/DOMErrorMonitor.java" />
-                                        <include name="org/w3c/domts/DOMLocatorImpl.java" />
-                                        <include name="org/w3c/domts/DOMTest.java" />
-                                        <include name="org/w3c/domts/DOMTestCase.java" />
-                                        <include name="org/w3c/domts/DOMTestDocumentBuilderFactory.java" />
-                                        <include name="org/w3c/domts/DOMTestFramework.java" />
-                                        <include name="org/w3c/domts/DOMTestIncompatibleException.java" />
-                                        <include name="org/w3c/domts/DOMTestInnerClass.java" />
-                                        <include name="org/w3c/domts/DOMTestSink.java" />
-                                        <include name="org/w3c/domts/DOMTestSuite.java" />
-                                        <include name="org/w3c/domts/UserDataMonitor.java" />
-                                        <include name="org/w3c/domts/UserDataNotification.java" />
-                                        <include name="org/w3c/domts/level?/core/*.java" />
-                                        <exclude name="org/w3c/domts/**/Test*.java" />
+                                        <include name="org/w3c/domts/DocumentBuilderSetting.java"/>
+                                        <include name="org/w3c/domts/DocumentBuilderSettingStrategy.java"/>
+                                        <include name="org/w3c/domts/DOMErrorImpl.java"/>
+                                        <include name="org/w3c/domts/DOMErrorMonitor.java"/>
+                                        <include name="org/w3c/domts/DOMLocatorImpl.java"/>
+                                        <include name="org/w3c/domts/DOMTest.java"/>
+                                        <include name="org/w3c/domts/DOMTestCase.java"/>
+                                        <include name="org/w3c/domts/DOMTestDocumentBuilderFactory.java"/>
+                                        <include name="org/w3c/domts/DOMTestFramework.java"/>
+                                        <include name="org/w3c/domts/DOMTestIncompatibleException.java"/>
+                                        <include name="org/w3c/domts/DOMTestInnerClass.java"/>
+                                        <include name="org/w3c/domts/DOMTestSink.java"/>
+                                        <include name="org/w3c/domts/DOMTestSuite.java"/>
+                                        <include name="org/w3c/domts/UserDataMonitor.java"/>
+                                        <include name="org/w3c/domts/UserDataNotification.java"/>
+                                        <include name="org/w3c/domts/level?/core/*.java"/>
+                                        <exclude name="org/w3c/domts/**/Test*.java"/>
                                     </patternset>
                                 </unzip>
                             </target>
@@ -155,26 +155,26 @@
                             <target>
                                 <unzip src="src/w3c/dom1-core-tests-20040405.jar" dest="${project.build.directory}/w3c/resources/org/w3c/domts/level1/core">
                                     <patternset>
-                                        <include name="*.xml" />
-                                        <exclude name="build.xml" />
-                                        <include name="*.dtd" />
+                                        <include name="*.xml"/>
+                                        <exclude name="build.xml"/>
+                                        <include name="*.dtd"/>
                                     </patternset>
                                 </unzip>
                                 <unzip src="src/w3c/dom2-core-tests-20040405.jar" dest="${project.build.directory}/w3c/resources/org/w3c/domts/level2/core">
                                     <patternset>
-                                        <include name="*.xml" />
-                                        <exclude name="build.xml" />
-                                        <include name="*.dtd" />
+                                        <include name="*.xml"/>
+                                        <exclude name="build.xml"/>
+                                        <include name="*.dtd"/>
                                     </patternset>
                                 </unzip>
                                 <unzip src="src/w3c/dom3-core-tests-20040405.jar" dest="${project.build.directory}/w3c/resources/org/w3c/domts/level3/core">
                                     <patternset>
-                                        <include name="*.xml" />
-                                        <exclude name="build.xml" />
-                                        <include name="*.dtd" />
-                                        <include name="*.xsd" />
-                                        <include name="*.js" />
-                                        <include name="*.ent" />
+                                        <include name="*.xml"/>
+                                        <exclude name="build.xml"/>
+                                        <include name="*.dtd"/>
+                                        <include name="*.xsd"/>
+                                        <include name="*.js"/>
+                                        <include name="*.ent"/>
                                     </patternset>
                                 </unzip>
                             </target>

@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.2.16-SNAPSHOT</version>
+        <version>1.2.15-SNAPSHOT</version>
     </parent>
 
     <artifactId>code-coverage</artifactId>
@@ -250,17 +250,17 @@
                         </goals>
                         <configuration>
                             <target>
-                                <taskdef name="report" classname="org.jacoco.ant.ReportTask" />
+                                <taskdef name="report" classname="org.jacoco.ant.ReportTask"/>
                                 <report>
                                     <executiondata>
-                                        <fileset dir="${project.build.directory}/jacoco/exec" />
+                                        <fileset dir="${project.build.directory}/jacoco/exec"/>
                                     </executiondata>
                                     <structure name="Coverage Report">
                                         <classfiles>
-                                            <fileset dir="${project.build.directory}/jacoco/classes" />
+                                            <fileset dir="${project.build.directory}/jacoco/classes"/>
                                         </classfiles>
                                         <sourcefiles>
-                                            <fileset dir="${project.build.directory}/jacoco/sources" />
+                                            <fileset dir="${project.build.directory}/jacoco/sources"/>
                                         </sourcefiles>
                                     </structure>
                                     <html destdir="${project.reporting.outputDirectory}" />
