@@ -88,6 +88,10 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode, OMNode
         return null;
     }
 
+    public final String getNamespaceURI() {
+        return null;
+    }
+
     public final void setPrefix(String prefix) throws DOMException {
         throw newDOMException(DOMException.NAMESPACE_ERR);
     }

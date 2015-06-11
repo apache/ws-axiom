@@ -47,6 +47,10 @@ public aspect DOMDocumentSupport {
         return null;
     }
 
+    public final String DOMDocument.getNamespaceURI() {
+        return null;
+    }
+
     public final String DOMDocument.getLocalName() {
         return null;
     }

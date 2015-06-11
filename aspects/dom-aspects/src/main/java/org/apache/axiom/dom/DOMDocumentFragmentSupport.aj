@@ -51,6 +51,10 @@ public aspect DOMDocumentFragmentSupport {
         return null;
     }
 
+    public final String DOMDocumentFragment.getNamespaceURI() {
+        return null;
+    }
+
     public final void DOMDocumentFragment.setPrefix(String prefix) throws DOMException {
         throw newDOMException(DOMException.NAMESPACE_ERR);
     }

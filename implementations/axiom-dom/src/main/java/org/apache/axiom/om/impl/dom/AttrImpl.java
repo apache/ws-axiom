@@ -272,21 +272,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
         setTextContent(value);
     }
 
-    /**
-     * Returns the namespace URI of this attr node.
-     *
-     * @see org.w3c.dom.Node#getNamespaceURI()
-     */
-    public String getNamespaceURI() {
-        OMNamespace namespace = getNamespace();
-        if (namespace == null) {
-            return null;
-        } else {
-            String namespaceURI = namespace.getNamespaceURI();
-            return namespaceURI.length() == 0 ? null : namespaceURI;
-        }
-    }
-
     /*
      * DOM-Level 3 methods
      */

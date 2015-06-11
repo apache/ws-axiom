@@ -103,19 +103,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
     }
 
-    /** Returns the value of the namespace URI. */
-    public String getNamespaceURI() {
-        OMNamespace namespace = getNamespace();
-        if (namespace == null) {
-            return null;
-        } else {
-            // If the element has no namespace, the result should be null, not
-            // an empty string.
-            String uri = namespace.getNamespaceURI();
-            return uri.length() == 0 ? null : uri.intern();
-        }
-    }
-
     // /
     // / org.w3c.dom.Element methods
     // /

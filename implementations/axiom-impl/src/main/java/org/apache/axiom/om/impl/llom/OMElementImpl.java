@@ -489,16 +489,6 @@ public class OMElementImpl extends OMNodeImpl
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public String getNamespaceURI() {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            return null;
-        } else {
-            String namespaceURI = ns.getNamespaceURI();
-            return namespaceURI.length() == 0 ? null : namespaceURI;
-        }
-    }
-
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
     }

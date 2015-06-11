@@ -61,10 +61,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         return false; // overridden in ElementImpl
     }
 
-    public String getNamespaceURI() {
-        return null; // Override in AttrImpl and ElementImpl
-    }
-
     /**
      * Returns the collection of attributes associated with this node, or null if none. At this
      * writing, Element is the only type of node which will ever have attributes.

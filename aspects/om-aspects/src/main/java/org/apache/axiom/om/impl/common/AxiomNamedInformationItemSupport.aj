@@ -75,6 +75,16 @@ public aspect AxiomNamedInformationItemSupport {
         }
     }
     
+    public final String AxiomNamedInformationItem.getNamespaceURI() {
+        OMNamespace namespace = getNamespace();
+        if (namespace == null) {
+            return null;
+        } else {
+            String namespaceURI = namespace.getNamespaceURI();
+            return namespaceURI.length() == 0 ? null : namespaceURI;
+        }
+    }
+
     public String AxiomNamedInformationItem.getLocalName() {
         return localName;
     }
