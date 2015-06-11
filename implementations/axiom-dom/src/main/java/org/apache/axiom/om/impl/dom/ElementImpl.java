@@ -752,11 +752,13 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
      * @param tempAttr
      */
     private void updateIsId(boolean isId, AttrImpl tempAttr) {
-        tempAttr.isId = isId;
-        if (isId) {
-            ownerDocument().addIdAttr(tempAttr);
-        } else {
-            ownerDocument().removeIdAttr(tempAttr);
+        if (tempAttr.isId != isId) {
+            tempAttr.isId = isId;
+            if (isId) {
+                ownerDocument().addIdAttr(tempAttr);
+            } else {
+                ownerDocument().removeIdAttr(tempAttr);
+            }
         }
     }
 
