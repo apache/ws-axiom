@@ -279,7 +279,12 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
      */
     public String getNamespaceURI() {
         OMNamespace namespace = getNamespace();
-        return namespace != null ? namespace.getNamespaceURI() : null;
+        if (namespace == null) {
+            return null;
+        } else {
+            String namespaceURI = namespace.getNamespaceURI();
+            return namespaceURI.length() == 0 ? null : namespaceURI;
+        }
     }
 
     /*

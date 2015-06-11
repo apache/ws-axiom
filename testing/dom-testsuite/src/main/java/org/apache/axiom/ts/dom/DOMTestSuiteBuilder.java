@@ -71,6 +71,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetFirstChild(dbf));
+        addTest(new org.apache.axiom.ts.dom.attr.TestGetNamespaceURIWithNoNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestLookupNamespaceURIWithoutOwnerElement(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
