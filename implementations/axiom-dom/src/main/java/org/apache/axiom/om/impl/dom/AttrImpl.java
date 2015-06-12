@@ -24,6 +24,7 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.NonDeferringParentNode;
+import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -41,7 +42,7 @@ import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute, Attr, NamedNode, NonDeferringParentNode {
+public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute, DOMAttribute, NamedNode, NonDeferringParentNode {
     private String type;
 
     /** Flag used to mark an attribute as per the DOM Level 3 specification */

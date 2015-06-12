@@ -21,6 +21,7 @@ package org.apache.axiom.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.w3c.dom.DOMException;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 public aspect DOMDocumentFragmentSupport {
@@ -51,15 +52,23 @@ public aspect DOMDocumentFragmentSupport {
         return null;
     }
 
-    public final String DOMDocumentFragment.getNamespaceURI() {
-        return null;
-    }
-
     public final void DOMDocumentFragment.setPrefix(String prefix) throws DOMException {
         throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 
+    public final String DOMDocumentFragment.getNamespaceURI() {
+        return null;
+    }
+
     public final String DOMDocumentFragment.getLocalName() {
+        return null;
+    }
+
+    public final boolean DOMDocumentFragment.hasAttributes() {
+        return false;
+    }
+
+    public final NamedNodeMap DOMDocumentFragment.getAttributes() {
         return null;
     }
 }

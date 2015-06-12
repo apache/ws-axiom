@@ -21,10 +21,27 @@ package org.apache.axiom.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.w3c.dom.DOMException;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public aspect DOMLeafNodeSupport {
+    public final String DOMLeafNode.getPrefix() {
+        return null;
+    }
+
+    public final void DOMLeafNode.setPrefix(String prefix) throws DOMException {
+        throw newDOMException(DOMException.NAMESPACE_ERR);
+    }
+
+    public final String DOMLeafNode.getNamespaceURI() {
+        return null;
+    }
+
+    public final String DOMLeafNode.getLocalName() {
+        return null;
+    }
+
     public final boolean DOMLeafNode.hasChildNodes() {
         return false;
     }
@@ -55,5 +72,13 @@ public aspect DOMLeafNodeSupport {
 
     public final Node DOMLeafNode.replaceChild(Node newChild, Node oldChild) throws DOMException {
         throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+    }
+
+    public final boolean DOMLeafNode.hasAttributes() {
+        return false;
+    }
+
+    public final NamedNodeMap DOMLeafNode.getAttributes() {
+        return null;
     }
 }

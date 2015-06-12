@@ -57,20 +57,6 @@ public abstract class NodeImpl extends InformationItem implements DOMNode {
         //Parent node should override this 
     }
 
-    public boolean hasAttributes() {
-        return false; // overridden in ElementImpl
-    }
-
-    /**
-     * Returns the collection of attributes associated with this node, or null if none. At this
-     * writing, Element is the only type of node which will ever have attributes.
-     *
-     * @see ElementImpl
-     */
-    public NamedNodeMap getAttributes() {
-        return null; // overridden in ElementImpl
-    }
-
     public final Node cloneNode(boolean deep) {
         OMCloneOptions options = new OMCloneOptions();
         // This is not specified by the API, but it's compatible with versions before 1.2.14

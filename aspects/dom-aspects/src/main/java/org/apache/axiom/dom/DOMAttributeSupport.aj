@@ -18,40 +18,14 @@
  */
 package org.apache.axiom.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
-import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 
-public aspect DOMEntityReferenceSupport {
-    public final String DOMEntityReference.getNodeValue() {
-        return null;
-    }
-
-    public final void DOMEntityReference.setNodeValue(String nodeValue) {
-    }
-
-    public final String DOMEntityReference.getPrefix() {
-        return null;
-    }
-
-    public final void DOMEntityReference.setPrefix(String prefix) throws DOMException {
-        throw newDOMException(DOMException.NAMESPACE_ERR);
-    }
-
-    public final String DOMEntityReference.getNamespaceURI() {
-        return null;
-    }
-
-    public final String DOMEntityReference.getLocalName() {
-        return null;
-    }
-
-    public final boolean DOMEntityReference.hasAttributes() {
+public aspect DOMAttributeSupport {
+    public final boolean DOMAttribute.hasAttributes() {
         return false;
     }
 
-    public final NamedNodeMap DOMEntityReference.getAttributes() {
+    public final NamedNodeMap DOMAttribute.getAttributes() {
         return null;
     }
 }

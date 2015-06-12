@@ -22,6 +22,7 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
@@ -52,6 +53,14 @@ public aspect DOMDocumentSupport {
     }
 
     public final String DOMDocument.getLocalName() {
+        return null;
+    }
+
+    public final boolean DOMDocument.hasAttributes() {
+        return false;
+    }
+
+    public final NamedNodeMap DOMDocument.getAttributes() {
         return null;
     }
 
