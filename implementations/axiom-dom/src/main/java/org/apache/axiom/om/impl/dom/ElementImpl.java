@@ -145,39 +145,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         return oldAttr;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#hasAttribute(java.lang.String)
-     */
-    public boolean hasAttribute(String name) {
-        return this.getAttributeNode(name) != null;
-    }
-
-    /**
-     * Returns whether the given attribute is available or not.
-     *
-     * @see org.w3c.dom.Element#hasAttributeNS(String, String)
-     */
-    public boolean hasAttributeNS(String namespaceURI, String localName) {
-        return this.getAttributeNodeNS(namespaceURI, localName) != null;
-    }
-
-    /**
-     * Looks in the local list of attributes and returns if found. If the local list is null,
-     * returns "".
-     *
-     * @see org.w3c.dom.Element#getAttribute(String)
-     */
-    public String getAttribute(String name) {
-        if (attributes == null) {
-            return "";
-        } else {
-            Attr attr = ((Attr) attributes.getNamedItem(name));
-            return (attr != null) ? attr.getValue() : "";
-        }
-    }
-
     /**
      * Retrieves an attribute node by name.
      *
@@ -186,19 +153,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     public Attr getAttributeNode(String name) {
         return (this.attributes == null) ? null : (AttrImpl) this.attributes
                 .getNamedItem(name);
-    }
-
-    /**
-     * Retrieves an attribute value by local name and namespace URI.
-     *
-     * @see org.w3c.dom.Element#getAttributeNS(String, String)
-     */
-    public String getAttributeNS(String namespaceURI, String localName) {
-        if (this.attributes == null) {
-            return "";
-        }
-        Attr attributeNodeNS = this.getAttributeNodeNS(namespaceURI, localName);
-        return attributeNodeNS == null ? "" : attributeNodeNS.getValue();
     }
 
     /**

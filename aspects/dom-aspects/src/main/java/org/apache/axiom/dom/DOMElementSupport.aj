@@ -20,6 +20,7 @@ package org.apache.axiom.dom;
 
 import javax.xml.XMLConstants;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -115,5 +116,23 @@ public aspect DOMElementSupport {
         }
         DOMParentNode parent = (DOMParentNode)coreGetParent();
         return parent instanceof Element ? ((DOMElement)parent).lookupPrefix(namespaceURI, originalElement) : null;
+    }
+
+    public final String DOMElement.getAttribute(String name) {
+        Attr attr = getAttributeNode(name);
+        return attr != null ? attr.getValue() : "";
+    }
+
+    public final String DOMElement.getAttributeNS(String namespaceURI, String localName) {
+        Attr attr = getAttributeNodeNS(namespaceURI, localName);
+        return attr != null ? attr.getValue() : "";
+    }
+
+    public final boolean DOMElement.hasAttribute(String name) {
+        return getAttributeNode(name) != null;
+    }
+
+    public final boolean DOMElement.hasAttributeNS(String namespaceURI, String localName) {
+        return getAttributeNodeNS(namespaceURI, localName) != null;
     }
 }
