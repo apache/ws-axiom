@@ -92,12 +92,12 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
 
     private final String checkNamespaceIsDeclared(String prefix, String namespaceURI, boolean allowDefaultNamespace, boolean declare) {
         if (prefix == null) {
-            if (namespaceURI.isEmpty()) {
+            if (namespaceURI.length() == 0) {
                 prefix = "";
                 declare = false;
             } else {
                 prefix = coreLookupPrefix(namespaceURI, true);
-                if (prefix != null && (allowDefaultNamespace || !prefix.isEmpty())) {
+                if (prefix != null && (allowDefaultNamespace || prefix.length() != 0)) {
                     declare = false;
                 } else {
                     prefix = OMSerializerUtil.getNextNSPrefix();
@@ -162,7 +162,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
 
         try {
-            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, Policies.ATTRIBUTE_MIGRATION_POLICY, true, null, ReturnValue.NONE);
+            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
         } catch (NodeMigrationException ex) {
             DOMExceptionUtil.translate(ex);
         }
@@ -408,7 +408,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
         }
-        ((AttrImpl)attr).coreRemove();
+        ((AttrImpl)attr).coreRemove(null);
     }
 
     public void setNamespace(OMNamespace namespace) {
@@ -458,10 +458,9 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         NamedNodeMap attributes = getAttributes();
         ArrayList list = new ArrayList();
         for (int i = 0; i < attributes.getLength(); i++) {
-            OMAttribute item = (OMAttribute) attributes.item(i);
-            if (item.getNamespace() == null
-                    || !(item.getNamespace() != null && XMLConstants.XMLNS_ATTRIBUTE_NS_URI
-                    .equals(item.getNamespace().getNamespaceURI()))) {
+            AttrImpl item = (AttrImpl) attributes.item(i);
+            // TODO: what about NS unaware attributes here?
+            if (item instanceof TypedAttribute) {
                 list.add(item);
             }
         }
@@ -485,13 +484,18 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
             AttrImpl attr = (AttrImpl)attributes.item(i);
             AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, true, false);
             clonedAttr.setSpecified(attr.getSpecified());
+            if (namespaceRepairing && attr instanceof NSAwareAttribute) {
+                NSAwareAttribute nsAwareAttr = (NSAwareAttribute)attr;
+                String namespaceURI = nsAwareAttr.coreGetNamespaceURI();
+                if (namespaceURI.length() != 0) {
+                    clone.checkNamespaceIsDeclared(nsAwareAttr.coreGetPrefix(), namespaceURI, false, true);
+                }
+            }
             try {
                 clone.coreAppendAttribute(clonedAttr, NodeMigrationPolicy.MOVE_ALWAYS);
             } catch (NodeMigrationException ex) {
                 DOMExceptionUtil.translate(ex);
             }
-            // TODO: namespace repairing
-//            clone.setAttributeNodeNS(clonedAttr, false, namespaceRepairing && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI()));
         }
         return clone;
     }

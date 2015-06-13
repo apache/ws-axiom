@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomText;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 
 public final class NSAwareAttribute extends TypedAttribute implements OMAttributeEx, AxiomAttribute, NamedNode, CoreNSAwareAttribute {
@@ -44,52 +43,12 @@ public final class NSAwareAttribute extends TypedAttribute implements OMAttribut
     public NSAwareAttribute(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
         super(ownerDocument, factory);
-        if (ns != null) {
-            if (ns.getNamespaceURI().length() == 0) {
-                if (ns.getPrefix().length() > 0) {
-                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
-                } else {
-                    ns = null;
-                }
-            } else if (ns.getPrefix().length() == 0) {
-                // TODO: allowed by DOM
-//                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
-            }
-        }
         internalSetLocalName(localName);
         if (value != null && value.length() != 0) {
             coreAppendChild((AxiomText)factory.createOMText(value), false);
         }
         this.type = OMConstants.XMLATTRTYPE_CDATA;
         internalSetNamespace(ns);
-    }
-
-    public NSAwareAttribute(DocumentImpl ownerDocument, String name, String value,
-                    OMFactory factory) {
-        super(ownerDocument, factory);
-        internalSetLocalName(name);
-        coreAppendChild((AxiomText)factory.createOMText(value), false);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
-    }
-
-    public NSAwareAttribute(DocumentImpl ownerDocument, String name, OMFactory factory) {
-        super(ownerDocument, factory);
-        internalSetLocalName(name);
-        //If this is a default namespace attr
-        if (XMLConstants.XMLNS_ATTRIBUTE.equals(name)) {
-            // TODO: this looks wrong; if the attribute name is "xmlns", then the prefix shouldn't be "xmlns"
-            internalSetNamespace(new OMNamespaceImpl(
-                    XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE));
-        }
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
-    }
-
-    public NSAwareAttribute(DocumentImpl ownerDocument, String localName,
-                    OMNamespace namespace, OMFactory factory) {
-        super(ownerDocument, factory);
-        internalSetLocalName(localName);
-        internalSetNamespace(namespace);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     public String getName() {

@@ -22,7 +22,10 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMDocument;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -201,17 +204,11 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
                 if (sourceAttrs != null) {
                     int length = sourceAttrs.getLength();
                     for (int index = 0; index < length; index++) {
-                        Attr attr = (Attr) sourceAttrs.item(index);
-                        if (attr.getNamespaceURI() != null
-                                && !attr.getNamespaceURI().equals(
-                                XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-                            Attr newAttr = (Attr) importNode(attr, true);
-                            newElement.setAttributeNodeNS(newAttr);
-                        } else { // if (attr.getLocalName() == null) {
-                            Attr newAttr = (Attr) importNode(attr, true);
-                            newElement.setAttributeNode(newAttr);
+                        try {
+                            ((ElementImpl)newElement).coreAppendAttribute((AttrImpl)importNode(sourceAttrs.item(index), true), NodeMigrationPolicy.MOVE_ALWAYS);
+                        } catch (CoreModelException ex) {
+                            throw DOMExceptionUtil.translate(ex);
                         }
-
                     }
                 }
                 newNode = newElement;
@@ -222,15 +219,10 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
                 if (importedNode.getLocalName() == null) {
                     newNode = createAttribute(importedNode.getNodeName());
                 } else {
-                    //Check whether it is a default ns decl
-                    if (XMLConstants.XMLNS_ATTRIBUTE.equals(importedNode.getNodeName())) {
-                        newNode = createAttribute(importedNode.getNodeName());
-                    } else {
-                        String ns = importedNode.getNamespaceURI();
-                        ns = (ns != null) ? ns.intern() : null;
-                        newNode = createAttributeNS(ns ,
-                                                    importedNode.getNodeName());
-                    }
+                    String ns = importedNode.getNamespaceURI();
+                    ns = (ns != null) ? ns.intern() : null;
+                    newNode = createAttributeNS(ns ,
+                                                importedNode.getNodeName());
                 }
                 ((Attr) newNode).setValue(importedNode.getNodeValue());
                 break;

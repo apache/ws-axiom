@@ -198,6 +198,17 @@ public class OMDOMFactory implements AxiomNodeFactory {
                 ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
             }
         }
+        if (ns != null) {
+            if (ns.getNamespaceURI().length() == 0) {
+                if (ns.getPrefix().length() > 0) {
+                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+                } else {
+                    ns = null;
+                }
+            } else if (ns.getPrefix().length() == 0) {
+                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
+            }
+        }
         return new NSAwareAttribute(null, localName, ns, value, this);
     }
 
@@ -338,7 +349,7 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public final CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
             String localName, String prefix, String value, String type) {
-        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.isEmpty() ? null : new OMNamespaceImpl(namespaceURI, prefix), value, this);
+        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix), value, this);
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
