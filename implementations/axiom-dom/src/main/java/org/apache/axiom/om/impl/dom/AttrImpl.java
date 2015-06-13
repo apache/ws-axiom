@@ -21,20 +21,9 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
-import javax.xml.XMLConstants;
-
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.dom.DOMAttribute;
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMAttributeEx;
-import org.apache.axiom.om.impl.common.AxiomAttribute;
-import org.apache.axiom.om.impl.common.AxiomText;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -181,12 +170,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDefe
 
     public boolean isId() {
         return isId;
-    }
-
-    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        // Note: targetParent is always null here
-        // TODO
-        return new NSAwareAttribute(getLocalName(), getNamespace(), type, getOMFactory());
     }
 
     public final boolean isComplete() {

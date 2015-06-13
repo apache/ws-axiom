@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
@@ -31,6 +33,10 @@ final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclara
         declaredNamespace = namespace;
     }
 
+    public final NodeFactory coreGetNodeFactory() {
+        return ((NodeFactory)getOMFactory());
+    }
+
     public String coreGetDeclaredPrefix() {
         return declaredNamespace.getPrefix();
     }
@@ -38,5 +44,12 @@ final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclara
     // TODO: should be part of a DOM aspect
     public String coreGetDeclaredNamespaceURI() {
         return getValue();
+    }
+
+    @Override
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent,
+            boolean namespaceRepairing) {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

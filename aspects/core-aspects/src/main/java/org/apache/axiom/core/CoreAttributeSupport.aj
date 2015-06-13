@@ -66,6 +66,10 @@ public aspect CoreAttributeSupport {
         return nextAttribute;
     }
 
+    public final void CoreAttribute.internalSetNextAttribute(CoreAttribute nextAttribute) {
+        this.nextAttribute = nextAttribute;
+    }
+    
     public final CoreAttribute CoreAttribute.coreGetPreviousAttribute() {
         if (owner instanceof CoreElement) {
             CoreElement ownerElement = (CoreElement)owner;

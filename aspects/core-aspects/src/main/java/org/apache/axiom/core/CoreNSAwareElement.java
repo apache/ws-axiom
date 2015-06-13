@@ -16,13 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreNSAwareElement;
-import org.apache.axiom.core.DeferringParentNode;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMElementEx;
+public interface CoreNSAwareElement extends CoreElement, CoreNSAwareNamedNode {
 
-public interface AxiomElement extends OMElementEx, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement, DeferringParentNode {
-    void addNamespaceDeclaration(OMNamespace ns);
 }

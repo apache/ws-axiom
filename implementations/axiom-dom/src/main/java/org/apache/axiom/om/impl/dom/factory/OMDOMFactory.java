@@ -328,8 +328,7 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
             String localName, String prefix, String value, String type) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.isEmpty() ? null : new OMNamespaceImpl(namespaceURI, prefix), this);
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,

@@ -79,13 +79,142 @@ public aspect CoreElementSupport {
 
     public final void CoreElement.coreAppendAttribute(CoreAttribute attr, NodeMigrationPolicy policy) throws NodeMigrationException {
         // TODO: we should probably check if the attribute is already owned by the element
-        attr = accept(attr, policy);
+        internalAppendAttribute(accept(attr, policy));
+    }
+
+    private void CoreElement.internalAppendAttribute(CoreAttribute attr) {
+        // TODO: we should probably check if the attribute is already owned by the element
         attr.internalSetOwnerElement(this);
         CoreAttribute lastAttribute = coreGetLastAttribute();
         if (lastAttribute == null) {
             firstAttribute = attr;
         } else {
             lastAttribute.insertAttributeAfter(attr);
+        }
+    }
+
+    public final void CoreElement.coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value) {
+        CoreAttribute attr = firstAttribute;
+        CoreAttribute previousAttr = null;
+        while (attr != null && !matcher.matches(attr, namespaceURI, name)) {
+            previousAttr = attr;
+            attr = attr.coreGetNextAttribute();
+        }
+        if (attr == null) {
+            CoreDocument document = coreGetOwnerDocument(false);
+            CoreAttribute newAttr = matcher.createAttribute(coreGetNodeFactory(), document, namespaceURI, name, prefix, value);
+            if (previousAttr == null) {
+                internalAppendAttribute(newAttr);
+            } else {
+                previousAttr.insertAttributeAfter(newAttr);
+            }
+        } else {
+            matcher.update(attr, prefix, value);
+        }
+    }
+    
+    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute coreAttr, NodeMigrationPolicy policy, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument, ReturnValue returnValue) throws NodeMigrationException {
+        if (coreAttr.coreGetOwnerElement() == this) {
+            // TODO: document this and add assertion
+            // TODO: take returnValue into account
+            return coreAttr;
+        }
+        CoreAttribute attr = accept(coreAttr, policy);
+        String namespaceURI = matcher.getNamespaceURI(attr);
+        String name = matcher.getName(attr); 
+        CoreAttribute existingAttr = firstAttribute;
+        CoreAttribute previousAttr = null;
+        while (existingAttr != null && !matcher.matches(existingAttr, namespaceURI, name)) {
+            previousAttr = existingAttr;
+            existingAttr = existingAttr.coreGetNextAttribute();
+        }
+        attr.internalSetOwnerElement(this);
+        if (existingAttr == null) {
+            if (previousAttr == null) {
+                firstAttribute = attr;
+            } else {
+                previousAttr.internalSetNextAttribute(attr);
+            }
+        } else {
+            if (previousAttr == null) {
+                firstAttribute = attr;
+            } else {
+                previousAttr.internalSetNextAttribute(attr);
+            }
+            existingAttr.internalUnsetOwnerElement(changeDocumentOfReplacedAttribute ? newDocument : coreGetOwnerDocument(true));
+            attr.internalSetNextAttribute(existingAttr.coreGetNextAttribute());
+            existingAttr.internalSetNextAttribute(null);
+        }
+        switch (returnValue) {
+            case ADDED_ATTRIBUTE: return attr;
+            case REPLACED_ATTRIBUTE: return existingAttr;
+            default: return null;
+        }
+    }
+
+    public abstract String CoreElement.getImplicitNamespaceURI(String prefix);
+    
+    public final String CoreElement.coreLookupNamespaceURI(String prefix, boolean strict) {
+        if (!strict) {
+            String namespaceURI = getImplicitNamespaceURI(prefix);
+            if (namespaceURI != null) {
+                return namespaceURI;
+            }
+        }
+        for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+            if (attr instanceof CoreNamespaceDeclaration) {
+                CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                if (prefix.equals(decl.coreGetDeclaredPrefix())) {
+                    return decl.coreGetDeclaredNamespaceURI();
+                }
+            }
+        }
+        CoreElement parentElement = coreGetParentElement();
+        if (parentElement != null) {
+            return parentElement.coreLookupNamespaceURI(prefix, strict);
+        } else if (prefix.length() == 0) {
+            return "";
+        } else {
+            return null;
+        }
+    }
+
+    public abstract String CoreElement.getImplicitPrefix(String namespaceURI);
+    
+    public final String CoreElement.coreLookupPrefix(String namespaceURI, boolean strict) {
+        if (namespaceURI == null) {
+            throw new IllegalArgumentException("namespaceURI must not be null");
+        }
+        if (!strict) {
+            String prefix = getImplicitPrefix(namespaceURI);
+            if (prefix != null) {
+                return prefix;
+            }
+        }
+        for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+            if (attr instanceof CoreNamespaceDeclaration) {
+                CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                if (decl.coreGetDeclaredNamespaceURI().equals(namespaceURI)) {
+                    return decl.coreGetDeclaredPrefix();
+                }
+            }
+        }
+        CoreElement parentElement = coreGetParentElement();
+        if (parentElement != null) {
+            String prefix = parentElement.coreLookupPrefix(namespaceURI, strict);
+            // The prefix declared on one of the ancestors may be masked by another
+            // namespace declaration on this element (or one of its descendants).
+            for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+                if (attr instanceof CoreNamespaceDeclaration) {
+                    CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                    if (decl.coreGetDeclaredPrefix().equals(prefix)) {
+                        return null;
+                    }
+                }
+            }
+            return prefix;
+        } else {
+            return null;
         }
     }
 }

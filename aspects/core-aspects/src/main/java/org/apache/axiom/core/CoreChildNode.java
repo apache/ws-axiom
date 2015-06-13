@@ -19,5 +19,11 @@
 package org.apache.axiom.core;
 
 public interface CoreChildNode extends CoreNode {
-    
+    /**
+     * Get the parent element of this node.
+     * 
+     * @return the parent element of this node or <code>null</code> if the node has no parent or if
+     *         the parent is not an element
+     */
+    CoreElement coreGetParentElement();
 }

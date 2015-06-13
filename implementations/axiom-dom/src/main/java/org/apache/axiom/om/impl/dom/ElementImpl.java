@@ -21,6 +21,8 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMConfigurationImpl;
@@ -36,9 +38,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -84,6 +88,29 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
         this.attributes = new AttributeMap(this);
         internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
+    }
+
+    private final String checkNamespaceIsDeclared(String prefix, String namespaceURI, boolean allowDefaultNamespace, boolean declare) {
+        if (prefix == null) {
+            if (namespaceURI.isEmpty()) {
+                prefix = "";
+                declare = false;
+            } else {
+                prefix = coreLookupPrefix(namespaceURI, true);
+                if (prefix != null && (allowDefaultNamespace || !prefix.isEmpty())) {
+                    declare = false;
+                } else {
+                    prefix = OMSerializerUtil.getNextNSPrefix();
+                }
+            }
+        } else {
+            String existingNamespaceURI = coreLookupNamespaceURI(prefix, true);
+            declare = declare && !namespaceURI.equals(existingNamespaceURI);
+        }
+        if (declare) {
+            coreSetAttribute(AttributeMatcher.NAMESPACE_DECLARATION, null, prefix, null, namespaceURI);
+        }
+        return prefix;
     }
 
     // /
@@ -269,7 +296,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         String prefix = DOMUtil.getPrefix(qualifiedName);
         DOMUtil.validateAttrName(namespaceURI, localName, prefix);
         
-        AttrImpl attr = (AttrImpl)getAttributeNodeNS(namespaceURI, localName);
+        NSAwareAttribute attr = (NSAwareAttribute)getAttributeNodeNS(namespaceURI, localName);
         if (attr != null) {
             attr.setPrefix(prefix);
             attr.setValue(value);
@@ -322,20 +349,35 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         return attr;
     }
 
-    public OMAttribute addAttribute(String localName, String value,
-                                    OMNamespace ns) {
-        OMNamespace namespace = null;
-        if (ns != null) {
-            String namespaceURI = ns.getNamespaceURI();
-            String prefix = ns.getPrefix();
-            if (namespaceURI.length() > 0 || prefix != null) {
-                namespace = findNamespace(namespaceURI, prefix);
-                if (namespace == null || prefix == null && namespace.getPrefix().length() == 0) {
-                    namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
+    public final OMAttribute addAttribute(String localName, String value, OMNamespace ns) {
+        try {
+            String namespaceURI;
+            String prefix;
+            if (ns == null) {
+                namespaceURI = "";
+                prefix = "";
+            } else {
+                namespaceURI = ns.getNamespaceURI();
+                prefix = ns.getPrefix();
+                if (namespaceURI.length() == 0) {
+                    if (prefix == null) {
+                        prefix = "";
+                    } else if (prefix.length() > 0) {
+                        throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+                    }
+                } else {
+                    if (prefix == null || prefix.length() > 0) {
+                        prefix = checkNamespaceIsDeclared(prefix, namespaceURI, false, true);
+                    } else {
+                        throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
+                    }
                 }
             }
+            AxiomAttribute attr = (AxiomAttribute)coreGetNodeFactory().createAttribute(null, namespaceURI, localName, prefix, value, "CDATA");
+            return (AxiomAttribute)coreSetAttribute(Policies.ATTRIBUTE_MATCHER, attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.ADDED_ATTRIBUTE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.translate(ex);
         }
-        return addAttribute(new NSAwareAttribute(null, localName, namespace, value, getOMFactory()));
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {

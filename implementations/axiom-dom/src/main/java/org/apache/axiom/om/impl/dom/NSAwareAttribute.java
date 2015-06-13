@@ -20,7 +20,9 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.XMLConstants;
 
+import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -30,7 +32,7 @@ import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 
-public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, NamedNode {
+public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, NamedNode, CoreNSAwareAttribute {
     // TODO: copy isId?
     NSAwareAttribute(String localName, OMNamespace namespace, String type, OMFactory factory) {
         super(null, factory);
@@ -178,5 +180,22 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
         String attrValue = getValue();
         return localName.hashCode() ^ (attrValue != null ? attrValue.toString().hashCode() : 0) ^
                 (namespace != null ? namespace.hashCode() : 0);
+    }
+
+    @Override
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        // Note: targetParent is always null here
+        // TODO
+        return new NSAwareAttribute(getLocalName(), getNamespace(), type, getOMFactory());
+    }
+
+    public String coreGetType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public void coreSetType(String type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
     }
 }

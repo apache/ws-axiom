@@ -40,4 +40,23 @@ aspect NamedNodeSupport {
             internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix == null ? "" : prefix));
         }
     }
+    
+    public final String NamedNode.coreGetNamespaceURI() {
+        String namespaceURI = getNamespaceURI();
+        return namespaceURI == null ? "" : namespaceURI;
+    }
+    
+    public final String NamedNode.coreGetPrefix() {
+        String prefix = getPrefix();
+        return prefix == null ? "" : prefix;
+    }
+
+    public final String NamedNode.coreGetLocalName() {
+        return getLocalName();
+    }
+    
+    public final void NamedNode.coreSetPrefix(String prefix) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }
