@@ -23,6 +23,7 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -45,7 +46,6 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
-import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
@@ -53,6 +53,7 @@ import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
+import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -326,9 +327,17 @@ public class OMDOMFactory implements AxiomNodeFactory {
         return new CDATASectionImpl(this);
     }
 
-    public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
+    public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {
+        NSUnawareAttribute attr = new NSUnawareAttribute((DocumentImpl)document, this);
+        attr.coreSetName(name);
+        attr.coreSetValue(value);
+//        attr.coreSetType(type);
+        return attr;
+    }
+
+    public final CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
             String localName, String prefix, String value, String type) {
-        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.isEmpty() ? null : new OMNamespaceImpl(namespaceURI, prefix), this);
+        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.isEmpty() ? null : new OMNamespaceImpl(namespaceURI, prefix), value, this);
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,

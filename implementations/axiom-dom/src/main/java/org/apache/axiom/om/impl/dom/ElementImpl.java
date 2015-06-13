@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
@@ -225,28 +226,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
 
         return (Attr) this.attributes.setNamedItem(attr);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#setAttribute(java.lang.String, java.lang.String)
-     */
-    public void setAttribute(String name, String value) throws DOMException {
-        // Check for invalid charaters
-        if (!DOMUtil.isQualifiedName(name)) {
-            throw newDOMException(DOMException.INVALID_CHARACTER_ERR);
-        }
-        if (name.startsWith(XMLConstants.XMLNS_ATTRIBUTE + ":")) {
-            // This is a ns declaration
-            this.declareNamespace(value, DOMUtil.getLocalName(name));
-        } else if (name.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-            this.declareDefaultNamespace(value);
-        } else {
-            this.setAttributeNode(new NSAwareAttribute(ownerDocument(), name, value,
-                                               getOMFactory()));
-        }
 
     }
 
@@ -493,17 +472,21 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     }
 
     public OMNamespace findNamespaceURI(String prefix) {
-        if (attributes != null) {
-            Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : prefix);
-            if (decl != null) {
-                String namespaceURI = decl.getValue();
-                if (prefix != null && prefix.length() > 0 && namespaceURI.length() == 0) {
-                    // Prefix undeclaring case (XML 1.1 only)
-                    return null;
-                } else {
-                    return new OMNamespaceImpl(namespaceURI, prefix);
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null) {
+            if (attr instanceof NamespaceDeclaration) {
+                NamespaceDeclaration nsDecl = (NamespaceDeclaration)attr;
+                if (nsDecl.coreGetDeclaredPrefix().equals(prefix)) {
+                    OMNamespace ns = nsDecl.getDeclaredNamespace();
+                    if (prefix != null && prefix.length() > 0 && ns.getNamespaceURI().length() == 0) {
+                        // Prefix undeclaring case (XML 1.1 only)
+                        return null;
+                    } else {
+                        return ns;
+                    }
                 }
             }
+            attr = attr.coreGetNextAttribute();
         }
         ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode instanceof OMElement) {

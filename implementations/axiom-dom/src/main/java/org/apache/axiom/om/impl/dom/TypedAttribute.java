@@ -16,12 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.dom;
 
-/**
- * Represents a namespace unaware named information item.
- */
-public interface CoreNSUnawareNamedNode {
-    String coreGetName();
-    void coreSetName(String name);
+import org.apache.axiom.om.OMFactory;
+
+public abstract class TypedAttribute extends AttrImpl {
+    public TypedAttribute(DocumentImpl ownerDocument, OMFactory factory) {
+        super(ownerDocument, factory);
+    }
+
+    public String coreGetType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
+    public void coreSetType(String type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
 }

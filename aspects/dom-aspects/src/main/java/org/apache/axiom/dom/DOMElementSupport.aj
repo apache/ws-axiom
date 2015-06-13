@@ -143,4 +143,9 @@ public aspect DOMElementSupport {
     public final boolean DOMElement.hasAttributeNS(String namespaceURI, String localName) {
         return getAttributeNodeNS(namespaceURI, localName) != null;
     }
+
+    public final void DOMElement.setAttribute(String name, String value) {
+        NSUtil.validateName(name);
+        coreSetAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name, null, value);
+    }
 }

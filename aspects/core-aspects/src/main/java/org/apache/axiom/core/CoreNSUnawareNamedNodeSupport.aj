@@ -18,10 +18,14 @@
  */
 package org.apache.axiom.core;
 
-/**
- * Represents a namespace unaware named information item.
- */
-public interface CoreNSUnawareNamedNode {
-    String coreGetName();
-    void coreSetName(String name);
+public aspect CoreNSUnawareNamedNodeSupport {
+    private String CoreNSUnawareNamedNode.name;
+
+    public final String CoreNSUnawareNamedNode.coreGetName() {
+        return name;
+    }
+    
+    public final void CoreNSUnawareNamedNode.coreSetName(String name) {
+        this.name = name;
+    }
 }

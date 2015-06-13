@@ -32,7 +32,7 @@ import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 
-public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, NamedNode, CoreNSAwareAttribute {
+public final class NSAwareAttribute extends TypedAttribute implements OMAttributeEx, AxiomAttribute, NamedNode, CoreNSAwareAttribute {
     // TODO: copy isId?
     NSAwareAttribute(String localName, OMNamespace namespace, String type, OMFactory factory) {
         super(null, factory);
@@ -187,15 +187,5 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
         // Note: targetParent is always null here
         // TODO
         return new NSAwareAttribute(getLocalName(), getNamespace(), type, getOMFactory());
-    }
-
-    public String coreGetType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
-    }
-
-    public void coreSetType(String type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
     }
 }

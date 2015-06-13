@@ -16,12 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.dom;
 
-/**
- * Represents a namespace unaware named information item.
- */
-public interface CoreNSUnawareNamedNode {
-    String coreGetName();
-    void coreSetName(String name);
+import org.apache.axiom.core.CoreNSUnawareAttribute;
+
+public interface DOMNSUnawareAttribute extends DOMAttribute, DOMNSUnawareNamedNode, CoreNSUnawareAttribute {
+
 }

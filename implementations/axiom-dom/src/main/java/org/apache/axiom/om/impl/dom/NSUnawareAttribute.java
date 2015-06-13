@@ -16,12 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.dom;
 
-/**
- * Represents a namespace unaware named information item.
- */
-public interface CoreNSUnawareNamedNode {
-    String coreGetName();
-    void coreSetName(String name);
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.dom.DOMNSUnawareAttribute;
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMFactory;
+
+public class NSUnawareAttribute extends TypedAttribute implements DOMNSUnawareAttribute {
+    public NSUnawareAttribute(DocumentImpl ownerDocument, OMFactory factory) {
+        super(ownerDocument, factory);
+    }
+
+    public final NodeFactory coreGetNodeFactory() {
+        return ((NodeFactory)getOMFactory());
+    }
+
+    @Override
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent,
+            boolean namespaceRepairing) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException();
+    }
+
 }

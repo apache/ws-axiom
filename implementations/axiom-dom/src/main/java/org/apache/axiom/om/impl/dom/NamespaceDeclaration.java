@@ -46,6 +46,10 @@ final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclara
         return getValue();
     }
 
+    public final OMNamespace getDeclaredNamespace() {
+        return declaredNamespace;
+    }
+
     @Override
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent,
             boolean namespaceRepairing) {
