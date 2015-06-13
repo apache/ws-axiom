@@ -57,39 +57,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDefe
     // /org.w3c.dom.Node methods
     // /
 
-    /** Returns the name of this attribute. */
-    public String getNodeName() {
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        return (namespace != null
-                && !"".equals(namespace.getPrefix()) &&
-                !(XMLConstants.XMLNS_ATTRIBUTE.equals(localName)))
-                ? namespace.getPrefix() + ":" + localName
-                : localName;
-    }
-
-    /**
-     * Returns the node type.
-     *
-     * @see org.w3c.dom.Node#getNodeType()
-     */
-    public short getNodeType() {
-        return Node.ATTRIBUTE_NODE;
-    }
-
-    /**
-     * Returns the value of this attribute.
-     *
-     * @see org.w3c.dom.Node#getNodeValue()
-     */
-    public String getNodeValue() throws DOMException {
-        return getValue();
-    }
-
-    public void setNodeValue(String nodeValue) throws DOMException {
-        setValue(nodeValue);
-    }
-
     /**
      * Returns the value of this attribute.
      *
