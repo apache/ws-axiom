@@ -592,5 +592,25 @@ public class OMElementImpl extends OMNodeImpl
             this.setComplete(true);
         }
     }
+
+    public final String coreGetNamespaceURI() {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public final String coreGetPrefix() {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public final void coreSetPrefix(String prefix) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public final String coreGetLocalName() {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }
 

@@ -23,6 +23,7 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
@@ -344,6 +345,12 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     
     public CoreCDATASection createCDATASection() {
         return new CDATASectionImpl(this);
+    }
+
+    public CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value,
+            String type) {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
