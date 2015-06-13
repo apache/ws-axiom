@@ -18,10 +18,18 @@
  */
 package org.apache.axiom.core;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+/**
+ * Indicates that a request to insert a node could not be fulfilled because the node belongs to a
+ * different document. Whether or not this exception may be thrown by a method depends on the
+ * provided {@link NodeMigrationPolicy} implementation.
+ */
+public class WrongDocumentException extends NodeMigrationException {
+    private static final long serialVersionUID = -7135259787609333075L;
+
+    public WrongDocumentException() {
+    }
+
+    public WrongDocumentException(String message) {
+        super(message);
+    }
 }

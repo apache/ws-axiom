@@ -18,10 +18,18 @@
  */
 package org.apache.axiom.core;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+/**
+ * Indicates that a request to insert a node could not be fulfilled because the node is already
+ * owned by another node in the same document. Whether or not this exception may be thrown by a
+ * method depends on the provided {@link NodeMigrationPolicy} implementation.
+ */
+public class NodeInUseException extends NodeMigrationException {
+    private static final long serialVersionUID = 3857141874280465603L;
+
+    public NodeInUseException() {
+    }
+
+    public NodeInUseException(String message) {
+        super(message);
+    }
 }

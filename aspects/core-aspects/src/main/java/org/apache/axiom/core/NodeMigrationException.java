@@ -18,10 +18,18 @@
  */
 package org.apache.axiom.core;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+/**
+ * Indicates that a request to insert a node could not be fulfilled. Exceptions of this type are
+ * thrown when {@link NodeMigrationPolicy#getAction(boolean, boolean, boolean)} returns
+ * {@link NodeMigrationPolicy.Action#REJECT}.
+ */
+public abstract class NodeMigrationException extends CoreModelException {
+    private static final long serialVersionUID = -1075697096493216501L;
+
+    public NodeMigrationException() {
+    }
+
+    public NodeMigrationException(String message) {
+        super(message);
+    }
 }

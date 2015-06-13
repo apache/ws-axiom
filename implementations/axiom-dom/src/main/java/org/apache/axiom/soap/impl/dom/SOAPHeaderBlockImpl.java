@@ -30,6 +30,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPConstants;
@@ -61,7 +62,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
         if (omAttribute != null) {
             omAttribute.setAttributeValue(attrValue);
         } else {
-            OMAttribute attribute = new AttrImpl((DocumentImpl)getOwnerDocument(), attributeName,
+            OMAttribute attribute = new NSAwareAttribute((DocumentImpl)getOwnerDocument(), attributeName,
                                                  new OMNamespaceImpl(soapEnvelopeNamespaceURI,
                                                                    SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                                                  attrValue, getOMFactory());

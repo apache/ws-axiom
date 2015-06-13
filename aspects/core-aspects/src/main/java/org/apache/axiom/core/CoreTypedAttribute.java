@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.core;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+/**
+ * Represents an attribute information item that is not a namespace declaration.
+ */
+public interface CoreTypedAttribute extends CoreAttribute {
+    String coreGetType();
+    void coreSetType(String type);
 }

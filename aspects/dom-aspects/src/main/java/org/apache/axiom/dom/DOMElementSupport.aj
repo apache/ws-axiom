@@ -118,6 +118,14 @@ public aspect DOMElementSupport {
         return parent instanceof Element ? ((DOMElement)parent).lookupPrefix(namespaceURI, originalElement) : null;
     }
 
+    public final boolean DOMElement.hasAttributes() {
+        return coreGetFirstAttribute() != null;
+    }
+
+    public final NamedNodeMap DOMElement.getAttributes() {
+        return new AttributesNamedNodeMap(this);
+    }
+    
     public final String DOMElement.getAttribute(String name) {
         Attr attr = getAttributeNode(name);
         return attr != null ? attr.getValue() : "";

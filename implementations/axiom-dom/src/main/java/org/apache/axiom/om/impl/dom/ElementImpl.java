@@ -21,8 +21,11 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.NodeMigrationException;
+import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMElement;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -44,7 +47,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.NamedNodeMap;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -215,7 +217,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         } else if (name.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
             this.declareDefaultNamespace(value);
         } else {
-            this.setAttributeNode(new AttrImpl(ownerDocument(), name, value,
+            this.setAttributeNode(new NSAwareAttribute(ownerDocument(), name, value,
                                                getOMFactory()));
         }
 
@@ -273,7 +275,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
             attr.setValue(value);
         } else {
             if (namespaceURI != null) {
-                attr = new AttrImpl(ownerDocument(), localName, value, getOMFactory());
+                attr = new NSAwareAttribute(ownerDocument(), localName, value, getOMFactory());
                 attr.internalSetNamespace(new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix));
     
                 this.setAttributeNodeNS(attr);
@@ -285,11 +287,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
             }
         }
 
-    }
-
-    /** Returns whether this element contains any attribute or not. */
-    public boolean hasAttributes() {
-        return attributes != null && attributes.getLength() > 0;
     }
 
     // /
@@ -305,7 +302,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
             if (owner == this) {
                 return attr;
             }
-            attr = new AttrImpl(null, attr.getLocalName(), attr.getNamespace(),
+            attr = new NSAwareAttribute(null, attr.getLocalName(), attr.getNamespace(),
                     attr.getAttributeValue(), attr.getOMFactory());
         }
         
@@ -338,7 +335,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
                 }
             }
         }
-        return addAttribute(new AttrImpl(null, localName, namespace, value, getOMFactory()));
+        return addAttribute(new NSAwareAttribute(null, localName, namespace, value, getOMFactory()));
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
@@ -348,8 +345,11 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     }
     
     public void addNamespaceDeclaration(OMNamespace ns) {
-        String prefix = ns.getPrefix();
-        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, ns.getNamespaceURI());
+        try {
+            coreAppendAttribute(new NamespaceDeclaration(null, ns, getOMFactory()), NodeMigrationPolicy.MOVE_ALWAYS);
+        } catch (NodeMigrationException ex) {
+            throw DOMExceptionUtil.translate(ex);
+        }
     }
 
     /**
@@ -524,9 +524,9 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
 
         if (qname.getNamespaceURI().equals("")) {
-            return (AttrImpl) this.getAttributeNode(qname.getLocalPart());
+            return (NSAwareAttribute) this.getAttributeNode(qname.getLocalPart());
         } else {
-            return (AttrImpl) this.getAttributeNodeNS(qname.getNamespaceURI(),
+            return (NSAwareAttribute) this.getAttributeNodeNS(qname.getNamespaceURI(),
                                                       qname.getLocalPart());
         }
     }
@@ -636,11 +636,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
 
     public int getLineNumber() {
         return lineNumber;
-    }
-
-    /** Returns the set of attributes of this node and the namespace declarations available. */
-    public NamedNodeMap getAttributes() {
-        return attributes;
     }
 
     /**

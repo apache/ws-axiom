@@ -24,9 +24,15 @@ public aspect CoreAttributeSupport {
      * to an element, or a {@link CoreElement} if the attribute has been added to an element.
      */
     private CoreParentNode CoreAttribute.owner;
+    
+    private CoreAttribute CoreAttribute.nextAttribute;
 
     public final CoreElement CoreAttribute.coreGetOwnerElement() {
         return owner instanceof CoreElement ? (CoreElement)owner : null;
+    }
+
+    public final boolean CoreAttribute.coreHasOwnerElement() {
+        return owner instanceof CoreElement;
     }
 
     public final void CoreAttribute.internalSetOwnerElement(CoreElement element) {
@@ -54,6 +60,63 @@ public aspect CoreAttributeSupport {
 //            throw new IllegalStateException();
         }
         owner = document;
+    }
+
+    public final CoreAttribute CoreAttribute.coreGetNextAttribute() {
+        return nextAttribute;
+    }
+
+    public final CoreAttribute CoreAttribute.coreGetPreviousAttribute() {
+        if (owner instanceof CoreElement) {
+            CoreElement ownerElement = (CoreElement)owner;
+            CoreAttribute previousAttr = ownerElement.coreGetFirstAttribute();
+            while (previousAttr != null) {
+                CoreAttribute nextAttr = previousAttr.nextAttribute;
+                if (nextAttr == this) {
+                    break;
+                }
+                previousAttr = nextAttr;
+            }
+            return previousAttr;
+        } else {
+            return null;
+        }
+    }
+
+    final void CoreAttribute.insertAttributeAfter(CoreAttribute attr) {
+        // TODO: throw exception if attribute already has an owner
+        attr.internalSetOwnerElement(coreGetOwnerElement());
+        if (nextAttribute != null) {
+            attr.nextAttribute = nextAttribute;
+        }
+        nextAttribute = attr;
+    }
+
+    public final boolean CoreAttribute.coreRemove() {
+        return remove(false, null);
+    }
+
+    public final boolean CoreAttribute.coreRemove(CoreDocument document) {
+        return remove(true, document);
+    }
+
+    private boolean CoreAttribute.remove(boolean newOwnerDocument, CoreDocument ownerDocument) {
+        if (owner instanceof CoreElement) {
+            CoreElement ownerElement = (CoreElement)owner;
+            CoreAttribute previousAttr = coreGetPreviousAttribute();
+            owner = newOwnerDocument ? ownerDocument : coreGetOwnerDocument(false); // TODO: create?
+            if (previousAttr == null) {
+                ownerElement.internalSetFirstAttribute(nextAttribute);
+            } else {
+                previousAttr.nextAttribute = nextAttribute;
+            }
+            return true;
+        } else {
+            if (newOwnerDocument) {
+                owner = ownerDocument;
+            }
+            return false;
+        }
     }
 
     public final boolean CoreAttribute.coreGetSpecified() {

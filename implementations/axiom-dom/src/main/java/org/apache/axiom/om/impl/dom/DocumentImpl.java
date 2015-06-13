@@ -97,7 +97,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
         if (!DOMUtil.isQualifiedName(name)) {
             throw newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
-        return new AttrImpl(this, name, getOMFactory());
+        return new NSAwareAttribute(this, name, getOMFactory());
     }
 
     public Attr createAttributeNS(String namespaceURI, String qualifiedName)
@@ -112,7 +112,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
         } else {
             namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
-        return new AttrImpl(this, localName, namespace, getOMFactory());
+        return new NSAwareAttribute(this, localName, namespace, getOMFactory());
     }
 
     public Comment createComment(String data) {

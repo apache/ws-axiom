@@ -18,10 +18,26 @@
  */
 package org.apache.axiom.core;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+/**
+ * Indicates an attempt to perform an invalid operation on the model. This exception is checked
+ * since the frontend implementation must translate any exception thrown by the backend
+ * implementation to an exception specific to the frontend API.
+ */
+public abstract class CoreModelException extends Exception {
+    private static final long serialVersionUID = 1204321445792058777L;
+
+    public CoreModelException() {
+    }
+
+    public CoreModelException(String message) {
+        super(message);
+    }
+
+    public CoreModelException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public CoreModelException(Throwable cause) {
+        super(cause);
+    }
 }

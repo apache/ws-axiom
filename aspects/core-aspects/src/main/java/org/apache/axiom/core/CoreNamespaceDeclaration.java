@@ -18,10 +18,17 @@
  */
 package org.apache.axiom.core;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+/**
+ * Represents a namespace declaration information item.
+ */
+public interface CoreNamespaceDeclaration extends CoreAttribute {
+    /**
+     * Get the prefix declared by this namespace declaration.
+     * 
+     * @return the prefix, or <code>null</code> if this namespace declaration defines the default
+     *         namespace
+     */
+    String coreGetDeclaredPrefix();
+    
+    String coreGetDeclaredNamespaceURI();
 }

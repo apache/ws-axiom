@@ -22,6 +22,8 @@ package org.apache.axiom.om.impl.dom.factory;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -50,6 +52,7 @@ import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
+import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -193,7 +196,7 @@ public class OMDOMFactory implements AxiomNodeFactory {
                 ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
             }
         }
-        return new AttrImpl(null, localName, ns, value, this);
+        return new NSAwareAttribute(null, localName, ns, value, this);
     }
 
     public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
@@ -321,5 +324,17 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public CoreCDATASection createCDATASection() {
         return new CDATASectionImpl(this);
+    }
+
+    public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
+            String localName, String prefix, String value, String type) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
+            String prefix, String namespaceURI) {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

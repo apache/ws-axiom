@@ -82,6 +82,10 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
         this.value = value;
     }
 
+    public void coreSetValue(String value) {
+        setAttributeValue(value);
+    }
+
     public String getAttributeType() {
         return type;
     }

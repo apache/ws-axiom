@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -67,7 +68,7 @@ public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
 
     public void setLang(String lang) {
         langAttr =
-                new AttrImpl((DocumentImpl)getOwnerDocument(),
+                new NSAwareAttribute((DocumentImpl)getOwnerDocument(),
                              SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
                              langNamespace,
                              lang, getOMFactory());

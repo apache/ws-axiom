@@ -16,12 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.dom;
 
-public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreCharacterData createCharacterData();
-    CoreCDATASection createCDATASection();
-    CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+import org.apache.axiom.dom.DOMNamespaceDeclaration;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+
+final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration {
+    private OMNamespace declaredNamespace;
+    
+    NamespaceDeclaration(DocumentImpl ownerDocument, OMNamespace namespace, OMFactory factory) {
+        super(ownerDocument, factory);
+        coreSetValue(namespace.getNamespaceURI());
+        declaredNamespace = namespace;
+    }
+
+    public String coreGetDeclaredPrefix() {
+        return declaredNamespace.getPrefix();
+    }
+
+    // TODO: should be part of a DOM aspect
+    public String coreGetDeclaredNamespaceURI() {
+        return getValue();
+    }
 }
