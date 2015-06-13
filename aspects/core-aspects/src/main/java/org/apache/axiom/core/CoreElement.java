@@ -58,6 +58,22 @@ public interface CoreElement extends CoreChildNode, CoreParentNode {
     CoreAttribute coreGetLastAttribute();
     
     /**
+     * Get the first attribute selected by a given {@link AttributeMatcher}.
+     * 
+     * @param matcher
+     *            the {@link AttributeMatcher} implementation to use
+     * @param namespaceURI
+     *            the <code>namespaceURI</code> parameter to pass to
+     *            {@link AttributeMatcher#matches(CoreAttribute, String, String)}
+     * @param name
+     *            the <code>name</code> parameter to pass to
+     *            {@link AttributeMatcher#matches(CoreAttribute, String, String)}
+     * @return the (first) matching attribute, or <code>null</code> if no matching attribute was
+     *         found
+     */
+    CoreAttribute coreGetAttribute(AttributeMatcher matcher, String namespaceURI, String name);
+    
+    /**
      * Create or update an attribute based on a given {@link AttributeMatcher}.
      * 
      * @param matcher
@@ -124,6 +140,22 @@ public interface CoreElement extends CoreChildNode, CoreParentNode {
      *             if appending the attribute was rejected by the policy
      */
     void coreAppendAttribute(CoreAttribute attr, NodeMigrationPolicy policy) throws NodeMigrationException;
+    
+    /**
+     * Remove an attribute based on a given {@link AttributeMatcher}.
+     * 
+     * @param matcher
+     *            the {@link AttributeMatcher} implementation to use
+     * @param namespaceURI
+     *            the <code>namespaceURI</code> parameter to pass to
+     *            {@link AttributeMatcher#matches(CoreAttribute, String, String)}
+     * @param name
+     *            the <code>name</code> parameter to pass to
+     *            {@link AttributeMatcher#matches(CoreAttribute, String, String)}
+     * @return <code>true</code> if a matching attribute was found (and has been removed),
+     *         <code>false</code> if no matching attribute was found
+     */
+    boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name);
     
     /**
      * Look up the namespace URI associated to the given prefix.

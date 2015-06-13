@@ -52,11 +52,14 @@ public final class NSAwareAttribute extends TypedAttribute implements OMAttribut
                     ns = null;
                 }
             } else if (ns.getPrefix().length() == 0) {
-                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
+                // TODO: allowed by DOM
+//                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
         internalSetLocalName(localName);
-        coreAppendChild((AxiomText)factory.createOMText(value), false);
+        if (value != null && value.length() != 0) {
+            coreAppendChild((AxiomText)factory.createOMText(value), false);
+        }
         this.type = OMConstants.XMLATTRTYPE_CDATA;
         internalSetNamespace(ns);
     }

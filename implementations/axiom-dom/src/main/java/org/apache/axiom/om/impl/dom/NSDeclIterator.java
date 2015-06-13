@@ -25,14 +25,15 @@ import javax.xml.XMLConstants;
 
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
 
 class NSDeclIterator implements Iterator {
-    private final AttributeMap attributes;
+    private final NamedNodeMap attributes;
     private boolean hasNextCalled;
     private int index = -1;
     private Attr nsDecl;
 
-    public NSDeclIterator(AttributeMap attributes) {
+    public NSDeclIterator(NamedNodeMap attributes) {
         this.attributes = attributes;
     }
 
@@ -69,7 +70,7 @@ class NSDeclIterator implements Iterator {
         if (hasNextCalled || nsDecl == null) {
             throw new IllegalStateException();
         }
-        attributes.removeItem(index);
+        ((AttrImpl)nsDecl).coreRemove();
         nsDecl = null;
     }
 }

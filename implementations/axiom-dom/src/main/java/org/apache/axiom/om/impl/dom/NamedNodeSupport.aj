@@ -56,7 +56,6 @@ aspect NamedNodeSupport {
     }
     
     public final void NamedNode.coreSetPrefix(String prefix) {
-        // TODO
-        throw new UnsupportedOperationException();
+        setPrefix(prefix);
     }
 }

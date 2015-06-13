@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -51,9 +50,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
 import javax.xml.XMLConstants;
-import javax.xml.stream.XMLStreamException;
 
-import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -92,28 +89,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
 
     // /org.w3c.dom.Document methods
     // /
-
-    public Attr createAttribute(String name) throws DOMException {
-        if (!DOMUtil.isQualifiedName(name)) {
-            throw newDOMException(DOMException.INVALID_CHARACTER_ERR);
-        }
-        return new NSAwareAttribute(this, name, getOMFactory());
-    }
-
-    public Attr createAttributeNS(String namespaceURI, String qualifiedName)
-            throws DOMException {
-        String localName = DOMUtil.getLocalName(qualifiedName);
-        String prefix = DOMUtil.getPrefix(qualifiedName);
-        DOMUtil.validateAttrName(namespaceURI, localName, prefix);
-
-        OMNamespace namespace;
-        if (namespaceURI == null) {
-            namespace = null;
-        } else {
-            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
-        }
-        return new NSAwareAttribute(this, localName, namespace, getOMFactory());
-    }
 
     public Comment createComment(String data) {
         CommentImpl comment = new CommentImpl(data, getOMFactory());
@@ -244,8 +219,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
             }
 
             case Node.ATTRIBUTE_NODE: {
-                if ("".equals(importedNode.getNamespaceURI())
-                        || importedNode.getNamespaceURI() == null) {
+                if (importedNode.getLocalName() == null) {
                     newNode = createAttribute(importedNode.getNodeName());
                 } else {
                     //Check whether it is a default ns decl

@@ -52,6 +52,7 @@ import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
+import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.OMDOMException;
@@ -342,7 +343,6 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
             String prefix, String namespaceURI) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return new NamespaceDeclaration((DocumentImpl)document, new OMNamespaceImpl(namespaceURI == null ? "" : namespaceURI, prefix), this);
     }
 }

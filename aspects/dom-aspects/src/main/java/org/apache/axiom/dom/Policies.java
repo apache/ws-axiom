@@ -23,6 +23,7 @@ import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.NodeMigrationPolicy;
 
 public final class Policies {
     private Policies() {}
@@ -68,4 +69,16 @@ public final class Policies {
     };
     
     public static final AttributeMatcher DOM2_ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(true, true);
+
+    public static final NodeMigrationPolicy ATTRIBUTE_MIGRATION_POLICY = new NodeMigrationPolicy() {
+        public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
+            return Action.REJECT;
+        }
+    };
+    
+    public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
+        public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
+            return isForeignDocument ? Action.REJECT : Action.MOVE;
+        }
+    };
 }

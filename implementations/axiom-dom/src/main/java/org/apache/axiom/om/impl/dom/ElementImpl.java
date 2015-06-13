@@ -26,6 +26,7 @@ import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
+import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.dom.DOMExceptionUtil;
@@ -52,6 +53,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.NamedNodeMap;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -69,8 +71,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     
     private int lineNumber;
 
-    private AttributeMap attributes;
-
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
     public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
@@ -87,7 +87,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
                 parentNode.coreAppendChild(this, builder != null);
             }
         }
-        this.attributes = new AttributeMap(this);
         internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
     }
 
@@ -134,168 +133,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     }
 
     // /
-    // / org.w3c.dom.Element methods
-    // /
-
-    /**
-     * Removes an attribute by name.
-     *
-     * @param name The name of the attribute to remove
-     * @see org.w3c.dom.Element#removeAttribute(String)
-     */
-    public void removeAttribute(String name) throws DOMException {
-        if (this.attributes != null) {
-            this.attributes.removeNamedItem(name);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#removeAttributeNS(java.lang.String,
-     *      java.lang.String)
-     */
-    public void removeAttributeNS(String namespaceURI, String localName)
-            throws DOMException {
-        if (this.attributes != null) {
-            this.attributes.removeNamedItemNS(namespaceURI, localName);
-        }
-    }
-
-    /**
-     * Removes the specified attribute node.
-     *
-     * @see org.w3c.dom.Element#removeAttributeNode(org.w3c.dom.Attr)
-     */
-    public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
-        if (oldAttr.getOwnerElement() != this) {
-            throw newDOMException(DOMException.NOT_FOUND_ERR);
-        }
-        attributes.remove((AttrImpl)oldAttr, true);
-        return oldAttr;
-    }
-
-    /**
-     * Retrieves an attribute node by name.
-     *
-     * @see org.w3c.dom.Element#getAttributeNode(String)
-     */
-    public Attr getAttributeNode(String name) {
-        return (this.attributes == null) ? null : (AttrImpl) this.attributes
-                .getNamedItem(name);
-    }
-
-    /**
-     * Retrieves an attribute node by local name and namespace URI.
-     *
-     * @see org.w3c.dom.Element#getAttributeNodeNS(String, String)
-     */
-    public Attr getAttributeNodeNS(String namespaceURI, String localName) {
-        return (this.attributes == null) ? null : (Attr) this.attributes
-                .getNamedItemNS(namespaceURI, localName);
-    }
-
-    /**
-     * Adds a new attribute node.
-     *
-     * @see org.w3c.dom.Element#setAttributeNode(org.w3c.dom.Attr)
-     */
-    public Attr setAttributeNode(Attr attr) throws DOMException {
-        AttrImpl attrImpl = (AttrImpl) attr;
-
-        checkSameOwnerDocument(attr);
-
-        // check whether the attr is in use
-        attrImpl.checkInUse();
-
-        if (attr.getNodeName().startsWith(XMLConstants.XMLNS_ATTRIBUTE + ":")) {
-            // This is a ns declaration
-            this.declareNamespace(attr.getNodeValue(), DOMUtil
-                    .getLocalName(attr.getName()));
-
-            //Don't add this to attr list, since its a namespace
-            return attr;
-        } else if (attr.getNodeName().equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-            this.declareDefaultNamespace(attr.getValue());
-
-            //Don't add this to attr list, since its a namespace
-            return attr;
-        }
-        if (this.attributes == null) {
-            this.attributes = new AttributeMap(this);
-        }
-
-        return (Attr) this.attributes.setNamedItem(attr);
-
-    }
-
-    public Attr setAttributeNodeNS(Attr attr) throws DOMException {
-        return setAttributeNodeNS(attr, true, false);
-    }
-    
-    private Attr setAttributeNodeNS(Attr attr, boolean useDomSemantics, boolean generateNSDecl) throws DOMException {
-        AttrImpl attrImpl = (AttrImpl) attr;
-
-        if (useDomSemantics) {
-            checkSameOwnerDocument(attr);
-        }
-
-        // check whether the attr is in use
-        attrImpl.checkInUse();
-
-        if (this.attributes == null) {
-            this.attributes = new AttributeMap(this);
-        }
-
-        // handle the namespaces
-        if (generateNSDecl && attr.getNamespaceURI() != null
-                && findNamespace(attr.getNamespaceURI(), attr.getPrefix())
-                == null) {
-            // TODO checkwhether the same ns is declared with a different
-            // prefix and remove it
-            this.declareNamespace(new OMNamespaceImpl(attr.getNamespaceURI(),
-                                                    attr.getPrefix()));
-        }
-
-        return (Attr) this.attributes.setAttribute(attr, useDomSemantics);
-    }
-
-    /**
-     * Adds a new attribute.
-     *
-     * @see org.w3c.dom.Element#setAttributeNS(String, String, String)
-     */
-    public void setAttributeNS(String namespaceURI, String qualifiedName,
-                               String value) throws DOMException {
-        
-        if (namespaceURI != null && namespaceURI.length() == 0) {
-            namespaceURI = null;
-        }
-        String localName = DOMUtil.getLocalName(qualifiedName);
-        String prefix = DOMUtil.getPrefix(qualifiedName);
-        DOMUtil.validateAttrName(namespaceURI, localName, prefix);
-        
-        NSAwareAttribute attr = (NSAwareAttribute)getAttributeNodeNS(namespaceURI, localName);
-        if (attr != null) {
-            attr.setPrefix(prefix);
-            attr.setValue(value);
-        } else {
-            if (namespaceURI != null) {
-                attr = new NSAwareAttribute(ownerDocument(), localName, value, getOMFactory());
-                attr.internalSetNamespace(new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix));
-    
-                this.setAttributeNodeNS(attr);
-            } else {
-                // When the namespace is null, the attr name given better not be
-                // a qualified name
-                // But anyway check and set it
-                this.setAttribute(localName, value);
-            }
-        }
-
-    }
-
-    // /
     // /OmElement methods
     // /
 
@@ -324,7 +161,11 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
             }
         }
 
-        this.setAttributeNodeNS((Attr) attr, false, true);
+        try {
+            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, Policies.ATTRIBUTE_MIGRATION_POLICY, true, null, ReturnValue.NONE);
+        } catch (NodeMigrationException ex) {
+            DOMExceptionUtil.translate(ex);
+        }
         return attr;
     }
 
@@ -423,7 +264,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     }
 
     public OMNamespace getDefaultNamespace() {
-        Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
+        Attr decl = getAttributeNodeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
         if (decl != null) {
             String uri = decl.getValue();
             return uri.length() == 0 ? null : new OMNamespaceImpl(uri, "");
@@ -502,7 +343,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
      * retrieve the prefix of a known namespace URI.
      */
     private OMNamespace findDeclaredNamespace(String uri, String prefix) {
-
+        NamedNodeMap attributes = getAttributes();
         if (uri == null) {
             Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
                     prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : prefix);
@@ -544,10 +385,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
      * @see org.apache.axiom.om.OMElement#getAttribute (javax.xml.namespace.QName)
      */
     public OMAttribute getAttribute(QName qname) {
-        if (this.attributes == null) {
-            return null;
-        }
-
         if (qname.getNamespaceURI().equals("")) {
             return (NSAwareAttribute) this.getAttributeNode(qname.getLocalPart());
         } else {
@@ -571,7 +408,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
         }
-        attributes.remove((AttrImpl)attr, false);
+        ((AttrImpl)attr).coreRemove();
     }
 
     public void setNamespace(OMNamespace namespace) {
@@ -610,17 +447,18 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
 
     /** @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces() */
     public Iterator getAllDeclaredNamespaces() throws OMException {
-        return new NSDeclIterator(attributes);
+        return new NSDeclIterator(getAttributes());
     }
 
     /** @see org.apache.axiom.om.OMElement#getAllAttributes() */
     public Iterator getAllAttributes() {
-        if (attributes == null) {
+        if (!hasAttributes()) {
             return EMPTY_ITERATOR;
         }
+        NamedNodeMap attributes = getAttributes();
         ArrayList list = new ArrayList();
         for (int i = 0; i < attributes.getLength(); i++) {
-            OMAttribute item = (OMAttribute) attributes.getItem(i);
+            OMAttribute item = (OMAttribute) attributes.item(i);
             if (item.getNamespace() == null
                     || !(item.getNamespace() != null && XMLConstants.XMLNS_ATTRIBUTE_NS_URI
                     .equals(item.getNamespace().getNamespaceURI()))) {
@@ -642,11 +480,18 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         } else {
             clone = new ElementImpl(targetParent, getLocalName(), getNamespace(), null, getOMFactory(), namespaceRepairing);
         }
+        NamedNodeMap attributes = getAttributes();
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
             AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, true, false);
             clonedAttr.setSpecified(attr.getSpecified());
-            clone.setAttributeNodeNS(clonedAttr, false, namespaceRepairing && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI()));
+            try {
+                clone.coreAppendAttribute(clonedAttr, NodeMigrationPolicy.MOVE_ALWAYS);
+            } catch (NodeMigrationException ex) {
+                DOMExceptionUtil.translate(ex);
+            }
+            // TODO: namespace repairing
+//            clone.setAttributeNodeNS(clonedAttr, false, namespaceRepairing && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI()));
         }
         return clone;
     }
@@ -702,21 +547,10 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
 
     public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
         //find the attr
-        Iterator attrIter = this.getAllAttributes();
-        AttrImpl tempAttr = null;
-        while (attrIter.hasNext()) {
-            AttrImpl attr = (AttrImpl) attrIter.next();
-            if (attr.equals(idAttr)) {
-                tempAttr = attr;
-                break;
-            }
-        }
-
-        if (tempAttr == null) {
+        if (((DOMAttribute)idAttr).coreGetOwnerElement() != this) {
             throw newDOMException(DOMException.NOT_FOUND_ERR);
         }
-
-        this.updateIsId(isId, tempAttr);
+        this.updateIsId(isId, (AttrImpl)idAttr);
     }
 
     /**

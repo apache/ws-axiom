@@ -24,10 +24,14 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
-final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration {
+public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration {
     private OMNamespace declaredNamespace;
     
-    NamespaceDeclaration(DocumentImpl ownerDocument, OMNamespace namespace, OMFactory factory) {
+    private NamespaceDeclaration(OMFactory factory) {
+        super(null, factory);
+    }
+    
+    public NamespaceDeclaration(DocumentImpl ownerDocument, OMNamespace namespace, OMFactory factory) {
         super(ownerDocument, factory);
         coreSetValue(namespace.getNamespaceURI());
         declaredNamespace = namespace;
@@ -47,13 +51,14 @@ final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclara
     }
 
     public final OMNamespace getDeclaredNamespace() {
+        // TODO: what if the attribute value has been changed in the meantime?
         return declaredNamespace;
     }
 
     @Override
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent,
-            boolean namespaceRepairing) {
-        // TODO
-        throw new UnsupportedOperationException();
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        NamespaceDeclaration clone = new NamespaceDeclaration(getOMFactory());
+        clone.declaredNamespace = getDeclaredNamespace();
+        return clone;
     }
 }

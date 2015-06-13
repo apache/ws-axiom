@@ -39,6 +39,14 @@ public aspect CoreElementSupport {
         return previousAttribute;
     }
 
+    public final CoreAttribute CoreElement.coreGetAttribute(AttributeMatcher matcher, String namespaceURI, String name) {
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null && !matcher.matches(attr, namespaceURI, name)) {
+            attr = attr.coreGetNextAttribute();
+        }
+        return attr;
+    }
+
     private CoreAttribute CoreElement.accept(CoreAttribute attr, NodeMigrationPolicy policy) throws NodeMigrationException {
         boolean hasParent = attr.coreHasOwnerElement();
         boolean isForeignDocument = !coreHasSameOwnerDocument(attr);
@@ -149,6 +157,16 @@ public aspect CoreElementSupport {
             case ADDED_ATTRIBUTE: return attr;
             case REPLACED_ATTRIBUTE: return existingAttr;
             default: return null;
+        }
+    }
+
+    public final boolean CoreElement.coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name) {
+        CoreAttribute att = coreGetAttribute(matcher, namespaceURI, name);
+        if (att != null) {
+            att.coreRemove();
+            return true;
+        } else {
+            return false;
         }
     }
 
