@@ -18,9 +18,27 @@
  */
 package org.apache.axiom.dom;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 public aspect DOMAttributeSupport {
+    public final short DOMAttribute.getNodeType() {
+        return Node.ATTRIBUTE_NODE;
+    }
+
+    public final String DOMAttribute.getNodeValue() throws DOMException {
+        return getValue();
+    }
+
+    public final void DOMAttribute.setNodeValue(String nodeValue) throws DOMException {
+        setValue(nodeValue);
+    }
+
+    public final String DOMAttribute.getNodeName() {
+        return getName();
+    }
+    
     public final boolean DOMAttribute.hasAttributes() {
         return false;
     }
