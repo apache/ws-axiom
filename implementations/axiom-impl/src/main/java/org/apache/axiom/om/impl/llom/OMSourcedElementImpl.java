@@ -383,16 +383,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getAllDeclaredNamespaces();
     }
 
-    public OMAttribute getAttribute(QName qname) {
-        forceExpand();
-        return super.getAttribute(qname);
-    }
-
-    public String getAttributeValue(QName qname) {
-        forceExpand();
-        return super.getAttributeValue(qname);
-    }
-
     public OMAttribute addAttribute(OMAttribute attr) {
         forceExpand();
         return super.addAttribute(attr);
@@ -401,11 +391,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMAttribute addAttribute(String attributeName, String value, OMNamespace namespace) {
         forceExpand();
         return super.addAttribute(attributeName, value, namespace);
-    }
-
-    public void removeAttribute(OMAttribute attr) {
-        forceExpand();
-        super.removeAttribute(attr);
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {

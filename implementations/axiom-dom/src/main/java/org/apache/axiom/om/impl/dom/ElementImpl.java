@@ -374,13 +374,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         return null;
     }
 
-    public void removeAttribute(OMAttribute attr) {
-        if (attr.getOwner() != this) {
-            throw new OMException("The attribute is not owned by this element");
-        }
-        ((AttrImpl)attr).coreRemove(null);
-    }
-
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
     }

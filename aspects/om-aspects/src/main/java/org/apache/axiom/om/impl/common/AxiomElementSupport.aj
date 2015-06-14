@@ -312,4 +312,11 @@ public aspect AxiomElementSupport {
         OMAttribute attr = getAttribute(qname);
         return attr == null ? null : attr.getAttributeValue();
     }
+
+    public final void AxiomElement.removeAttribute(OMAttribute attr) {
+        if (attr.getOwner() != this) {
+            throw new OMException("The attribute is not owned by this element");
+        }
+        ((AxiomAttribute)attr).coreRemove(null);
+    }
 }

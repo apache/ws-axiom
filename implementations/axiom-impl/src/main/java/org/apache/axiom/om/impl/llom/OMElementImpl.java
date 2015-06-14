@@ -58,9 +58,6 @@ public class OMElementImpl extends OMNodeImpl
     /** Field namespaces */
     protected HashMap namespaces = null;
     
-    /** Field attributes */
-    protected HashMap attributes = null;
-
     private int lineNumber;
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
@@ -371,15 +368,6 @@ public class OMElementImpl extends OMNodeImpl
 
         internalAppendAttribute(attr);
         return attr;
-    }
-
-    public void removeAttribute(OMAttribute attr) {
-        if (attr.getOwner() != this) {
-            throw new OMException("The attribute is not owned by this element");
-        }
-        // Remove the owner from this attribute
-        ((OMAttributeImpl)attr).internalUnsetOwnerElement(null);
-        attributes.remove(attr.getQName());
     }
 
     public OMAttribute addAttribute(String localName, String value,
