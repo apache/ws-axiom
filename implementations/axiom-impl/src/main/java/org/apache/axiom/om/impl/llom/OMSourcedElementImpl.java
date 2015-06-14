@@ -383,11 +383,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getAllDeclaredNamespaces();
     }
 
-    public Iterator getAllAttributes() {
-        forceExpand();
-        return super.getAllAttributes();
-    }
-
     public OMAttribute getAttribute(QName qname) {
         forceExpand();
         return super.getAttribute(qname);

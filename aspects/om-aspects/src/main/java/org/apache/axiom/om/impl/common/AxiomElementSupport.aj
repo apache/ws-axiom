@@ -303,4 +303,13 @@ public aspect AxiomElementSupport {
     public final Iterator AxiomElement.getAllAttributes() {
         return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper);
     }
+    
+    public final OMAttribute AxiomElement.getAttribute(QName qname) {
+        return (AxiomAttribute)coreGetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
+    }
+
+    public final String AxiomElement.getAttributeValue(QName qname) {
+        OMAttribute attr = getAttribute(qname);
+        return attr == null ? null : attr.getAttributeValue();
+    }
 }

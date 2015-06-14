@@ -47,7 +47,6 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,11 +55,9 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
@@ -70,8 +67,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
     private int lineNumber;
-
-    private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
     public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                        OMFactory factory, boolean generateNSDecl) {
@@ -377,31 +372,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
 
         return null;
-    }
-
-    /**
-     * Returns a named attribute if present.
-     *
-     * @see org.apache.axiom.om.OMElement#getAttribute (javax.xml.namespace.QName)
-     */
-    public OMAttribute getAttribute(QName qname) {
-        if (qname.getNamespaceURI().equals("")) {
-            return (NSAwareAttribute) this.getAttributeNode(qname.getLocalPart());
-        } else {
-            return (NSAwareAttribute) this.getAttributeNodeNS(qname.getNamespaceURI(),
-                                                      qname.getLocalPart());
-        }
-    }
-
-    /**
-     * Returns a named attribute's value, if present.
-     *
-     * @param qname the qualified name to search for
-     * @return Returns a String containing the attribute value, or null.
-     */
-    public String getAttributeValue(QName qname) {
-        OMAttribute attr = getAttribute(qname);
-        return (attr == null) ? null : attr.getAttributeValue();
     }
 
     public void removeAttribute(OMAttribute attr) {
