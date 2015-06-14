@@ -195,47 +195,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         }
     }
 
-    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
-        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        addNamespaceDeclaration(ns);
-        return ns;
-    }
-    
-    public void addNamespaceDeclaration(OMNamespace ns) {
-        try {
-            coreAppendAttribute(new NamespaceDeclaration(null, ns, getOMFactory()), NodeMigrationPolicy.MOVE_ALWAYS);
-        } catch (NodeMigrationException ex) {
-            throw DOMExceptionUtil.translate(ex);
-        }
-    }
-
-    /**
-     * Allows overriding an existing declaration if the same prefix was used.
-     *
-     * @see org.apache.axiom.om.OMElement#declareNamespace (org.apache.axiom.om.OMNamespace)
-     */
-    public OMNamespace declareNamespace(OMNamespace namespace) {
-        if (namespace != null) {
-            String prefix = namespace.getPrefix();
-            if (prefix == null) {
-                prefix = OMSerializerUtil.getNextNSPrefix();
-                namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
-            }
-            if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
-                throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
-            }
-
-            if (!namespace.getPrefix().startsWith(XMLConstants.XMLNS_ATTRIBUTE)) {
-                setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, namespace.getNamespaceURI());
-            }
-        }
-        return namespace;
-    }
-
-    public void undeclarePrefix(String prefix) {
-        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, "");
-    }
-
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
             log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
@@ -244,18 +203,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);
-    }
-
-    public OMNamespace declareDefaultNamespace(String uri) {
-        OMNamespace namespace = getNamespace();
-        if (namespace == null && uri.length() > 0
-                || namespace != null && namespace.getPrefix().length() == 0 && !namespace.getNamespaceURI().equals(uri)) {
-            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
-                    "the namespace information of the element");
-        }
-
-        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, uri);
-        return new OMNamespaceImpl(uri, "");
     }
 
     public OMNamespace getDefaultNamespace() {
@@ -406,11 +353,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
             throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
         }
         return new String(baos.toByteArray());
-    }
-
-    /** @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces() */
-    public Iterator getAllDeclaredNamespaces() throws OMException {
-        return new NSDeclIterator(getAttributes());
     }
 
     public OMElement cloneOMElement() {

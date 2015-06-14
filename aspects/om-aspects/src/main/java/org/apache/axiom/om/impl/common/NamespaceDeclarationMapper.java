@@ -16,13 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.factory;
+package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
-import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 
-public interface AxiomNodeFactory extends NodeFactory, OMFactoryEx {
-    AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace);
+public class NamespaceDeclarationMapper implements Mapper<AxiomNamespaceDeclaration,OMNamespace> {
+    public static final NamespaceDeclarationMapper INSTANCE = new NamespaceDeclarationMapper();
+    
+    private NamespaceDeclarationMapper() {}
+    
+    public OMNamespace map(AxiomNamespaceDeclaration namespaceDeclaration) {
+        return namespaceDeclaration.getDeclaredNamespace();
+    }
 }

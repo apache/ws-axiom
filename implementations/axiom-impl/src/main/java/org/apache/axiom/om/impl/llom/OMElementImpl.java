@@ -142,23 +142,6 @@ public class OMElementImpl extends OMNodeImpl
         return declareNamespace(ns);
     }
 
-    public OMNamespace declareDefaultNamespace(String uri) {
-        OMNamespace elementNamespace = getNamespace();
-        if (elementNamespace == null && uri.length() > 0
-                || elementNamespace != null && elementNamespace.getPrefix().length() == 0 && !elementNamespace.getNamespaceURI().equals(uri)) {
-            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
-            		"the namespace information of the element");
-        }
-
-        OMNamespaceImpl namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");
-
-        if (namespaces == null) {
-            this.namespaces = new HashMap(5);
-        }
-        namespaces.put("", namespace);
-        return namespace;
-    }
-
     public OMNamespace getDefaultNamespace() {
         OMNamespace defaultNS;
         if (namespaces != null && (defaultNS = (OMNamespace) namespaces.get("")) != null) {
@@ -170,43 +153,6 @@ public class OMElementImpl extends OMNodeImpl
 
         }
         return null;
-    }
-
-    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
-        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        addNamespaceDeclaration(ns);
-        return ns;
-    }
-    
-    public void addNamespaceDeclaration(OMNamespace ns) {
-        if (namespaces == null) {
-            this.namespaces = new HashMap(5);
-        }
-        namespaces.put(ns.getPrefix(), ns);
-    }
-
-    /** @return Returns namespace. */
-    public OMNamespace declareNamespace(OMNamespace namespace) {
-        if (namespaces == null) {
-            this.namespaces = new HashMap(5);
-        }
-        String prefix = namespace.getPrefix();
-        if (prefix == null) {
-            prefix = OMSerializerUtil.getNextNSPrefix();
-            namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
-        }
-        if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
-            throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
-        }
-        namespaces.put(prefix, namespace);
-        return namespace;
-    }
-
-    public void undeclarePrefix(String prefix) {
-        if (namespaces == null) {
-            this.namespaces = new HashMap(5);
-        }
-        namespaces.put(prefix, new OMNamespaceImpl("", prefix));
     }
 
     /**
@@ -311,19 +257,6 @@ public class OMElementImpl extends OMNodeImpl
             }
         }
         return null;
-    }
-
-
-    /**
-     * Method getAllDeclaredNamespaces.
-     *
-     * @return Returns Iterator.
-     */
-    public Iterator getAllDeclaredNamespaces() {
-        if (namespaces == null) {
-            return EMPTY_ITERATOR;
-        }
-        return namespaces.values().iterator();
     }
 
     /**

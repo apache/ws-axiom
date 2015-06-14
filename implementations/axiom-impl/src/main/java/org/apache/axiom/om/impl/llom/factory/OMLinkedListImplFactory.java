@@ -43,10 +43,12 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.llom.CDATASectionImpl;
 import org.apache.axiom.om.impl.llom.CharacterDataImpl;
+import org.apache.axiom.om.impl.llom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
@@ -363,5 +365,11 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
             String prefix, String namespaceURI) {
         // TODO
         throw new UnsupportedOperationException();
+    }
+
+    public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
+        NamespaceDeclaration decl = new NamespaceDeclaration(this);
+        decl.setDeclaredNamespace(namespace);
+        return decl;
     }
 }

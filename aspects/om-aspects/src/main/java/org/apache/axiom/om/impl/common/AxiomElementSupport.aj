@@ -44,6 +44,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
@@ -318,5 +320,53 @@ public aspect AxiomElementSupport {
             throw new OMException("The attribute is not owned by this element");
         }
         ((AxiomAttribute)attr).coreRemove(null);
+    }
+
+    public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        addNamespaceDeclaration(ns);
+        return ns;
+    }
+    
+    public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
+        try {
+            coreAppendAttribute(((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns), NodeMigrationPolicy.MOVE_ALWAYS);
+        } catch (NodeMigrationException ex) {
+            throw AxiomExceptionUtil.translate(ex);
+        }
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public final Iterator AxiomElement.getAllDeclaredNamespaces() {
+        return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE);
+    }
+
+    public final OMNamespace AxiomElement.declareNamespace(OMNamespace namespace) {
+        String prefix = namespace.getPrefix();
+        if (prefix == null) {
+            prefix = OMSerializerUtil.getNextNSPrefix();
+            namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
+        }
+        if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
+            throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
+        }
+        addNamespaceDeclaration(namespace);
+        return namespace;
+    }
+
+    public final OMNamespace AxiomElement.declareDefaultNamespace(String uri) {
+        OMNamespace elementNamespace = getNamespace();
+        if (elementNamespace == null && uri.length() > 0
+                || elementNamespace != null && elementNamespace.getPrefix().length() == 0 && !elementNamespace.getNamespaceURI().equals(uri)) {
+            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
+                    "the namespace information of the element");
+        }
+        OMNamespace namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");
+        addNamespaceDeclaration(namespace);
+        return namespace;
+    }
+
+    public final void AxiomElement.undeclarePrefix(String prefix) {
+        addNamespaceDeclaration(new OMNamespaceImpl("", prefix));
     }
 }
