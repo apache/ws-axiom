@@ -1259,9 +1259,10 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     <para>
                         Publish the site:
                     </para>
-<screen>svn merge \
- https://svn.apache.org/repos/asf/webservices/website/axiom-staging \
- https://svn.apache.org/repos/asf/webservices/website/axiom</screen>
+<screen>svn co https://svn.apache.org/repos/asf/webservices/website/axiom axiom-site
+cd axiom-site/
+svn merge https://svn.apache.org/repos/asf/webservices/website/axiom-staging
+svn commit</screen>
                 </step>
             </procedure>
             <para>
