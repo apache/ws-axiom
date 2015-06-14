@@ -48,7 +48,6 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
@@ -331,18 +330,6 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * Returns a List of OMAttributes.
-     *
-     * @return Returns iterator.
-     */
-    public Iterator getAllAttributes() {
-        if (attributes == null) {
-            return EMPTY_ITERATOR;
-        }
-        return attributes.values().iterator();
-    }
-
-    /**
      * Returns a named attribute if present.
      *
      * @param qname the qualified name to search for
@@ -403,21 +390,8 @@ public class OMElementImpl extends OMNodeImpl
             }
         }
 
-        appendAttribute(attr);
+        internalAppendAttribute(attr);
         return attr;
-    }
-    
-    void appendAttribute(OMAttribute attr) {
-        if (attributes == null) {
-            this.attributes = new LinkedHashMap(5);
-        }
-        // Set the owner element of the attribute
-        ((OMAttributeImpl)attr).internalSetOwnerElement(this);
-        OMAttributeImpl oldAttr = (OMAttributeImpl)attributes.put(attr.getQName(), attr);
-        // Did we replace an existing attribute?
-        if (oldAttr != null) {
-            oldAttr.internalUnsetOwnerElement(null);
-        }
     }
 
     public void removeAttribute(OMAttribute attr) {
@@ -591,26 +565,6 @@ public class OMElementImpl extends OMNodeImpl
             }
             this.setComplete(true);
         }
-    }
-
-    public final String coreGetNamespaceURI() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public final String coreGetPrefix() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public final void coreSetPrefix(String prefix) {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public final String coreGetLocalName() {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 }
 

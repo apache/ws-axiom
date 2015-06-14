@@ -24,14 +24,4 @@ public abstract class TypedAttribute extends AttrImpl {
     public TypedAttribute(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
-
-    public String coreGetType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
-    }
-
-    public void coreSetType(String type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
-    }
 }

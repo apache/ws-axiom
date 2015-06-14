@@ -16,11 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreNSAwareAttribute;
-import org.apache.axiom.om.OMAttribute;
-
-public interface AxiomAttribute extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {
-
+public aspect CoreTypedAttributeSupport {
+    private String CoreTypedAttribute.type;
+    
+    public final String CoreTypedAttribute.coreGetType() {
+        return type;
+    }
+    
+    public final void CoreTypedAttribute.coreSetType(String type) {
+        this.type = type;
+    }
 }

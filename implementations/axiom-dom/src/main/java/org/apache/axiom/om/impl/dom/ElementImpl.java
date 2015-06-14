@@ -450,24 +450,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         return new NSDeclIterator(getAttributes());
     }
 
-    /** @see org.apache.axiom.om.OMElement#getAllAttributes() */
-    public Iterator getAllAttributes() {
-        if (!hasAttributes()) {
-            return EMPTY_ITERATOR;
-        }
-        NamedNodeMap attributes = getAttributes();
-        ArrayList list = new ArrayList();
-        for (int i = 0; i < attributes.getLength(); i++) {
-            AttrImpl item = (AttrImpl) attributes.item(i);
-            // TODO: what about NS unaware attributes here?
-            if (item instanceof TypedAttribute) {
-                list.add(item);
-            }
-        }
-
-        return list.iterator();
-    }
-
     public OMElement cloneOMElement() {
         return (OMElement)clone(new OMCloneOptions());
     }

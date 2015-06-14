@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.DOMException;
 
 aspect NamedNodeSupport {
+    // TODO: rewrite this using coreSetPrefix
     public final void NamedNode.setPrefix(String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";
@@ -39,23 +40,5 @@ aspect NamedNodeSupport {
         } else {
             internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix == null ? "" : prefix));
         }
-    }
-    
-    public final String NamedNode.coreGetNamespaceURI() {
-        String namespaceURI = getNamespaceURI();
-        return namespaceURI == null ? "" : namespaceURI;
-    }
-    
-    public final String NamedNode.coreGetPrefix() {
-        String prefix = getPrefix();
-        return prefix == null ? "" : prefix;
-    }
-
-    public final String NamedNode.coreGetLocalName() {
-        return getLocalName();
-    }
-    
-    public final void NamedNode.coreSetPrefix(String prefix) {
-        setPrefix(prefix);
     }
 }

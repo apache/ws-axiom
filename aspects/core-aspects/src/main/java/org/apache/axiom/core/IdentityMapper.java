@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreNSAwareAttribute;
-import org.apache.axiom.om.OMAttribute;
-
-public interface AxiomAttribute extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {
-
+public final class IdentityMapper<T> implements Mapper<T,T> {
+    public T map(T object) {
+        return object;
+    }
 }

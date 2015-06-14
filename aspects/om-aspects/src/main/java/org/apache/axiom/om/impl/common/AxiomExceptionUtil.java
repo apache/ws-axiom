@@ -18,9 +18,11 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreNSAwareAttribute;
-import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.om.OMException;
 
-public interface AxiomAttribute extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {
-
+public class AxiomExceptionUtil {
+    public static OMException translate(CoreModelException ex) {
+        return new OMException(ex);
+    }
 }

@@ -32,6 +32,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.IdentityMapper;
+import org.apache.axiom.core.NodeMigrationException;
+import org.apache.axiom.core.NodeMigrationPolicy;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -284,5 +288,19 @@ public aspect AxiomElementSupport {
             }
             return namespace;
         }
+    }
+    
+    public final void AxiomElement.internalAppendAttribute(OMAttribute attr) {
+        try {
+            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
+        } catch (NodeMigrationException ex) {
+            AxiomExceptionUtil.translate(ex);
+        }
+    }
+    private static final IdentityMapper<AxiomAttribute> attributeIdentityMapper = new IdentityMapper<AxiomAttribute>();
+    
+    @SuppressWarnings("rawtypes")
+    public final Iterator AxiomElement.getAllAttributes() {
+        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper);
     }
 }

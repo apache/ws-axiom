@@ -31,8 +31,6 @@ import org.apache.axiom.om.impl.common.AxiomAttribute;
 public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttribute {
     private String value;
 
-    private String type;
-
     /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
     private OMFactory factory;
 
@@ -63,7 +61,7 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
         internalSetLocalName(localName);
         this.value = value;
         internalSetNamespace(ns);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
+        coreSetType(OMConstants.XMLATTRTYPE_CDATA);
         this.factory = factory;
     }
 
@@ -84,19 +82,6 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
 
     public void coreSetValue(String value) {
         setAttributeValue(value);
-    }
-
-    public String getAttributeType() {
-        return type;
-    }
-
-    /**
-     * Method setAttributeType.
-     *
-     * @param type
-     */
-    public void setAttributeType(String type) {
-        this.type = type;
     }
 
     public OMFactory getOMFactory() {

@@ -37,7 +37,7 @@ public final class NSAwareAttribute extends TypedAttribute implements OMAttribut
         super(null, factory);
         internalSetLocalName(localName);
         internalSetNamespace(namespace);
-        this.type = type;
+        coreSetType(type);
     }
     
     public NSAwareAttribute(DocumentImpl ownerDocument, String localName,
@@ -47,7 +47,7 @@ public final class NSAwareAttribute extends TypedAttribute implements OMAttribut
         if (value != null && value.length() != 0) {
             coreAppendChild((AxiomText)factory.createOMText(value), false);
         }
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
+        coreSetType(OMConstants.XMLATTRTYPE_CDATA);
         internalSetNamespace(ns);
     }
 
@@ -147,7 +147,6 @@ public final class NSAwareAttribute extends TypedAttribute implements OMAttribut
     @Override
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         // Note: targetParent is always null here
-        // TODO
-        return new NSAwareAttribute(getLocalName(), getNamespace(), type, getOMFactory());
+        return new NSAwareAttribute(getLocalName(), getNamespace(), coreGetType(), getOMFactory());
     }
 }

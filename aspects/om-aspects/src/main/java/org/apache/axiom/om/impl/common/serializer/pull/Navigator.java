@@ -302,6 +302,7 @@ final class Navigator extends PullSerializerState
     }
 
     private void loadAttributes() {
+        // TODO: use the core model API to do this without iterators
         if (attributeCount == -1) {
             attributeCount = 0;
             for (Iterator it = ((OMElement)node).getAllAttributes(); it.hasNext(); ) {
@@ -323,6 +324,7 @@ final class Navigator extends PullSerializerState
     }
     
     private void loadNamespaces() {
+        // TODO: use the core model API to do this without iterators
         if (namespaceCount == -1) {
             namespaceCount = 0;
             for (Iterator it = ((OMElement)node).getAllDeclaredNamespaces(); it.hasNext(); ) {

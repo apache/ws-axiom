@@ -32,8 +32,6 @@ import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDeferringParentNode {
-    String type;
-
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
@@ -119,10 +117,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDefe
         return getValue();
     }
 
-    public String getAttributeType() {
-        return type;
-    }
-
     /**
      * Sets the attribute value.
      *
@@ -130,15 +124,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDefe
      */
     public void setAttributeValue(String value) {
         setValue(value);
-    }
-
-    /**
-     * Sets the attribute value.
-     *
-     * @see org.apache.axiom.om.OMAttribute#setAttributeType(String)
-     */
-    public void setAttributeType(String attrType) {    
-    	this.type = attrType;
     }
 
     final void checkInUse() {

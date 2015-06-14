@@ -16,11 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreNSAwareAttribute;
-import org.apache.axiom.om.OMAttribute;
+final class AttributesByTypeIterator<T extends CoreAttribute,S> extends AbstractAttributeIterator<T,S> {
+    AttributesByTypeIterator(CoreElement element, Class<T> type, Mapper<T,S> mapper) {
+        super(element, type, mapper);
+    }
 
-public interface AxiomAttribute extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {
-
+    @Override
+    protected boolean matches(T attribute) {
+        return true;
+    }
 }

@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreElement extends CoreChildNode, CoreParentNode {
+import java.util.Iterator;
+
+public interface CoreElement extends CoreChildNode, CoreParentNode, DeferringParentNode {
     /**
      * Specifies the value that should be returned by
      * {@link CoreElement#coreSetAttribute(AttributeMatcher, String, String, CoreAttribute, NodeMigrationPolicy, ReturnValue)}.
@@ -156,6 +158,8 @@ public interface CoreElement extends CoreChildNode, CoreParentNode {
      *         <code>false</code> if no matching attribute was found
      */
     boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name);
+    
+    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper);
     
     /**
      * Look up the namespace URI associated to the given prefix.

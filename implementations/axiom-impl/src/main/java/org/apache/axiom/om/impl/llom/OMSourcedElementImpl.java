@@ -408,10 +408,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.addAttribute(attributeName, value, namespace);
     }
 
-    void appendAttribute(OMAttribute attr) {
-        super.appendAttribute(attr);
-    }
-
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);

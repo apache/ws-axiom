@@ -18,10 +18,13 @@
  */
 package org.apache.axiom.core;
 
+import java.util.Iterator;
+
 public aspect CoreElementSupport {
     private CoreAttribute CoreElement.firstAttribute;
 
     public final CoreAttribute CoreElement.coreGetFirstAttribute() {
+        forceExpand();
         return firstAttribute;
     }
 
@@ -168,6 +171,11 @@ public aspect CoreElementSupport {
         } else {
             return false;
         }
+    }
+
+    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper) {
+        // TODO: if we know that there are no attributes, don't create a new iterator, but return a constant
+        return new AttributesByTypeIterator<T,S>(this, type, mapper);
     }
 
     public abstract String CoreElement.getImplicitNamespaceURI(String prefix);
