@@ -16,17 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.llom;
 
-/**
- * Represents a namespace declaration information item.
- */
-public interface CoreNamespaceDeclaration extends CoreAttribute {
-    /**
-     * Get the prefix declared by this namespace declaration.
-     * 
-     * @return the prefix, or <code>null</code> if this namespace declaration defines the default
-     *         namespace
-     */
-    String coreGetDeclaredPrefix();
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.om.OMFactory;
+
+public abstract class Attribute extends OMInformationItemImpl implements CoreAttribute {
+    private OMFactory factory;
+    private String value;
+
+    public Attribute(OMFactory factory) {
+        this.factory = factory;
+    }
+    
+    public final OMFactory getOMFactory() {
+        return factory;
+    }
+    
+    public final String coreGetValue() {
+        return value;
+    }
+    
+    public final void coreSetValue(String value) {
+        this.value = value;
+    }
 }

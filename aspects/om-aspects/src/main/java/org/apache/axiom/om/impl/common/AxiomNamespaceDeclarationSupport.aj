@@ -18,35 +18,21 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
-public aspect AxiomAttributeSupport {
-    public final OMElement AxiomAttribute.getOwner() {
-        return (OMElement)coreGetOwnerElement();
+public aspect AxiomNamespaceDeclarationSupport {
+    private OMNamespace AxiomNamespaceDeclaration.declaredNamespace;
+    
+    public final String AxiomNamespaceDeclaration.coreGetDeclaredPrefix() {
+        return declaredNamespace.getPrefix();
     }
 
-    public final void AxiomAttribute.setNamespace(OMNamespace namespace, boolean decl) {
-        internalSetNamespace(handleNamespace((AxiomElement)getOwner(), namespace, true, decl));
+    public final OMNamespace AxiomNamespaceDeclaration.getDeclaredNamespace() {
+        // TODO: what if the attribute value has been changed in the meantime?
+        return declaredNamespace;
     }
     
-    public final void AxiomAttribute.setOMNamespace(OMNamespace omNamespace) {
-        internalSetNamespace(omNamespace);
-    }
-    
-    public final String AxiomAttribute.getAttributeValue() {
-        return coreGetValue();
-    }
-    
-    public final void AxiomAttribute.setAttributeValue(String value) {
-        coreSetValue(value);
-    }
-    
-    public final String AxiomAttribute.getAttributeType() {
-        return coreGetType();
-    }
-
-    public final void AxiomAttribute.setAttributeType(String type) {
-        coreSetType(type);
+    public final void AxiomNamespaceDeclaration.setDeclaredNamespace(OMNamespace declaredNamespace) {
+        this.declaredNamespace = declaredNamespace;
     }
 }

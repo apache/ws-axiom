@@ -113,25 +113,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDefe
         coreSetSpecified(specified);
     }
 
-    public String getAttributeValue() {
-        return getValue();
-    }
-
-    /**
-     * Sets the attribute value.
-     *
-     * @see org.apache.axiom.om.OMAttribute#setAttributeValue(String)
-     */
-    public void setAttributeValue(String value) {
-        setValue(value);
-    }
-
-    final void checkInUse() {
-        if (coreGetOwnerElement() != null) {
-            throw newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
-        }
-    }
-
     /**
      * Sets the value of the attribute.
      *
@@ -141,6 +122,10 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDefe
         setTextContent(value);
     }
 
+    public final String coreGetValue() {
+        return getValue();
+    }
+    
     public final void coreSetValue(String value) {
         setValue(value);
     }

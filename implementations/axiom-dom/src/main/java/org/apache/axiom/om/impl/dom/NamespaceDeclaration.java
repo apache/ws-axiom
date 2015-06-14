@@ -23,10 +23,9 @@ import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 
-public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration {
-    private OMNamespace declaredNamespace;
-    
+public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration, AxiomNamespaceDeclaration {
     private NamespaceDeclaration(OMFactory factory) {
         super(null, factory);
     }
@@ -34,31 +33,13 @@ public final class NamespaceDeclaration extends AttrImpl implements DOMNamespace
     public NamespaceDeclaration(DocumentImpl ownerDocument, OMNamespace namespace, OMFactory factory) {
         super(ownerDocument, factory);
         coreSetValue(namespace.getNamespaceURI());
-        declaredNamespace = namespace;
-    }
-
-    public final NodeFactory coreGetNodeFactory() {
-        return ((NodeFactory)getOMFactory());
-    }
-
-    public String coreGetDeclaredPrefix() {
-        return declaredNamespace.getPrefix();
-    }
-
-    // TODO: should be part of a DOM aspect
-    public String coreGetDeclaredNamespaceURI() {
-        return getValue();
-    }
-
-    public final OMNamespace getDeclaredNamespace() {
-        // TODO: what if the attribute value has been changed in the meantime?
-        return declaredNamespace;
+        setDeclaredNamespace(namespace);
     }
 
     @Override
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         NamespaceDeclaration clone = new NamespaceDeclaration(getOMFactory());
-        clone.declaredNamespace = getDeclaredNamespace();
+        clone.setDeclaredNamespace(getDeclaredNamespace());
         return clone;
     }
 }

@@ -68,5 +68,6 @@ public interface CoreAttribute extends CoreNode {
      */
     CoreAttribute coreGetPreviousAttribute();
 
+    String coreGetValue();
     void coreSetValue(String value);
 }

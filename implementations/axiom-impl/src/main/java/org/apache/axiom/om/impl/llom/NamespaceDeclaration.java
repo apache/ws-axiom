@@ -16,17 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.llom;
 
-/**
- * Represents a namespace declaration information item.
- */
-public interface CoreNamespaceDeclaration extends CoreAttribute {
-    /**
-     * Get the prefix declared by this namespace declaration.
-     * 
-     * @return the prefix, or <code>null</code> if this namespace declaration defines the default
-     *         namespace
-     */
-    String coreGetDeclaredPrefix();
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
+
+public final class NamespaceDeclaration extends Attribute implements AxiomNamespaceDeclaration {
+    public NamespaceDeclaration(OMFactory factory) {
+        super(factory);
+    }
+
+    public OMInformationItem clone(OMCloneOptions options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

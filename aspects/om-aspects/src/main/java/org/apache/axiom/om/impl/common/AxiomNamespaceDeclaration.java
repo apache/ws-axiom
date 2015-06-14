@@ -16,17 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.common;
 
-/**
- * Represents a namespace declaration information item.
- */
-public interface CoreNamespaceDeclaration extends CoreAttribute {
-    /**
-     * Get the prefix declared by this namespace declaration.
-     * 
-     * @return the prefix, or <code>null</code> if this namespace declaration defines the default
-     *         namespace
-     */
-    String coreGetDeclaredPrefix();
+import org.apache.axiom.core.CoreNamespaceDeclaration;
+
+public interface AxiomNamespaceDeclaration extends AxiomInformationItem, CoreNamespaceDeclaration {
+
 }

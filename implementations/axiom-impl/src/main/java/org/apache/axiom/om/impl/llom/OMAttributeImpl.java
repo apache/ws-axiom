@@ -28,12 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 
 /** Class OMAttributeImpl */
-public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttribute {
-    private String value;
-
-    /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
-    private OMFactory factory;
-
+public class OMAttributeImpl extends Attribute implements AxiomAttribute {
     /**
      * Constructor OMAttributeImpl.
      *
@@ -43,6 +38,7 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
      */
     public OMAttributeImpl(String localName, OMNamespace ns, String value, OMFactory factory) 
     {
+        super(factory);
         if (localName == null || localName.trim().length() == 0)
             throw new IllegalArgumentException("Local name may not be null or empty");
         
@@ -59,33 +55,9 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
         }
 
         internalSetLocalName(localName);
-        this.value = value;
+        coreSetValue(value);
         internalSetNamespace(ns);
         coreSetType(OMConstants.XMLATTRTYPE_CDATA);
-        this.factory = factory;
-    }
-
-    // -------- Getters and Setters
-
-    public String getAttributeValue() {
-        return value;
-    }
-
-    /**
-     * Method setAttributeValue.
-     *
-     * @param value
-     */
-    public void setAttributeValue(String value) {
-        this.value = value;
-    }
-
-    public void coreSetValue(String value) {
-        setAttributeValue(value);
-    }
-
-    public OMFactory getOMFactory() {
-        return this.factory;
     }
 
     /**
@@ -111,6 +83,7 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
         OMAttribute other = (OMAttribute)obj;
         OMNamespace namespace = getNamespace();
         String localName = getLocalName();
+        String value = getAttributeValue();
         //first check namespace then localName then value to improve performance
         return (namespace == null ? other.getNamespace() == null :
                 namespace.equals(other.getNamespace()) &&
@@ -123,11 +96,12 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
     public int hashCode() {
         OMNamespace namespace = getNamespace();
         String localName = getLocalName();
+        String value = getAttributeValue();
         return localName.hashCode() ^ (value != null ? value.hashCode() : 0) ^
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
     public OMInformationItem clone(OMCloneOptions options) {
-        return new OMAttributeImpl(getLocalName(), getNamespace(), value, factory);
+        return new OMAttributeImpl(getLocalName(), getNamespace(), getAttributeValue(), getOMFactory());
     }
 }
