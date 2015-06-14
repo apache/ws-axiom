@@ -509,6 +509,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                     addTest(new org.apache.axiom.ts.om.sourcedelement.TestHasName(metaFactory, variant, qname));
                 }
             }
+            for (AddAttributeStrategy strategy : getInstances(AddAttributeStrategy.class)) {
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestAddAttribute(metaFactory, strategy));
+            }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
@@ -518,6 +521,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAllAttributes(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAttribute(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAttributeValue(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
