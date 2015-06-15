@@ -35,7 +35,6 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -55,11 +54,7 @@ public class OMElementImpl extends OMNodeImpl
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
-    /** Field namespaces */
-    protected HashMap namespaces = null;
-    
     private int lineNumber;
-    private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
     public OMElementImpl(OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                     OMFactory factory, boolean generateNSDecl) {
@@ -140,123 +135,6 @@ public class OMElementImpl extends OMNodeImpl
         }
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);
-    }
-
-    public OMNamespace getDefaultNamespace() {
-        OMNamespace defaultNS;
-        if (namespaces != null && (defaultNS = (OMNamespace) namespaces.get("")) != null) {
-            return defaultNS.getNamespaceURI().length() == 0 ? null : defaultNS;
-        }
-        OMContainer parent = getParent();
-        if (parent instanceof OMElementImpl) {
-            return ((OMElementImpl) parent).getDefaultNamespace();
-
-        }
-        return null;
-    }
-
-    /**
-     * Finds a namespace with the given uri and prefix, in the scope of the document. Starts to find
-     * from the current element and goes up in the hiararchy until one is found. If none is found,
-     * returns null.
-     */
-    public OMNamespace findNamespace(String uri, String prefix) {
-
-        // check in the current element
-        OMNamespace namespace = findDeclaredNamespace(uri, prefix);
-        if (namespace != null) {
-            return namespace;
-        }
-
-        // go up to check with ancestors
-        OMContainer parent = getParent();
-        if (parent != null) {
-            //For the OMDocumentImpl there won't be any explicit namespace
-            //declarations, so going up the parent chain till the document
-            //element should be enough.
-            if (parent instanceof OMElement) {
-                namespace = ((OMElementImpl) parent).findNamespace(uri, prefix);
-                // If the prefix has been redeclared, then ignore the binding found on the ancestors
-                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
-                    namespace = null;
-                }
-            }
-        }
-
-        return namespace;
-    }
-
-    public OMNamespace findNamespaceURI(String prefix) {
-        OMNamespace ns = this.namespaces == null ?
-                null :
-                (OMNamespace) this.namespaces.get(prefix);
-
-        if (ns == null) {
-            OMContainer parent = getParent();
-            if (parent instanceof OMElement) {
-                // try with the parent
-                return ((OMElement)parent).findNamespaceURI(prefix);
-            } else {
-                return null;
-            }
-        } else if (prefix != null && prefix.length() > 0 && ns.getNamespaceURI().length() == 0) {
-            // Prefix undeclaring case (XML 1.1 only)
-            return null;
-        } else {
-            return ns;
-        }
-    }
-
-    // Constant
-    static final OMNamespaceImpl xmlns =
-            new OMNamespaceImpl(OMConstants.XMLNS_URI,
-                                OMConstants.XMLNS_PREFIX);
-
-    /**
-     * Checks for the namespace <B>only</B> in the current Element. This is also used to retrieve
-     * the prefix of a known namespace URI.
-     */
-    private OMNamespace findDeclaredNamespace(String uri, String prefix) {
-        if (uri == null) {
-            return namespaces == null ? null : (OMNamespace)namespaces.get(prefix);
-        }
-
-        //If the prefix is available and uri is available and its the xml namespace
-        if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX) &&
-                uri.equals(OMConstants.XMLNS_URI)) {
-            return xmlns;
-        }
-
-        if (namespaces == null) {
-            return null;
-        }
-
-        if (prefix == null || "".equals(prefix)) {
-
-            OMNamespace defaultNamespace = this.getDefaultNamespace();
-            if (defaultNamespace != null && uri.equals(defaultNamespace.getNamespaceURI())) {
-                return defaultNamespace;
-            }
-            Iterator namespaceListIterator = namespaces.values().iterator();
-
-            String nsUri;
-
-            while (namespaceListIterator.hasNext()) {
-                OMNamespace omNamespace =
-                        (OMNamespace) namespaceListIterator.next();
-                nsUri = omNamespace.getNamespaceURI();
-                if (nsUri != null &&
-                        nsUri.equals(uri)) {
-                    return omNamespace;
-                }
-            }
-        } else {
-            OMNamespace namespace = (OMNamespace) namespaces.get(prefix);
-            if (namespace != null && uri.equals(namespace.getNamespaceURI())) {
-                return namespace;
-            }
-        }
-        return null;
     }
 
     /**

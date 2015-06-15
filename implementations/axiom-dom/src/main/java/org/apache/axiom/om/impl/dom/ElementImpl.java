@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.AttributeMatcher;
-import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
@@ -34,7 +33,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -54,7 +52,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 
-import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
 
 import java.io.ByteArrayOutputStream;
@@ -203,122 +200,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);
-    }
-
-    public OMNamespace getDefaultNamespace() {
-        Attr decl = getAttributeNodeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
-        if (decl != null) {
-            String uri = decl.getValue();
-            return uri.length() == 0 ? null : new OMNamespaceImpl(uri, "");
-        }
-
-        ParentNode parentNode = (ParentNode)coreGetParent();
-        if (parentNode instanceof ElementImpl) {
-            ElementImpl element = (ElementImpl) parentNode;
-            return element.getDefaultNamespace();
-        }
-        return null;
-    }
-
-    /** @see org.apache.axiom.om.OMElement#findNamespace(String, String) */
-    public OMNamespace findNamespace(String uri, String prefix) {
-
-        // check in the current element
-        OMNamespace namespace = findDeclaredNamespace(uri, prefix);
-        if (namespace != null) {
-            return namespace;
-        }
-
-        // go up to check with ancestors
-        ParentNode parentNode = (ParentNode)coreGetParent();
-        if (parentNode != null) {
-            // For the OMDocumentImpl there won't be any explicit namespace
-            // declarations, so going up the parent chain till the document
-            // element should be enough.
-            if (parentNode instanceof OMElement) {
-                namespace = ((ElementImpl) parentNode).findNamespace(uri,
-                                                                     prefix);
-                // If the prefix has been redeclared, then ignore the binding found on the ancestors
-                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
-                    namespace = null;
-                }
-            }
-        }
-
-        if (namespace == null && uri != null && prefix != null
-                && prefix.equals(OMConstants.XMLNS_PREFIX)
-                && uri.equals(OMConstants.XMLNS_URI)) {
-            declareNamespace(OMConstants.XMLNS_URI, OMConstants.XMLNS_PREFIX);
-            namespace = findNamespace(uri, prefix);
-        }
-        return namespace;
-    }
-
-    public OMNamespace findNamespaceURI(String prefix) {
-        CoreAttribute attr = coreGetFirstAttribute();
-        while (attr != null) {
-            if (attr instanceof NamespaceDeclaration) {
-                NamespaceDeclaration nsDecl = (NamespaceDeclaration)attr;
-                if (nsDecl.coreGetDeclaredPrefix().equals(prefix)) {
-                    OMNamespace ns = nsDecl.getDeclaredNamespace();
-                    if (prefix != null && prefix.length() > 0 && ns.getNamespaceURI().length() == 0) {
-                        // Prefix undeclaring case (XML 1.1 only)
-                        return null;
-                    } else {
-                        return ns;
-                    }
-                }
-            }
-            attr = attr.coreGetNextAttribute();
-        }
-        ParentNode parentNode = (ParentNode)coreGetParent();
-        if (parentNode instanceof OMElement) {
-            // try with the parent
-            return ((OMElement)parentNode).findNamespaceURI(prefix);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Checks for the namespace <B>only</B> in the current Element. This can also be used to
-     * retrieve the prefix of a known namespace URI.
-     */
-    private OMNamespace findDeclaredNamespace(String uri, String prefix) {
-        NamedNodeMap attributes = getAttributes();
-        if (uri == null) {
-            Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
-                    prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : prefix);
-            return decl == null ? null : new OMNamespaceImpl(decl.getValue(), prefix);
-        }
-        // If the prefix is available and uri is available and its the xml
-        // namespace
-        if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX)
-                && uri.equals(OMConstants.XMLNS_URI)) {
-            return new OMNamespaceImpl(uri, prefix);
-        }
-
-        if (prefix == null || "".equals(prefix)) {
-            for (int i=0; i<attributes.getLength(); i++) {
-                Attr attr = (Attr)attributes.item(i);
-                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
-                    String declaredUri = attr.getValue();
-                    if (declaredUri.equals(uri)) {
-                        return new OMNamespaceImpl(uri, attr.getPrefix() == null ? "" : attr.getLocalName());
-                    }
-                }
-            }
-        } else {
-            Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix);
-            if (decl != null) {
-                String declaredUri = decl.getValue();
-                if (declaredUri.equals(uri)) {
-                    return new OMNamespaceImpl(uri, prefix);
-                }
-            }
-        }
-
-        return null;
     }
 
     public void setNamespace(OMNamespace namespace) {

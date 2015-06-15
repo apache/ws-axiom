@@ -31,11 +31,13 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.IdentityMapper;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -368,5 +370,98 @@ public aspect AxiomElementSupport {
 
     public final void AxiomElement.undeclarePrefix(String prefix) {
         addNamespaceDeclaration(new OMNamespaceImpl("", prefix));
+    }
+
+    public final OMNamespace AxiomElement.findNamespace(String uri, String prefix) {
+
+        // check in the current element
+        OMNamespace namespace = findDeclaredNamespace(uri, prefix);
+        if (namespace != null) {
+            return namespace;
+        }
+
+        // go up to check with ancestors
+        OMContainer parent = getParent();
+        if (parent != null) {
+            //For the OMDocumentImpl there won't be any explicit namespace
+            //declarations, so going up the parent chain till the document
+            //element should be enough.
+            if (parent instanceof OMElement) {
+                namespace = ((OMElement) parent).findNamespace(uri, prefix);
+                // If the prefix has been redeclared, then ignore the binding found on the ancestors
+                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                    namespace = null;
+                }
+            }
+        }
+
+        return namespace;
+    }
+
+    private static final OMNamespace XMLNS = new OMNamespaceImpl(OMConstants.XMLNS_URI, OMConstants.XMLNS_PREFIX);
+
+    /**
+     * Checks for the namespace <B>only</B> in the current Element. This is also used to retrieve
+     * the prefix of a known namespace URI.
+     */
+    private OMNamespace AxiomElement.findDeclaredNamespace(String uri, String prefix) {
+        // Seems weird, but necessary for compatibility with older versions
+        if (uri != null && prefix != null && prefix.length() == 0) {
+            prefix = null;
+        }
+        
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null) {
+            if (attr instanceof AxiomNamespaceDeclaration) {
+                OMNamespace namespace = ((AxiomNamespaceDeclaration)attr).getDeclaredNamespace();
+                if ((prefix == null || prefix.equals(namespace.getPrefix()))
+                        && (uri == null || uri.equals(namespace.getNamespaceURI()))) {
+                    return namespace;
+                }
+            }
+            attr = attr.coreGetNextAttribute();
+        }
+
+        //If the prefix is available and uri is available and its the xml namespace
+        if ((prefix == null || prefix.equals(OMConstants.XMLNS_PREFIX))
+                && (uri == null || uri.equals(OMConstants.XMLNS_URI))) {
+            return XMLNS;
+        } else {
+            return null;
+        }
+    }
+
+    public final OMNamespace AxiomElement.findNamespaceURI(String prefix) {
+        if (prefix == null) {
+            throw new IllegalArgumentException();
+        }
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null) {
+            if (attr instanceof AxiomNamespaceDeclaration) {
+                AxiomNamespaceDeclaration nsDecl = (AxiomNamespaceDeclaration)attr;
+                if (nsDecl.coreGetDeclaredPrefix().equals(prefix)) {
+                    OMNamespace ns = nsDecl.getDeclaredNamespace();
+                    if (ns.getNamespaceURI().length() == 0) {
+                        // We are either in the prefix undeclaring case (XML 1.1 only) or the namespace
+                        // declaration is xmlns="". In both cases we need to return null.
+                        return null;
+                    } else {
+                        return ns;
+                    }
+                }
+            }
+            attr = attr.coreGetNextAttribute();
+        }
+        OMContainer parent = getParent();
+        if (parent instanceof OMElement) {
+            // try with the parent
+            return ((OMElement)parent).findNamespaceURI(prefix);
+        } else {
+            return null;
+        }
+    }
+
+    public final OMNamespace AxiomElement.getDefaultNamespace() {
+        return findNamespaceURI("");
     }
 }
