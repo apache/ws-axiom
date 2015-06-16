@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.IdentityMapper;
@@ -326,13 +327,19 @@ public aspect AxiomElementSupport {
 
     public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
         OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        addNamespaceDeclaration(ns);
+        try {
+            coreAppendAttribute(((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns), NodeMigrationPolicy.MOVE_ALWAYS);
+        } catch (NodeMigrationException ex) {
+            throw AxiomExceptionUtil.translate(ex);
+        }
         return ns;
     }
     
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
         try {
-            coreAppendAttribute(((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns), NodeMigrationPolicy.MOVE_ALWAYS);
+            coreSetAttribute(AttributeMatcher.NAMESPACE_DECLARATION,
+                    ((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns),
+                    NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
         } catch (NodeMigrationException ex) {
             throw AxiomExceptionUtil.translate(ex);
         }
