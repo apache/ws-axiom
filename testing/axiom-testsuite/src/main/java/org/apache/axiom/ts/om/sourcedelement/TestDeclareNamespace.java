@@ -27,39 +27,36 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
- * Tests that adding an attribute to an {@link OMSourcedElement} overrides a corresponding attribute
- * that may be produced during expansion.
+ * Tests that declaring a namespace on an {@link OMSourcedElement} overrides a corresponding
+ * namespace declaration that may be produced during expansion.
  */
-public class TestAddAttribute extends AxiomTestCase {
-    private final AddAttributeStrategy strategy;
-    
-    public TestAddAttribute(OMMetaFactory metaFactory, AddAttributeStrategy strategy) {
+public class TestDeclareNamespace extends AxiomTestCase {
+    public TestDeclareNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
-        this.strategy = strategy;
-        strategy.addTestParameters(this);
     }
 
     @Override
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(
-                new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
-        // Add an attribute before expansion
-        OMAttribute attr = strategy.addAttribute(element, "attr", null, "newvalue");
-        // Force expansion; this should not overwrite the attribute we just added
+                new PullOMDataSource("<root xmlns:p='urn:ns1'><child/></root>"), "root", null);
+        // Declare a namespace before expansion
+        element.declareNamespace("urn:ns2", "p");
+        // Force expansion; this should not overwrite the namespace declaration we just added
         ASSERT.that(element.getFirstOMChild()).isNotNull();
-        OMAttribute attr2 = element.getAttribute(new QName("attr"));
-        ASSERT.that(attr2).isSameAs(attr);
-        ASSERT.that(attr2.getAttributeValue()).isEqualTo("newvalue");
-        Iterator it = element.getAllAttributes();
+        OMNamespace ns = element.findNamespaceURI("p");
+        ASSERT.that(ns).isNotNull();
+        ASSERT.that(ns.getPrefix()).isEqualTo("p");
+        ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:ns2");
+        Iterator it = element.getAllDeclaredNamespaces();
         ASSERT.that(it.hasNext()).isTrue();
-        ASSERT.that(it.next()).isSameAs(attr);
+        ASSERT.that(it.next()).isSameAs(ns);
         ASSERT.that(it.hasNext()).isFalse();
     }
 }
