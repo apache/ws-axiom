@@ -18,7 +18,13 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -37,19 +43,31 @@ public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement("test", null);
-        element.declareNamespace("urn:a", "a");
-        element.declareNamespace("urn:b", "b");
-        element.declareNamespace("urn:c", "c");
-        for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
-            if (ns.getPrefix().equals("b")) {
-                it.remove();
-                break;
+        List<String> prefixes = Arrays.asList("a", "b", "c");
+        for (String prefixToRemove : prefixes) {
+            OMElement element = factory.createOMElement("test", null);
+            for (String prefix : prefixes) {
+                element.declareNamespace("urn:" + prefix, prefix);
+            }
+            Set<String> seenPrefixes = new HashSet<String>();
+            for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                OMNamespace ns = (OMNamespace)it.next();
+                String prefix = ns.getPrefix();
+                if (prefix.equals(prefixToRemove)) {
+                    it.remove();
+                }
+                seenPrefixes.add(prefix);
+            }
+            ASSERT.that(seenPrefixes).containsAllIn(prefixes);
+            for (String prefix : prefixes) {
+                OMNamespace ns = element.findNamespaceURI(prefix);
+                if (prefix.equals(prefixToRemove)) {
+                    ASSERT.that(ns).isNull();
+                } else {
+                    ASSERT.that(ns).isNotNull();
+                    ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:" + prefix);
+                }
             }
         }
-        assertEquals("urn:a", element.findNamespaceURI("a").getNamespaceURI());
-        assertNull(element.findNamespaceURI("b"));
-        assertEquals("urn:c", element.findNamespaceURI("c").getNamespaceURI());
     }
 }
