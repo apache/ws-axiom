@@ -52,7 +52,7 @@ public class TestAddAttribute extends AxiomTestCase {
                 new PullOMDataSource("<root attr='orgvalue'><child/></root>"), "root", null);
         // Add an attribute before expansion
         OMAttribute attr = strategy.addAttribute(element, "attr", null, "newvalue");
-        // Force expansion; this not overwrite the attribute we just added
+        // Force expansion; this should not overwrite the attribute we just added
         ASSERT.that(element.getFirstOMChild()).isNotNull();
         OMAttribute attr2 = element.getAttribute(new QName("attr"));
         ASSERT.that(attr2).isSameAs(attr);
