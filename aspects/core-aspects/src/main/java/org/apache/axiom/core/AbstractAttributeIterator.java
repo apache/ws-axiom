@@ -25,8 +25,9 @@ abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements I
     private final CoreElement element;
     private final Class<T> type;
     private final Mapper<T,S> mapper;
-    private CoreAttribute attribute;
-    private boolean hasNext;
+    private CoreAttribute currentAttribute;
+    private CoreAttribute nextAttribute;
+    private boolean hasNextCalled;
     
     AbstractAttributeIterator(CoreElement element, Class<T> type, Mapper<T,S> mapper) {
         this.element = element;
@@ -37,8 +38,8 @@ abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements I
     protected abstract boolean matches(T attribute);
 
     public final boolean hasNext() {
-        if (!hasNext) {
-            CoreAttribute attribute = this.attribute;
+        if (!hasNextCalled) {
+            CoreAttribute attribute = currentAttribute;
             do {
                 if (attribute == null) {
                     attribute = element.coreGetFirstAttribute();
@@ -46,15 +47,18 @@ abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements I
                     attribute = attribute.coreGetNextAttribute();
                 }
             } while (attribute != null && (!type.isInstance(attribute) || !matches(type.cast(attribute))));
-            this.attribute = attribute;
-            hasNext = true;
+            nextAttribute = attribute;
+            hasNextCalled = true;
         }
-        return attribute != null;
+        return nextAttribute != null;
     }
 
     public final S next() {
         if (hasNext()) {
-            hasNext = false;
+            CoreAttribute attribute = nextAttribute;
+            currentAttribute = attribute;
+            nextAttribute = null;
+            hasNextCalled = false;
             return mapper.map(type.cast(attribute));
         } else {
             throw new NoSuchElementException();
@@ -62,6 +66,11 @@ abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements I
     }
 
     public final void remove() {
-        throw new UnsupportedOperationException();
+        if (currentAttribute == null) {
+            throw new IllegalStateException();
+        } else {
+            currentAttribute.coreRemove();
+            currentAttribute = null;
+        }
     }
 }
