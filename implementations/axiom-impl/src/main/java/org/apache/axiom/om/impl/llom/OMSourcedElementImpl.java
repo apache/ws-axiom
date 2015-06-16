@@ -340,49 +340,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.declareNamespace(uri, prefix);
     }
 
-    public OMNamespace declareDefaultNamespace(String uri) {
-        forceExpand();
-        return super.declareDefaultNamespace(uri);
-    }
-
-    public OMNamespace getDefaultNamespace() {
-        forceExpand();
-        return super.getDefaultNamespace();
-    }
-
-    public OMNamespace declareNamespace(OMNamespace namespace) {
-        forceExpand();
-        return super.declareNamespace(namespace);
-    }
-
-    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
-        return super.addNamespaceDeclaration(uri, prefix);
-    }
-
-    public void addNamespaceDeclaration(OMNamespace ns) {
-        super.addNamespaceDeclaration(ns);
-    }
-
-    public void undeclarePrefix(String prefix) {
-        forceExpand();
-        super.undeclarePrefix(prefix);
-    }
-
-    public OMNamespace findNamespace(String uri, String prefix) {
-        forceExpand();
-        return super.findNamespace(uri, prefix);
-    }
-
-    public OMNamespace findNamespaceURI(String prefix) {
-        forceExpand();
-        return super.findNamespaceURI(prefix);
-    }
-
-    public Iterator getAllDeclaredNamespaces() throws OMException {
-        forceExpand();
-        return super.getAllDeclaredNamespaces();
-    }
-
     public OMAttribute addAttribute(OMAttribute attr) {
         forceExpand();
         return super.addAttribute(attr);
@@ -498,11 +455,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         forceExpand();
         super.setNamespaceWithNoFindInCurrentScope(namespace);
-    }
-
-    public void setNamespace(OMNamespace namespace, boolean declare) {
-        forceExpand();
-        super.setNamespace(namespace, declare);
     }
 
     public QName getQName() {
