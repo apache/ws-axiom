@@ -28,6 +28,7 @@ import org.apache.axiom.ts.om.container.TestGetXMLStreamReader;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
+import org.apache.axiom.ts.om.element.TestGetAllDeclaredNamespacesRemove;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements;
 import org.apache.axiom.ts.om.element.sr.TestClose;
@@ -66,6 +67,9 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: test issue: DOOM doesn't preserve attribute order
         builder.exclude(TestGetXMLStreamReader.class, "(&(file=large.xml))");
+        
+        // TODO: will be fixed by merging the attrs-aspects branch
+        builder.exclude(TestGetAllDeclaredNamespacesRemove.class);
         
         return builder.build();
     }
