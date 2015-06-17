@@ -133,7 +133,7 @@ public aspect CoreElementSupport {
         CoreAttribute attr = accept(coreAttr, policy);
         String namespaceURI = matcher.getNamespaceURI(attr);
         String name = matcher.getName(attr); 
-        CoreAttribute existingAttr = firstAttribute;
+        CoreAttribute existingAttr = coreGetFirstAttribute();
         CoreAttribute previousAttr = null;
         while (existingAttr != null && !matcher.matches(existingAttr, namespaceURI, name)) {
             previousAttr = existingAttr;

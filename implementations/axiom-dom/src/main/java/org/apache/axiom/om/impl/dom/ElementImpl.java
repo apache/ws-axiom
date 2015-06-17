@@ -22,14 +22,12 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.AttributeMatcher;
-import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.dom.DOMExceptionUtil;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -38,16 +36,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
@@ -61,8 +54,6 @@ import java.util.Iterator;
 public class ElementImpl extends ParentNode implements DOMElement, AxiomElement, NamedNode,
         OMConstants {
 
-    private static final Log log = LogFactory.getLog(ElementImpl.class);
-    
     private int lineNumber;
 
     public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
@@ -127,80 +118,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
     // /
     // /OmElement methods
     // /
-
-    /** @see org.apache.axiom.om.OMElement#addAttribute (org.apache.axiom.om.OMAttribute) */
-    public OMAttribute addAttribute(OMAttribute attr) {
-        // If the attribute already has an owner element then clone the attribute (except if it is owned
-        // by the this element)
-        OMElement owner = attr.getOwner();
-        if (owner != null) {
-            if (owner == this) {
-                return attr;
-            }
-            attr = new NSAwareAttribute(null, attr.getLocalName(), attr.getNamespace(),
-                    attr.getAttributeValue(), attr.getOMFactory());
-        }
-        
-        OMNamespace namespace = attr.getNamespace();
-        if (namespace != null) {
-            String uri = namespace.getNamespaceURI();
-            if (uri.length() > 0) {
-                String prefix = namespace.getPrefix();
-                OMNamespace ns2 = findNamespaceURI(prefix);
-                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
-                    declareNamespace(uri, prefix);
-                }
-            }
-        }
-
-        try {
-            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
-        } catch (NodeMigrationException ex) {
-            DOMExceptionUtil.translate(ex);
-        }
-        return attr;
-    }
-
-    public final OMAttribute addAttribute(String localName, String value, OMNamespace ns) {
-        try {
-            String namespaceURI;
-            String prefix;
-            if (ns == null) {
-                namespaceURI = "";
-                prefix = "";
-            } else {
-                namespaceURI = ns.getNamespaceURI();
-                prefix = ns.getPrefix();
-                if (namespaceURI.length() == 0) {
-                    if (prefix == null) {
-                        prefix = "";
-                    } else if (prefix.length() > 0) {
-                        throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
-                    }
-                } else {
-                    if (prefix == null || prefix.length() > 0) {
-                        prefix = checkNamespaceIsDeclared(prefix, namespaceURI, false, true);
-                    } else {
-                        throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
-                    }
-                }
-            }
-            AxiomAttribute attr = (AxiomAttribute)coreGetNodeFactory().createAttribute(null, namespaceURI, localName, prefix, value, "CDATA");
-            return (AxiomAttribute)coreSetAttribute(Policies.ATTRIBUTE_MATCHER, attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.ADDED_ATTRIBUTE);
-        } catch (CoreModelException ex) {
-            throw DOMExceptionUtil.translate(ex);
-        }
-    }
-
-    public OMNamespace declareNamespace(String uri, String prefix) {
-        if ("".equals(prefix)) {
-            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
-            prefix = OMSerializerUtil.getNextNSPrefix();
-        }
-        
-        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
-        return declareNamespace(ns);
-    }
 
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);

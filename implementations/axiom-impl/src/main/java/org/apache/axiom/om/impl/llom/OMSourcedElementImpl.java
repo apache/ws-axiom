@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -333,21 +332,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public boolean isExpanded() {
         return isExpanded;
-    }
-
-    public OMNamespace declareNamespace(String uri, String prefix) {
-        forceExpand();
-        return super.declareNamespace(uri, prefix);
-    }
-
-    public OMAttribute addAttribute(OMAttribute attr) {
-        forceExpand();
-        return super.addAttribute(attr);
-    }
-
-    public OMAttribute addAttribute(String attributeName, String value, OMNamespace namespace) {
-        forceExpand();
-        return super.addAttribute(attributeName, value, namespace);
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {

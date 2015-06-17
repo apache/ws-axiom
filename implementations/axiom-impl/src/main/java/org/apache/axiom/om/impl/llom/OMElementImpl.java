@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -45,7 +44,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /** Class OMElementImpl */
@@ -126,75 +124,6 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void checkChild(OMNode child) {
-    }
-
-    public OMNamespace declareNamespace(String uri, String prefix) {
-        if ("".equals(prefix)) {
-            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
-            prefix = OMSerializerUtil.getNextNSPrefix();
-        }
-        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
-        return declareNamespace(ns);
-    }
-
-    /**
-     * Inserts an attribute to this element. Implementor can decide as to insert this in the front
-     * or at the end of set of attributes.
-     *
-     * <p>The owner of the attribute is set to be the particular <code>OMElement</code>.
-     * If the attribute already has an owner then the attribute is cloned (i.e. its name,
-     * value and namespace are copied to a new attribute) and the new attribute is added
-     * to the element. It's owner is then set to be the particular <code>OMElement</code>.
-     * 
-     * @return The attribute that was added to the element. Note: The added attribute
-     * may not be the same instance that was given to add. This can happen if the given
-     * attribute already has an owner. In such case the returned attribute and the given
-     * attribute are <i>equal</i> but not the same instance.
-     *
-     * @see OMAttributeImpl#equals(Object)
-     */
-    public OMAttribute addAttribute(OMAttribute attr){
-        // If the attribute already has an owner element then clone the attribute (except if it is owned
-        // by the this element)
-        OMElement owner = attr.getOwner();
-        if (owner != null) {
-            if (owner == this) {
-                return attr;
-            }
-            attr = new OMAttributeImpl(
-                    attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue(), attr.getOMFactory());
-        }
-
-        OMNamespace namespace = attr.getNamespace();
-        if (namespace != null) {
-            String uri = namespace.getNamespaceURI();
-            if (uri.length() > 0) {
-                String prefix = namespace.getPrefix();
-                OMNamespace ns2 = findNamespaceURI(prefix);
-                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
-                    declareNamespace(uri, prefix);
-                }
-            }
-        }
-
-        internalAppendAttribute(attr);
-        return attr;
-    }
-
-    public OMAttribute addAttribute(String localName, String value,
-                                    OMNamespace ns) {
-        OMNamespace namespace = null;
-        if (ns != null) {
-            String namespaceURI = ns.getNamespaceURI();
-            String prefix = ns.getPrefix();
-            if (namespaceURI.length() > 0 || prefix != null) {
-                namespace = findNamespace(namespaceURI, prefix);
-                if (namespace == null || prefix == null && namespace.getPrefix().length() == 0) {
-                    namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
-                }
-            }
-        }
-        return addAttribute(new OMAttributeImpl(localName, namespace, value, getOMFactory()));
     }
 
     public void build() throws OMException {

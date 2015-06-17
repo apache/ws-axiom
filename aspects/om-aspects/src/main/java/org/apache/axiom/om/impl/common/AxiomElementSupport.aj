@@ -51,6 +51,8 @@ import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -58,6 +60,8 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  */
 public aspect AxiomElementSupport {
     declare parents: (InformationItem+ && OMElement+) implements AxiomElement;
+    
+    private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
     
     public final int AxiomElement.getType() {
         return OMNode.ELEMENT_NODE;
@@ -302,6 +306,49 @@ public aspect AxiomElementSupport {
             AxiomExceptionUtil.translate(ex);
         }
     }
+    
+    public final OMAttribute AxiomElement.addAttribute(OMAttribute attr){
+        // If the attribute already has an owner element then clone the attribute (except if it is owned
+        // by the this element)
+        OMElement owner = attr.getOwner();
+        if (owner != null) {
+            if (owner == this) {
+                return attr;
+            }
+            attr = getOMFactory().createOMAttribute(attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue());
+        }
+
+        OMNamespace namespace = attr.getNamespace();
+        if (namespace != null) {
+            String uri = namespace.getNamespaceURI();
+            if (uri.length() > 0) {
+                String prefix = namespace.getPrefix();
+                OMNamespace ns2 = findNamespaceURI(prefix);
+                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
+                    declareNamespace(uri, prefix);
+                }
+            }
+        }
+
+        internalAppendAttribute(attr);
+        return attr;
+    }
+
+    public final OMAttribute AxiomElement.addAttribute(String localName, String value, OMNamespace ns) {
+        OMNamespace namespace = null;
+        if (ns != null) {
+            String namespaceURI = ns.getNamespaceURI();
+            String prefix = ns.getPrefix();
+            if (namespaceURI.length() > 0 || prefix != null) {
+                namespace = findNamespace(namespaceURI, prefix);
+                if (namespace == null || prefix == null && namespace.getPrefix().length() == 0) {
+                    namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
+                }
+            }
+        }
+        return addAttribute(getOMFactory().createOMAttribute(localName, namespace, value));
+    }
+
     private static final IdentityMapper<AxiomAttribute> attributeIdentityMapper = new IdentityMapper<AxiomAttribute>();
     
     @SuppressWarnings("rawtypes")
@@ -361,6 +408,15 @@ public aspect AxiomElementSupport {
         }
         addNamespaceDeclaration(namespace);
         return namespace;
+    }
+
+    public final OMNamespace AxiomElement.declareNamespace(String uri, String prefix) {
+        if ("".equals(prefix)) {
+            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
+            prefix = OMSerializerUtil.getNextNSPrefix();
+        }
+        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
+        return declareNamespace(ns);
     }
 
     public final OMNamespace AxiomElement.declareDefaultNamespace(String uri) {
