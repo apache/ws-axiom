@@ -60,47 +60,6 @@ public class OMAttributeImpl extends Attribute implements AxiomAttribute {
         coreSetType(OMConstants.XMLATTRTYPE_CDATA);
     }
 
-    /**
-     * Checks for the equality of two <code>OMAttribute</code> instances. Thus the object to compare
-     * this with may be an instance of <code>OMAttributeImpl</code> (an instance of this class) or
-     * an instance of <code>AttrImpl</code>. The method returns false for any object of type other
-     * than <code>OMAttribute</code>.
-     *
-     * <p>We check for the equality of namespaces first (note that if the namespace of this instance is null
-     * then for the <code>obj</code> to be equal its namespace must also be null). This condition solely
-     * doesn't determine the equality. So we check for the equality of names and values (note that the value
-     * can also be null in which case the same argument holds as that for the namespace) of the two instances.
-     * If all three conditions are met then we say the two instances are equal.
-     *
-     * Note: We ignore the owner when checking for the equality. This is simply because the owner is
-     * introduced just to keep things simple for the programmer and not as part of an attribute itself.
-     *
-     * @param obj The object to compare with this instance.
-     * @return True if obj is equal to this or else false.
-     */
-    public boolean equals(Object obj) {
-        if (! (obj instanceof OMAttribute)) return false;
-        OMAttribute other = (OMAttribute)obj;
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        String value = getAttributeValue();
-        //first check namespace then localName then value to improve performance
-        return (namespace == null ? other.getNamespace() == null :
-                namespace.equals(other.getNamespace()) &&
-                localName.equals(other.getLocalName()) &&
-                (value == null ? other.getAttributeValue() == null :
-                        value.equals(other.getAttributeValue())));
-
-    }
-
-    public int hashCode() {
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        String value = getAttributeValue();
-        return localName.hashCode() ^ (value != null ? value.hashCode() : 0) ^
-                (namespace != null ? namespace.hashCode() : 0);
-    }
-
     public OMInformationItem clone(OMCloneOptions options) {
         return new OMAttributeImpl(getLocalName(), getNamespace(), getAttributeValue(), getOMFactory());
     }
