@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.dom;
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.CoreNSAwareAttribute;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
@@ -29,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomText;
-import org.w3c.dom.Attr;
 
 public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, NamedNode, CoreNSAwareAttribute {
     // TODO: copy isId?
