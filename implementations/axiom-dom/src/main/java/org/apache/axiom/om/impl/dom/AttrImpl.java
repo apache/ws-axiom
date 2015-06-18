@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.om.OMFactory;

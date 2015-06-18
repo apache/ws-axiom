@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
