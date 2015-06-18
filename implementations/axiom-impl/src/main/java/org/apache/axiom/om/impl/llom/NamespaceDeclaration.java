@@ -28,6 +28,16 @@ public final class NamespaceDeclaration extends Attribute implements AxiomNamesp
         super(factory);
     }
 
+    public String coreGetValue() {
+        // Method not used in LLOM
+        throw new UnsupportedOperationException();
+    }
+
+    public void coreSetValue(String value) {
+        // Method not used in LLOM
+        throw new UnsupportedOperationException();
+    }
+
     public OMInformationItem clone(OMCloneOptions options) {
         NamespaceDeclaration decl = new NamespaceDeclaration(getOMFactory());
         decl.setDeclaredNamespace(getDeclaredNamespace());

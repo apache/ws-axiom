@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMFactory;
 
 public abstract class Attribute extends OMInformationItemImpl implements CoreAttribute {
     private OMFactory factory;
-    private String value;
 
     public Attribute(OMFactory factory) {
         this.factory = factory;
@@ -31,13 +30,5 @@ public abstract class Attribute extends OMInformationItemImpl implements CoreAtt
     
     public final OMFactory getOMFactory() {
         return factory;
-    }
-    
-    public final String coreGetValue() {
-        return value;
-    }
-    
-    public final void coreSetValue(String value) {
-        this.value = value;
     }
 }

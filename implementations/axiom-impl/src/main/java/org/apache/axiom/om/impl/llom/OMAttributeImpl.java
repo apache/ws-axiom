@@ -28,6 +28,8 @@ import org.apache.axiom.om.impl.common.AxiomAttribute;
 
 /** Class OMAttributeImpl */
 public class OMAttributeImpl extends Attribute implements AxiomAttribute {
+    private String value;
+    
     /**
      * Constructor OMAttributeImpl.
      *
@@ -57,6 +59,14 @@ public class OMAttributeImpl extends Attribute implements AxiomAttribute {
         coreSetValue(value);
         internalSetNamespace(ns);
         coreSetType(OMConstants.XMLATTRTYPE_CDATA);
+    }
+    
+    public final String coreGetValue() {
+        return value;
+    }
+    
+    public final void coreSetValue(String value) {
+        this.value = value;
     }
 
     public OMInformationItem clone(OMCloneOptions options) {
