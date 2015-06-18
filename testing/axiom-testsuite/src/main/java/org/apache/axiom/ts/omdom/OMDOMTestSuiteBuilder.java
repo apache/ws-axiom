@@ -36,6 +36,7 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
 
     protected void addTests() {
         addTest(new org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.attr.TestSetValueOnNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.document.TestAppendChildForbidden(metaFactory, true));
         addTest(new org.apache.axiom.ts.omdom.document.TestAppendChildForbidden(metaFactory, false));
         addTest(new org.apache.axiom.ts.omdom.document.TestCreateDocumentFragmentInterfaces(metaFactory));
