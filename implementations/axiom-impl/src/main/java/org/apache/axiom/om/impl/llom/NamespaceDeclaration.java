@@ -29,7 +29,8 @@ public final class NamespaceDeclaration extends Attribute implements AxiomNamesp
     }
 
     public OMInformationItem clone(OMCloneOptions options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        NamespaceDeclaration decl = new NamespaceDeclaration(getOMFactory());
+        decl.setDeclaredNamespace(getDeclaredNamespace());
+        return decl;
     }
 }
