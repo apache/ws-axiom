@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
