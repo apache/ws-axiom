@@ -36,8 +36,6 @@ public interface AttributeMatcher {
      * <dt><code>prefix</code>
      * <dd>Not used.
      * </dl>
-     * 
-     * @author Andreas Veithen
      */
     AttributeMatcher NAMESPACE_DECLARATION = new AttributeMatcher() {
         public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
