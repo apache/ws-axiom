@@ -23,7 +23,7 @@ import org.apache.axiom.dom.DOMNSUnawareAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 
-public class NSUnawareAttribute extends TypedAttribute implements DOMNSUnawareAttribute {
+public class NSUnawareAttribute extends AttrImpl implements DOMNSUnawareAttribute {
     public NSUnawareAttribute(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
