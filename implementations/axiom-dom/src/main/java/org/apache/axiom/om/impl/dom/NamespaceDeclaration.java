@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 
 public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration, AxiomNamespaceDeclaration {
     private NamespaceDeclaration(OMFactory factory) {
@@ -31,14 +32,15 @@ public final class NamespaceDeclaration extends AttrImpl implements DOMNamespace
     
     public NamespaceDeclaration(DocumentImpl ownerDocument, OMNamespace namespace, OMFactory factory) {
         super(ownerDocument, factory);
-        coreSetValue(namespace.getNamespaceURI());
         setDeclaredNamespace(namespace);
     }
 
     @Override
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         NamespaceDeclaration clone = new NamespaceDeclaration(getOMFactory());
-        clone.setDeclaredNamespace(getDeclaredNamespace());
+        // TODO: this is ugly, but we are expected to create a shallow clone and can't copy the value;
+        //       this will be fixed when the clone code is moved to om-aspects
+        clone.setDeclaredNamespace(new OMNamespaceImpl("", getDeclaredNamespace().getPrefix()));
         return clone;
     }
 }
