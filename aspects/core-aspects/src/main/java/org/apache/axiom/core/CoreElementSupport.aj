@@ -174,8 +174,7 @@ public aspect CoreElementSupport {
     }
 
     public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper) {
-        // TODO: if we know that there are no attributes, don't create a new iterator, but return a constant
-        return new AttributesByTypeIterator<T,S>(this, type, mapper);
+        return AttributeIterator.create(this, type, mapper);
     }
 
     public abstract String CoreElement.getImplicitNamespaceURI(String prefix);

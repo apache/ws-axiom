@@ -114,6 +114,7 @@ public aspect CoreAttributeSupport {
             } else {
                 previousAttr.nextAttribute = nextAttribute;
             }
+            nextAttribute = null;
             return true;
         } else {
             if (newOwnerDocument) {

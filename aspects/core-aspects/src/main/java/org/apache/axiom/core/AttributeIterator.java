@@ -18,37 +18,44 @@
  */
 package org.apache.axiom.core;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
-    private final CoreElement element;
+final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
     private final Class<T> type;
     private final Mapper<T,S> mapper;
     private CoreAttribute currentAttribute;
     private CoreAttribute nextAttribute;
-    private boolean hasNextCalled;
+    private boolean nextAttributeSet;
     
-    AbstractAttributeIterator(CoreElement element, Class<T> type, Mapper<T,S> mapper) {
-        this.element = element;
+    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<T,S> mapper) {
         this.type = type;
         this.mapper = mapper;
+        nextAttribute = firstAttribute;
+        nextAttributeSet = true;
     }
     
-    protected abstract boolean matches(T attribute);
-
+    static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper) {
+        CoreAttribute attribute = element.coreGetFirstAttribute();
+        while (attribute != null && !type.isInstance(attribute)) {
+            attribute = attribute.coreGetNextAttribute();
+        }
+        if (attribute == null) {
+            return Collections.<S>emptyList().iterator();
+        } else {
+            return new AttributeIterator<T,S>(attribute, type, mapper);
+        }
+    }
+    
     public final boolean hasNext() {
-        if (!hasNextCalled) {
+        if (!nextAttributeSet) {
             CoreAttribute attribute = currentAttribute;
             do {
-                if (attribute == null) {
-                    attribute = element.coreGetFirstAttribute();
-                } else {
-                    attribute = attribute.coreGetNextAttribute();
-                }
-            } while (attribute != null && (!type.isInstance(attribute) || !matches(type.cast(attribute))));
+                attribute = attribute.coreGetNextAttribute();
+            } while (attribute != null && !type.isInstance(attribute));
             nextAttribute = attribute;
-            hasNextCalled = true;
+            nextAttributeSet = true;
         }
         return nextAttribute != null;
     }
@@ -58,7 +65,7 @@ abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements I
             CoreAttribute attribute = nextAttribute;
             currentAttribute = attribute;
             nextAttribute = null;
-            hasNextCalled = false;
+            nextAttributeSet = false;
             return mapper.map(type.cast(attribute));
         } else {
             throw new NoSuchElementException();
@@ -69,6 +76,8 @@ abstract class AbstractAttributeIterator<T extends CoreAttribute,S> implements I
         if (currentAttribute == null) {
             throw new IllegalStateException();
         } else {
+            // Ensure that the next attribute is known before we remove the current one.
+            hasNext();
             currentAttribute.coreRemove();
             currentAttribute = null;
         }
