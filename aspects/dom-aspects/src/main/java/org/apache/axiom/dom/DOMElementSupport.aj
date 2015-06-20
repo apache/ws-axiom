@@ -57,10 +57,8 @@ public aspect DOMElementSupport {
         String namespace = this.getNamespaceURI();
         String prefix = this.getPrefix();
         // First check for namespaces implicitly defined by the namespace prefix/URI of the element
-        // TODO: although the namespace != null condition conforms to the specs, it is likely incorrect; see XERCESJ-1586
-        if (namespace != null
-                && (prefix == null && specifiedPrefix == null
-                        || prefix != null && prefix.equals(specifiedPrefix))) {
+        if (prefix == null && specifiedPrefix == null
+                || prefix != null && prefix.equals(specifiedPrefix)) {
             return namespace;
         }
         // looking in attributes
