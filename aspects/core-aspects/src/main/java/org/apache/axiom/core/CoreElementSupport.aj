@@ -229,6 +229,9 @@ public aspect CoreElementSupport {
             String prefix = parentElement.coreLookupPrefix(namespaceURI, strict);
             // The prefix declared on one of the ancestors may be masked by another
             // namespace declaration on this element (or one of its descendants).
+            if (!strict && getImplicitNamespaceURI(prefix) != null) {
+                return null;
+            }
             for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
                 if (attr instanceof CoreNamespaceDeclaration) {
                     CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;

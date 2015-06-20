@@ -20,12 +20,10 @@ package org.apache.axiom.core;
 
 public aspect CoreNSAwareElementSupport {
     public final String CoreNSAwareElement.getImplicitNamespaceURI(String prefix) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return prefix.equals(coreGetPrefix()) ? coreGetNamespaceURI() : null;
     }
 
     public final String CoreNSAwareElement.getImplicitPrefix(String namespaceURI) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
 }
