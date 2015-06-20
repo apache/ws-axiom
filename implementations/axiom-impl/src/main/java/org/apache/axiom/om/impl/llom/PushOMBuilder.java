@@ -148,7 +148,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         // Use the internal appendAttribute method instead of addAttribute in order to avoid
         // automatic of a namespace declaration (the OMDataSource is required to produce well formed
         // XML with respect to namespaces, so it will take care of the namespace declarations).
-        ((OMElementImpl)parent).appendAttribute(attr);
+        ((OMElementImpl)parent).internalAppendAttribute(attr);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {

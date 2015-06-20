@@ -22,6 +22,9 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.NodeInUseException;
+import org.apache.axiom.core.WrongDocumentException;
 import org.w3c.dom.DOMException;
 
 public final class DOMExceptionUtil {
@@ -63,6 +66,16 @@ public final class DOMExceptionUtil {
             return new DOMException(code, key);
         } else {
             return new DOMException(code, key + ": " + message);
+        }
+    }
+
+    public static RuntimeException translate(CoreModelException ex) {
+        if (ex instanceof WrongDocumentException) {
+            return newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+        } else if (ex instanceof NodeInUseException) {
+            return newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
+        } else {
+            throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
         }
     }
 }

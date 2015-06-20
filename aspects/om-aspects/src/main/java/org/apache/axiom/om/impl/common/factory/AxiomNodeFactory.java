@@ -19,8 +19,10 @@
 package org.apache.axiom.om.impl.common.factory;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 
 public interface AxiomNodeFactory extends NodeFactory, OMFactoryEx {
-
+    AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace);
 }

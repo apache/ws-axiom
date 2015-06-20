@@ -20,8 +20,12 @@ package org.apache.axiom.dom;
 
 import javax.xml.XMLConstants;
 
+import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
@@ -48,74 +52,45 @@ public aspect DOMElementSupport {
         throw new UnsupportedOperationException();
     }
 
-    public final String DOMElement.lookupNamespaceURI(String specifiedPrefix) {
-        String namespace = this.getNamespaceURI();
-        String prefix = this.getPrefix();
-        // First check for namespaces implicitly defined by the namespace prefix/URI of the element
-        if (prefix == null && specifiedPrefix == null
-                || prefix != null && prefix.equals(specifiedPrefix)) {
-            return namespace;
+    public final String DOMElement.lookupNamespaceURI(String prefix) {
+        if (prefix == null) {
+            prefix = "";
+        } else if (prefix.length() == 0) {
+            return null;
         }
-        // looking in attributes
-        if (this.hasAttributes()) {
-            NamedNodeMap map = this.getAttributes();
-            int length = map.getLength();
-            for (int i = 0; i < length; i++) {
-                Node attr = map.item(i);
-                namespace = attr.getNamespaceURI();
-                if (namespace != null && namespace.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-                    // At this point we know that either the prefix of the attribute is null and
-                    // the local name is "xmlns" or the prefix is "xmlns" and the local name is the
-                    // namespace prefix declared by the namespace declaration. We check that constraint
-                    // when the attribute is created.
-                    String attrPrefix = attr.getPrefix();
-                    if ((specifiedPrefix == null && attrPrefix == null)
-                            || (specifiedPrefix != null && attrPrefix != null
-                                    && attr.getLocalName().equals(specifiedPrefix))) {
-                        String value = attr.getNodeValue();
-                        return value.length() > 0 ? value : null;
-                    }
-                }
-            }
-        }
-        // looking in ancestor
-        DOMParentNode parent = (DOMParentNode)coreGetParent();
-        return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
+        String namespaceURI = coreLookupNamespaceURI(prefix, false);
+        return namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI;
     }
 
     public final String DOMElement.lookupPrefix(String namespaceURI) {
-        return lookupPrefix(namespaceURI, this);
-    }
-    
-    private final String DOMElement.lookupPrefix(String namespaceURI, Element originalElement) {
-        if (namespaceURI == null || namespaceURI.length() == 0) {
+        if (namespaceURI == null) {
             return null;
+        } else {
+            String prefix = coreLookupPrefix(namespaceURI, false);
+            return prefix == null || prefix.length() == 0 ? null : prefix;
         }
-        if (namespaceURI.equals(getNamespaceURI())) {
-            String prefix = getPrefix();
-            if (namespaceURI.equals(originalElement.lookupNamespaceURI(prefix))) {
-                return prefix;
-            }
-        }
-        if (this.hasAttributes()) {
-            NamedNodeMap map = this.getAttributes();
-            int length = map.getLength();
-            for (int i = 0; i < length; i++) {
-                Node attr = map.item(i);
-                String attrPrefix = attr.getPrefix();
-                if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_ATTRIBUTE)
-                        && attr.getNodeValue().equals(namespaceURI)) {
-                    String prefix = attr.getLocalName();
-                    if (namespaceURI.equals(originalElement.lookupNamespaceURI(prefix))) {
-                        return prefix;
-                    }
-                }
-            }
-        }
-        DOMParentNode parent = (DOMParentNode)coreGetParent();
-        return parent instanceof Element ? ((DOMElement)parent).lookupPrefix(namespaceURI, originalElement) : null;
     }
 
+    public final boolean DOMElement.hasAttributes() {
+        return coreGetFirstAttribute() != null;
+    }
+
+    public final NamedNodeMap DOMElement.getAttributes() {
+        return new AttributesNamedNodeMap(this);
+    }
+    
+    public final Attr DOMElement.getAttributeNode(String name) {
+        return (DOMAttribute)coreGetAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name);
+    }
+
+    public final Attr DOMElement.getAttributeNodeNS(String namespaceURI, String localName) {
+        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+            return (DOMAttribute)coreGetAttribute(AttributeMatcher.NAMESPACE_DECLARATION, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
+        } else {
+            return (DOMAttribute)coreGetAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
+        }
+    }
+    
     public final String DOMElement.getAttribute(String name) {
         Attr attr = getAttributeNode(name);
         return attr != null ? attr.getValue() : "";
@@ -132,5 +107,82 @@ public aspect DOMElementSupport {
 
     public final boolean DOMElement.hasAttributeNS(String namespaceURI, String localName) {
         return getAttributeNodeNS(namespaceURI, localName) != null;
+    }
+
+    public final void DOMElement.setAttribute(String name, String value) {
+        NSUtil.validateName(name);
+        coreSetAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name, null, value);
+    }
+
+    public final void DOMElement.setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
+        int i = NSUtil.validateQualifiedName(qualifiedName);
+        String prefix;
+        String localName;
+        if (i == -1) {
+            prefix = "";
+            localName = qualifiedName;
+        } else {
+            prefix = qualifiedName.substring(0, i);
+            localName = qualifiedName.substring(i+1);
+        }
+        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+            coreSetAttribute(AttributeMatcher.NAMESPACE_DECLARATION, null, NSUtil.getDeclaredPrefix(localName, prefix), null, value);
+        } else {
+            namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
+            NSUtil.validateAttributeName(namespaceURI, localName, prefix);
+            coreSetAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
+        }
+    }
+
+    public final Attr DOMElement.setAttributeNode(Attr newAttr) throws DOMException {
+        return setAttributeNodeNS(newAttr);
+    }
+    
+    public final Attr DOMElement.setAttributeNodeNS(Attr _newAttr) throws DOMException {
+        DOMAttribute newAttr = (DOMAttribute)_newAttr;
+        if (newAttr.coreGetOwnerElement() == this) {
+            // This means that the "new" attribute is already linked to the element
+            // and replaces itself.
+            return newAttr;
+        } else {
+            AttributeMatcher matcher;
+            if (newAttr instanceof CoreNSAwareAttribute) {
+                matcher = Policies.DOM2_ATTRIBUTE_MATCHER;
+            } else if (newAttr instanceof CoreNamespaceDeclaration) {
+                matcher = AttributeMatcher.NAMESPACE_DECLARATION;
+            } else {
+                // Must be a DOM1 (namespace unaware) attribute
+                matcher = Policies.DOM1_ATTRIBUTE_MATCHER;
+            }
+            try {
+                return (DOMAttribute)coreSetAttribute(matcher, newAttr, Policies.ATTRIBUTE_MIGRATION_POLICY, false, null, ReturnValue.REPLACED_ATTRIBUTE);
+            } catch (CoreModelException ex) {
+                throw DOMExceptionUtil.translate(ex);
+            }
+        }
+    }
+
+    public final Attr DOMElement.removeAttributeNode(Attr oldAttr) throws DOMException {
+        DOMAttribute attr = (DOMAttribute)oldAttr;
+        if (attr.coreGetOwnerElement() != this) {
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+        } else {
+            attr.coreRemove();
+        }
+        return attr;
+    }
+
+    public final void DOMElement.removeAttribute(String name) throws DOMException {
+        // Specs: "If no attribute with this name is found, this method has no effect."
+        coreRemoveAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name);
+    }
+
+    public final void DOMElement.removeAttributeNS(String namespaceURI, String localName) throws DOMException {
+        // Specs: "If no attribute with this local name and namespace URI is found, this method has no effect."
+        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+            coreRemoveAttribute(AttributeMatcher.NAMESPACE_DECLARATION, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
+        } else {
+            coreRemoveAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
+        }
     }
 }

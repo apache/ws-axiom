@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
@@ -28,14 +27,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 
 /** Class OMAttributeImpl */
-public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttribute {
-    private String value;
-
-    private String type;
-
-    /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
-    private OMFactory factory;
-
+public class OMAttributeImpl extends Attribute implements AxiomAttribute {
     /**
      * Constructor OMAttributeImpl.
      *
@@ -45,6 +37,7 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
      */
     public OMAttributeImpl(String localName, OMNamespace ns, String value, OMFactory factory) 
     {
+        super(factory);
         if (localName == null || localName.trim().length() == 0)
             throw new IllegalArgumentException("Local name may not be null or empty");
         
@@ -61,45 +54,12 @@ public class OMAttributeImpl extends OMInformationItemImpl implements AxiomAttri
         }
 
         internalSetLocalName(localName);
-        this.value = value;
+        coreSetValue(value);
         internalSetNamespace(ns);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
-        this.factory = factory;
-    }
-
-    // -------- Getters and Setters
-
-    public String getAttributeValue() {
-        return value;
-    }
-
-    /**
-     * Method setAttributeValue.
-     *
-     * @param value
-     */
-    public void setAttributeValue(String value) {
-        this.value = value;
-    }
-
-    public String getAttributeType() {
-        return type;
-    }
-
-    /**
-     * Method setAttributeType.
-     *
-     * @param type
-     */
-    public void setAttributeType(String type) {
-        this.type = type;
-    }
-
-    public OMFactory getOMFactory() {
-        return this.factory;
+        coreSetType(OMConstants.XMLATTRTYPE_CDATA);
     }
 
     public OMInformationItem clone(OMCloneOptions options) {
-        return new OMAttributeImpl(getLocalName(), getNamespace(), value, factory);
+        return new OMAttributeImpl(getLocalName(), getNamespace(), getAttributeValue(), getOMFactory());
     }
 }

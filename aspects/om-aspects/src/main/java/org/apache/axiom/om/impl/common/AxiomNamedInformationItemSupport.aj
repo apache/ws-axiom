@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
@@ -157,6 +158,33 @@ public aspect AxiomNamedInformationItemSupport {
                 context.addNamespaceDeclaration(ns);
             }
             return ns;
+        }
+    }
+    
+    public final String AxiomNamedInformationItem.coreGetNamespaceURI() {
+        OMNamespace namespace = getNamespace();
+        return namespace == null ? "" : namespace.getNamespaceURI();
+    }
+    
+    public final String AxiomNamedInformationItem.coreGetPrefix() {
+        OMNamespace namespace = getNamespace();
+        return namespace == null ? "" : namespace.getPrefix();
+    }
+
+    public final String AxiomNamedInformationItem.coreGetLocalName() {
+        return getLocalName();
+    }
+    
+    public final void AxiomNamedInformationItem.coreSetPrefix(String prefix) {
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            if (prefix.length() > 0) {
+                throw new OMException("Cannot set prefix on an information item without namespace");
+            } else {
+                // No need to set a new OMNamespace in this case
+            }
+        } else {
+            internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix));
         }
     }
 }

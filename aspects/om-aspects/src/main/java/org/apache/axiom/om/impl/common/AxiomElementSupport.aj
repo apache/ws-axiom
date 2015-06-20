@@ -31,7 +31,14 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.IdentityMapper;
+import org.apache.axiom.core.NodeMigrationException;
+import org.apache.axiom.core.NodeMigrationPolicy;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -40,8 +47,12 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -49,6 +60,8 @@ import org.apache.axiom.util.stax.XMLStreamReaderUtils;
  */
 public aspect AxiomElementSupport {
     declare parents: (InformationItem+ && OMElement+) implements AxiomElement;
+    
+    private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
     
     public final int AxiomElement.getType() {
         return OMNode.ELEMENT_NODE;
@@ -284,5 +297,234 @@ public aspect AxiomElementSupport {
             }
             return namespace;
         }
+    }
+    
+    public final void AxiomElement.internalAppendAttribute(OMAttribute attr) {
+        try {
+            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
+        } catch (NodeMigrationException ex) {
+            AxiomExceptionUtil.translate(ex);
+        }
+    }
+    
+    public final OMAttribute AxiomElement.addAttribute(OMAttribute attr){
+        // If the attribute already has an owner element then clone the attribute (except if it is owned
+        // by the this element)
+        OMElement owner = attr.getOwner();
+        if (owner != null) {
+            if (owner == this) {
+                return attr;
+            }
+            attr = getOMFactory().createOMAttribute(attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue());
+        }
+
+        OMNamespace namespace = attr.getNamespace();
+        if (namespace != null) {
+            String uri = namespace.getNamespaceURI();
+            if (uri.length() > 0) {
+                String prefix = namespace.getPrefix();
+                OMNamespace ns2 = findNamespaceURI(prefix);
+                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
+                    declareNamespace(uri, prefix);
+                }
+            }
+        }
+
+        internalAppendAttribute(attr);
+        return attr;
+    }
+
+    public final OMAttribute AxiomElement.addAttribute(String localName, String value, OMNamespace ns) {
+        OMNamespace namespace = null;
+        if (ns != null) {
+            String namespaceURI = ns.getNamespaceURI();
+            String prefix = ns.getPrefix();
+            if (namespaceURI.length() > 0 || prefix != null) {
+                namespace = findNamespace(namespaceURI, prefix);
+                if (namespace == null || prefix == null && namespace.getPrefix().length() == 0) {
+                    namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
+                }
+            }
+        }
+        return addAttribute(getOMFactory().createOMAttribute(localName, namespace, value));
+    }
+
+    private static final IdentityMapper<AxiomAttribute> attributeIdentityMapper = new IdentityMapper<AxiomAttribute>();
+    
+    @SuppressWarnings("rawtypes")
+    public final Iterator AxiomElement.getAllAttributes() {
+        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper);
+    }
+    
+    public final OMAttribute AxiomElement.getAttribute(QName qname) {
+        return (AxiomAttribute)coreGetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
+    }
+
+    public final String AxiomElement.getAttributeValue(QName qname) {
+        OMAttribute attr = getAttribute(qname);
+        return attr == null ? null : attr.getAttributeValue();
+    }
+
+    public final void AxiomElement.removeAttribute(OMAttribute attr) {
+        if (attr.getOwner() != this) {
+            throw new OMException("The attribute is not owned by this element");
+        }
+        ((AxiomAttribute)attr).coreRemove(null);
+    }
+
+    public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        try {
+            coreAppendAttribute(((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns), NodeMigrationPolicy.MOVE_ALWAYS);
+        } catch (NodeMigrationException ex) {
+            throw AxiomExceptionUtil.translate(ex);
+        }
+        return ns;
+    }
+    
+    public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
+        try {
+            coreSetAttribute(AttributeMatcher.NAMESPACE_DECLARATION,
+                    ((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns),
+                    NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
+        } catch (NodeMigrationException ex) {
+            throw AxiomExceptionUtil.translate(ex);
+        }
+    }
+    
+    @SuppressWarnings("rawtypes")
+    public final Iterator AxiomElement.getAllDeclaredNamespaces() {
+        return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE);
+    }
+
+    public final OMNamespace AxiomElement.declareNamespace(OMNamespace namespace) {
+        String prefix = namespace.getPrefix();
+        if (prefix == null) {
+            prefix = OMSerializerUtil.getNextNSPrefix();
+            namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
+        }
+        if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
+            throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
+        }
+        addNamespaceDeclaration(namespace);
+        return namespace;
+    }
+
+    public final OMNamespace AxiomElement.declareNamespace(String uri, String prefix) {
+        if ("".equals(prefix)) {
+            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
+            prefix = OMSerializerUtil.getNextNSPrefix();
+        }
+        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
+        return declareNamespace(ns);
+    }
+
+    public final OMNamespace AxiomElement.declareDefaultNamespace(String uri) {
+        OMNamespace elementNamespace = getNamespace();
+        if (elementNamespace == null && uri.length() > 0
+                || elementNamespace != null && elementNamespace.getPrefix().length() == 0 && !elementNamespace.getNamespaceURI().equals(uri)) {
+            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
+                    "the namespace information of the element");
+        }
+        OMNamespace namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");
+        addNamespaceDeclaration(namespace);
+        return namespace;
+    }
+
+    public final void AxiomElement.undeclarePrefix(String prefix) {
+        addNamespaceDeclaration(new OMNamespaceImpl("", prefix));
+    }
+
+    public final OMNamespace AxiomElement.findNamespace(String uri, String prefix) {
+
+        // check in the current element
+        OMNamespace namespace = findDeclaredNamespace(uri, prefix);
+        if (namespace != null) {
+            return namespace;
+        }
+
+        // go up to check with ancestors
+        OMContainer parent = getParent();
+        if (parent != null) {
+            //For the OMDocumentImpl there won't be any explicit namespace
+            //declarations, so going up the parent chain till the document
+            //element should be enough.
+            if (parent instanceof OMElement) {
+                namespace = ((OMElement) parent).findNamespace(uri, prefix);
+                // If the prefix has been redeclared, then ignore the binding found on the ancestors
+                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                    namespace = null;
+                }
+            }
+        }
+
+        return namespace;
+    }
+
+    private static final OMNamespace XMLNS = new OMNamespaceImpl(OMConstants.XMLNS_URI, OMConstants.XMLNS_PREFIX);
+
+    /**
+     * Checks for the namespace <B>only</B> in the current Element. This is also used to retrieve
+     * the prefix of a known namespace URI.
+     */
+    private OMNamespace AxiomElement.findDeclaredNamespace(String uri, String prefix) {
+        // Seems weird, but necessary for compatibility with older versions
+        if (uri != null && prefix != null && prefix.length() == 0) {
+            prefix = null;
+        }
+        
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null) {
+            if (attr instanceof AxiomNamespaceDeclaration) {
+                OMNamespace namespace = ((AxiomNamespaceDeclaration)attr).getDeclaredNamespace();
+                if ((prefix == null || prefix.equals(namespace.getPrefix()))
+                        && (uri == null || uri.equals(namespace.getNamespaceURI()))) {
+                    return namespace;
+                }
+            }
+            attr = attr.coreGetNextAttribute();
+        }
+
+        //If the prefix is available and uri is available and its the xml namespace
+        if ((prefix == null || prefix.equals(OMConstants.XMLNS_PREFIX))
+                && (uri == null || uri.equals(OMConstants.XMLNS_URI))) {
+            return XMLNS;
+        } else {
+            return null;
+        }
+    }
+
+    public final OMNamespace AxiomElement.findNamespaceURI(String prefix) {
+        if (prefix == null) {
+            throw new IllegalArgumentException();
+        }
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null) {
+            if (attr instanceof AxiomNamespaceDeclaration) {
+                AxiomNamespaceDeclaration nsDecl = (AxiomNamespaceDeclaration)attr;
+                if (nsDecl.coreGetDeclaredPrefix().equals(prefix)) {
+                    OMNamespace ns = nsDecl.getDeclaredNamespace();
+                    if (ns.getNamespaceURI().length() == 0) {
+                        // We are either in the prefix undeclaring case (XML 1.1 only) or the namespace
+                        // declaration is xmlns="". In both cases we need to return null.
+                        return null;
+                    } else {
+                        return ns;
+                    }
+                }
+            }
+            attr = attr.coreGetNextAttribute();
+        }
+        OMContainer parent = getParent();
+        if (parent instanceof OMElement) {
+            // try with the parent
+            return ((OMElement)parent).findNamespaceURI(prefix);
+        } else {
+            return null;
+        }
+    }
+
+    public final OMNamespace AxiomElement.getDefaultNamespace() {
+        return findNamespaceURI("");
     }
 }

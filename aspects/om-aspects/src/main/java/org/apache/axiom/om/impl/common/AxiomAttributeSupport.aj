@@ -33,4 +33,20 @@ public aspect AxiomAttributeSupport {
     public final void AxiomAttribute.setOMNamespace(OMNamespace omNamespace) {
         internalSetNamespace(omNamespace);
     }
+    
+    public final String AxiomAttribute.getAttributeValue() {
+        return coreGetValue();
+    }
+    
+    public final void AxiomAttribute.setAttributeValue(String value) {
+        coreSetValue(value);
+    }
+    
+    public final String AxiomAttribute.getAttributeType() {
+        return coreGetType();
+    }
+
+    public final void AxiomAttribute.setAttributeType(String type) {
+        coreSetType(type);
+    }
 }

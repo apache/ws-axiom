@@ -22,6 +22,9 @@ package org.apache.axiom.om.impl.dom.factory;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNSUnawareAttribute;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -41,15 +44,18 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
-import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
+import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
+import org.apache.axiom.om.impl.dom.NSAwareAttribute;
+import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -193,7 +199,18 @@ public class OMDOMFactory implements AxiomNodeFactory {
                 ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
             }
         }
-        return new AttrImpl(null, localName, ns, value, this);
+        if (ns != null) {
+            if (ns.getNamespaceURI().length() == 0) {
+                if (ns.getPrefix().length() > 0) {
+                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+                } else {
+                    ns = null;
+                }
+            } else if (ns.getPrefix().length() == 0) {
+                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
+            }
+        }
+        return new NSAwareAttribute(null, localName, ns, value, this);
     }
 
     public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
@@ -321,5 +338,27 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public CoreCDATASection createCDATASection() {
         return new CDATASectionImpl(this);
+    }
+
+    public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {
+        NSUnawareAttribute attr = new NSUnawareAttribute((DocumentImpl)document, this);
+        attr.coreSetName(name);
+        attr.coreSetValue(value);
+//        attr.coreSetType(type);
+        return attr;
+    }
+
+    public final CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
+            String localName, String prefix, String value, String type) {
+        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix), value, this);
+    }
+
+    public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
+            String prefix, String namespaceURI) {
+        return new NamespaceDeclaration((DocumentImpl)document, new OMNamespaceImpl(namespaceURI == null ? "" : namespaceURI, prefix), this);
+    }
+
+    public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
+        return new NamespaceDeclaration(null, namespace, this);
     }
 }

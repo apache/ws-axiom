@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.dom;
 
+import javax.xml.XMLConstants;
+
+import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
@@ -105,5 +108,30 @@ public aspect DOMDocumentSupport {
         cdataSection.coreSetOwnerDocument(this);
         cdataSection.coreSetData(data);
         return cdataSection;
+    }
+    
+    public final Attr DOMDocument.createAttribute(String name) {
+        NSUtil.validateName(name);
+        return (DOMAttribute)coreGetNodeFactory().createAttribute(this, name, "", "CDATA");
+    }
+
+    public final Attr DOMDocument.createAttributeNS(String namespaceURI, String qualifiedName) {
+        int i = NSUtil.validateQualifiedName(qualifiedName);
+        String prefix;
+        String localName;
+        if (i == -1) {
+            prefix = "";
+            localName = qualifiedName;
+        } else {
+            prefix = qualifiedName.substring(0, i);
+            localName = qualifiedName.substring(i+1);
+        }
+        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+            return (DOMAttribute)coreGetNodeFactory().createNamespaceDeclaration(this, NSUtil.getDeclaredPrefix(localName, prefix), null);
+        } else {
+            namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
+            NSUtil.validateAttributeName(namespaceURI, localName, prefix);
+            return (DOMAttribute)coreGetNodeFactory().createAttribute(this, namespaceURI, localName, prefix, null, null);
+        }
     }
 }

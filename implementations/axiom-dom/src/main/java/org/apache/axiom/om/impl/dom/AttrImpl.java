@@ -19,22 +19,9 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
-import javax.xml.XMLConstants;
-
 import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.dom.DOMAttribute;
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMAttributeEx;
-import org.apache.axiom.om.impl.common.AxiomAttribute;
-import org.apache.axiom.om.impl.common.AxiomText;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,71 +29,13 @@ import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute, DOMAttribute, NamedNode, NonDeferringParentNode {
-    private String type;
-
+public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDeferringParentNode {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
-    private AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
+    AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
         coreSetOwnerDocument(ownerDocument);
-    }
-
-    // TODO: copy isId?
-    private AttrImpl(String localName, OMNamespace namespace, String type, OMFactory factory) {
-        this(null, factory);
-        internalSetLocalName(localName);
-        internalSetNamespace(namespace);
-        this.type = type;
-    }
-    
-    public AttrImpl(DocumentImpl ownerDocument, String localName,
-                    OMNamespace ns, String value, OMFactory factory) {
-        this(ownerDocument, factory);
-        if (ns != null) {
-            if (ns.getNamespaceURI().length() == 0) {
-                if (ns.getPrefix().length() > 0) {
-                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
-                } else {
-                    ns = null;
-                }
-            } else if (ns.getPrefix().length() == 0) {
-                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
-            }
-        }
-        internalSetLocalName(localName);
-        coreAppendChild((AxiomText)factory.createOMText(value), false);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
-        internalSetNamespace(ns);
-    }
-
-    public AttrImpl(DocumentImpl ownerDocument, String name, String value,
-                    OMFactory factory) {
-        this(ownerDocument, factory);
-        internalSetLocalName(name);
-        coreAppendChild((AxiomText)factory.createOMText(value), false);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
-    }
-
-    public AttrImpl(DocumentImpl ownerDocument, String name, OMFactory factory) {
-        this(ownerDocument, factory);
-        internalSetLocalName(name);
-        //If this is a default namespace attr
-        if (XMLConstants.XMLNS_ATTRIBUTE.equals(name)) {
-            // TODO: this looks wrong; if the attribute name is "xmlns", then the prefix shouldn't be "xmlns"
-            internalSetNamespace(new OMNamespaceImpl(
-                    XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE));
-        }
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
-    }
-
-    public AttrImpl(DocumentImpl ownerDocument, String localName,
-                    OMNamespace namespace, OMFactory factory) {
-        this(ownerDocument, factory);
-        internalSetLocalName(localName);
-        internalSetNamespace(namespace);
-        this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     // /
@@ -156,23 +85,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
     // /
     // /org.w3c.dom.Attr methods
     // /
-    public String getName() {
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        if (namespace != null) {
-            if ((XMLConstants.XMLNS_ATTRIBUTE.equals(localName))) {
-                return localName;
-            } else if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI())) {
-                return XMLConstants.XMLNS_ATTRIBUTE + ":" + localName;
-            } else if (namespace.getPrefix().equals("")) {
-                return localName;
-            } else {
-                return namespace.getPrefix() + ":" + localName;
-            }
-        } else {
-            return localName;
-        }
-    }
 
     /**
      * Returns the owner element.
@@ -199,38 +111,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
         coreSetSpecified(specified);
     }
 
-    public String getAttributeValue() {
-        return getValue();
-    }
-
-    public String getAttributeType() {
-        return type;
-    }
-
-    /**
-     * Sets the attribute value.
-     *
-     * @see org.apache.axiom.om.OMAttribute#setAttributeValue(String)
-     */
-    public void setAttributeValue(String value) {
-        setValue(value);
-    }
-
-    /**
-     * Sets the attribute value.
-     *
-     * @see org.apache.axiom.om.OMAttribute#setAttributeType(String)
-     */
-    public void setAttributeType(String attrType) {    
-    	this.type = attrType;
-    }
-
-    final void checkInUse() {
-        if (coreGetOwnerElement() != null) {
-            throw newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
-        }
-    }
-
     /**
      * Sets the value of the attribute.
      *
@@ -238,6 +118,14 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
      */
     public void setValue(String value) throws DOMException {
         setTextContent(value);
+    }
+
+    public final String coreGetValue() {
+        return getValue();
+    }
+    
+    public final void coreSetValue(String value) {
+        setValue(value);
     }
 
     /*
@@ -250,19 +138,6 @@ public class AttrImpl extends RootNode implements OMAttributeEx, AxiomAttribute,
 
     public boolean isId() {
         return isId;
-    }
-
-    public String toString() {
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        return (namespace == null) ? localName : namespace
-                .getPrefix()
-                + ":" + localName;
-    }
-
-    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        // Note: targetParent is always null here
-        return new AttrImpl(getLocalName(), getNamespace(), type, getOMFactory());
     }
 
     public final boolean isComplete() {

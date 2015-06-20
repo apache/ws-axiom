@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -335,88 +334,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return isExpanded;
     }
 
-    public OMNamespace declareNamespace(String uri, String prefix) {
-        forceExpand();
-        return super.declareNamespace(uri, prefix);
-    }
-
-    public OMNamespace declareDefaultNamespace(String uri) {
-        forceExpand();
-        return super.declareDefaultNamespace(uri);
-    }
-
-    public OMNamespace getDefaultNamespace() {
-        forceExpand();
-        return super.getDefaultNamespace();
-    }
-
-    public OMNamespace declareNamespace(OMNamespace namespace) {
-        forceExpand();
-        return super.declareNamespace(namespace);
-    }
-
-    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
-        return super.addNamespaceDeclaration(uri, prefix);
-    }
-
-    public void addNamespaceDeclaration(OMNamespace ns) {
-        super.addNamespaceDeclaration(ns);
-    }
-
-    public void undeclarePrefix(String prefix) {
-        forceExpand();
-        super.undeclarePrefix(prefix);
-    }
-
-    public OMNamespace findNamespace(String uri, String prefix) {
-        forceExpand();
-        return super.findNamespace(uri, prefix);
-    }
-
-    public OMNamespace findNamespaceURI(String prefix) {
-        forceExpand();
-        return super.findNamespaceURI(prefix);
-    }
-
-    public Iterator getAllDeclaredNamespaces() throws OMException {
-        forceExpand();
-        return super.getAllDeclaredNamespaces();
-    }
-
-    public Iterator getAllAttributes() {
-        forceExpand();
-        return super.getAllAttributes();
-    }
-
-    public OMAttribute getAttribute(QName qname) {
-        forceExpand();
-        return super.getAttribute(qname);
-    }
-
-    public String getAttributeValue(QName qname) {
-        forceExpand();
-        return super.getAttributeValue(qname);
-    }
-
-    public OMAttribute addAttribute(OMAttribute attr) {
-        forceExpand();
-        return super.addAttribute(attr);
-    }
-
-    public OMAttribute addAttribute(String attributeName, String value, OMNamespace namespace) {
-        forceExpand();
-        return super.addAttribute(attributeName, value, namespace);
-    }
-
-    void appendAttribute(OMAttribute attr) {
-        super.appendAttribute(attr);
-    }
-
-    public void removeAttribute(OMAttribute attr) {
-        forceExpand();
-        super.removeAttribute(attr);
-    }
-
     public XMLStreamReader getXMLStreamReader(boolean cache) {
         return getXMLStreamReader(cache, new OMXMLStreamReaderConfiguration());
     }
@@ -522,11 +439,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         forceExpand();
         super.setNamespaceWithNoFindInCurrentScope(namespace);
-    }
-
-    public void setNamespace(OMNamespace namespace, boolean declare) {
-        forceExpand();
-        super.setNamespace(namespace, declare);
     }
 
     public QName getQName() {

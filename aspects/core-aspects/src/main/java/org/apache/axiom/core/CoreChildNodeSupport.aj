@@ -45,6 +45,10 @@ public aspect CoreChildNodeSupport {
         return getFlag(Flags.HAS_PARENT) ? owner : null;
     }
     
+    public final CoreElement CoreChildNode.coreGetParentElement() {
+        return owner instanceof CoreElement ? (CoreElement)owner : null;
+    }
+    
     public void CoreChildNode.internalSetParent(CoreParentNode parent) {
         if (parent == null) {
             throw new IllegalArgumentException();

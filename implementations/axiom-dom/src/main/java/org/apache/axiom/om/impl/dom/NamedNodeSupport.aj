@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.DOMException;
 
 aspect NamedNodeSupport {
+    // TODO: rewrite this using coreSetPrefix
     public final void NamedNode.setPrefix(String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";

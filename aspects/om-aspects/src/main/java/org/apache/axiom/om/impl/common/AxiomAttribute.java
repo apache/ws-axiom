@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.om.OMAttribute;
 
-public interface AxiomAttribute extends OMAttribute, CoreAttribute, AxiomNamedInformationItem {
+public interface AxiomAttribute extends OMAttribute, CoreNSAwareAttribute, AxiomNamedInformationItem {
 
 }

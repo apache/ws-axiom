@@ -22,6 +22,9 @@ package org.apache.axiom.om.impl.llom.factory;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNSUnawareAttribute;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -40,10 +43,13 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.llom.CDATASectionImpl;
 import org.apache.axiom.om.impl.llom.CharacterDataImpl;
+import org.apache.axiom.om.impl.llom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
@@ -342,5 +348,29 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     
     public CoreCDATASection createCDATASection() {
         return new CDATASectionImpl(this);
+    }
+
+    public CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value,
+            String type) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
+            String localName, String prefix, String value, String type) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
+            String prefix, String namespaceURI) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
+        NamespaceDeclaration decl = new NamespaceDeclaration(this);
+        decl.setDeclaredNamespace(namespace);
+        return decl;
     }
 }

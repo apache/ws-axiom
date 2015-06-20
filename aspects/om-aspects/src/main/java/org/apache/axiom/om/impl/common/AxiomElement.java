@@ -18,11 +18,11 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.DeferringParentNode;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMElementEx;
 
-public interface AxiomElement extends OMElementEx, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreElement, DeferringParentNode {
+public interface AxiomElement extends OMElementEx, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement, DeferringParentNode {
     void addNamespaceDeclaration(OMNamespace ns);
 }
