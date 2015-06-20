@@ -38,7 +38,6 @@ import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,10 +45,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Iterator;
 
 /**
@@ -437,18 +433,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public String toStringWithConsume() throws XMLStreamException {
-        if (isExpanded()) {
-            return super.toStringWithConsume();
-        } else {
-            StringWriter writer = new StringWriter();
-            XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-            dataSource.serialize(writer2);  // dataSource.serialize consumes the data
-            writer2.flush();
-            return writer.toString();
-        }
-    }
-    
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
         // If already expanded or this is not an OMDataSourceExt, then
         // create a copy of the OM Tree
@@ -545,28 +529,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             return super.isComplete();
         } else {
             return true;
-        }
-    }
-
-    public String toString() {
-        if (isExpanded) {
-            return super.toString();
-        } else if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
-            forceExpand();
-            return super.toString();
-        } else {
-            try {
-                StringWriter writer = new StringWriter();
-                OMOutputFormat format = new OMOutputFormat();
-                dataSource.serialize(writer, format);
-                String text = writer.toString();
-                writer.close();
-                return text;
-            } catch (XMLStreamException e) {
-                throw new RuntimeException("Cannot serialize OM Element " + this.getLocalName(), e);
-            } catch (IOException e) {
-                throw new RuntimeException("Cannot serialize OM Element " + this.getLocalName(), e);
-            }
         }
     }
 

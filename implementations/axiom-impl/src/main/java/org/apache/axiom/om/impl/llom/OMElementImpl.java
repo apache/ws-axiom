@@ -174,7 +174,7 @@ public class OMElementImpl extends OMNodeImpl
         setNamespace(namespace, true);
     }
 
-    public String toStringWithConsume() throws XMLStreamException {
+    public final String toStringWithConsume() throws XMLStreamException {
         StringWriter writer = new StringWriter();
         XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
         try {
@@ -186,7 +186,7 @@ public class OMElementImpl extends OMNodeImpl
         return writer.toString();
     }
 
-    public String toString() {
+    public final String toString() {
         StringWriter writer = new StringWriter();
         try {
             XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
