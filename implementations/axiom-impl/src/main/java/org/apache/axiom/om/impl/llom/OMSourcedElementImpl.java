@@ -327,10 +327,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return isExpanded;
     }
 
-    public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return getXMLStreamReader(cache, new OMXMLStreamReaderConfiguration());
-    }
-    
     public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         if (log.isDebugEnabled()) {
             log.debug("getting XMLStreamReader for " + getPrintableName()

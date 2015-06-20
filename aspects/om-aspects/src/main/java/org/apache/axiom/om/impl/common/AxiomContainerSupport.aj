@@ -77,7 +77,7 @@ public aspect AxiomContainerSupport {
         return getXMLStreamReader(false);
     }
 
-    public XMLStreamReader AxiomContainer.getXMLStreamReader(boolean cache) {
+    public final XMLStreamReader AxiomContainer.getXMLStreamReader(boolean cache) {
         return getXMLStreamReader(cache, defaultReaderConfiguration);
     }
     
