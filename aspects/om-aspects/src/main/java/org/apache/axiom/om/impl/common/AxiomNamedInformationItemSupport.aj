@@ -86,8 +86,8 @@ public aspect AxiomNamedInformationItemSupport {
         }
     }
 
-    public String AxiomNamedInformationItem.getLocalName() {
-        return localName;
+    public final String AxiomNamedInformationItem.getLocalName() {
+        return coreGetLocalName();
     }
 
     public void AxiomNamedInformationItem.setLocalName(String localName) {
@@ -171,8 +171,15 @@ public aspect AxiomNamedInformationItemSupport {
         return namespace == null ? "" : namespace.getPrefix();
     }
 
+    public void AxiomNamedInformationItem.updateLocalName() {
+        throw new IllegalStateException();
+    }
+    
     public final String AxiomNamedInformationItem.coreGetLocalName() {
-        return getLocalName();
+        if (localName == null) {
+            updateLocalName();
+        }
+        return localName;
     }
     
     public final void AxiomNamedInformationItem.coreSetPrefix(String prefix) {

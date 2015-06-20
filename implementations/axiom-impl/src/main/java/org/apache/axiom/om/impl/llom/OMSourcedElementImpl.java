@@ -352,20 +352,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    private void ensureLocalNameSet() {
-        if (internalGetLocalName() == null) {
-            if (dataSource instanceof QNameAwareOMDataSource) {
-                internalSetLocalName(((QNameAwareOMDataSource)dataSource).getLocalName());
-            }
-            if (internalGetLocalName() == null) {
-                forceExpand();
-            }
+    public final void updateLocalName() {
+        if (dataSource instanceof QNameAwareOMDataSource) {
+            internalSetLocalName(((QNameAwareOMDataSource)dataSource).getLocalName());
         }
-    }
-    
-    public String getLocalName() {
-        ensureLocalNameSet();
-        return super.getLocalName();
+        if (internalGetLocalName() == null) {
+            forceExpand();
+        }
     }
 
     public void setLocalName(String localName) {

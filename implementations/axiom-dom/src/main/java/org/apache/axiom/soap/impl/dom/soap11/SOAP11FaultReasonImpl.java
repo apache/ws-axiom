@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -56,10 +55,6 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
                             "parent. But received some other implementation");
         }
-    }
-
-    public String getLocalName() {
-        return SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME;
     }
 
     public SOAPFaultText getFirstSOAPText() {

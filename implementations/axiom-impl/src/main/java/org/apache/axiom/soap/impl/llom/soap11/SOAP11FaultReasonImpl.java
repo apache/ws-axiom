@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -59,9 +58,5 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
             throw new SOAPProcessingException(
                     "Expecting SOAP11FaultImpl, got " + parent.getClass());
         }
-    }
-
-    public String getLocalName() {
-        return SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME;
     }
 }
