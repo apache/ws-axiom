@@ -24,10 +24,8 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -49,7 +47,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.sax.SAXResult;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -359,18 +356,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public XMLStreamReader getXMLStreamReader() {
-        return getXMLStreamReader(true);
-    }
-
-    public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        return getXMLStreamReader(false);
-    }
-
-    public String getText() {
-        return super.getText();
-    }
-
     private void ensureLocalNameSet() {
         if (internalGetLocalName() == null) {
             if (dataSource instanceof QNameAwareOMDataSource) {
@@ -452,10 +437,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public boolean hasName(QName name) {
-        return super.hasName(name);
-    }
-
     public String toStringWithConsume() throws XMLStreamException {
         if (isExpanded()) {
             return super.toStringWithConsume();
@@ -468,14 +449,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    public OMElement cloneOMElement() {
-        return super.cloneOMElement();
-    }
-
-    public OMInformationItem clone(OMCloneOptions options) {
-        return super.clone(options);
-    }
-
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
         // If already expanded or this is not an OMDataSourceExt, then
         // create a copy of the OM Tree
@@ -519,22 +492,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return targetOMSE;
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return super.createClone(options, targetParent);
-    }
-    
     protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
         return getOMFactory().createOMElement(ds);
-    }
-
-    public void setLineNumber(int lineNumber) {
-        // no need to expand the tree, just call base method directly
-        super.setLineNumber(lineNumber);
-    }
-
-    public int getLineNumber() {
-        // no need to expand the tree, just call base method directly
-        return super.getLineNumber();
     }
 
     public void discard() throws OMException {
@@ -566,15 +525,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         OMNode result = super.detach();
         setComplete(complete);
         return result;
-    }
-
-    public OMNode getNextOMSibling() throws OMException {
-        // no need to expand the tree, just call base method directly
-        return super.getNextOMSibling();
-    }
-
-    public OMNode getNextOMSiblingIfAvailable() {
-        return super.getNextOMSiblingIfAvailable();
     }
 
     OMNamespace handleNamespace(QName qname) {
@@ -641,14 +591,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public void build() throws OMException {
-        super.build();
-    }
-
-    void notifyChildComplete() {
-        super.notifyChildComplete();
-    }
-
     /**
      * Provide access to the data source encapsulated in OMSourcedElement. 
      * This is usesful when we want to access the raw data in the data source.
@@ -704,10 +646,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    public SAXResult getSAXResult() {
-        return super.getSAXResult();
-    }
-
     class DeferredNamespace implements OMNamespace {
         
         final String uri;

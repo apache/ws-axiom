@@ -108,7 +108,7 @@ public aspect AxiomNamedInformationItemSupport {
         return qName;
     }
     
-    public boolean AxiomNamedInformationItem.hasName(QName name) {
+    public final boolean AxiomNamedInformationItem.hasName(QName name) {
         if (name.getLocalPart().equals(getLocalName())) {
             OMNamespace ns = getNamespace();
             return ns == null && name.getNamespaceURI().length() == 0

@@ -126,7 +126,7 @@ public class OMElementImpl extends OMNodeImpl
     public void checkChild(OMNode child) {
     }
 
-    public void build() throws OMException {
+    public final void build() throws OMException {
         /**
          * builder is null. Meaning this is a programatical created element but it has children which are not completed
          * Build them all.
@@ -202,7 +202,7 @@ public class OMElementImpl extends OMNodeImpl
         return writer.toString();
     }
 
-    public OMElement cloneOMElement() {
+    public final OMElement cloneOMElement() {
         
         if (log.isDebugEnabled()) {
             log.debug("cloneOMElement start");
@@ -238,11 +238,11 @@ public class OMElementImpl extends OMNodeImpl
         return getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
     }
     
-    public void setLineNumber(int lineNumber) {
+    public final void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }
 
-    public int getLineNumber() {
+    public final int getLineNumber() {
         return lineNumber;
     }
 
@@ -261,7 +261,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /** This method will be called when one of the children becomes complete. */
-    void notifyChildComplete() {
+    final void notifyChildComplete() {
         if (getState() == INCOMPLETE && getBuilder() == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {

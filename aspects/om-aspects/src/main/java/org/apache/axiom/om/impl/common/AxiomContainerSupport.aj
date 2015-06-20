@@ -69,11 +69,11 @@ public aspect AxiomContainerSupport {
         coreSetState(DISCARDED);
     }
 
-    public XMLStreamReader AxiomContainer.getXMLStreamReader() {
+    public final XMLStreamReader AxiomContainer.getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
     
-    public XMLStreamReader AxiomContainer.getXMLStreamReaderWithoutCaching() {
+    public final XMLStreamReader AxiomContainer.getXMLStreamReaderWithoutCaching() {
         return getXMLStreamReader(false);
     }
 
@@ -239,7 +239,7 @@ public aspect AxiomContainerSupport {
         return new SAXSource(new XMLReaderImpl(this, cache), new InputSource());
     }
 
-    public SAXResult AxiomContainer.getSAXResult() {
+    public final SAXResult AxiomContainer.getSAXResult() {
         SAXResultContentHandler handler = new SAXResultContentHandler(this);
         SAXResult result = new SAXResult();
         result.setHandler(handler);

@@ -62,7 +62,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
         }
     }
 
-    public OMInformationItem clone(OMCloneOptions options) {
+    public final OMInformationItem clone(OMCloneOptions options) {
         return clone(options, null);
     }
 
