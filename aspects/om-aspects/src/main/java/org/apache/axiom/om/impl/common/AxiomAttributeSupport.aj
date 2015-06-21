@@ -26,6 +26,9 @@ public aspect AxiomAttributeSupport {
         return (OMElement)coreGetOwnerElement();
     }
 
+    final void AxiomAttribute.beforeSetLocalName() {
+    }
+    
     public final void AxiomAttribute.setNamespace(OMNamespace namespace, boolean decl) {
         internalSetNamespace(handleNamespace((AxiomElement)getOwner(), namespace, true, decl));
     }

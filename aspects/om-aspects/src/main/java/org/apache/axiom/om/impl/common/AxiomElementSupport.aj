@@ -63,6 +63,10 @@ public aspect AxiomElementSupport {
     
     private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
     
+    final void AxiomElement.beforeSetLocalName() {
+        forceExpand();
+    }
+    
     public final int AxiomElement.getType() {
         return OMNode.ELEMENT_NODE;
     }

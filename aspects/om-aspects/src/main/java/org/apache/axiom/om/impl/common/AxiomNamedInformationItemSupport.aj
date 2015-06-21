@@ -90,7 +90,10 @@ public aspect AxiomNamedInformationItemSupport {
         return coreGetLocalName();
     }
 
-    public void AxiomNamedInformationItem.setLocalName(String localName) {
+    abstract void AxiomNamedInformationItem.beforeSetLocalName();
+    
+    public final void AxiomNamedInformationItem.setLocalName(String localName) {
+        beforeSetLocalName();
         this.localName = localName;
         qName = null;
     }

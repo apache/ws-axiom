@@ -357,12 +357,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public void setLocalName(String localName) {
-        // Need to expand the element so that the method actually overrides the the local name
-        forceExpand();
-        super.setLocalName(localName);
-    }
-
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
             return super.getNamespace();
