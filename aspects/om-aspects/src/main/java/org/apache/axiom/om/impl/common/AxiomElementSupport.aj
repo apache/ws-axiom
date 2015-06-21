@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreAttribute;
@@ -44,11 +46,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -531,5 +537,28 @@ public aspect AxiomElementSupport {
 
     public final OMNamespace AxiomElement.getDefaultNamespace() {
         return findNamespaceURI("");
+    }
+
+    public void AxiomElement.internalSerialize(Serializer serializer, OMOutputFormat format,
+            boolean cache) throws OutputException {
+        serializer.serializeStartpart(this);
+        serializer.serializeChildren(this, format, cache);
+        serializer.writeEndElement();
+    }
+
+    public final String AxiomElement.toStringWithConsume() throws XMLStreamException {
+        StringWriter sw = new StringWriter();
+        serializeAndConsume(sw);
+        return sw.toString();
+    }
+
+    public final String AxiomElement.toString() {
+        StringWriter sw = new StringWriter();
+        try {
+            serialize(sw);
+        } catch (XMLStreamException ex) {
+            throw new OMException("Failed to serialize node", ex);
+        }
+        return sw.toString();
     }
 }

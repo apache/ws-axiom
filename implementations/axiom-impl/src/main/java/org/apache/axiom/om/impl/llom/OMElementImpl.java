@@ -28,22 +28,15 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
-import java.io.StringWriter;
 import java.util.Iterator;
 
 /** Class OMElementImpl */
@@ -159,47 +152,8 @@ public class OMElementImpl extends OMNodeImpl
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
-            throws OutputException {
-
-        serializer.serializeStartpart(this);
-        serializer.serializeChildren(this, format, cache);
-        serializer.writeEndElement();
-    }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
-    }
-
-    public final String toStringWithConsume() throws XMLStreamException {
-        StringWriter writer = new StringWriter();
-        XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            this.serializeAndConsume(writer2);
-            writer2.flush();
-        } finally {
-            writer2.close();
-        }
-        return writer.toString();
-    }
-
-    public final String toString() {
-        StringWriter writer = new StringWriter();
-        try {
-            XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-            try {
-                this.serialize(writer2);
-                writer2.flush();
-            } finally {
-                writer2.close();
-            }
-        } catch (XMLStreamException e) {
-            throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
-        }
-        return writer.toString();
     }
 
     public final OMElement cloneOMElement() {

@@ -34,20 +34,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 
-import javax.xml.stream.XMLStreamException;
-
-import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
@@ -121,36 +115,6 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
 
     public void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
-    }
-
-    public void internalSerialize(Serializer serializer,
-                                     OMOutputFormat format, boolean cache) throws OutputException {
-
-        serializer.serializeStartpart(this);
-        serializer.serializeChildren(this, format, cache);
-        serializer.writeEndElement();
-    }
-
-    public String toStringWithConsume() throws XMLStreamException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        this.serializeAndConsume(baos);
-        return new String(baos.toByteArray());
-    }
-
-    /**
-     * Overridden toString() for ease of debugging.
-     *
-     * @see Object#toString()
-     */
-    public String toString() {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-//            this.build();
-            this.serialize(baos);
-        } catch (XMLStreamException e) {
-            throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
-        }
-        return new String(baos.toByteArray());
     }
 
     public OMElement cloneOMElement() {
