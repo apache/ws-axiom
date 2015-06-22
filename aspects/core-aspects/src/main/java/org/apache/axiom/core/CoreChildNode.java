@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.core;
 
+import org.apache.axiom.om.OMNode;
+
 public interface CoreChildNode extends CoreNode {
     /**
      * Get the parent element of this node.
@@ -26,4 +28,16 @@ public interface CoreChildNode extends CoreNode {
      *         the parent is not an element
      */
     CoreElement coreGetParentElement();
+
+    /**
+     * Get the next sibling if it is available. The sibling is available if it is complete or
+     * if the builder has started building the node. In the latter case,
+     * {@link OMNode#isComplete()} may return <code>false</code> when called on the sibling. 
+     * In contrast to {@link OMNode#getNextOMSibling()}, this method will never modify
+     * the state of the underlying parser.
+     * 
+     * @return the next sibling or <code>null</code> if the node has no next sibling or
+     *         the builder has not yet started to build the next sibling
+     */
+    CoreChildNode coreGetNextSiblingIfAvailable();
 }

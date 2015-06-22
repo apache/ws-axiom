@@ -562,33 +562,6 @@ public class OMSerializerUtil {
     }
 
     /**
-     * @deprecated This is an internal method that is no longer used.
-     */
-    public static void serializeChildren(OMContainer container, XMLStreamWriter writer,
-            boolean cache) throws XMLStreamException {
-        if (cache) {
-            OMNode child = container.getFirstOMChild();
-            while (child != null) {
-                child.serialize(writer, true);
-                child = child.getNextOMSibling();
-            }
-        } else {
-            OMNode child = (OMNodeEx)container.getFirstOMChild();
-            while (child != null) {
-                if ((!(child instanceof OMElement)) || child.isComplete() ||
-                        ((OMElement)child).getBuilder() == null) {
-                    child.serialize(writer, false);
-                } else {
-                    OMElement element = (OMElement) child;
-                    element.getBuilder().setCache(false);
-                    serializeByPullStream(element, writer, cache);
-                }
-                child = ((OMNodeEx)child).getNextOMSiblingIfAvailable();
-            }
-        }
-    }
-
-    /**
      * Get the next prefix name
      * @return next prefix name
      */

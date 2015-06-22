@@ -168,10 +168,6 @@ public aspect AxiomContainerSupport {
         }
     }
     
-    public OMNode AxiomContainer.getFirstOMChildIfAvailable() {
-        return (OMNode)coreGetFirstChildIfAvailable();
-    }
-    
     public OMNode AxiomContainer.getFirstOMChild() {
         return (OMNode)coreGetFirstChild();
     }

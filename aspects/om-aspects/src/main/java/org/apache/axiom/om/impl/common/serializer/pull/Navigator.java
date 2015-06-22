@@ -52,9 +52,9 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomChildNode;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
@@ -549,7 +549,7 @@ final class Navigator extends PullSerializerState
             return true;
         } else if (node instanceof OMContainer && !visited) {
             AxiomContainer current = (AxiomContainer)node;
-            OMNode firstChild = cache ? current.getFirstOMChild() : current.getFirstOMChildIfAvailable();
+            OMNode firstChild = cache ? current.getFirstOMChild() : (OMNode)current.coreGetFirstChildIfAvailable();
             if (firstChild != null) {
                 node = firstChild;
                 visited = false;
@@ -566,8 +566,8 @@ final class Navigator extends PullSerializerState
             visited = true;
             return true;
         } else {
-            OMNodeEx current = (OMNodeEx)node;
-            OMNode nextSibling = cache ? current.getNextOMSibling() : current.getNextOMSiblingIfAvailable();
+            AxiomChildNode current = (AxiomChildNode)node;
+            AxiomChildNode nextSibling = (AxiomChildNode)(cache ? current.coreGetNextSibling() : current.coreGetNextSiblingIfAvailable());
             if (nextSibling != null) {
                 node = nextSibling;
                 visited = false;

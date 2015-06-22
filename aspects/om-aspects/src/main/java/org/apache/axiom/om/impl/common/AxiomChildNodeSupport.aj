@@ -31,10 +31,6 @@ public aspect AxiomChildNodeSupport {
         return parent instanceof OMContainer ? (OMContainer)parent : null;
     }
     
-    public final OMNode AxiomChildNode.getNextOMSiblingIfAvailable() {
-        return (OMNode)coreGetNextSiblingIfAvailable();
-    }
-
     public final OMNode AxiomChildNode.getNextOMSibling() {
         return (OMNode)coreGetNextSibling();
     }

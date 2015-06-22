@@ -274,10 +274,10 @@ public abstract class Serializer {
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
-            AxiomChildNode child = (AxiomChildNode)container.getFirstOMChildIfAvailable();
+            AxiomChildNode child = (AxiomChildNode)container.coreGetFirstChildIfAvailable();
             while (child != null) {
                 child.internalSerialize(this, format, cache);
-                child = (AxiomChildNode)child.getNextOMSiblingIfAvailable();
+                child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)
             // and serialize the nodes that have not been built yet by copying the
