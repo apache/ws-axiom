@@ -27,9 +27,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPFaultRole;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement
-        implements org.apache.axiom.soap.SOAPFaultRole {
+        implements AxiomSOAPFaultRole {
 
     protected SOAPFaultRoleImpl(OMNamespace ns, SOAPFactory factory) {
         super(factory.getSOAPVersion().getFaultRoleQName().getLocalPart(), ns, factory);
@@ -50,14 +51,6 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement
               factory.getSOAPVersion().getFaultRoleQName().getLocalPart(),
               builder,
               factory);
-    }
-
-    public void setRoleValue(String uri) {
-        this.setText(uri);
-    }
-
-    public String getRoleValue() {
-        return this.getText();
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
