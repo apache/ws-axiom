@@ -80,6 +80,10 @@ public aspect AxiomContainerSupport {
     }
     
     public XMLStreamReader AxiomContainer.getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+        return defaultGetXMLStreamReader(cache, configuration);
+    }
+    
+    public final XMLStreamReader AxiomContainer.defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = getBuilder();
         if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");

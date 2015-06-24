@@ -75,11 +75,13 @@ public aspect AxiomElementSupport {
         return OMNode.ELEMENT_NODE;
     }
     
-    public void AxiomElement.setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
+    public final void AxiomElement.setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
+        forceExpand();
         internalSetNamespace(namespace);
     }
 
-    public void AxiomElement.setNamespace(OMNamespace namespace, boolean decl) {
+    public final void AxiomElement.setNamespace(OMNamespace namespace, boolean decl) {
+        forceExpand();
         internalSetNamespace(handleNamespace(this, namespace, false, decl));
     }
 
@@ -538,6 +540,11 @@ public aspect AxiomElementSupport {
     }
 
     public void AxiomElement.internalSerialize(Serializer serializer, OMOutputFormat format,
+            boolean cache) throws OutputException {
+        defaultInternalSerialize(serializer, format, cache);
+    }
+    
+    public final void AxiomElement.defaultInternalSerialize(Serializer serializer, OMOutputFormat format,
             boolean cache) throws OutputException {
         serializer.serializeStartpart(this);
         serializer.serializeChildren(this, format, cache);

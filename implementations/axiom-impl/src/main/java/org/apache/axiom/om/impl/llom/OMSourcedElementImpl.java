@@ -333,11 +333,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                     + " with cache=" + cache);
         }
         if (isExpanded) {
-            return super.getXMLStreamReader(cache, configuration);
+            return defaultGetXMLStreamReader(cache, configuration);
         } else {
             if ((cache && OMDataSourceUtil.isDestructiveRead(dataSource)) || OMDataSourceUtil.isPushDataSource(dataSource)) {
                 forceExpand();
-                return super.getXMLStreamReader(true, configuration);
+                return defaultGetXMLStreamReader(true, configuration);
             } else {
                 try {
                     return dataSource.getReader();  
@@ -359,7 +359,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
-            return super.getNamespace();
+            return defaultGetNamespace();
         } else if (definedNamespaceSet) {
             return definedNamespace;
         } else {
@@ -390,24 +390,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 // We have no information about the namespace of the element. Need to expand
                 // the element to get it.
                 forceExpand();
-                return super.getNamespace();
+                return defaultGetNamespace();
             }
         }
     }
 
-    public void setNamespace(OMNamespace namespace) {
-        forceExpand();
-        super.setNamespace(namespace);
-    }
-
-    public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
-        forceExpand();
-        super.setNamespaceWithNoFindInCurrentScope(namespace);
-    }
-
     public QName getQName() {
         if (isExpanded()) {
-            return super.getQName();
+            return defaultGetQName();
         } else if (getNamespace() != null) {
             // always ignore prefix on name from sourced element
             return new QName(getNamespace().getNamespaceURI(), getLocalName());
@@ -424,18 +414,18 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             ds == null || 
             isExpanded() || 
             !(ds instanceof OMDataSourceExt)) {
-            return super.clone(options, targetParent);
+            return defaultClone(options, targetParent);
         }
         
         // If copying is destructive, then copy the OM tree
         OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
         if (sourceDS.isDestructiveRead() ||
             sourceDS.isDestructiveWrite()) {
-            return super.clone(options, targetParent);
+            return defaultClone(options, targetParent);
         }
         OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
         if (targetDS == null) {
-            return super.clone(options, targetParent);
+            return defaultClone(options, targetParent);
         }
         // Otherwise create a target OMSE with the copied DataSource
         OMSourcedElementImpl targetOMSE;
@@ -472,11 +462,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
             throws OutputException {
         if (isExpanded()) {
-            super.internalSerialize(serializer, format, cache);
+            defaultInternalSerialize(serializer, format, cache);
         } else if (cache) {
             if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
                 forceExpand();
-                super.internalSerialize(serializer, format, true);
+                defaultInternalSerialize(serializer, format, true);
             } else {
                 serializer.serialize(dataSource);
             }
@@ -492,11 +482,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         OMNode result = super.detach();
         setComplete(complete);
         return result;
-    }
-
-    OMNamespace handleNamespace(QName qname) {
-        forceExpand();
-        return super.handleNamespace(qname);
     }
 
     public int getState() {
@@ -647,10 +632,5 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         } else {
             return ((OMDataSourceExt)dataSource).getObject();
         }
-    }
-
-    public CoreChildNode coreGetFirstChildIfAvailable() {
-        forceExpand();
-        return super.coreGetFirstChildIfAvailable();
     }
 }

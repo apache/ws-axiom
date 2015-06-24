@@ -90,7 +90,8 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /** Method handleNamespace. */
-    OMNamespace handleNamespace(QName qname) {
+    final OMNamespace handleNamespace(QName qname) {
+        forceExpand();
         OMNamespace ns = null;
 
         // first try to find a namespace from the scope
@@ -152,7 +153,7 @@ public class OMElementImpl extends OMNodeImpl
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setNamespace(OMNamespace namespace) {
+    public final void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
     }
 
@@ -168,6 +169,10 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return defaultClone(options, targetParent);
+    }
+    
+    final OMNode defaultClone(OMCloneOptions options, OMContainer targetParent) {
         OMElement targetElement;
         if (options.isPreserveModel()) {
             targetElement = createClone(options, targetParent);

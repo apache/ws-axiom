@@ -63,6 +63,10 @@ public aspect AxiomNamedInformationItemSupport {
     }
 
     public OMNamespace AxiomNamedInformationItem.getNamespace() {
+        return defaultGetNamespace();
+    }
+    
+    public final OMNamespace AxiomNamedInformationItem.defaultGetNamespace() {
         return namespace;
     }
 
@@ -99,6 +103,10 @@ public aspect AxiomNamedInformationItemSupport {
     }
 
     public QName AxiomNamedInformationItem.getQName() {
+        return defaultGetQName();
+    }
+    
+    public final QName AxiomNamedInformationItem.defaultGetQName() {
         if (qName != null) {
             return qName;
         }

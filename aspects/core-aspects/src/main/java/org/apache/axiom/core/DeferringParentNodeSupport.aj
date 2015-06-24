@@ -28,8 +28,6 @@ public aspect DeferringParentNodeSupport {
         return builder;
     }
 
-    public void DeferringParentNode.forceExpand() {}
-    
     public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
         this.builder = builder;
     }

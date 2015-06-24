@@ -30,6 +30,8 @@ public aspect CoreParentNodeSupport {
     CoreChildNode CoreParentNode.firstChild;
     CoreChildNode CoreParentNode.lastChild;
     
+    public void CoreParentNode.forceExpand() {}
+    
     /**
      * Get the first child if it is available. The child is available if it is complete or
      * if the builder has started building the node. In the latter case,
@@ -40,7 +42,8 @@ public aspect CoreParentNodeSupport {
      * @return the first child or <code>null</code> if the container has no children or
      *         the builder has not yet started to build the first child
      */
-    public CoreChildNode CoreParentNode.coreGetFirstChildIfAvailable() {
+    public final CoreChildNode CoreParentNode.coreGetFirstChildIfAvailable() {
+        forceExpand();
         return firstChild;
     }
 
