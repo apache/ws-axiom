@@ -25,9 +25,10 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.AxiomChildNode;
 
 /** Class OMNodeImpl */
-public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode {
+public abstract class OMNodeImpl extends OMSerializableImpl implements AxiomChildNode {
     /**
      * Constructor OMNodeImpl
      *

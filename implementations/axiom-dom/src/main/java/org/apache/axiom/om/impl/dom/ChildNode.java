@@ -22,11 +22,11 @@ import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.AxiomChildNode;
 import org.w3c.dom.Element;
 
-public abstract class ChildNode extends NodeImpl implements DOMChildNode, OMNode {
+public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomChildNode {
     public ChildNode(OMFactory factory) {
         super(factory);
     }

@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.InformationItem;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -37,7 +36,7 @@ import org.w3c.dom.UserDataHandler;
 
 import java.util.Hashtable;
 
-public abstract class NodeImpl extends InformationItem implements DOMNode {
+public abstract class NodeImpl implements DOMNode {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()

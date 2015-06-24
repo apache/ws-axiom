@@ -29,15 +29,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public aspect AxiomTextSupport {
-    declare parents: (InformationItem+ && OMText+) implements AxiomText;
-
     // TODO: should be private
     public String AxiomText.value;
     

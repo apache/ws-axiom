@@ -65,8 +65,6 @@ import org.apache.commons.logging.LogFactory;
  * {@link OMElement} interface.
  */
 public aspect AxiomElementSupport {
-    declare parents: (InformationItem+ && OMElement+) implements AxiomElement;
-    
     private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
     
     final void AxiomElement.beforeSetLocalName() {

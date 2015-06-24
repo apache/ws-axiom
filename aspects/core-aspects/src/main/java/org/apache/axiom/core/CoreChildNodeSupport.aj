@@ -62,7 +62,7 @@ public aspect CoreChildNodeSupport {
         setFlag(Flags.HAS_PARENT, false);
     }
     
-    final CoreNode CoreChildNode.getRootOrOwnerDocument() {
+    public final CoreNode CoreChildNode.getRootOrOwnerDocument() {
         if (owner == null) {
             return this;
         } else {

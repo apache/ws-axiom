@@ -24,8 +24,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
 public aspect AxiomChildNodeSupport {
-    declare parents: (InformationItem+ && OMNode+) implements AxiomChildNode;
-
     public final OMContainer AxiomChildNode.getParent() {
         CoreParentNode parent = coreGetParent();
         return parent instanceof OMContainer ? (OMContainer)parent : null;

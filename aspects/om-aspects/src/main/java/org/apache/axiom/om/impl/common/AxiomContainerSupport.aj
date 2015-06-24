@@ -55,8 +55,6 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
 public aspect AxiomContainerSupport {
-    declare parents: (InformationItem+ && OMContainer+) implements AxiomContainer;
-    
     private static final Log log = LogFactory.getLog(AxiomContainerSupport.class);
     
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();

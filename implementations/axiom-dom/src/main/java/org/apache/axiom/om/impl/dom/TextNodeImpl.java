@@ -24,14 +24,13 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import org.apache.axiom.dom.DOMTextNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.AxiomText;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 
 import javax.activation.DataHandler;
 
-public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, OMText, OMNodeEx {
+public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, AxiomText {
     public TextNodeImpl(OMFactory factory) {
         super(factory);
     }

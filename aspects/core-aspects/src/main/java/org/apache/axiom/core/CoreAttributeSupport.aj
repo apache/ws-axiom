@@ -46,7 +46,7 @@ public aspect CoreAttributeSupport {
         owner = newOwnerDocument;
     }
     
-    final CoreNode CoreAttribute.getRootOrOwnerDocument() {
+    public final CoreNode CoreAttribute.getRootOrOwnerDocument() {
         if (owner == null) {
             return this;
         } else {

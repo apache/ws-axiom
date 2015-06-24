@@ -19,8 +19,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.impl.common.AxiomInformationItem;
-import org.apache.axiom.om.impl.common.InformationItem;
 
-public abstract class OMInformationItemImpl extends InformationItem implements AxiomInformationItem {
+public abstract class OMInformationItemImpl implements AxiomInformationItem {
 
 }

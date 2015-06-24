@@ -21,7 +21,7 @@ package org.apache.axiom.core;
 public aspect CoreNodeSupport {
     int CoreNode.flags;
 
-    abstract CoreNode CoreNode.getRootOrOwnerDocument();
+    public abstract CoreNode CoreNode.getRootOrOwnerDocument();
 
     /**
      * Get the owner document to which this node belongs.

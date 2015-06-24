@@ -21,7 +21,7 @@ package org.apache.axiom.core;
 public aspect CoreDocumentFragmentSupport {
     private CoreDocument CoreDocumentFragment.ownerDocument;
     
-    final CoreNode CoreDocumentFragment.getRootOrOwnerDocument() {
+    public final CoreNode CoreDocumentFragment.getRootOrOwnerDocument() {
         if (ownerDocument == null) {
             return this;
         } else {
