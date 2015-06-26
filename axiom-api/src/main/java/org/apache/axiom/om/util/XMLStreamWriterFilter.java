@@ -27,15 +27,15 @@ import javax.xml.stream.XMLStreamWriter;
  * @see XMLStreamWriterFilterBase
  */
 public interface XMLStreamWriterFilter extends XMLStreamWriter {
-	
-	/**
-	 * Set a new delegate writer
-	 * @param writer
-	 */
-	public void setDelegate(XMLStreamWriter writer);
-	
-	/**
-	 * @return XMLStreamWriter delegate
-	 */
-	public XMLStreamWriter getDelegate();
+    
+    /**
+     * Set a new delegate writer
+     * @param writer
+     */
+    public void setDelegate(XMLStreamWriter writer);
+    
+    /**
+     * @return XMLStreamWriter delegate
+     */
+    public XMLStreamWriter getDelegate();
 }
