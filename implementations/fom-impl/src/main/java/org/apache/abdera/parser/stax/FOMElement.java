@@ -57,6 +57,7 @@ import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
+import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -72,7 +73,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMElement extends OMElementImpl implements Element, OMElement, Constants {
+public class FOMElement extends OMElementImpl implements Element, AbderaNode, OMElement, Constants {
 
     private static final long serialVersionUID = 8024257594220911953L;
 
@@ -97,13 +98,6 @@ public class FOMElement extends OMElementImpl implements Element, OMElement, Con
                 return ns;
         }
         return factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
-    }
-
-    protected Element getWrapped(Element internal) {
-        if (internal == null)
-            return null;
-        FOMFactory factory = (FOMFactory)getFactory();
-        return factory.getElementWrapper(internal);
     }
 
     public <T extends Base> T getParentElement() {

@@ -21,12 +21,13 @@ import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Base;
 import org.apache.abdera.model.Comment;
 import org.apache.abdera.model.Element;
+import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMComment extends OMCommentImpl implements Comment {
+public class FOMComment extends OMCommentImpl implements Comment, AbderaNode {
 
     public FOMComment(OMContainer parent, String contentText,
             OMFactory factory, boolean fromBuilder) {
@@ -45,13 +46,6 @@ public class FOMComment extends OMCommentImpl implements Comment {
     public <T extends Base> T getParentElement() {
         T parent = (T)super.getParent();
         return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
-    }
-
-    protected Element getWrapped(Element internal) {
-        if (internal == null)
-            return null;
-        FOMFactory factory = (FOMFactory)getFactory();
-        return factory.getElementWrapper(internal);
     }
 
     public Factory getFactory() {

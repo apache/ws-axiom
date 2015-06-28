@@ -21,12 +21,13 @@ import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Base;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.ProcessingInstruction;
+import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements ProcessingInstruction {
+public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements ProcessingInstruction, AbderaNode {
 
     public FOMProcessingInstruction(OMContainer parent, String target, String value,
             OMFactory factory, boolean fromBuilder) {
@@ -36,13 +37,6 @@ public class FOMProcessingInstruction extends OMProcessingInstructionImpl implem
     public <T extends Base> T getParentElement() {
         T parent = (T)super.getParent();
         return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
-    }
-
-    protected Element getWrapped(Element internal) {
-        if (internal == null)
-            return null;
-        FOMFactory factory = (FOMFactory)getFactory();
-        return factory.getElementWrapper(internal);
     }
 
     public Factory getFactory() {

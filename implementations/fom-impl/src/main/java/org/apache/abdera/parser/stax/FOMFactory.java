@@ -56,6 +56,7 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.util.Version;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -68,7 +69,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMFactory extends OMLinkedListImplFactory implements Factory, Constants, ExtensionFactory {
+public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory, Constants, ExtensionFactory {
 
     private final ExtensionFactoryMap factoriesMap;
     private final Abdera abdera;

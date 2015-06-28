@@ -26,11 +26,12 @@ import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Base;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.TextValue;
+import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.CharacterDataImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMCharacterData extends CharacterDataImpl implements TextValue {
+public class FOMCharacterData extends CharacterDataImpl implements TextValue, AbderaNode {
 
     public FOMCharacterData(OMFactory factory) {
         super(factory);
@@ -51,13 +52,6 @@ public class FOMCharacterData extends CharacterDataImpl implements TextValue {
     public <T extends Base> T getParentElement() {
         T parent = (T)super.getParent();
         return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
-    }
-
-    protected Element getWrapped(Element internal) {
-        if (internal == null)
-            return null;
-        FOMFactory factory = (FOMFactory)getFactory();
-        return factory.getElementWrapper(internal);
     }
 
     public Factory getFactory() {
