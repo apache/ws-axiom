@@ -142,6 +142,37 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>fom-aspects</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fom-aspects</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fom-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fom-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fom-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>old-tests</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
