@@ -39,10 +39,6 @@ public class FOMProcessingInstruction extends OMProcessingInstructionImpl implem
         return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
-    public Factory getFactory() {
-        return (Factory)this.getOMFactory();
-    }
-
     public String getText() {
         return getValue();
     }

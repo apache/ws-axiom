@@ -54,10 +54,6 @@ public class FOMCharacterData extends CharacterDataImpl implements TextValue, Ab
         return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
-    public Factory getFactory() {
-        return (Factory)this.getOMFactory();
-    }
-
     @Override
     public String toString() {
         return getText();

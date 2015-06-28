@@ -48,10 +48,6 @@ public class FOMComment extends OMCommentImpl implements Comment, AbderaNode {
         return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
-    public Factory getFactory() {
-        return (Factory)this.getOMFactory();
-    }
-
     public String toString() {
         java.io.CharArrayWriter w = new java.io.CharArrayWriter();
         try {

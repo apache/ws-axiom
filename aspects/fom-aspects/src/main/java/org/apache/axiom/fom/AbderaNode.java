@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.fom;
 
-import org.apache.abdera.factory.Factory;
+import org.apache.axiom.core.CoreNode;
 
-public interface AbderaNode {
-    Factory getFactory();
+public interface AbderaNode extends CoreNode {
+
 }

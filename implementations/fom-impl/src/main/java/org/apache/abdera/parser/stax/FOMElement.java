@@ -621,10 +621,6 @@ public class FOMElement extends OMElementImpl implements Element, AbderaNode, OM
         return el;
     }
 
-    public Factory getFactory() {
-        return (Factory)this.getOMFactory();
-    }
-
     // This appears to no longer be necessary with Axiom 1.2
     //
     // @Override

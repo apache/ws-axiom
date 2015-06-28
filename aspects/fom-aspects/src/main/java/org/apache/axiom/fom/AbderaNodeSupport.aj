@@ -18,14 +18,19 @@
  */
 package org.apache.axiom.fom;
 
+import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Element;
 
 public aspect AbderaNodeSupport {
+    public final Factory AbderaNode.getFactory() {
+        return (Factory)coreGetNodeFactory();
+    }
+    
     public final Element AbderaNode.getWrapped(Element internal) {
         if (internal == null) {
             return null;
         } else {
-            AbderaFactory factory = (AbderaFactory)getFactory();
+            AbderaFactory factory = (AbderaFactory)coreGetNodeFactory();
             return factory.getElementWrapper(internal);
         }
     }
