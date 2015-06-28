@@ -371,7 +371,8 @@ public aspect AxiomElementSupport {
         return (AxiomAttribute)coreGetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
     }
 
-    public final String AxiomElement.getAttributeValue(QName qname) {
+    // TODO: overridden in fom-impl
+    public String AxiomElement.getAttributeValue(QName qname) {
         OMAttribute attr = getAttribute(qname);
         return attr == null ? null : attr.getAttributeValue();
     }
