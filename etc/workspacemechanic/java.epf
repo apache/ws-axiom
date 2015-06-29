@@ -1,0 +1,8 @@
+# @title Java style
+# @description Configures indentation, line length and license header for Java files
+# @task_type RECONCILE
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.comment.line_length=100
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.lineSplit=100
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.tabulation.char=space
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.indentation.size=4
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="newtype_context" deleted\="false" description\="Newly created files" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.newtype" name\="newtype">/*\n * Licensed to the Apache Software Foundation (ASF) under one\n * or more contributor license agreements. See the NOTICE file\n * distributed with this work for additional information\n * regarding copyright ownership. The ASF licenses this file\n * to you under the Apache License, Version 2.0 (the\n * "License"); you may not use this file except in compliance\n * with the License. You may obtain a copy of the License at\n *\n * http\://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing,\n * software distributed under the License is distributed on an\n * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n * KIND, either express or implied. See the License for the\n * specific language governing permissions and limitations\n * under the License.\n */\n${filecomment}\n${package_declaration}\n\n${typecomment}\n${type_declaration}</template></templates>

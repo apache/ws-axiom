@@ -1,0 +1,6 @@
+# @title XML style
+# @description Configures correct indentation for XML files
+# @task_type RECONCILE
+file_export_version=3.0
+/instance/org.eclipse.wst.xml.core/indentationSize=4
+/instance/org.eclipse.wst.xml.core/indentationChar=space
