@@ -239,6 +239,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix3(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDetachWithDifferentBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDiscardDocumentElement(metaFactory));
@@ -520,6 +521,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestDeclareNamespace(metaFactory));
             for (ExpansionStrategy es : getInstances(ExpansionStrategy.class)) {
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestDetach(metaFactory, es));
                 addTest(new org.apache.axiom.ts.om.sourcedelement.TestDiscard(metaFactory, es));
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));

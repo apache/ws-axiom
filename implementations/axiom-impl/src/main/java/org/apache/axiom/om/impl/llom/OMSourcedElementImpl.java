@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -467,15 +466,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         } else {
             serializer.serialize(dataSource); 
         }
-    }
-
-    public OMNode detach() throws OMException {
-        // detach without expanding the tree
-        boolean complete = isComplete();
-        setComplete(true);
-        OMNode result = super.detach();
-        setComplete(complete);
-        return result;
     }
 
     public int getState() {
