@@ -453,12 +453,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return getOMFactory().createOMElement(ds);
     }
 
-    public void discard() throws OMException {
-        // discard without expanding the tree
-        setComplete(true);
-        super.detach();
-    }
-
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
             throws OutputException {
         if (isExpanded()) {

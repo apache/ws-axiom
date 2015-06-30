@@ -337,10 +337,24 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
     
     public void discard(OMContainer container) throws OMException {
-
-//        if (element.isComplete() || !cache) {
-//            throw new OMException();
-//        }
+        int targetElementLevel = elementLevel;
+        OMContainerEx current = target;
+        while (current != container) {
+            targetElementLevel--;
+            current = (OMContainerEx)((OMElement)current).getParent();
+        }
+        if (targetElementLevel == 0 || targetElementLevel == 1 && document == null) {
+            close();
+            current = target;
+            while (true) {
+                discarded(current);
+                if (current == container) {
+                    break;
+                }
+                current = (OMContainerEx)((OMElement)current).getParent();
+            }
+            return;
+        }
         int skipDepth = 0;
         loop: while (true) {
             switch (parserNext()) {

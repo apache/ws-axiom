@@ -242,7 +242,7 @@ public aspect AxiomElementSupport {
         }
     }
 
-    public void AxiomElement.discard() {
+    public final void AxiomElement.discard() {
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
             ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
         }
