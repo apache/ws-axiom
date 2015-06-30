@@ -178,15 +178,12 @@ public aspect CoreChildNodeSupport {
         fragment.lastChild = null;
     }
     
+    void CoreChildNode.beforeDetach() {}
+    
     public final void CoreChildNode.coreDetach(CoreDocument newOwnerDocument) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
-            // TODO: ugly hack
-            if (this instanceof CoreParentNode &&
-                    ((CoreParentNode)this).getState() == CoreParentNode.INCOMPLETE) {
-                ((CoreParentNode)this).build();
-            }
-            
+            beforeDetach();
             if (previousSibling == null) {
                 parent.firstChild = nextSibling;
             } else {
