@@ -476,14 +476,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public boolean isComplete() {
-        if (isExpanded) {
-            return super.isComplete();
-        } else {
-            return true;
-        }
-    }
-
     public void buildWithAttachments() {
         
         // If not done, force the parser to build the elements
