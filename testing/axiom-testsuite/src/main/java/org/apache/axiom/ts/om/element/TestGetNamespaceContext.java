@@ -69,9 +69,9 @@ public class TestGetNamespaceContext extends AxiomTestCase {
         assertFalse(it.hasNext());
 
         it = context.getPrefixes("urn:test3");
-        Set prefixes = new HashSet();
+        Set<String> prefixes = new HashSet<>();
         while (it.hasNext()) {
-            prefixes.add(it.next());
+            prefixes.add((String)it.next());
         }
         assertEquals(2, prefixes.size());
         assertTrue(prefixes.contains("q"));

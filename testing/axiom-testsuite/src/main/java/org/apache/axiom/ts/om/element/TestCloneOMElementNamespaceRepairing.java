@@ -55,12 +55,12 @@ public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
         
         // Clone the child and check that namespace declarations have been generated automatically
         OMElement clone = child.cloneOMElement();
-        Set expectedNSDecls = new HashSet();
+        Set<OMNamespace> expectedNSDecls = new HashSet<>();
         expectedNSDecls.add(ns1);
         expectedNSDecls.add(ns2);
-        Set actualNSDecls = new HashSet();
+        Set<OMNamespace> actualNSDecls = new HashSet<>();
         for (Iterator it = clone.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            actualNSDecls.add(it.next());
+            actualNSDecls.add((OMNamespace)it.next());
         }
         assertEquals(expectedNSDecls, actualNSDecls);
     }

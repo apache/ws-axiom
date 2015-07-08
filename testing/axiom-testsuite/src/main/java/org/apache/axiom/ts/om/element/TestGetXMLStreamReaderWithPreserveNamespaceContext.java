@@ -49,10 +49,10 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
         XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(true, configuration);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(4, reader.getNamespaceCount());
-        Set prefixes = new HashSet();
+        Set<String> prefixes = new HashSet<>();
         for (int i=0; i<4; i++) {
             prefixes.add(reader.getNamespacePrefix(i));
         }
-        assertEquals(new HashSet(Arrays.asList(new String[] { "soapenv", "xsd", "xsi", "ns"} )), prefixes);
+        assertEquals(new HashSet<>(Arrays.asList(new String[] { "soapenv", "xsd", "xsi", "ns"} )), prefixes);
     }
 }

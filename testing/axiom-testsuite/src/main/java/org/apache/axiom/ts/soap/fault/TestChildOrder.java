@@ -20,7 +20,6 @@ package org.apache.axiom.ts.soap.fault;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -74,9 +73,9 @@ public class TestChildOrder extends SOAPTestCase {
         }
         // Calculate the order in which we expect to see the children. Note that a given type
         // may be added multiple times. Therefore we need to use a Set.
-        SortedSet outputOrder = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                return ((SOAPFaultChild)o1).getOrder() - ((SOAPFaultChild)o2).getOrder();
+        SortedSet<SOAPFaultChild> outputOrder = new TreeSet<>(new Comparator<SOAPFaultChild>() {
+            public int compare(SOAPFaultChild o1, SOAPFaultChild o2) {
+                return o1.getOrder() - o2.getOrder();
             }
         });
         outputOrder.addAll(Arrays.asList(inputOrder));
@@ -86,8 +85,7 @@ public class TestChildOrder extends SOAPTestCase {
         Document document = dbf.newDocumentBuilder().parse(serializationStrategy.serialize(fault).getInputSource());
         Element domFault = document.getDocumentElement();
         Node child = domFault.getFirstChild();
-        for (Iterator it = outputOrder.iterator(); it.hasNext(); ) {
-            SOAPFaultChild type = (SOAPFaultChild)it.next();
+        for (SOAPFaultChild type : outputOrder) {
             assertNotNull(child);
             assertEquals(type.getQName(spec).getLocalPart(), child.getLocalName());
             child = child.getNextSibling();
