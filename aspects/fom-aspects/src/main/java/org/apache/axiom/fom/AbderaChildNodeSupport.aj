@@ -16,11 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.fom;
 
-import org.apache.axiom.core.CoreProcessingInstruction;
-import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.abdera.model.Base;
+import org.apache.abdera.model.Element;
 
-public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, CoreProcessingInstruction {
-
+public aspect AbderaChildNodeSupport {
+    @SuppressWarnings("unchecked")
+    public final <T extends Base> T AbderaChildNode.getParentElement() {
+        T parent = (T)coreGetParent();
+        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
+    }
 }

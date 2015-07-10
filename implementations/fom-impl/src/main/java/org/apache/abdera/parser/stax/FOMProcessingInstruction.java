@@ -17,26 +17,18 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Base;
-import org.apache.abdera.model.Element;
 import org.apache.abdera.model.ProcessingInstruction;
-import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.AbderaProcessingInstruction;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements ProcessingInstruction, AbderaNode {
+public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements AbderaProcessingInstruction {
 
     public FOMProcessingInstruction(OMContainer parent, String target, String value,
             OMFactory factory, boolean fromBuilder) {
         super(parent, target, value, factory, fromBuilder);
-    }
-
-    public <T extends Base> T getParentElement() {
-        T parent = (T)super.getParent();
-        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
     public String getText() {

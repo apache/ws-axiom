@@ -16,11 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreProcessingInstruction;
-import org.apache.axiom.om.OMProcessingInstruction;
-
-public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, CoreProcessingInstruction {
+public interface CoreProcessingInstruction extends CoreChildNode {
 
 }

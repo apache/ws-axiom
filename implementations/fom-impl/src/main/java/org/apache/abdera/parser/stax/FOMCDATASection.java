@@ -22,16 +22,11 @@ import java.io.InputStream;
 
 import javax.activation.DataHandler;
 
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Base;
-import org.apache.abdera.model.Element;
-import org.apache.abdera.model.TextValue;
-import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.AbderaCDATASection;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.CDATASectionImpl;
 
-@SuppressWarnings("unchecked")
-public class FOMCDATASection extends CDATASectionImpl implements TextValue, AbderaNode {
+public class FOMCDATASection extends CDATASectionImpl implements AbderaCDATASection {
 
     public FOMCDATASection(OMFactory factory) {
         super(factory);
@@ -47,11 +42,6 @@ public class FOMCDATASection extends CDATASectionImpl implements TextValue, Abde
         } catch (IOException ex) {
             throw new FOMException(ex);
         }
-    }
-
-    public <T extends Base> T getParentElement() {
-        T parent = (T)super.getParent();
-        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
     @Override

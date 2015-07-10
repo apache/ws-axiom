@@ -17,17 +17,13 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Base;
 import org.apache.abdera.model.Comment;
-import org.apache.abdera.model.Element;
-import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.AbderaComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 
-@SuppressWarnings("unchecked")
-public class FOMComment extends OMCommentImpl implements Comment, AbderaNode {
+public class FOMComment extends OMCommentImpl implements AbderaComment {
 
     public FOMComment(OMContainer parent, String contentText,
             OMFactory factory, boolean fromBuilder) {
@@ -41,11 +37,6 @@ public class FOMComment extends OMCommentImpl implements Comment, AbderaNode {
     public Comment setText(String text) {
         super.setValue(text);
         return this;
-    }
-
-    public <T extends Base> T getParentElement() {
-        T parent = (T)super.getParent();
-        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
     public String toString() {

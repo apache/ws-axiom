@@ -36,7 +36,6 @@ import javax.activation.MimeType;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.abdera.factory.Factory;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.iri.IRIHelper;
 import org.apache.abdera.i18n.rfc4646.Lang;
@@ -57,7 +56,7 @@ import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
-import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -73,7 +72,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMElement extends OMElementImpl implements Element, AbderaNode, OMElement, Constants {
+public class FOMElement extends OMElementImpl implements AbderaElement, Constants {
 
     private static final long serialVersionUID = 8024257594220911953L;
 
@@ -98,11 +97,6 @@ public class FOMElement extends OMElementImpl implements Element, AbderaNode, OM
                 return ns;
         }
         return factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
-    }
-
-    public <T extends Base> T getParentElement() {
-        T parent = (T)super.getParent();
-        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 
     protected void setParentDocument(Document parent) {
