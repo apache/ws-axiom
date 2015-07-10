@@ -51,10 +51,7 @@ public class FOMDateTime extends FOMElement implements DateTime {
 
     public AtomDate getValue() {
         if (value == null) {
-            String v = getText();
-            if (v != null) {
-                value = AtomDate.valueOf(v);
-            }
+            value = AtomDate.valueOf(getText());
         }
         return value;
     }
