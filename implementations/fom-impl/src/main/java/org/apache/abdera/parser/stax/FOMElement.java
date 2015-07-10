@@ -479,7 +479,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
             }
         }
         String value = buf.toString();
-        return getMustPreserveWhitespace() || value == null ? value : value.trim();
+        return getMustPreserveWhitespace() ? value : value.trim();
     }
 
     protected String getText(QName qname) {
