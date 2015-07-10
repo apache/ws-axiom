@@ -25,16 +25,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.impl.common.SOAPHelper;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
-public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12Constants {
+public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP12HeaderBlock {
 
     public SOAP12HeaderBlockImpl(OMContainer parent, String localName, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
@@ -55,66 +51,5 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
             throw new SOAPProcessingException(
                     "Expecting SOAP12HeaderImpl as parent, got " + parent.getClass());
         }
-    }
-
-    public void setRole(String roleURI) {
-        setAttribute(SOAP_ROLE, roleURI, SOAP_ENVELOPE_NAMESPACE_URI);
-    }
-
-    public String getRole() {
-        // Get the property or attribute
-        String val;
-        if (this.hasOMDataSourceProperty(ROLE_PROPERTY)) {
-            val = this.getOMDataSourceProperty(ROLE_PROPERTY);
-        } else {
-            val = getAttributeValue(QNAME_ROLE);
-        }
-       return val;
-    }
-
-    public void setMustUnderstand(boolean mustUnderstand) {
-        setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                     mustUnderstand ? SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE :
-                             SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE,
-                     SOAP_ENVELOPE_NAMESPACE_URI);
-
-    }
-
-    public void setRelay(boolean relay) {
-        setAttribute(SOAP_RELAY, relay ? "true" : "false", SOAP_ENVELOPE_NAMESPACE_URI);
-    }
-
-    public boolean getRelay() {
-        // Get the property or attribute
-        String val;
-        if (this.hasOMDataSourceProperty(RELAY_PROPERTY)) {
-            val = this.getOMDataSourceProperty(RELAY_PROPERTY);
-        } else {
-            val = getAttributeValue(QNAME_RELAY);
-        }
-        
-        if (val != null) {
-            Boolean parsedValue = SOAPHelper.SOAP12.parseBoolean(val);
-            if (parsedValue == null) {
-                throw new SOAPProcessingException("Invalid relay attribute value");
-            } else {
-                return parsedValue.booleanValue();
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * What SOAP version is this HeaderBlock?
-     *
-     * @return a SOAPVersion, one of the two singletons.
-     */
-    public SOAPVersion getVersion() {
-        return SOAP12Version.getSingleton();
-    }
-
-    protected SOAPHelper getSOAPHelper() {
-        return SOAPHelper.SOAP12;
     }
 }

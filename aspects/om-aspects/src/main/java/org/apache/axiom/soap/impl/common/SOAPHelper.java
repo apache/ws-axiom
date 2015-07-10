@@ -18,6 +18,13 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP11Version;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAP12Version;
+import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPVersion;
 
 /**
@@ -25,8 +32,9 @@ import org.apache.axiom.soap.SOAPVersion;
  * added to {@link SOAPVersion}, but that are not relevant for application code and should therefore
  * not be part of the public API.
  */
-public interface SOAPHelper {
-    SOAPHelper SOAP11 = new SOAPHelper() {
+abstract class SOAPHelper {
+    static final SOAPHelper SOAP11 = new SOAPHelper(SOAP11Version.getSingleton(), "SOAP 1.1",
+            SOAP11Constants.ATTR_ACTOR, null) {
         public Boolean parseBoolean(String literal) {
             if (literal.equals("1")) {
                 return Boolean.TRUE;
@@ -36,9 +44,15 @@ public interface SOAPHelper {
                 return null;
             }
         }
+
+        @Override
+        public String formatBoolean(boolean value) {
+            return value ? "1" : "0";
+        }
     };
     
-    SOAPHelper SOAP12 = new SOAPHelper() {
+    static final SOAPHelper SOAP12 = new SOAPHelper(SOAP12Version.getSingleton(), "SOAP 1.2",
+            SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY) {
         public Boolean parseBoolean(String literal) {
             if (literal.equals("true") || literal.equals("1")) {
                 return Boolean.TRUE;
@@ -48,7 +62,50 @@ public interface SOAPHelper {
                 return null;
             }
         }
+
+        @Override
+        public String formatBoolean(boolean value) {
+            return String.valueOf(value);
+        }
     };
     
-    Boolean parseBoolean(String literal);
+    private final SOAPVersion version;
+    private final String specName;
+    private final QName mustUnderstandAttributeQName;
+    private final QName roleAttributeQName;
+    private final QName relayAttributeQName;
+    
+    private SOAPHelper(SOAPVersion version, String specName, String roleAttributeLocalName, String relayAttributeLocalName) {
+        this.version = version;
+        this.specName = specName;
+        mustUnderstandAttributeQName = new QName(
+                version.getEnvelopeURI(), SOAPConstants.ATTR_MUSTUNDERSTAND, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        roleAttributeQName = new QName(
+                version.getEnvelopeURI(), roleAttributeLocalName, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        relayAttributeQName = relayAttributeLocalName == null ? null :
+            new QName(version.getEnvelopeURI(), relayAttributeLocalName, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+    }
+    
+    final SOAPVersion getVersion() {
+        return version;
+    }
+    
+    final String getSpecName() {
+        return specName;
+    }
+
+    final QName getMustUnderstandAttributeQName() {
+        return mustUnderstandAttributeQName;
+    }
+
+    final QName getRoleAttributeQName() {
+        return roleAttributeQName;
+    }
+
+    final QName getRelayAttributeQName() {
+        return relayAttributeQName;
+    }
+
+    abstract Boolean parseBoolean(String literal);
+    abstract String formatBoolean(boolean value);
 }

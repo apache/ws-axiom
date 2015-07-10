@@ -27,7 +27,7 @@ public final class Policies {
     
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
             false,  // Axiom doesn't support namespace unaware attributes
-            false); // Axiom doesn't have any API to (match and) update an existing attribute
+            false);
 
     public static final NodeMigrationPolicy ATTRIBUTE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {

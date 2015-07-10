@@ -25,16 +25,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.soap.SOAP11Version;
-import org.apache.axiom.soap.impl.common.SOAPHelper;
+import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
-public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
+public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP11HeaderBlock {
 
     public SOAP11HeaderBlockImpl(OMContainer parent, String localName, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
@@ -56,46 +52,5 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP11HeaderImpl, got " + parent.getClass());
         }
-    }
-
-    public void setRole(String roleURI) {
-        setAttribute(SOAP11Constants.ATTR_ACTOR,
-                     roleURI,
-                     SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-
-    }
-
-    public String getRole() {
-//      Get the property or attribute
-        String val;
-        if (this.hasOMDataSourceProperty(ROLE_PROPERTY)) {
-            val = this.getOMDataSourceProperty(ROLE_PROPERTY);
-        } else {
-            val = getAttribute(SOAP11Constants.ATTR_ACTOR,
-                               SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        }
-        return val;
-    }
-
-    public void setMustUnderstand(boolean mustUnderstand) {
-        setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                     mustUnderstand ? "1" : "0",
-                     SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-    }
-
-    public void setRelay(boolean relay) {
-        throw new UnsupportedOperationException("Not supported for SOAP 1.1");
-    }
-
-    public boolean getRelay() {
-        throw new UnsupportedOperationException("Not supported for SOAP 1.1");
-    }
-
-    public SOAPVersion getVersion() {
-        return SOAP11Version.getSingleton();
-    }
-
-    protected SOAPHelper getSOAPHelper() {
-        return SOAPHelper.SOAP11;
     }
 }

@@ -375,6 +375,11 @@ public aspect AxiomElementSupport {
         return attr == null ? null : attr.getAttributeValue();
     }
 
+    // TODO: complete the implementation (i.e. support value == null) and add the method to the OMElement API
+    public final void AxiomElement.setAttributeValue(QName qname, String value) {
+        coreSetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
+    }
+    
     public final void AxiomElement.removeAttribute(OMAttribute attr) {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");

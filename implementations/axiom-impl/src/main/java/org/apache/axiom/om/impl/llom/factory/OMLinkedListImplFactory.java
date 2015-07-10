@@ -43,7 +43,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
@@ -358,8 +357,10 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
 
     public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
             String localName, String prefix, String value, String type) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return new OMAttributeImpl(
+                localName,
+                namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix),
+                value, this);
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
