@@ -78,7 +78,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
         SOAPHelper helper = getSOAPHelper();
         Boolean value = helper.parseBoolean(mustUnderstand);
         if (value != null) {
-            setAttributeValue(helper.getMustUnderstandAttributeQName(), mustUnderstand);
+            _setAttributeValue(helper.getMustUnderstandAttributeQName(), mustUnderstand);
         } else {
             throw new SOAPProcessingException("Invalid value for mustUnderstand attribute");
         }
@@ -86,7 +86,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
 
     public final void AxiomSOAPHeaderBlock.setMustUnderstand(boolean mustUnderstand) {
         SOAPHelper helper = getSOAPHelper();
-        setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
+        _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
     }
 
     public final String AxiomSOAPHeaderBlock.getRole() {
@@ -94,7 +94,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
     }
     
     public final void AxiomSOAPHeaderBlock.setRole(String role) {
-        setAttributeValue(getSOAPHelper().getRoleAttributeQName(), role);
+        _setAttributeValue(getSOAPHelper().getRoleAttributeQName(), role);
     }
     
     public final boolean AxiomSOAPHeaderBlock.getRelay() {
@@ -113,7 +113,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
         if (attributeQName == null) {
             throw new UnsupportedOperationException("Not supported for " + helper.getSpecName());
         } else {
-            setAttributeValue(attributeQName, helper.formatBoolean(relay));
+            _setAttributeValue(attributeQName, helper.formatBoolean(relay));
         }
     }
 }

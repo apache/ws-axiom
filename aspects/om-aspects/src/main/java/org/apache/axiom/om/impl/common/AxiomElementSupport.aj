@@ -376,7 +376,7 @@ public aspect AxiomElementSupport {
     }
 
     // TODO: complete the implementation (i.e. support value == null) and add the method to the OMElement API
-    public final void AxiomElement.setAttributeValue(QName qname, String value) {
+    public final void AxiomElement._setAttributeValue(QName qname, String value) {
         coreSetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
     }
     
