@@ -375,9 +375,14 @@ public aspect AxiomElementSupport {
         return attr == null ? null : attr.getAttributeValue();
     }
 
-    // TODO: complete the implementation (i.e. support value == null) and add the method to the OMElement API
+    // TODO: complete the implementation (i.e. support value == null and the no namespace case) and add the method to the OMElement API
     public final void AxiomElement._setAttributeValue(QName qname, String value) {
-        coreSetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
+        OMAttribute attr = getAttribute(qname);
+        if (attr != null) {
+            attr.setAttributeValue(value);
+        } else {
+            addAttribute(qname.getLocalPart(), value, new OMNamespaceImpl(qname.getNamespaceURI(), qname.getLocalPart()));
+        }
     }
     
     public final void AxiomElement.removeAttribute(OMAttribute attr) {

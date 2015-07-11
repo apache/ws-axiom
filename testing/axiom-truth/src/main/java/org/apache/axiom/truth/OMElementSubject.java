@@ -18,7 +18,10 @@
  */
 package org.apache.axiom.truth;
 
+import java.util.Iterator;
+
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
 
 import com.google.common.truth.FailureStrategy;
 
@@ -31,5 +34,15 @@ public final class OMElementSubject extends AbstractOMContainerSubject<OMElement
         if (getSubject().getAllDeclaredNamespaces().hasNext()) {
             fail("has no namespace declarations");
         }
+    }
+    
+    public void hasNamespaceDeclaration(OMNamespace ns) {
+        for (Iterator it = getSubject().getAllDeclaredNamespaces(); it.hasNext(); ) {
+            if (it.next().equals(ns)) {
+                return;
+            }
+        }
+        fail("has namespace declaration for namespace URI \"" + ns.getNamespaceURI()
+                + "\" and prefix \"" + ns.getPrefix() + "\"");
     }
 }

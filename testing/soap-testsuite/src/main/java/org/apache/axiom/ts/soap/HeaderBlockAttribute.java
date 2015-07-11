@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.testing.multiton.Multiton;
 
 /**
@@ -77,6 +79,10 @@ public abstract class HeaderBlockAttribute extends Multiton {
      * @return the name of the attribute in the given SOAP version
      */
     public abstract String getName(SOAPSpec spec);
+    
+    public final QName getQName(SOAPSpec spec) {
+        return new QName(spec.getEnvelopeNamespaceURI(), getName(spec));
+    }
     
     /**
      * Determine if the attribute is a boolean attribute.
