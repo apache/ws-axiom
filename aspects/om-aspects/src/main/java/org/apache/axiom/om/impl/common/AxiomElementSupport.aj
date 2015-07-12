@@ -130,42 +130,7 @@ public aspect AxiomElementSupport {
 
     // TODO: this is (incorrectly) overridden by the SOAPFaultReason implementations for SOAP 1.2
     public String AxiomElement.getText() {
-        String childText = null;
-        StringBuffer buffer = null;
-        OMNode child = getFirstOMChild();
-
-        while (child != null) {
-            final int type = child.getType();
-            if (type == OMNode.TEXT_NODE || type == OMNode.CDATA_SECTION_NODE) {
-                OMText textNode = (OMText) child;
-                String textValue = textNode.getText();
-                if (textValue != null && textValue.length() != 0) {
-                    if (childText == null) {
-                        // This is the first non empty text node. Just save the string.
-                        childText = textValue;
-                    } else {
-                        // We've already seen a non empty text node before. Concatenate using
-                        // a StringBuffer.
-                        if (buffer == null) {
-                            // This is the first text node we need to append. Initialize the
-                            // StringBuffer.
-                            buffer = new StringBuffer(childText);
-                        }
-                        buffer.append(textValue);
-                    }
-                }
-            }
-            child = child.getNextOMSibling();
-        }
-
-        if (childText == null) {
-            // We didn't see any text nodes. Return an empty string.
-            return "";
-        } else if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return childText;
-        }
+        return coreGetTextContent(ElementAction.SKIP);
     }
     
     // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2
