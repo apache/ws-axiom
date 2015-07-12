@@ -58,9 +58,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements Entry {
-
-    private static final long serialVersionUID = 1L;
-
     public FOMEntry() {
         super(Constants.ENTRY, new FOMDocument<Entry>(), new FOMFactory());
     }

@@ -44,8 +44,6 @@ public class FOMCollection extends FOMExtensibleElement implements Collection {
     private static final String[] ENTRY = {"application/atom+xml;type=\"entry\""};
     private static final String[] EMPTY = new String[0];
 
-    private static final long serialVersionUID = -5291734055253987136L;
-
     protected FOMCollection(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

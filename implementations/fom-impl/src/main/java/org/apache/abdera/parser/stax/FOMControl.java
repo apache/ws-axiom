@@ -28,9 +28,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMControl extends FOMExtensibleElement implements Control {
-
-    private static final long serialVersionUID = -3816493378953555206L;
-
     protected FOMControl(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

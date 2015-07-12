@@ -35,9 +35,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMWorkspace extends FOMExtensibleElement implements Workspace {
-
-    private static final long serialVersionUID = -421749865550509424L;
-
     protected FOMWorkspace(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

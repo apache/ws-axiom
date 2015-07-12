@@ -41,8 +41,6 @@ import org.apache.axiom.util.base64.Base64Utils;
 
 @SuppressWarnings("unchecked")
 public class FOMContent extends FOMExtensibleElement implements Content {
-
-    private static final long serialVersionUID = -5499917654824498563L;
     protected Type type = Type.TEXT;
 
     protected FOMContent(String name, OMNamespace namespace, Type type, OMContainer parent, OMFactory factory)

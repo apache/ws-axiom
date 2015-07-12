@@ -35,9 +35,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMDiv extends FOMExtensibleElement implements Div {
-
-    private static final long serialVersionUID = -2319449893405850433L;
-
     protected FOMDiv(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

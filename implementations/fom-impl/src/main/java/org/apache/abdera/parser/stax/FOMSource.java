@@ -50,9 +50,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMSource extends FOMExtensibleElement implements Source {
-
-    private static final long serialVersionUID = 9153127297531238021L;
-
     protected FOMSource(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

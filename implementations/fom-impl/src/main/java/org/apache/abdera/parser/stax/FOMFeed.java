@@ -39,9 +39,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMFeed extends FOMSource implements Feed {
-
-    private static final long serialVersionUID = 4552921210185524535L;
-
     public FOMFeed() {
         super(Constants.FEED, new FOMDocument<Feed>(), new FOMFactory());
     }

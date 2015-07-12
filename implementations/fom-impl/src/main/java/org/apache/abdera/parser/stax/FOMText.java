@@ -34,8 +34,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("unchecked")
 public class FOMText extends FOMElement implements Text {
-
-    private static final long serialVersionUID = 5177795905116574120L;
     protected Type type = Type.TEXT;
 
     protected FOMText(Type type, String name, OMNamespace namespace, OMContainer parent, OMFactory factory)

@@ -29,9 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMCategory extends FOMExtensibleElement implements Category {
-
-    private static final long serialVersionUID = -4313042828936786803L;
-
     protected FOMCategory(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

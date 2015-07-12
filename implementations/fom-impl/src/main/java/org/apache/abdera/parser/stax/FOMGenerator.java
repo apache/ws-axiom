@@ -28,9 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMGenerator extends FOMElement implements Generator {
-
-    private static final long serialVersionUID = -8441971633807437976L;
-
     protected FOMGenerator(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

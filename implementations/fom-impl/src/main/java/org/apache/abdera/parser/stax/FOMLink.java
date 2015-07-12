@@ -33,9 +33,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMLink extends FOMExtensibleElement implements Link {
-
-    private static final long serialVersionUID = 2239772197929910635L;
-
     protected FOMLink(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

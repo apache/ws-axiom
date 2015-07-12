@@ -31,9 +31,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMPerson extends FOMExtensibleElement implements Person {
-
-    private static final long serialVersionUID = 2147684807662492625L;
-
     protected FOMPerson(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

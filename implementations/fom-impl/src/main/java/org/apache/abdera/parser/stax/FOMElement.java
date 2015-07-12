@@ -73,9 +73,6 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 
 @SuppressWarnings("unchecked")
 public class FOMElement extends OMElementImpl implements AbderaElement, Constants {
-
-    private static final long serialVersionUID = 8024257594220911953L;
-
     protected FOMElement(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(parent, name, namespace, null, factory, true);
     }

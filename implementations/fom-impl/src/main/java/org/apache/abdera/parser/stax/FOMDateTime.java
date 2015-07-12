@@ -32,8 +32,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMDateTime extends FOMElement implements DateTime {
-
-    private static final long serialVersionUID = -6611503566172011733L;
     private AtomDate value;
 
     protected FOMDateTime(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {

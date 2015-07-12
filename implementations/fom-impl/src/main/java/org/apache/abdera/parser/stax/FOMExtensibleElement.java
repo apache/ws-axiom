@@ -36,9 +36,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("unchecked")
 public class FOMExtensibleElement extends FOMElement implements ExtensibleElement {
-
-    private static final long serialVersionUID = -1652430686161947531L;
-
     protected FOMExtensibleElement(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);
