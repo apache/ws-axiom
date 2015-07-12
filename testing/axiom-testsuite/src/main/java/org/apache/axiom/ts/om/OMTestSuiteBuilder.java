@@ -316,6 +316,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithNonTextChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithoutCaching(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithSingleTextNode(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextBinary(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithCDATASectionChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithMixedOMTextChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));

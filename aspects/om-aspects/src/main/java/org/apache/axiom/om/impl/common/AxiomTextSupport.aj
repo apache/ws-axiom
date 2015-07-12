@@ -174,7 +174,7 @@ public aspect AxiomTextSupport {
     }
     
     public final String AxiomText.coreGetData() {
-        return value;
+        return getText();
     }
 
     public final void AxiomText.coreSetData(String data) {
