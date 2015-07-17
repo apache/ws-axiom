@@ -483,8 +483,8 @@
                             <_removeheaders>
                                 <!-- Remove these headers to make the output deterministic -->
                                 Bnd-LastModified,Build-Jdk,Built-By,
-                                <!-- This is not an OSGi header and shouldn't appear in the manifest -->
-                                Private-Package
+                                <!-- There are not OSGi headers and shouldn't appear in the manifest -->
+                                Private-Package,Include-Resource
                             </_removeheaders>
                             <!-- These two are for compatibility with maven-bundle-plugin 1.4.0 -->
                             <_nodefaultversion>true</_nodefaultversion>
