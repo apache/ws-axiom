@@ -76,7 +76,6 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <excludeDependencies>true</excludeDependencies>
                     <instructions>
                         <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                         <Import-Package>!org.aspectj.*,*</Import-Package>

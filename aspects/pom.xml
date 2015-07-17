@@ -71,7 +71,6 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <excludeDependencies>true</excludeDependencies>
                     <instructions>
                         <Export-Package>*;-noimport:=true</Export-Package>
                         <Import-Package>

@@ -96,7 +96,6 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <excludeDependencies>true</excludeDependencies>
                     <instructions>
                         <Export-Package>*;-noimport:=true</Export-Package>
                         <Import-Package>javax.xml.bind;version="[2.1,3)",javax.xml.bind.attachment;version="[2.1,3)",*</Import-Package>

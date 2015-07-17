@@ -479,6 +479,7 @@
                     <!-- Note: don't use 2.5.4 because of FELIX-4882 -->
                     <version>2.5.3</version>
                     <configuration>
+                        <excludeDependencies>true</excludeDependencies>
                         <instructions>
                             <_removeheaders>
                                 <!-- Remove these headers to make the output deterministic -->
