@@ -476,7 +476,8 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>2.4.0</version>
+                    <!-- Note: don't use 2.5.4 because of FELIX-4882 -->
+                    <version>2.5.3</version>
                     <configuration>
                         <instructions>
                             <!-- These two are for compatibility with maven-bundle-plugin 1.4.0 -->
