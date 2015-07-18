@@ -54,4 +54,8 @@ public aspect DOMEntityReferenceSupport {
     public final NamedNodeMap DOMEntityReference.getAttributes() {
         return null;
     }
+
+    public final String DOMEntityReference.getTextContent() throws DOMException {
+        throw new UnsupportedOperationException();
+    }
 }

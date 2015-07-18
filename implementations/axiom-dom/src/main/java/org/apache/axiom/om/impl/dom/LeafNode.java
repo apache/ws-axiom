@@ -20,21 +20,9 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMLeafNode;
 import org.apache.axiom.om.OMFactory;
-import org.w3c.dom.DOMException;
 
 public abstract class LeafNode extends ChildNode implements DOMLeafNode {
     public LeafNode(OMFactory factory) {
         super(factory);
-    }
-
-    public final String getTextContent() throws DOMException {
-        return getNodeValue();
-    }
-
-    final void getTextContent(StringBuffer buf) {
-        String content = getNodeValue();
-        if (content != null) {
-            buf.append(content);
-        }
     }
 }

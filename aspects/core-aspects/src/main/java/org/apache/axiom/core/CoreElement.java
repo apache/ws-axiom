@@ -45,8 +45,6 @@ public interface CoreElement extends CoreChildNode, CoreParentNode, DeferringPar
         REPLACED_ATTRIBUTE,
     }
     
-    enum ElementAction { SKIP, RECURSE, FAIL }
-    
     /**
      * Get the first attribute of this element.
      * 
@@ -201,6 +199,4 @@ public interface CoreElement extends CoreChildNode, CoreParentNode, DeferringPar
     // TODO: wrong Javadoc: null vs. empty string
     // TODO: we can support default namespaces!
     String coreLookupPrefix(String namespaceURI, boolean strict);
-    
-    String coreGetTextContent(ElementAction elementAction);
 }

@@ -163,31 +163,6 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     
     abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
 
-    public String getTextContent() throws DOMException {
-        Node child = getFirstChild();
-        if (child != null) {
-            Node next = child.getNextSibling();
-            if (next == null) {
-                return hasTextContent(child) ? ((NodeImpl)child).getTextContent() : "";
-            }
-            StringBuffer buf = new StringBuffer();
-            getTextContent(buf);
-            return buf.toString();
-        } else {
-            return "";
-        }
-    }
-
-    void getTextContent(StringBuffer buf) throws DOMException {
-        Node child = getFirstChild();
-        while (child != null) {
-            if (hasTextContent(child)) {
-                ((NodeImpl)child).getTextContent(buf);
-            }
-            child = child.getNextSibling();
-        }
-    }
-    
     // internal method returning whether to take the given node's text content
     private static boolean hasTextContent(Node child) {
         return child.getNodeType() != Node.COMMENT_NODE &&

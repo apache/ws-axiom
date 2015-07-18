@@ -71,4 +71,8 @@ public aspect DOMDocumentFragmentSupport {
     public final NamedNodeMap DOMDocumentFragment.getAttributes() {
         return null;
     }
+    
+    public final String DOMDocumentFragment.getTextContent() {
+        return coreGetTextContent(ElementAction.RECURSE);
+    }
 }

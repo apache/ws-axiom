@@ -46,4 +46,8 @@ public aspect DOMAttributeSupport {
     public final NamedNodeMap DOMAttribute.getAttributes() {
         return null;
     }
+    
+    public final String DOMAttribute.getTextContent() {
+        return getValue();
+    }
 }

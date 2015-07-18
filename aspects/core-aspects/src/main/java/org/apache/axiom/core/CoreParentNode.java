@@ -24,6 +24,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
  * Interface for parent nodes.
  */
 public interface CoreParentNode extends CoreNode {
+    enum ElementAction { SKIP, RECURSE, FAIL }
+    
     int INCOMPLETE = 0;
     int COMPLETE = 1;
     int DISCARDED = 2;
@@ -33,4 +35,6 @@ public interface CoreParentNode extends CoreNode {
     int getState();
     void coreSetState(int state);
     void build();
+    
+    String coreGetTextContent(ElementAction elementAction);
 }

@@ -100,12 +100,4 @@ public class EntityReferenceImpl extends ChildNode implements AxiomEntityReferen
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
-
-    public String getTextContent() throws DOMException {
-        throw new UnsupportedOperationException();
-    }
-
-    void getTextContent(StringBuffer buf) {
-        throw new UnsupportedOperationException();
-    }
 }

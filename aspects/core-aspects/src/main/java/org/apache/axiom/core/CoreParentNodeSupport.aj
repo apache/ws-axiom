@@ -158,4 +158,72 @@ public aspect CoreParentNodeSupport {
             coreSetState(COMPLETE);
         }
     }
+    
+    public final String CoreParentNode.coreGetTextContent(ElementAction elementAction) {
+        String textContent = null;
+        StringBuilder buffer = null;
+        int depth = 0;
+        CoreChildNode child = coreGetFirstChild();
+        boolean visited = false;
+        while (child != null) {
+            if (visited) {
+                visited = false;
+            } else if (child instanceof CoreElement) {
+                switch (elementAction) {
+                    case FAIL:
+                        return null;
+                    case RECURSE:
+                        CoreChildNode firstChild = ((CoreElement)child).coreGetFirstChild();
+                        if (firstChild != null) {
+                            child = firstChild;
+                            depth++;
+                            continue;
+                        }
+                        // Fall through
+                    case SKIP:
+                        // Just continue
+                }
+            } else {
+                String textValue;
+                if (child instanceof CoreCharacterData) {
+                    textValue = ((CoreCharacterData)child).coreGetData();
+                } else if (child instanceof CoreCDATASection) {
+                    textValue = ((CoreCDATASection)child).coreGetData();
+                } else {
+                    textValue = null;
+                }
+                if (textValue != null && textValue.length() != 0) {
+                    if (textContent == null) {
+                        // This is the first non empty text node. Just save the string.
+                        textContent = textValue;
+                    } else {
+                        // We've already seen a non empty text node before. Concatenate using
+                        // a StringBuilder.
+                        if (buffer == null) {
+                            // This is the first text node we need to append. Initialize the
+                            // StringBuilder.
+                            buffer = new StringBuilder(textContent);
+                        }
+                        buffer.append(textValue);
+                    }
+                }
+            }
+            CoreChildNode nextSibling = child.coreGetNextSibling();
+            if (depth > 0 && nextSibling == null) {
+                depth--;
+                child = (CoreChildNode)child.coreGetParent();
+                visited = true;
+            } else {
+                child = nextSibling;
+            }
+        }
+        if (textContent == null) {
+            // We didn't see any text nodes. Return an empty string.
+            return "";
+        } else if (buffer != null) {
+            return buffer.toString();
+        } else {
+            return textContent;
+        }
+    }
 }

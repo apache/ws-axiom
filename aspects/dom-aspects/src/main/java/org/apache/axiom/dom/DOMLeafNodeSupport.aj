@@ -81,4 +81,8 @@ public aspect DOMLeafNodeSupport {
     public final NamedNodeMap DOMLeafNode.getAttributes() {
         return null;
     }
+
+    public final String DOMLeafNode.getTextContent() {
+        return getNodeValue();
+    }
 }

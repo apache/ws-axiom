@@ -67,6 +67,10 @@ public aspect DOMDocumentSupport {
         return null;
     }
 
+    public final String DOMDocument.getTextContent() throws DOMException {
+        return null;
+    }
+
     public final Element DOMDocument.getDocumentElement() {
         return (Element)coreGetDocumentElement();
     }

@@ -185,4 +185,8 @@ public aspect DOMElementSupport {
             coreRemoveAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
         }
     }
+    
+    public final String DOMElement.getTextContent() {
+        return coreGetTextContent(ElementAction.RECURSE);
+    }
 }

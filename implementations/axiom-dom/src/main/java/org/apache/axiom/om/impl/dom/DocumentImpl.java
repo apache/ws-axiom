@@ -341,10 +341,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
     * DOM-Level 3 methods
     */
 
-    public String getTextContent() throws DOMException {
-        return null;
-    }
-
     public void setTextContent(String textContent) throws DOMException {
         // no-op
     }

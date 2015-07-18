@@ -88,9 +88,6 @@ public abstract class NodeImpl implements DOMNode {
         throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
     }
 
-    // internal method taking a StringBuffer in parameter
-    abstract void getTextContent(StringBuffer buf);
-
     public void setTextContent(String textContent) throws DOMException {
         setNodeValue(textContent);  // overriden in some subclasses
     }
