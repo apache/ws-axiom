@@ -21,10 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
@@ -35,50 +32,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute {
     AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
         coreSetOwnerDocument(ownerDocument);
-    }
-
-    // /
-    // /org.w3c.dom.Node methods
-    // /
-
-    /**
-     * Returns the value of this attribute.
-     *
-     * @see org.w3c.dom.Attr#getValue()
-     */
-    public String getValue() {
-        String value = null;
-        StringBuffer buffer = null;
-        Node child = getFirstChild();
-
-        while (child != null) {
-            String textValue = ((Text)child).getData();
-            if (textValue != null && textValue.length() != 0) {
-                if (value == null) {
-                    // This is the first non empty text node. Just save the string.
-                    value = textValue;
-                } else {
-                    // We've already seen a non empty text node before. Concatenate using
-                    // a StringBuffer.
-                    if (buffer == null) {
-                        // This is the first text node we need to append. Initialize the
-                        // StringBuffer.
-                        buffer = new StringBuffer(value);
-                    }
-                    buffer.append(textValue);
-                }
-            }
-            child = child.getNextSibling();
-        }
-
-        if (value == null) {
-            // We didn't see any text nodes. Return an empty string.
-            return "";
-        } else if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return value;
-        }
     }
 
     // /
@@ -108,15 +61,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute {
 
     public void setSpecified(boolean specified) {
         coreSetSpecified(specified);
-    }
-
-    /**
-     * Sets the value of the attribute.
-     *
-     * @see org.w3c.dom.Attr#setValue(String)
-     */
-    public void setValue(String value) throws DOMException {
-        setTextContent(value);
     }
 
     public final String coreGetValue() {

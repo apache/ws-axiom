@@ -48,10 +48,18 @@ public aspect DOMAttributeSupport {
     }
     
     public final String DOMAttribute.getTextContent() {
-        return getValue();
+        return coreGetTextContent(ElementAction.FAIL);
     }
 
     public final void DOMAttribute.setTextContent(String textContent) {
         coreSetTextContent(textContent, Policies.DETACH_POLICY);
+    }
+    
+    public final String DOMAttribute.getValue() {
+        return getTextContent();
+    }
+    
+    public final void DOMAttribute.setValue(String value) {
+        setTextContent(value);
     }
 }
