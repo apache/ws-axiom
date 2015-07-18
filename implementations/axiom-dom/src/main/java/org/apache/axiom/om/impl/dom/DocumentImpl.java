@@ -56,7 +56,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument {
+public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocument {
     private String xmlVersion;
 
     private String xmlEncoding;

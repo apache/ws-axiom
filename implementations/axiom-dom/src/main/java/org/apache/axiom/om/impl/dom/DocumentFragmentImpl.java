@@ -24,7 +24,7 @@ import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 
-public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragment {
+public class DocumentFragmentImpl extends ParentNode implements DOMDocumentFragment {
 
     public DocumentFragmentImpl(OMFactory factory) {
         super(factory);
