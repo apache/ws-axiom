@@ -164,14 +164,6 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     
     abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
 
-    // internal method returning whether to take the given node's text content
-    private static boolean hasTextContent(Node child) {
-        return child.getNodeType() != Node.COMMENT_NODE &&
-            child.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE /* &&
-            (child.getNodeType() != Node.TEXT_NODE ||
-             ((TextImpl) child).isIgnorableWhitespace() == false)*/;
-    }
-    
     public void setTextContent(String textContent) throws DOMException {
         // get rid of any existing children
         coreRemoveChildren(Policies.DETACH_POLICY);
