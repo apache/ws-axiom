@@ -22,13 +22,14 @@ import javax.xml.namespace.QName;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
+import org.apache.axiom.fom.AbderaIRIElement;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-public class FOMIRI extends FOMElement implements IRIElement {
+public class FOMIRI extends FOMElement implements AbderaIRIElement {
     protected FOMIRI(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

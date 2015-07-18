@@ -40,6 +40,7 @@ import org.apache.abdera.model.Person;
 import org.apache.abdera.model.Source;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.stax.util.FOMHelper;
+import org.apache.axiom.fom.AbderaSource;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -49,7 +50,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMSource extends FOMExtensibleElement implements Source {
+public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     protected FOMSource(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

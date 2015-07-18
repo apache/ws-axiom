@@ -21,13 +21,14 @@ import javax.xml.namespace.QName;
 
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Generator;
+import org.apache.axiom.fom.AbderaGenerator;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-public class FOMGenerator extends FOMElement implements Generator {
+public class FOMGenerator extends FOMElement implements AbderaGenerator {
     protected FOMGenerator(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

@@ -23,6 +23,7 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.abdera.model.Person;
+import org.apache.axiom.fom.AbderaPerson;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -30,7 +31,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-public class FOMPerson extends FOMExtensibleElement implements Person {
+public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     protected FOMPerson(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

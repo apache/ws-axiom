@@ -24,6 +24,7 @@ import org.apache.abdera.model.Div;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
+import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -33,7 +34,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("unchecked")
-public class FOMText extends FOMElement implements Text {
+public class FOMText extends FOMElement implements AbderaText {
     protected Type type = Type.TEXT;
 
     protected FOMText(Type type, String name, OMNamespace namespace, OMContainer parent, OMFactory factory)

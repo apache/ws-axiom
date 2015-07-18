@@ -20,6 +20,7 @@ package org.apache.abdera.parser.stax;
 import javax.xml.namespace.QName;
 
 import org.apache.abdera.model.Control;
+import org.apache.axiom.fom.AbderaControl;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -27,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
-public class FOMControl extends FOMExtensibleElement implements Control {
+public class FOMControl extends FOMExtensibleElement implements AbderaControl {
     protected FOMControl(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

@@ -27,6 +27,7 @@ import org.apache.abdera.model.ExtensibleElement;
 import org.apache.abdera.parser.stax.util.FOMElementIteratorWrapper;
 import org.apache.abdera.parser.stax.util.FOMExtensionIterator;
 import org.apache.abdera.parser.stax.util.FOMList;
+import org.apache.axiom.fom.AbderaExtensibleElement;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -35,7 +36,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("unchecked")
-public class FOMExtensibleElement extends FOMElement implements ExtensibleElement {
+public class FOMExtensibleElement extends FOMElement implements AbderaExtensibleElement {
     protected FOMExtensibleElement(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

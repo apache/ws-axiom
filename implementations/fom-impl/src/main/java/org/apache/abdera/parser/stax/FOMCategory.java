@@ -22,13 +22,14 @@ import javax.xml.namespace.QName;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Element;
+import org.apache.axiom.fom.AbderaCategory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-public class FOMCategory extends FOMExtensibleElement implements Category {
+public class FOMCategory extends FOMExtensibleElement implements AbderaCategory {
     protected FOMCategory(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

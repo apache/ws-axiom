@@ -26,6 +26,7 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.parser.stax.util.FOMHelper;
+import org.apache.axiom.fom.AbderaCategories;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -33,7 +34,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
-public class FOMCategories extends FOMExtensibleElement implements Categories {
+public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
     public FOMCategories() {
         super(CATEGORIES, new FOMDocument<Categories>(), new FOMFactory());
         init();

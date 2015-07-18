@@ -30,6 +30,7 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.ElementWrapper;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.fom.AbderaContent;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -40,7 +41,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.util.base64.Base64Utils;
 
 @SuppressWarnings("unchecked")
-public class FOMContent extends FOMExtensibleElement implements Content {
+public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     protected Type type = Type.TEXT;
 
     protected FOMContent(String name, OMNamespace namespace, Type type, OMContainer parent, OMFactory factory)

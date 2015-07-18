@@ -49,6 +49,7 @@ import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.i18n.text.io.InputStreamDataSource;
 import org.apache.abdera.i18n.iri.IRI;
+import org.apache.axiom.fom.AbderaEntry;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -57,7 +58,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMEntry extends FOMExtensibleElement implements Entry {
+public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     public FOMEntry() {
         super(Constants.ENTRY, new FOMDocument<Entry>(), new FOMFactory());
     }

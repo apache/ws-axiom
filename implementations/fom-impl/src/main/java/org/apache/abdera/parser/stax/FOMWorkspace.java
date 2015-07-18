@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.model.Workspace;
+import org.apache.axiom.fom.AbderaWorkspace;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -34,7 +35,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
-public class FOMWorkspace extends FOMExtensibleElement implements Workspace {
+public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspace {
     protected FOMWorkspace(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

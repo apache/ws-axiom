@@ -41,6 +41,7 @@ import org.apache.abdera.util.XmlUtil;
 import org.apache.abdera.util.XmlUtil.XMLVersion;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
+import org.apache.axiom.fom.AbderaDocument;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -52,7 +53,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 
 @SuppressWarnings("unchecked")
-public class FOMDocument<T extends Element> extends OMDocumentImpl implements Document<T> {
+public class FOMDocument<T extends Element> extends OMDocumentImpl implements AbderaDocument<T> {
 
     private static final long serialVersionUID = -3255339511063344662L;
     protected IRI base = null;
