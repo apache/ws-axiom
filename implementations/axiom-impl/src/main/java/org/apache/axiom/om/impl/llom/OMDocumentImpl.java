@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -54,18 +53,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
      */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /**
-     * Create the <code>OMDocument</code> with the factory
-     *
-     * @param parserWrapper
-     * @param factory
-     */
-    public OMDocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
-        super(factory);
-        coreSetBuilder(parserWrapper);
-        coreSetState(INCOMPLETE);
     }
 
     public void setOMDocumentElement(OMElement documentElement) {

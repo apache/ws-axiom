@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
@@ -70,12 +69,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
 
     protected Hashtable identifiers;
     
-    public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
-        super(factory);
-        coreSetBuilder(parserWrapper);
-        coreSetState(INCOMPLETE);
-    }
-
     public DocumentImpl(OMFactory factory) {
         super(factory);
     }

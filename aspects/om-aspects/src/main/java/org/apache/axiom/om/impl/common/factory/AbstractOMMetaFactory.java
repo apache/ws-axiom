@@ -31,6 +31,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -41,10 +42,12 @@ import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
@@ -240,5 +243,14 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
                 sourceInfo.getCloseable());
         builder.setAutoClose(true);
         return builder;
+    }
+    
+    public abstract AxiomSOAPMessage createSOAPMessage();
+    
+    public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
+        AxiomSOAPMessage message = createSOAPMessage();
+        message.coreSetBuilder(builder);
+        message.coreSetState(CoreParentNode.INCOMPLETE);
+        return message;
     }
 }

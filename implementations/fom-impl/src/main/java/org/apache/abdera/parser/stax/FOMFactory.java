@@ -56,6 +56,7 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.util.Version;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
@@ -100,8 +101,8 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     @Override
-    public OMDocument createOMDocument(OMXMLParserWrapper parserWrapper) {
-        return new FOMDocument(parserWrapper, this);
+    public CoreDocument createDocument() {
+        return new FOMDocument(this);
     }
 
     public Service newService(Base parent) {

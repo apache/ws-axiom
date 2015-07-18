@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
@@ -82,10 +81,6 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public OMMetaFactory getMetaFactory() {
         return metaFactory;
-    }
-
-    public OMDocument createOMDocument() {
-        return new DocumentImpl(this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
@@ -238,10 +233,6 @@ public class OMDOMFactory implements AxiomNodeFactory {
             ((OMContainerEx)parent).addChild(comment, fromBuilder);
         }
         return comment;
-    }
-
-    public OMDocument createOMDocument(OMXMLParserWrapper builder) {
-        return new DocumentImpl(builder, this);
     }
 
     public OMEntityReference createOMEntityReference(OMContainer parent, String name) {

@@ -24,27 +24,19 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 
-public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
-
-
+public class SOAPMessageImpl extends OMDocumentImpl implements AxiomSOAPMessage {
     public SOAPMessageImpl(SOAPFactory factory) {
         super(factory);
     }
-
-    public SOAPMessageImpl(OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
-        super(parserWrapper, factory);
-    }
-
 
     public SOAPEnvelope getSOAPEnvelope() throws SOAPProcessingException {
         return (SOAPEnvelope) getOMDocumentElement();

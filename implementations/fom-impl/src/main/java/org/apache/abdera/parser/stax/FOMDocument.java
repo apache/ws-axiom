@@ -72,14 +72,6 @@ public class FOMDocument<T extends Element> extends OMDocumentImpl implements Ab
         super(factory);
     }
 
-    protected FOMDocument(OMXMLParserWrapper parserWrapper, OMFactory factory) {
-        super(parserWrapper, factory);
-    }
-
-    protected FOMDocument(OMXMLParserWrapper parserWrapper) {
-        super(parserWrapper, new FOMFactory());
-    }
-
     public T getRoot() {
         FOMFactory factory = (FOMFactory)getFactory();
         return (T)factory.getElementWrapper((T)this.getOMDocumentElement());

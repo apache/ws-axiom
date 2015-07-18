@@ -20,20 +20,35 @@ package org.apache.axiom.om.impl.common.factory;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterData;
+import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
 
 public aspect AxiomNodeFactorySupport {
+    public final OMDocument AxiomNodeFactory.createOMDocument() {
+        return (AxiomDocument)createDocument();
+    }
+
+    public final OMDocument AxiomNodeFactory.createOMDocument(OMXMLParserWrapper builder) {
+        AxiomDocument document = (AxiomDocument)createDocument();
+        document.coreSetBuilder(builder);
+        document.coreSetState(CoreParentNode.INCOMPLETE);
+        return document;
+    }
+
     public void AxiomNodeFactory.validateOMTextParent(OMContainer parent) {
     }
     

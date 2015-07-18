@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
@@ -240,20 +239,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
 
     public OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
         return new OMCommentImpl(parent, content, this, fromBuilder);
-    }
-
-    /* (non-Javadoc)
-    * @see org.apache.axiom.om.OMFactory#createOMDocument()
-    */
-    public OMDocument createOMDocument() {
-        return new OMDocumentImpl(this);
-    }
-
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMFactory#createOMDocument(org.apache.axiom.om.OMXMLParserWrapper)
-      */
-    public OMDocument createOMDocument(OMXMLParserWrapper builder) {
-        return new OMDocumentImpl(builder, this);
     }
 
     public OMEntityReference createOMEntityReference(OMContainer parent, String name) {
