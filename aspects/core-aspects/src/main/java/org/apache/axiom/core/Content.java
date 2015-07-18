@@ -18,17 +18,7 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
-
-public aspect DeferringParentNodeSupport {
-    private OMXMLParserWrapper DeferringParentNode.builder;
-
-    public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
-        forceExpand();
-        return builder;
-    }
-
-    public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
-        this.builder = builder;
-    }
+final class Content {
+    CoreChildNode firstChild;
+    CoreChildNode lastChild;
 }

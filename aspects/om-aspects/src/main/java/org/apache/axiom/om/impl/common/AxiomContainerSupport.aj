@@ -60,7 +60,8 @@ public aspect AxiomContainerSupport {
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
     
     public final boolean AxiomContainer.isComplete() {
-        return getState() == COMPLETE;
+        int state = getState();
+        return state == COMPLETE || state == COMPACT;
     }
 
     public final void AxiomContainer.discarded() {

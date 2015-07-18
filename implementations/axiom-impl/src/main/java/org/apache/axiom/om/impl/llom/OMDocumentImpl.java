@@ -54,7 +54,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
      */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-        coreSetState(COMPLETE);
     }
 
     /**
@@ -66,6 +65,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
     public OMDocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         coreSetBuilder(parserWrapper);
+        coreSetState(INCOMPLETE);
     }
 
     public void setOMDocumentElement(OMElement documentElement) {

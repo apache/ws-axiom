@@ -26,9 +26,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 public interface CoreParentNode extends CoreNode {
     enum ElementAction { SKIP, RECURSE, FAIL }
     
-    int INCOMPLETE = 0;
-    int COMPLETE = 1;
+    int COMPLETE = 0;
+    int INCOMPLETE = 1;
     int DISCARDED = 2;
+    int COMPACT = 3;
     
     OMXMLParserWrapper getBuilder();
     void coreSetBuilder(OMXMLParserWrapper builder);

@@ -125,7 +125,7 @@ public aspect CoreChildNodeSupport {
         CoreChildNode nextSibling = coreGetNextSibling();
         sibling.previousSibling = this;
         if (nextSibling == null) {
-            parent.lastChild = sibling;
+            parent.getContent(true).lastChild = sibling;
         } else {
             nextSibling.previousSibling = sibling;
         }
@@ -144,7 +144,7 @@ public aspect CoreChildNodeSupport {
         sibling.internalDetach(null, parent);
         sibling.nextSibling = this;
         if (previousSibling == null) {
-            parent.firstChild = sibling;
+            parent.getContent(true).firstChild = sibling;
         } else {
             previousSibling.nextSibling = sibling;
         }
@@ -153,27 +153,28 @@ public aspect CoreChildNodeSupport {
     }
     
     public final void CoreChildNode.coreInsertSiblingsBefore(CoreDocumentFragment fragment) {
-        if (fragment.firstChild == null) {
+        Content fragmentContent = fragment.getContent(false);
+        if (fragmentContent == null || fragmentContent.firstChild == null) {
             // Fragment is empty; nothing to do
             return;
         }
         CoreParentNode parent = coreGetParent();
         // TODO: check parent != null
-        CoreChildNode child = fragment.firstChild;
+        CoreChildNode child = fragmentContent.firstChild;
         while (child != null) {
             child.internalSetParent(parent);
             child = child.nextSibling;
         }
-        fragment.lastChild.nextSibling = this;
+        fragmentContent.lastChild.nextSibling = this;
         if (previousSibling == null) {
-            parent.firstChild = fragment.firstChild;
+            parent.getContent(true).firstChild = fragmentContent.firstChild;
         } else {
-            previousSibling.nextSibling = fragment.firstChild;
+            previousSibling.nextSibling = fragmentContent.firstChild;
         }
-        fragment.firstChild.previousSibling = previousSibling;
-        previousSibling = fragment.lastChild;
-        fragment.firstChild = null;
-        fragment.lastChild = null;
+        fragmentContent.firstChild.previousSibling = previousSibling;
+        previousSibling = fragmentContent.lastChild;
+        fragmentContent.firstChild = null;
+        fragmentContent.lastChild = null;
     }
     
     void CoreChildNode.beforeDetach() {}
@@ -188,12 +189,12 @@ public aspect CoreChildNodeSupport {
             beforeDetach();
             CoreDocument newOwnerDocument = newParent != null ? null : detachPolicy.getNewOwnerDocument(parent);
             if (previousSibling == null) {
-                parent.firstChild = nextSibling;
+                parent.getContent(true).firstChild = nextSibling;
             } else {
                 previousSibling.nextSibling = nextSibling;
             }
             if (nextSibling == null) {
-                parent.lastChild = previousSibling;
+                parent.getContent(true).lastChild = previousSibling;
             } else {
                 nextSibling.previousSibling = previousSibling;
             }

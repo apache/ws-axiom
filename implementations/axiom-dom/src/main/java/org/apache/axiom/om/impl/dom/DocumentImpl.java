@@ -73,11 +73,11 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         coreSetBuilder(parserWrapper);
+        coreSetState(INCOMPLETE);
     }
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        coreSetState(COMPLETE);
     }
 
     public Document getOwnerDocument() {

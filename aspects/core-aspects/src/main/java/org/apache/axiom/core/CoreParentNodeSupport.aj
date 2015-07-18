@@ -27,10 +27,39 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 public aspect CoreParentNodeSupport {
-    CoreChildNode CoreParentNode.firstChild;
-    CoreChildNode CoreParentNode.lastChild;
+    private Object CoreParentNode.content;
+    
+    // TODO: rename & make final
+    public int CoreParentNode.getState() {
+        return flags & Flags.STATE_MASK;
+    }
+    
+    public final void CoreParentNode.coreSetState(int state) {
+        flags = (flags & ~Flags.STATE_MASK) | state;
+    }
     
     public void CoreParentNode.forceExpand() {}
+    
+    final Content CoreParentNode.getContent(boolean create) {
+        if (getState() == COMPACT) {
+            Content content = new Content();
+            CoreCharacterData cdata = coreGetNodeFactory().createCharacterData();
+            cdata.internalSetParent(this);
+            cdata.coreSetData((String)this.content);
+            content.firstChild = cdata;
+            content.lastChild = cdata;
+            this.content = content;
+            coreSetState(COMPLETE);
+            return content;
+        } else {
+            Content content = (Content)this.content;
+            if (content == null && create) {
+                content = new Content();
+                this.content = content;
+            }
+            return content;
+        }
+    }
     
     /**
      * Get the first child if it is available. The child is available if it is complete or
@@ -44,11 +73,13 @@ public aspect CoreParentNodeSupport {
      */
     public final CoreChildNode CoreParentNode.coreGetFirstChildIfAvailable() {
         forceExpand();
-        return firstChild;
+        Content content = getContent(false);
+        return content == null ? null : content.firstChild;
     }
 
     public CoreChildNode CoreParentNode.coreGetLastKnownChild() {
-        return lastChild;
+        Content content = getContent(false);
+        return content == null ? null : content.lastChild;
     }
 
     public void CoreParentNode.buildNext() {
@@ -85,7 +116,7 @@ public aspect CoreParentNodeSupport {
 
     public final CoreChildNode CoreParentNode.coreGetLastChild() {
         build();
-        return lastChild;
+        return coreGetLastKnownChild();
     }
 
     public final void CoreParentNode.coreAppendChild(CoreChildNode child, boolean fromBuilder) {
@@ -93,148 +124,159 @@ public aspect CoreParentNodeSupport {
         if (!fromBuilder) {
             build();
         }
-        if (parent == this && child == lastChild) {
+        Content content = getContent(true);
+        if (parent == this && child == content.lastChild) {
             // The child is already the last node. 
             // We don't need to detach and re-add it.
             return;
         }
         child.internalDetach(null, this);
-        if (firstChild == null) {
-            firstChild = child;
+        if (content.firstChild == null) {
+            content.firstChild = child;
         } else {
-            child.previousSibling = lastChild;
-            lastChild.nextSibling = child;
+            child.previousSibling = content.lastChild;
+            content.lastChild.nextSibling = child;
         }
-        lastChild = child;
+        content.lastChild = child;
     }
 
     public final void CoreParentNode.coreAppendChildren(CoreDocumentFragment fragment) {
         fragment.build();
-        if (fragment.firstChild == null) {
+        Content fragmentContent = fragment.getContent(false);
+        if (fragmentContent == null || fragmentContent.firstChild == null) {
             // Fragment is empty; nothing to do
             return;
         }
         build();
-        CoreChildNode child = fragment.firstChild;
+        CoreChildNode child = fragmentContent.firstChild;
         while (child != null) {
             child.internalSetParent(this);
             child = child.nextSibling;
         }
-        if (firstChild == null) {
-            firstChild = fragment.firstChild;
+        Content content = getContent(true);
+        if (content.firstChild == null) {
+            content.firstChild = fragmentContent.firstChild;
         } else {
-            fragment.firstChild.previousSibling = lastChild;
-            lastChild.nextSibling = fragment.firstChild;
+            fragmentContent.firstChild.previousSibling = content.lastChild;
+            content.lastChild.nextSibling = fragmentContent.firstChild;
         }
-        lastChild = fragment.lastChild;
-        fragment.firstChild = null;
-        fragment.lastChild = null;
+        content.lastChild = fragmentContent.lastChild;
+        fragmentContent.firstChild = null;
+        fragmentContent.lastChild = null;
     }
 
     public final void CoreParentNode.coreRemoveChildren(DetachPolicy detachPolicy) {
-        // We need to call this first because if may modify the state (applies to OMSourcedElements)
-        CoreChildNode child = coreGetFirstChildIfAvailable();
-        boolean updateState;
-        if (getState() == INCOMPLETE && getBuilder() != null) {
-            if (lastChild instanceof CoreParentNode) {
-                ((CoreParentNode)lastChild).build();
-            }
-            ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
-            updateState = true;
-        } else {
-            updateState = false;
-        }
-        if (child != null) {
-            CoreDocument newOwnerDocument = detachPolicy.getNewOwnerDocument(this);
-            do {
-                CoreChildNode nextSibling = child.nextSibling;
-                child.previousSibling = null;
-                child.nextSibling = null;
-                child.internalUnsetParent(newOwnerDocument);
-                child = nextSibling;
-            } while (child != null);
-        }
-        firstChild = null;
-        lastChild = null;
-        if (updateState) {
+        if (getState() == COMPACT) {
             coreSetState(COMPLETE);
+            content = null;
+        } else {
+            // We need to call this first because if may modify the state (applies to OMSourcedElements)
+            CoreChildNode child = coreGetFirstChildIfAvailable();
+            boolean updateState;
+            if (getState() == INCOMPLETE && getBuilder() != null) {
+                CoreChildNode lastChild = coreGetLastKnownChild();
+                if (lastChild instanceof CoreParentNode) {
+                    ((CoreParentNode)lastChild).build();
+                }
+                ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
+                updateState = true;
+            } else {
+                updateState = false;
+            }
+            if (child != null) {
+                CoreDocument newOwnerDocument = detachPolicy.getNewOwnerDocument(this);
+                do {
+                    CoreChildNode nextSibling = child.nextSibling;
+                    child.previousSibling = null;
+                    child.nextSibling = null;
+                    child.internalUnsetParent(newOwnerDocument);
+                    child = nextSibling;
+                } while (child != null);
+            }
+            content = null;
+            if (updateState) {
+                coreSetState(COMPLETE);
+            }
         }
     }
     
     public final String CoreParentNode.coreGetTextContent(ElementAction elementAction) {
-        String textContent = null;
-        StringBuilder buffer = null;
-        int depth = 0;
-        CoreChildNode child = coreGetFirstChild();
-        boolean visited = false;
-        while (child != null) {
-            if (visited) {
-                visited = false;
-            } else if (child instanceof CoreElement) {
-                switch (elementAction) {
-                    case FAIL:
-                        return null;
-                    case RECURSE:
-                        CoreChildNode firstChild = ((CoreElement)child).coreGetFirstChild();
-                        if (firstChild != null) {
-                            child = firstChild;
-                            depth++;
-                            continue;
-                        }
-                        // Fall through
-                    case SKIP:
-                        // Just continue
-                }
-            } else {
-                String textValue;
-                if (child instanceof CoreCharacterData) {
-                    textValue = ((CoreCharacterData)child).coreGetData();
-                } else if (child instanceof CoreCDATASection) {
-                    textValue = ((CoreCDATASection)child).coreGetData();
+        if (getState() == COMPACT) {
+            return (String)content;
+        } else {
+            String textContent = null;
+            StringBuilder buffer = null;
+            int depth = 0;
+            CoreChildNode child = coreGetFirstChild();
+            boolean visited = false;
+            while (child != null) {
+                if (visited) {
+                    visited = false;
+                } else if (child instanceof CoreElement) {
+                    switch (elementAction) {
+                        case FAIL:
+                            return null;
+                        case RECURSE:
+                            CoreChildNode firstChild = ((CoreElement)child).coreGetFirstChild();
+                            if (firstChild != null) {
+                                child = firstChild;
+                                depth++;
+                                continue;
+                            }
+                            // Fall through
+                        case SKIP:
+                            // Just continue
+                    }
                 } else {
-                    textValue = null;
-                }
-                if (textValue != null && textValue.length() != 0) {
-                    if (textContent == null) {
-                        // This is the first non empty text node. Just save the string.
-                        textContent = textValue;
+                    String textValue;
+                    if (child instanceof CoreCharacterData) {
+                        textValue = ((CoreCharacterData)child).coreGetData();
+                    } else if (child instanceof CoreCDATASection) {
+                        textValue = ((CoreCDATASection)child).coreGetData();
                     } else {
-                        // We've already seen a non empty text node before. Concatenate using
-                        // a StringBuilder.
-                        if (buffer == null) {
-                            // This is the first text node we need to append. Initialize the
-                            // StringBuilder.
-                            buffer = new StringBuilder(textContent);
+                        textValue = null;
+                    }
+                    if (textValue != null && textValue.length() != 0) {
+                        if (textContent == null) {
+                            // This is the first non empty text node. Just save the string.
+                            textContent = textValue;
+                        } else {
+                            // We've already seen a non empty text node before. Concatenate using
+                            // a StringBuilder.
+                            if (buffer == null) {
+                                // This is the first text node we need to append. Initialize the
+                                // StringBuilder.
+                                buffer = new StringBuilder(textContent);
+                            }
+                            buffer.append(textValue);
                         }
-                        buffer.append(textValue);
                     }
                 }
+                CoreChildNode nextSibling = child.coreGetNextSibling();
+                if (depth > 0 && nextSibling == null) {
+                    depth--;
+                    child = (CoreChildNode)child.coreGetParent();
+                    visited = true;
+                } else {
+                    child = nextSibling;
+                }
             }
-            CoreChildNode nextSibling = child.coreGetNextSibling();
-            if (depth > 0 && nextSibling == null) {
-                depth--;
-                child = (CoreChildNode)child.coreGetParent();
-                visited = true;
+            if (textContent == null) {
+                // We didn't see any text nodes. Return an empty string.
+                return "";
+            } else if (buffer != null) {
+                return buffer.toString();
             } else {
-                child = nextSibling;
+                return textContent;
             }
-        }
-        if (textContent == null) {
-            // We didn't see any text nodes. Return an empty string.
-            return "";
-        } else if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return textContent;
         }
     }
     
     public final void CoreParentNode.coreSetTextContent(String text, DetachPolicy detachPolicy) {
         coreRemoveChildren(detachPolicy);
         if (text != null && text.length() > 0) {
-            CoreCharacterData cdata = coreGetNodeFactory().createCharacterData();
-            cdata.coreSetData(text);
-            coreAppendChild(cdata, false);
+            coreSetState(COMPACT);
+            content = text;
         }
     }
 }
