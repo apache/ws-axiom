@@ -36,12 +36,16 @@ package org.apache.axiom.core;
  * {@link AttributeMatcher#NAMESPACE_DECLARATION} can be used).
  */
 public final class NSAwareAttributeMatcher implements AttributeMatcher {
+    private final DetachPolicy detachPolicy;
     private final boolean matchNSUnawareAttributes;
     private final boolean updatePrefix;
     
     /**
      * Constructor.
      * 
+     * @param detachPolicy
+     *            Specifies the {@link DetachPolicy} to be used by
+     *            {@link #update(CoreAttribute, String, String)}.
      * @param matchNSUnawareAttributes
      *            Specifies if {@link CoreNSUnawareAttribute} instances can also be matched. Only
      *            applies to the case where <code>namespaceURI</code> is the empty string.
@@ -51,7 +55,9 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
      *            <code>prefix</prefix> is only used when creating new attributes and prefixes of
      * existing attributes are preserved (i.e. only their value is updated).
      */
-    public NSAwareAttributeMatcher(boolean matchNSUnawareAttributes, boolean updatePrefix) {
+    public NSAwareAttributeMatcher(DetachPolicy detachPolicy, boolean matchNSUnawareAttributes,
+            boolean updatePrefix) {
+        this.detachPolicy = detachPolicy;
         this.matchNSUnawareAttributes = matchNSUnawareAttributes;
         this.updatePrefix = updatePrefix;
     }
@@ -83,7 +89,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
     }
 
     public void update(CoreAttribute attr, String prefix, String value) {
-        attr.coreSetValue(value);
+        attr.coreSetTextContent(value, detachPolicy);
         if (updatePrefix && attr instanceof CoreNSAwareAttribute) {
             ((CoreNSAwareAttribute)attr).coreSetPrefix(prefix);
         }

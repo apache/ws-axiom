@@ -51,10 +51,6 @@ public abstract class AttrImpl extends ParentNode implements DOMAttribute {
         return coreGetSpecified();
     }
 
-    public final String coreGetValue() {
-        return getValue();
-    }
-    
     public final void coreSetValue(String value) {
         setValue(value);
     }

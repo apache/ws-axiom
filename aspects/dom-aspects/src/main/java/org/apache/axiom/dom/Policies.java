@@ -24,11 +24,18 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
+import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeMigrationPolicy;
 
 public final class Policies {
     private Policies() {}
+    
+    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
+        public CoreDocument getNewOwnerDocument(CoreParentNode parent) {
+            return parent.coreGetOwnerDocument(true);
+        }
+    };
     
     /**
      * {@link AttributeMatcher} implementation that matches attributes based on their name, i.e.
@@ -66,12 +73,14 @@ public final class Policies {
         }
 
         public void update(CoreAttribute attr, String prefix, String value) {
-            attr.coreSetValue(value);
+            attr.coreSetTextContent(value, DETACH_POLICY);
         }
     };
     
-    public static final AttributeMatcher DOM2_ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(true, true);
+    public static final AttributeMatcher DOM2_ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(DETACH_POLICY, true, true);
 
+    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(DETACH_POLICY);
+    
     public static final NodeMigrationPolicy ATTRIBUTE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             return Action.REJECT;
@@ -81,12 +90,6 @@ public final class Policies {
     public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             return isForeignDocument ? Action.REJECT : Action.MOVE;
-        }
-    };
-    
-    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode parent) {
-            return parent.coreGetOwnerDocument(true);
         }
     };
 }

@@ -42,7 +42,7 @@ public aspect AxiomAttributeSupport {
     }
     
     public final void AxiomAttribute.setAttributeValue(String value) {
-        coreSetValue(value);
+        coreSetTextContent(value, Policies.DETACH_POLICY);
     }
     
     public final String AxiomAttribute.getAttributeType() {

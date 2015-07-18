@@ -46,6 +46,7 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
@@ -320,7 +321,7 @@ public class OMDOMFactory implements AxiomNodeFactory {
     public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {
         NSUnawareAttribute attr = new NSUnawareAttribute((DocumentImpl)document, this);
         attr.coreSetName(name);
-        attr.coreSetValue(value);
+        attr.coreSetTextContent(value, Policies.DETACH_POLICY);
 //        attr.coreSetType(type);
         return attr;
     }

@@ -365,7 +365,7 @@ public aspect AxiomElementSupport {
     
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
         try {
-            coreSetAttribute(AttributeMatcher.NAMESPACE_DECLARATION,
+            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER,
                     ((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns),
                     NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
         } catch (NodeMigrationException ex) {

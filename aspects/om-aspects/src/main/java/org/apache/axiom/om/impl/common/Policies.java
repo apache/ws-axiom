@@ -23,15 +23,25 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
+import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeMigrationPolicy;
 
 public final class Policies {
     private Policies() {}
     
+    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
+        public CoreDocument getNewOwnerDocument(CoreParentNode parent) {
+            return null;
+        }
+    };
+    
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
+            DETACH_POLICY,
             false,  // Axiom doesn't support namespace unaware attributes
             false);
 
+    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(DETACH_POLICY);
+    
     public static final NodeMigrationPolicy ATTRIBUTE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             // TODO: doesn't look correct for foreign documents
@@ -42,12 +52,6 @@ public final class Policies {
     public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             return isForeignModel ? Action.CLONE : Action.MOVE;
-        }
-    };
-    
-    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode parent) {
-            return null;
         }
     };
 }

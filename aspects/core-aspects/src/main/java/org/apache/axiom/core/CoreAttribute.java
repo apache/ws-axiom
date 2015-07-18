@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreAttribute extends CoreNode {
+public interface CoreAttribute extends NonDeferringParentNode {
     /**
      * Get the owner element of this attribute.
      * 
@@ -69,5 +69,4 @@ public interface CoreAttribute extends CoreNode {
     CoreAttribute coreGetPreviousAttribute();
 
     String coreGetValue();
-    void coreSetValue(String value);
 }

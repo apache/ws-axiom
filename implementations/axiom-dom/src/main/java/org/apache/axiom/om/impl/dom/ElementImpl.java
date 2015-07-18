@@ -28,6 +28,7 @@ import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNSAwareElement;
+import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -85,7 +86,7 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
             declare = declare && !namespaceURI.equals(existingNamespaceURI);
         }
         if (declare) {
-            coreSetAttribute(AttributeMatcher.NAMESPACE_DECLARATION, null, prefix, null, namespaceURI);
+            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, prefix, null, namespaceURI);
         }
         return prefix;
     }

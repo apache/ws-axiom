@@ -23,48 +23,6 @@ package org.apache.axiom.core;
  */
 public interface AttributeMatcher {
     /**
-     * {@link AttributeMatcher} that matches {@link CoreNamespaceDeclaration} attributes based on
-     * the declared prefix. Parameters are defined as follows:
-     * <dl>
-     * <dt><code>namespaceURI</code>
-     * <dd>Not used.
-     * <dt><code>name</code>
-     * <dd>The prefix declared by the namespace declaration, or the empty string for the default
-     * namespace declaration.
-     * <dt><code>value</code>
-     * <dd>The namespace URI of the namespace declaration.
-     * <dt><code>prefix</code>
-     * <dd>Not used.
-     * </dl>
-     */
-    AttributeMatcher NAMESPACE_DECLARATION = new AttributeMatcher() {
-        public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
-            if (attr instanceof CoreNamespaceDeclaration) {
-                String prefix = ((CoreNamespaceDeclaration)attr).coreGetDeclaredPrefix();
-                return name.equals(prefix);
-            } else {
-                return false;
-            }
-        }
-
-        public CoreAttribute createAttribute(NodeFactory nodeFactory, CoreDocument document, String namespaceURI, String name, String prefix, String value) {
-            return nodeFactory.createNamespaceDeclaration(document, name, value);
-        }
-
-        public String getNamespaceURI(CoreAttribute attr) {
-            return null;
-        }
-
-        public String getName(CoreAttribute attr) {
-            return ((CoreNamespaceDeclaration)attr).coreGetDeclaredPrefix();
-        }
-
-        public void update(CoreAttribute attr, String prefix, String value) {
-            attr.coreSetValue(value);
-        }
-    };
-    
-    /**
      * Check if the given attribute matches. The values of the <code>namespaceURI</code> and
      * <code>name</code> parameters are those passed to
      * {@link CoreElement#coreGetAttribute(AttributeMatcher, String, String)} or

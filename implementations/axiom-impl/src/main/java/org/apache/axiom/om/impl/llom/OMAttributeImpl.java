@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.common.Policies;
 
 /** Class OMAttributeImpl */
 public class OMAttributeImpl extends Attribute implements AxiomAttribute {
@@ -54,7 +55,7 @@ public class OMAttributeImpl extends Attribute implements AxiomAttribute {
         }
 
         internalSetLocalName(localName);
-        coreSetValue(value);
+        coreSetTextContent(value, Policies.DETACH_POLICY);
         internalSetNamespace(ns);
         coreSetType(OMConstants.XMLATTRTYPE_CDATA);
     }
