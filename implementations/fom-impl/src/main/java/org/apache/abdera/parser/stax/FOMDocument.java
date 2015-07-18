@@ -42,7 +42,6 @@ import org.apache.abdera.util.XmlUtil.XMLVersion;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
