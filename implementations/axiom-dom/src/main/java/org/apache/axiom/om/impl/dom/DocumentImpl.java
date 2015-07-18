@@ -342,7 +342,7 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
             }
             childNode.coreSetOwnerDocument(this);
             if (node instanceof AttrImpl) {
-                ((AttrImpl)node).setSpecified(true);
+                ((AttrImpl)node).coreSetSpecified(true);
             }
             return childNode;
         } else {

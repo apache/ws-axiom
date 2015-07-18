@@ -36,4 +36,7 @@ public aspect NonDeferringParentNodeSupport {
     public final void NonDeferringParentNode.coreSetState(int state) {
         throw new UnsupportedOperationException();
     }
+    
+    public final void NonDeferringParentNode.build() {
+    }
 }

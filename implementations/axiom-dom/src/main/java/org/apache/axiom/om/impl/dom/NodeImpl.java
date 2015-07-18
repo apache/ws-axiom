@@ -361,8 +361,6 @@ public abstract class NodeImpl implements DOMNode {
 
     public abstract OMXMLParserWrapper getBuilder();
     
-    abstract void build();
-    
     public final OMInformationItem clone(OMCloneOptions options) {
         return (OMInformationItem)clone(options, null, true, true);
     }

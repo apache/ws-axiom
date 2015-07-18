@@ -132,7 +132,7 @@ public class ElementImpl extends ParentNode implements DOMElement, AxiomElement,
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
             AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, true, false);
-            clonedAttr.setSpecified(attr.getSpecified());
+            clonedAttr.coreSetSpecified(attr.coreGetSpecified());
             if (namespaceRepairing && attr instanceof NSAwareAttribute) {
                 NSAwareAttribute nsAwareAttr = (NSAwareAttribute)attr;
                 String namespaceURI = nsAwareAttr.coreGetNamespaceURI();

@@ -23,7 +23,6 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 
 public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragment {
 
@@ -37,12 +36,5 @@ public class DocumentFragmentImpl extends RootNode implements DOMDocumentFragmen
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         return new DocumentFragmentImpl(getOMFactory());
-    }
-
-    public final void build() {
-        // A document fragment doesn't have a builder
-    }
-
-    public final void checkChild(OMNode child) {
     }
 }

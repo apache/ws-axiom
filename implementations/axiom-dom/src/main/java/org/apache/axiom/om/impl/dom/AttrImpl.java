@@ -47,20 +47,8 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute {
         return (Element)coreGetOwnerElement();
     }
 
-    void setOwnerElement(ElementImpl element, boolean useDomSemantics) {
-        if (element == null) {
-            internalUnsetOwnerElement(useDomSemantics ? coreGetOwnerDocument(true) : null);
-        } else {
-            internalSetOwnerElement(element);
-        }
-    }
-    
     public boolean getSpecified() {
         return coreGetSpecified();
-    }
-
-    public void setSpecified(boolean specified) {
-        coreSetSpecified(specified);
     }
 
     public final String coreGetValue() {
@@ -81,20 +69,6 @@ public abstract class AttrImpl extends RootNode implements DOMAttribute {
 
     public boolean isId() {
         return isId;
-    }
-
-    public final boolean isComplete() {
-        return true;
-    }
-
-    public final void setComplete(boolean state) {
-        if (state != true) {
-            throw new IllegalStateException();
-        }
-    }
-
-    public final void build() {
-        // An attribute node doesn't have a builder
     }
 
     public final String lookupNamespaceURI(String specifiedPrefix) {
