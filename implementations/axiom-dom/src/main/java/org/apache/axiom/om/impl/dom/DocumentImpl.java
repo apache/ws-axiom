@@ -137,13 +137,6 @@ public class DocumentImpl extends RootNode implements DOMDocument, AxiomDocument
         return node;
     }
 
-    public ProcessingInstruction createProcessingInstruction(String target,
-                                                             String data) throws DOMException {
-        ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, getOMFactory());
-        pi.coreSetOwnerDocument(this);
-        return pi;
-    }
-
     public DocumentType getDoctype() {
         Iterator it = getChildren();
         while (it.hasNext()) {

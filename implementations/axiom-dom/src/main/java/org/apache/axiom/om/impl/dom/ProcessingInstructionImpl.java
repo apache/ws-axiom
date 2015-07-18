@@ -24,13 +24,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
 public class ProcessingInstructionImpl extends LeafNode implements DOMProcessingInstruction, AxiomProcessingInstruction {
-    public ProcessingInstructionImpl(String target, String value, OMFactory factory) {
+    public ProcessingInstructionImpl(OMFactory factory) {
         super(factory);
-        coreSetTarget(target);
-        coreSetValue(value);
     }
 
     ChildNode createClone() {
-        return new ProcessingInstructionImpl(coreGetTarget(), coreGetValue(), getOMFactory());
+        return (ChildNode)getOMFactory().createOMProcessingInstruction(null, coreGetTarget(), coreGetValue());
     }
 }

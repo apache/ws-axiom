@@ -25,6 +25,7 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -227,24 +228,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     }
 
     /**
-     * Creates a PI.
-     *
-     * @param parent
-     * @param piTarget
-     * @param piData
-     * @return Returns OMProcessingInstruction.
-     */
-    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
-                                                                 String piTarget, String piData) {
-        return createOMProcessingInstruction(parent, piTarget, piData, false);
-    }
-
-    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
-            String piTarget, String piData, boolean fromBuilder) {
-        return new OMProcessingInstructionImpl(parent, piTarget, piData, this, fromBuilder);
-    }
-
-    /**
      * Creates a comment.
      *
      * @param parent
@@ -373,5 +356,9 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         NamespaceDeclaration decl = new NamespaceDeclaration(this);
         decl.setDeclaredNamespace(namespace);
         return decl;
+    }
+
+    public CoreProcessingInstruction createProcessingInstruction() {
+        return new OMProcessingInstructionImpl(this);
     }
 }

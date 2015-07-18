@@ -27,6 +27,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
 public aspect DOMDocumentSupport {
@@ -137,5 +138,13 @@ public aspect DOMDocumentSupport {
             NSUtil.validateAttributeName(namespaceURI, localName, prefix);
             return (DOMAttribute)coreGetNodeFactory().createAttribute(this, namespaceURI, localName, prefix, null, null);
         }
+    }
+
+    public final ProcessingInstruction DOMDocument.createProcessingInstruction(String target, String data) {
+        DOMProcessingInstruction pi = (DOMProcessingInstruction)coreGetNodeFactory().createProcessingInstruction();
+        pi.coreSetOwnerDocument(this);
+        pi.coreSetTarget(target);
+        pi.coreSetValue(data);
+        return pi;
     }
 }

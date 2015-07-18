@@ -25,6 +25,7 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -227,21 +228,6 @@ public class OMDOMFactory implements AxiomNodeFactory {
         return docType;
     }
 
-    public OMProcessingInstruction createOMProcessingInstruction(
-            OMContainer parent, String piTarget, String piData) {
-        return createOMProcessingInstruction(parent, piTarget, piData, false);
-    }
-    
-    public OMProcessingInstruction createOMProcessingInstruction(
-            OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
-        ProcessingInstructionImpl pi =
-            new ProcessingInstructionImpl(piTarget, piData, this);
-        if (parent != null) {
-            ((OMContainerEx)parent).addChild(pi, fromBuilder);
-        }
-        return pi;
-    }
-
     public OMComment createOMComment(OMContainer parent, String content) {
         return createOMComment(parent, content, false);
     }
@@ -360,5 +346,9 @@ public class OMDOMFactory implements AxiomNodeFactory {
 
     public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
         return new NamespaceDeclaration(null, namespace, this);
+    }
+
+    public final CoreProcessingInstruction createProcessingInstruction() {
+        return new ProcessingInstructionImpl(this);
     }
 }

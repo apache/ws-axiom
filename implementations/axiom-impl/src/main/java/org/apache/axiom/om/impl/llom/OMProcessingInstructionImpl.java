@@ -26,11 +26,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
 public class OMProcessingInstructionImpl extends OMLeafNode implements AxiomProcessingInstruction {
-    public OMProcessingInstructionImpl(OMContainer parentNode, String target,
-                                       String value, OMFactory factory, boolean fromBuilder) {
-        super(parentNode, factory, fromBuilder);
-        coreSetTarget(target);
-        coreSetValue(value);
+    public OMProcessingInstructionImpl(OMFactory factory) {
+        super(factory);
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

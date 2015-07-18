@@ -24,11 +24,13 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterData;
 import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
 
 public aspect AxiomNodeFactorySupport {
@@ -142,6 +144,22 @@ public aspect AxiomNodeFactorySupport {
         node.internalSetDataHandlerObject(dataHandlerProvider);
         node.setBinary(true);
         node.setOptimize(optimize);
+        return node;
+    }
+    
+    public final OMProcessingInstruction AxiomNodeFactory.createOMProcessingInstruction(
+            OMContainer parent, String piTarget, String piData) {
+        return createOMProcessingInstruction(parent, piTarget, piData, false);
+    }
+
+    public final OMProcessingInstruction AxiomNodeFactory.createOMProcessingInstruction(
+            OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
+        AxiomProcessingInstruction node = (AxiomProcessingInstruction)createProcessingInstruction();
+        node.coreSetTarget(piTarget);
+        node.coreSetValue(piData);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(node, fromBuilder);
+        }
         return node;
     }
 }

@@ -25,10 +25,8 @@ import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 
 @SuppressWarnings("unchecked")
 public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements AbderaProcessingInstruction {
-
-    public FOMProcessingInstruction(OMContainer parent, String target, String value,
-            OMFactory factory, boolean fromBuilder) {
-        super(parent, target, value, factory, fromBuilder);
+    FOMProcessingInstruction(OMFactory factory) {
+        super(factory);
     }
 
     public String toString() {
