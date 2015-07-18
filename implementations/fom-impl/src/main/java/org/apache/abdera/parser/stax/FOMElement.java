@@ -538,13 +538,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
         }
     }
 
-    protected void _removeAllChildren() {
-        for (Iterator i = getChildren(); i.hasNext();) {
-            OMNode node = (OMNode)i.next();
-            node.discard();
-        }
-    }
-
     public Object clone() {
         OMElement el = _create(this);
         _copyElement(this, el);
