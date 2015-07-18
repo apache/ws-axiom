@@ -26,8 +26,8 @@ import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMConfigurationImpl;
-import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.dom.DOMExceptionUtil;
+import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -45,7 +45,7 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements DOMElement, AxiomElement, NamedNode,
+public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomElement,
         OMConstants {
 
     private int lineNumber;

@@ -16,10 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.core;
 
-import org.apache.axiom.om.impl.common.AxiomNamedInformationItem;
-
-interface NamedNode extends AxiomNamedInformationItem {
+public interface CoreNSUnawareElement extends CoreElement, CoreNSUnawareNamedNode {
 
 }

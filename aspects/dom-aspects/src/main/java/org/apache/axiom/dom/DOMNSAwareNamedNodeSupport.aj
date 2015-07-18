@@ -16,29 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.DOMException;
 
-aspect NamedNodeSupport {
-    // TODO: rewrite this using coreSetPrefix
-    public final void NamedNode.setPrefix(String prefix) throws DOMException {
+public aspect DOMNSAwareNamedNodeSupport {
+    public final void DOMNSAwareNamedNode.setPrefix(String prefix) throws DOMException {
         if (prefix == null) {
             prefix = "";
         }
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            if (prefix.length() > 0) {
-                throw newDOMException(DOMException.NAMESPACE_ERR);
-            } else {
-                // No need to set a new OMNamespace in this case
-            }
-        } else {
-            internalSetNamespace(new OMNamespaceImpl(ns.getNamespaceURI(), prefix == null ? "" : prefix));
+        if (coreGetNamespaceURI().length() == 0 && prefix.length() > 0) {
+            throw newDOMException(DOMException.NAMESPACE_ERR);
         }
+        coreSetPrefix(prefix);
     }
 }

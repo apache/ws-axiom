@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.XMLConstants;
 
-import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.dom.DOMNSAwareAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
@@ -29,7 +29,7 @@ import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomText;
 
-public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, NamedNode, CoreNSAwareAttribute {
+public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, DOMNSAwareAttribute {
     // TODO: copy isId?
     NSAwareAttribute(String localName, OMNamespace namespace, String type, OMFactory factory) {
         super(null, factory);
