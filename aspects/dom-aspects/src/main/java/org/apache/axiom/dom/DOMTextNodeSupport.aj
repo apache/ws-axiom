@@ -84,12 +84,11 @@ public aspect DOMTextNodeSupport {
             if (newText != null) {
                 first.coreInsertSiblingBefore(newText);
             }
-            CoreDocument document = coreGetOwnerDocument(true);
             DOMTextNode current = first;
             DOMTextNode next;
             do {
                 next = current == last ? null : (DOMTextNode)current.coreGetNextSibling();
-                current.coreDetach(document);
+                current.coreDetach(Policies.DETACH_POLICY);
                 current = next;
             } while (next != null);
         }

@@ -121,8 +121,7 @@ public aspect CoreChildNodeSupport {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        sibling.coreDetach(null);
-        sibling.internalSetParent(parent);
+        sibling.internalDetach(null, parent);
         CoreChildNode nextSibling = coreGetNextSibling();
         sibling.previousSibling = this;
         if (nextSibling == null) {
@@ -142,8 +141,7 @@ public aspect CoreChildNodeSupport {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        sibling.coreDetach(null);
-        sibling.internalSetParent(parent);
+        sibling.internalDetach(null, parent);
         sibling.nextSibling = this;
         if (previousSibling == null) {
             parent.firstChild = sibling;
@@ -180,10 +178,15 @@ public aspect CoreChildNodeSupport {
     
     void CoreChildNode.beforeDetach() {}
     
-    public final void CoreChildNode.coreDetach(CoreDocument newOwnerDocument) {
+    public final void CoreChildNode.coreDetach(DetachPolicy detachPolicy) {
+        internalDetach(detachPolicy, null);
+    }
+    
+    final void CoreChildNode.internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             beforeDetach();
+            CoreDocument newOwnerDocument = newParent != null ? null : detachPolicy.getNewOwnerDocument(this);
             if (previousSibling == null) {
                 parent.firstChild = nextSibling;
             } else {
@@ -196,8 +199,12 @@ public aspect CoreChildNodeSupport {
             }
             previousSibling = null;
             nextSibling = null;
-            // TODO: what if parent == null? shouldn't we always set the new owner document?
-            internalUnsetParent(newOwnerDocument);
+            if (newParent == null) {
+                internalUnsetParent(newOwnerDocument);
+            }
+        }
+        if (newParent != null) {
+            internalSetParent(newParent);
         }
     }
 }

@@ -20,7 +20,9 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeMigrationPolicy;
@@ -79,6 +81,12 @@ public final class Policies {
     public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             return isForeignDocument ? Action.REJECT : Action.MOVE;
+        }
+    };
+    
+    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
+        public CoreDocument getNewOwnerDocument(CoreChildNode node) {
+            return node.coreGetOwnerDocument(true);
         }
     };
 }

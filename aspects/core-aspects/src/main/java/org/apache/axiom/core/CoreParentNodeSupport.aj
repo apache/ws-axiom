@@ -98,8 +98,7 @@ public aspect CoreParentNodeSupport {
             // We don't need to detach and re-add it.
             return;
         }
-        child.coreDetach(null);
-        child.internalSetParent(this);
+        child.internalDetach(null, this);
         if (firstChild == null) {
             firstChild = child;
         } else {

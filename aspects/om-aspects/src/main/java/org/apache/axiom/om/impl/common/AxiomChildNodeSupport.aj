@@ -58,7 +58,7 @@ public aspect AxiomChildNodeSupport {
             throw new OMException(
                     "Nodes that don't have a parent can not be detached");
         }
-        coreDetach(null);
+        coreDetach(Policies.DETACH_POLICY);
         return this;
     }
     

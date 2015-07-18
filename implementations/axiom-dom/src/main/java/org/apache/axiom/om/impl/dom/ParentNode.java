@@ -24,6 +24,7 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.dom.DOMParentNode;
+import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.DOMException;
@@ -114,7 +115,7 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
         }
         checkNewChild(newChild, _oldChild);
         CoreChildNode nextSibling = oldChild.coreGetNextSibling();
-        oldChild.coreDetach(coreGetOwnerDocument(true));
+        oldChild.coreDetach(Policies.DETACH_POLICY);
         if (newChild instanceof CoreChildNode) {
             if (nextSibling == null) {
                 coreAppendChild((CoreChildNode)newChild, false);
