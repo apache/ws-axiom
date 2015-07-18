@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.DOMException;
@@ -29,7 +28,7 @@ import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public abstract class AttrImpl extends RootNode implements DOMAttribute, NonDeferringParentNode {
+public abstract class AttrImpl extends RootNode implements DOMAttribute {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 

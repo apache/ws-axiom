@@ -85,4 +85,8 @@ public aspect DOMLeafNodeSupport {
     public final String DOMLeafNode.getTextContent() {
         return getNodeValue();
     }
+
+    public final void DOMLeafNode.setTextContent(String textContent) {
+        setNodeValue(textContent);
+    }
 }

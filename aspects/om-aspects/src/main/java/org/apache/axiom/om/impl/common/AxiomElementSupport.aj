@@ -188,11 +188,7 @@ public aspect AxiomElementSupport {
     
     // Not final because overridden in Abdera
     public void AxiomElement.setText(String text) {
-        removeChildren();
-        // Add a new text node
-        if (text != null && text.length() > 0) {
-            getOMFactory().createOMText(this, text);
-        }
+        coreSetTextContent(text, Policies.DETACH_POLICY);
     }
 
     public final void AxiomElement.setText(QName qname) {

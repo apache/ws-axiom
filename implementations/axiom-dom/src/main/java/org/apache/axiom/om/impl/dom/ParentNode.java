@@ -163,13 +163,4 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     }
     
     abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
-
-    public void setTextContent(String textContent) throws DOMException {
-        // get rid of any existing children
-        coreRemoveChildren(Policies.DETACH_POLICY);
-        // create a Text node to hold the given content
-        if (textContent != null && textContent.length() != 0) {
-            coreAppendChild((CoreChildNode)getOMFactory().createOMText(textContent), false);
-        }
-    }
 }

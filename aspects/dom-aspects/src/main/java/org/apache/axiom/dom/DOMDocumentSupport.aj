@@ -68,8 +68,12 @@ public aspect DOMDocumentSupport {
         return null;
     }
 
-    public final String DOMDocument.getTextContent() throws DOMException {
+    public final String DOMDocument.getTextContent() {
         return null;
+    }
+
+    public final void DOMDocument.setTextContent(String textContent) {
+        // no-op
     }
 
     public final Element DOMDocument.getDocumentElement() {

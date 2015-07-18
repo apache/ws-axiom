@@ -189,4 +189,8 @@ public aspect DOMElementSupport {
     public final String DOMElement.getTextContent() {
         return coreGetTextContent(ElementAction.RECURSE);
     }
+
+    public final void DOMElement.setTextContent(String textContent) {
+        coreSetTextContent(textContent, Policies.DETACH_POLICY);
+    }
 }

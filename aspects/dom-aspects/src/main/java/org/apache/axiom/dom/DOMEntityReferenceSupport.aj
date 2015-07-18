@@ -55,7 +55,11 @@ public aspect DOMEntityReferenceSupport {
         return null;
     }
 
-    public final String DOMEntityReference.getTextContent() throws DOMException {
+    public final String DOMEntityReference.getTextContent() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final void DOMEntityReference.setTextContent(String textContent) {
         throw new UnsupportedOperationException();
     }
 }

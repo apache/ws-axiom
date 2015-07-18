@@ -88,10 +88,6 @@ public abstract class NodeImpl implements DOMNode {
         throw newDOMException(DOMException.NOT_SUPPORTED_ERR);
     }
 
-    public void setTextContent(String textContent) throws DOMException {
-        setNodeValue(textContent);  // overriden in some subclasses
-    }
-
     public boolean isSameNode(Node node) {
         // TODO : check
         return this == node;

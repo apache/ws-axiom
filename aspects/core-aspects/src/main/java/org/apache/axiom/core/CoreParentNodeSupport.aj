@@ -228,4 +228,13 @@ public aspect CoreParentNodeSupport {
             return textContent;
         }
     }
+    
+    public final void CoreParentNode.coreSetTextContent(String text, DetachPolicy detachPolicy) {
+        coreRemoveChildren(detachPolicy);
+        if (text != null && text.length() > 0) {
+            CoreCharacterData cdata = coreGetNodeFactory().createCharacterData();
+            cdata.coreSetData(text);
+            coreAppendChild(cdata, false);
+        }
+    }
 }

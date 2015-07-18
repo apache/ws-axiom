@@ -19,8 +19,9 @@
 package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.NonDeferringParentNode;
 import org.w3c.dom.Attr;
 
-public interface DOMAttribute extends Attr, CoreAttribute {
+public interface DOMAttribute extends Attr, CoreAttribute, NonDeferringParentNode {
 
 }
