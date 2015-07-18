@@ -31,15 +31,6 @@ public class FOMProcessingInstruction extends OMProcessingInstructionImpl implem
         super(parent, target, value, factory, fromBuilder);
     }
 
-    public String getText() {
-        return getValue();
-    }
-
-    public <T extends ProcessingInstruction> T setText(String text) {
-        setValue(text);
-        return (T)this;
-    }
-
     public String toString() {
         java.io.CharArrayWriter w = new java.io.CharArrayWriter();
         try {
@@ -48,9 +39,4 @@ public class FOMProcessingInstruction extends OMProcessingInstructionImpl implem
         }
         return w.toString();
     }
-
-    public void setTarget(String target) {
-        super.setTarget(target);
-    }
-
 }

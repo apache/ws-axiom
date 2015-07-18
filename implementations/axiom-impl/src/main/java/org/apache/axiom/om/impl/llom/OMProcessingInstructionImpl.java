@@ -23,74 +23,17 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 public class OMProcessingInstructionImpl extends OMLeafNode implements AxiomProcessingInstruction {
-    protected String target;
-    protected String value;
-
-    /**
-     * Constructor OMProcessingInstructionImpl.
-     *
-     * @param parentNode
-     * @param target
-     * @param value
-     */
     public OMProcessingInstructionImpl(OMContainer parentNode, String target,
                                        String value, OMFactory factory, boolean fromBuilder) {
         super(parentNode, factory, fromBuilder);
-        this.target = target;
-        this.value = value;
-    }
-
-    public final int getType() {
-        return OMNode.PI_NODE;
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeProcessingInstruction(this.target + " ", this.value);
-    }
-
-    /**
-     * Gets the value of this Processing Instruction.
-     *
-     * @return string
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * Sets the target of this Processing Instruction.
-     *
-     * @param target
-     */
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    /**
-     * Gets the target of this Processing Instruction.
-     *
-     * @return Returns String.
-     */
-    public String getTarget() {
-        return target;
-    }
-
-    /**
-     * Sets the value of this Processing Instruction.
-     *
-     * @param text
-     */
-    public void setValue(String text) {
-        this.value = text;
+        coreSetTarget(target);
+        coreSetValue(value);
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return getOMFactory().createOMProcessingInstruction(targetParent, target, value);
+        return getOMFactory().createOMProcessingInstruction(targetParent, coreGetTarget(), coreGetValue());
     }
 }

@@ -16,21 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.dom;
 
-package org.apache.axiom.om.impl.dom;
-
-import org.apache.axiom.dom.DOMProcessingInstruction;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
-
-public class ProcessingInstructionImpl extends LeafNode implements DOMProcessingInstruction, AxiomProcessingInstruction {
-    public ProcessingInstructionImpl(String target, String value, OMFactory factory) {
-        super(factory);
-        coreSetTarget(target);
-        coreSetValue(value);
+public aspect DOMProcessingInstructionSupport {
+    public final short DOMProcessingInstruction.getNodeType() {
+        return PROCESSING_INSTRUCTION_NODE;
     }
 
-    ChildNode createClone() {
-        return new ProcessingInstructionImpl(coreGetTarget(), coreGetValue(), getOMFactory());
+    public final String DOMProcessingInstruction.getData() {
+        return coreGetValue();
+    }
+    
+    public final void DOMProcessingInstruction.setData(String data) {
+        coreSetValue(data);
+    }
+    
+    public final String DOMProcessingInstruction.getNodeName() {
+        return coreGetTarget();
+    }
+
+    public final String DOMProcessingInstruction.getNodeValue() {
+        return coreGetValue();
+    }
+
+    public final void DOMProcessingInstruction.setNodeValue(String nodeValue) {
+        coreSetValue(nodeValue);
     }
 }

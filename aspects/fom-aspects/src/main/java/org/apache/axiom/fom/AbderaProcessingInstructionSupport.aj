@@ -16,21 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.fom;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.abdera.model.ProcessingInstruction;
 
-import org.apache.axiom.dom.DOMProcessingInstruction;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
-
-public class ProcessingInstructionImpl extends LeafNode implements DOMProcessingInstruction, AxiomProcessingInstruction {
-    public ProcessingInstructionImpl(String target, String value, OMFactory factory) {
-        super(factory);
-        coreSetTarget(target);
-        coreSetValue(value);
+public aspect AbderaProcessingInstructionSupport {
+    public final String AbderaProcessingInstruction.getText() {
+        return coreGetValue();
     }
 
-    ChildNode createClone() {
-        return new ProcessingInstructionImpl(coreGetTarget(), coreGetValue(), getOMFactory());
+    @SuppressWarnings("unchecked")
+    public final <T extends ProcessingInstruction> T AbderaProcessingInstruction.setText(String text) {
+        coreSetValue(text);
+        return (T)this;
     }
 }
