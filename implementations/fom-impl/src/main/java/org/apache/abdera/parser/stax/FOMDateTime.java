@@ -56,7 +56,6 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     }
 
     public DateTime setValue(AtomDate dateTime) {
-        complete();
         value = null;
         if (dateTime != null)
             ((Element)this).setText(dateTime.getValue());
@@ -66,7 +65,6 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     }
 
     public DateTime setDate(Date date) {
-        complete();
         value = null;
         if (date != null)
             ((Element)this).setText(AtomDate.valueOf(date).getValue());
@@ -76,7 +74,6 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     }
 
     public DateTime setCalendar(Calendar date) {
-        complete();
         value = null;
         if (date != null)
             ((Element)this).setText(AtomDate.valueOf(date).getValue());
@@ -86,14 +83,12 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     }
 
     public DateTime setTime(long date) {
-        complete();
         value = null;
         ((Element)this).setText(AtomDate.valueOf(date).getValue());
         return this;
     }
 
     public DateTime setString(String date) {
-        complete();
         value = null;
         if (date != null)
             ((Element)this).setText(AtomDate.valueOf(date).getValue());

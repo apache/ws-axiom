@@ -65,19 +65,16 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     }
 
     public Feed addEntry(Entry entry) {
-        complete();
         addChild((OMElement)entry);
         return this;
     }
 
     public Entry addEntry() {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         return fomfactory.newEntry(this);
     }
 
     public Feed insertEntry(Entry entry) {
-        complete();
         OMElement el = getFirstChildWithName(ENTRY);
         if (el == null) {
             addEntry(entry);
@@ -88,7 +85,6 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     }
 
     public Entry insertEntry() {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Entry entry = fomfactory.newEntry((Feed)null);
         insertEntry(entry);
@@ -125,19 +121,16 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     }
 
     public Feed sortEntriesByUpdated(boolean new_first) {
-        complete();
         sortEntries(new UpdatedComparator(new_first));
         return this;
     }
 
     public Feed sortEntriesByEdited(boolean new_first) {
-        complete();
         sortEntries(new EditedComparator(new_first));
         return this;
     }
 
     public Feed sortEntries(Comparator<Entry> comparator) {
-        complete();
         if (comparator == null)
             return this;
         List<Entry> entries = this.getEntries();

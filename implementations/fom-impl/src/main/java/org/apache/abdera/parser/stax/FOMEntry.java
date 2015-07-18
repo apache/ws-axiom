@@ -88,13 +88,11 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addAuthor(Person person) {
-        complete();
         addChild((OMElement)person);
         return this;
     }
 
     public Person addAuthor(String name) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newAuthor(this);
         person.setName(name);
@@ -102,7 +100,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Person addAuthor(String name, String email, String uri) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newAuthor(this);
         person.setName(name);
@@ -120,7 +117,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addCategory(Category category) {
-        complete();
         Element el = category.getParentElement();
         if (el != null && el instanceof Categories) {
             Categories cats = category.getParentElement();
@@ -137,7 +133,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Category addCategory(String term) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Category category = factory.newCategory(this);
         category.setTerm(term);
@@ -145,7 +140,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Category addCategory(String scheme, String term, String label) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Category category = factory.newCategory(this);
         category.setTerm(term);
@@ -159,7 +153,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setContentElement(Content content) {
-        complete();
         if (content != null) {
             _setChild(CONTENT, (OMElement)content);
         } else {
@@ -172,7 +165,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
      * Sets the content for this entry as @type="text"
      */
     public Content setContent(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Content content = factory.newContent();
         content.setValue(value);
@@ -340,13 +332,11 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addContributor(Person person) {
-        complete();
         addChild((OMElement)person);
         return this;
     }
 
     public Person addContributor(String name) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newContributor(this);
         person.setName(name);
@@ -354,7 +344,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Person addContributor(String name, String email, String uri) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newContributor(this);
         person.setName(name);
@@ -368,7 +357,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setIdElement(IRIElement id) {
-        complete();
         if (id != null)
             _setChild(ID, (OMElement)id);
         else
@@ -390,7 +378,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public IRIElement setId(String value, boolean normalize) {
-        complete();
         if (value == null) {
             _removeChildren(ID, false);
             return null;
@@ -423,18 +410,15 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addLink(Link link) {
-        complete();
         addChild((OMElement)link);
         return this;
     }
 
     public Link addLink(String href) {
-        complete();
         return addLink(href, null);
     }
 
     public Link addLink(String href, String rel) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Link link = fomfactory.newLink(this);
         link.setHref(href);
@@ -444,7 +428,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Link addLink(String href, String rel, String type, String title, String hreflang, long length) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Link link = fomfactory.newLink(this);
         link.setHref(href);
@@ -461,7 +444,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setPublishedElement(DateTime dateTime) {
-        complete();
         if (dateTime != null)
             _setChild(PUBLISHED, (OMElement)dateTime);
         else
@@ -475,7 +457,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     private DateTime setPublished(AtomDate value) {
-        complete();
         if (value == null) {
             _removeChildren(PUBLISHED, false);
             return null;
@@ -505,13 +486,11 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setRightsElement(Text text) {
-        complete();
         setTextElement(RIGHTS, text, false);
         return this;
     }
 
     public Text setRights(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Text text = factory.newRights();
         text.setValue(value);
@@ -552,7 +531,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setSource(Source source) {
-        complete();
         if (source != null) {
             if (source instanceof Feed)
                 source = ((Feed)source).getAsSource();
@@ -568,13 +546,11 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setSummaryElement(Text text) {
-        complete();
         setTextElement(SUMMARY, text, false);
         return this;
     }
 
     public Text setSummary(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Text text = factory.newSummary();
         text.setValue(value);
@@ -615,13 +591,11 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setTitleElement(Text title) {
-        complete();
         setTextElement(TITLE, title, false);
         return this;
     }
 
     public Text setTitle(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Text text = factory.newTitle();
         text.setValue(value);
@@ -662,7 +636,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setUpdatedElement(DateTime updated) {
-        complete();
         if (updated != null)
             _setChild(UPDATED, (OMElement)updated);
         else
@@ -676,7 +649,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     private DateTime setUpdated(AtomDate value) {
-        complete();
         if (value == null) {
             _removeChildren(UPDATED, false);
             return null;
@@ -709,7 +681,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public void setEditedElement(DateTime updated) {
-        complete();
         declareNamespace(APP_NS, "app");
         _removeChildren(PRE_RFC_EDITED, false);
         if (updated != null)
@@ -724,7 +695,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     private DateTime setEdited(AtomDate value) {
-        complete();
         declareNamespace(APP_NS, "app");
         if (value == null) {
             _removeChildren(PRE_RFC_EDITED, false);
@@ -768,7 +738,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setControl(Control control) {
-        complete();
         _removeChildren(PRE_RFC_CONTROL, true);
         if (control != null)
             _setChild(CONTROL, (OMElement)control);
@@ -895,7 +864,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setDraft(boolean draft) {
-        complete();
         Control control = getControl();
         if (control == null && draft) {
             control = ((FOMFactory)getOMFactory()).newControl(this);
@@ -914,7 +882,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Control addControl() {
-        complete();
         Control control = getControl();
         if (control == null) {
             control = ((FOMFactory)getOMFactory()).newControl(this);

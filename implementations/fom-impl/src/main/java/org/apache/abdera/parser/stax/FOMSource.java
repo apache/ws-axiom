@@ -77,13 +77,11 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addAuthor(Person person) {
-        complete();
         addChild((OMElement)person);
         return (T)this;
     }
 
     public Person addAuthor(String name) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newAuthor(this);
         person.setName(name);
@@ -91,7 +89,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Person addAuthor(String name, String email, String uri) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newAuthor(this);
         person.setName(name);
@@ -109,7 +106,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addCategory(Category category) {
-        complete();
         Element el = category.getParentElement();
         if (el != null && el instanceof Categories) {
             Categories cats = category.getParentElement();
@@ -126,7 +122,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Category addCategory(String term) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Category category = factory.newCategory(this);
         category.setTerm(term);
@@ -134,7 +129,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Category addCategory(String scheme, String term, String label) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Category category = factory.newCategory(this);
         category.setTerm(term);
@@ -148,13 +142,11 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addContributor(Person person) {
-        complete();
         addChild((OMElement)person);
         return (T)this;
     }
 
     public Person addContributor(String name) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newContributor(this);
         person.setName(name);
@@ -162,7 +154,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Person addContributor(String name, String email, String uri) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
         Person person = fomfactory.newContributor(this);
         person.setName(name);
@@ -176,7 +167,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setIdElement(IRIElement id) {
-        complete();
         if (id != null)
             _setChild(ID, (OMElement)id);
         else
@@ -190,7 +180,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement setId(String value) {
-        complete();
         return setId(value, false);
     }
 
@@ -199,7 +188,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement setId(String value, boolean normalize) {
-        complete();
         if (value == null) {
             _removeChildren(ID, false);
             return null;
@@ -232,7 +220,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addLink(Link link) {
-        complete();
         addChild((OMElement)link);
         return (T)this;
     }
@@ -242,7 +229,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Link addLink(String href, String rel) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Link link = fomfactory.newLink(this);
         link.setHref(href);
@@ -252,7 +238,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Link addLink(String href, String rel, String type, String title, String hreflang, long length) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Link link = fomfactory.newLink(this);
         link.setHref(href);
@@ -269,13 +254,11 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setRightsElement(Text text) {
-        complete();
         setTextElement(RIGHTS, text, false);
         return (T)this;
     }
 
     public Text setRights(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Text text = factory.newRights();
         text.setValue(value);
@@ -316,13 +299,11 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setSubtitleElement(Text text) {
-        complete();
         setTextElement(SUBTITLE, text, false);
         return (T)this;
     }
 
     public Text setSubtitle(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Text text = factory.newSubtitle();
         text.setValue(value);
@@ -363,13 +344,11 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setTitleElement(Text text) {
-        complete();
         setTextElement(TITLE, text, false);
         return (T)this;
     }
 
     public Text setTitle(String value) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Text text = factory.newTitle();
         text.setValue(value);
@@ -410,7 +389,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setUpdatedElement(DateTime updated) {
-        complete();
         if (updated != null)
             _setChild(UPDATED, (OMElement)updated);
         else
@@ -429,7 +407,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     private DateTime setUpdated(AtomDate value) {
-        complete();
         if (value == null) {
             _removeChildren(UPDATED, false);
             return null;
@@ -459,7 +436,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setGenerator(Generator generator) {
-        complete();
         if (generator != null)
             _setChild(GENERATOR, (OMElement)generator);
         else
@@ -468,7 +444,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Generator setGenerator(String uri, String version, String value) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Generator generator = fomfactory.newGenerator(this);
         if (uri != null)
@@ -485,7 +460,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setIconElement(IRIElement iri) {
-        complete();
         if (iri != null)
             _setChild(ICON, (OMElement)iri);
         else
@@ -494,7 +468,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement setIcon(String value) {
-        complete();
         if (value == null) {
             _removeChildren(ICON, false);
             return null;
@@ -516,7 +489,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setLogoElement(IRIElement iri) {
-        complete();
         if (iri != null)
             _setChild(LOGO, (OMElement)iri);
         else
@@ -525,7 +497,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement setLogo(String value) {
-        complete();
         if (value == null) {
             _removeChildren(LOGO, false);
             return null;
@@ -596,7 +567,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setCollection(Collection collection) {
-        complete();
         if (collection != null) {
             _removeChildren(PRE_RFC_COLLECTION, true);
             _setChild(COLLECTION, (OMElement)collection);

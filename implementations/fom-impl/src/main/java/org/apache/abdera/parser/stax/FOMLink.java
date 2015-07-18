@@ -60,7 +60,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public Link setHref(String href) {
-        complete();
         if (href != null)
             setAttributeValue(HREF, (new IRI(href)).toString());
         else
@@ -73,7 +72,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public Link setRel(String rel) {
-        complete();
         setAttributeValue(REL, rel);
         return this;
     }
@@ -88,12 +86,10 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public void setMimeType(MimeType type) {
-        complete();
         setAttributeValue(TYPE, (type != null) ? type.toString() : null);
     }
 
     public Link setMimeType(String type) {
-        complete();
         try {
             if (type != null)
                 setAttributeValue(TYPE, (new MimeType(type)).toString());
@@ -110,7 +106,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public Link setHrefLang(String lang) {
-        complete();
         if (lang != null)
             setAttributeValue(HREFLANG, lang);
         else
@@ -123,7 +118,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public Link setTitle(String title) {
-        complete();
         if (title != null)
             setAttributeValue(ATITLE, title);
         else
@@ -137,7 +131,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public Link setLength(long length) {
-        complete();
         if (length > -1)
             setAttributeValue(LENGTH, (length >= 0) ? String.valueOf(length) : "0");
         else
@@ -179,7 +172,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     }
 
     public void setValue(String value) {
-        complete();
         if (value != null)
             ((Element)this).setText(value);
         else

@@ -53,14 +53,12 @@ public class FOMControl extends FOMExtensibleElement implements AbderaControl {
     }
 
     public Control setDraft(boolean draft) {
-        complete();
         _removeChildren(PRE_RFC_DRAFT, true);
         _setElementValue(DRAFT, (draft) ? YES : NO);
         return this;
     }
 
     public Control unsetDraft() {
-        complete();
         _removeChildren(PRE_RFC_DRAFT, true);
         _removeChildren(DRAFT, true);
         return this;

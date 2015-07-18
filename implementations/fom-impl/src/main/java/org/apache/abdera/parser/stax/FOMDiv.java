@@ -66,7 +66,6 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public Div setId(String id) {
-        complete();
         if (id != null)
             setAttributeValue(AID, id);
         else
@@ -75,7 +74,6 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public Div setTitle(String title) {
-        complete();
         if (title != null)
             setAttributeValue(ATITLE, title);
         else
@@ -84,7 +82,6 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public Div setXhtmlClass(String[] classes) {
-        complete();
         if (classes != null) {
             StringBuilder val = new StringBuilder();
             for (String s : classes) {
@@ -103,7 +100,6 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public void setValue(String value) {
-        complete();
         _removeAllChildren();
         if (value != null) {
             IRI baseUri = null;

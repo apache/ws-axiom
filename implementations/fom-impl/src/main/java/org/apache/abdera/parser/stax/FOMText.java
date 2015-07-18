@@ -71,7 +71,6 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Text setTextType(Type type) {
-        complete();
         init(type);
         return this;
     }
@@ -81,7 +80,6 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Text setValueElement(Div value) {
-        complete();
         if (value != null) {
             if (this.getFirstChildWithName(Constants.DIV) != null)
                 this.getFirstChildWithName(Constants.DIV).discard();
@@ -112,7 +110,6 @@ public class FOMText extends FOMElement implements AbderaText {
 //    }
 
     public <T extends Element> T setText(Text.Type type, String value) {
-        complete();
         init(type);
         if (value != null) {
             OMNode child = this.getFirstOMChild();
@@ -129,7 +126,6 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Text setValue(String value) {
-        complete();
         if (value != null) {
             if (Type.TEXT.equals(type)) {
                 setText(type, value);
@@ -161,7 +157,6 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Text setWrappedValue(String wrappedValue) {
-        complete();
         if (Type.XHTML.equals(type)) {
             IRI baseUri = null;
             Element element = null;

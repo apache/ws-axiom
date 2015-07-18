@@ -50,7 +50,6 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setNameElement(Element element) {
-        complete();
         if (element != null)
             _setChild(NAME, (OMElement)element);
         else
@@ -59,7 +58,6 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Element setName(String name) {
-        complete();
         if (name != null) {
             FOMFactory fomfactory = (FOMFactory)getOMFactory();
             Element el = fomfactory.newName(null);
@@ -82,7 +80,6 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setEmailElement(Element element) {
-        complete();
         if (element != null)
             _setChild(EMAIL, (OMElement)element);
         else
@@ -91,7 +88,6 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Element setEmail(String email) {
-        complete();
         if (email != null) {
             FOMFactory fomfactory = (FOMFactory)getOMFactory();
             Element el = fomfactory.newEmail(null);
@@ -114,7 +110,6 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setUriElement(IRIElement uri) {
-        complete();
         if (uri != null)
             _setChild(URI, (OMElement)uri);
         else
@@ -123,7 +118,6 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public IRIElement setUri(String uri) {
-        complete();
         if (uri != null) {
             FOMFactory fomfactory = (FOMFactory)getOMFactory();
             IRIElement el = fomfactory.newUri(null);

@@ -85,7 +85,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setContentType(Type type) {
-        complete();
         init(type);
         return this;
     }
@@ -96,7 +95,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public <T extends Element> Content setValueElement(T value) {
-        complete();
         if (value != null) {
             if (this.getFirstElement() != null)
                 this.getFirstElement().discard();
@@ -139,7 +137,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setMimeType(String type) {
-        complete();
         try {
             if (type != null)
                 setAttributeValue(TYPE, (new MimeType(type)).toString());
@@ -160,7 +157,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setSrc(String src) {
-        complete();
         if (src != null)
             setAttributeValue(SRC, (new IRI(src)).toString());
         else
@@ -189,7 +185,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setDataHandler(DataHandler dataHandler) {
-        complete();
         if (!Type.MEDIA.equals(type))
             throw new IllegalArgumentException();
         if (dataHandler.getContentType() != null) {
@@ -224,7 +219,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public <T extends Element> T setText(Content.Type type, String value) {
-        complete();
         init(type);
         if (value != null) {
             OMNode child = this.getFirstOMChild();
@@ -246,7 +240,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 //    }
 
     public Content setValue(String value) {
-        complete();
         if (value != null)
             removeAttribute(SRC);
         if (value != null) {
@@ -306,7 +299,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setWrappedValue(String wrappedValue) {
-        complete();
         if (Type.XHTML.equals(type)) {
             IRI baseUri = null;
             Element element = null;

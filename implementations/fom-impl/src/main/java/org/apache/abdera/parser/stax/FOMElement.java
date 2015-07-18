@@ -213,7 +213,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     public <T extends Element> T setBaseUri(IRI base) {
-        complete();
         setAttributeValue(BASE, _getStringValue(base));
         return (T)this;
     }
@@ -356,7 +355,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     protected void _setElementValue(QName qname, String value) {
-        complete();
         OMElement element = this.getFirstChildWithName(qname);
         if (element != null && value != null) {
             element.setText(value);
@@ -385,7 +383,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     protected <T extends Text> void setTextElement(QName qname, T text, boolean many) {
-        complete();
         if (text != null) {
             _setChild(qname, (OMElement)text);
         } else
@@ -447,7 +444,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     public void setText(String text) {
-        complete();
         if (text != null) {
             OMNode child = this.getFirstOMChild();
             while (child != null) {
@@ -530,7 +526,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     protected void _removeChildren(QName qname, boolean many) {
-        complete();
         if (many) {
             for (Iterator i = getChildrenWithName(qname); i.hasNext();) {
                 OMElement element = (OMElement)i.next();
@@ -544,7 +539,6 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     protected void _removeAllChildren() {
-        complete();
         for (Iterator i = getChildren(); i.hasNext();) {
             OMNode node = (OMNode)i.next();
             node.discard();

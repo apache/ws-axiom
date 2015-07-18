@@ -71,7 +71,6 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends ExtensibleElement> T addExtension(Element extension) {
-        complete();
         if (extension instanceof ElementWrapper) {
             ElementWrapper wrapper = (ElementWrapper)extension;
             extension = wrapper.getInternal();
@@ -84,7 +83,6 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends Element> T addExtension(QName qname) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         String prefix = qname.getPrefix();
         declareIfNecessary(qname.getNamespaceURI(), prefix);
@@ -92,14 +90,12 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends Element> T addExtension(String namespace, String localpart, String prefix) {
-        complete();
         declareIfNecessary(namespace, prefix);
         return (prefix != null) ? (T)addExtension(new QName(namespace, localpart, prefix))
             : (T)addExtension(new QName(namespace, localpart, ""));
     }
 
     public Element addSimpleExtension(QName qname, String value) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Element el = fomfactory.newElement(qname, this);
         el.setText(value);
@@ -109,7 +105,6 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public Element addSimpleExtension(String namespace, String localPart, String prefix, String value) {
-        complete();
         declareIfNecessary(namespace, prefix);
         return addSimpleExtension((prefix != null) ? new QName(namespace, localPart, prefix) : new QName(namespace,
                                                                                                          localPart),
@@ -155,7 +150,6 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends ExtensibleElement> T addExtension(Element extension, Element before) {
-        complete();
         extension = getInternal(extension);
         before = getInternal(before);
         if (before instanceof ElementWrapper) {
@@ -171,7 +165,6 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends Element> T addExtension(QName qname, QName before) {
-        complete();
         OMElement el = getFirstChildWithName(before);
         T element = (T)getFactory().newElement(qname);
         if (el == null) {

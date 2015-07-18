@@ -47,7 +47,6 @@ public class FOMIRI extends FOMElement implements AbderaIRIElement {
     }
 
     public IRIElement setValue(String iri) {
-        complete();
         if (iri != null)
             ((Element)this).setText((new IRI(iri)).toString());
         else

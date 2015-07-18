@@ -51,7 +51,6 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
     }
 
     public Category setTerm(String term) {
-        complete();
         if (term != null)
             setAttributeValue(TERM, term);
         else
@@ -65,7 +64,6 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
     }
 
     public Category setScheme(String scheme) {
-        complete();
         if (scheme != null)
             setAttributeValue(SCHEME, new IRI(scheme).toString());
         else
@@ -78,7 +76,6 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
     }
 
     public Category setLabel(String label) {
-        complete();
         if (label != null)
             setAttributeValue(LABEL, label);
         else
@@ -91,7 +88,6 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
     }
 
     public void setValue(String value) {
-        complete();
         if (value != null)
             ((Element)this).setText(value);
         else

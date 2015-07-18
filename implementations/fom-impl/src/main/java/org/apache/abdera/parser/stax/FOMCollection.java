@@ -68,7 +68,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     private Text setTitle(String title, Text.Type type) {
-        complete();
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
         Text text = fomfactory.newText(PREFIXED_TITLE, type);
         text.setValue(title);
@@ -101,7 +100,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Collection setHref(String href) {
-        complete();
         if (href != null)
             setAttributeValue(HREF, (new IRI(href).toString()));
         else
@@ -134,7 +132,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Collection setAccept(String... mediaRanges) {
-        complete();
         if (mediaRanges != null && mediaRanges.length > 0) {
             _removeChildren(ACCEPT, true);
             _removeChildren(PRE_RFC_ACCEPT, true);
@@ -166,7 +163,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Collection addAccepts(String... mediaRanges) {
-        complete();
         if (mediaRanges != null) {
             for (String type : mediaRanges) {
                 if (!accepts(type)) {
@@ -216,18 +212,15 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Categories addCategories() {
-        complete();
         return ((FOMFactory)getOMFactory()).newCategories(this);
     }
 
     public Collection addCategories(Categories categories) {
-        complete();
         addChild((OMElement)categories);
         return this;
     }
 
     public Categories addCategories(String href) {
-        complete();
         Categories cats = ((FOMFactory)getOMFactory()).newCategories();
         cats.setHref(href);
         addCategories(cats);
@@ -235,7 +228,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Categories addCategories(List<Category> categories, boolean fixed, String scheme) {
-        complete();
         Categories cats = ((FOMFactory)getOMFactory()).newCategories();
         cats.setFixed(fixed);
         if (scheme != null)

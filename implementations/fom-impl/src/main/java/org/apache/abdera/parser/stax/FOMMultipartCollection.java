@@ -87,7 +87,6 @@ public class FOMMultipartCollection extends FOMCollection {
     }
 
     public Collection setAccept(Map<String, String> mediaRanges) {
-        complete();
         if (mediaRanges != null && mediaRanges.size() > 0) {
             _removeChildren(ACCEPT, true);
             _removeChildren(PRE_RFC_ACCEPT, true);
@@ -121,7 +120,6 @@ public class FOMMultipartCollection extends FOMCollection {
     }
 
     public Collection addAccepts(Map<String, String> mediaRanges) {
-        complete();
         if (mediaRanges != null) {
             for (Map.Entry<String, String> entry : mediaRanges.entrySet()) {
                 if (!accepts(entry.getKey())) {

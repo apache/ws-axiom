@@ -65,13 +65,11 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Categories addCategory(Category category) {
-        complete();
         addChild((OMElement)category);
         return this;
     }
 
     public Category addCategory(String term) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Category category = factory.newCategory(this);
         category.setTerm(term);
@@ -79,7 +77,6 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Category addCategory(String scheme, String term, String label) {
-        complete();
         FOMFactory factory = (FOMFactory)this.getOMFactory();
         Category category = factory.newCategory(this);
         category.setTerm(term);
@@ -128,7 +125,6 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Categories setFixed(boolean fixed) {
-        complete();
         if (fixed && !isFixed())
             setAttributeValue(FIXED, YES);
         else if (!fixed && isFixed())
@@ -137,7 +133,6 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Categories setScheme(String scheme) {
-        complete();
         if (scheme != null)
             setAttributeValue(SCHEME, new IRI(scheme).toString());
         else
@@ -154,7 +149,6 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Categories setHref(String href) {
-        complete();
         if (href != null)
             setAttributeValue(HREF, (new IRI(href)).toString());
         else
