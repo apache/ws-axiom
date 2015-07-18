@@ -222,10 +222,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 log.debug("forceExpand: expanding element " +
                         getPrintableName());
                 if(forceExpandLog.isDebugEnabled()){
-                	// When using an OMSourcedElement, it can be particularly difficult to
-                	// determine why an expand occurs... a stack trace should help debugging this
-                	Exception e = new Exception("Debug Stack Trace");
-                	forceExpandLog.debug("forceExpand stack", e);
+                    // When using an OMSourcedElement, it can be particularly difficult to
+                    // determine why an expand occurs... a stack trace should help debugging this
+                    Exception e = new Exception("Debug Stack Trace");
+                    forceExpandLog.debug("forceExpand stack", e);
                 }
             }
 
