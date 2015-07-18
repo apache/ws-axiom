@@ -186,7 +186,7 @@ public aspect CoreChildNodeSupport {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             beforeDetach();
-            CoreDocument newOwnerDocument = newParent != null ? null : detachPolicy.getNewOwnerDocument(this);
+            CoreDocument newOwnerDocument = newParent != null ? null : detachPolicy.getNewOwnerDocument(parent);
             if (previousSibling == null) {
                 parent.firstChild = nextSibling;
             } else {

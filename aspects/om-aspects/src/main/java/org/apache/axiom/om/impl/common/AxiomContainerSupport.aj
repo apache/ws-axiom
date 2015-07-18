@@ -175,7 +175,7 @@ public aspect AxiomContainerSupport {
     }
     
     public void AxiomContainer.removeChildren() {
-        coreRemoveChildren(null);
+        coreRemoveChildren(Policies.DETACH_POLICY);
     }
     
     public Iterator OMContainer.getChildren() {

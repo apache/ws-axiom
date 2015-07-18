@@ -174,7 +174,7 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     
     public void setTextContent(String textContent) throws DOMException {
         // get rid of any existing children
-        coreRemoveChildren(coreGetOwnerDocument(true));
+        coreRemoveChildren(Policies.DETACH_POLICY);
         // create a Text node to hold the given content
         if (textContent != null && textContent.length() != 0) {
             coreAppendChild((CoreChildNode)getOMFactory().createOMText(textContent), false);

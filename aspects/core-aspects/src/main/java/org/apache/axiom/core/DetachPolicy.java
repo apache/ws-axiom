@@ -23,13 +23,13 @@ package org.apache.axiom.core;
  */
 public interface DetachPolicy {
     /**
-     * Get the new owner document for the given child node. This method is called before the child
-     * node is detached.
+     * Get the new owner document for the child node (or group of child nodes) to be detached. This
+     * method is called before any child node is detached.
      * 
-     * @param node
-     *            the child node
+     * @param parent
+     *            the parent of the child node (or group of child nodes) to be detached
      * @return the new owner document or <code>null</code> to (lazily) create a new owner document
-     *         for the node
+     *         for each child node
      */
-    CoreDocument getNewOwnerDocument(CoreChildNode node);
+    CoreDocument getNewOwnerDocument(CoreParentNode parent);
 }

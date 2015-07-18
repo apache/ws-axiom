@@ -131,7 +131,7 @@ public aspect CoreParentNodeSupport {
         fragment.lastChild = null;
     }
 
-    public final void CoreParentNode.coreRemoveChildren(CoreDocument newOwnerDocument) {
+    public final void CoreParentNode.coreRemoveChildren(DetachPolicy detachPolicy) {
         // We need to call this first because if may modify the state (applies to OMSourcedElements)
         CoreChildNode child = coreGetFirstChildIfAvailable();
         boolean updateState;
@@ -144,12 +144,15 @@ public aspect CoreParentNodeSupport {
         } else {
             updateState = false;
         }
-        while (child != null) {
-            CoreChildNode nextSibling = child.nextSibling;
-            child.previousSibling = null;
-            child.nextSibling = null;
-            child.internalUnsetParent(newOwnerDocument);
-            child = nextSibling;
+        if (child != null) {
+            CoreDocument newOwnerDocument = detachPolicy.getNewOwnerDocument(this);
+            do {
+                CoreChildNode nextSibling = child.nextSibling;
+                child.previousSibling = null;
+                child.nextSibling = null;
+                child.internalUnsetParent(newOwnerDocument);
+                child = nextSibling;
+            } while (child != null);
         }
         firstChild = null;
         lastChild = null;
