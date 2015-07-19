@@ -16,11 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.shared;
 
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.shared.IProcessingInstruction;
+public aspect NSAwareNamedNodeSupport {
+    public final String INSAwareNamedNode.getLocalName() {
+        return coreGetLocalName();
+    }
 
-public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, IProcessingInstruction {
+    public final String INSAwareNamedNode.getNamespaceURI() {
+        String namespaceURI = coreGetNamespaceURI();
+        return namespaceURI.length() == 0 ? null : namespaceURI;
+    }
 
+    public final String INSAwareNamedNode.getPrefix() {
+        String prefix = coreGetPrefix();
+        return prefix.length() == 0 ? null : prefix;
+    }
 }

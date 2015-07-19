@@ -104,6 +104,10 @@
                             <groupId>${project.groupId}</groupId>
                             <artifactId>om-aspects</artifactId>
                         </aspectLibrary>
+                        <aspectLibrary>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>shared-aspects</artifactId>
+                        </aspectLibrary>
                     </aspectLibraries>
                 </configuration>
             </plugin>

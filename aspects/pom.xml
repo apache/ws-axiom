@@ -37,6 +37,7 @@
         <module>dom-aspects</module>
         <module>fom-aspects</module>
         <module>om-aspects</module>
+        <module>shared-aspects</module>
     </modules>
 
     <build>

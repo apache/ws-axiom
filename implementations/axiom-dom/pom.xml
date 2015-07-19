@@ -120,6 +120,10 @@
                             <groupId>${project.groupId}</groupId>
                             <artifactId>dom-aspects</artifactId>
                         </aspectLibrary>
+                        <aspectLibrary>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>shared-aspects</artifactId>
+                        </aspectLibrary>
                     </aspectLibraries>
                 </configuration>
             </plugin>

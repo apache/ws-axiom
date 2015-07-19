@@ -27,10 +27,6 @@ public aspect AxiomProcessingInstructionSupport {
         return PI_NODE;
     }
 
-    public final String AxiomProcessingInstruction.getTarget() {
-        return coreGetTarget();
-    }
-
     public final void AxiomProcessingInstruction.setTarget(String target) {
         coreSetTarget(target);
     }

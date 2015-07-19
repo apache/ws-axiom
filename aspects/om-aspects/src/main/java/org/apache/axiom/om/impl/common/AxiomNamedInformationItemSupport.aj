@@ -70,30 +70,6 @@ public aspect AxiomNamedInformationItemSupport {
         return namespace;
     }
 
-    public final String AxiomNamedInformationItem.getPrefix() {
-        OMNamespace namespace = getNamespace();
-        if (namespace == null) {
-            return null;
-        } else {
-            String prefix = namespace.getPrefix();
-            return prefix.length() == 0 ? null : prefix;
-        }
-    }
-    
-    public final String AxiomNamedInformationItem.getNamespaceURI() {
-        OMNamespace namespace = getNamespace();
-        if (namespace == null) {
-            return null;
-        } else {
-            String namespaceURI = namespace.getNamespaceURI();
-            return namespaceURI.length() == 0 ? null : namespaceURI;
-        }
-    }
-
-    public final String AxiomNamedInformationItem.getLocalName() {
-        return coreGetLocalName();
-    }
-
     abstract void AxiomNamedInformationItem.beforeSetLocalName();
     
     public final void AxiomNamedInformationItem.setLocalName(String localName) {

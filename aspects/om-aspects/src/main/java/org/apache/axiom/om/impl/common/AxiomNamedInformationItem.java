@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.shared.INSAwareNamedNode;
 
-public interface AxiomNamedInformationItem extends OMNamedInformationItem, AxiomInformationItem, CoreNSAwareNamedNode {
+public interface AxiomNamedInformationItem extends OMNamedInformationItem, AxiomInformationItem, INSAwareNamedNode {
 
 }
