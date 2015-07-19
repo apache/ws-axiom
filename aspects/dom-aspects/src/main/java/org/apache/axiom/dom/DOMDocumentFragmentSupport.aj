@@ -22,10 +22,15 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 public aspect DOMDocumentFragmentSupport {
+    public final Document DOMDocumentFragment.getOwnerDocument() {
+        return (Document)coreGetOwnerDocument(true);
+    }
+
     public final short DOMDocumentFragment.getNodeType() {
         return Node.DOCUMENT_FRAGMENT_NODE;
     }

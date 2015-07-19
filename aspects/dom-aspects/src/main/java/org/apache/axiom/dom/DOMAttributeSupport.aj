@@ -20,10 +20,15 @@ package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 public aspect DOMAttributeSupport {
+    public final Document DOMAttribute.getOwnerDocument() {
+        return (Document)coreGetOwnerDocument(true);
+    }
+
     public final short DOMAttribute.getNodeType() {
         return Node.ATTRIBUTE_NODE;
     }

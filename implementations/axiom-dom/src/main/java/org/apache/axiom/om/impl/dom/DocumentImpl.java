@@ -73,10 +73,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         super(factory);
     }
 
-    public Document getOwnerDocument() {
-        return null;
-    }
-
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
     }

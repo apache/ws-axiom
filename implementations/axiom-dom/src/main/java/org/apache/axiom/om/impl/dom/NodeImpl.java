@@ -333,10 +333,6 @@ public abstract class NodeImpl implements DOMNode {
         }
     }
     
-    public Document getOwnerDocument() {
-        return ownerDocument();
-    }
-
     ParentNode parentNode() {
         // TODO: get rid of this
         if (this instanceof CoreChildNode) {
@@ -349,15 +345,6 @@ public abstract class NodeImpl implements DOMNode {
     // /
     // /OMNode methods
     // /
-
-    protected void setParent(ParentNode parent) {
-        // TODO: this is not OO; clean up this mess
-        if (parent == null) {
-            ((CoreChildNode)this).internalUnsetParent(ownerDocument());
-        } else {
-            ((CoreChildNode)this).internalSetParent(parent);
-        }
-    }
 
     public abstract OMXMLParserWrapper getBuilder();
     

@@ -22,9 +22,14 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 
 public aspect DOMEntityReferenceSupport {
+    public final Document DOMEntityReference.getOwnerDocument() {
+        return (Document)coreGetOwnerDocument(true);
+    }
+
     public final String DOMEntityReference.getNodeValue() {
         return null;
     }

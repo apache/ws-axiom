@@ -68,9 +68,6 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
                     // Throw exception since there cannot be two document elements
                     throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
-                if (newDomChild.parentNode() == null) {
-                    newDomChild.setParent(this);
-                }
             } else if (!(newDomChild instanceof CommentImpl
                     || newDomChild instanceof ProcessingInstructionImpl
                     || newDomChild instanceof DocumentFragmentImpl

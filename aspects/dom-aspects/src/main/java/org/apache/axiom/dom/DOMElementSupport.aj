@@ -27,11 +27,16 @@ import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
 public aspect DOMElementSupport {
+    public final Document DOMElement.getOwnerDocument() {
+        return (Document)coreGetOwnerDocument(true);
+    }
+
     public final short DOMElement.getNodeType() {
         return Node.ELEMENT_NODE;
     }
