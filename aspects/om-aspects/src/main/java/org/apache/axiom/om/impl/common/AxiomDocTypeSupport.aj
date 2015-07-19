@@ -16,21 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.common;
 
-package org.apache.axiom.om.impl.llom;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.AxiomDocType;
-
-public class OMDocTypeImpl extends OMLeafNode implements AxiomDocType {
-    public OMDocTypeImpl(OMFactory factory) {
-        super(factory);
+public aspect AxiomDocTypeSupport {
+    public final int AxiomDocType.getType() {
+        return DTD_NODE;
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return getOMFactory().createOMDocType(targetParent, coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
+    public final String AxiomDocType.getRootName() {
+        return coreGetRootName();
+    }
+
+    public final void AxiomDocType.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        serializer.writeDTD(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 }

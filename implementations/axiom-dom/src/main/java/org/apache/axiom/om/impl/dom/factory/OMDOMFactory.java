@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.dom.factory;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
@@ -211,20 +212,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return new NSAwareAttribute(null, localName, ns, value, this);
     }
 
-    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
-            String systemId, String internalSubset) {
-        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
-    }
-
-    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
-            String systemId, String internalSubset, boolean fromBuilder) {
-        DocumentTypeImpl docType = new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, this);
-        if (parent != null) {
-            ((OMContainerEx)parent).addChild(docType, fromBuilder);
-        }
-        return docType;
-    }
-
     public OMComment createOMComment(OMContainer parent, String content) {
         return createOMComment(parent, content, false);
     }
@@ -309,6 +296,10 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public final CoreDocument createDocument() {
         return new DocumentImpl(this);
+    }
+
+    public final CoreDocumentTypeDeclaration createDocumentTypeDeclaration() {
+        return new DocumentTypeImpl(this);
     }
 
     public final CoreCharacterData createCharacterData() {

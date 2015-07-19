@@ -16,21 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.shared;
 
-package org.apache.axiom.om.impl.llom;
-
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.AxiomDocType;
-
-public class OMDocTypeImpl extends OMLeafNode implements AxiomDocType {
-    public OMDocTypeImpl(OMFactory factory) {
-        super(factory);
+public aspect DocumentTypeDeclarationSupport {
+    public final String IDocumentTypeDeclaration.getPublicId() {
+        return coreGetPublicId();
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return getOMFactory().createOMDocType(targetParent, coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
+    public final String IDocumentTypeDeclaration.getSystemId() {
+        return coreGetSystemId();
+    }
+
+    public final String IDocumentTypeDeclaration.getInternalSubset() {
+        return coreGetInternalSubset();
     }
 }

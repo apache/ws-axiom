@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -32,6 +33,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterData;
+import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
@@ -47,6 +49,24 @@ public aspect AxiomNodeFactorySupport {
         document.coreSetBuilder(builder);
         document.coreSetState(CoreParentNode.INCOMPLETE);
         return document;
+    }
+
+    public final OMDocType AxiomNodeFactory.createOMDocType(OMContainer parent, String rootName,
+            String publicId, String systemId, String internalSubset) {
+        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
+    }
+
+    public final OMDocType AxiomNodeFactory.createOMDocType(OMContainer parent, String rootName,
+            String publicId, String systemId, String internalSubset, boolean fromBuilder) {
+        AxiomDocType node = (AxiomDocType)createDocumentTypeDeclaration();
+        node.coreSetRootName(rootName);
+        node.coreSetPublicId(publicId);
+        node.coreSetSystemId(systemId);
+        node.coreSetInternalSubset(internalSubset);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(node, fromBuilder);
+        }
+        return node;
     }
 
     public void AxiomNodeFactory.validateOMTextParent(OMContainer parent) {

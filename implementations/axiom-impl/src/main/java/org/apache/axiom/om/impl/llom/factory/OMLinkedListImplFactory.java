@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.llom.factory;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterData;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
@@ -216,16 +217,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return new OMAttributeImpl(localName, ns, value, this);
     }
 
-    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
-            String systemId, String internalSubset) {
-        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
-    }
-
-    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
-            String systemId, String internalSubset, boolean fromBuilder) {
-        return new OMDocTypeImpl(parent, rootName, publicId, systemId, internalSubset, this, fromBuilder);
-    }
-
     /**
      * Creates a comment.
      *
@@ -307,6 +298,10 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
 
     public CoreDocument createDocument() {
         return new OMDocumentImpl(this);
+    }
+
+    public CoreDocumentTypeDeclaration createDocumentTypeDeclaration() {
+        return new OMDocTypeImpl(this);
     }
 
     public CoreCharacterData createCharacterData() {

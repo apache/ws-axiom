@@ -21,72 +21,14 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMDocumentType;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomDocType;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.w3c.dom.NamedNodeMap;
 
 public class DocumentTypeImpl extends LeafNode implements DOMDocumentType, AxiomDocType {
-    private final String rootName;
-    private final String publicId;
-    private final String systemId;
-    private final String internalSubset;
-    
-    public DocumentTypeImpl(String rootName, String publicId, String systemId,
-            String internalSubset, OMFactory factory) {
+    public DocumentTypeImpl(OMFactory factory) {
         super(factory);
-        this.rootName = rootName;
-        this.publicId = publicId;
-        this.systemId = systemId;
-        this.internalSubset = internalSubset;
-    }
-
-    public String getNodeName() {
-        return getName();
-    }
-
-    public short getNodeType() {
-        return DOCUMENT_TYPE_NODE;
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeDTD(rootName, publicId, systemId, internalSubset);
-    }
-
-    public int getType() {
-        return DTD_NODE;
-    }
-
-    public NamedNodeMap getEntities() {
-        throw new UnsupportedOperationException();
-    }
-
-    public String getInternalSubset() {
-        return internalSubset;
-    }
-
-    public String getName() {
-        return rootName;
-    }
-
-    public String getRootName() {
-        return rootName;
-    }
-
-    public NamedNodeMap getNotations() {
-        throw new UnsupportedOperationException();
-    }
-
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public String getSystemId() {
-        return systemId;
     }
 
     ChildNode createClone() {
-        return new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, getOMFactory());
+        return (ChildNode)getOMFactory().createOMDocType(null, coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 }

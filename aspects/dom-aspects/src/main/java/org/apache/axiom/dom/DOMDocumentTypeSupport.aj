@@ -18,11 +18,33 @@
  */
 package org.apache.axiom.dom;
 
+import org.w3c.dom.NamedNodeMap;
+
 public aspect DOMDocumentTypeSupport {
+    public final short DOMDocumentType.getNodeType() {
+        return DOCUMENT_TYPE_NODE;
+    }
+
+    public final String DOMDocumentType.getNodeName() {
+        return getName();
+    }
+
     public final String DOMDocumentType.getNodeValue() {
         return null;
     }
 
     public final void DOMDocumentType.setNodeValue(String nodeValue) {
+    }
+
+    public final String DOMDocumentType.getName() {
+        return coreGetRootName();
+    }
+
+    public final NamedNodeMap DOMDocumentType.getEntities() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final NamedNodeMap DOMDocumentType.getNotations() {
+        throw new UnsupportedOperationException();
     }
 }
