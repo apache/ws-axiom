@@ -52,4 +52,15 @@ public aspect DOMNodeSupport {
             return prefix == null || prefix.length() == 0 ? null : prefix;
         }
     }
+
+    public final boolean DOMNode.isDefaultNamespace(String namespaceURI) {
+        CoreElement context = getNamespaceContext();
+        if (context == null) {
+            return false;
+        }
+        if (namespaceURI == null) {
+            namespaceURI = "";
+        }
+        return namespaceURI.equals(context.coreLookupNamespaceURI("", false));
+    }
 }

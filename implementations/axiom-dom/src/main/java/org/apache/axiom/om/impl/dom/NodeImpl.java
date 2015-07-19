@@ -93,11 +93,6 @@ public abstract class NodeImpl implements DOMNode {
         return this == node;
     }
 
-    public boolean isDefaultNamespace(String namespaceURI) {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
     /**
      * Tests whether two nodes are equal. <br>This method tests for equality of nodes, not sameness
      * (i.e., whether the two nodes are references to the same object) which can be tested with
