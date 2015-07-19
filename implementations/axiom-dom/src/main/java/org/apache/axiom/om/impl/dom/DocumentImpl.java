@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -41,15 +40,12 @@ import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.ProcessingInstruction;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -157,10 +153,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
         //If we reach this point then, there's no such attr 
         return null;
-    }
-
-    public DOMImplementation getImplementation() {
-        return ((DOMMetaFactory)getOMFactory().getMetaFactory()).getDOMImplementation();
     }
 
     public Node importNode(Node importedNode, boolean deep) throws DOMException {

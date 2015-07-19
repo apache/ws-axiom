@@ -25,6 +25,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -88,6 +89,10 @@ public aspect DOMDocumentSupport {
     
     public final CoreElement DOMDocument.getNamespaceContext() {
         return coreGetDocumentElement();
+    }
+
+    public final DOMImplementation DOMDocument.getImplementation() {
+        return (DOMNodeFactory)coreGetNodeFactory();
     }
 
     public final DOMConfiguration DOMDocument.getDomConfig() {

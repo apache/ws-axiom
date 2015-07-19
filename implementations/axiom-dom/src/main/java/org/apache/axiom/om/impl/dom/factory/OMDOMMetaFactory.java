@@ -22,13 +22,10 @@ package org.apache.axiom.om.impl.dom.factory;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
-import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
@@ -43,10 +40,9 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
     // Since that method is deprecated, this singleton should disappear in Axiom 1.3.
     public static final OMDOMMetaFactory INSTANCE = new OMDOMMetaFactory();
     
-    private final OMFactory omFactory = new OMDOMFactory(this);
+    private final OMDOMFactory omFactory = new OMDOMFactory(this);
     private final SOAPFactory soap11Factory = new SOAP11Factory(this);
     private final SOAPFactory soap12Factory = new SOAP12Factory(this);
-    private final DOMImplementation domImplementation = new DOMImplementationImpl(omFactory);
     
     public OMFactory getOMFactory() {
         return omFactory;
@@ -69,6 +65,6 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
     }
 
     public DOMImplementation getDOMImplementation() {
-        return domImplementation;
+        return omFactory;
     }
 }

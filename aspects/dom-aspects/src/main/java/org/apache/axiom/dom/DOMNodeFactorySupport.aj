@@ -16,36 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.dom;
 
-package org.apache.axiom.om.impl.dom;
-
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 
-public class DOMImplementationImpl implements DOMImplementation {
-    private final OMFactory factory;
-    
-    public DOMImplementationImpl(OMFactory factory) {
-        this.factory = factory;
-    }
-
-    public boolean hasFeature(String feature, String version) {
+public aspect DOMNodeFactorySupport {
+    public boolean DOMNodeFactory.hasFeature(String feature, String version) {
         boolean anyVersion = version == null || version.length() == 0;
         return (feature.equalsIgnoreCase("Core") || feature.equalsIgnoreCase("XML"))
                 && (anyVersion || version.equals("1.0") || version.equals("2.0"));
     }
 
-    public Document createDocument(String namespaceURI, String qualifiedName,
+    public Document DOMNodeFactory.createDocument(String namespaceURI, String qualifiedName,
                                    DocumentType doctype) throws DOMException {
 
         // TODO Handle docType stuff
-        DocumentImpl doc = new DocumentImpl(factory);
+        Document doc = (Document)createDocument();
 
         Element element = doc.createElementNS(namespaceURI, qualifiedName);
         doc.appendChild(element);
@@ -53,7 +42,7 @@ public class DOMImplementationImpl implements DOMImplementation {
         return doc;
     }
 
-    public DocumentType createDocumentType(String qualifiedName,
+    public DocumentType DOMNodeFactory.createDocumentType(String qualifiedName,
                                            String publicId, String systemId) throws DOMException {
         // TODO
         throw new UnsupportedOperationException("TODO");
@@ -63,7 +52,7 @@ public class DOMImplementationImpl implements DOMImplementation {
      * DOM-Level 3 methods
      */
 
-    public Object getFeature(String feature, String version) {
+    public Object DOMNodeFactory.getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

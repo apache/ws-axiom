@@ -26,6 +26,7 @@ import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
+import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -69,7 +70,7 @@ import javax.xml.namespace.QName;
  * OM factory implementation for DOOM. It creates nodes that implement
  * DOM as defined by the interfaces in {@link org.w3c.dom}.
  */
-public class OMDOMFactory implements AxiomNodeFactory {
+public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
     private final OMDOMMetaFactory metaFactory;
 
     public OMDOMFactory(OMDOMMetaFactory metaFactory) {
