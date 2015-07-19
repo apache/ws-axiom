@@ -67,11 +67,6 @@ public abstract class NodeImpl implements DOMNode {
         return clone;
     }
 
-    public boolean isSupported(String feature, String version) {
-        throw new UnsupportedOperationException();
-        // TODO
-    }
-
     /*
      * DOM-Level 3 methods
      */

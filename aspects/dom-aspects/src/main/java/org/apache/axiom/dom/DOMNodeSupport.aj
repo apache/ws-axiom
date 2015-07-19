@@ -26,6 +26,10 @@ public aspect DOMNodeSupport {
         // Default: do nothing
     }
 
+    public final boolean DOMNode.isSupported(String feature, String version) {
+        return ((DOMNodeFactory)coreGetNodeFactory()).hasFeature(feature, version);
+    }
+    
     public final String DOMNode.lookupNamespaceURI(String prefix) {
         CoreElement context = getNamespaceContext();
         if (context == null) {
