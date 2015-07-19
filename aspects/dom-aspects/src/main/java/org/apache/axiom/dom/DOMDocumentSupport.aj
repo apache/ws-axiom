@@ -20,6 +20,7 @@ package org.apache.axiom.dom;
 
 import javax.xml.XMLConstants;
 
+import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.DOMConfiguration;
@@ -80,16 +81,8 @@ public aspect DOMDocumentSupport {
         return (Element)coreGetDocumentElement();
     }
     
-    public final String DOMDocument.lookupNamespaceURI(String specifiedPrefix) {
-        Element documentElement = getDocumentElement();
-        return documentElement == null ? null
-                : documentElement.lookupNamespaceURI(specifiedPrefix);
-    }
-    
-    public final String DOMDocument.lookupPrefix(String namespaceURI) {
-        Element documentElement = getDocumentElement();
-        return documentElement == null ? null
-                : getDocumentElement().lookupPrefix(namespaceURI);
+    public final CoreElement DOMDocument.getNamespaceContext() {
+        return coreGetDocumentElement();
     }
 
     public final DOMConfiguration DOMDocument.getDomConfig() {

@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomChildNode;
-import org.w3c.dom.Element;
 
 public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomChildNode {
     public ChildNode(OMFactory factory) {
@@ -66,18 +65,5 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomC
 
     public final void build() {
         // Do nothing; a leaf node is always complete
-    }
-
-    public final String lookupNamespaceURI(String specifiedPrefix) {
-        ParentNode parent = (ParentNode)coreGetParent();
-        // Note: according to the DOM specs, we need to delegate the lookup if the parent
-        // is an element or an entity reference. However, since we don't support entity
-        // references fully, we only check for elements.
-        return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
-    }
-    
-    public final String lookupPrefix(String namespaceURI) {
-        ParentNode parent = (ParentNode)coreGetParent();
-        return parent instanceof Element ? parent.lookupPrefix(namespaceURI) : null;
     }
 }

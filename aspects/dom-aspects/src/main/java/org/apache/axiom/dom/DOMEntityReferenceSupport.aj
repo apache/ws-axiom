@@ -20,6 +20,7 @@ package org.apache.axiom.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 
@@ -61,5 +62,9 @@ public aspect DOMEntityReferenceSupport {
 
     public final void DOMEntityReference.setTextContent(String textContent) {
         throw new UnsupportedOperationException();
+    }
+    
+    public final CoreElement DOMEntityReference.getNamespaceContext() {
+        return coreGetParentElement();
     }
 }

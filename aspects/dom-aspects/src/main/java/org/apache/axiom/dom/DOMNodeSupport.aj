@@ -18,9 +18,38 @@
  */
 package org.apache.axiom.dom;
 
+import org.apache.axiom.core.CoreElement;
+
 public aspect DOMNodeSupport {
     // TODO: should eventually have package access
     public void DOMNode.normalize(DOMConfigurationImpl config) {
         // Default: do nothing
+    }
+
+    public final String DOMNode.lookupNamespaceURI(String prefix) {
+        CoreElement context = getNamespaceContext();
+        if (context == null) {
+            return null;
+        }
+        if (prefix == null) {
+            prefix = "";
+        } else if (prefix.length() == 0) {
+            return null;
+        }
+        String namespaceURI = context.coreLookupNamespaceURI(prefix, false);
+        return namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI;
+    }
+
+    public final String DOMNode.lookupPrefix(String namespaceURI) {
+        CoreElement context = getNamespaceContext();
+        if (context == null) {
+            return null;
+        }
+        if (namespaceURI == null) {
+            return null;
+        } else {
+            String prefix = context.coreLookupPrefix(namespaceURI, false);
+            return prefix == null || prefix.length() == 0 ? null : prefix;
+        }
     }
 }

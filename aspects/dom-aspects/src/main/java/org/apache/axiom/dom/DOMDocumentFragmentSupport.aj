@@ -20,6 +20,7 @@ package org.apache.axiom.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -40,11 +41,7 @@ public aspect DOMDocumentFragmentSupport {
     public final void DOMDocumentFragment.setNodeValue(String nodeValue) {
     }
 
-    public final String DOMDocumentFragment.lookupNamespaceURI(String specifiedPrefix) {
-        return null;
-    }
-
-    public final String DOMDocumentFragment.lookupPrefix(String namespaceURI) {
+    public final CoreElement DOMDocumentFragment.getNamespaceContext() {
         return null;
     }
 

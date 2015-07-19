@@ -21,6 +21,7 @@ package org.apache.axiom.dom;
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
@@ -52,23 +53,8 @@ public aspect DOMElementSupport {
         throw new UnsupportedOperationException();
     }
 
-    public final String DOMElement.lookupNamespaceURI(String prefix) {
-        if (prefix == null) {
-            prefix = "";
-        } else if (prefix.length() == 0) {
-            return null;
-        }
-        String namespaceURI = coreLookupNamespaceURI(prefix, false);
-        return namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI;
-    }
-
-    public final String DOMElement.lookupPrefix(String namespaceURI) {
-        if (namespaceURI == null) {
-            return null;
-        } else {
-            String prefix = coreLookupPrefix(namespaceURI, false);
-            return prefix == null || prefix.length() == 0 ? null : prefix;
-        }
+    public final CoreElement DOMElement.getNamespaceContext() {
+        return this;
     }
 
     public final boolean DOMElement.hasAttributes() {

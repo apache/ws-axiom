@@ -66,14 +66,4 @@ public abstract class AttrImpl extends ParentNode implements DOMAttribute {
     public boolean isId() {
         return isId;
     }
-
-    public final String lookupNamespaceURI(String specifiedPrefix) {
-        Element ownerElement = getOwnerElement();
-        return ownerElement == null ? null : ownerElement.lookupNamespaceURI(specifiedPrefix);
-    }
-
-    public final String lookupPrefix(String namespaceURI) {
-        Element ownerElement = getOwnerElement();
-        return ownerElement == null ? null : ownerElement.lookupPrefix(namespaceURI);
-    }
 }

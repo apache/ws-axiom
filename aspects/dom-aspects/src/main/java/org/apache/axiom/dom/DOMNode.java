@@ -18,9 +18,20 @@
  */
 package org.apache.axiom.dom;
 
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
 import org.w3c.dom.Node;
 
 public interface DOMNode extends Node, CoreNode {
-
+    /**
+     * Get the element that defines this node's namespace context. The returned element is used by
+     * the implementations of {@link Node#lookupNamespaceURI(String)},
+     * {@link Node#lookupPrefix(String)} and {@link Node#isDefaultNamespace(String)}. The
+     * implementation must be compatible with the provisions in appendix B of the DOM Level 3 Core
+     * specification.
+     * 
+     * @return the element defining the namespace context of this node or <code>null</code> if the
+     *         namespace context of this node is defined to be empty
+     */
+    CoreElement getNamespaceContext();
 }

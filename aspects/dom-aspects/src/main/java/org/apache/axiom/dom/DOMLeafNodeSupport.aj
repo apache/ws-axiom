@@ -20,6 +20,7 @@ package org.apache.axiom.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -88,5 +89,9 @@ public aspect DOMLeafNodeSupport {
 
     public final void DOMLeafNode.setTextContent(String textContent) {
         setNodeValue(textContent);
+    }
+    
+    public final CoreElement DOMLeafNode.getNamespaceContext() {
+        return coreGetParentElement();
     }
 }

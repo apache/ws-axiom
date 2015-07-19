@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.dom;
 
+import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -61,5 +62,9 @@ public aspect DOMAttributeSupport {
     
     public final void DOMAttribute.setValue(String value) {
         coreSetTextContent(value, Policies.DETACH_POLICY);
+    }
+    
+    public final CoreElement DOMAttribute.getNamespaceContext() {
+        return coreGetOwnerElement();
     }
 }
