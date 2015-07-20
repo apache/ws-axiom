@@ -35,11 +35,6 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
         super(factory);
     }
 
-    /** Sets the text value of data. */
-    public void setData(String data) throws DOMException {
-        this.value = data;
-    }
-
     /**
      * Breaks this node into two nodes at the specified offset, keeping both in the tree as
      * siblings. After being split, this node will contain all the content up to the offset point. A
@@ -49,11 +44,12 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
      * node has no data.
      */
     public Text splitText(int offset) throws DOMException {
-        if (offset < 0 || offset > this.value.length()) {
+        String value = getData();
+        if (offset < 0 || offset > value.length()) {
             throw newDOMException(DOMException.INDEX_SIZE_ERR);
         }
-        String newValue = this.value.substring(offset);
-        this.deleteData(offset, this.value.length());
+        String newValue = value.substring(offset);
+        this.deleteData(offset, value.length());
 
         TextImpl newText = (TextImpl) this.getOwnerDocument().createTextNode(
                 newValue);
@@ -84,7 +80,8 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
     }
 
     public String toString() {
-        return (this.value != null) ? value : "";
+        String value = getData();
+        return value != null ? value : "";
     }
 
     void beforeClone(OMCloneOptions options) {

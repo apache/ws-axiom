@@ -35,8 +35,7 @@ import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public aspect AxiomTextSupport {
-    // TODO: should be private
-    public String AxiomText.value;
+    private String AxiomText.value;
     
     private String AxiomText.mimeType;
     
