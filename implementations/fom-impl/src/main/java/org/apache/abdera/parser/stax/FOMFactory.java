@@ -55,7 +55,7 @@ import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.util.Version;
 import org.apache.axiom.core.CoreCDATASection;
-import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.fom.AbderaFactory;
@@ -643,8 +643,8 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     @Override
-    public CoreCharacterData createCharacterData() {
-        return new FOMCharacterData(this);
+    public CoreCharacterDataNode createCharacterDataNode() {
+        return new FOMCharacterDataNode(this);
     }
 
     @Override

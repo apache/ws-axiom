@@ -16,10 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreCharacterData;
-
-public interface AxiomCharacterData extends CoreCharacterData, AxiomText {
-
+public aspect CoreCharacterDataNodeSupport {
+    public final boolean CoreCharacterDataNode.coreIsIgnorable() {
+        return getFlag(Flags.IGNORABLE);
+    }
+    
+    public final void CoreCharacterDataNode.coreSetIgnorable(boolean ignorable) {
+        setFlag(Flags.IGNORABLE, ignorable);
+    }
 }

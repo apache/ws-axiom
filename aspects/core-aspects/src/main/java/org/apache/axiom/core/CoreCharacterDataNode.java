@@ -18,12 +18,18 @@
  */
 package org.apache.axiom.core;
 
-public aspect CoreCharacterDataSupport {
-    public final boolean CoreCharacterData.coreIsIgnorable() {
-        return getFlag(Flags.IGNORABLE);
-    }
+public interface CoreCharacterDataNode extends CoreChildNode {
+    String coreGetData();
+    void coreSetData(String data);
     
-    public final void CoreCharacterData.coreSetIgnorable(boolean ignorable) {
-        setFlag(Flags.IGNORABLE, ignorable);
-    }
+    /**
+     * Check whether this text node contains element content whitespace (also called
+     * "ignorable whitespace").
+     * 
+     * @return <code>true</code> if the text node contains ignorable whitespace, <code>false</code>
+     *         otherwise
+     */
+    boolean coreIsIgnorable();
+    
+    void coreSetIgnorable(boolean ignorable);
 }

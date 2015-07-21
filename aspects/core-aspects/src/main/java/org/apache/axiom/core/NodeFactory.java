@@ -21,7 +21,7 @@ package org.apache.axiom.core;
 public interface NodeFactory {
     CoreDocument createDocument();
     CoreDocumentTypeDeclaration createDocumentTypeDeclaration();
-    CoreCharacterData createCharacterData();
+    CoreCharacterDataNode createCharacterDataNode();
     CoreCDATASection createCDATASection();
     CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type);
     CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);

@@ -43,7 +43,7 @@ public aspect CoreParentNodeSupport {
     final Content CoreParentNode.getContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
-            CoreCharacterData cdata = coreGetNodeFactory().createCharacterData();
+            CoreCharacterDataNode cdata = coreGetNodeFactory().createCharacterDataNode();
             cdata.internalSetParent(this);
             cdata.coreSetData((String)this.content);
             content.firstChild = cdata;
@@ -229,8 +229,8 @@ public aspect CoreParentNodeSupport {
                     }
                 } else {
                     String textValue;
-                    if (child instanceof CoreCharacterData) {
-                        textValue = ((CoreCharacterData)child).coreGetData();
+                    if (child instanceof CoreCharacterDataNode) {
+                        textValue = ((CoreCharacterDataNode)child).coreGetData();
                     } else if (child instanceof CoreCDATASection) {
                         textValue = ((CoreCDATASection)child).coreGetData();
                     } else {

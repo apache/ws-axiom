@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.llom.factory;
 
 import org.apache.axiom.core.CoreCDATASection;
-import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNSAwareAttribute;
@@ -304,7 +304,7 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return new OMDocTypeImpl(this);
     }
 
-    public CoreCharacterData createCharacterData() {
+    public CoreCharacterDataNode createCharacterDataNode() {
         return new CharacterDataImpl(this);
     }
     

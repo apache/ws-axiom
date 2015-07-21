@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreCharacterDataNode;
 
-public interface DOMText extends DOMTextNode, CoreCharacterData {
+public interface DOMText extends DOMTextNode, CoreCharacterDataNode {
 
 }

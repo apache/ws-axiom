@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom.factory;
 
 import org.apache.axiom.core.CoreCDATASection;
-import org.apache.axiom.core.CoreCharacterData;
+import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNSAwareAttribute;
@@ -302,7 +302,7 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return new DocumentTypeImpl(this);
     }
 
-    public final CoreCharacterData createCharacterData() {
+    public final CoreCharacterDataNode createCharacterDataNode() {
         return new TextImpl(this);
     }
 

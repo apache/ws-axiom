@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
-import org.apache.axiom.om.impl.common.AxiomCharacterData;
+import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
@@ -76,11 +76,11 @@ public aspect AxiomNodeFactorySupport {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE: {
-                node = (AxiomCharacterData)createCharacterData();
+                node = (AxiomCharacterDataNode)createCharacterDataNode();
                 break;
             }
             case OMNode.SPACE_NODE: {
-                AxiomCharacterData cdata = (AxiomCharacterData)createCharacterData();
+                AxiomCharacterDataNode cdata = (AxiomCharacterDataNode)createCharacterDataNode();
                 cdata.coreSetIgnorable(true);
                 node = cdata;
                 break;

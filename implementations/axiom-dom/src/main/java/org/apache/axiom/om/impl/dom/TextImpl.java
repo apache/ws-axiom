@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomCharacterData;
+import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
 
-public class TextImpl extends TextNodeImpl implements DOMText, AxiomCharacterData {
+public class TextImpl extends TextNodeImpl implements DOMText, AxiomCharacterDataNode {
     public TextImpl(OMFactory factory) {
         super(factory);
     }

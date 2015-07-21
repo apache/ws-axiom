@@ -18,16 +18,8 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.core.CoreCharacterDataNode;
 
-public aspect AxiomCharacterDataSupport {
-    public final int AxiomCharacterData.getType() {
-        return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
-    }
-    
-    public final AxiomText AxiomCharacterData.createInstanceOfSameType() {
-        AxiomCharacterData instance = (AxiomCharacterData)coreGetNodeFactory().createCharacterData();
-        instance.coreSetIgnorable(coreIsIgnorable());
-        return instance;
-    }
+public interface AxiomCharacterDataNode extends CoreCharacterDataNode, AxiomText {
+
 }

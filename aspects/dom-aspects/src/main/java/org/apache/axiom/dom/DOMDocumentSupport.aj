@@ -109,7 +109,7 @@ public aspect DOMDocumentSupport {
     }
     
     public final Text DOMDocument.createTextNode(String data) {
-        DOMText text = (DOMText)coreGetNodeFactory().createCharacterData();
+        DOMText text = (DOMText)coreGetNodeFactory().createCharacterDataNode();
         text.coreSetOwnerDocument(this);
         text.coreSetData(data);
         return text;

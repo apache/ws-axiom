@@ -16,20 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.common;
 
-public interface CoreCharacterData extends CoreChildNode {
-    String coreGetData();
-    void coreSetData(String data);
+import org.apache.axiom.om.OMNode;
+
+public aspect AxiomCharacterDataNodeSupport {
+    public final int AxiomCharacterDataNode.getType() {
+        return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
+    }
     
-    /**
-     * Check whether this text node contains element content whitespace (also called
-     * "ignorable whitespace").
-     * 
-     * @return <code>true</code> if the text node contains ignorable whitespace, <code>false</code>
-     *         otherwise
-     */
-    boolean coreIsIgnorable();
-    
-    void coreSetIgnorable(boolean ignorable);
+    public final AxiomText AxiomCharacterDataNode.createInstanceOfSameType() {
+        AxiomCharacterDataNode instance = (AxiomCharacterDataNode)coreGetNodeFactory().createCharacterDataNode();
+        instance.coreSetIgnorable(coreIsIgnorable());
+        return instance;
+    }
 }

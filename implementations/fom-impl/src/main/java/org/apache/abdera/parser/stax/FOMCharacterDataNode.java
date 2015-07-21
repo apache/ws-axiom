@@ -22,13 +22,13 @@ import java.io.InputStream;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.fom.AbderaCharacterData;
+import org.apache.axiom.fom.AbderaCharacterDataNode;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.CharacterDataImpl;
 
-public class FOMCharacterData extends CharacterDataImpl implements AbderaCharacterData {
+public class FOMCharacterDataNode extends CharacterDataImpl implements AbderaCharacterDataNode {
 
-    public FOMCharacterData(OMFactory factory) {
+    public FOMCharacterDataNode(OMFactory factory) {
         super(factory);
     }
 

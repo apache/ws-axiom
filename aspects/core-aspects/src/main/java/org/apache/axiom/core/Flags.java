@@ -37,7 +37,7 @@ final class Flags {
     static final int DEFAULT_ATTR = 8;
     
     /**
-     * Used to store the information returned by {@link CoreCharacterData#coreIsIgnorable()}.
+     * Used to store the information returned by {@link CoreCharacterDataNode#coreIsIgnorable()}.
      */
     static final int IGNORABLE = 16;
 }
