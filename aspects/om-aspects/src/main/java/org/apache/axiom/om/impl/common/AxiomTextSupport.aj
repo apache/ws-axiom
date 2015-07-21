@@ -35,62 +35,80 @@ import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public aspect AxiomTextSupport {
-    private String AxiomText.value;
-    
-    private String AxiomText.mimeType;
-    
-    /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
-    private String AxiomText.contentID;
-    
     /**
-     * Contains a {@link DataHandler} or {@link DataHandlerProvider} object if the text node
-     * represents base64 encoded binary data.
+     * Either a {@link String} or a {@link TextContent} object.
      */
-    private Object AxiomText.dataHandlerObject;
+    private Object AxiomText.content;
 
-    private boolean AxiomText.optimize;
-    private boolean AxiomText.binary;
-
+    private TextContent AxiomText.getTextContent(boolean force) {
+        if (content instanceof TextContent) {
+            return (TextContent)content;
+        } else if (force) {
+            TextContent textContent = new TextContent();
+            textContent.value = (String)content;
+            content = textContent;
+            return textContent;
+        } else {
+            return null;
+        }
+    }
+    
     public final boolean AxiomText.isBinary() {
-        return binary;
+        return content instanceof TextContent ? ((TextContent)content).binary : false;
     }
 
     public final void AxiomText.setBinary(boolean binary) {
-        this.binary = binary;
+        TextContent textContent = getTextContent(binary);
+        if (textContent != null) {
+            textContent.binary = binary;
+        }
     }
 
     public final boolean AxiomText.isOptimized() {
-        return optimize;
+        return content instanceof TextContent ? ((TextContent)content).optimize : false;
     }
 
     public final void AxiomText.setOptimize(boolean optimize) {
-        this.optimize = optimize;
-        if (optimize) {
-            binary = true;
+        TextContent textContent = getTextContent(optimize);
+        if (textContent != null) {
+            textContent.optimize = optimize;
+            if (optimize) {
+                textContent.binary = true;
+            }
         }
     }
     
     public final String AxiomText.getText() throws OMException {
-        if (dataHandlerObject != null) {
-            try {
-                return Base64Utils.encode((DataHandler)getDataHandler());
-            } catch (Exception e) {
-                throw new OMException(e);
+        if (content instanceof TextContent) {
+            TextContent textContent = (TextContent)content;
+            if (textContent.dataHandlerObject != null) {
+                try {
+                    return Base64Utils.encode((DataHandler)getDataHandler());
+                } catch (Exception e) {
+                    throw new OMException(e);
+                }
+            } else {
+                return textContent.value;
             }
         } else {
-            return value;
+            return (String)content;
         }
     }
 
     public final char[] AxiomText.getTextCharacters() {
-        if (dataHandlerObject != null) {
-            try {
-                return Base64Utils.encodeToCharArray((DataHandler)getDataHandler());
-            } catch (IOException ex) {
-                throw new OMException(ex);
+        if (content instanceof TextContent) {
+            TextContent textContent = (TextContent)content;
+            if (textContent.dataHandlerObject != null) {
+                try {
+                    return Base64Utils.encodeToCharArray((DataHandler)getDataHandler());
+                } catch (IOException ex) {
+                    throw new OMException(ex);
+                }
+            } else {
+                return textContent.value.toCharArray();
             }
         } else {
-            return value.toCharArray();
+            return ((String)content).toCharArray();
         }
     }
 
@@ -115,37 +133,45 @@ public aspect AxiomTextSupport {
 
     // TODO: should be final, but Abdera overrides this method
     public Object AxiomText.getDataHandler() {
-        if (dataHandlerObject != null) {
-            if (dataHandlerObject instanceof DataHandlerProvider) {
-                try {
-                    dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
-                } catch (IOException ex) {
-                    throw new OMException(ex);
+        if (content instanceof TextContent) {
+            TextContent textContent = (TextContent)content;
+            if (textContent.dataHandlerObject != null) {
+                if (textContent.dataHandlerObject instanceof DataHandlerProvider) {
+                    try {
+                        textContent.dataHandlerObject = ((DataHandlerProvider)textContent.dataHandlerObject).getDataHandler();
+                    } catch (IOException ex) {
+                        throw new OMException(ex);
+                    }
                 }
+                return textContent.dataHandlerObject;
+            } else if (textContent.binary) {
+                return new DataHandler(new ByteArrayDataSource(
+                        Base64Utils.decode(textContent.value), textContent.mimeType));
             }
-            return dataHandlerObject;
-        } else if (isBinary()) {
-            return new DataHandler(new ByteArrayDataSource(
-                    Base64Utils.decode(value), mimeType));
-        } else {
-            throw new OMException("No DataHandler available");
         }
+        throw new OMException("No DataHandler available");
     }
 
     public final String AxiomText.getContentID() {
-        if (contentID == null) {
-            contentID = UIDGenerator.generateContentId();
+        TextContent textContent = getTextContent(true);
+        if (textContent.contentID == null) {
+            textContent.contentID = UIDGenerator.generateContentId();
         }
-        return this.contentID;
+        return textContent.contentID;
     }
 
     public final void AxiomText.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        if (!isBinary()) {
-            serializer.writeText(getType(), getText());
-        } else if (dataHandlerObject instanceof DataHandlerProvider) {
-            serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, contentID, isOptimized());
+        if (content instanceof TextContent) {
+            TextContent textContent = (TextContent)content;
+            if (!textContent.binary) {
+                serializer.writeText(getType(), textContent.value);
+            } else if (textContent.dataHandlerObject instanceof DataHandlerProvider) {
+                serializer.writeDataHandler((DataHandlerProvider)textContent.dataHandlerObject, textContent.contentID, textContent.optimize);
+            } else {
+                serializer.writeDataHandler((DataHandler)getDataHandler(), textContent.contentID, textContent.optimize);
+            }
         } else {
-            serializer.writeDataHandler((DataHandler)getDataHandler(), contentID, isOptimized());
+            serializer.writeText(getType(), (String)content);
         }
     }
 
@@ -157,15 +183,15 @@ public aspect AxiomTextSupport {
     }
 
     public final void AxiomText.setContentID(String cid) {
-        this.contentID = cid;
+        getTextContent(true).contentID = cid;
     }
 
     public final void AxiomText.internalSetMimeType(String mimeType) {
-        this.mimeType = mimeType;
+        getTextContent(true).mimeType = mimeType;
     }
     
     public final void AxiomText.internalSetDataHandlerObject(Object dataHandlerObject) {
-        this.dataHandlerObject = dataHandlerObject;
+        getTextContent(true).dataHandlerObject = dataHandlerObject;
     }
     
     public final String AxiomText.coreGetData() {
@@ -173,21 +199,28 @@ public aspect AxiomTextSupport {
     }
 
     public final void AxiomText.coreSetData(String data) {
-        this.value = data;
+        if (content instanceof TextContent) {
+            ((TextContent)content).value = data;
+        } else {
+            content = data;
+        }
     }
     
     public final AxiomText AxiomText.doClone() {
         AxiomText clone = createInstanceOfSameType();
-        clone.value = value;
-        
-        // Copy the optimized related settings.
-        clone.optimize = optimize;
-        clone.mimeType = mimeType;
-        clone.binary = binary;
-        
-        clone.contentID = contentID;
-        clone.dataHandlerObject = dataHandlerObject;
-        
+        if (content instanceof TextContent) {
+            TextContent textContent = (TextContent)content;
+            TextContent clonedTextContent = new TextContent();
+            clonedTextContent.value = textContent.value;
+            clonedTextContent.optimize = textContent.optimize;
+            clonedTextContent.mimeType = textContent.mimeType;
+            clonedTextContent.binary = textContent.binary;
+            clonedTextContent.contentID = textContent.contentID;
+            clonedTextContent.dataHandlerObject = textContent.dataHandlerObject;
+            clone.content = clonedTextContent;
+        } else {
+            clone.content = content;
+        }
         return clone;
     }
 }
