@@ -160,10 +160,6 @@ public aspect AxiomTextSupport {
         this.contentID = cid;
     }
 
-    public final void AxiomText.internalSetValue(String value) {
-        this.value = value;
-    }
-
     public final void AxiomText.internalSetMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
