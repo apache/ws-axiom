@@ -200,7 +200,7 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final String CoreParentNode.coreGetTextContent(ElementAction elementAction) {
+    public final String CoreParentNode.coreGetCharacterData(ElementAction elementAction) {
         if (getState() == COMPACT) {
             return (String)content;
         } else {
@@ -272,7 +272,7 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final void CoreParentNode.coreSetTextContent(String text, DetachPolicy detachPolicy) {
+    public final void CoreParentNode.coreSetCharacterData(String text, DetachPolicy detachPolicy) {
         coreRemoveChildren(detachPolicy);
         if (text != null && text.length() > 0) {
             coreSetState(COMPACT);

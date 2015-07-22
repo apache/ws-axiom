@@ -313,7 +313,7 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
     public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {
         NSUnawareAttribute attr = new NSUnawareAttribute((DocumentImpl)document, this);
         attr.coreSetName(name);
-        attr.coreSetTextContent(value, Policies.DETACH_POLICY);
+        attr.coreSetCharacterData(value, Policies.DETACH_POLICY);
 //        attr.coreSetType(type);
         return attr;
     }

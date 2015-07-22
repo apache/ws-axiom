@@ -75,10 +75,10 @@ public aspect DOMDocumentFragmentSupport {
     }
     
     public final String DOMDocumentFragment.getTextContent() {
-        return coreGetTextContent(ElementAction.RECURSE);
+        return coreGetCharacterData(ElementAction.RECURSE);
     }
 
     public final void DOMDocumentFragment.setTextContent(String textContent) {
-        coreSetTextContent(textContent, Policies.DETACH_POLICY);
+        coreSetCharacterData(textContent, Policies.DETACH_POLICY);
     }
 }

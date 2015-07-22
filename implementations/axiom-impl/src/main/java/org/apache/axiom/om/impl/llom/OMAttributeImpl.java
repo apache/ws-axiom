@@ -55,7 +55,7 @@ public class OMAttributeImpl extends Attribute implements AxiomAttribute {
         }
 
         internalSetLocalName(localName);
-        coreSetTextContent(value, Policies.DETACH_POLICY);
+        coreSetCharacterData(value, Policies.DETACH_POLICY);
         internalSetNamespace(ns);
         coreSetType(OMConstants.XMLATTRTYPE_CDATA);
     }

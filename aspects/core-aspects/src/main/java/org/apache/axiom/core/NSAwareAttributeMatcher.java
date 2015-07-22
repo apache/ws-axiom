@@ -89,7 +89,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
     }
 
     public void update(CoreAttribute attr, String prefix, String value) {
-        attr.coreSetTextContent(value, detachPolicy);
+        attr.coreSetCharacterData(value, detachPolicy);
         if (updatePrefix && attr instanceof CoreNSAwareAttribute) {
             ((CoreNSAwareAttribute)attr).coreSetPrefix(prefix);
         }

@@ -178,10 +178,10 @@ public aspect DOMElementSupport {
     }
     
     public final String DOMElement.getTextContent() {
-        return coreGetTextContent(ElementAction.RECURSE);
+        return coreGetCharacterData(ElementAction.RECURSE);
     }
 
     public final void DOMElement.setTextContent(String textContent) {
-        coreSetTextContent(textContent, Policies.DETACH_POLICY);
+        coreSetCharacterData(textContent, Policies.DETACH_POLICY);
     }
 }

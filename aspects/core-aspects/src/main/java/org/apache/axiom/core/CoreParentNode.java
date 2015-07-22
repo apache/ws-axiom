@@ -37,6 +37,6 @@ public interface CoreParentNode extends CoreNode {
     void coreSetState(int state);
     void build();
     
-    String coreGetTextContent(ElementAction elementAction);
-    void coreSetTextContent(String text, DetachPolicy detachPolicy);
+    String coreGetCharacterData(ElementAction elementAction);
+    void coreSetCharacterData(String text, DetachPolicy detachPolicy);
 }

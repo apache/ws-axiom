@@ -62,6 +62,6 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
     }
 
     public void update(CoreAttribute attr, String prefix, String value) {
-        attr.coreSetTextContent(value, detachPolicy);
+        attr.coreSetCharacterData(value, detachPolicy);
     }
 }

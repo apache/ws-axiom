@@ -130,7 +130,7 @@ public aspect AxiomElementSupport {
 
     // TODO: this is (incorrectly) overridden by the SOAPFaultReason implementations for SOAP 1.2
     public String AxiomElement.getText() {
-        return coreGetTextContent(ElementAction.SKIP);
+        return coreGetCharacterData(ElementAction.SKIP);
     }
     
     // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2
@@ -188,7 +188,7 @@ public aspect AxiomElementSupport {
     
     // Not final because overridden in Abdera
     public void AxiomElement.setText(String text) {
-        coreSetTextContent(text, Policies.DETACH_POLICY);
+        coreSetCharacterData(text, Policies.DETACH_POLICY);
     }
 
     public final void AxiomElement.setText(QName qname) {

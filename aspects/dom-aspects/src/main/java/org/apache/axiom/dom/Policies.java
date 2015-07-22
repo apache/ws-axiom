@@ -73,7 +73,7 @@ public final class Policies {
         }
 
         public void update(CoreAttribute attr, String prefix, String value) {
-            attr.coreSetTextContent(value, DETACH_POLICY);
+            attr.coreSetCharacterData(value, DETACH_POLICY);
         }
     };
     
