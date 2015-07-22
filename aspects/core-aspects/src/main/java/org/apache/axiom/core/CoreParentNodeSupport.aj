@@ -214,7 +214,7 @@ public aspect CoreParentNodeSupport {
                     visited = false;
                 } else if (child instanceof CoreElement) {
                     switch (elementAction) {
-                        case FAIL:
+                        case RETURN_NULL:
                             return null;
                         case RECURSE:
                             CoreChildNode firstChild = ((CoreElement)child).coreGetFirstChild();

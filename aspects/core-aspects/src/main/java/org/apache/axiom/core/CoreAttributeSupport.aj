@@ -133,6 +133,6 @@ public aspect CoreAttributeSupport {
     }
 
     public final String CoreAttribute.coreGetValue() {
-        return coreGetCharacterData(ElementAction.FAIL);
+        return coreGetCharacterData(ElementAction.RETURN_NULL);
     }
 }
