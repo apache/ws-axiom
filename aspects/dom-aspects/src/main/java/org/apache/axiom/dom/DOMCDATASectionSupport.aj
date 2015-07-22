@@ -30,6 +30,6 @@ public aspect DOMCDATASectionSupport {
     }
 
     public final void DOMCDATASection.setData(String data) {
-        coreSetData(data);
+        coreSetCharacterData(data);
     }
 }

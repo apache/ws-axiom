@@ -26,7 +26,7 @@ import org.apache.axiom.om.impl.common.AxiomComment;
 public class CommentImpl extends LeafNode implements DOMComment, AxiomComment {
     public CommentImpl(String value, OMFactory factory) {
         super(factory);
-        coreSetData(value);
+        coreSetCharacterData(value);
     }
 
     ChildNode createClone() {

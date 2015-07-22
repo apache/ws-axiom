@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreCharacterDataNode extends CoreChildNode {
-    String coreGetData();
-    void coreSetData(String data);
+public interface CoreCharacterDataNode extends CoreChildNode, CoreCharacterDataContainer {
+    void coreSetCharacterData(String data);
     
     /**
      * Check whether this text node contains element content whitespace (also called

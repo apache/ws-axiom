@@ -32,14 +32,14 @@ public aspect AxiomProcessingInstructionSupport {
     }
 
     public final String AxiomProcessingInstruction.getValue() {
-        return coreGetValue();
+        return coreGetCharacterData();
     }
 
     public final void AxiomProcessingInstruction.setValue(String value) {
-        coreSetValue(value);
+        coreSetCharacterData(value);
     }
     
     public final void AxiomProcessingInstruction.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeProcessingInstruction(coreGetTarget() + " ", coreGetValue());
+        serializer.writeProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData());
     }
 }

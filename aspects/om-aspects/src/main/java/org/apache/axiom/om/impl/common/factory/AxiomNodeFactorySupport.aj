@@ -101,7 +101,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
         AxiomText node = createAxiomText(parent, type, fromBuilder);
-        node.coreSetData(text);
+        node.coreSetCharacterData(text);
         return node;
     }
     
@@ -131,7 +131,7 @@ public aspect AxiomNodeFactorySupport {
         }
         AxiomText node = createAxiomText(parent, type, false);
         OMNamespace ns = ((AxiomElement)parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        node.coreSetData(ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart());
+        node.coreSetCharacterData(ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart());
         return node;
     }
     
@@ -141,7 +141,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String s, String mimeType, boolean optimize) {
         AxiomText node = createAxiomText(parent, OMNode.TEXT_NODE, false);
-        node.coreSetData(s);
+        node.coreSetCharacterData(s);
         node.internalSetMimeType(mimeType);
         node.setOptimize(optimize);
         node.setBinary(true);
@@ -191,7 +191,7 @@ public aspect AxiomNodeFactorySupport {
             OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
         AxiomProcessingInstruction node = (AxiomProcessingInstruction)createProcessingInstruction();
         node.coreSetTarget(piTarget);
-        node.coreSetValue(piData);
+        node.coreSetCharacterData(piData);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }

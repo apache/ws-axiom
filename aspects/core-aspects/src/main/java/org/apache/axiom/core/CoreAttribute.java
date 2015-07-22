@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreAttribute extends NonDeferringParentNode {
+public interface CoreAttribute extends NonDeferringParentNode, CoreCharacterDataContainingParentNode {
     /**
      * Get the owner element of this attribute.
      * 
@@ -67,6 +67,4 @@ public interface CoreAttribute extends NonDeferringParentNode {
      *         of its owner element or if the attribute has no owner element
      */
     CoreAttribute coreGetPreviousAttribute();
-
-    String coreGetValue();
 }

@@ -30,6 +30,6 @@ public aspect DOMTextSupport {
     }
 
     public final void DOMText.setData(String data) {
-        coreSetData(data);
+        coreSetCharacterData(data);
     }
 }

@@ -38,7 +38,7 @@ public aspect AxiomAttributeSupport {
     }
     
     public final String AxiomAttribute.getAttributeValue() {
-        return coreGetValue();
+        return coreGetCharacterData();
     }
     
     public final void AxiomAttribute.setAttributeValue(String value) {

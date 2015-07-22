@@ -194,11 +194,11 @@ public aspect AxiomTextSupport {
         getTextContent(true).dataHandlerObject = dataHandlerObject;
     }
     
-    public final String AxiomText.coreGetData() {
+    public final String AxiomText.coreGetCharacterData() {
         return getText();
     }
 
-    public final void AxiomText.coreSetData(String data) {
+    public final void AxiomText.coreSetCharacterData(String data) {
         if (content instanceof TextContent) {
             ((TextContent)content).value = data;
         } else {

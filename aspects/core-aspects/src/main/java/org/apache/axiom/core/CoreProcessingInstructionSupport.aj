@@ -30,11 +30,11 @@ public aspect CoreProcessingInstructionSupport {
         this.target = target;
     }
     
-    public final String CoreProcessingInstruction.coreGetValue() {
+    public final String CoreProcessingInstruction.coreGetCharacterData() {
         return value;
     }
     
-    public final void CoreProcessingInstruction.coreSetValue(String value) {
+    public final void CoreProcessingInstruction.coreSetCharacterData(String value) {
         this.value = value;
     }
 }

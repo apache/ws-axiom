@@ -111,14 +111,14 @@ public aspect DOMDocumentSupport {
     public final Text DOMDocument.createTextNode(String data) {
         DOMText text = (DOMText)coreGetNodeFactory().createCharacterDataNode();
         text.coreSetOwnerDocument(this);
-        text.coreSetData(data);
+        text.coreSetCharacterData(data);
         return text;
     }
 
     public final CDATASection DOMDocument.createCDATASection(String data) throws DOMException {
         DOMCDATASection cdataSection = (DOMCDATASection)coreGetNodeFactory().createCDATASection();
         cdataSection.coreSetOwnerDocument(this);
-        cdataSection.coreSetData(data);
+        cdataSection.coreSetCharacterData(data);
         return cdataSection;
     }
     
@@ -151,7 +151,7 @@ public aspect DOMDocumentSupport {
         DOMProcessingInstruction pi = (DOMProcessingInstruction)coreGetNodeFactory().createProcessingInstruction();
         pi.coreSetOwnerDocument(this);
         pi.coreSetTarget(target);
-        pi.coreSetValue(data);
+        pi.coreSetCharacterData(data);
         return pi;
     }
 }

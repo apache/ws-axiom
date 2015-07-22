@@ -73,7 +73,7 @@ public aspect DOMTextNodeSupport {
         DOMText newText;
         if (content.length() > 0) {
             newText = (DOMText)coreGetNodeFactory().createCharacterDataNode();
-            newText.coreSetData(content);
+            newText.coreSetCharacterData(content);
         } else {
             newText = null;
         }

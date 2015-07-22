@@ -62,7 +62,7 @@ public aspect DOMAttributeSupport {
     }
     
     public final String DOMAttribute.getValue() {
-        return coreGetValue();
+        return coreGetCharacterData();
     }
     
     public final void DOMAttribute.setValue(String value) {

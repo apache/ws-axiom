@@ -35,10 +35,10 @@ public class OMCommentImpl extends OMLeafNode implements AxiomComment {
     public OMCommentImpl(OMContainer parentNode, String contentText,
                          OMFactory factory, boolean fromBuilder) {
         super(parentNode, factory, fromBuilder);
-        coreSetData(contentText);
+        coreSetCharacterData(contentText);
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return getOMFactory().createOMComment(targetParent, coreGetData());
+        return getOMFactory().createOMComment(targetParent, coreGetCharacterData());
     }
 }

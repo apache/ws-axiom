@@ -21,11 +21,11 @@ package org.apache.axiom.core;
 public aspect CoreCommentSupport {
     private String CoreComment.data;
     
-    public final String CoreComment.coreGetData() {
+    public final String CoreComment.coreGetCharacterData() {
         return data;
     }
     
-    public final void CoreComment.coreSetData(String data) {
+    public final void CoreComment.coreSetCharacterData(String data) {
         this.data = data;
     }
 }

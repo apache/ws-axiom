@@ -45,7 +45,7 @@ public aspect CoreParentNodeSupport {
             Content content = new Content();
             CoreCharacterDataNode cdata = coreGetNodeFactory().createCharacterDataNode();
             cdata.internalSetParent(this);
-            cdata.coreSetData((String)this.content);
+            cdata.coreSetCharacterData((String)this.content);
             content.firstChild = cdata;
             content.lastChild = cdata;
             this.content = content;
@@ -200,7 +200,7 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final String CoreParentNode.coreGetCharacterData(ElementAction elementAction) {
+    final String CoreParentNode.internalGetCharacterData(ElementAction elementAction) {
         if (getState() == COMPACT) {
             return (String)content;
         } else {
@@ -228,27 +228,22 @@ public aspect CoreParentNodeSupport {
                             // Just continue
                     }
                 } else {
-                    String textValue;
-                    if (child instanceof CoreCharacterDataNode) {
-                        textValue = ((CoreCharacterDataNode)child).coreGetData();
-                    } else if (child instanceof CoreCDATASection) {
-                        textValue = ((CoreCDATASection)child).coreGetData();
-                    } else {
-                        textValue = null;
-                    }
-                    if (textValue != null && textValue.length() != 0) {
-                        if (textContent == null) {
-                            // This is the first non empty text node. Just save the string.
-                            textContent = textValue;
-                        } else {
-                            // We've already seen a non empty text node before. Concatenate using
-                            // a StringBuilder.
-                            if (buffer == null) {
-                                // This is the first text node we need to append. Initialize the
-                                // StringBuilder.
-                                buffer = new StringBuilder(textContent);
+                    if (child instanceof CoreCharacterDataNode || child instanceof CoreCDATASection) {
+                        String textValue = ((CoreCharacterDataContainer)child).coreGetCharacterData();
+                        if (textValue.length() != 0) {
+                            if (textContent == null) {
+                                // This is the first non empty text node. Just save the string.
+                                textContent = textValue;
+                            } else {
+                                // We've already seen a non empty text node before. Concatenate using
+                                // a StringBuilder.
+                                if (buffer == null) {
+                                    // This is the first text node we need to append. Initialize the
+                                    // StringBuilder.
+                                    buffer = new StringBuilder(textContent);
+                                }
+                                buffer.append(textValue);
                             }
-                            buffer.append(textValue);
                         }
                     }
                 }

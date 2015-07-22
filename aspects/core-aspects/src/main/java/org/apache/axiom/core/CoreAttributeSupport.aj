@@ -131,8 +131,4 @@ public aspect CoreAttributeSupport {
     public final void CoreAttribute.coreSetSpecified(boolean specified) {
         setFlag(Flags.DEFAULT_ATTR, !specified);
     }
-
-    public final String CoreAttribute.coreGetValue() {
-        return coreGetCharacterData(ElementAction.RETURN_NULL);
-    }
 }

@@ -16,18 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.fom;
+package org.apache.axiom.core;
 
-import org.apache.abdera.model.ProcessingInstruction;
-
-public aspect AbderaProcessingInstructionSupport {
-    public final String AbderaProcessingInstruction.getText() {
-        return coreGetCharacterData();
-    }
-
-    @SuppressWarnings("unchecked")
-    public final <T extends ProcessingInstruction> T AbderaProcessingInstruction.setText(String text) {
-        coreSetCharacterData(text);
-        return (T)this;
+public aspect CoreCharacterDataContainingParentNodeSupport {
+    public final String CoreCharacterDataContainingParentNode.coreGetCharacterData() {
+        String characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
+        if (characterData == null) {
+            throw new IllegalStateException();
+        }
+        return characterData;
     }
 }

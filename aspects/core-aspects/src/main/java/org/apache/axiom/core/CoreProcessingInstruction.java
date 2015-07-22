@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreProcessingInstruction extends CoreChildNode {
+public interface CoreProcessingInstruction extends CoreChildNode, CoreCharacterDataContainer {
 
 }

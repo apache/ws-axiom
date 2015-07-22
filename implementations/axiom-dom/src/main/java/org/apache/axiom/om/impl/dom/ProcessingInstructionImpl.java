@@ -29,6 +29,6 @@ public class ProcessingInstructionImpl extends LeafNode implements DOMProcessing
     }
 
     ChildNode createClone() {
-        return (ChildNode)getOMFactory().createOMProcessingInstruction(null, coreGetTarget(), coreGetValue());
+        return (ChildNode)getOMFactory().createOMProcessingInstruction(null, coreGetTarget(), coreGetCharacterData());
     }
 }

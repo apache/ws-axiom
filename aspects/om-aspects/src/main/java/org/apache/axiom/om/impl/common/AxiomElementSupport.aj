@@ -35,6 +35,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.IdentityMapper;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;

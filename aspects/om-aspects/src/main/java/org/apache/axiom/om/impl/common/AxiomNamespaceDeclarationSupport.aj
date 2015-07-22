@@ -28,7 +28,7 @@ public aspect AxiomNamespaceDeclarationSupport {
     }
 
     public final OMNamespace AxiomNamespaceDeclaration.getDeclaredNamespace() {
-        String namespaceURI = coreGetValue();
+        String namespaceURI = coreGetCharacterData();
         if (!namespaceURI.equals(declaredNamespace.getNamespaceURI())) {
             declaredNamespace = new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
         }
