@@ -44,8 +44,7 @@ public aspect AxiomTextSupport {
         if (content instanceof TextContent) {
             return (TextContent)content;
         } else if (force) {
-            TextContent textContent = new TextContent();
-            textContent.value = (String)content;
+            TextContent textContent = new TextContent((String)content);
             content = textContent;
             return textContent;
         } else {
@@ -199,19 +198,14 @@ public aspect AxiomTextSupport {
     }
 
     public final void AxiomText.coreSetCharacterData(String data) {
-        if (content instanceof TextContent) {
-            ((TextContent)content).value = data;
-        } else {
-            content = data;
-        }
+        content = data;
     }
     
     public final AxiomText AxiomText.doClone() {
         AxiomText clone = createInstanceOfSameType();
         if (content instanceof TextContent) {
             TextContent textContent = (TextContent)content;
-            TextContent clonedTextContent = new TextContent();
-            clonedTextContent.value = textContent.value;
+            TextContent clonedTextContent = new TextContent(textContent.value);
             clonedTextContent.optimize = textContent.optimize;
             clonedTextContent.mimeType = textContent.mimeType;
             clonedTextContent.binary = textContent.binary;

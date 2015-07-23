@@ -23,7 +23,7 @@ import javax.activation.DataHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 
 final class TextContent {
-    String value;
+    final String value;
     
     String mimeType;
     
@@ -38,4 +38,8 @@ final class TextContent {
 
     boolean optimize;
     boolean binary;
+    
+    TextContent(String value) {
+        this.value = value;
+    }
 }
