@@ -18,9 +18,11 @@
  */
 package org.apache.axiom.dom;
 
+import org.w3c.dom.Node;
+
 public aspect DOMProcessingInstructionSupport {
     public final short DOMProcessingInstruction.getNodeType() {
-        return PROCESSING_INSTRUCTION_NODE;
+        return Node.PROCESSING_INSTRUCTION_NODE;
     }
 
     public final String DOMProcessingInstruction.getData() {

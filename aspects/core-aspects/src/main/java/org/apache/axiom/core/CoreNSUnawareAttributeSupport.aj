@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreEntityReference;
-import org.apache.axiom.om.OMEntityReference;
-
-public interface AxiomEntityReference extends OMEntityReference, AxiomCoreLeafNode, CoreEntityReference {
-
+public aspect CoreNSUnawareAttributeSupport {
+    public final int CoreNSUnawareAttribute.coreGetNodeType() {
+        return NS_UNAWARE_ATTRIBUTE_NODE;
+    }
 }

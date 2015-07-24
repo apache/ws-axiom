@@ -21,6 +21,10 @@ package org.apache.axiom.core;
 public aspect CoreProcessingInstructionSupport {
     private String CoreProcessingInstruction.target;
 
+    public final int CoreProcessingInstruction.coreGetNodeType() {
+        return PROCESSING_INSTRUCTION_NODE;
+    }
+    
     public final String CoreProcessingInstruction.coreGetTarget() {
         return target;
     }

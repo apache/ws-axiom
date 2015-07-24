@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.dom;
 
+import org.apache.axiom.core.CoreEntityReference;
 import org.w3c.dom.EntityReference;
 
-public interface DOMEntityReference extends DOMChildNode, EntityReference {
+public interface DOMEntityReference extends DOMChildNode, EntityReference, CoreEntityReference {
 
 }

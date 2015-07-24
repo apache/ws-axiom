@@ -19,6 +19,10 @@
 package org.apache.axiom.core;
 
 public aspect CoreDocumentSupport {
+    public final int CoreDocument.coreGetNodeType() {
+        return DOCUMENT_NODE;
+    }
+    
     public final CoreNode CoreDocument.getRootOrOwnerDocument() {
         return this;
     }
