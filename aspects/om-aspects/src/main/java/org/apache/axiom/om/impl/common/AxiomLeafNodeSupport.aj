@@ -23,6 +23,7 @@ import java.io.Writer;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 
 public aspect AxiomLeafNodeSupport {
@@ -56,5 +57,15 @@ public aspect AxiomLeafNodeSupport {
 
     public final void AxiomLeafNode.serializeAndConsume(Writer writer2, OMOutputFormat format) throws XMLStreamException {
         throw new UnsupportedOperationException("Only supported on OMContainer instances");
+    }
+
+    public final void AxiomLeafNode.setComplete(boolean state) {
+        if (state != true) {
+            throw new IllegalStateException();
+        }
+    }
+
+    public final void AxiomLeafNode.discard() throws OMException {
+        detach();
     }
 }

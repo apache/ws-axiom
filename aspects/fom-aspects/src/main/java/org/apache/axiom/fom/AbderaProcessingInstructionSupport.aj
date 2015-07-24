@@ -22,12 +22,12 @@ import org.apache.abdera.model.ProcessingInstruction;
 
 public aspect AbderaProcessingInstructionSupport {
     public final String AbderaProcessingInstruction.getText() {
-        return coreGetCharacterData();
+        return coreGetCharacterData().toString();
     }
 
     @SuppressWarnings("unchecked")
     public final <T extends ProcessingInstruction> T AbderaProcessingInstruction.setText(String text) {
-        coreSetCharacterData(text);
+        coreSetCharacterData(text, Policies.DETACH_POLICY);
         return (T)this;
     }
 }

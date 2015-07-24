@@ -24,11 +24,11 @@ public aspect DOMProcessingInstructionSupport {
     }
 
     public final String DOMProcessingInstruction.getData() {
-        return coreGetCharacterData();
+        return coreGetCharacterData().toString();
     }
     
     public final void DOMProcessingInstruction.setData(String data) {
-        coreSetCharacterData(data);
+        coreSetCharacterData(data, Policies.DETACH_POLICY);
     }
     
     public final String DOMProcessingInstruction.getNodeName() {
@@ -36,10 +36,10 @@ public aspect DOMProcessingInstructionSupport {
     }
 
     public final String DOMProcessingInstruction.getNodeValue() {
-        return coreGetCharacterData();
+        return getData();
     }
 
     public final void DOMProcessingInstruction.setNodeValue(String nodeValue) {
-        coreSetCharacterData(nodeValue);
+        setData(nodeValue);
     }
 }

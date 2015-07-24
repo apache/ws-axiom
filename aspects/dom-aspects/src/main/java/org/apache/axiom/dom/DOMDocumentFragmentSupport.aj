@@ -76,7 +76,7 @@ public aspect DOMDocumentFragmentSupport {
     }
     
     public final String DOMDocumentFragment.getTextContent() {
-        return coreGetCharacterData(ElementAction.RECURSE);
+        return coreGetCharacterData(ElementAction.RECURSE).toString();
     }
 
     public final void DOMDocumentFragment.setTextContent(String textContent) {

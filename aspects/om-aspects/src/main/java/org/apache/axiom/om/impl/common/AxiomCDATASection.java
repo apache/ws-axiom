@@ -20,6 +20,6 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.CoreCDATASection;
 
-public interface AxiomCDATASection extends CoreCDATASection, AxiomText {
+public interface AxiomCDATASection extends CoreCDATASection, AxiomText, AxiomCoreParentNode {
 
 }

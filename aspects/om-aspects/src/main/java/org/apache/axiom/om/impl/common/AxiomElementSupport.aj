@@ -131,7 +131,7 @@ public aspect AxiomElementSupport {
 
     // TODO: this is (incorrectly) overridden by the SOAPFaultReason implementations for SOAP 1.2
     public String AxiomElement.getText() {
-        return coreGetCharacterData(ElementAction.SKIP);
+        return coreGetCharacterData(ElementAction.SKIP).toString();
     }
     
     // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2

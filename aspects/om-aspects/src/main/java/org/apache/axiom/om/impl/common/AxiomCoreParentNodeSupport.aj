@@ -16,16 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.common;
 
-public aspect CoreProcessingInstructionSupport {
-    private String CoreProcessingInstruction.target;
-
-    public final String CoreProcessingInstruction.coreGetTarget() {
-        return target;
-    }
-    
-    public final void CoreProcessingInstruction.coreSetTarget(String target) {
-        this.target = target;
+public aspect AxiomCoreParentNodeSupport {
+    public final boolean AxiomCoreParentNode.isComplete() {
+        int state = getState();
+        return state == COMPLETE || state == COMPACT;
     }
 }

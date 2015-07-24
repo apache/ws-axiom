@@ -16,16 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.common;
 
-public aspect CoreCommentSupport {
-    private String CoreComment.data;
-    
-    public final String CoreComment.coreGetCharacterData() {
-        return data;
+import org.apache.axiom.om.OMXMLParserWrapper;
+
+public aspect AxiomCoreLeafNodeSupport {
+    public final OMXMLParserWrapper AxiomCoreLeafNode.getBuilder() {
+        return null;
     }
-    
-    public final void CoreComment.coreSetCharacterData(String data) {
-        this.data = data;
+
+    public final boolean AxiomCoreLeafNode.isComplete() {
+        return true;
+    }
+
+    public void AxiomCoreLeafNode.build() {
+        // Do nothing; a leaf node is always complete
     }
 }

@@ -18,11 +18,17 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import java.io.IOException;
+
 import javax.activation.DataHandler;
 
+import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.util.base64.Base64Utils;
 
-final class TextContent {
+final class TextContent implements CharacterData {
     final String value;
     
     String mimeType;
@@ -41,5 +47,47 @@ final class TextContent {
     
     TextContent(String value) {
         this.value = value;
+    }
+
+    DataHandler getDataHandler() {
+        if (dataHandlerObject != null) {
+            if (dataHandlerObject instanceof DataHandlerProvider) {
+                try {
+                    dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                } catch (IOException ex) {
+                    throw new OMException(ex);
+                }
+            }
+            return (DataHandler)dataHandlerObject;
+        } else if (binary) {
+            return new DataHandler(new ByteArrayDataSource(Base64Utils.decode(value), mimeType));
+        } else {
+            throw new OMException("No DataHandler available");
+        }
+    }
+    
+    @Override
+    public String toString() {
+        if (dataHandlerObject != null) {
+            try {
+                return Base64Utils.encode(getDataHandler());
+            } catch (Exception e) {
+                throw new OMException(e);
+            }
+        } else {
+            return value;
+        }
+    }
+    
+    char[] toCharArray() {
+        if (dataHandlerObject != null) {
+            try {
+                return Base64Utils.encodeToCharArray(getDataHandler());
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            }
+        } else {
+            return value.toCharArray();
+        }
     }
 }

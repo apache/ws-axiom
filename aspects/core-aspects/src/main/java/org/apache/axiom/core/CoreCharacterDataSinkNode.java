@@ -18,14 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public aspect CoreProcessingInstructionSupport {
-    private String CoreProcessingInstruction.target;
-
-    public final String CoreProcessingInstruction.coreGetTarget() {
-        return target;
-    }
-    
-    public final void CoreProcessingInstruction.coreSetTarget(String target) {
-        this.target = target;
-    }
+public interface CoreCharacterDataSinkNode {
+    void coreSetCharacterData(Object data, DetachPolicy detachPolicy);
 }

@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreComment extends CoreChildNode, CoreCharacterDataContainer {
-    void coreSetCharacterData(String data);
+public interface CoreComment extends CoreChildNode, CoreCharacterDataContainingParentNode {
+
 }

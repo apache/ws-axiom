@@ -196,7 +196,7 @@ public aspect CoreElementSupport {
             if (attr instanceof CoreNamespaceDeclaration) {
                 CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
                 if (prefix.equals(decl.coreGetDeclaredPrefix())) {
-                    return decl.coreGetCharacterData();
+                    return decl.coreGetCharacterData().toString();
                 }
             }
         }
@@ -225,7 +225,7 @@ public aspect CoreElementSupport {
         for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
             if (attr instanceof CoreNamespaceDeclaration) {
                 CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
-                if (decl.coreGetCharacterData().equals(namespaceURI)) {
+                if (decl.coreGetCharacterData().toString().equals(namespaceURI)) {
                     return decl.coreGetDeclaredPrefix();
                 }
             }

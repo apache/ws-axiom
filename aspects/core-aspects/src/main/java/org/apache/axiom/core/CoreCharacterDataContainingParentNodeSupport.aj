@@ -19,8 +19,8 @@
 package org.apache.axiom.core;
 
 public aspect CoreCharacterDataContainingParentNodeSupport {
-    public final String CoreCharacterDataContainingParentNode.coreGetCharacterData() {
-        String characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
+    public final Object CoreCharacterDataContainingParentNode.coreGetCharacterData() {
+        Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
         if (characterData == null) {
             throw new IllegalStateException();
         }

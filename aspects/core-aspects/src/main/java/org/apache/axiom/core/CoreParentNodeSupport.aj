@@ -200,11 +200,11 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    final String CoreParentNode.internalGetCharacterData(ElementAction elementAction) {
+    final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) {
         if (getState() == COMPACT) {
             return (String)content;
         } else {
-            String textContent = null;
+            Object textContent = null;
             StringBuilder buffer = null;
             int depth = 0;
             CoreChildNode child = coreGetFirstChild();
@@ -229,8 +229,8 @@ public aspect CoreParentNodeSupport {
                     }
                 } else {
                     if (child instanceof CoreCharacterDataNode || child instanceof CoreCDATASection) {
-                        String textValue = ((CoreCharacterDataContainer)child).coreGetCharacterData();
-                        if (textValue.length() != 0) {
+                        Object textValue = ((CoreCharacterDataContainer)child).coreGetCharacterData();
+                        if (textValue instanceof CharacterData || ((String)textValue).length() != 0) {
                             if (textContent == null) {
                                 // This is the first non empty text node. Just save the string.
                                 textContent = textValue;
@@ -240,9 +240,9 @@ public aspect CoreParentNodeSupport {
                                 if (buffer == null) {
                                     // This is the first text node we need to append. Initialize the
                                     // StringBuilder.
-                                    buffer = new StringBuilder(textContent);
+                                    buffer = new StringBuilder(textContent.toString());
                                 }
-                                buffer.append(textValue);
+                                buffer.append(textValue.toString());
                             }
                         }
                     }
@@ -267,11 +267,11 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final void CoreParentNode.coreSetCharacterData(String text, DetachPolicy detachPolicy) {
+    public final void CoreParentNode.coreSetCharacterData(Object data, DetachPolicy detachPolicy) {
         coreRemoveChildren(detachPolicy);
-        if (text != null && text.length() > 0) {
+        if (data != null && (data instanceof CharacterData || ((String)data).length() > 0)) {
             coreSetState(COMPACT);
-            content = text;
+            content = data;
         }
     }
 }

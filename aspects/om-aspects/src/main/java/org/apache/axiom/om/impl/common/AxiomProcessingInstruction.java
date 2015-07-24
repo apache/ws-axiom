@@ -21,6 +21,6 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.shared.IProcessingInstruction;
 
-public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, IProcessingInstruction {
+public interface AxiomProcessingInstruction extends OMProcessingInstruction, AxiomLeafNode, IProcessingInstruction, AxiomCoreParentNode {
 
 }

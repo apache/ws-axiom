@@ -18,12 +18,11 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 
-public interface AxiomContainer extends OMContainerEx, CoreParentNode, AxiomSerializable {
+public interface AxiomContainer extends OMContainerEx, AxiomCoreParentNode {
     /**
      * Check if the node can be added as a child of this container.
      * 

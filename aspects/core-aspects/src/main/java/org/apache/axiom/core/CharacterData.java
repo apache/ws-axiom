@@ -18,14 +18,10 @@
  */
 package org.apache.axiom.core;
 
-public aspect CoreProcessingInstructionSupport {
-    private String CoreProcessingInstruction.target;
-
-    public final String CoreProcessingInstruction.coreGetTarget() {
-        return target;
-    }
-    
-    public final void CoreProcessingInstruction.coreSetTarget(String target) {
-        this.target = target;
-    }
+/**
+ * Represents character data stored by a {@link CoreCharacterDataNode} instance. The content of a
+ * {@link CoreCharacterDataNode} is either a {@link String} object or an instance of this interface.
+ */
+public interface CharacterData {
+    String toString();
 }

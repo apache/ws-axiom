@@ -20,9 +20,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomChildNode;
 
 public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomChildNode {
@@ -44,26 +42,4 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomC
     }
     
     abstract ChildNode createClone();
-
-    public final OMXMLParserWrapper getBuilder() {
-        return null;
-    }
-
-    public final boolean isComplete() {
-        return true;
-    }
-
-    public final void setComplete(boolean state) {
-        if (state != true) {
-            throw new IllegalStateException();
-        }
-    }
-
-    public final void discard() throws OMException {
-        detach();
-    }
-
-    public final void build() {
-        // Do nothing; a leaf node is always complete
-    }
 }

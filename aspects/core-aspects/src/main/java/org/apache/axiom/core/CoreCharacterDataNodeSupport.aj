@@ -19,11 +19,28 @@
 package org.apache.axiom.core;
 
 public aspect CoreCharacterDataNodeSupport {
+    /**
+     * Either a {@link String} or a {@link CharacterData} object.
+     */
+    private Object CoreCharacterDataNode.data;
+    
     public final boolean CoreCharacterDataNode.coreIsIgnorable() {
         return getFlag(Flags.IGNORABLE);
     }
     
     public final void CoreCharacterDataNode.coreSetIgnorable(boolean ignorable) {
         setFlag(Flags.IGNORABLE, ignorable);
+    }
+    
+    public final Object CoreCharacterDataNode.coreGetCharacterData() {
+        return data == null ? "" : data;
+    }
+    
+    public final void CoreCharacterDataNode.coreSetCharacterData(Object data) {
+        this.data = data;
+    }
+    
+    public final void CoreCharacterDataNode.coreSetCharacterData(Object data, DetachPolicy detachPolicy) {
+        this.data = data;
     }
 }

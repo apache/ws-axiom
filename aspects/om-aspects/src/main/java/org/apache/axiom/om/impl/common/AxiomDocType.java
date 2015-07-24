@@ -21,6 +21,6 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.shared.IDocumentTypeDeclaration;
 
-public interface AxiomDocType extends OMDocType, AxiomLeafNode, IDocumentTypeDeclaration {
+public interface AxiomDocType extends OMDocType, AxiomCoreLeafNode, IDocumentTypeDeclaration {
 
 }

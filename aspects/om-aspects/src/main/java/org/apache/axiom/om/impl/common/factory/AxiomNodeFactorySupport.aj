@@ -38,6 +38,7 @@ import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
+import org.apache.axiom.om.impl.common.Policies;
 
 public aspect AxiomNodeFactorySupport {
     public final OMDocument AxiomNodeFactory.createOMDocument() {
@@ -101,7 +102,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
         AxiomText node = createAxiomText(parent, type, fromBuilder);
-        node.coreSetCharacterData(text);
+        node.coreSetCharacterData(text, Policies.DETACH_POLICY);
         return node;
     }
     
@@ -131,7 +132,7 @@ public aspect AxiomNodeFactorySupport {
         }
         AxiomText node = createAxiomText(parent, type, false);
         OMNamespace ns = ((AxiomElement)parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        node.coreSetCharacterData(ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart());
+        node.coreSetCharacterData(ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), Policies.DETACH_POLICY);
         return node;
     }
     
@@ -141,7 +142,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String s, String mimeType, boolean optimize) {
         AxiomText node = createAxiomText(parent, OMNode.TEXT_NODE, false);
-        node.coreSetCharacterData(s);
+        node.coreSetCharacterData(s, Policies.DETACH_POLICY);
         node.internalSetMimeType(mimeType);
         node.setOptimize(optimize);
         node.setBinary(true);
@@ -191,7 +192,7 @@ public aspect AxiomNodeFactorySupport {
             OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
         AxiomProcessingInstruction node = (AxiomProcessingInstruction)createProcessingInstruction();
         node.coreSetTarget(piTarget);
-        node.coreSetCharacterData(piData);
+        node.coreSetCharacterData(piData, Policies.DETACH_POLICY);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }

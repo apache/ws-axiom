@@ -31,6 +31,6 @@ public class OMProcessingInstructionImpl extends OMLeafNode implements AxiomProc
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return getOMFactory().createOMProcessingInstruction(targetParent, coreGetTarget(), coreGetCharacterData());
+        return getOMFactory().createOMProcessingInstruction(targetParent, coreGetTarget(), coreGetCharacterData().toString());
     }
 }

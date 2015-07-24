@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreMixedContentContainer extends CoreParentNode {
-    String coreGetCharacterData(ElementAction elementAction);
+public interface CoreMixedContentContainer extends CoreParentNode, CoreCharacterDataSinkNode {
+    Object coreGetCharacterData(ElementAction elementAction);
 }

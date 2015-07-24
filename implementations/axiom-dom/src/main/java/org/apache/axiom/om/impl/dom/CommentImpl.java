@@ -20,13 +20,14 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMComment;
+import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomComment;
 
 public class CommentImpl extends LeafNode implements DOMComment, AxiomComment {
     public CommentImpl(String value, OMFactory factory) {
         super(factory);
-        coreSetCharacterData(value);
+        coreSetCharacterData(value, Policies.DETACH_POLICY);
     }
 
     ChildNode createClone() {

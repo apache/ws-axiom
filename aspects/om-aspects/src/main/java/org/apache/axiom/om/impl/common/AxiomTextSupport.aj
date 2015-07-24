@@ -18,12 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import java.io.IOException;
-
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -32,20 +29,15 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.util.UIDGenerator;
-import org.apache.axiom.util.base64.Base64Utils;
 
 public aspect AxiomTextSupport {
-    /**
-     * Either a {@link String} or a {@link TextContent} object.
-     */
-    private Object AxiomText.content;
-
     private TextContent AxiomText.getTextContent(boolean force) {
+        Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
             return (TextContent)content;
         } else if (force) {
             TextContent textContent = new TextContent((String)content);
-            content = textContent;
+            coreSetCharacterData(textContent, Policies.DETACH_POLICY);
             return textContent;
         } else {
             return null;
@@ -53,7 +45,8 @@ public aspect AxiomTextSupport {
     }
     
     public final boolean AxiomText.isBinary() {
-        return content instanceof TextContent ? ((TextContent)content).binary : false;
+        TextContent textContent = getTextContent(false);
+        return textContent != null && textContent.binary;
     }
 
     public final void AxiomText.setBinary(boolean binary) {
@@ -64,7 +57,8 @@ public aspect AxiomTextSupport {
     }
 
     public final boolean AxiomText.isOptimized() {
-        return content instanceof TextContent ? ((TextContent)content).optimize : false;
+        TextContent textContent = getTextContent(false);
+        return textContent != null && textContent.optimize;
     }
 
     public final void AxiomText.setOptimize(boolean optimize) {
@@ -78,34 +72,13 @@ public aspect AxiomTextSupport {
     }
     
     public final String AxiomText.getText() throws OMException {
-        if (content instanceof TextContent) {
-            TextContent textContent = (TextContent)content;
-            if (textContent.dataHandlerObject != null) {
-                try {
-                    return Base64Utils.encode((DataHandler)getDataHandler());
-                } catch (Exception e) {
-                    throw new OMException(e);
-                }
-            } else {
-                return textContent.value;
-            }
-        } else {
-            return (String)content;
-        }
+        return coreGetCharacterData().toString();
     }
 
     public final char[] AxiomText.getTextCharacters() {
+        Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
-            TextContent textContent = (TextContent)content;
-            if (textContent.dataHandlerObject != null) {
-                try {
-                    return Base64Utils.encodeToCharArray((DataHandler)getDataHandler());
-                } catch (IOException ex) {
-                    throw new OMException(ex);
-                }
-            } else {
-                return textContent.value.toCharArray();
-            }
+            return ((TextContent)content).toCharArray();
         } else {
             return ((String)content).toCharArray();
         }
@@ -132,23 +105,12 @@ public aspect AxiomTextSupport {
 
     // TODO: should be final, but Abdera overrides this method
     public Object AxiomText.getDataHandler() {
+        Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
-            TextContent textContent = (TextContent)content;
-            if (textContent.dataHandlerObject != null) {
-                if (textContent.dataHandlerObject instanceof DataHandlerProvider) {
-                    try {
-                        textContent.dataHandlerObject = ((DataHandlerProvider)textContent.dataHandlerObject).getDataHandler();
-                    } catch (IOException ex) {
-                        throw new OMException(ex);
-                    }
-                }
-                return textContent.dataHandlerObject;
-            } else if (textContent.binary) {
-                return new DataHandler(new ByteArrayDataSource(
-                        Base64Utils.decode(textContent.value), textContent.mimeType));
-            }
+            return ((TextContent)content).getDataHandler();
+        } else {
+            throw new OMException("No DataHandler available");
         }
-        throw new OMException("No DataHandler available");
     }
 
     public final String AxiomText.getContentID() {
@@ -160,6 +122,7 @@ public aspect AxiomTextSupport {
     }
 
     public final void AxiomText.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
             TextContent textContent = (TextContent)content;
             if (!textContent.binary) {
@@ -167,7 +130,7 @@ public aspect AxiomTextSupport {
             } else if (textContent.dataHandlerObject instanceof DataHandlerProvider) {
                 serializer.writeDataHandler((DataHandlerProvider)textContent.dataHandlerObject, textContent.contentID, textContent.optimize);
             } else {
-                serializer.writeDataHandler((DataHandler)getDataHandler(), textContent.contentID, textContent.optimize);
+                serializer.writeDataHandler(textContent.getDataHandler(), textContent.contentID, textContent.optimize);
             }
         } else {
             serializer.writeText(getType(), (String)content);
@@ -193,16 +156,9 @@ public aspect AxiomTextSupport {
         getTextContent(true).dataHandlerObject = dataHandlerObject;
     }
     
-    public final String AxiomText.coreGetCharacterData() {
-        return getText();
-    }
-
-    public final void AxiomText.coreSetCharacterData(String data) {
-        content = data;
-    }
-    
     public final AxiomText AxiomText.doClone() {
         AxiomText clone = createInstanceOfSameType();
+        Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
             TextContent textContent = (TextContent)content;
             TextContent clonedTextContent = new TextContent(textContent.value);
@@ -211,9 +167,9 @@ public aspect AxiomTextSupport {
             clonedTextContent.binary = textContent.binary;
             clonedTextContent.contentID = textContent.contentID;
             clonedTextContent.dataHandlerObject = textContent.dataHandlerObject;
-            clone.content = clonedTextContent;
+            clone.coreSetCharacterData(clonedTextContent, Policies.DETACH_POLICY);
         } else {
-            clone.content = content;
+            clone.coreSetCharacterData(content, Policies.DETACH_POLICY);
         }
         return clone;
     }

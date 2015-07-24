@@ -20,6 +20,6 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMEntityReference;
 
-public interface AxiomEntityReference extends OMEntityReference, AxiomLeafNode {
+public interface AxiomEntityReference extends OMEntityReference, AxiomCoreLeafNode {
 
 }

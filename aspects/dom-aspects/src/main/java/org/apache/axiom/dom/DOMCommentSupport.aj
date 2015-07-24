@@ -30,12 +30,10 @@ public aspect DOMCommentSupport {
     }
 
     public final String DOMComment.getData() {
-        String data = coreGetCharacterData();
-        // TODO: review this
-        return data != null ? data : "";
+        return coreGetCharacterData().toString();
     }
 
     public final void DOMComment.setData(String data) {
-        coreSetCharacterData(data);
+        coreSetCharacterData(data, Policies.DETACH_POLICY);
     }
 }

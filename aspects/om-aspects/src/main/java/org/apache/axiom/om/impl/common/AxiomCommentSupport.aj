@@ -29,14 +29,14 @@ public aspect AxiomCommentSupport {
     }
 
     public String AxiomComment.getValue() {
-        return coreGetCharacterData();
+        return coreGetCharacterData().toString();
     }
 
     public void AxiomComment.setValue(String text) {
-        coreSetCharacterData(text);
+        coreSetCharacterData(text, Policies.DETACH_POLICY);
     }
     
     public final void AxiomComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeComment(coreGetCharacterData());
+        serializer.writeComment(coreGetCharacterData().toString());
     }
 }

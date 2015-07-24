@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreCharacterDataContainer extends CoreNode {
-    String coreGetCharacterData();
+public interface CoreCharacterDataContainer extends CoreCharacterDataSourceNode, CoreCharacterDataSinkNode {
+
 }

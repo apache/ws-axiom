@@ -19,7 +19,7 @@
 package org.apache.axiom.core;
 
 public aspect CoreMixedContentContainerSupport {
-    public final String CoreMixedContentContainer.coreGetCharacterData(ElementAction elementAction) {
+    public final Object CoreMixedContentContainer.coreGetCharacterData(ElementAction elementAction) {
         return internalGetCharacterData(elementAction);
     }
 }
