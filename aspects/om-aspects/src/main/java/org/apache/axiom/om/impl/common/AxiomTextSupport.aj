@@ -148,26 +148,11 @@ public aspect AxiomTextSupport {
         getTextContent(true).contentID = cid;
     }
 
-    public final void AxiomText.internalSetMimeType(String mimeType) {
-        getTextContent(true).mimeType = mimeType;
-    }
-    
-    public final void AxiomText.internalSetDataHandlerObject(Object dataHandlerObject) {
-        getTextContent(true).dataHandlerObject = dataHandlerObject;
-    }
-    
     public final AxiomText AxiomText.doClone() {
         AxiomText clone = createInstanceOfSameType();
         Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
-            TextContent textContent = (TextContent)content;
-            TextContent clonedTextContent = new TextContent(textContent.value);
-            clonedTextContent.optimize = textContent.optimize;
-            clonedTextContent.mimeType = textContent.mimeType;
-            clonedTextContent.binary = textContent.binary;
-            clonedTextContent.contentID = textContent.contentID;
-            clonedTextContent.dataHandlerObject = textContent.dataHandlerObject;
-            clone.coreSetCharacterData(clonedTextContent, Policies.DETACH_POLICY);
+            clone.coreSetCharacterData(new TextContent((TextContent)content), Policies.DETACH_POLICY);
         } else {
             clone.coreSetCharacterData(content, Policies.DETACH_POLICY);
         }

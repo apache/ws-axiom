@@ -28,10 +28,10 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.base64.Base64Utils;
 
-final class TextContent implements CharacterData {
+public final class TextContent implements CharacterData {
     final String value;
     
-    String mimeType;
+    final String mimeType;
     
     /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
     String contentID;
@@ -47,6 +47,39 @@ final class TextContent implements CharacterData {
     
     TextContent(String value) {
         this.value = value;
+        this.mimeType = null;
+    }
+    
+    public TextContent(String value, String mimeType, boolean optimize) {
+        this.value = value;
+        this.mimeType = mimeType;
+        binary = true;
+        this.optimize = optimize;
+    }
+    
+    public TextContent(Object dataHandlerObject, boolean optimize) {
+        this.value = null;
+        mimeType = null;
+        this.dataHandlerObject = dataHandlerObject;
+        binary = true;
+        this.optimize = optimize;
+    }
+    
+    public TextContent(String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize) {
+        this.value = null;
+        mimeType = null;
+        dataHandlerObject = dataHandlerProvider;
+        binary = true;
+        this.optimize = optimize;
+    }
+    
+    TextContent(TextContent other) {
+        this.value = other.value;
+        this.mimeType = other.mimeType;
+        this.contentID = other.contentID;
+        this.dataHandlerObject = other.dataHandlerObject;
+        this.optimize = other.optimize;
+        this.binary = other.binary;
     }
 
     DataHandler getDataHandler() {

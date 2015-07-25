@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreParentNode;
@@ -39,6 +40,7 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.Policies;
+import org.apache.axiom.om.impl.common.TextContent;
 
 public aspect AxiomNodeFactorySupport {
     public final OMDocument AxiomNodeFactory.createOMDocument() {
@@ -73,7 +75,7 @@ public aspect AxiomNodeFactorySupport {
     public void AxiomNodeFactory.validateOMTextParent(OMContainer parent) {
     }
     
-    private AxiomText AxiomNodeFactory.createAxiomText(OMContainer parent, int type, boolean fromBuilder) {
+    private AxiomText AxiomNodeFactory.createAxiomText(OMContainer parent, Object content, int type, boolean fromBuilder) {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE: {
@@ -97,56 +99,48 @@ public aspect AxiomNodeFactorySupport {
             validateOMTextParent(parent);
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }
+        node.coreSetCharacterData(content, Policies.DETACH_POLICY);
         return node;
     }
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
-        AxiomText node = createAxiomText(parent, type, fromBuilder);
-        node.coreSetCharacterData(text, Policies.DETACH_POLICY);
-        return node;
+        return createAxiomText(parent, text, type, fromBuilder);
     }
     
     public final OMText AxiomNodeFactory.createOMText(String s, int type) {
-        return createOMText(null, s, type, false);
+        return createAxiomText(null, s, type, false);
     }
 
     public final OMText AxiomNodeFactory.createOMText(String s) {
-        return createOMText(null, s, OMNode.TEXT_NODE, false);
+        return createAxiomText(null, s, OMNode.TEXT_NODE, false);
     }
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String text, int type) {
-        return createOMText(parent, text, type, false);
+        return createAxiomText(parent, text, type, false);
     }
     
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String text) {
-        return createOMText(parent, text, OMNode.TEXT_NODE, false);
+        return createAxiomText(parent, text, OMNode.TEXT_NODE, false);
     }
     
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, char[] charArray, int type) {
-        return createOMText(parent, new String(charArray), type, false);
+        return createAxiomText(parent, new String(charArray), type, false);
     }
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, QName text, int type) {
         if (text == null) {
             throw new IllegalArgumentException("QName text arg cannot be null!");
         }
-        AxiomText node = createAxiomText(parent, type, false);
         OMNamespace ns = ((AxiomElement)parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        node.coreSetCharacterData(ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), Policies.DETACH_POLICY);
-        return node;
+        return createAxiomText(parent, ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), type, false);
     }
     
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, QName text) {
-        return createOMText(parent, text, OMNode.TEXT_NODE);
+        return createAxiomText(parent, text, OMNode.TEXT_NODE, false);
     }
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, String s, String mimeType, boolean optimize) {
-        AxiomText node = createAxiomText(parent, OMNode.TEXT_NODE, false);
-        node.coreSetCharacterData(s, Policies.DETACH_POLICY);
-        node.internalSetMimeType(mimeType);
-        node.setOptimize(optimize);
-        node.setBinary(true);
-        return node;
+        return createAxiomText(parent, new TextContent(s, mimeType, optimize), OMNode.TEXT_NODE, false);
     }
 
     public final OMText AxiomNodeFactory.createOMText(String s, String mimeType, boolean optimize) {
@@ -167,20 +161,11 @@ public aspect AxiomNodeFactorySupport {
     }
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder) {
-        AxiomText node = createAxiomText(parent, OMNode.TEXT_NODE, fromBuilder);
-        node.internalSetDataHandlerObject(dataHandler);
-        node.setBinary(true);
-        node.setOptimize(optimize);
-        return node;
+        return createAxiomText(parent, new TextContent(dataHandler, optimize), OMNode.TEXT_NODE, fromBuilder);
     }
 
     public final OMText AxiomNodeFactory.createOMText(String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize) {
-        AxiomText node = createAxiomText(null, OMNode.TEXT_NODE, false);
-        node.setContentID(contentID);
-        node.internalSetDataHandlerObject(dataHandlerProvider);
-        node.setBinary(true);
-        node.setOptimize(optimize);
-        return node;
+        return createAxiomText(null, new TextContent(contentID, dataHandlerProvider, optimize), OMNode.TEXT_NODE, false);
     }
     
     public final OMProcessingInstruction AxiomNodeFactory.createOMProcessingInstruction(
