@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.om.OMNode;
-
 public interface CoreChildNode extends CoreNode {
     /**
      * Get the parent element of this node.
