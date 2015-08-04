@@ -49,14 +49,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocument {
-    private String xmlVersion;
-
-    private String xmlEncoding;
-    
-    private boolean xmlStandalone = false;
-    
-    private String charEncoding;
-
     private Vector idAttrs;
 
     protected Hashtable identifiers;
@@ -236,41 +228,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
     }
 
-    // /
-    // /OMDocument Methods
-    // /
-    public String getCharsetEncoding() {
-        return this.charEncoding;
-    }
-
-    public String getXMLVersion() {
-        return this.xmlVersion;
-    }
-
-    public String isStandalone() {
-        return (this.xmlStandalone) ? "yes" : "no";
-    }
-
-    public void setCharsetEncoding(String charsetEncoding) {
-        this.charEncoding = charsetEncoding;
-    }
-
-    public void setStandalone(String isStandalone) {
-        this.xmlStandalone = "yes".equalsIgnoreCase(isStandalone);
-    }
-
-    public void setXMLVersion(String version) {
-        this.xmlVersion = version;
-    }
-
-    public String getXMLEncoding() {
-        return xmlEncoding;
-    }
-
-    public void setXMLEncoding(String encoding) {
-        this.xmlEncoding = encoding;
-    }
-    
     protected void addIdAttr(Attr attr) {
         if (this.idAttrs == null) {
             this.idAttrs = new Vector();
@@ -310,25 +267,9 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         throw new UnsupportedOperationException("TODO");
     }
 
-    public String getInputEncoding() {
-        return charEncoding;
-    }
-
     public boolean getStrictErrorChecking() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
-    }
-
-    public String getXmlEncoding() {
-        return xmlEncoding;
-    }
-
-    public boolean getXmlStandalone() {
-        return this.xmlStandalone;
-    }
-
-    public String getXmlVersion() {
-        return getXMLVersion();
     }
 
     public Node renameNode(Node node, String namespaceURI, String qualifiedName)
@@ -347,14 +288,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setXmlStandalone(boolean standalone) throws DOMException {
-        this.xmlStandalone = standalone;
-    }
-
-    public void setXmlVersion(String version) throws DOMException {
-        setXMLVersion(version);
-    }
-
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         DocumentImpl clone;
         if (options.isPreserveModel()) {
@@ -362,10 +295,10 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         } else {
             clone = new DocumentImpl(getOMFactory());
         }
-        clone.xmlVersion = xmlVersion;
-        clone.xmlEncoding = xmlEncoding;
-        clone.xmlStandalone = xmlStandalone;
-        clone.charEncoding = charEncoding;
+        clone.coreSetXmlVersion(coreGetXmlVersion());
+        clone.coreSetXmlEncoding(coreGetXmlEncoding());
+        clone.coreSetStandalone(coreIsStandalone());
+        clone.coreSetInputEncoding(coreGetInputEncoding());
         return clone;
     }
 

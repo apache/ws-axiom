@@ -32,16 +32,6 @@ import java.util.Iterator;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument {
-    /** Field charSetEncoding Default : UTF-8 */
-    protected String charSetEncoding = "UTF-8";
-
-    /** Field xmlVersion */
-    protected String xmlVersion = "1.0";
-    
-    protected String xmlEncoding;
-
-    protected String isStandalone;
-
     /**
      * Create a <code>OMDocument</code> given the <code>OMFactory</code>
      *
@@ -68,38 +58,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
     protected void checkDocumentElement(OMElement element) {
     }
 
-    public String getCharsetEncoding() {
-        return charSetEncoding;
-    }
-
-    public void setCharsetEncoding(String charEncoding) {
-        this.charSetEncoding = charEncoding;
-    }
-
-    public String isStandalone() {
-        return isStandalone;
-    }
-
-    public void setStandalone(String isStandalone) {
-        this.isStandalone = isStandalone;
-    }
-
-    public String getXMLVersion() {
-        return xmlVersion;
-    }
-
-    public void setXMLVersion(String xmlVersion) {
-        this.xmlVersion = xmlVersion;
-    }
-
-    public String getXMLEncoding() {
-        return xmlEncoding;
-    }
-
-    public void setXMLEncoding(String encoding) {
-        this.xmlEncoding = encoding;
-    }
-
     void notifyChildComplete() {
         if (getState() == INCOMPLETE && getBuilder() == null) {
             Iterator iterator = getChildren();
@@ -124,10 +82,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
         } else {
             targetDocument = getOMFactory().createOMDocument();
         }
-        targetDocument.setXMLVersion(xmlVersion);
-        targetDocument.setXMLEncoding(xmlEncoding);
-        targetDocument.setCharsetEncoding(charSetEncoding);
-        targetDocument.setStandalone(isStandalone);
+        targetDocument.setXMLVersion(getXMLVersion());
+        targetDocument.setXMLEncoding(getXMLEncoding());
+        targetDocument.setCharsetEncoding(getCharsetEncoding());
+        targetDocument.setStandalone(isStandalone());
         for (Iterator it = getChildren(); it.hasNext(); ) {
             ((OMNodeImpl)it.next()).clone(options, targetDocument);
         }

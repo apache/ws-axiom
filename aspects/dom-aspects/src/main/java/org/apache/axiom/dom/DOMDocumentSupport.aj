@@ -99,6 +99,30 @@ public aspect DOMDocumentSupport {
         return domConfig;
     }
 
+    public final String DOMDocument.getInputEncoding() {
+        return coreGetInputEncoding();
+    }
+
+    public final String DOMDocument.getXmlVersion() {
+        return coreGetXmlVersion();
+    }
+
+    public final void DOMDocument.setXmlVersion(String version) {
+        coreSetXmlVersion(version);
+    }
+
+    public final String DOMDocument.getXmlEncoding() {
+        return coreGetXmlEncoding();
+    }
+
+    public final boolean DOMDocument.getXmlStandalone() {
+        return coreIsStandalone();
+    }
+
+    public final void DOMDocument.setXmlStandalone(boolean standalone) {
+        coreSetStandalone(standalone);
+    }
+
     public final void DOMDocument.normalizeDocument() {
         if (domConfig.isEnabled(DOMConfigurationImpl.SPLIT_CDATA_SECTIONS)
                 || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {

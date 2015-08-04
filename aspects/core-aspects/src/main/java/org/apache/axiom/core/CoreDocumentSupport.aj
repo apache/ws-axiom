@@ -19,6 +19,11 @@
 package org.apache.axiom.core;
 
 public aspect CoreDocumentSupport {
+    private String CoreDocument.inputEncoding;
+    private String CoreDocument.xmlVersion = "1.0";
+    private String CoreDocument.xmlEncoding;
+    private boolean CoreDocument.standalone;
+    
     public final int CoreDocument.coreGetNodeType() {
         return DOCUMENT_NODE;
     }
@@ -42,5 +47,37 @@ public aspect CoreDocumentSupport {
             child = child.coreGetNextSibling();
         }
         return null;
+    }
+    
+    public final String CoreDocument.coreGetInputEncoding() {
+        return inputEncoding;
+    }
+    
+    public final void CoreDocument.coreSetInputEncoding(String inputEncoding) {
+        this.inputEncoding = inputEncoding;
+    }
+    
+    public final String CoreDocument.coreGetXmlVersion() {
+        return xmlVersion;
+    }
+    
+    public final void CoreDocument.coreSetXmlVersion(String xmlVersion) {
+        this.xmlVersion = xmlVersion;
+    }
+    
+    public final String CoreDocument.coreGetXmlEncoding() {
+        return xmlEncoding;
+    }
+    
+    public final void CoreDocument.coreSetXmlEncoding(String xmlEncoding) {
+        this.xmlEncoding = xmlEncoding;
+    }
+    
+    public final boolean CoreDocument.coreIsStandalone() {
+        return standalone;
+    }
+    
+    public final void CoreDocument.coreSetStandalone(boolean standalone) {
+        this.standalone = standalone;
     }
 }

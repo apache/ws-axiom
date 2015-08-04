@@ -74,4 +74,38 @@ public aspect AxiomDocumentSupport {
         serializer.serializeChildren(this, format, cache);
         serializer.writeEndDocument();
     }
+
+    public final String AxiomDocument.getCharsetEncoding() {
+        String inputEncoding = coreGetInputEncoding();
+        return inputEncoding == null ? "UTF-8" : inputEncoding;
+    }
+
+    public final void AxiomDocument.setCharsetEncoding(String charsetEncoding) {
+        coreSetInputEncoding(charsetEncoding);
+    }
+
+    public final String AxiomDocument.getXMLVersion() {
+        return coreGetXmlVersion();
+    }
+
+    public final void AxiomDocument.setXMLVersion(String xmlVersion) {
+        coreSetXmlVersion(xmlVersion);
+    }
+
+    public final String AxiomDocument.getXMLEncoding() {
+        return coreGetXmlEncoding();
+    }
+
+    public final void AxiomDocument.setXMLEncoding(String xmlEncoding) {
+        coreSetXmlEncoding(xmlEncoding);
+    }
+
+    public final String AxiomDocument.isStandalone() {
+        return coreIsStandalone() ? "yes" : "no";
+    }
+
+    public final void AxiomDocument.setStandalone(String standalone) {
+        coreSetStandalone("yes".equalsIgnoreCase(standalone));
+    }
+
 }
