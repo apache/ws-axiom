@@ -31,12 +31,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomDocument;
-import org.apache.axiom.om.impl.common.OMDocumentHelper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
@@ -67,10 +63,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
     
     public DocumentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
     }
 
     // /org.w3c.dom.Document methods
@@ -263,24 +255,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         this.charEncoding = charsetEncoding;
     }
 
-    public void setOMDocumentElement(OMElement documentElement) {
-        if (documentElement == null) {
-            throw new IllegalArgumentException("documentElement must not be null");
-        }
-        OMElement existingDocumentElement = getOMDocumentElement();
-        if (existingDocumentElement == null) {
-            addChild(documentElement);
-        } else {
-            OMNode nextSibling = existingDocumentElement.getNextOMSibling();
-            existingDocumentElement.detach();
-            if (nextSibling == null) {
-                addChild(documentElement);
-            } else {
-                nextSibling.insertSiblingBefore(documentElement);
-            }
-        }
-    }
-
     public void setStandalone(String isStandalone) {
         this.xmlStandalone = "yes".equalsIgnoreCase(isStandalone);
     }
@@ -379,11 +353,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
     public void setXmlVersion(String version) throws DOMException {
         setXMLVersion(version);
-    }
-
-    protected void internalSerialize(Serializer serializer, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws OutputException {
-        OMDocumentHelper.internalSerialize(this, serializer, format, cache, includeXMLDeclaration);
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {

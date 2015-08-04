@@ -26,11 +26,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomDocument;
-import org.apache.axiom.om.impl.common.OMDocumentHelper;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 import java.util.Iterator;
 
@@ -53,24 +49,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
      */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public void setOMDocumentElement(OMElement documentElement) {
-        if (documentElement == null) {
-            throw new IllegalArgumentException("documentElement must not be null");
-        }
-        OMElement existingDocumentElement = getOMDocumentElement();
-        if (existingDocumentElement == null) {
-            addChild(documentElement);
-        } else {
-            OMNode nextSibling = existingDocumentElement.getNextOMSibling();
-            existingDocumentElement.detach();
-            if (nextSibling == null) {
-                addChild(documentElement);
-            } else {
-                nextSibling.insertSiblingBefore(documentElement);
-            }
-        }
     }
 
     public void setComplete(boolean complete) {
@@ -120,15 +98,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
 
     public void setXMLEncoding(String encoding) {
         this.xmlEncoding = encoding;
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
-    }
-
-    protected void internalSerialize(Serializer serializer, OMOutputFormat format,
-                                     boolean cache, boolean includeXMLDeclaration) throws OutputException {
-        OMDocumentHelper.internalSerialize(this, serializer, format, cache, includeXMLDeclaration);
     }
 
     void notifyChildComplete() {

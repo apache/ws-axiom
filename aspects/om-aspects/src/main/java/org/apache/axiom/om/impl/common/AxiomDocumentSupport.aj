@@ -19,9 +19,59 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 public aspect AxiomDocumentSupport {
     public final OMElement AxiomDocument.getOMDocumentElement() {
         return (OMElement)coreGetDocumentElement();
+    }
+
+    public final void AxiomDocument.setOMDocumentElement(OMElement documentElement) {
+        if (documentElement == null) {
+            throw new IllegalArgumentException("documentElement must not be null");
+        }
+        OMElement existingDocumentElement = getOMDocumentElement();
+        if (existingDocumentElement == null) {
+            addChild(documentElement);
+        } else {
+            OMNode nextSibling = existingDocumentElement.getNextOMSibling();
+            existingDocumentElement.detach();
+            if (nextSibling == null) {
+                addChild(documentElement);
+            } else {
+                nextSibling.insertSiblingBefore(documentElement);
+            }
+        }
+    }
+
+    public final void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
+    }
+
+    // Overridden in AxiomSOAPMessageSupport
+    public void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format,
+            boolean cache, boolean includeXMLDeclaration) throws OutputException {
+        if (includeXMLDeclaration) {
+            //Check whether the OMOutput char encoding and OMDocument char
+            //encoding matches, if not use char encoding of OMOutput
+            String encoding = format.getCharSetEncoding();
+            if (encoding == null || "".equals(encoding)) {
+                encoding = getCharsetEncoding();
+            }
+            String version = getXMLVersion();
+            if (version == null) {
+                version = "1.0";
+            }
+            if (encoding == null) {
+                serializer.writeStartDocument(version);
+            } else {
+                serializer.writeStartDocument(encoding, version);
+            }
+        }
+        serializer.serializeChildren(this, format, cache);
+        serializer.writeEndDocument();
     }
 }

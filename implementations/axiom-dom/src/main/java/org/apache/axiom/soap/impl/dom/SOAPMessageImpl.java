@@ -22,10 +22,6 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -49,11 +45,6 @@ public class SOAPMessageImpl extends DocumentImpl implements AxiomSOAPMessage {
         if (!(element instanceof SOAPEnvelope)) {
             throw new OMException("Child not allowed; must be a SOAPEnvelope");
         }
-    }
-
-    protected void internalSerialize(Serializer serializer, OMOutputFormat format,
-                                     boolean cache, boolean includeXMLDeclaration) throws OutputException {
-        ((AxiomElement)getDocumentElement()).internalSerialize(serializer, format, cache);
     }
 
     protected DocumentImpl createClone(OMCloneOptions options) {
