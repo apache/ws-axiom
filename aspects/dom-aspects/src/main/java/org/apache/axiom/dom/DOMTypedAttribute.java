@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.dom;
 
-import org.apache.axiom.shared.INSAwareNamedNode;
-
-public interface DOMNSAwareNamedNode extends INSAwareNamedNode, DOMNamedNode {
+public interface DOMTypedAttribute extends DOMAttribute, DOMNamedNode{
 
 }

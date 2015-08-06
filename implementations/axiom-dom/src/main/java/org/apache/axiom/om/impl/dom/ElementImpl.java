@@ -92,25 +92,6 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
     }
 
     // /
-    // /org.w3c.dom.Node methods
-    // /
-
-    public String getTagName() {
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        if (namespace != null) {
-            if (namespace.getPrefix() == null
-                    || "".equals(namespace.getPrefix())) {
-                return localName;
-            } else {
-                return namespace.getPrefix() + ":" + localName;
-            }
-        } else {
-            return localName;
-        }
-    }
-
-    // /
     // /OmElement methods
     // /
 

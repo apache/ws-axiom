@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import javax.xml.XMLConstants;
-
 import org.apache.axiom.dom.DOMNSAwareAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -47,24 +45,6 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
         }
         coreSetType(OMConstants.XMLATTRTYPE_CDATA);
         internalSetNamespace(ns);
-    }
-
-    public String getName() {
-        OMNamespace namespace = getNamespace();
-        String localName = getLocalName();
-        if (namespace != null) {
-            if ((XMLConstants.XMLNS_ATTRIBUTE.equals(localName))) {
-                return localName;
-            } else if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI())) {
-                return XMLConstants.XMLNS_ATTRIBUTE + ":" + localName;
-            } else if (namespace.getPrefix().equals("")) {
-                return localName;
-            } else {
-                return namespace.getPrefix() + ":" + localName;
-            }
-        } else {
-            return localName;
-        }
     }
 
     public String toString() {

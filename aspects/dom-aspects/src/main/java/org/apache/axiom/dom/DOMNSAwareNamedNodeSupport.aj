@@ -32,4 +32,14 @@ public aspect DOMNSAwareNamedNodeSupport {
         }
         coreSetPrefix(prefix);
     }
+    
+    public final String DOMNSAwareNamedNode.internalGetName() {
+        String prefix = coreGetPrefix();
+        String localName = coreGetLocalName();
+        if (prefix.length() == 0) {
+            return localName;
+        } else {
+            return prefix + ":" + localName;
+        }
+    }
 }

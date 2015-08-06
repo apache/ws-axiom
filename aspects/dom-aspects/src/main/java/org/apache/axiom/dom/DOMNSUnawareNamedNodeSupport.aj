@@ -36,4 +36,8 @@ public aspect DOMNSUnawareNamedNodeSupport {
     public final String DOMNSUnawareNamedNode.getLocalName() {
         return null;
     }
+    
+    public final String DOMNSUnawareNamedNode.internalGetName() {
+        return coreGetName();
+    }
 }

@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.dom;
 
-public aspect DOMNSUnawareAttributeSupport {
-    public final String DOMNSUnawareAttribute.getName() {
-        return coreGetName();
+public aspect DOMTypedAttributeSupport {
+    public final String DOMTypedAttribute.getName() {
+        return internalGetName();
     }
 }
