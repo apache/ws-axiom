@@ -58,19 +58,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
     protected void checkDocumentElement(OMElement element) {
     }
 
-    void notifyChildComplete() {
-        if (getState() == INCOMPLETE && getBuilder() == null) {
-            Iterator iterator = getChildren();
-            while (iterator.hasNext()) {
-                OMNode node = (OMNode) iterator.next();
-                if (!node.isComplete()) {
-                    return;
-                }
-            }
-            this.setComplete(true);
-        }
-    }
-    
     public void build() {
         defaultBuild();
     }

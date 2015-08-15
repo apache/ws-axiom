@@ -332,4 +332,17 @@ public aspect AxiomContainerSupport {
             writer.close();
         }
     }
+
+    public final void AxiomContainer.notifyChildComplete() {
+        if (getState() == INCOMPLETE && getBuilder() == null) {
+            Iterator iterator = getChildren();
+            while (iterator.hasNext()) {
+                OMNode node = (OMNode) iterator.next();
+                if (!node.isComplete()) {
+                    return;
+                }
+            }
+            this.setComplete(true);
+        }
+    }
 }

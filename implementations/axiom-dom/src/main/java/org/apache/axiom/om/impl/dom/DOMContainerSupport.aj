@@ -68,17 +68,4 @@ public aspect DOMContainerSupport {
             };
         }
     }
-
-    void DOMContainer.notifyChildComplete() {
-        if (!this.isComplete() && getBuilder() == null) {
-            Iterator iterator = getChildren();
-            while (iterator.hasNext()) {
-                OMNode node = (OMNode) iterator.next();
-                if (!node.isComplete()) {
-                    return;
-                }
-            }
-            this.setComplete(true);
-        }
-    }
 }

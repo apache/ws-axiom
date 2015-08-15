@@ -215,19 +215,5 @@ public class OMElementImpl extends OMNodeImpl
             node.buildWithAttachments();
         }
     }
-
-    /** This method will be called when one of the children becomes complete. */
-    final void notifyChildComplete() {
-        if (getState() == INCOMPLETE && getBuilder() == null) {
-            Iterator iterator = getChildren();
-            while (iterator.hasNext()) {
-                OMNode node = (OMNode) iterator.next();
-                if (!node.isComplete()) {
-                    return;
-                }
-            }
-            this.setComplete(true);
-        }
-    }
 }
 
