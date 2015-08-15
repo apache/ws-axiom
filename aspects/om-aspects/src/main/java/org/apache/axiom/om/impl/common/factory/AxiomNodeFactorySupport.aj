@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreParentNode;
