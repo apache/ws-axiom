@@ -49,7 +49,6 @@ public aspect AxiomNodeFactorySupport {
     public final OMDocument AxiomNodeFactory.createOMDocument(OMXMLParserWrapper builder) {
         AxiomDocument document = (AxiomDocument)createDocument();
         document.coreSetBuilder(builder);
-        document.coreSetState(CoreParentNode.INCOMPLETE);
         return document;
     }
 

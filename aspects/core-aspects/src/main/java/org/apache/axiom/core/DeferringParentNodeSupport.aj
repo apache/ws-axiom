@@ -30,5 +30,6 @@ public aspect DeferringParentNodeSupport {
 
     public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
         this.builder = builder;
+        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
     }
 }

@@ -55,7 +55,6 @@ public class OMElementImpl extends OMNodeImpl
         }
         internalSetLocalName(localName);
         coreSetBuilder(builder);
-        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parent != null) {
             ((AxiomContainer)parent).addChild(this, builder != null);
         }
@@ -71,7 +70,6 @@ public class OMElementImpl extends OMNodeImpl
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
         super(factory);
-        coreSetState(COMPLETE);
         if (parent != null) {
             parent.addChild(this);
         }
@@ -86,7 +84,6 @@ public class OMElementImpl extends OMNodeImpl
      */
     OMElementImpl(OMFactory factory) {
         super(factory);
-        coreSetState(COMPLETE);
     }
 
     /** Method handleNamespace. */

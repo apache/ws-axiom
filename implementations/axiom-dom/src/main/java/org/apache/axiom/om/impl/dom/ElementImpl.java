@@ -56,7 +56,6 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
         super(factory);
         internalSetLocalName(localName);
         coreSetBuilder(builder);
-        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
         if (parentNode != null) {
             // TODO: dirty hack to get the correct semantics (reordering) if the parent is a SOAP envelope
             if (parentNode instanceof AxiomContainer) {

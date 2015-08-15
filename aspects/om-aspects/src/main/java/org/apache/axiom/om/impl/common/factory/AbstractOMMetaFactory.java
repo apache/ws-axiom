@@ -250,7 +250,6 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
         AxiomSOAPMessage message = createSOAPMessage();
         message.coreSetBuilder(builder);
-        message.coreSetState(CoreParentNode.INCOMPLETE);
         return message;
     }
 }

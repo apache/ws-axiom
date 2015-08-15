@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPMessage;
 
@@ -28,7 +27,6 @@ public aspect AxiomSOAPFactorySupport {
         // Null check for Spring-WS compatibility
         if (builder != null) {
             message.coreSetBuilder(builder);
-            message.coreSetState(CoreParentNode.INCOMPLETE);
         }
         return message;
     }
