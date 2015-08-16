@@ -66,9 +66,9 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         actual.setByteStream(new ByteArrayInputStream(baos.toByteArray()));
         actual.setSystemId(file.getUrl().toString());
         assertAbout(xml())
-                .that(xml(actual))
+                .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences(expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
-                .hasSameContentAs(xml(file.getUrl()));
+                .hasSameContentAs(file.getUrl());
     }
 }

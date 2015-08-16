@@ -53,8 +53,8 @@ public abstract class CloneTestCase extends SOAPTestCase {
         identityCheck(sourceEnv, targetEnv, "");
         
         assertAbout(xml())
-                .that(xml(targetEnv.toString()))
-                .hasSameContentAs(xml(sourceEnv.toString()));
+                .that(targetEnv.toString())
+                .hasSameContentAs(sourceEnv.toString());
         
         sourceEnv.close(false);
     }

@@ -40,9 +40,9 @@ import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.SubjectFactory;
 
 public final class XMLTruth {
-    private static final SubjectFactory<XMLSubject,XML> SUBJECT_FACTORY = new SubjectFactory<XMLSubject,XML>() {
+    private static final SubjectFactory<XMLSubject,Object> SUBJECT_FACTORY = new SubjectFactory<XMLSubject,Object>() {
         @Override
-        public XMLSubject getSubject(FailureStrategy fs, XML that) {
+        public XMLSubject getSubject(FailureStrategy fs, Object that) {
             return new XMLSubject(fs, that);
         }
         
@@ -52,6 +52,17 @@ public final class XMLTruth {
     
     static {
         factories = new ArrayList<>();
+        factories.add(new XMLFactory<XML>() {
+            @Override
+            public Class<XML> getExpectedType() {
+                return XML.class;
+            }
+
+            @Override
+            public XML createXML(XML xml) {
+                return xml;
+            }
+        });
         factories.add(new XMLFactory<InputStream>() {
             @Override
             public Class<InputStream> getExpectedType() {
@@ -179,7 +190,7 @@ public final class XMLTruth {
     
     private XMLTruth() {}
 
-    public static SubjectFactory<XMLSubject,XML> xml() {
+    public static SubjectFactory<XMLSubject,Object> xml() {
         return SUBJECT_FACTORY;
     }
 
@@ -202,7 +213,7 @@ public final class XMLTruth {
         }
     }
     
-    public static XML xml(Object object) {
+    static XML xml(Object object) {
         return xml((Class<Object>)null, object);
     }
     

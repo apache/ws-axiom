@@ -69,9 +69,7 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         InputSource actual = new InputSource();
         actual.setByteStream(new ByteArrayInputStream(out.toByteArray()));
         actual.setSystemId(file.getUrl().toString());
-        assertAbout(xml())
-                .that(xml(actual))
-                .hasSameContentAs(xml(file.getUrl()));
+        assertAbout(xml()).that(actual).hasSameContentAs(file.getUrl());
     }
 
     public static TestSuite suite() throws Exception {

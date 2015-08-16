@@ -53,8 +53,8 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         StringWriter out = new StringWriter();
         document.serializeAndConsume(out);
         assertAbout(xml())
-                .that(xml(out.toString()))
-                .hasSameContentAs(xml("<root><elem>text</elem></root>"));
+                .that(out.toString())
+                .hasSameContentAs("<root><elem>text</elem></root>");
         assertConsumed(incompleteElement);
     }
 }

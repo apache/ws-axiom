@@ -66,10 +66,10 @@ public class SAXResultSAXParserTest extends AbstractTestCase {
         actual.setByteStream(new ByteArrayInputStream(baos.toByteArray()));
         actual.setSystemId(file.getUrl().toString());
         assertAbout(xml())
-                .that(xml(actual))
+                .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences()
-                .hasSameContentAs(xml(file.getUrl()));
+                .hasSameContentAs(file.getUrl());
     }
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {

@@ -61,10 +61,10 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
         actual.setByteStream(new ByteArrayInputStream(out.toByteArray()));
         actual.setSystemId(file.getUrl().toString());
         assertAbout(xml())
-                .that(xml(actual))
+                .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences()
-                .hasSameContentAs(xml(file.getUrl()));
+                .hasSameContentAs(file.getUrl());
     }
 
     public static TestSuite suite() {

@@ -128,9 +128,9 @@ public class NamespaceTest extends TestCase {
                     .getDocumentElement();
             String actualXML = documentElement.toString();
             assertAbout(xml())
-                    .that(xml(actualXML))
+                    .that(actualXML)
                     .ignoringRedundantNamespaceDeclarations()
-                    .hasSameContentAs(xml(xml));
+                    .hasSameContentAs(xml);
             documentElement.close(false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,10 +169,7 @@ public class NamespaceTest extends TestCase {
 
         String result = personElem.toString();
 
-
-        assertAbout(xml())
-                .that(xml(result))
-                .hasSameContentAs(xml(expectedString));
+        assertAbout(xml()).that(result).hasSameContentAs(expectedString);
     }
 
     /**
@@ -200,9 +197,7 @@ public class NamespaceTest extends TestCase {
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);
 
-        assertAbout(xml())
-                .that(xml(personElem.toString()))
-                .hasSameContentAs(xml(expectedXML));
+        assertAbout(xml()).that(personElem.toString()).hasSameContentAs(expectedXML);
     }
 
     public void testOMElementSerialize() throws Exception {

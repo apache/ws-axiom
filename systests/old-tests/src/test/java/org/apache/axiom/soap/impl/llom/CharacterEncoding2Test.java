@@ -67,8 +67,8 @@ public class CharacterEncoding2Test extends TestCase {
         envelope.serialize(byteOutStr, outputFormat);
 
         assertAbout(xml())
-                .that(xml(new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1")))
-                .hasSameContentAs(xml(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1")));
+                .that(new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1"))
+                .hasSameContentAs(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1"));
         
         builder.close();
     }

@@ -109,10 +109,10 @@ public class TestSerializeOMDataSourceWritingToOutputStream extends AxiomTestCas
             elementToSerialize = element;
         }
         assertAbout(xml())
-                .that(xml(serializationStrategy.serialize(elementToSerialize).getInputSource()))
-                .hasSameContentAs(xml(serializeParent
+                .that(serializationStrategy.serialize(elementToSerialize).getInputSource())
+                .hasSameContentAs(serializeParent
                         ? "<root><test xmlns='urn:test'/></root>"
-                        : "<test xmlns='urn:test'/>"));
+                        : "<test xmlns='urn:test'/>");
         assertThat(ds.isOutputStreamUsed()).isEqualTo(serializationStrategy instanceof SerializeToOutputStream);
     }
 }

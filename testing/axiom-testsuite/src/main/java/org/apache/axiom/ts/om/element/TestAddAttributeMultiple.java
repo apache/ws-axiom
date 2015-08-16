@@ -58,6 +58,6 @@ public class TestAddAttributeMultiple extends AxiomTestCase {
     
         assertAbout(xml())
                 .that(xml(OMElement.class, omElement))
-                .hasSameContentAs(xml(expectedXML));
+                .hasSameContentAs(expectedXML);
     }
 }

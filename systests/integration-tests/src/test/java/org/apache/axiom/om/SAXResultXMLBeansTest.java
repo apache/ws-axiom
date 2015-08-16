@@ -55,8 +55,6 @@ public class SAXResultXMLBeansTest {
         ContentHandler handler = omDocument.getSAXResult().getHandler();
         document.save(handler, (LexicalHandler)handler);
         
-        assertAbout(xml())
-                .that(xml(omDocument))
-                .hasSameContentAs(xml(out.toString()));
+        assertAbout(xml()).that(omDocument).hasSameContentAs(out.toString());
     }
 }

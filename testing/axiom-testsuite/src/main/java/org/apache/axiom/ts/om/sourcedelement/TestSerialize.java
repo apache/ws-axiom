@@ -121,8 +121,8 @@ public class TestSerialize extends AxiomTestCase {
                 expectedXML = elementContext.getControl(expectedXML);
             }
             assertAbout(xml())
-                    .that(xml(result.getInputSource()))
-                    .hasSameContentAs(xml(expectedXML));
+                    .that(result.getInputSource())
+                    .hasSameContentAs(expectedXML);
             // If the underlying OMDataSource is non destructive, the expansion status should not have been
             // changed during serialization. If it is destructive and caching is enabled, then
             // the sourced element should be expanded.

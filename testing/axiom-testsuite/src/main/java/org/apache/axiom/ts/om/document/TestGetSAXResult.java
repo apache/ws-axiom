@@ -52,6 +52,6 @@ public class TestGetSAXResult extends ConformanceTestCase {
                 .ignoringWhitespaceInPrologAndEpilog()
                 .ignoringRedundantNamespaceDeclarations()
                 .expandingEntityReferences()
-                .hasSameContentAs(xml(file.getUrl()));
+                .hasSameContentAs(file.getUrl());
     }
 }

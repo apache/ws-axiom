@@ -50,10 +50,10 @@ public class TestSerialize extends AxiomTestCase {
                 message.getInputStream(), null).getSOAPEnvelope();
         expansionStrategy.apply(soapEnvelope);
         assertAbout(xml())
-                .that(xml(serializationStrategy.serialize(soapEnvelope).getInputSource()))
+                .that(serializationStrategy.serialize(soapEnvelope).getInputSource())
                 .ignoringRedundantNamespaceDeclarations()
                 .ignoringPrologAndEpilog()
-                .hasSameContentAs(xml(message.getInputStream()));
+                .hasSameContentAs(message.getInputStream());
         soapEnvelope.close(false);
     }
 }

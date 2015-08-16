@@ -63,9 +63,7 @@ public class SpacesTest extends AbstractTestCase {
 
         Document dom1 = newDocument(new InputSource(getTestResource(file)));
         Document dom2 = newDocument(resultXML);
-        assertAbout(xml())
-                .that(xml(dom2))
-                .hasSameContentAs(xml(dom1));
+        assertAbout(xml()).that(dom2).hasSameContentAs(dom1);
         rootElement.close(false);
     }
 

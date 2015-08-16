@@ -56,7 +56,7 @@ public class TestDetach extends AxiomTestCase {
         omse.detach();
         ASSERT.that(ds.hasUnclosedReaders()).isEqualTo(expansionStrategy == PARTIAL);
         ASSERT.that(ds.getReaderRequestCount()).isEqualTo(expansionStrategy == DONT_EXPAND ? 0 : 1);
-        ASSERT.about(xml()).that(xml(parent)).hasSameContentAs(xml(xml1));
-        ASSERT.about(xml()).that(xml(omse)).hasSameContentAs(xml(xml2));
+        ASSERT.about(xml()).that(parent).hasSameContentAs(xml1);
+        ASSERT.about(xml()).that(omse).hasSameContentAs(xml2);
     }
 }

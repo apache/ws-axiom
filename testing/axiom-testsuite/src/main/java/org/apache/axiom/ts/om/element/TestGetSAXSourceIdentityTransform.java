@@ -60,7 +60,7 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         assertAbout(xml())
                 .that(xml(OMDocument.class, outputDocument))
                 .ignoringWhitespaceInPrologAndEpilog()
-                .hasSameContentAs(xml(getInput()));
+                .hasSameContentAs(getInput());
         
         element.close(false);
     }

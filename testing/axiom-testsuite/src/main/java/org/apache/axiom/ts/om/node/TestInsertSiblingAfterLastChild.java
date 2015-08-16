@@ -54,7 +54,7 @@ public class TestInsertSiblingAfterLastChild extends AxiomTestCase {
         assertAbout(xml())
                 .that(xml(OMElement.class, parent))
                 .ignoringRedundantNamespaceDeclarations()
-                .hasSameContentAs(xml("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
-                        "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>"));
+                .hasSameContentAs("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
+                        "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>");
     }
 }

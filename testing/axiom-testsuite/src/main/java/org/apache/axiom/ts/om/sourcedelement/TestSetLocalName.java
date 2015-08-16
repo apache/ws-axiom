@@ -54,7 +54,7 @@ public class TestSetLocalName extends AxiomTestCase {
         }
         element.setLocalName("newroot");
         assertAbout(xml())
-                .that(xml(element.toString()))
-                .hasSameContentAs(xml("<p:newroot xmlns:p='urn:test'><child/></p:newroot>"));
+                .that(element.toString())
+                .hasSameContentAs("<p:newroot xmlns:p='urn:test'><child/></p:newroot>");
     }
 }

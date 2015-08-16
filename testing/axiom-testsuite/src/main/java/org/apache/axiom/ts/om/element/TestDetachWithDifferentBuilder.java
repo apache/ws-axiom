@@ -46,7 +46,7 @@ public class TestDetachWithDifferentBuilder extends AxiomTestCase {
         // builder.
         child.detach();
         ASSERT.that(child.isComplete()).isFalse();
-        ASSERT.about(xml()).that(xml(OMElement.class, parent)).hasSameContentAs(xml(xml1));
-        ASSERT.about(xml()).that(xml(OMElement.class, child)).hasSameContentAs(xml(xml2));
+        ASSERT.about(xml()).that(xml(OMElement.class, parent)).hasSameContentAs(xml1);
+        ASSERT.about(xml()).that(xml(OMElement.class, child)).hasSameContentAs(xml2);
     }
 }

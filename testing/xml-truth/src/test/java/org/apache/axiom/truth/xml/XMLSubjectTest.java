@@ -27,16 +27,16 @@ public class XMLSubjectTest {
     @Test
     public void testIgnoringRedundantNamespaceDeclarations1() {
         assertAbout(xml())
-                .that(xml("<a xmlns:p='#1' xmlns=''><b xmlns:p='#1'/></a>"))
+                .that("<a xmlns:p='#1' xmlns=''><b xmlns:p='#1'/></a>")
                 .ignoringRedundantNamespaceDeclarations()
-                .hasSameContentAs(xml("<a xmlns:p='#1'><b/></a>"));
+                .hasSameContentAs("<a xmlns:p='#1'><b/></a>");
     }
     
     @Test(expected=AssertionError.class)
     public void testIgnoringRedundantNamespaceDeclarations2() {
         assertAbout(xml())
-                .that(xml("<a xmlns:p='#1'><b xmlns:p='#2'/></a>"))
+                .that("<a xmlns:p='#1'><b xmlns:p='#2'/></a>")
                 .ignoringRedundantNamespaceDeclarations()
-                .hasSameContentAs(xml("<a xmlns:p='#1'><b/></a>"));
+                .hasSameContentAs("<a xmlns:p='#1'><b/></a>");
     }
 }

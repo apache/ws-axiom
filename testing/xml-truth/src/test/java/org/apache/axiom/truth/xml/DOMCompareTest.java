@@ -49,10 +49,10 @@ public class DOMCompareTest extends MatrixTestCase {
         // If necessary, let DOMTraverser expand entity references
         factory.setExpandEntityReferences(false);
         assertAbout(xml())
-                .that(xml(factory.newDocumentBuilder().parse(sample.getUrl().toString())))
+                .that(factory.newDocumentBuilder().parse(sample.getUrl().toString()))
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences(expandEntityReferences)
-                .hasSameContentAs(xml(sample.getUrl()));
+                .hasSameContentAs(sample.getUrl());
     }
 
     public static TestSuite suite() {

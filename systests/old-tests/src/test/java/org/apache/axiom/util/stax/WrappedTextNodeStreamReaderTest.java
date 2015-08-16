@@ -100,8 +100,8 @@ public class WrappedTextNodeStreamReaderTest extends TestCase {
         new StreamingOMSerializer().serialize(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.flush();
         assertAbout(xml())
-                .that(xml(writer.toString()))
-                .hasSameContentAs(xml(expectedXML));
+                .that(writer.toString())
+                .hasSameContentAs(expectedXML);
     }
 
     public void testShortStringUsingSerializer() throws Exception {
@@ -146,8 +146,8 @@ public class WrappedTextNodeStreamReaderTest extends TestCase {
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
         assertAbout(xml())
-                .that(xml(writer.toString()))
-                .hasSameContentAs(xml(expectedXML));
+                .that(writer.toString())
+                .hasSameContentAs(expectedXML);
     }
     
     public void testShortStringUsingSerializeAndConsume() throws Exception {

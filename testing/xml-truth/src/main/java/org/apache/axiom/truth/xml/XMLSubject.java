@@ -30,7 +30,8 @@ import javax.xml.namespace.QName;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 
-public final class XMLSubject extends Subject<XMLSubject,XML> {
+public final class XMLSubject extends Subject<XMLSubject,Object> {
+    private final XML xml;
     private final Set<Event> ignoredEvents = new HashSet<Event>();
     private boolean ignoreWhitespace;
     private boolean ignoreWhitespaceInPrologAndEpilog;
@@ -41,8 +42,9 @@ public final class XMLSubject extends Subject<XMLSubject,XML> {
     private boolean expandEntityReferences;
     private boolean treatWhitespaceAsText;
     
-    XMLSubject(FailureStrategy failureStrategy, XML subject) {
+    XMLSubject(FailureStrategy failureStrategy, Object subject) {
         super(failureStrategy, subject);
+        xml = XMLTruth.xml(subject);
     }
 
     public XMLSubject ignoringComments() {
@@ -200,10 +202,10 @@ public final class XMLSubject extends Subject<XMLSubject,XML> {
         return result;
     }
     
-    public void hasSameContentAs(XML other) {
+    public void hasSameContentAs(Object other) {
         try {
-            Traverser actual = createTraverser(getSubject());
-            Traverser expected = createTraverser(other);
+            Traverser actual = createTraverser(xml);
+            Traverser expected = createTraverser(XMLTruth.xml(other));
             while (true) {
                 Event actualEvent = actual.next();
                 Event expectedEvent = expected.next();

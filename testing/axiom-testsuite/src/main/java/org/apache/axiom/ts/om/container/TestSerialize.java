@@ -65,9 +65,9 @@ public class TestSerialize extends ConformanceTestCase {
                 InputSource actualIS = actual.getInputSource();
                 actualIS.setSystemId(systemId);
                 assertAbout(xml())
-                        .that(xml(actualIS))
+                        .that(actualIS)
                         .ignoringElementContentWhitespace()  // TODO: shouldn't be necessary
-                        .hasSameContentAs(xml(control[0]));
+                        .hasSameContentAs(control[0]);
             } catch (Throwable ex) {
                 System.out.println("Control:");
                 dumpInputSource(control[1]);

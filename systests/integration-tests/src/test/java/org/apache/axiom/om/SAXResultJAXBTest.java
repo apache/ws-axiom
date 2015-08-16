@@ -58,8 +58,6 @@ public class SAXResultJAXBTest {
         OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
         marshaller.marshal(order, document.getSAXResult().getHandler());
         
-        assertAbout(xml())
-                .that(xml(document))
-                .hasSameContentAs(xml(out.toString()));
+        assertAbout(xml()).that(document).hasSameContentAs(out.toString());
     }
 }

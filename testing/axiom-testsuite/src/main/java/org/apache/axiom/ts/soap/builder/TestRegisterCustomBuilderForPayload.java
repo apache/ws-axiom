@@ -59,9 +59,9 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
             InputSource is = new InputSource(new ByteArrayInputStream(byteArray.bytes));
             is.setEncoding(byteArray.encoding);
             assertAbout(xml())
-                    .that(xml(is))
+                    .that(is)
                     .ignoringNamespaceDeclarations()
-                    .hasSameContentAs(xml(message.getPayloadInputSource()));
+                    .hasSameContentAs(message.getPayloadInputSource());
         }
     }
 }

@@ -73,7 +73,7 @@ public class TestGetDocumentElement extends AxiomTestCase {
             }
             assertAbout(xml())
                     .that(xml(OMElement.class, newParent))
-                    .hasSameContentAs(xml("<newParent><root/></newParent>"));
+                    .hasSameContentAs("<newParent><root/></newParent>");
             assertTrue(element.isComplete());
             // Since we discarded the document, the nodes in the epilog will not be accessible.
             // Therefore we expect that when the document element changes its completion status,
