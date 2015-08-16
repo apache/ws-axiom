@@ -34,6 +34,10 @@
     <description />
     <url>http://ws.apache.org/axiom/</url>
 
+    <properties>
+        <skipSite>true</skipSite>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -62,12 +66,6 @@
                     <instructions>
                         <Export-Package>*;-noimport:=true</Export-Package>
                     </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

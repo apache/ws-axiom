@@ -263,6 +263,7 @@
         <springws.version>2.2.0.RELEASE</springws.version>
         
         <skipDeploy>false</skipDeploy>
+        <skipSite>false</skipSite>
     </properties>
 
     <repositories>
@@ -897,6 +898,12 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>${skipDeploy}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>${skipSite}</skip>
                 </configuration>
             </plugin>
             <plugin>
