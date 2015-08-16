@@ -234,18 +234,6 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
         super.normalize(config);
     }
 
-    public final void setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-        ParentNode parentNode = (ParentNode)coreGetParent();
-        if (parentNode != null) {
-            if (!complete) {
-                ((DOMContainer)parentNode).setComplete(false);
-            } else {
-                ((DOMContainer)parentNode).notifyChildComplete();
-            }
-        }
-    }
-
     public final void build() {
         defaultBuild();
     }

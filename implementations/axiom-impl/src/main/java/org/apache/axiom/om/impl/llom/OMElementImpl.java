@@ -133,20 +133,6 @@ public class OMElementImpl extends OMNodeImpl
 
     }
 
-    public void setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-        OMContainer parent = getParent();
-        if (parent != null) {
-            if (!complete) {
-                ((AxiomContainer)parent).setComplete(false);
-            } else if (parent instanceof OMElementImpl) {
-                ((OMElementImpl) parent).notifyChildComplete();
-            } else if (parent instanceof OMDocumentImpl) {
-                ((OMDocumentImpl) parent).notifyChildComplete();
-            }
-        }
-    }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -306,10 +306,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         return new DocumentImpl(getOMFactory());
     }
     
-    public final void setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-    }
-
     public final void build() {
         defaultBuild();
     }

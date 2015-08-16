@@ -537,4 +537,16 @@ public aspect AxiomElementSupport {
         }
         return sw.toString();
     }
+
+    public void AxiomElement.setComplete(boolean complete) {
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
+        AxiomContainer parent = (AxiomContainer)coreGetParent();
+        if (parent != null) {
+            if (!complete) {
+                parent.setComplete(false);
+            } else {
+                parent.notifyChildComplete();
+            }
+        }
+    }
 }

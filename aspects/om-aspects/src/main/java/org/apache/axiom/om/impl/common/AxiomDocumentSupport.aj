@@ -108,4 +108,7 @@ public aspect AxiomDocumentSupport {
         coreSetStandalone("yes".equalsIgnoreCase(standalone));
     }
 
+    public final void AxiomDocument.setComplete(boolean complete) {
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
+    }
 }

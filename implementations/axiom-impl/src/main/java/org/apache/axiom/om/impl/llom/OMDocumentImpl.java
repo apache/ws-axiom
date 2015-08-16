@@ -41,10 +41,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
         super(factory);
     }
 
-    public void setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-    }
-
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {
