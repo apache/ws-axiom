@@ -45,8 +45,8 @@ public class TestTransformerWithStylesheet extends TransformerTestCase {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(input), new DOMResult(actual));
         assertAbout(xml())
-                .that(xml(actual))
+                .that(xml(Document.class, actual))
                 .ignoringWhitespace()
-                .hasSameContentAs(xml(expected));
+                .hasSameContentAs(xml(Document.class, expected));
     }
 }

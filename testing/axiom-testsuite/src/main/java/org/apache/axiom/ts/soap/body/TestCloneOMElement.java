@@ -46,16 +46,16 @@ public class TestCloneOMElement extends SampleBasedSOAPTestCase {
         
         // first check whether both have the same information
         assertAbout(xml())
-                .that(xml(firstClonedBodyElement))
+                .that(xml(OMElement.class, firstClonedBodyElement))
                 .ignoringNamespaceDeclarations()
-                .hasSameContentAs(xml(body));
+                .hasSameContentAs(xml(OMElement.class, body));
         assertAbout(xml())
-                .that(xml(secondClonedBodyElement))
+                .that(xml(OMElement.class, secondClonedBodyElement))
                 .ignoringNamespaceDeclarations()
-                .hasSameContentAs(xml(body));
+                .hasSameContentAs(xml(OMElement.class, body));
         assertAbout(xml())
-                .that(xml(secondClonedBodyElement))
-                .hasSameContentAs(xml(firstClonedBodyElement));
+                .that(xml(OMElement.class, secondClonedBodyElement))
+                .hasSameContentAs(xml(OMElement.class, firstClonedBodyElement));
 
         // The clone is expected to be orphaned
         assertNull(firstClonedBodyElement.getParent());

@@ -40,8 +40,8 @@ public class TestCloneNode extends DOMTestCase {
         Document document = dbf.newDocumentBuilder().parse(file.getUrl().toString());
         Document document2 = (Document)document.cloneNode(true);
         assertAbout(xml())
-                .that(xml(document2))
+                .that(xml(Document.class, document2))
                 .treatingElementContentWhitespaceAsText()
-                .hasSameContentAs(xml(document));
+                .hasSameContentAs(xml(Document.class, document));
     }
 }

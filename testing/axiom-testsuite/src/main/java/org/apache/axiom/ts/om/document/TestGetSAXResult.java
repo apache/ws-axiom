@@ -48,7 +48,7 @@ public class TestGetSAXResult extends ConformanceTestCase {
         SAXResult result = document.getSAXResult();
         transformerFactory.newTransformer().transform(source, result);
         assertAbout(xml())
-                .that(xml(document))
+                .that(xml(OMDocument.class, document))
                 .ignoringWhitespaceInPrologAndEpilog()
                 .ignoringRedundantNamespaceDeclarations()
                 .expandingEntityReferences()

@@ -66,7 +66,7 @@ public class TestRemoveChildren extends AxiomTestCase {
         // new children.
         element.addChild(factory.createOMElement("c", null));
         assertAbout(xml())
-                .that(xml(element))
+                .that(xml(OMElement.class, element))
                 .hasSameContentAs(xml("<root><c/></root>"));
     }
 }

@@ -42,8 +42,8 @@ public class TestCloneOMElement2 extends ConformanceTestCase {
             OMElement original = OMXMLBuilderFactory.createOMBuilder(factory, TEST_PARSER_CONFIGURATION, in).getDocumentElement();
             OMElement clone = original.cloneOMElement();
             assertAbout(xml())
-                    .that(xml(clone))
-                    .hasSameContentAs(xml(original));
+                    .that(xml(OMElement.class, clone))
+                    .hasSameContentAs(xml(OMElement.class, original));
         } finally {
             in.close();
         }

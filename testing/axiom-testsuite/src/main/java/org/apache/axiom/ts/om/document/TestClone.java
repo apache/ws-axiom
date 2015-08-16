@@ -38,7 +38,7 @@ public class TestClone extends ConformanceTestCase {
                 TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString())).getDocument();
         OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
         assertAbout(xml())
-                .that(xml(clone))
-                .hasSameContentAs(xml(original));
+                .that(xml(OMDocument.class, clone))
+                .hasSameContentAs(xml(OMDocument.class, original));
     }
 }

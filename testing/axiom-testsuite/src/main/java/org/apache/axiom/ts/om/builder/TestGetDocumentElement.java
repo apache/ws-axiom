@@ -72,7 +72,7 @@ public class TestGetDocumentElement extends AxiomTestCase {
                 assertFalse(builder.isCompleted());
             }
             assertAbout(xml())
-                    .that(xml(newParent))
+                    .that(xml(OMElement.class, newParent))
                     .hasSameContentAs(xml("<newParent><root/></newParent>"));
             assertTrue(element.isComplete());
             // Since we discarded the document, the nodes in the epilog will not be accessible.

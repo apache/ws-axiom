@@ -54,7 +54,7 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
         
         element.discard();
         assertAbout(xml())
-                .that(xml(root))
+                .that(xml(OMElement.class, root))
                 .hasSameContentAs(xml("<root><sibling/></root>"));
         
         // Force the builder to complete the document. If the discard method didn't adjust the

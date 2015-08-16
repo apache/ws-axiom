@@ -41,6 +41,6 @@ public class TestCloneNodeIncomplete extends AxiomTestCase {
         Element element = (Element)OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root><child1/><child2/></root>")).getDocumentElement();
         Element clone = (Element)element.cloneNode(true);
-        assertAbout(xml()).that(xml(clone)).hasSameContentAs(xml(element));
+        assertAbout(xml()).that(xml(Element.class, clone)).hasSameContentAs(xml(Element.class, element));
     }
 }

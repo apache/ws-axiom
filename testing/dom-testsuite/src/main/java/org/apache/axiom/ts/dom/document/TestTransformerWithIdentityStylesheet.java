@@ -55,8 +55,8 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         Transformer transformer = xsltImplementation.newTransformerFactory().newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(document), new DOMResult(output));
         assertAbout(xml())
-                .that(xml(output))
+                .that(xml(Document.class, output))
                 .ignoringNamespaceDeclarations()
-                .hasSameContentAs(xml(document));
+                .hasSameContentAs(xml(Document.class, document));
     }
 }

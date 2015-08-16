@@ -57,7 +57,7 @@ public class TestAddAttributeMultiple extends AxiomTestCase {
         strategy.addAttribute(omElement, "attrNumber", attrNS2, "2");
     
         assertAbout(xml())
-                .that(xml(omElement))
+                .that(xml(OMElement.class, omElement))
                 .hasSameContentAs(xml(expectedXML));
     }
 }
