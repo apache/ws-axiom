@@ -24,6 +24,8 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.truth.xml.spi.Event;
+import org.apache.axiom.truth.xml.spi.Traverser;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;

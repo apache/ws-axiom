@@ -19,8 +19,8 @@
 package org.apache.axiom.truth;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.truth.xml.XML;
-import org.apache.axiom.truth.xml.XMLFactory;
+import org.apache.axiom.truth.xml.spi.XML;
+import org.apache.axiom.truth.xml.spi.XMLFactory;
 
 public class AxiomXMLFactory implements XMLFactory<OMContainer> {
     @Override

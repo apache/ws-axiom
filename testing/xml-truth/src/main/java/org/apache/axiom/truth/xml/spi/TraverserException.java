@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.truth.xml;
+package org.apache.axiom.truth.xml.spi;
 
 public class TraverserException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    TraverserException(Throwable cause) {
+    public TraverserException(Throwable cause) {
         super(cause);
     }
 }

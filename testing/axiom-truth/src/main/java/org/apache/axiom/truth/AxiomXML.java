@@ -19,8 +19,8 @@
 package org.apache.axiom.truth;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.truth.xml.Traverser;
-import org.apache.axiom.truth.xml.XML;
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.XML;
 
 final class AxiomXML implements XML {
     private final OMContainer root;

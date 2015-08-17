@@ -26,6 +26,10 @@ import java.util.Map;
 
 import javax.xml.XMLConstants;
 
+import org.apache.axiom.truth.xml.spi.Event;
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.TraverserException;
+
 final class RedundantNamespaceDeclarationFilter extends Filter {
     private static final Map<String,String> implicitNamespaces;
     

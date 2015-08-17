@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.truth.xml;
 
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.XML;
 import org.w3c.dom.Node;
 
 final class DOMXML implements XML {

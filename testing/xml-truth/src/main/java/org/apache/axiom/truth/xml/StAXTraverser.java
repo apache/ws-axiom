@@ -25,6 +25,9 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.truth.xml.spi.Event;
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.TraverserException;
 import org.codehaus.stax2.DTDInfo;
 
 import com.google.common.base.Strings;

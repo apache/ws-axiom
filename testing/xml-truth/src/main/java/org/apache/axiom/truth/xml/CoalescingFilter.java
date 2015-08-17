@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.truth.xml;
 
+import org.apache.axiom.truth.xml.spi.Event;
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.TraverserException;
+
 final class CoalescingFilter extends Filter {
     private Event savedEvent;
     private String savedText;

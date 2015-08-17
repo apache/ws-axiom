@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.truth.xml;
+package org.apache.axiom.truth.xml.spi;
+
 
 public interface XMLFactory<T> {
     Class<T> getExpectedType();

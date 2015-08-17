@@ -22,6 +22,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.TraverserException;
+import org.apache.axiom.truth.xml.spi.XML;
+
 import com.ctc.wstx.stax.WstxInputFactory;
 
 abstract class StAXXML implements XML {

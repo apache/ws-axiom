@@ -27,6 +27,11 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.truth.xml.spi.Event;
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.TraverserException;
+import org.apache.axiom.truth.xml.spi.XML;
+
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 

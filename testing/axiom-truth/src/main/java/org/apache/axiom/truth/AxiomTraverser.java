@@ -35,9 +35,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.truth.xml.Event;
-import org.apache.axiom.truth.xml.Traverser;
-import org.apache.axiom.truth.xml.TraverserException;
+import org.apache.axiom.truth.xml.spi.Event;
+import org.apache.axiom.truth.xml.spi.Traverser;
+import org.apache.axiom.truth.xml.spi.TraverserException;
 
 final class AxiomTraverser implements Traverser {
     private final OMContainer root;

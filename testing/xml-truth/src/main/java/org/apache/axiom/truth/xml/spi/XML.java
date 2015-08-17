@@ -16,16 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.truth.xml;
+package org.apache.axiom.truth.xml.spi;
 
-public enum Event {
-    DOCUMENT_TYPE,
-    START_ELEMENT,
-    END_ELEMENT,
-    TEXT,
-    WHITESPACE,
-    ENTITY_REFERENCE,
-    COMMENT,
-    CDATA_SECTION,
-    PROCESSING_INSTRUCTION
+public interface XML {
+    Traverser createTraverser(boolean expandEntityReferences) throws TraverserException;
 }
