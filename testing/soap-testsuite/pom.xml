@@ -34,6 +34,10 @@
     </description>
     <url>http://ws.apache.org/axiom/</url>
 
+    <properties>
+        <skipSite>true</skipSite>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

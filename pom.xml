@@ -691,6 +691,13 @@
                     <artifactId>alta-maven-plugin</artifactId>
                     <version>0.2</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.8</version>
+                    <configuration>
+                        <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -743,7 +750,7 @@
                                 <!-- Since we don't generate Maven sites for submodules the project URLs computed by Maven
                                      (parent project URL + artifact ID) are wrong. Make sure that the URL is explicitly set
                                      to the right location, at least for modules that deploy artifacts. -->
-                                if (project.properties['skipDeploy'] == 'false' &amp;&amp; project.url != 'http://ws.apache.org/axiom/') {
+                                if (project.properties['skipDeploy'] == 'false' &amp;&amp; project.properties['skipSite'] == 'true' &amp;&amp; project.url != 'http://ws.apache.org/axiom/') {
                                     throw new Error('Invalid project URL')
                                 }
                                 
@@ -945,7 +952,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.6</version>
+                <inherited>false</inherited>
                 <reportSets>
                     <reportSet>
                         <reports>

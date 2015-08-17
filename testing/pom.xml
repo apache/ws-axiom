@@ -30,7 +30,6 @@
     <packaging>pom</packaging>
 
     <name>Testing</name>
-    <url>http://ws.apache.org/axiom/</url>
 
     <modules>
         <module>axiom-testsuite</module>
@@ -45,10 +44,6 @@
         <module>xml-testsuite</module>
         <module>xml-truth</module>
     </modules>
-
-    <properties>
-        <skipSite>true</skipSite>
-    </properties>
 
     <build>
         <plugins>
@@ -72,4 +67,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports />
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

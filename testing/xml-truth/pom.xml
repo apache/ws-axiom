@@ -29,7 +29,6 @@
     <artifactId>xml-truth</artifactId>
 
     <name>Google Truth extension for XML</name>
-    <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>
@@ -51,4 +50,29 @@
             <artifactId>xercesImpl</artifactId>
         </dependency>
     </dependencies>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependencies</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc-no-fork</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

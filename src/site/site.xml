@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements. See the NOTICE file
@@ -52,6 +53,9 @@
             <item name="View Source" href="http://svn.apache.org/viewvc/webservices/axiom/trunk/?root=Apache-SVN"/>
             <item name="Code Coverage" href="code-coverage/index.html"/>
             <item name="Privacy Policy" href="privacy-policy.html"/>
+        </menu>
+        <menu name="Modules">
+            <item name="Google Truth extension for XML" href="testing/xml-truth/index.html"/>
         </menu>
     </body>
 </project>
