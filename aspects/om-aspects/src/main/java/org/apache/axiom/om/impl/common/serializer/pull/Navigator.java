@@ -33,6 +33,15 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreCharacterDataContainer;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -54,8 +63,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.AxiomChildNode;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -74,25 +81,25 @@ final class Navigator extends PullSerializerState
     
     /**
      * The current node, corresponding to the current event. It is <code>null</code> if the root
-     * node is an {@link OMElement} and the current event is
+     * node is a {@link CoreElement} and the current event is
      * {@link XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#END_DOCUMENT}.
      */
-    private OMSerializable node;
+    private CoreNode node;
 
     /**
-     * If the current node is an {@link OMContainer}, then this flag indicates whether the current
-     * event is the start event ({@link XMLStreamConstants#START_DOCUMENT} or
-     * {@link XMLStreamConstants#START_ELEMENT}) or the end event
-     * ({@link XMLStreamConstants#END_DOCUMENT} or {@link XMLStreamConstants#END_ELEMENT}) for that
-     * node. In the latter case, we have already visited the node before, hence the name of the
-     * attribute.
+     * If the current node is a {@link CoreDocument} or {@link CoreElement}, then this flag
+     * indicates whether the current event is the start event (
+     * {@link XMLStreamConstants#START_DOCUMENT} or {@link XMLStreamConstants#START_ELEMENT}) or the
+     * end event ({@link XMLStreamConstants#END_DOCUMENT} or {@link XMLStreamConstants#END_ELEMENT})
+     * for that node. In the latter case, we have already visited the node before, hence the name of
+     * the attribute.
      */
     private boolean visited;
 
     /**
      * The root node, i.e. the node from which the {@link XMLStreamReader} has been requested.
      */
-    private final OMContainer rootNode;
+    private final CoreParentNode rootNode;
 
     /** Field currentEvent Default set to START_DOCUMENT */
     private int currentEvent;
@@ -115,9 +122,9 @@ final class Navigator extends PullSerializerState
     // attributes or namespaces for the current element have not been loaded yet. The
     // two arrays are resized on demand.
     private int attributeCount = -1;
-    private OMAttribute[] attributes = new OMAttribute[16];
+    private CoreNSAwareAttribute[] attributes = new CoreNSAwareAttribute[16];
     private int namespaceCount = -1;
-    private OMNamespace[] namespaces = new OMNamespace[16];
+    private CoreNamespaceDeclaration[] namespaces = new CoreNamespaceDeclaration[16];
     
     /**
      * The data source exposed by {@link #getDataSource()}.
@@ -133,7 +140,7 @@ final class Navigator extends PullSerializerState
      * @param cache
      * @param preserveNamespaceContext
      */
-    Navigator(PullSerializer serializer, OMContainer startNode,
+    Navigator(PullSerializer serializer, CoreParentNode startNode,
                             boolean cache, boolean preserveNamespaceContext) {
         this.serializer = serializer;
         this.rootNode = startNode;
@@ -143,7 +150,7 @@ final class Navigator extends PullSerializerState
         // If the start node is a document it become the current node. If the start node
         // is an element, then there is no current node, because there is no node
         // corresponding to the current event (START_DOCUMENT).
-        if (startNode instanceof OMDocument) {
+        if (startNode instanceof CoreDocument) {
             node = startNode;
         }
         currentEvent = START_DOCUMENT;
@@ -268,9 +275,8 @@ final class Navigator extends PullSerializerState
             case CHARACTERS:
             case CDATA:
             case SPACE:
-                return ((OMText)node).getText();
             case COMMENT:
-                return ((OMComment)node).getValue();
+                return ((CoreCharacterDataContainer)node).coreGetCharacterData().toString();
             default:
                 throw new IllegalStateException();
         }
@@ -302,49 +308,58 @@ final class Navigator extends PullSerializerState
     }
 
     private void loadAttributes() {
-        // TODO: use the core model API to do this without iterators
         if (attributeCount == -1) {
             attributeCount = 0;
-            for (Iterator it = ((OMElement)node).getAllAttributes(); it.hasNext(); ) {
-                OMAttribute attr = (OMAttribute)it.next();
-                if (attributeCount == attributes.length) {
-                    OMAttribute[] newAttributes = new OMAttribute[attributes.length*2];
-                    System.arraycopy(attributes, 0, newAttributes, 0, attributes.length);
-                    attributes = newAttributes;
+            CoreAttribute attr = ((CoreElement)node).coreGetFirstAttribute();
+            while (attr != null) {
+                if (attr instanceof CoreNSAwareAttribute) {
+                    if (attributeCount == attributes.length) {
+                        CoreNSAwareAttribute[] newAttributes = new CoreNSAwareAttribute[attributes.length*2];
+                        System.arraycopy(attributes, 0, newAttributes, 0, attributes.length);
+                        attributes = newAttributes;
+                    }
+                    attributes[attributeCount] = (CoreNSAwareAttribute)attr;
+                    attributeCount++;
                 }
-                attributes[attributeCount] = attr;
-                attributeCount++;
+                attr = attr.coreGetNextAttribute();
             }
         }
     }
     
-    private OMAttribute getAttribute(int index) {
+    private CoreNSAwareAttribute getAttribute(int index) {
         loadAttributes();
         return attributes[index];
     }
     
     private void loadNamespaces() {
-        // TODO: use the core model API to do this without iterators
         if (namespaceCount == -1) {
             namespaceCount = 0;
-            for (Iterator it = ((OMElement)node).getAllDeclaredNamespaces(); it.hasNext(); ) {
-                addNamespace((OMNamespace)it.next());
+            CoreAttribute attr = ((CoreElement)node).coreGetFirstAttribute();
+            while (attr != null) {
+                if (attr instanceof CoreNamespaceDeclaration) {
+                    addNamespace((CoreNamespaceDeclaration)attr);
+                }
+                attr = attr.coreGetNextAttribute();
             }
             if (preserveNamespaceContext && node == rootNode) {
-                OMElement element = (OMElement)node;
+                CoreElement element = (CoreElement)node;
                 while (true) {
-                    OMContainer container = element.getParent();
-                    if (container instanceof OMElement) {
-                        element = (OMElement)container;
-                        decl: for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                            OMNamespace ns = (OMNamespace)it.next();
-                            String prefix = ns.getPrefix();
-                            for (int i=0; i<namespaceCount; i++) {
-                                if (namespaces[i].getPrefix().equals(prefix)) {
-                                    continue decl;
+                    CoreParentNode parent = element.coreGetParent();
+                    if (parent instanceof CoreElement) {
+                        element = (CoreElement)parent;
+                        attr = element.coreGetFirstAttribute();
+                        decl: while (attr != null) {
+                            if (attr instanceof CoreNamespaceDeclaration) {
+                                CoreNamespaceDeclaration ns = (CoreNamespaceDeclaration)attr;
+                                String prefix = ns.coreGetDeclaredPrefix();
+                                for (int i=0; i<namespaceCount; i++) {
+                                    if (namespaces[i].coreGetDeclaredPrefix().equals(prefix)) {
+                                        continue decl;
+                                    }
                                 }
+                                addNamespace(ns);
                             }
-                            addNamespace(ns);
+                            attr = attr.coreGetNextAttribute();
                         }
                     } else {
                         break;
@@ -354,18 +369,18 @@ final class Navigator extends PullSerializerState
         }
     }
     
-    private OMNamespace getNamespace(int index) {
+    private CoreNamespaceDeclaration getNamespace(int index) {
         loadNamespaces();
         return namespaces[index];
     }
     
-    private void addNamespace(OMNamespace ns) {
+    private void addNamespace(CoreNamespaceDeclaration ns) {
         // TODO: verify if this check is actually still necessary
         // Axiom internally creates an OMNamespace instance for the "xml" prefix, even
         // if it is not declared explicitly. Filter this instance out.
-        if (!"xml".equals(ns.getPrefix())) {
+        if (!"xml".equals(ns.coreGetDeclaredPrefix())) {
             if (namespaceCount == namespaces.length) {
-                OMNamespace[] newNamespaces = new OMNamespace[namespaces.length*2];
+                CoreNamespaceDeclaration[] newNamespaces = new CoreNamespaceDeclaration[namespaces.length*2];
                 System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
                 namespaces = newNamespaces;
             }
@@ -376,7 +391,7 @@ final class Navigator extends PullSerializerState
     
     String getNamespaceURI(int i) {
         if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
-            return getNamespace(i).getNamespaceURI();
+            return getNamespace(i).coreGetCharacterData().toString();
         } else {
             throw new IllegalStateException();
         }
@@ -384,7 +399,7 @@ final class Navigator extends PullSerializerState
 
     String getNamespacePrefix(int i) {
         if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
-            String prefix = getNamespace(i).getPrefix();
+            String prefix = getNamespace(i).coreGetDeclaredPrefix();
             return prefix.length() == 0 ? null : prefix; 
         } else {
             throw new IllegalStateException();
@@ -413,7 +428,7 @@ final class Navigator extends PullSerializerState
 
     String getAttributeValue(int i) {
         if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).getAttributeValue();
+            return getAttribute(i).coreGetCharacterData().toString();
         } else {
             throw new IllegalStateException(
                     "attribute type accessed in illegal event!");
@@ -422,7 +437,7 @@ final class Navigator extends PullSerializerState
 
     String getAttributeType(int i) {
         if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).getAttributeType();
+            return getAttribute(i).coreGetType();
         } else {
             throw new IllegalStateException(
                     "attribute type accessed in illegal event!");
@@ -431,7 +446,8 @@ final class Navigator extends PullSerializerState
 
     String getAttributePrefix(int i) {
         if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).getPrefix();
+            String prefix = getAttribute(i).coreGetPrefix();
+            return prefix.length() == 0 ? null : prefix;
         } else {
             throw new IllegalStateException(
                     "attribute prefix accessed in illegal event!");
@@ -440,7 +456,7 @@ final class Navigator extends PullSerializerState
 
     String getAttributeLocalName(int i) {
         if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).getLocalName();
+            return getAttribute(i).coreGetLocalName();
         } else {
             throw new IllegalStateException(
                     "attribute localName accessed in illegal event!");
@@ -449,7 +465,8 @@ final class Navigator extends PullSerializerState
 
     String getAttributeNamespace(int i) {
         if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).getNamespaceURI();
+            String namespaceURI = getAttribute(i).coreGetNamespaceURI();
+            return namespaceURI.length() == 0 ? null : namespaceURI;
         } else {
             throw new IllegalStateException(
                     "attribute nameSpace accessed in illegal event!");
@@ -458,7 +475,8 @@ final class Navigator extends PullSerializerState
 
     QName getAttributeName(int i) {
         if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).getQName();
+            // TODO: use the core model without loosing the optimization
+            return ((OMAttribute)getAttribute(i)).getQName();
         } else {
             throw new IllegalStateException(
                     "attribute count accessed in illegal event!");
@@ -548,13 +566,13 @@ final class Navigator extends PullSerializerState
             node = rootNode;
             return true;
         } else if (node instanceof OMContainer && !visited) {
-            AxiomContainer current = (AxiomContainer)node;
-            OMNode firstChild = cache ? current.getFirstOMChild() : (OMNode)current.coreGetFirstChildIfAvailable();
+            CoreParentNode current = (CoreParentNode)node;
+            CoreChildNode firstChild = cache ? current.coreGetFirstChild() : current.coreGetFirstChildIfAvailable();
             if (firstChild != null) {
                 node = firstChild;
                 visited = false;
                 return true;
-            } else if (node.isComplete()) {
+            } else if (current.getState() == CoreParentNode.COMPLETE || current.getState() == CoreParentNode.COMPACT) {
                 visited = true;
                 return true;
             } else {
@@ -566,16 +584,16 @@ final class Navigator extends PullSerializerState
             visited = true;
             return true;
         } else {
-            AxiomChildNode current = (AxiomChildNode)node;
-            AxiomChildNode nextSibling = (AxiomChildNode)(cache ? current.coreGetNextSibling() : current.coreGetNextSiblingIfAvailable());
+            CoreChildNode current = (CoreChildNode)node;
+            CoreChildNode nextSibling = cache ? current.coreGetNextSibling() : current.coreGetNextSiblingIfAvailable();
             if (nextSibling != null) {
                 node = nextSibling;
                 visited = false;
                 return true;
             } else {
-                OMContainer parent = current.getParent();
+                CoreParentNode parent = current.coreGetParent();
                 node = parent;
-                if (parent.isComplete() || parent.getBuilder() == null) { // TODO: review this condition
+                if (parent.getState() == CoreParentNode.COMPLETE || parent.getState() == CoreParentNode.COMPACT || parent.getBuilder() == null) { // TODO: review this condition
                     visited = true;
                     return true;
                 } else {
@@ -625,13 +643,13 @@ final class Navigator extends PullSerializerState
             attributeCount = -1;
             namespaceCount = -1;
         } else {
-            OMContainer container = (OMContainer)node;
+            CoreParentNode container = (CoreParentNode)node;
             StAXOMBuilder builder = (StAXOMBuilder)container.getBuilder();
             int depth = 1;
             // Find the root node for the builder (i.e. the topmost node having the same
             // builder as the current node)
-            while (container != rootNode && container instanceof OMElement) {
-                OMContainer parent = ((OMElement)container).getParent();
+            while (container != rootNode && container instanceof CoreElement) {
+                CoreParentNode parent = ((CoreElement)container).coreGetParent();
                 if (parent.getBuilder() != builder) {
                     break;
                 }
@@ -642,7 +660,7 @@ final class Navigator extends PullSerializerState
             if (log.isDebugEnabled()) {
                 log.debug("Switching to pull-through mode; first event is " + XMLEventUtils.getEventTypeString(reader.getEventType()) + "; depth is " + depth);
             }
-            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, reader, depth);
+            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, (OMContainer)container, reader, depth);
             serializer.pushState(wrapper);
             node = container;
             visited = true;
@@ -655,13 +673,13 @@ final class Navigator extends PullSerializerState
     }
 
     Object getProperty(String s) throws IllegalArgumentException {
-        OMContainer container;
+        CoreParentNode container;
         if (node == null) {
             container = rootNode;
         } else if (node instanceof OMContainer) {
-            container = (OMContainer)node;
+            container = (CoreParentNode)node;
         } else {
-            container = ((OMNode)node).getParent();
+            container = ((CoreChildNode)node).coreGetParent();
         }
         OMXMLParserWrapper builder = container.getBuilder();
         // Delegate to the builder's parser.
@@ -683,7 +701,7 @@ final class Navigator extends PullSerializerState
     }
 
     NamespaceContext getNamespaceContext() {
-        return new MapBasedNamespaceContext(getAllNamespaces(node));
+        return new MapBasedNamespaceContext(getAllNamespaces((OMSerializable)node));
     }
 
     String getEncoding() {

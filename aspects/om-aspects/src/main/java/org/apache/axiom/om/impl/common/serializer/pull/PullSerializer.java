@@ -27,11 +27,11 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -60,7 +60,7 @@ public final class PullSerializer extends AbstractXMLStreamReader implements Dat
      */
     private boolean isDataSourceALeaf;
 
-    public PullSerializer(OMContainer startNode, boolean cache, boolean preserveNamespaceContext) {
+    public PullSerializer(CoreParentNode startNode, boolean cache, boolean preserveNamespaceContext) {
         state = new Navigator(this, startNode, cache, preserveNamespaceContext);
         if (log.isDebugEnabled()) {
             log.debug("Pull serializer created; initial state is " + state);
