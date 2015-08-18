@@ -468,14 +468,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public int getState() {
-        if (isExpanded) {
-            return super.getState();
-        } else {
-            return COMPLETE;
-        }
-    }
-
     public void buildWithAttachments() {
         
         // If not done, force the parser to build the elements
