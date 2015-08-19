@@ -78,14 +78,6 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     }
 
     public void testConstructors() {
-
-        try {
-            factory.createOMElement("", null);
-            fail("This should fail as OMElement should not be allowed to create without a local name ");
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-
         assertTrue("Namespace having same information, declared in the same context, should share" +
                 " the same namespace object",
                    firstElement.getNamespace() != secondElement.getNamespace());

@@ -50,9 +50,6 @@ public class OMElementImpl extends OMNodeImpl
     public OMElementImpl(OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                     OMFactory factory, boolean generateNSDecl) {
         super(factory);
-        if (localName == null || localName.trim().length() == 0) {
-            throw new OMException("localname can not be null or empty");
-        }
         internalSetLocalName(localName);
         coreSetBuilder(builder);
         if (parent != null) {
