@@ -32,7 +32,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
