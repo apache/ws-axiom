@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.common.factory;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
