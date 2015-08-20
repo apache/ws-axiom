@@ -43,6 +43,10 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 
     protected Exception e;
 
+    public SOAPFaultImpl(OMFactory factory) {
+        super(factory);
+    }
+
     /**
      * Constructor SOAPFaultImpl
      *

@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -28,6 +29,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultDetail;
 import org.apache.axiom.soap.impl.llom.SOAPFaultDetailImpl;
 
 public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomSOAP11FaultDetail {
+    public SOAP11FaultDetailImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP11FaultDetailImpl(SOAPFactory factory) {
         super(null, factory);
     }

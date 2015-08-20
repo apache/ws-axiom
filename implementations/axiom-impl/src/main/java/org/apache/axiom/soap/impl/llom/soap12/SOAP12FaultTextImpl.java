@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
@@ -38,6 +39,14 @@ import org.apache.axiom.soap.impl.llom.SOAPElement;
 public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
     private OMAttribute langAttr;
     private OMNamespace langNamespace = null;
+
+    public SOAP12FaultTextImpl(OMFactory factory) {
+        super(factory);
+        // TODO: get rid of this crap
+        this.langNamespace = factory.createOMNamespace(
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    }
 
     public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
             throws SOAPProcessingException {

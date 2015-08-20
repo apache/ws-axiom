@@ -31,6 +31,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAPFaultRole;
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements
         AxiomSOAPFaultRole {
 
+    public SOAPFaultRoleImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAPFaultRoleImpl(SOAPFault parent,
                              String localName,
                              boolean extractNamespaceFromParent,

@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -29,6 +30,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
+    public SOAP12BodyImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAP12BodyImpl(SOAPFactory factory) {
         super(SOAPConstants.BODY_LOCAL_NAME, factory.getNamespace(),

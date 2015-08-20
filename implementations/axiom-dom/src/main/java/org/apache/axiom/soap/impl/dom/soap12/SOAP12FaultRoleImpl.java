@@ -33,6 +33,9 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultRole;
 import org.apache.axiom.soap.impl.dom.SOAPFaultRoleImpl;
 
 public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP12FaultRole {
+    public SOAP12FaultRoleImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAP12FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {

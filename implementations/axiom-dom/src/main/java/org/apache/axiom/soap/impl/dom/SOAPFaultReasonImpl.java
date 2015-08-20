@@ -39,6 +39,10 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         SOAPFaultReason {
     protected SOAPFaultText text;
 
+    public SOAPFaultReasonImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAPFaultReasonImpl(ParentNode parentNode, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultReasonQName().getLocalPart(),

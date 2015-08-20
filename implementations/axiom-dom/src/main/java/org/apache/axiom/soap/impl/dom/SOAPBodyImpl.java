@@ -35,6 +35,10 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
         OMConstants {
+    public SOAPBodyImpl(OMFactory factory) {
+        super(factory);
+    }
+
     /** @param envelope  */
     public SOAPBodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {

@@ -36,7 +36,9 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class SOAP11HeaderImpl extends SOAPHeaderImpl {
-
+    public SOAP11HeaderImpl(OMFactory factory) {
+        super(factory);
+    }
 
     /** @param envelope  */
     public SOAP11HeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)

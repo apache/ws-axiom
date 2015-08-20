@@ -34,6 +34,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultReason;
 import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
+    public SOAP12FaultReasonImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12FaultReasonImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);

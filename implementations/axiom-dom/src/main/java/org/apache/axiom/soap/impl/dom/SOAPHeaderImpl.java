@@ -46,6 +46,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
+    public SOAPHeaderImpl(OMFactory factory) {
+        super(factory);
+    }
+
     /** @param envelope  */
     public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {

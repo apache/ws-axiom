@@ -36,6 +36,10 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl {
+    public SOAP12HeaderImpl(OMFactory factory) {
+        super(factory);
+    }
+
     /** @param envelope  */
     public SOAP12HeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {

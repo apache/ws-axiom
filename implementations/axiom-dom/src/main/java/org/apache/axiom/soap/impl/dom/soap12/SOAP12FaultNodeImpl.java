@@ -33,6 +33,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 
 public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
+    public SOAP12FaultNodeImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true, factory);

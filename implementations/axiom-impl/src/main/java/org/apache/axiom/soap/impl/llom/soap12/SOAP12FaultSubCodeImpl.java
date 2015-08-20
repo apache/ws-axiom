@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -38,6 +39,10 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements SOAPFaultSubC
     private SOAPFaultValue value;
     private SOAPFaultSubCode subCode;
     
+    public SOAP12FaultSubCodeImpl(OMFactory factory) {
+        super(factory);
+    }
+
     //changed
     public SOAP12FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
             throws SOAPProcessingException {

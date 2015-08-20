@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -28,6 +29,9 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultRole;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
 
 public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP11FaultRole {
+    public SOAP11FaultRoleImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAP11FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {

@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -30,6 +31,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
+    public SOAP12FaultReasonImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                  SOAPFactory factory) {
         super(parent, builder, factory);

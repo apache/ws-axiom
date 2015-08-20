@@ -38,6 +38,10 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultCodeImpl;
 import javax.xml.namespace.QName;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP12FaultCode {
+    public SOAP12FaultCodeImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12FaultCodeImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);

@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -28,9 +29,14 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
 
 import javax.xml.namespace.QName;
+
 import java.util.Iterator;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl {
+    public SOAP12HeaderImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12HeaderImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }

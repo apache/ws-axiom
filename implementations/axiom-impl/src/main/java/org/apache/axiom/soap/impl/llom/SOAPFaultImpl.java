@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
@@ -35,6 +36,7 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -43,6 +45,10 @@ public abstract class SOAPFaultImpl extends SOAPElement
         implements SOAPFault, OMConstants {
 
     protected Exception e;
+
+    public SOAPFaultImpl(OMFactory factory) {
+        super(factory);
+    }
 
     protected SOAPFaultImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.SOAPFAULT_LOCAL_NAME, ns, factory);

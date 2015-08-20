@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -50,8 +51,12 @@ import javax.xml.namespace.QName;
 
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
-    
     private static final Log log = LogFactory.getLog(SOAPHeaderImpl.class);
+    
+    public SOAPHeaderImpl(OMFactory factory) {
+        super(factory);
+    }
+
     protected SOAPHeaderImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.HEADER_LOCAL_NAME, ns, factory);
     }

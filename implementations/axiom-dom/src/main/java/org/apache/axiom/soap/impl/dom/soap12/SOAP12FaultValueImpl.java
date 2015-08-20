@@ -32,6 +32,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 
 public class SOAP12FaultValueImpl extends SOAPElement implements SOAPFaultValue {
+    public SOAP12FaultValueImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAP12FaultValueImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {

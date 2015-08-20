@@ -40,6 +40,10 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements SOAPFaultSubC
     private SOAPFaultValue value;
     private SOAPFaultSubCode subCode;
     
+    public SOAP12FaultSubCodeImpl(OMFactory factory) {
+        super(factory);
+    }
+
     //changed
     public SOAP12FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
             throws SOAPProcessingException {

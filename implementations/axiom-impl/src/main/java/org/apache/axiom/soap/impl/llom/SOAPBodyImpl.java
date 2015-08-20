@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -45,6 +46,10 @@ public abstract class SOAPBodyImpl extends SOAPElement
     private boolean lookAheadSuccessful = false;
     private String lookAheadLocalName = null;
     private OMNamespace lookAheadNS = null;
+
+    public SOAPBodyImpl(OMFactory factory) {
+        super(factory);
+    }
 
     protected SOAPBodyImpl(String localName, OMNamespace ns,
                            SOAPFactory factory) {

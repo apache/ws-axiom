@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
@@ -30,6 +31,10 @@ import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
+    public SOAPFaultCodeImpl(OMFactory factory) {
+        super(factory);
+    }
+
     protected SOAPFaultCodeImpl(String localName, OMNamespace ns, SOAPFactory factory) {
         super(localName, ns, factory);
     }

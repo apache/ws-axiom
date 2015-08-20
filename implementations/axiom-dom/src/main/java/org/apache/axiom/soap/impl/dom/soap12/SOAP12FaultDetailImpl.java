@@ -32,6 +32,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultDetail;
 import org.apache.axiom.soap.impl.dom.SOAPFaultDetailImpl;
 
 public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomSOAP12FaultDetail {
+    public SOAP12FaultDetailImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12FaultDetailImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);

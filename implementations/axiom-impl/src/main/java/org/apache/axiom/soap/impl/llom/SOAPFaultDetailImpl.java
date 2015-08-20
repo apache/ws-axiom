@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
@@ -30,6 +31,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultDetail;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements AxiomSOAPFaultDetail {
+    public SOAPFaultDetailImpl(OMFactory factory) {
+        super(factory);
+    }
 
     protected SOAPFaultDetailImpl(OMNamespace ns, SOAPFactory factory) {
         super(factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), ns, factory);

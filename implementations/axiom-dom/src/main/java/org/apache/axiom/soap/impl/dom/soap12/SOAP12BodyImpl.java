@@ -33,6 +33,10 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
+    public SOAP12BodyImpl(OMFactory factory) {
+        super(factory);
+    }
+
     /** @param envelope  */
     public SOAP12BodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {

@@ -34,6 +34,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP11Fault;
 import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
 
 public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {
+    public SOAP11FaultImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP11FaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, e, factory);

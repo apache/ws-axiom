@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -36,6 +37,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFaultReason {
+    public SOAPFaultReasonImpl(OMFactory factory) {
+        super(factory);
+    }
 
     protected SOAPFaultReasonImpl(OMNamespace ns, SOAPFactory factory) {
         super(factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), ns, factory);

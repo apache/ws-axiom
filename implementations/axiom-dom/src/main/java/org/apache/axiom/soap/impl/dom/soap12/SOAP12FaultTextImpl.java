@@ -42,6 +42,14 @@ public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
     private OMAttribute langAttr;
     private final OMNamespace langNamespace;
 
+    public SOAP12FaultTextImpl(OMFactory factory) {
+        super(factory);
+        // TODO: get rid of this crap
+        this.langNamespace = factory.createOMNamespace(
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    }
+
     public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, true, factory);

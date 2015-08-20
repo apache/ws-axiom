@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
@@ -34,6 +35,10 @@ import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 import javax.xml.namespace.QName;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP12FaultCode {
+    public SOAP12FaultCodeImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP12FaultCodeImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }

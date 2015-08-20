@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -31,6 +32,9 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
 public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
+    public SOAP12FaultNodeImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAP12FaultNodeImpl(SOAPFactory factory) {
         super(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, factory.getNamespace(), factory);
