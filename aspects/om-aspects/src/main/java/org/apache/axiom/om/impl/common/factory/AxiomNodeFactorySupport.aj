@@ -24,6 +24,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -32,6 +33,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
@@ -179,5 +181,29 @@ public aspect AxiomNodeFactorySupport {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }
         return node;
+    }
+
+    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMNamespace ns) {
+        return createOMElement(localName, ns, null);
+    }
+
+    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMNamespace ns, OMContainer parent) {
+        AxiomElement element = (AxiomElement)createNSAwareElement();
+        if (parent != null) {
+            parent.addChild(element);
+        }
+        element.initName(localName, ns, true);
+        return element;
+    }
+
+    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMContainer parent,
+            OMXMLParserWrapper builder) {
+        AxiomElement element = (AxiomElement)createNSAwareElement();
+        element.coreSetBuilder(builder);
+        if (parent != null) {
+            ((AxiomContainer)parent).addChild(element, true);
+        }
+        element.initName(localName, null, false);
+        return element;
     }
 }

@@ -24,6 +24,7 @@ import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
@@ -43,7 +44,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
@@ -59,8 +59,6 @@ import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
 import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
-import org.apache.axiom.om.impl.dom.OMDOMException;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -84,25 +82,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public OMMetaFactory getMetaFactory() {
         return metaFactory;
-    }
-
-    public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new ElementImpl(null, localName, ns, null, this, true);
-    }
-
-    public OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent) throws OMDOMException {
-        if (parent == null) {
-            return createOMElement(localName, ns);
-        } else {
-            return new ElementImpl((ParentNode) parent, localName, ns, null, this, true);
-        }
-    }
-
-    /** Creates an OMElement with the builder. */
-    public OMElement createOMElement(String localName, OMContainer parent,
-                                     OMXMLParserWrapper builder) {
-        return new ElementImpl((ParentNode) parent, localName, null, builder, this, false);
     }
 
     public OMSourcedElement createOMElement(OMDataSource source) {
@@ -308,6 +287,10 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public CoreCDATASection createCDATASection() {
         return new CDATASectionImpl(this);
+    }
+
+    public final CoreNSAwareElement createNSAwareElement() {
+        return new ElementImpl(this);
     }
 
     public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {

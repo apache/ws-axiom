@@ -50,10 +50,13 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
 
     private int lineNumber;
 
+    public ElementImpl(OMFactory factory) {
+        super(factory);
+    }
+    
     public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                        OMFactory factory, boolean generateNSDecl) {
         super(factory);
-        internalSetLocalName(localName);
         coreSetBuilder(builder);
         if (parentNode != null) {
             // TODO: dirty hack to get the correct semantics (reordering) if the parent is a SOAP envelope
@@ -63,7 +66,7 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
                 parentNode.coreAppendChild(this, builder != null);
             }
         }
-        internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
+        initName(localName, ns, generateNSDecl);
     }
 
     private final String checkNamespaceIsDeclared(String prefix, String namespaceURI, boolean allowDefaultNamespace, boolean declare) {

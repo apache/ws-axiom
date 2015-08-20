@@ -65,6 +65,11 @@ import org.apache.commons.logging.LogFactory;
 public aspect AxiomElementSupport {
     private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
     
+    public final void AxiomElement.initName(String localName, OMNamespace ns, boolean generateNSDecl) {
+        internalSetLocalName(localName);
+        internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
+    }
+    
     final void AxiomElement.beforeSetLocalName() {
         forceExpand();
     }

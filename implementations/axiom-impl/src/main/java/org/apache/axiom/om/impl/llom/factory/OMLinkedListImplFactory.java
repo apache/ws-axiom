@@ -24,6 +24,7 @@ import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNSAwareAttribute;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
@@ -42,7 +43,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -85,34 +85,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
 
     public OMMetaFactory getMetaFactory() {
         return metaFactory;
-    }
-
-    /**
-     * Method createOMElement.
-     *
-     * @param localName
-     * @param ns
-     * @return Returns OMElement.
-     */
-    public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new OMElementImpl(null, localName, ns, null, this, true);
-    }
-
-    public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return new OMElementImpl(parent, localName, ns, null, this, true);
-    }
-
-    /**
-     * Method createOMElement.
-     *
-     * @param localName
-     * @param parent
-     * @param builder
-     * @return Returns OMElement.
-     */
-    public OMElement createOMElement(String localName, OMContainer parent,
-                                     OMXMLParserWrapper builder) {
-        return new OMElementImpl(parent, localName, null, builder, this, false);
     }
 
     public OMElement createOMElement(String localName, String namespaceURI, String prefix) {
@@ -310,6 +282,10 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     
     public CoreCDATASection createCDATASection() {
         return new CDATASectionImpl(this);
+    }
+
+    public final CoreNSAwareElement createNSAwareElement() {
+        return new OMElementImpl(this);
     }
 
     public CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value,

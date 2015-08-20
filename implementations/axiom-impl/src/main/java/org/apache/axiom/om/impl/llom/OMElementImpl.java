@@ -50,12 +50,11 @@ public class OMElementImpl extends OMNodeImpl
     public OMElementImpl(OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                     OMFactory factory, boolean generateNSDecl) {
         super(factory);
-        internalSetLocalName(localName);
         coreSetBuilder(builder);
         if (parent != null) {
             ((AxiomContainer)parent).addChild(this, builder != null);
         }
-        internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
+        initName(localName, ns, generateNSDecl);
     }
 
     /**
@@ -74,12 +73,7 @@ public class OMElementImpl extends OMNodeImpl
         internalSetNamespace(handleNamespace(qname));
     }
     
-    /**
-     * Constructor reserved for use by {@link OMSourcedElementImpl}.
-     * 
-     * @param factory
-     */
-    OMElementImpl(OMFactory factory) {
+    public OMElementImpl(OMFactory factory) {
         super(factory);
     }
 
