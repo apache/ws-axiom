@@ -29,6 +29,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends ElementImpl {
+    public SOAPElement(OMFactory factory) {
+        super(factory);
+    }
 
     /** @param parent  */
     protected SOAPElement(OMElement parent,

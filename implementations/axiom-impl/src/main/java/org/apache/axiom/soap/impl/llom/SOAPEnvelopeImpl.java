@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -41,35 +42,20 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
 
 import javax.xml.namespace.QName;
 
 /** Class SOAPEnvelopeImpl */
 public class SOAPEnvelopeImpl extends SOAPElement
-        implements SOAPEnvelope, OMConstants {
+        implements AxiomSOAPEnvelope, OMConstants {
     private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
 
-    /**
-     * Constructor
-     * @param message
-     * @param builder the OMXMLParserWrapper building this envelope
-     * @param factory the SOAPFactory building this envelope
-     */
-    public SOAPEnvelopeImpl(SOAPMessage message, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(message, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
-    }
-
-    /**
-     * Constructor
-     * @param ns OMNamespace for this envelope
-     * @param factory SOAPFactory associated with this envelope
-     */
-    public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
+    public SOAPEnvelopeImpl(OMFactory factory) {
+        super(factory);
     }
 
     public SOAPVersion getVersion() {

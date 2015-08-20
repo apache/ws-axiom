@@ -37,19 +37,23 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 
-public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
+public class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         OMConstants {
+
+    public SOAPEnvelopeImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAPEnvelopeImpl(ParentNode parentNode, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {

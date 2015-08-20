@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
@@ -29,6 +30,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends OMElementImpl {
+    public SOAPElement(OMFactory factory) {
+        super(factory);
+    }
 
     /**
      * @param parent

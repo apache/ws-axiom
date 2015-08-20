@@ -19,7 +19,6 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -51,18 +50,6 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
         return message;
     }
     
-    public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl(message, builder, this);
-    }
-
-    public final SOAPEnvelope createSOAPEnvelope() {
-        return createSOAPEnvelope(getNamespace());
-    }
-    
-    public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return new SOAPEnvelopeImpl(ns, this);
-    }
-
     public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
         SOAPEnvelope env = createSOAPEnvelope();
         createSOAPHeader(env);

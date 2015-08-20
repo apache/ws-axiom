@@ -62,6 +62,8 @@ import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
+import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
+import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11HeaderBlockImpl;
 import org.apache.axiom.soap.impl.llom.soap12.SOAP12HeaderBlockImpl;
 
@@ -293,6 +295,8 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         CoreNSAwareElement element;
         if (type == AxiomElement.class) {
             element = new OMElementImpl(this);
+        } else if (type == AxiomSOAPEnvelope.class) {
+            element = new SOAPEnvelopeImpl(this);
         } else if (type == AxiomSOAP11HeaderBlock.class) {
             element = new SOAP11HeaderBlockImpl(this);
         } else if (type == AxiomSOAP12HeaderBlock.class) {

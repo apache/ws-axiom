@@ -20,6 +20,8 @@ package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
@@ -34,6 +36,18 @@ public aspect AxiomSOAPFactorySupport {
         return message;
     }
     
+    public final SOAPEnvelope AxiomSOAPFactory.createSOAPEnvelope() {
+        return createSOAPEnvelope(getNamespace());
+    }
+    
+    public final SOAPEnvelope AxiomSOAPFactory.createSOAPEnvelope(OMNamespace ns) {
+        return createAxiomElement(AxiomSOAPEnvelope.class, null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, null, true);
+    }
+
+    public final SOAPEnvelope AxiomSOAPFactory.createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
+        return createAxiomElement(AxiomSOAPEnvelope.class, message, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, null, builder, false);
+    }
+
     public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
         return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, ns, null, true);
     }
