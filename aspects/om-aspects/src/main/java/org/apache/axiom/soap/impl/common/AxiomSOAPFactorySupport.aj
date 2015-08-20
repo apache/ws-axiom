@@ -18,7 +18,10 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 
 public aspect AxiomSOAPFactorySupport {
@@ -29,5 +32,17 @@ public aspect AxiomSOAPFactorySupport {
             message.coreSetBuilder(builder);
         }
         return message;
+    }
+    
+    public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
+        return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, ns, null, this, true);
+    }
+
+    public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, OMNamespace ns) {
+        return createAxiomElement(getSOAPHeaderBlockClass(), null, localName, ns, null, this, true);
+    }
+
+    public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, SOAPHeader parent, OMXMLParserWrapper builder) {
+        return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, null, builder, this, false);
     }
 }

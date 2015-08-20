@@ -33,6 +33,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 public abstract class SOAPHeaderBlockImpl extends ElementImpl implements AxiomSOAPHeaderBlock {
+    public SOAPHeaderBlockImpl(OMFactory factory) {
+        super(factory);
+    }
 
     public SOAPHeaderBlockImpl(ParentNode parentNode, String localName, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {

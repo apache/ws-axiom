@@ -19,22 +19,18 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP11HeaderBlock {
-
-    public SOAP11HeaderBlockImpl(OMContainer parent, String localName, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parent, localName, ns, builder, factory, generateNSDecl);
+    public SOAP11HeaderBlockImpl(OMFactory factory) {
+        super(factory);
     }
 
     public SOAP11HeaderBlockImpl(SOAPFactory factory, OMDataSource source) {

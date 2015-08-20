@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -204,6 +205,18 @@ public aspect AxiomNodeFactorySupport {
             ((AxiomContainer)parent).addChild(element, true);
         }
         element.initName(localName, null, false);
+        return element;
+    }
+
+    public final <T extends AxiomElement> T AxiomNodeFactory.createAxiomElement(Class<T> type,
+            OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
+            OMFactory factory, boolean generateNSDecl) {
+        T element = createNSAwareElement(type);
+        element.coreSetBuilder(builder);
+        if (parent != null) {
+            ((AxiomContainer)parent).addChild(element, builder != null);
+        }
+        element.initName(localName, ns, generateNSDecl);
         return element;
     }
 }

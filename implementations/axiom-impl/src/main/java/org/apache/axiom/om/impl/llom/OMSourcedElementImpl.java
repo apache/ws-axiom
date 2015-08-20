@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -153,9 +152,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         definedNamespaceSet = true;
     }
 
-    public OMSourcedElementImpl(OMContainer parent, String localName, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parent, localName, ns, builder, factory, generateNSDecl);
+    public OMSourcedElementImpl(OMFactory factory) {
+        super(factory);
     }
 
     /**

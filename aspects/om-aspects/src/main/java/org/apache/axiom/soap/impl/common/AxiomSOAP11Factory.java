@@ -18,10 +18,6 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
-import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
+public interface AxiomSOAP11Factory extends AxiomSOAPFactory {
 
-public interface AxiomSOAPFactory extends AxiomNodeFactory, SOAPFactoryEx {
-    Class<? extends AxiomSOAPHeaderBlock> getSOAPHeaderBlockClass();
-    AxiomSOAPMessage createSOAPMessage();
 }

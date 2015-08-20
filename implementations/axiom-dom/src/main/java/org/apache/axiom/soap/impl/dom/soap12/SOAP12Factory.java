@@ -37,16 +37,15 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12Factory;
 import org.apache.axiom.soap.impl.dom.SOAPFactoryImpl;
 
 /**
  */
-public class SOAP12Factory extends SOAPFactoryImpl implements SOAP12FactoryEx {
+public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory {
     public SOAP12Factory(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -73,24 +72,6 @@ public class SOAP12Factory extends SOAPFactoryImpl implements SOAP12FactoryEx {
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope,
                                        OMXMLParserWrapper builder) {
         return new SOAP12HeaderImpl((ParentNode)envelope, null, builder, this, false);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
-            throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl(null, localName, ns, null, this, true);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns,
-                                                 SOAPHeader parent) throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl((ParentNode)parent, localName, ns, null, this, true);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 SOAPHeader parent,
-                                                 OMXMLParserWrapper builder)
-            throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl((ParentNode)parent, localName, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e) throws SOAPProcessingException {

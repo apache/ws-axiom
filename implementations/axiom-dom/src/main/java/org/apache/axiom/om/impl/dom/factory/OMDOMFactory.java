@@ -62,6 +62,10 @@ import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
+import org.apache.axiom.soap.impl.dom.soap11.SOAP11HeaderBlockImpl;
+import org.apache.axiom.soap.impl.dom.soap12.SOAP12HeaderBlockImpl;
 
 import javax.xml.namespace.QName;
 
@@ -291,6 +295,18 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public final CoreNSAwareElement createNSAwareElement() {
         return new ElementImpl(this);
+    }
+
+    public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
+        CoreNSAwareElement element;
+        if (type == AxiomSOAP11HeaderBlock.class) {
+            element = new SOAP11HeaderBlockImpl(this);
+        } else if (type == AxiomSOAP12HeaderBlock.class) {
+            element = new SOAP12HeaderBlockImpl(this);
+        } else {
+            throw new IllegalArgumentException();
+        }
+        return type.cast(element);
     }
 
     public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {

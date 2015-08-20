@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
@@ -40,9 +39,8 @@ import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         implements AxiomSOAPHeaderBlock {
 
-    public SOAPHeaderBlockImpl(OMContainer parent, String localName, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parent, localName, ns, builder, factory, generateNSDecl);
+    public SOAPHeaderBlockImpl(OMFactory factory) {
+        super(factory);
     }
 
     public SOAPHeaderBlockImpl(SOAPFactory factory, OMDataSource source) {

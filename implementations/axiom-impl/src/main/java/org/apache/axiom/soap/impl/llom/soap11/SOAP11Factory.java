@@ -42,11 +42,12 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
+import org.apache.axiom.soap.impl.common.AxiomSOAP11Factory;
 import org.apache.axiom.soap.impl.llom.SOAPFactoryImpl;
 
 /**
  */
-public class SOAP11Factory extends SOAPFactoryImpl {
+public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory {
     /**
      * For internal use only.
      * 
@@ -90,17 +91,6 @@ public class SOAP11Factory extends SOAPFactoryImpl {
         return new SOAP11HeaderImpl(envelope, builder, this);
     }
 
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns, SOAPHeader parent)
-            throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(parent, localName, ns, null, this, true);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns) throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(null, localName, ns, null, this, true);
-    }
-
     public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
         return new SOAP11HeaderBlockImpl(this, source);
     }
@@ -110,12 +100,6 @@ public class SOAP11Factory extends SOAPFactoryImpl {
                                                  OMDataSource ds) 
         throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, this, ds);
-    }
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 SOAPHeader parent,
-                                                 OMXMLParserWrapper builder)
-            throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(parent, localName, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)

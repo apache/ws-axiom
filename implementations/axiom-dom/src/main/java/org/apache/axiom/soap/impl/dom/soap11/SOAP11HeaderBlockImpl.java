@@ -31,6 +31,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP11HeaderBlock {
+    public SOAP11HeaderBlockImpl(OMFactory factory) {
+        super(factory);
+    }
+
     public SOAP11HeaderBlockImpl(ParentNode parentNode, String localName, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, localName, ns, builder, factory, generateNSDecl);
