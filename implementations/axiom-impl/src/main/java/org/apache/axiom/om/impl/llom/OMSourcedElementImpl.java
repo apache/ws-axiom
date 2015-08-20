@@ -65,7 +65,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private OMDataSource dataSource;
 
     /** Namespace for element, needed in order to bypass base class handling. */
-    private OMNamespace definedNamespace = null;
+    private OMNamespace definedNamespace;
     
     /**
      * Flag indicating whether the {@link #definedNamespace} attribute has been set. If this flag is
@@ -77,7 +77,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private boolean definedNamespaceSet;
 
     /** Flag for parser provided to base element class. */
-    private boolean isExpanded;
+    private boolean isExpanded = true;
 
     private static final Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     
@@ -156,8 +156,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMSourcedElementImpl(OMContainer parent, String localName, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parent, localName, ns, builder, factory, generateNSDecl);
-        definedNamespace = ns;
-        isExpanded = true;
     }
 
     /**
