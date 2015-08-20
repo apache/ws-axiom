@@ -34,6 +34,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPHeader;
 import org.apache.axiom.soap.impl.common.HeaderIterator;
 import org.apache.axiom.soap.impl.common.MURoleChecker;
 import org.apache.axiom.soap.impl.common.RoleChecker;
@@ -45,7 +46,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
+public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
     public SOAPHeaderImpl(OMFactory factory) {
         super(factory);
     }

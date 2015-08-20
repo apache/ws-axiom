@@ -32,11 +32,11 @@ import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
-public class SOAP12FaultTextImpl extends SOAPElement implements SOAPFaultText {
+public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12FaultText {
     private OMAttribute langAttr;
     private OMNamespace langNamespace = null;
 

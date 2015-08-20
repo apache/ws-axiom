@@ -32,8 +32,9 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPBody;
 
-public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
+public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
         OMConstants {
     public SOAPBodyImpl(OMFactory factory) {
         super(factory);

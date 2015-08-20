@@ -29,9 +29,10 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 
-public class SOAP12FaultValueImpl extends SOAPElement implements SOAPFaultValue {
+public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12FaultValue {
     public SOAP12FaultValueImpl(OMFactory factory) {
         super(factory);
     }

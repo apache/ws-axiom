@@ -34,6 +34,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPFault;
 
 import javax.xml.namespace.QName;
 
@@ -42,7 +43,7 @@ import java.io.StringWriter;
 
 /** Class SOAPFaultImpl */
 public abstract class SOAPFaultImpl extends SOAPElement
-        implements SOAPFault, OMConstants {
+        implements AxiomSOAPFault, OMConstants {
 
     protected Exception e;
 

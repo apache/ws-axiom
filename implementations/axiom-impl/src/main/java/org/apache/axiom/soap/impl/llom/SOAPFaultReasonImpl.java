@@ -28,15 +28,15 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPFaultReason;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFaultReason {
+public abstract class SOAPFaultReasonImpl extends SOAPElement implements AxiomSOAPFaultReason {
     public SOAPFaultReasonImpl(OMFactory factory) {
         super(factory);
     }

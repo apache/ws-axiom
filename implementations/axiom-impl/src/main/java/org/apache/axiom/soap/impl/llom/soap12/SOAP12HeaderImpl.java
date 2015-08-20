@@ -26,13 +26,14 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12Header;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
 
 import javax.xml.namespace.QName;
 
 import java.util.Iterator;
 
-public class SOAP12HeaderImpl extends SOAPHeaderImpl {
+public class SOAP12HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP12Header {
     public SOAP12HeaderImpl(OMFactory factory) {
         super(factory);
     }

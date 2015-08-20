@@ -30,12 +30,14 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAP11Header;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderImpl;
 
 import javax.xml.namespace.QName;
+
 import java.util.Iterator;
 
-public class SOAP11HeaderImpl extends SOAPHeaderImpl {
+public class SOAP11HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP11Header {
     public SOAP11HeaderImpl(OMFactory factory) {
         super(factory);
     }

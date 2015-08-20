@@ -32,9 +32,9 @@ import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPHeader;
 import org.apache.axiom.soap.impl.common.Checker;
 import org.apache.axiom.soap.impl.common.HeaderIterator;
 import org.apache.axiom.soap.impl.common.MURoleChecker;
@@ -50,7 +50,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
-public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
+public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
     private static final Log log = LogFactory.getLog(SOAPHeaderImpl.class);
     
     public SOAPHeaderImpl(OMFactory factory) {

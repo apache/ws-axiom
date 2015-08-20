@@ -27,10 +27,10 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 
-public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
+public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
     public SOAPFaultCodeImpl(OMFactory factory) {
         super(factory);
     }
