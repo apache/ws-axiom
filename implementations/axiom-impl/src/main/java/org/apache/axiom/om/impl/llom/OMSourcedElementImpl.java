@@ -153,16 +153,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         definedNamespaceSet = true;
     }
 
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMFactory factory) {
-        super(parent, localName, null, null, factory, false);
-        dataSource = null;
-        definedNamespace = ns;
-        isExpanded = true;
-        if (ns != null) {
-            this.setNamespace(ns);
-        }
-    }
-
     public OMSourcedElementImpl(OMContainer parent, String localName, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parent, localName, ns, builder, factory, generateNSDecl);
