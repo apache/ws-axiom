@@ -46,6 +46,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.Policies;
@@ -293,13 +294,11 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return new CDATASectionImpl(this);
     }
 
-    public final CoreNSAwareElement createNSAwareElement() {
-        return new ElementImpl(this);
-    }
-
     public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
         CoreNSAwareElement element;
-        if (type == AxiomSOAP11HeaderBlock.class) {
+        if (type == AxiomElement.class) {
+            element = new ElementImpl(this);
+        } else if (type == AxiomSOAP11HeaderBlock.class) {
             element = new SOAP11HeaderBlockImpl(this);
         } else if (type == AxiomSOAP12HeaderBlock.class) {
             element = new SOAP12HeaderBlockImpl(this);

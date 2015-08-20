@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -188,29 +187,9 @@ public aspect AxiomNodeFactorySupport {
         return createOMElement(localName, ns, null);
     }
 
-    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        AxiomElement element = (AxiomElement)createNSAwareElement();
-        if (parent != null) {
-            parent.addChild(element);
-        }
-        element.initName(localName, ns, true);
-        return element;
-    }
-
-    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMContainer parent,
-            OMXMLParserWrapper builder) {
-        AxiomElement element = (AxiomElement)createNSAwareElement();
-        element.coreSetBuilder(builder);
-        if (parent != null) {
-            ((AxiomContainer)parent).addChild(element, true);
-        }
-        element.initName(localName, null, false);
-        return element;
-    }
-
     public final <T extends AxiomElement> T AxiomNodeFactory.createAxiomElement(Class<T> type,
             OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
+            boolean generateNSDecl) {
         T element = createNSAwareElement(type);
         element.coreSetBuilder(builder);
         if (parent != null) {
@@ -218,5 +197,14 @@ public aspect AxiomNodeFactorySupport {
         }
         element.initName(localName, ns, generateNSDecl);
         return element;
+    }
+
+    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMNamespace ns, OMContainer parent) {
+        return createAxiomElement(AxiomElement.class, parent, localName, ns, null, true);
+    }
+
+    public final OMElement AxiomNodeFactory.createOMElement(String localName, OMContainer parent,
+            OMXMLParserWrapper builder) {
+        return createAxiomElement(AxiomElement.class, parent, localName, null, builder, false);
     }
 }

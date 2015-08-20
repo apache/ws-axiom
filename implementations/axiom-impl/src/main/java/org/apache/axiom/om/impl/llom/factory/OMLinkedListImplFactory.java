@@ -44,6 +44,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
@@ -288,13 +289,11 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return new CDATASectionImpl(this);
     }
 
-    public final CoreNSAwareElement createNSAwareElement() {
-        return new OMElementImpl(this);
-    }
-
     public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
         CoreNSAwareElement element;
-        if (type == AxiomSOAP11HeaderBlock.class) {
+        if (type == AxiomElement.class) {
+            element = new OMElementImpl(this);
+        } else if (type == AxiomSOAP11HeaderBlock.class) {
             element = new SOAP11HeaderBlockImpl(this);
         } else if (type == AxiomSOAP12HeaderBlock.class) {
             element = new SOAP12HeaderBlockImpl(this);

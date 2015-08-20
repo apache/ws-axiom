@@ -35,14 +35,14 @@ public aspect AxiomSOAPFactorySupport {
     }
     
     public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
-        return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, ns, null, this, true);
+        return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, ns, null, true);
     }
 
     public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, OMNamespace ns) {
-        return createAxiomElement(getSOAPHeaderBlockClass(), null, localName, ns, null, this, true);
+        return createAxiomElement(getSOAPHeaderBlockClass(), null, localName, ns, null, true);
     }
 
     public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, SOAPHeader parent, OMXMLParserWrapper builder) {
-        return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, null, builder, this, false);
+        return createAxiomElement(getSOAPHeaderBlockClass(), parent, localName, null, builder, false);
     }
 }
