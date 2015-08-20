@@ -163,7 +163,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @param source
      * @return true or false
      */
-    private boolean isLossyPrefix(OMDataSource source) {
+    private static boolean isLossyPrefix(OMDataSource source) {
         Object lossyPrefix = null;
         if (source instanceof OMDataSourceExt) {
             lossyPrefix = 
