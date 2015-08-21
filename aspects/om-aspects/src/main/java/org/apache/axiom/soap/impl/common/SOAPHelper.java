@@ -34,6 +34,7 @@ import org.apache.axiom.soap.SOAPVersion;
  */
 abstract class SOAPHelper {
     static final SOAPHelper SOAP11 = new SOAPHelper(SOAP11Version.getSingleton(), "SOAP 1.1",
+            AxiomSOAP11HeaderBlock.class,
             SOAP11Constants.ATTR_ACTOR, null) {
         public Boolean parseBoolean(String literal) {
             if (literal.equals("1")) {
@@ -52,6 +53,7 @@ abstract class SOAPHelper {
     };
     
     static final SOAPHelper SOAP12 = new SOAPHelper(SOAP12Version.getSingleton(), "SOAP 1.2",
+            AxiomSOAP12HeaderBlock.class,
             SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY) {
         public Boolean parseBoolean(String literal) {
             if (literal.equals("true") || literal.equals("1")) {
@@ -71,13 +73,17 @@ abstract class SOAPHelper {
     
     private final SOAPVersion version;
     private final String specName;
+    private final Class<? extends AxiomSOAPHeaderBlock> headerBlockClass;
     private final QName mustUnderstandAttributeQName;
     private final QName roleAttributeQName;
     private final QName relayAttributeQName;
     
-    private SOAPHelper(SOAPVersion version, String specName, String roleAttributeLocalName, String relayAttributeLocalName) {
+    private SOAPHelper(SOAPVersion version, String specName,
+            Class<? extends AxiomSOAPHeaderBlock> headerBlockClass,
+            String roleAttributeLocalName, String relayAttributeLocalName) {
         this.version = version;
         this.specName = specName;
+        this.headerBlockClass = headerBlockClass;
         mustUnderstandAttributeQName = new QName(
                 version.getEnvelopeURI(), SOAPConstants.ATTR_MUSTUNDERSTAND, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         roleAttributeQName = new QName(
@@ -92,6 +98,10 @@ abstract class SOAPHelper {
     
     final String getSpecName() {
         return specName;
+    }
+
+    final Class<? extends AxiomSOAPHeaderBlock> getHeaderBlockClass() {
+        return headerBlockClass;
     }
 
     final QName getMustUnderstandAttributeQName() {

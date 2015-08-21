@@ -19,7 +19,7 @@
 package org.apache.axiom.soap.impl.common;
 
 public aspect AxiomSOAP11FactorySupport {
-    public final Class<? extends AxiomSOAPHeaderBlock> AxiomSOAP11Factory.getSOAPHeaderBlockClass() {
-        return AxiomSOAP11HeaderBlock.class;
+    public final SOAPHelper AxiomSOAP11Factory.getSOAPHelper() {
+        return SOAPHelper.SOAP11;
     }
 }
