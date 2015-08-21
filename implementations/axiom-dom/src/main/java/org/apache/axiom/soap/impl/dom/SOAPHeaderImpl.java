@@ -29,7 +29,6 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -48,13 +47,6 @@ import javax.xml.namespace.QName;
 public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
     public SOAPHeaderImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /** @param envelope  */
-    public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true, factory);
-
     }
 
     public SOAPHeaderImpl(ParentNode parentNode, OMNamespace ns,

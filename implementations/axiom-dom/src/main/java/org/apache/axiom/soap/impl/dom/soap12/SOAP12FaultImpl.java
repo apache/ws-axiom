@@ -48,16 +48,6 @@ public class SOAP12FaultImpl extends SOAPFaultImpl implements AxiomSOAP12Fault {
         super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
-    /**
-     * This is a convenience method for the SOAP Fault Impl.
-     *
-     * @param parent
-     */
-    public SOAP12FaultImpl(SOAPBody parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, factory);
-    }
-
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault) {
         return new SOAP12FaultDetailImpl(fault, (SOAPFactory)getOMFactory());
 

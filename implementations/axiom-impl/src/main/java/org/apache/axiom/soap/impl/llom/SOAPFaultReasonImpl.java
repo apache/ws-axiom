@@ -23,13 +23,10 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultReason;
 
 import java.util.ArrayList;
@@ -39,32 +36,6 @@ import java.util.List;
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements AxiomSOAPFaultReason {
     public SOAPFaultReasonImpl(OMFactory factory) {
         super(factory);
-    }
-
-    protected SOAPFaultReasonImpl(OMNamespace ns, SOAPFactory factory) {
-        super(factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), ns, factory);
-    }
-
-    /**
-     * Constructor OMElementImpl
-     *
-     * @param parent
-     * @param builder
-     */
-    public SOAPFaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                               SOAPFactory factory) {
-        super(parent, factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), builder,
-              factory);
-    }
-
-    /** @param parent  */
-    public SOAPFaultReasonImpl(OMElement parent,
-                               boolean extractNamespaceFromParent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent,
-              factory.getSOAPVersion().getFaultReasonQName().getLocalPart(),
-              extractNamespaceFromParent,
-              factory);
     }
 
     public List getAllSoapTexts() {

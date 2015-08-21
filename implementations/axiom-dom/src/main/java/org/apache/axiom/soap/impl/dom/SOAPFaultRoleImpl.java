@@ -24,8 +24,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultRole;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements
@@ -33,13 +31,6 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
 
     public SOAPFaultRoleImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAPFaultRoleImpl(SOAPFault parent,
-                             String localName,
-                             boolean extractNamespaceFromParent,
-                             SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, localName, extractNamespaceFromParent, factory);
     }
 
     public SOAPFaultRoleImpl(ParentNode parentNode, OMNamespace ns,

@@ -21,9 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultReason;
@@ -32,21 +29,6 @@ import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP11FaultReason {
     public SOAP11FaultReasonImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11FaultReasonImpl(SOAPFactory factory) {
-        super(null, factory);
-    }
-
-    public SOAP11FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                                 SOAPFactory factory) {
-        super(parent, builder, factory);
-    }
-
-    /** @param parent  */
-    public SOAP11FaultReasonImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, false, factory);
     }
 
     public void addSOAPText(SOAPFaultText soapFaultText)

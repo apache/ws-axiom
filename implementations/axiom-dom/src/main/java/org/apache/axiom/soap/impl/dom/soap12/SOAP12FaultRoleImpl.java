@@ -37,11 +37,6 @@ public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP1
         super(factory);
     }
 
-    public SOAP12FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, true, factory);
-    }
-
     public SOAP12FaultRoleImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);

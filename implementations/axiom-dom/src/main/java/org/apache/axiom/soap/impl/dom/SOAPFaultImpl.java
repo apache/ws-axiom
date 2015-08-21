@@ -66,11 +66,6 @@ public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFaul
         putExceptionToSOAPFault(e);
     }
 
-    public SOAPFaultImpl(SOAPBody parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
-    }
-
     public SOAPFaultImpl(ParentNode parentNode, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, SOAPConstants.SOAPFAULT_LOCAL_NAME, ns, builder, factory, generateNSDecl);

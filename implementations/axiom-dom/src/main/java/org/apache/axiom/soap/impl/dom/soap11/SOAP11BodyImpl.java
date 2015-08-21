@@ -26,22 +26,14 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
 import org.apache.axiom.soap.impl.dom.SOAPBodyImpl;
 
 public class SOAP11BodyImpl extends SOAPBodyImpl implements AxiomSOAP11Body {
     public SOAP11BodyImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /** @param envelope  */
-    public SOAP11BodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(envelope, factory);
     }
 
     public SOAP11BodyImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,

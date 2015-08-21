@@ -25,8 +25,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -51,10 +49,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
         super(factory);
     }
 
-    protected SOAPFaultImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAPConstants.SOAPFAULT_LOCAL_NAME, ns, factory);
-    }
-
     /**
      * Constructor SOAPFaultImpl
      *
@@ -70,21 +64,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
     public void setException(Exception e) {
         this.e = e;
         putExceptionToSOAPFault(e);
-    }
-
-    public SOAPFaultImpl(SOAPBody parent, SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
-    }
-
-    /**
-     * Constructor SOAPFaultImpl
-     *
-     * @param parent
-     * @param builder
-     */
-    public SOAPFaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-                         SOAPFactory factory) {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder, factory);
     }
 
     protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)

@@ -25,8 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -44,13 +42,6 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);
     }
-
-    /** @param parent  */
-    public SOAP11FaultCodeImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, false, factory);
-    }
-
 
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
         throw new UnsupportedOperationException();

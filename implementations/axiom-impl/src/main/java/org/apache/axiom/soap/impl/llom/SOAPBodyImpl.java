@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
@@ -49,29 +48,6 @@ public abstract class SOAPBodyImpl extends SOAPElement
 
     public SOAPBodyImpl(OMFactory factory) {
         super(factory);
-    }
-
-    protected SOAPBodyImpl(String localName, OMNamespace ns,
-                           SOAPFactory factory) {
-        super(localName, ns, factory);
-    }
-
-    /** @param envelope  */
-    public SOAPBodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(envelope, SOAPConstants.BODY_LOCAL_NAME, true, factory);
-
-    }
-
-    /**
-     * Constructor SOAPBodyImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAPBodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                        SOAPFactory factory) {
-        super(envelope, SOAPConstants.BODY_LOCAL_NAME, builder, factory);
     }
 
     /**

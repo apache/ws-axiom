@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -35,28 +34,9 @@ public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {
         super(factory);
     }
 
-    public SOAP11FaultImpl(SOAPFactory factory) {
-        super(factory.getNamespace(), factory);
-    }
-
     public SOAP11FaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, e, factory);
-    }
-
-    public SOAP11FaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-                           SOAPFactory factory) {
-        super(parent, builder, factory);
-    }
-
-    /**
-     * This is a convenience method for the SOAP Fault Impl.
-     *
-     * @param parent
-     */
-    public SOAP11FaultImpl(SOAPBody parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, factory);
     }
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)

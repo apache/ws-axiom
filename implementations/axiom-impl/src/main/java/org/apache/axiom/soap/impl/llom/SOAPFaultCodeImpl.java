@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
@@ -39,36 +38,9 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAP
         super(localName, ns, factory);
     }
 
-    protected SOAPFaultCodeImpl(OMNamespace ns, SOAPFactory factory) {
-        this(factory.getSOAPVersion().getFaultCodeQName().getLocalPart(), ns, factory);
-    }
-
     public SOAPFaultCodeImpl(SOAPFault parent, String localName, OMXMLParserWrapper builder,
                              SOAPFactory factory) {
         super(parent, localName, builder, factory);
-    }
-
-    public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                             SOAPFactory factory) {
-        this(parent, factory.getSOAPVersion().getFaultCodeQName().getLocalPart(), builder,
-             factory);
-    }
-
-    public SOAPFaultCodeImpl(SOAPFault parent,
-                             String localName,
-                             boolean extractNamespaceFromParent,
-                             SOAPFactory factory) throws SOAPProcessingException {
-        super(parent,
-              localName,
-              extractNamespaceFromParent, factory);
-    }
-
-    public SOAPFaultCodeImpl(SOAPFault parent,
-                             boolean extractNamespaceFromParent,
-                             SOAPFactory factory) throws SOAPProcessingException {
-        this(parent,
-             factory.getSOAPVersion().getFaultCodeQName().getLocalPart(),
-             extractNamespaceFromParent, factory);
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

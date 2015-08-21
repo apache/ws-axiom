@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -30,14 +29,11 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
@@ -77,20 +73,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
         return SOAP11Version.getSingleton();
     }
 
-    public SOAPHeader createSOAPHeader(SOAPEnvelope envelope)
-            throws SOAPProcessingException {
-        return new SOAP11HeaderImpl(envelope, this);
-    }
-
-    public SOAPHeader createSOAPHeader() throws SOAPProcessingException {
-        return new SOAP11HeaderImpl(this);
-    }
-
-    public SOAPHeader createSOAPHeader(SOAPEnvelope envelope,
-                                       OMXMLParserWrapper builder) {
-        return new SOAP11HeaderImpl(envelope, builder, this);
-    }
-
     public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
         return new SOAP11HeaderBlockImpl(this, source);
     }
@@ -105,48 +87,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
             throws SOAPProcessingException {
         return new SOAP11FaultImpl(parent, e, this);
-    }
-
-    public SOAPFault createSOAPFault() throws SOAPProcessingException {
-        return new SOAP11FaultImpl(this);
-    }
-
-    public SOAPFault createSOAPFault(SOAPBody parent)
-            throws SOAPProcessingException {
-        return new SOAP11FaultImpl(parent, this);
-    }
-
-    public SOAPFault createSOAPFault(SOAPBody parent,
-                                     OMXMLParserWrapper builder) {
-        return new SOAP11FaultImpl(parent, builder, this);
-    }
-
-    public SOAPBody createSOAPBody(SOAPEnvelope envelope)
-            throws SOAPProcessingException {
-        return new SOAP11BodyImpl(envelope, this);
-    }
-
-    public SOAPBody createSOAPBody(SOAPEnvelope envelope,
-                                   OMXMLParserWrapper builder) {
-        return new SOAP11BodyImpl(envelope, builder, this);
-    }
-
-    public SOAPBody createSOAPBody() throws SOAPProcessingException {
-        return new SOAP11BodyImpl(this);
-    }
-
-    public SOAPFaultCode createSOAPFaultCode(SOAPFault parent)
-            throws SOAPProcessingException {
-        return new SOAP11FaultCodeImpl(parent, this);
-    }
-
-    public SOAPFaultCode createSOAPFaultCode() throws SOAPProcessingException {
-        return new SOAP11FaultCodeImpl(this);
-    }
-
-    public SOAPFaultCode createSOAPFaultCode(SOAPFault parent,
-                                             OMXMLParserWrapper builder) {
-        return new SOAP11FaultCodeImpl(parent, builder, this);
     }
 
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
@@ -179,20 +119,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
         throw new UnsupportedOperationException();
     }
 
-    public SOAPFaultReason createSOAPFaultReason(SOAPFault parent)
-            throws SOAPProcessingException {
-        return new SOAP11FaultReasonImpl(parent, this);
-    }
-
-    public SOAPFaultReason createSOAPFaultReason() throws SOAPProcessingException {
-        return new SOAP11FaultReasonImpl(this);
-    }
-
-    public SOAPFaultReason createSOAPFaultReason(SOAPFault parent,
-                                                 OMXMLParserWrapper builder) {
-        return new SOAP11FaultReasonImpl(parent, builder, this);
-    }
-
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
             throws SOAPProcessingException {
         throw new UnsupportedOperationException();
@@ -209,34 +135,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
 
     public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
         throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
-    }
-
-    public SOAPFaultRole createSOAPFaultRole(SOAPFault parent)
-            throws SOAPProcessingException {
-        return new SOAP11FaultRoleImpl(parent, this);
-    }
-
-    public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException {
-        return new SOAP11FaultRoleImpl(this);
-    }
-
-    public SOAPFaultRole createSOAPFaultRole(SOAPFault parent,
-                                             OMXMLParserWrapper builder) {
-        return new SOAP11FaultRoleImpl(parent, builder, this);
-    }
-
-    public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent)
-            throws SOAPProcessingException {
-        return new SOAP11FaultDetailImpl(parent, this);
-    }
-
-    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
-        return new SOAP11FaultDetailImpl(this);
-    }
-
-    public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent,
-                                                 OMXMLParserWrapper builder) {
-        return new SOAP11FaultDetailImpl(parent, builder, this);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

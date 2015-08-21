@@ -28,7 +28,6 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -46,13 +45,6 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);
     }
-
-    /** @param parent  */
-    public SOAP12FaultCodeImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, true, factory);
-    }
-
 
     public void setSubCode(SOAPFaultSubCode subCode)
             throws SOAPProcessingException {

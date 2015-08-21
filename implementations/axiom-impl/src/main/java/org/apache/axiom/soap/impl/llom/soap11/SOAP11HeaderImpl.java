@@ -20,12 +20,8 @@
 package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Header;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
 
@@ -36,28 +32,6 @@ import java.util.Iterator;
 public class SOAP11HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP11Header {
     public SOAP11HeaderImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11HeaderImpl(SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(factory.getNamespace(), factory);
-    }
-
-    /** @param envelope  */
-    public SOAP11HeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(envelope, factory);
-    }
-
-    /**
-     * Constructor SOAPHeaderImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAP11HeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                            SOAPFactory factory) {
-        super(envelope, builder, factory);
     }
 
     public Iterator extractHeaderBlocks(String role) {

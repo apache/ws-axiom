@@ -26,10 +26,8 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.soap.RolePlayer;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -55,27 +53,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
     
     public SOAPHeaderImpl(OMFactory factory) {
         super(factory);
-    }
-
-    protected SOAPHeaderImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAPConstants.HEADER_LOCAL_NAME, ns, factory);
-    }
-
-    public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true, factory);
-
-    }
-
-    /**
-     * Constructor SOAPHeaderImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAPHeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                          SOAPFactory factory) {
-        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder, factory);
     }
 
     public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)

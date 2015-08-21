@@ -25,8 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultReason;
@@ -40,12 +38,6 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
     public SOAP11FaultReasonImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);
-    }
-
-    /** @param parent  */
-    public SOAP11FaultReasonImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, false, factory);
     }
 
     public void addSOAPText(SOAPFaultText soapFaultText)

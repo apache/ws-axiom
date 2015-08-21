@@ -25,9 +25,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
@@ -39,14 +37,6 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAP
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultCodeQName().getLocalPart(),
                 ns, builder, factory, generateNSDecl);
-    }
-
-    /** @param parent  */
-    public SOAPFaultCodeImpl(SOAPFault parent,
-                             boolean extractNamespaceFromParent,
-                             SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, factory.getSOAPVersion().getFaultCodeQName().getLocalPart(),
-              extractNamespaceFromParent, factory);
     }
 
     public SOAPFaultSubCode getSubCode() {

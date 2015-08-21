@@ -25,9 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultRole;
 import org.apache.axiom.soap.impl.dom.SOAPFaultRoleImpl;
@@ -35,12 +32,6 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultRoleImpl;
 public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP11FaultRole {
     public SOAP11FaultRoleImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME, false,
-              factory);
     }
 
     public SOAP11FaultRoleImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,

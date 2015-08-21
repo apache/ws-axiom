@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -33,18 +32,9 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomS
         super(factory);
     }
 
-    public SOAP11FaultDetailImpl(SOAPFactory factory) {
-        super(null, factory);
-    }
-
     public SOAP11FaultDetailImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, false, factory);
-    }
-
-    public SOAP11FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                                 SOAPFactory factory) {
-        super(parent, builder, factory);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {

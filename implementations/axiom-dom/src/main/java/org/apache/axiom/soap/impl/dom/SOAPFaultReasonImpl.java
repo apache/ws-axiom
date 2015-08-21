@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -47,14 +46,6 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultReasonQName().getLocalPart(),
                 ns, builder, factory, generateNSDecl);
-    }
-
-    /** @param parent  */
-    public SOAPFaultReasonImpl(OMElement parent,
-                               boolean extractNamespaceFromParent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, factory.getSOAPVersion().getFaultReasonQName().getLocalPart(),
-              extractNamespaceFromParent, factory);
     }
 
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {

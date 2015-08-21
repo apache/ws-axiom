@@ -21,10 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -37,20 +33,6 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
     public SOAP11FaultCodeImpl(OMFactory factory) {
         super(factory);
     }
-
-    public SOAP11FaultCodeImpl(SOAPFactory factory) {
-        super(SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, null, factory);
-    }
-
-    public SOAP11FaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder, factory);
-    }
-
-    public SOAP11FaultCodeImpl(SOAPFault parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, false, factory);
-    }
-
 
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
         throw new UnsupportedOperationException();
