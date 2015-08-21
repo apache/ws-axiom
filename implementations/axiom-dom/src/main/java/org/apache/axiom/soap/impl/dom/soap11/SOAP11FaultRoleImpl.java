@@ -48,7 +48,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP1
         super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +

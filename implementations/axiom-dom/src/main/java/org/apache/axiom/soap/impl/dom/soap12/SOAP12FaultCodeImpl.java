@@ -78,7 +78,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
         return getValueAsQName();
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as " +

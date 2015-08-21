@@ -52,7 +52,7 @@ public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12Faul
         super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, builder, factory);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!((parent instanceof SOAP12FaultSubCodeImpl) ||
                 (parent instanceof SOAP12FaultCodeImpl))) {
             throw new SOAPProcessingException(

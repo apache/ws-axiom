@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAPFaultDetail;
 
-public interface AxiomSOAPFaultDetail extends AxiomElement, SOAPFaultDetail {
+public interface AxiomSOAPFaultDetail extends AxiomSOAPElement, SOAPFaultDetail {
 
 }

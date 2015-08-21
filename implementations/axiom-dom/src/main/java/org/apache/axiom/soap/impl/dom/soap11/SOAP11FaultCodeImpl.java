@@ -60,7 +60,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
         throw new UnsupportedOperationException();
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +

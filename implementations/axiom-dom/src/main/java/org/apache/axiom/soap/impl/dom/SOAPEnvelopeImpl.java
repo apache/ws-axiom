@@ -185,7 +185,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         return null;
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 

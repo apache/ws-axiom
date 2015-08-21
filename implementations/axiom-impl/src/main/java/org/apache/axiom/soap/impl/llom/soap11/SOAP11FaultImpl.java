@@ -64,7 +64,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {
         return new SOAP11FaultDetailImpl(fault, (SOAPFactory)getOMFactory());
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11BodyImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Body as the " +

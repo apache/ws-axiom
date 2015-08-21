@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 
-public interface AxiomSOAPEnvelope extends AxiomElement, SOAPEnvelope {
+public interface AxiomSOAPEnvelope extends AxiomSOAPElement, SOAPEnvelope {
 
 }

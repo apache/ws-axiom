@@ -53,7 +53,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
         throw new UnsupportedOperationException("addSOAPText() not allowed for SOAP 1.1!");
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +

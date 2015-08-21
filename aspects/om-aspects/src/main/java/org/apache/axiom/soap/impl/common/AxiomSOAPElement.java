@@ -18,8 +18,10 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.soap.SOAPProcessingException;
 
-public interface AxiomSOAPFaultReason extends AxiomSOAPElement, SOAPFaultReason {
-
+public interface AxiomSOAPElement extends AxiomElement {
+    void checkParent(OMElement parent) throws SOAPProcessingException;
 }

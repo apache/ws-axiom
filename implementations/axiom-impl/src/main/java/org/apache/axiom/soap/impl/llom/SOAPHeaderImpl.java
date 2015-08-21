@@ -177,7 +177,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
 
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAPEnvelopeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting an implementation of SOAP Envelope as the parent. But received some other implementation");

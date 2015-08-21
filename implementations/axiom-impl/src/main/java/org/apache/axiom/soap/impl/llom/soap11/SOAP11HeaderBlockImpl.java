@@ -43,7 +43,7 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomS
         super(localName, ns, factory, ds);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11HeaderImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP11HeaderImpl, got " + parent.getClass());

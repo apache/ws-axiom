@@ -73,7 +73,7 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12Fa
               factory);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!((parent instanceof SOAP12FaultSubCodeImpl) ||
                 (parent instanceof SOAP12FaultCodeImpl))) {
             throw new SOAPProcessingException(

@@ -32,7 +32,6 @@ import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 /** Class SOAPHeaderBlockImpl */
@@ -51,8 +50,6 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
                                OMDataSource ds) {
         super(localName, ns, factory, ds);
     }
-
-    protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
     public void internalSetParent(CoreParentNode element) {
         super.internalSetParent(element);

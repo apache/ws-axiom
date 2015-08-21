@@ -65,7 +65,7 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultReasonImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP FaultReason " +

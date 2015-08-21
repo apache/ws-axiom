@@ -46,7 +46,7 @@ public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomS
         super(parent, true, factory);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +

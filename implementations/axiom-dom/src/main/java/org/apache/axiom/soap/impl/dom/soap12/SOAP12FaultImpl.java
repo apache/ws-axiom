@@ -63,7 +63,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl implements AxiomSOAP12Fault {
 
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12BodyImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Body as the parent. But received some other implementation");

@@ -28,8 +28,9 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.common.AxiomSOAPElement;
 
-public abstract class SOAPElement extends OMElementImpl {
+public abstract class SOAPElement extends OMElementImpl implements AxiomSOAPElement {
     public SOAPElement(OMFactory factory) {
         super(factory);
     }
@@ -72,9 +73,6 @@ public abstract class SOAPElement extends OMElementImpl {
                           SOAPFactory factory) {
         super(null, localName, ns, null, factory, true);
     }
-
-    /** This has to be implemented by all the derived classes to check for the correct parent. */
-    protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
     public void internalSetParent(CoreParentNode element) {
         super.internalSetParent(element);

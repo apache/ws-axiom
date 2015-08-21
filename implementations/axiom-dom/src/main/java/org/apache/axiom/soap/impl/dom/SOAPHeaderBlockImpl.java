@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -29,7 +28,6 @@ import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 public abstract class SOAPHeaderBlockImpl extends ElementImpl implements AxiomSOAPHeaderBlock {
@@ -58,9 +56,6 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements AxiomSO
         throw new UnsupportedOperationException();
     }
 
-    protected abstract void checkParent(OMElement parent)
-            throws SOAPProcessingException;
-    
     protected final void copyData(OMCloneOptions options, SOAPHeaderBlock targetSHB) {
         // Copy the processed flag.  The other SOAPHeaderBlock information 
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.

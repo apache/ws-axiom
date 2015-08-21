@@ -49,7 +49,7 @@ public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12Fault
         super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder, factory);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultImpl, got " + parent.getClass());

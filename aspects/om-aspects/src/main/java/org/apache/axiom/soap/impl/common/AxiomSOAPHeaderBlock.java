@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
-public interface AxiomSOAPHeaderBlock extends AxiomElement, SOAPHeaderBlock {
+public interface AxiomSOAPHeaderBlock extends AxiomSOAPElement, SOAPHeaderBlock {
     SOAPHelper getSOAPHelper();
 }

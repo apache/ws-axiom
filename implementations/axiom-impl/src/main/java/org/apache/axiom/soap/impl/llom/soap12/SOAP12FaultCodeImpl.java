@@ -76,7 +76,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
         ElementHelper.setNewElement(this, getValue(), value);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultImpl as parent, got " + parent.getClass());

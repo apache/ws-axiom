@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 
-public interface AxiomSOAP12FaultSubCode extends AxiomElement, SOAPFaultSubCode {
+public interface AxiomSOAP12FaultSubCode extends AxiomSOAPElement, SOAPFaultSubCode {
 
 }

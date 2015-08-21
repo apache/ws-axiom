@@ -74,7 +74,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
         return getFirstSOAPText().getText();
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultImpl, got " + parent.getClass());

@@ -98,7 +98,7 @@ public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
         addChild(soapFault);
     }
 
-    protected void checkParent(OMElement parent) throws SOAPProcessingException {
+    public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAPEnvelopeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting an implementation of SOAP Envelope as the " +
