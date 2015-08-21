@@ -31,7 +31,6 @@ import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeader;
