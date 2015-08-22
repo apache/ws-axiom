@@ -22,12 +22,8 @@ package org.apache.axiom.om.impl.llom;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomSerializable;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public abstract class OMSerializableImpl extends OMInformationItemImpl implements AxiomSerializable {
-    private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
-    
     private OMFactory factory;
 
     public OMSerializableImpl(OMFactory factory) {
