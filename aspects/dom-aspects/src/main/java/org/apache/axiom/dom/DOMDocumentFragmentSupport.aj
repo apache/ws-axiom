@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.ElementAction;

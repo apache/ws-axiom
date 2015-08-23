@@ -18,28 +18,27 @@
  */
 package org.apache.axiom.dom;
 
-import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
+import java.util.Iterator;
 
-import org.w3c.dom.DOMException;
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.ElementMatcher;
+import org.w3c.dom.Node;
 
-public aspect DOMNSAwareNamedNodeSupport {
-    public final void DOMNSAwareNamedNode.setPrefix(String prefix) throws DOMException {
-        if (prefix == null) {
-            prefix = "";
-        }
-        if (coreGetNamespaceURI().length() == 0 && prefix.length() > 0) {
-            throw newDOMException(DOMException.NAMESPACE_ERR);
-        }
-        coreSetPrefix(prefix);
-    }
+public class ElementsByTagName extends NodeListImpl {
+    private final DOMParentNode node;
+    private final String tagname;
     
-    public final String DOMNSAwareNamedNode.internalGetName() {
-        String prefix = coreGetPrefix();
-        String localName = coreGetLocalName();
-        if (prefix.length() == 0) {
-            return localName;
+    public ElementsByTagName(DOMParentNode node, String tagname) {
+        this.node = node;
+        this.tagname = tagname;
+    }
+
+    @Override
+    protected Iterator<? extends Node> createIterator() {
+        if (tagname.equals("*")) {
+            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
         } else {
-            return prefix + ":" + localName;
+            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.BY_NAME, null, tagname, DOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
         }
     }
 }

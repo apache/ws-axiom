@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMEntityReference;
 import org.apache.axiom.om.OMFactory;

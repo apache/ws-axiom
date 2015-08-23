@@ -283,4 +283,8 @@ public aspect CoreParentNodeSupport {
             }
         };
     }
+    
+    public final <T extends CoreElement> NodeIterator<T> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
+        return new ElementsIterator<T>(this, axis, type, matcher, namespaceURI, name, exceptionTranslator, detachPolicy);
+    }
 }

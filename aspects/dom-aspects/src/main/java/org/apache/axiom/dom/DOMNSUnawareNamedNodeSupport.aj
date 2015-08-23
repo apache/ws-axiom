@@ -30,7 +30,7 @@ public aspect DOMNSUnawareNamedNodeSupport {
     }
     
     public final void DOMNSUnawareNamedNode.setPrefix(String prefix) throws DOMException {
-        throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
+        throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
     }
     
     public final String DOMNSUnawareNamedNode.getLocalName() {

@@ -19,13 +19,13 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMConfigurationImpl;
-import org.apache.axiom.dom.DOMExceptionUtil;
+import org.apache.axiom.dom.DOMExceptionTranslator;
 import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
@@ -126,7 +126,7 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
             try {
                 clone.coreAppendAttribute(clonedAttr, NodeMigrationPolicy.MOVE_ALWAYS);
             } catch (NodeMigrationException ex) {
-                DOMExceptionUtil.translate(ex);
+                DOMExceptionTranslator.translate(ex);
             }
         }
         return clone;

@@ -63,7 +63,7 @@ final class AttributesNamedNodeMap implements NamedNodeMap {
         if (arg instanceof CoreTypedAttribute) {
             return element.setAttributeNode((Attr)arg);
         } else {
-            throw DOMExceptionUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            throw DOMExceptionTranslator.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
     }
 
@@ -71,7 +71,7 @@ final class AttributesNamedNodeMap implements NamedNodeMap {
         if (arg instanceof CoreTypedAttribute) {
             return element.setAttributeNodeNS((Attr)arg);
         } else {
-            throw DOMExceptionUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            throw DOMExceptionTranslator.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
     }
 
@@ -82,7 +82,7 @@ final class AttributesNamedNodeMap implements NamedNodeMap {
             element.removeAttributeNode(attr);
             return attr;
         } else {
-            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 
@@ -93,7 +93,7 @@ final class AttributesNamedNodeMap implements NamedNodeMap {
             element.removeAttributeNode(attr);
             return attr;
         } else {
-            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 }

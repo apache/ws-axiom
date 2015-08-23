@@ -31,6 +31,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
 public aspect DOMElementSupport {
@@ -153,7 +154,7 @@ public aspect DOMElementSupport {
             try {
                 return (DOMAttribute)coreSetAttribute(matcher, newAttr, Policies.ATTRIBUTE_MIGRATION_POLICY, false, null, ReturnValue.REPLACED_ATTRIBUTE);
             } catch (CoreModelException ex) {
-                throw DOMExceptionUtil.translate(ex);
+                throw DOMExceptionTranslator.translate(ex);
             }
         }
     }
@@ -161,7 +162,7 @@ public aspect DOMElementSupport {
     public final Attr DOMElement.removeAttributeNode(Attr oldAttr) throws DOMException {
         DOMAttribute attr = (DOMAttribute)oldAttr;
         if (attr.coreGetOwnerElement() != this) {
-            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
         } else {
             attr.coreRemove();
         }
@@ -188,5 +189,13 @@ public aspect DOMElementSupport {
 
     public final void DOMElement.setTextContent(String textContent) {
         coreSetCharacterData(textContent, Policies.DETACH_POLICY);
+    }
+
+    public final NodeList DOMElement.getElementsByTagName(String tagname) {
+        return new ElementsByTagName(this, tagname);
+    }
+
+    public final NodeList DOMElement.getElementsByTagNameNS(String namespaceURI, String localName) {
+        return new ElementsByTagNameNS(this, namespaceURI, localName);
     }
 }

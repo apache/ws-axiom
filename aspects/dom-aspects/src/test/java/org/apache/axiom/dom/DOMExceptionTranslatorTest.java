@@ -16,11 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
-import org.apache.axiom.om.impl.common.AxiomContainer;
-import org.w3c.dom.Node;
+import static com.google.common.truth.Truth.assertThat;
 
-public interface DOMContainer extends Node, AxiomContainer {
+import org.junit.Test;
+import org.w3c.dom.DOMException;
 
+public class DOMExceptionTranslatorTest {
+    @Test
+    public void testMessage() {
+        DOMException ex = DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
+        assertThat(ex.getMessage()).isEqualTo(
+                "NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.");
+    }
 }

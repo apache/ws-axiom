@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
@@ -177,5 +178,13 @@ public aspect DOMDocumentSupport {
         pi.coreSetTarget(target);
         pi.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return pi;
+    }
+
+    public final NodeList DOMDocument.getElementsByTagName(String tagname) {
+        return new ElementsByTagName(this, tagname);
+    }
+
+    public final NodeList DOMDocument.getElementsByTagNameNS(String namespaceURI, String localName) {
+        return new ElementsByTagNameNS(this, namespaceURI, localName);
     }
 }

@@ -23,13 +23,16 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.ExceptionTranslator;
 import org.apache.axiom.core.NodeInUseException;
 import org.apache.axiom.core.WrongDocumentException;
 import org.w3c.dom.DOMException;
 
-public final class DOMExceptionUtil {
+public final class DOMExceptionTranslator implements ExceptionTranslator {
+    public static final DOMExceptionTranslator INSTANCE = new DOMExceptionTranslator();
+    
     private static final ResourceBundle resourceBundle =
-            PropertyResourceBundle.getBundle(DOMExceptionUtil.class.getName());
+            PropertyResourceBundle.getBundle(DOMExceptionTranslator.class.getName());
 
     private static final String[] codeStrings = {
         // Note: order is determined by the constants defined in DOMException
@@ -52,7 +55,7 @@ public final class DOMExceptionUtil {
         "TYPE_MISMATCH_ERR",
     };
     
-    private DOMExceptionUtil() {}
+    private DOMExceptionTranslator() {}
     
     public static DOMException newDOMException(short code) {
         String key = codeStrings[code-1];
@@ -77,5 +80,9 @@ public final class DOMExceptionUtil {
         } else {
             throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
         }
+    }
+
+    public RuntimeException toUncheckedException(CoreModelException ex) {
+        return translate(ex);
     }
 }

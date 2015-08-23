@@ -19,13 +19,13 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMDocument;
-import org.apache.axiom.dom.DOMExceptionUtil;
+import org.apache.axiom.dom.DOMExceptionTranslator;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -163,7 +163,7 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
                         try {
                             ((ElementImpl)newElement).coreAppendAttribute((AttrImpl)importNode(sourceAttrs.item(index), true), NodeMigrationPolicy.MOVE_ALWAYS);
                         } catch (CoreModelException ex) {
-                            throw DOMExceptionUtil.translate(ex);
+                            throw DOMExceptionTranslator.translate(ex);
                         }
                     }
                 }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.dom;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /** Implementation of org.w3c.dom.NodeList */
 public abstract class NodeListImpl implements NodeList {
-    protected abstract Iterator getIterator();
+    protected abstract Iterator<? extends Node> createIterator();
 
     /**
      * Returns the number of nodes.
@@ -34,7 +34,7 @@ public abstract class NodeListImpl implements NodeList {
      * @see org.w3c.dom.NodeList#getLength()
      */
     public int getLength() {
-        Iterator children = getIterator();
+        Iterator<? extends Node> children = createIterator();
         int count = 0;
         while (children.hasNext()) {
             count++;
@@ -49,11 +49,11 @@ public abstract class NodeListImpl implements NodeList {
      * @see org.w3c.dom.NodeList#item(int)
      */
     public Node item(int index) {
-        Iterator children = getIterator();
+        Iterator<? extends Node> children = createIterator();
         int count = 0;
         while (children.hasNext()) {
             if (count == index) {
-                return (Node) children.next();
+                return children.next();
             } else {
                 children.next();
             }
