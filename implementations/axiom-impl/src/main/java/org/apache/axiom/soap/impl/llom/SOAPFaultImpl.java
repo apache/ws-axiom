@@ -43,14 +43,11 @@ import java.io.StringWriter;
 public abstract class SOAPFaultImpl extends SOAPElement
         implements AxiomSOAPFault, OMConstants {
 
-    protected Exception e;
-
     public SOAPFaultImpl(OMFactory factory) {
         super(factory);
     }
 
     public void setException(Exception e) {
-        this.e = e;
         putExceptionToSOAPFault(e);
     }
 
@@ -91,8 +88,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return e == null ?
-                ((SOAPFactory)getOMFactory()).createSOAPFault((SOAPBody) targetParent):
-                ((SOAPFactory)getOMFactory()).createSOAPFault((SOAPBody) targetParent, e);
+        return ((SOAPFactory)getOMFactory()).createSOAPFault((SOAPBody) targetParent);
     }
 }

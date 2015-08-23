@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -40,14 +39,11 @@ import java.io.StringWriter;
 public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFault,
         OMConstants {
 
-    protected Exception e;
-
     public SOAPFaultImpl(OMFactory factory) {
         super(factory);
     }
 
     public void setException(Exception e) {
-        this.e = e;
         putExceptionToSOAPFault(e);
     }
 
@@ -85,12 +81,5 @@ public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFaul
                                                     SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
                                                     null, null, getOMFactory(), true);
         faultDetailEnty.setText(sw.getBuffer().toString());
-    }
-
-    @Override
-    protected final void copyData(OMCloneOptions options, NSAwareElement clone) {
-        if (e != null) {
-            ((SOAPFault)clone).setException(e);
-        }
     }
 }
