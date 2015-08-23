@@ -31,7 +31,6 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.om.NodeUnavailableException;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
@@ -178,15 +177,15 @@ public aspect AxiomContainerSupport {
         return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
     }
 
-    public Iterator OMContainer.getChildrenWithLocalName(String localName) {
+    public Iterator AxiomContainer.getChildrenWithLocalName(String localName) {
         return new OMChildrenLocalNameIterator(getFirstOMChild(), localName);
     }
 
-    public Iterator OMContainer.getChildrenWithNamespaceURI(String uri) {
+    public Iterator AxiomContainer.getChildrenWithNamespaceURI(String uri) {
         return new OMChildrenNamespaceIterator(getFirstOMChild(), uri);
     }
 
-    public Iterator OMContainer.getChildrenWithName(QName elementQName) {
+    public Iterator AxiomContainer.getChildrenWithName(QName elementQName) {
         OMNode firstChild = getFirstOMChild();
         Iterator it =  new OMChildrenQNameIterator(firstChild, elementQName);
         
@@ -212,7 +211,7 @@ public aspect AxiomContainerSupport {
         return it;
     }
     
-    public Iterator OMContainer.getDescendants(boolean includeSelf) {
+    public Iterator AxiomContainer.getDescendants(boolean includeSelf) {
         return new OMDescendantsIterator(this, includeSelf);
     }
 
