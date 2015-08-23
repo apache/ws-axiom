@@ -44,7 +44,7 @@ public class TestComplete extends AxiomTestCase {
         
         // Trigger expansion of the child OMSE
         // This will cause the child to be partially parsed (i.e. incomplete)
-        child.getChildren();
+        child.getFirstOMChild();
         
         // Add the child OMSE to the root.
         root.addChild(child);
@@ -62,7 +62,7 @@ public class TestComplete extends AxiomTestCase {
         root = f.createOMElement("root", rootNS);
         
         root.addChild(child);
-        child.getChildren(); // causes partial parsing...i.e. incomplete child
+        child.getFirstOMChild(); // causes partial parsing...i.e. incomplete child
     
         assertTrue(!child.isComplete());
         assertTrue(root.isComplete());

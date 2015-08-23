@@ -278,7 +278,7 @@ public aspect AxiomElementSupport {
         try {
             coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
         } catch (NodeMigrationException ex) {
-            AxiomExceptionUtil.translate(ex);
+            AxiomExceptionTranslator.translate(ex);
         }
     }
     
@@ -363,7 +363,7 @@ public aspect AxiomElementSupport {
         try {
             coreAppendAttribute(((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns), NodeMigrationPolicy.MOVE_ALWAYS);
         } catch (NodeMigrationException ex) {
-            throw AxiomExceptionUtil.translate(ex);
+            throw AxiomExceptionTranslator.translate(ex);
         }
         return ns;
     }
@@ -374,7 +374,7 @@ public aspect AxiomElementSupport {
                     ((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns),
                     NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
         } catch (NodeMigrationException ex) {
-            throw AxiomExceptionUtil.translate(ex);
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
     

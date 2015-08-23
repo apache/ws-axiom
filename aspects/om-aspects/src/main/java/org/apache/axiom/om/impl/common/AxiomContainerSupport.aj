@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.core.Axis;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -47,7 +48,6 @@ import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
-import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -174,8 +174,8 @@ public aspect AxiomContainerSupport {
         coreRemoveChildren(Policies.DETACH_POLICY);
     }
     
-    public Iterator OMContainer.getChildren() {
-        return new OMChildrenIterator(getFirstOMChild());
+    public Iterator AxiomContainer.getChildren() {
+        return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
     }
 
     public Iterator OMContainer.getChildrenWithLocalName(String localName) {

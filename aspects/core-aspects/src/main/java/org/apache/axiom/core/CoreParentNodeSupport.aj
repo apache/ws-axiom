@@ -274,4 +274,13 @@ public aspect CoreParentNodeSupport {
             content = data;
         }
     }
+    
+    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Class<T> type, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
+        return new AbstractNodeIterator<T>(this, axis, type, exceptionTranslator, detachPolicy) {
+            @Override
+            protected boolean matches(CoreNode node) throws CoreModelException {
+                return true;
+            }
+        };
+    }
 }
