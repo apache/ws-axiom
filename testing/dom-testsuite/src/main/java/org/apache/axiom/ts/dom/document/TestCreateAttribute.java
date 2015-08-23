@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -31,11 +33,12 @@ public class TestCreateAttribute extends DOMTestCase {
 
     protected void runTest() throws Throwable {
         String attrName = "attrIdentifier";
-
         Document doc = dbf.newDocumentBuilder().newDocument();
         Attr attr = doc.createAttribute(attrName);
-
-        assertEquals("Attr name mismatch", attrName, attr.getName());
-        assertNull("Namespace value should be null", attr.getNamespaceURI());
+        assertThat(attr.getNodeName()).isEqualTo(attrName);
+        assertThat(attr.getName()).isEqualTo(attrName);
+        assertThat(attr.getPrefix()).isNull();
+        assertThat(attr.getLocalName()).isNull();
+        assertThat(attr.getNamespaceURI()).isNull();
     }
 }
