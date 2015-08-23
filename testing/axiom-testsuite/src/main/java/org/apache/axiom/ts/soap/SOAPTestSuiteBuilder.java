@@ -180,7 +180,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 }
             }
         }
-        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithParent(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithException(metaFactory, spec, true));
+        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFaultWithException(metaFactory, spec, false));
         addTest(new org.apache.axiom.ts.soap.factory.TestFactoryIsSingleton(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, spec));
@@ -192,7 +193,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
                     new SOAPFaultChild[] { SOAPFaultChild.CODE, SOAPFaultChild.REASON, SOAPFaultChild.DETAIL, SOAPFaultChild.REASON }, ss));
         }
-        addTest(new org.apache.axiom.ts.soap.fault.TestCloneWithException(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetDetailWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetException(metaFactory, spec));
