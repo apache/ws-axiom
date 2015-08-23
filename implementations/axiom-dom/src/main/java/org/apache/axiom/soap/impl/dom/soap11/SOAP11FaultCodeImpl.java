@@ -19,12 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -36,11 +32,6 @@ import javax.xml.namespace.QName;
 public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP11FaultCode {
     public SOAP11FaultCodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11FaultCodeImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
@@ -69,10 +60,5 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
 
     public QName getValueAsQName() {
         return getTextAsQName();
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        return new SOAP11FaultCodeImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

@@ -22,14 +22,11 @@ package org.apache.axiom.soap.impl.dom.soap12;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
@@ -42,14 +39,6 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
     public SOAP12FaultTextImpl(OMFactory factory) {
         super(factory);
         // TODO: get rid of this crap
-        this.langNamespace = factory.createOMNamespace(
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
-    }
-
-    public SOAP12FaultTextImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, ns, builder, factory, generateNSDecl);
         this.langNamespace = factory.createOMNamespace(
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
@@ -82,10 +71,5 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
         }
 
         return langAttr == null ? null : langAttr.getAttributeValue();
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        return new SOAP12FaultTextImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

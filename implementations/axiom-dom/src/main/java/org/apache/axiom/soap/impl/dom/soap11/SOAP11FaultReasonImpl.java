@@ -19,12 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultReason;
@@ -33,11 +29,6 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP11FaultReason {
     public SOAP11FaultReasonImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11FaultReasonImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     public void addSOAPText(SOAPFaultText soapFaultText)
@@ -55,10 +46,5 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
 
     public SOAPFaultText getFirstSOAPText() {
         throw new UnsupportedOperationException("getFirstSOAPText() not supported for SOAP 1.1!");
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        return new SOAP11FaultReasonImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

@@ -18,8 +18,14 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.om.impl.common.AxiomElement;
+
 public aspect AxiomSOAP12HeaderBlockSupport {
     public final SOAPHelper AxiomSOAP12HeaderBlock.getSOAPHelper() {
         return SOAPHelper.SOAP12;
+    }
+
+    public final Class<? extends AxiomElement> AxiomSOAP12HeaderBlock.getElementType() {
+        return AxiomSOAP12HeaderBlock.class;
     }
 }

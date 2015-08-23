@@ -19,12 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -35,11 +31,6 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
 public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {
     public SOAP11FaultImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11FaultImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
@@ -53,14 +44,5 @@ public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {
                     "Expecting SOAP 1.1 implementation of SOAP Body as the " +
                             "parent. But received some other implementation");
         }
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        SOAPFault clone = new SOAP11FaultImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
-        if (e != null) {
-            clone.setException(e);
-        }
-        return clone;
     }
 }

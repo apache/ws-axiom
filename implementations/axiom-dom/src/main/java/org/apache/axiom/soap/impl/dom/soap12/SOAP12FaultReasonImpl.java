@@ -19,12 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -34,11 +30,6 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
     public SOAP12FaultReasonImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP12FaultReasonImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     public void addSOAPText(SOAPFaultText soapFaultText)
@@ -61,10 +52,5 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
 
     public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_TEXT);
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        return new SOAP12FaultReasonImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

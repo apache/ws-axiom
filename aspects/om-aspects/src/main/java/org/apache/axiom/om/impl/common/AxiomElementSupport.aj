@@ -74,6 +74,10 @@ public aspect AxiomElementSupport {
         forceExpand();
     }
     
+    public Class<? extends AxiomElement> AxiomElement.getElementType() {
+        return AxiomElement.class;
+    }
+    
     public final int AxiomElement.getType() {
         return OMNode.ELEMENT_NODE;
     }

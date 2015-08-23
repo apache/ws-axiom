@@ -21,8 +21,6 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
@@ -50,10 +48,5 @@ public abstract class SOAPElement extends NSAwareElement implements AxiomSOAPEle
         if (extractNamespaceFromParent) {
             internalSetNamespace(parent.getNamespace());
         }
-    }
-
-    public SOAPElement(ParentNode parentNode, String localName, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 }

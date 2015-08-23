@@ -20,10 +20,6 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultRole;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements
@@ -31,10 +27,5 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
 
     public SOAPFaultRoleImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAPFaultRoleImpl(ParentNode parentNode, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultRoleQName().getLocalPart(), ns, builder, factory, generateNSDecl);
     }
 }

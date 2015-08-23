@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -30,7 +29,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -53,11 +51,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
 
     public SOAPEnvelopeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAPEnvelopeImpl(ParentNode parentNode, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public SOAPVersion getVersion() {
@@ -260,9 +253,5 @@ public class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
             
         }
         return null;
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new SOAPEnvelopeImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

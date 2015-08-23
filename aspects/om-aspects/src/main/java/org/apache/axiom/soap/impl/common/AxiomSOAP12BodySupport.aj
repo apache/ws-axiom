@@ -16,15 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.common;
 
-package org.apache.axiom.soap.impl.dom.soap12;
+import org.apache.axiom.om.impl.common.AxiomElement;
 
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12Body;
-import org.apache.axiom.soap.impl.dom.SOAPBodyImpl;
-
-public class SOAP12BodyImpl extends SOAPBodyImpl implements AxiomSOAP12Body {
-    public SOAP12BodyImpl(OMFactory factory) {
-        super(factory);
+public aspect AxiomSOAP12BodySupport {
+    public final Class<? extends AxiomElement> AxiomSOAP12Body.getElementType() {
+        return AxiomSOAP12Body.class;
     }
 }

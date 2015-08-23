@@ -19,12 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -34,11 +30,6 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultDetailImpl;
 public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomSOAP12FaultDetail {
     public SOAP12FaultDetailImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP12FaultDetailImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     public SOAP12FaultDetailImpl(SOAPFault parent, SOAPFactory factory)
@@ -52,10 +43,5 @@ public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl implements AxiomS
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
                             "parent. But received some other implementation");
         }
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        return new SOAP12FaultDetailImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

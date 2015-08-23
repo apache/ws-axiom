@@ -19,13 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
@@ -33,11 +28,6 @@ import org.apache.axiom.soap.impl.dom.SOAPElement;
 public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
     public SOAP12FaultNodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP12FaultNodeImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
-            OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -62,10 +52,5 @@ public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12Fault
 
     public String getNodeValue() {
         return getFaultNodeValue();
-    }
-
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
-            boolean generateNSDecl) {
-        return new SOAP12FaultNodeImpl(targetParent, getNamespace(), null, getOMFactory(), generateNSDecl);
     }
 }

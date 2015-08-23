@@ -20,12 +20,8 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultReason;
@@ -40,12 +36,6 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
 
     public SOAPFaultReasonImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAPFaultReasonImpl(ParentNode parentNode, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultReasonQName().getLocalPart(),
-                ns, builder, factory, generateNSDecl);
     }
 
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {

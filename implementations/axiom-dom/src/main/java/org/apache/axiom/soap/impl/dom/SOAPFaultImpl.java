@@ -19,12 +19,11 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPConstants;
@@ -50,11 +49,6 @@ public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFaul
     public void setException(Exception e) {
         this.e = e;
         putExceptionToSOAPFault(e);
-    }
-
-    public SOAPFaultImpl(ParentNode parentNode, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, SOAPConstants.SOAPFAULT_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
@@ -91,5 +85,12 @@ public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFaul
                                                     SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
                                                     null, null, getOMFactory(), true);
         faultDetailEnty.setText(sw.getBuffer().toString());
+    }
+
+    @Override
+    protected final void copyData(OMCloneOptions options, NSAwareElement clone) {
+        if (e != null) {
+            ((SOAPFault)clone).setException(e);
+        }
     }
 }

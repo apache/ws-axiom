@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -30,6 +31,10 @@ public aspect AxiomSOAP12FaultSupport {
     private static final Class<?>[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
             SOAPFaultNode.class, SOAPFaultRole.class, SOAPFaultDetail.class };
 
+    public final Class<? extends AxiomElement> AxiomSOAP12Fault.getElementType() {
+        return AxiomSOAP12Fault.class;
+    }
+    
     public final void AxiomSOAP12Fault.setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException {
         if (!(soapFaultCode instanceof AxiomSOAP12FaultCode)) {
             throw new SOAPProcessingException(

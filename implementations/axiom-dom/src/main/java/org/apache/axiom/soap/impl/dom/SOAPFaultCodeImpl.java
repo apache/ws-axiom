@@ -20,23 +20,13 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
     public SOAPFaultCodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAPFaultCodeImpl(ParentNode parentNode, OMNamespace ns,
-            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
-        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultCodeQName().getLocalPart(),
-                ns, builder, factory, generateNSDecl);
     }
 
     public SOAPFaultSubCode getSubCode() {
