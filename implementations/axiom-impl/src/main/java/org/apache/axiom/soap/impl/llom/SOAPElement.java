@@ -23,37 +23,12 @@ import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPElement;
 
 public abstract class SOAPElement extends OMElementImpl implements AxiomSOAPElement {
     public SOAPElement(OMFactory factory) {
         super(factory);
     }
-
-    /**
-     * @param parent
-     * @param localName
-     * @param extractNamespaceFromParent
-     */
-    protected SOAPElement(OMElement parent,
-                          String localName,
-                          boolean extractNamespaceFromParent,
-                          SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, localName, null, null, factory, true);
-        if (parent == null) {
-            throw new SOAPProcessingException(
-                    " Can not create " + localName +
-                            " element without a parent !!");
-        }
-        checkParent(parent);
-
-        if (extractNamespaceFromParent) {
-            internalSetNamespace(parent.getNamespace());
-        }
-    }
-
 
     public void internalSetParent(CoreParentNode element) {
         super.internalSetParent(element);
