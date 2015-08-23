@@ -35,6 +35,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
@@ -212,7 +213,7 @@ public aspect AxiomContainerSupport {
     }
     
     public Iterator AxiomContainer.getDescendants(boolean includeSelf) {
-        return new OMDescendantsIterator(this, includeSelf);
+        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
     }
 
     public OMElement AxiomContainer.getFirstChildWithName(QName elementQName) throws OMException {
