@@ -57,9 +57,9 @@ import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
-import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
+import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -335,7 +335,7 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
     public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
         CoreNSAwareElement element;
         if (type == AxiomElement.class) {
-            element = new ElementImpl(this);
+            element = new NSAwareElement(this);
         } else if (type == AxiomSOAPEnvelope.class) {
             element = new SOAPEnvelopeImpl(this);
         } else if (type == AxiomSOAP11Header.class) {

@@ -16,18 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.dom;
 
-public aspect CoreNSUnawareElementSupport {
-    public final int CoreNSUnawareElement.coreGetNodeType() {
-        return NS_UNAWARE_ELEMENT_NODE;
-    }
-    
-    public final String CoreNSUnawareElement.getImplicitNamespaceURI(String prefix) {
-        return null;
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.dom.DOMNSUnawareElement;
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMFactory;
+
+public class NSUnawareElement extends ElementImpl implements DOMNSUnawareElement {
+    public NSUnawareElement(OMFactory factory) {
+        super(factory);
     }
 
-    public final String CoreNSUnawareElement.getImplicitPrefix(String namespaceURI) {
-        return null;
+    public final NodeFactory coreGetNodeFactory() {
+        return ((NodeFactory)getOMFactory());
+    }
+
+    public void build() {
+        // Do nothing: the builder never creates NS unaware elements
+    }
+
+    @Override
+    ElementImpl createClone0(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

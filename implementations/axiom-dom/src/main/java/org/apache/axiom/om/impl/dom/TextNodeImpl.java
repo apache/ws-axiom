@@ -56,7 +56,7 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
 
         ParentNode parentNode = (ParentNode)coreGetParent();
         if (parentNode != null) {
-            this.insertSiblingAfter(newText);
+            coreInsertSiblingAfter(newText);
         }
 
         return newText;

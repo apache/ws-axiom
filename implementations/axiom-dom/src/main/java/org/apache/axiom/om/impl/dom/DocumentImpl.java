@@ -73,7 +73,8 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
     }
 
     public Element createElement(String tagName) throws DOMException {
-        ElementImpl element = new ElementImpl(null, tagName, null, null, getOMFactory(), false);
+        NSUnawareElement element = new NSUnawareElement(getOMFactory());
+        element.coreSetName(tagName);
         element.coreSetOwnerDocument(this);
         return element;
     }
@@ -95,7 +96,7 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         } else {
             namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
         }
-        ElementImpl element = new ElementImpl(null, localName, namespace, null, getOMFactory(), false);
+        NSAwareElement element = new NSAwareElement(null, localName, namespace, null, getOMFactory(), false);
         element.coreSetOwnerDocument(this);
         return element;
     }

@@ -23,13 +23,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPElement;
 
-public abstract class SOAPElement extends ElementImpl implements AxiomSOAPElement {
+public abstract class SOAPElement extends NSAwareElement implements AxiomSOAPElement {
     public SOAPElement(OMFactory factory) {
         super(factory);
     }

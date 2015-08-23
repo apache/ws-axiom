@@ -24,13 +24,13 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
-public abstract class SOAPHeaderBlockImpl extends ElementImpl implements AxiomSOAPHeaderBlock {
+public abstract class SOAPHeaderBlockImpl extends NSAwareElement implements AxiomSOAPHeaderBlock {
     public SOAPHeaderBlockImpl(OMFactory factory) {
         super(factory);
     }

@@ -64,7 +64,7 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
 
         if (this instanceof Document) {
             if (newDomChild instanceof ElementImpl) {
-                if (!(replacedChild instanceof Element) && ((DocumentImpl) this).getOMDocumentElement() != null) {
+                if (!(replacedChild instanceof Element) && ((DocumentImpl) this).coreGetDocumentElement() != null) {
                     // Throw exception since there cannot be two document elements
                     throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }

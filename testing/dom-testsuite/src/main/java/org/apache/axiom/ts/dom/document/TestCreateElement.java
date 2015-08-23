@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -33,7 +35,10 @@ public class TestCreateElement extends DOMTestCase {
         String tagName = "LocalName";
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement(tagName);
-
-        assertEquals("Local name misnatch", tagName, elem.getNodeName());
+        assertThat(elem.getNodeName()).isEqualTo(tagName);
+        assertThat(elem.getTagName()).isEqualTo(tagName);
+        assertThat(elem.getPrefix()).isNull();
+        assertThat(elem.getLocalName()).isNull();
+        assertThat(elem.getNamespaceURI()).isNull();
     }
 }

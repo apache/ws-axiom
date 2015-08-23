@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -101,7 +101,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFaul
             detail = getNewSOAPFaultDetail(this);
             setDetail(detail);
         }
-        OMElement faultDetailEnty = new ElementImpl((ParentNode)detail,
+        OMElement faultDetailEnty = new NSAwareElement((ParentNode)detail,
                                                     SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
                                                     null, null, getOMFactory(), true);
         faultDetailEnty.setText(sw.getBuffer().toString());

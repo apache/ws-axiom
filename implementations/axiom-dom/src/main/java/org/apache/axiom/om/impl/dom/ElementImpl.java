@@ -24,49 +24,19 @@ import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMAttribute;
-import org.apache.axiom.dom.DOMConfigurationImpl;
+import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.dom.DOMExceptionTranslator;
-import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.AxiomContainer;
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.Iterator;
-
-/** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomElement,
-        OMConstants {
-
-    private int lineNumber;
-
+public abstract class ElementImpl extends ParentNode implements DOMElement {
     public ElementImpl(OMFactory factory) {
         super(factory);
-    }
-    
-    public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
-                       OMFactory factory, boolean generateNSDecl) {
-        super(factory);
-        coreSetBuilder(builder);
-        if (parentNode != null) {
-            // TODO: dirty hack to get the correct semantics (reordering) if the parent is a SOAP envelope
-            if (parentNode instanceof AxiomContainer) {
-                ((AxiomContainer)parentNode).addChild(this, builder != null);
-            } else {
-                parentNode.coreAppendChild(this, builder != null);
-            }
-        }
-        initName(localName, ns, generateNSDecl);
     }
 
     private final String checkNamespaceIsDeclared(String prefix, String namespaceURI, boolean allowDefaultNamespace, boolean declare) {
@@ -92,25 +62,8 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
         return prefix;
     }
 
-    // /
-    // /OmElement methods
-    // /
-
-    public void setNamespace(OMNamespace namespace) {
-        setNamespace(namespace, true);
-    }
-
-    public OMElement cloneOMElement() {
-        return (OMElement)clone(new OMCloneOptions());
-    }
-
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        ElementImpl clone;
-        if (options.isPreserveModel()) {
-            clone = (ElementImpl)createClone(options, targetParent, namespaceRepairing);
-        } else {
-            clone = new ElementImpl(targetParent, getLocalName(), getNamespace(), null, getOMFactory(), namespaceRepairing);
-        }
+        ElementImpl clone = createClone0(options, targetParent, namespaceRepairing);
         NamedNodeMap attributes = getAttributes();
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
@@ -132,35 +85,13 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
         return clone;
     }
 
-    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
-        return new ElementImpl(targetParent, getLocalName(), getNamespace(), null, getOMFactory(), generateNSDecl);
-    }
+    abstract ElementImpl createClone0(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
     
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    /**
-     * Returns the namespace uri, given the prefix. If it is not found at this element, searches the
-     * parent.
-     *
-     * @param prefix
-     * @return Returns namespace.
-     */
-    public String getNamespaceURI(String prefix) {
-        OMNamespace ns = this.findNamespaceURI(prefix);
-        return (ns != null) ? ns.getNamespaceURI() : null;
-    }
-
     /*
      * DOM-Level 3 methods
      */
 
-    public void setIdAttribute(String name, boolean isId) throws DOMException {
+    public final void setIdAttribute(String name, boolean isId) throws DOMException {
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNode(name);
         if (tempAttr == null) {
@@ -170,7 +101,7 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
         this.updateIsId(isId, tempAttr);
     }
 
-    public void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
+    public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
             throws DOMException {
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNodeNS(namespaceURI, localName);
@@ -181,7 +112,7 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
         this.updateIsId(isId, tempAttr);
     }
 
-    public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
+    public final void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
         //find the attr
         if (((DOMAttribute)idAttr).coreGetOwnerElement() != this) {
             throw newDOMException(DOMException.NOT_FOUND_ERR);
@@ -204,43 +135,5 @@ public class ElementImpl extends ParentNode implements DOMNSAwareElement, AxiomE
                 ownerDocument().removeIdAttr(tempAttr);
             }
         }
-    }
-
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMNode#buildAll()
-      */
-    public void buildWithAttachments() {
-        if (getState() == INCOMPLETE) {
-            this.build();
-        }
-        Iterator iterator = getChildren();
-        while (iterator.hasNext()) {
-            OMNode node = (OMNode) iterator.next();
-            node.buildWithAttachments();
-        }
-    }
-
-    public void normalize(DOMConfigurationImpl config) {
-        if (config.isEnabled(DOMConfigurationImpl.NAMESPACES)) {
-            OMNamespace namespace = getNamespace();
-            if (namespace == null) {
-                if (getDefaultNamespace() != null) {
-                    declareDefaultNamespace("");
-                }
-            } else {
-                OMNamespace namespaceForPrefix = findNamespaceURI(namespace.getPrefix());
-                if (namespaceForPrefix == null || !namespaceForPrefix.getNamespaceURI().equals(namespace.getNamespaceURI())) {
-                    declareNamespace(namespace);
-                }
-            }
-        }
-        super.normalize(config);
-    }
-
-    public final void build() {
-        defaultBuild();
-    }
-
-    public final void checkChild(OMNode child) {
     }
 }
