@@ -51,18 +51,6 @@ public abstract class SOAPBodyImpl extends SOAPElement
     }
 
     /**
-     * Creates a new <code>SOAPFault</code> object and adds it to this <code>SOAPBody</code>
-     * object.
-     *
-     * @param e
-     * @return the new <code>SOAPFault</code> object
-     * @throws org.apache.axiom.om.OMException
-     *                     if there is a SOAP error
-     * @throws OMException
-     */
-    public abstract SOAPFault addFault(Exception e) throws OMException;
-
-    /**
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
      * object.
      *

@@ -27,8 +27,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPBody;
@@ -43,17 +41,6 @@ public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, SOAPConstants.BODY_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
-
-    /**
-     * Creates a new <code>SOAPFault</code> object and adds it to this <code>SOAPBody</code> object.
-     *
-     * @param e
-     * @return the new <code>SOAPFault</code> object
-     * @throws org.apache.axiom.om.OMException
-     *                     if there is a SOAP error
-     * @throws OMException
-     */
-    public abstract SOAPFault addFault(Exception e) throws OMException;
 
     /**
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code> object.

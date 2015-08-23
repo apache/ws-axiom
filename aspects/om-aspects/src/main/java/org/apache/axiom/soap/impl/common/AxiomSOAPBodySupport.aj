@@ -16,22 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.llom;
+package org.apache.axiom.soap.impl.common;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFault;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
-import org.apache.axiom.ts.soap.envelope.TestClone;
-
-public class SOAPImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true, true);
-        
-        // TODO
-        builder.exclude(TestClone.class, "(message=soap/soap11/soapfault2.xml)");
-        
-        return builder.build();
+public aspect AxiomSOAPBodySupport {
+    public final SOAPFault AxiomSOAPBody.addFault(Exception e) throws OMException {
+        return ((SOAPFactory)getOMFactory()).createSOAPFault(this, e);
     }
 }

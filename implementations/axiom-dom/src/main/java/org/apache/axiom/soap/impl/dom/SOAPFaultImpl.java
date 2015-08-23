@@ -27,9 +27,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -47,18 +45,6 @@ public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFaul
 
     public SOAPFaultImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /**
-     * Constructor SOAPFaultImpl
-     *
-     * @param parent
-     * @param e
-     */
-    public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
-        setException(e);
     }
 
     public void setException(Exception e) {

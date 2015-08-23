@@ -21,13 +21,10 @@ package org.apache.axiom.soap.impl.dom.soap12;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Body;
 import org.apache.axiom.soap.impl.dom.SOAPBodyImpl;
 
@@ -39,10 +36,6 @@ public class SOAP12BodyImpl extends SOAPBodyImpl implements AxiomSOAP12Body {
     public SOAP12BodyImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
             OMFactory factory, boolean generateNSDecl) {
         super(parentNode, ns, builder, factory, generateNSDecl);
-    }
-
-    public SOAPFault addFault(Exception e) throws OMException {
-        return new SOAP12FaultImpl(this, e, (SOAPFactory)getOMFactory());
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {

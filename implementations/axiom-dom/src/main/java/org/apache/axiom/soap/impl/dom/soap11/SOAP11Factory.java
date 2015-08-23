@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -48,11 +47,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
 
     public SOAPVersion getSOAPVersion() {
         return SOAP11Version.getSingleton();
-    }
-
-    public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
-            throws SOAPProcessingException {
-        return new SOAP11FaultImpl(parent, e, this);
     }
 
     public OMNamespace getNamespace() {

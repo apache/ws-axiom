@@ -26,7 +26,6 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -67,11 +66,6 @@ public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                    SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-    }
-
-    public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
-            throws SOAPProcessingException {
-        return new SOAP12FaultImpl(parent, e, this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {

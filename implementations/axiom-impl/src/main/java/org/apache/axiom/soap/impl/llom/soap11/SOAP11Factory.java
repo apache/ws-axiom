@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -76,11 +75,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
                                                  OMDataSource ds) 
         throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, this, ds);
-    }
-
-    public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
-            throws SOAPProcessingException {
-        return new SOAP11FaultImpl(parent, e, this);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

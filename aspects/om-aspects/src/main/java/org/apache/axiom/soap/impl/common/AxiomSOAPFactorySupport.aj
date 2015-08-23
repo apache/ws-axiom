@@ -131,6 +131,12 @@ public aspect AxiomSOAPFactorySupport {
         return createSOAPFault(null, (OMXMLParserWrapper)null);
     }
 
+    public final SOAPFault AxiomSOAPFactory.createSOAPFault(SOAPBody parent, Exception e) {
+        SOAPFault fault = createSOAPFault(parent, (OMXMLParserWrapper)null);
+        fault.setException(e);
+        return fault;
+    }
+
     public final SOAPFaultCode AxiomSOAPFactory.createSOAPFaultCode(SOAPFault parent, OMXMLParserWrapper builder) {
         SOAPHelper helper = getSOAPHelper();
         return createSOAPElement(helper.getFaultCodeClass(), parent, helper.getFaultCodeQName(), builder);

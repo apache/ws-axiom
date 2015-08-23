@@ -192,6 +192,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.fault.TestChildOrder(metaFactory, spec,
                     new SOAPFaultChild[] { SOAPFaultChild.CODE, SOAPFaultChild.REASON, SOAPFaultChild.DETAIL, SOAPFaultChild.REASON }, ss));
         }
+        addTest(new org.apache.axiom.ts.soap.fault.TestCloneWithException(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetDetailWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetException(metaFactory, spec));
@@ -257,6 +258,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.headerblock.TestByteArrayDS(metaFactory, spec));
         }
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.TRUE));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.FALSE));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, null));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
         for (int i=0; i<booleanLiterals.length; i++) {

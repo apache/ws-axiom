@@ -23,7 +23,6 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
-import org.apache.axiom.ts.soap.factory.TestCreateSOAPElementWithNullParent;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -36,9 +35,6 @@ public class SOAPImplementationTest extends TestCase {
         builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent1.class);
         builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent2.class);
         builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent3.class);
-        
-        // TODO: need to decide what the correct behavior is (other OMFactory methods allow null parents)
-        builder.exclude(TestCreateSOAPElementWithNullParent.class);
         
         return builder.build();
     }

@@ -49,18 +49,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
         super(factory);
     }
 
-    /**
-     * Constructor SOAPFaultImpl
-     *
-     * @param parent
-     * @param e
-     */
-    public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
-        setException(e);
-    }
-
     public void setException(Exception e) {
         this.e = e;
         putExceptionToSOAPFault(e);

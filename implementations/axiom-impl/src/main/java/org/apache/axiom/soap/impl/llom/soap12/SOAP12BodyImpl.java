@@ -19,20 +19,12 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Body;
 import org.apache.axiom.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl implements AxiomSOAP12Body {
     public SOAP12BodyImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAPFault addFault(Exception e) throws OMException {
-        return new SOAP12FaultImpl(this, e,
-                                   (SOAPFactory)getOMFactory());
     }
 }
