@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -31,11 +30,7 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
@@ -79,20 +74,6 @@ public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory
         return new SOAP12FaultImpl(parent, e, this);
     }
 
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
-            throws SOAPProcessingException {
-        return new SOAP12FaultValueImpl(parent, this);
-    }
-
-    public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
-        return new SOAP12FaultValueImpl(this);
-    }
-
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent,
-                                               OMXMLParserWrapper builder) {
-        return new SOAP12FaultValueImpl(parent, builder, this);
-    }
-
     public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
         return new SOAP12HeaderBlockImpl(this, source);
     }
@@ -102,73 +83,6 @@ public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory
                                                  OMDataSource ds) 
         throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, this, ds);
-    }
-
-    //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
-            throws SOAPProcessingException {
-        return new SOAP12FaultValueImpl(parent, this);
-    }
-
-    //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
-                                               OMXMLParserWrapper builder) {
-        return new SOAP12FaultValueImpl(parent, builder, this);
-    }
-
-    //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
-            throws SOAPProcessingException {
-        return new SOAP12FaultSubCodeImpl(parent, this);
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode()
-            throws SOAPProcessingException {
-        return new SOAP12FaultSubCodeImpl(this);
-    }
-
-    //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
-                                                   OMXMLParserWrapper builder) {
-        return new SOAP12FaultSubCodeImpl(parent, builder, this);
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
-            throws SOAPProcessingException {
-        return new SOAP12FaultSubCodeImpl(parent, this);
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
-                                                   OMXMLParserWrapper builder) {
-        return new SOAP12FaultSubCodeImpl(parent, builder, this);
-    }
-
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
-            throws SOAPProcessingException {
-        return new SOAP12FaultTextImpl(parent, this);
-    }
-
-    public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
-        return new SOAP12FaultTextImpl(this);
-    }
-
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent,
-                                             OMXMLParserWrapper builder) {
-        return new SOAP12FaultTextImpl(parent, builder, this);
-    }
-
-    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent)
-            throws SOAPProcessingException {
-        return new SOAP12FaultNodeImpl(parent, this);
-    }
-
-    public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
-        return new SOAP12FaultNodeImpl(this);
-    }
-
-    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
-                                             OMXMLParserWrapper builder) {
-        return new SOAP12FaultNodeImpl(parent, builder, this);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

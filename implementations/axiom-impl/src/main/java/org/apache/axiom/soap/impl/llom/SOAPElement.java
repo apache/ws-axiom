@@ -20,11 +20,8 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -57,22 +54,6 @@ public abstract class SOAPElement extends OMElementImpl implements AxiomSOAPElem
         }
     }
 
-
-    protected SOAPElement(OMContainer parent,
-                          String localName,
-                          OMXMLParserWrapper builder,
-                          SOAPFactory factory) {
-        super(parent, localName, null, builder, factory, false);
-    }
-
-    /**
-     * @param localName
-     * @param ns
-     */
-    protected SOAPElement(String localName, OMNamespace ns,
-                          SOAPFactory factory) {
-        super(null, localName, ns, null, factory, true);
-    }
 
     public void internalSetParent(CoreParentNode element) {
         super.internalSetParent(element);

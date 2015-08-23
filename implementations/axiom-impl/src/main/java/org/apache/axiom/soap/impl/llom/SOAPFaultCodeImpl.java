@@ -23,8 +23,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
@@ -32,15 +30,6 @@ import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
     public SOAPFaultCodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    protected SOAPFaultCodeImpl(String localName, OMNamespace ns, SOAPFactory factory) {
-        super(localName, ns, factory);
-    }
-
-    public SOAPFaultCodeImpl(SOAPFault parent, String localName, OMXMLParserWrapper builder,
-                             SOAPFactory factory) {
-        super(parent, localName, builder, factory);
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

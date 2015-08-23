@@ -31,8 +31,6 @@ import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
@@ -44,14 +42,6 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
     public SOAP12FaultTextImpl(OMFactory factory) {
         super(factory);
         // TODO: get rid of this crap
-        this.langNamespace = factory.createOMNamespace(
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
-    }
-
-    public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, true, factory);
         this.langNamespace = factory.createOMNamespace(
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);

@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -42,35 +41,6 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12Fa
     
     public SOAP12FaultSubCodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    //changed
-    public SOAP12FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
-    }
-
-    public SOAP12FaultSubCodeImpl(SOAPFactory factory) {
-        super(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory.getNamespace(), factory);
-    }
-
-    //changed
-    public SOAP12FaultSubCodeImpl(SOAPFaultCode parent,
-                                  OMXMLParserWrapper builder,
-                                  SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
-              factory);
-    }
-
-    public SOAP12FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
-    }
-
-    public SOAP12FaultSubCodeImpl(SOAPFaultSubCode parent,
-                                  OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
-              factory);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {

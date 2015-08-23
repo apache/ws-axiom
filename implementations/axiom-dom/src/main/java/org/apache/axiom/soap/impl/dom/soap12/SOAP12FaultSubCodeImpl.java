@@ -30,7 +30,6 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -45,20 +44,9 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12Fa
         super(factory);
     }
 
-    //changed
-    public SOAP12FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
-    }
-
     public SOAP12FaultSubCodeImpl(ParentNode parentNode, OMNamespace ns,
             OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
         super(parentNode, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
-    }
-
-    public SOAP12FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, true, factory);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {

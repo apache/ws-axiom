@@ -28,12 +28,6 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultNode;
-import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
@@ -87,54 +81,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
             throws SOAPProcessingException {
         return new SOAP11FaultImpl(parent, e, this);
-    }
-
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
-    }
-
-    public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

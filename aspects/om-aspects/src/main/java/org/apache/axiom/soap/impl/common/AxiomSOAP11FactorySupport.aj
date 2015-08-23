@@ -18,8 +18,56 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPFaultCode;
+import org.apache.axiom.soap.SOAPFaultNode;
+import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.soap.SOAPFaultSubCode;
+import org.apache.axiom.soap.SOAPFaultText;
+import org.apache.axiom.soap.SOAPFaultValue;
+
 public aspect AxiomSOAP11FactorySupport {
     public final SOAPHelper AxiomSOAP11Factory.getSOAPHelper() {
         return SOAPHelper.SOAP11;
+    }
+
+    public final SOAPFaultValue AxiomSOAP11Factory.createSOAPFaultValue(SOAPFaultCode parent) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultValue AxiomSOAP11Factory.createSOAPFaultValue(SOAPFaultSubCode parent) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultValue AxiomSOAP11Factory.createSOAPFaultValue() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultSubCode AxiomSOAP11Factory.createSOAPFaultSubCode(SOAPFaultCode parent) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultSubCode AxiomSOAP11Factory.createSOAPFaultSubCode(SOAPFaultSubCode parent) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultSubCode AxiomSOAP11Factory.createSOAPFaultSubCode() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultText AxiomSOAP11Factory.createSOAPFaultText(SOAPFaultReason parent) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultText AxiomSOAP11Factory.createSOAPFaultText() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultNode AxiomSOAP11Factory.createSOAPFaultNode(SOAPFault parent) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultNode AxiomSOAP11Factory.createSOAPFaultNode() {
+        throw new UnsupportedOperationException();
     }
 }

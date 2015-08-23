@@ -26,8 +26,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
@@ -35,11 +33,6 @@ import org.apache.axiom.soap.impl.dom.SOAPElement;
 public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12FaultValue {
     public SOAP12FaultValueImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP12FaultValueImpl(OMElement parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, true, factory);
     }
 
     public SOAP12FaultValueImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,

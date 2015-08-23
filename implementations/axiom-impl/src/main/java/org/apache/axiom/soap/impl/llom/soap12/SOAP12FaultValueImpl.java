@@ -23,8 +23,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -35,21 +33,6 @@ import org.apache.axiom.soap.impl.llom.SOAPElement;
 public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12FaultValue {
     public SOAP12FaultValueImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP12FaultValueImpl(OMElement parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, true, factory);
-    }
-
-    public SOAP12FaultValueImpl(SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, factory.getNamespace(), factory);
-    }
-
-    public SOAP12FaultValueImpl(OMElement parent, OMXMLParserWrapper builder,
-                                SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, builder, factory);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {
