@@ -35,7 +35,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -44,9 +43,9 @@ import org.apache.axiom.util.base64.Base64Utils;
 public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     protected Type type = Type.TEXT;
 
-    protected FOMContent(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
+    protected FOMContent(QName qname, OMContainer parent, OMFactory factory)
         throws OMException {
-        super(name, namespace, parent, factory);
+        super(qname, parent, factory);
     }
 
     protected FOMContent(QName qname, Type type, OMContainer parent, OMFactory factory) {

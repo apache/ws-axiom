@@ -73,10 +73,6 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 
 @SuppressWarnings("unchecked")
 public class FOMElement extends OMElementImpl implements AbderaElement, Constants {
-    protected FOMElement(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(parent, name, namespace, null, factory, true);
-    }
-
     protected FOMElement(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(parent, qname.getLocalPart(), getOrCreateNamespace(qname, parent, factory), null, factory, true);
     }

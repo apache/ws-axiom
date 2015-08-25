@@ -32,16 +32,10 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("unchecked")
 public class FOMExtensibleElement extends FOMElement implements AbderaExtensibleElement {
-    protected FOMExtensibleElement(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
-        throws OMException {
-        super(name, namespace, parent, factory);
-    }
-
     protected FOMExtensibleElement(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }

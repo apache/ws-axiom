@@ -30,14 +30,9 @@ import org.apache.axiom.fom.AbderaLink;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMLink extends FOMExtensibleElement implements AbderaLink {
-    protected FOMLink(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(name, namespace, parent, factory);
-    }
-
     protected FOMLink(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }

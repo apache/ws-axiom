@@ -29,15 +29,10 @@ import org.apache.axiom.fom.AbderaDateTime;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMDateTime extends FOMElement implements AbderaDateTime {
     private AtomDate value;
-
-    protected FOMDateTime(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(name, namespace, parent, factory);
-    }
 
     protected FOMDateTime(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);

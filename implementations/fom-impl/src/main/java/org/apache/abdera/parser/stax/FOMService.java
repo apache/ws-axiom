@@ -29,18 +29,11 @@ import org.apache.abdera.model.Workspace;
 import org.apache.axiom.fom.AbderaService;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMService extends FOMExtensibleElement implements AbderaService {
-    protected FOMService(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(name, namespace, parent, factory);
-        declareAtomNs();
-    }
-
     protected FOMService(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
         declareAtomNs();

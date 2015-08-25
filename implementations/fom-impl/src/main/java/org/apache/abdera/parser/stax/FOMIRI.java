@@ -26,14 +26,9 @@ import org.apache.axiom.fom.AbderaIRIElement;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMIRI extends FOMElement implements AbderaIRIElement {
-    protected FOMIRI(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(name, namespace, parent, factory);
-    }
-
     protected FOMIRI(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }

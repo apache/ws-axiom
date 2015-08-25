@@ -29,18 +29,10 @@ import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaCategories;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
-    protected FOMCategories(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
-        throws OMException {
-        super(name, namespace, parent, factory);
-        init();
-    }
-
     protected FOMCategories(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
         init();

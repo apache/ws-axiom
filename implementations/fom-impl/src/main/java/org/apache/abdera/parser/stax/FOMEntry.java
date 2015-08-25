@@ -51,17 +51,11 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.axiom.fom.AbderaEntry;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
-    protected FOMEntry(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(name, namespace, parent, factory);
-    }
-
     protected FOMEntry(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
     }

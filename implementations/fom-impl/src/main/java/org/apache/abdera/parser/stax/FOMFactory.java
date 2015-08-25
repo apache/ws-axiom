@@ -63,8 +63,6 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
@@ -433,63 +431,62 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
 
     protected OMElement createElement(QName qname, OMContainer parent) {
         OMElement element = null;
-        OMNamespace namespace = this.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
         if (FEED.equals(qname)) {
-            element = new FOMFeed(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMFeed(qname, parent, this);
         } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
-            element = new FOMService(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMService(qname, parent, this);
         } else if (ENTRY.equals(qname)) {
-            element = new FOMEntry(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMEntry(qname, parent, this);
         } else if (AUTHOR.equals(qname)) {
-            element = new FOMPerson(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMPerson(qname, parent, this);
         } else if (CATEGORY.equals(qname)) {
-            element = new FOMCategory(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMCategory(qname, parent, this);
         } else if (CONTENT.equals(qname)) {
-            element = new FOMContent(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMContent(qname, parent, this);
         } else if (CONTRIBUTOR.equals(qname)) {
-            element = new FOMPerson(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMPerson(qname, parent, this);
         } else if (GENERATOR.equals(qname)) {
-            element = new FOMGenerator(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMGenerator(qname, parent, this);
         } else if (ICON.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMIRI(qname, parent, this);
         } else if (ID.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMIRI(qname, parent, this);
         } else if (LOGO.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMIRI(qname, parent, this);
         } else if (LINK.equals(qname)) {
-            element = new FOMLink(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMLink(qname, parent, this);
         } else if (PUBLISHED.equals(qname)) {
-            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMDateTime(qname, parent, this);
         } else if (RIGHTS.equals(qname)) {
-            element = new FOMText(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMText(qname, parent, this);
         } else if (SOURCE.equals(qname)) {
-            element = new FOMSource(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMSource(qname, parent, this);
         } else if (SUBTITLE.equals(qname)) {
-            element = new FOMText(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMText(qname, parent, this);
         } else if (SUMMARY.equals(qname)) {
-            element = new FOMText(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMText(qname, parent, this);
         } else if (TITLE.equals(qname)) {
-            element = new FOMText(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMText(qname, parent, this);
         } else if (UPDATED.equals(qname)) {
-            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMDateTime(qname, parent, this);
         } else if (WORKSPACE.equals(qname) || PRE_RFC_WORKSPACE.equals(qname)) {
-            element = new FOMWorkspace(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMWorkspace(qname, parent, this);
         } else if (COLLECTION.equals(qname) || PRE_RFC_COLLECTION.equals(qname)) {
-            element = new FOMCollection(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMCollection(qname, parent, this);
         } else if (NAME.equals(qname)) {
-            element = new FOMElement(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMElement(qname, parent, this);
         } else if (EMAIL.equals(qname)) {
-            element = new FOMElement(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMElement(qname, parent, this);
         } else if (URI.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMIRI(qname, parent, this);
         } else if (CONTROL.equals(qname) || PRE_RFC_CONTROL.equals(qname)) {
-            element = new FOMControl(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMControl(qname, parent, this);
         } else if (DIV.equals(qname)) {
-            element = new FOMDiv(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMDiv(qname, parent, this);
         } else if (CATEGORIES.equals(qname) || PRE_RFC_CATEGORIES.equals(qname)) {
-            element = new FOMCategories(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMCategories(qname, parent, this);
         } else if (EDITED.equals(qname) || PRE_RFC_EDITED.equals(qname)) {
-            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, this);
+            element = new FOMDateTime(qname, parent, this);
         } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
             element = (OMElement)new FOMExtensibleElement(qname, parent, this);
         } else {

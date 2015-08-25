@@ -34,9 +34,7 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.fom.AbderaCollection;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
@@ -44,11 +42,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
 
     private static final String[] ENTRY = {"application/atom+xml;type=\"entry\""};
     private static final String[] EMPTY = new String[0];
-
-    protected FOMCollection(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
-        throws OMException {
-        super(name, namespace, parent, factory);
-    }
 
     protected FOMCollection(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);

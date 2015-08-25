@@ -24,16 +24,10 @@ import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaCategory;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMCategory extends FOMExtensibleElement implements AbderaCategory {
-    protected FOMCategory(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
-        super(name, namespace, parent, factory);
-    }
-
     protected FOMCategory(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
     }
