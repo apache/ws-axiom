@@ -265,7 +265,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
 
     public <T extends Element> T newExtensionElement(QName qname, Base parent) {
         String ns = qname.getNamespaceURI();
-        Element el = (Element)createElement(qname, (OMContainer)parent);
+        Element el = createElement(qname, (OMContainer)parent);
         return (T)((ATOM_NS.equals(ns) || APP_NS.equals(ns)) ? el : factoriesMap.getElementWrapper(el));
     }
 
@@ -429,8 +429,8 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         return new FOMDiv(DIV, (OMContainer)parent, this);
     }
 
-    protected OMElement createElement(QName qname, OMContainer parent) {
-        OMElement element = null;
+    protected FOMElement createElement(QName qname, OMContainer parent) {
+        FOMElement element = null;
         if (FEED.equals(qname)) {
             element = new FOMFeed(qname, parent, this);
         } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
@@ -488,9 +488,9 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         } else if (EDITED.equals(qname) || PRE_RFC_EDITED.equals(qname)) {
             element = new FOMDateTime(qname, parent, this);
         } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
-            element = (OMElement)new FOMExtensibleElement(qname, parent, this);
+            element = new FOMExtensibleElement(qname, parent, this);
         } else {
-            element = (OMElement)new FOMExtensibleElement(qname, null, this);
+            element = new FOMExtensibleElement(qname, null, this);
         }
         return element;
     }
