@@ -17,6 +17,7 @@
  */
 package org.apache.abdera.test.parser.stax;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -740,6 +741,15 @@ public class FOMTest {
         Document<Entry> doc = parser.parse(new StringReader(s));
         Entry entry = (Entry)(doc.getRoot().clone());
         assertEquals(Content.Type.HTML, entry.getContentType());
+    }
+
+    @Test
+    public void testTextClone() throws Exception {
+        Abdera abdera = new Abdera();
+        Document<Entry> doc = abdera.getParser().parse(new StringReader(
+                "<entry xmlns='http://www.w3.org/2005/Atom'><summary type='html'>test</summary></entry>"));
+        Entry entry = (Entry)(doc.getRoot().clone());
+        assertThat(entry.getSummaryElement().getTextType()).isEqualTo(Text.Type.HTML);
     }
 
     @Test
