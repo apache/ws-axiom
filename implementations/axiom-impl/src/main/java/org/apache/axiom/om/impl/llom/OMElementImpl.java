@@ -80,13 +80,12 @@ public class OMElementImpl extends OMNodeImpl
     /** Method handleNamespace. */
     final OMNamespace handleNamespace(QName qname) {
         forceExpand();
-        OMNamespace ns = null;
 
         // first try to find a namespace from the scope
         String namespaceURI = qname.getNamespaceURI();
         if (namespaceURI.length() > 0) {
             String prefix = qname.getPrefix();
-            ns = findNamespace(namespaceURI, prefix);
+            OMNamespace ns = findNamespace(namespaceURI, prefix);
 
             /**
              * What is left now is
@@ -97,12 +96,18 @@ public class OMElementImpl extends OMNodeImpl
                 if ("".equals(prefix)) {
                     prefix = OMSerializerUtil.getNextNSPrefix();
                 }
-                ns = declareNamespace(namespaceURI, prefix);
+                return declareNamespace(namespaceURI, prefix);
+            } else {
+                return ns;
             }
         } else if (qname.getPrefix().length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+        } else {
+            if (getDefaultNamespace() != null) {
+                declareDefaultNamespace("");
+            }
+            return null;
         }
-        return ns;
     }
 
     public void checkChild(OMNode child) {
