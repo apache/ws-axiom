@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
@@ -734,10 +735,9 @@ public class FOMTest {
     @Test
     public void testContentClone() throws Exception {
         String s = "<entry xmlns='http://www.w3.org/2005/Atom'><content type='html'>test</content></entry>";
-        ByteArrayInputStream in = new ByteArrayInputStream(s.getBytes());
         Abdera abdera = new Abdera();
         Parser parser = abdera.getParser();
-        Document<Entry> doc = parser.parse(in);
+        Document<Entry> doc = parser.parse(new StringReader(s));
         Entry entry = (Entry)(doc.getRoot().clone());
         assertEquals(Content.Type.HTML, entry.getContentType());
     }
@@ -769,7 +769,7 @@ public class FOMTest {
         Abdera abdera = new Abdera();
 
         Entry entry = abdera.newEntry();
-        Document<Element> foodoc = abdera.getParser().parse(new ByteArrayInputStream("<a><b><c/></b></a>".getBytes()));
+        Document<Element> foodoc = abdera.getParser().parse(new StringReader("<a><b><c/></b></a>"));
         Element foo = foodoc.getRoot();
         entry.setContent(foo, "application/foo+xml");
         assertEquals(foo, entry.getContentElement().getValueElement());
