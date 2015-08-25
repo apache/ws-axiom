@@ -62,12 +62,9 @@ import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
