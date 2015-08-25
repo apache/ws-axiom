@@ -40,21 +40,25 @@ public class FOMText extends FOMElement implements AbderaText {
     protected FOMText(Type type, String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);
-        init(type);
+        setTextType(type);
     }
 
     protected FOMText(Type type, QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
-        init(type);
+        setTextType(type);
     }
 
     protected FOMText(Type type, String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
         throws OMException {
         super(localName, parent, factory, builder);
-        init(type);
+        setTextType(type);
     }
 
-    private void init(Type type) {
+    public final Type getTextType() {
+        return type;
+    }
+
+    public Text setTextType(Type type) {
         this.type = type;
         if (Type.TEXT.equals(type))
             setAttributeValue(TYPE, "text");
@@ -64,14 +68,6 @@ public class FOMText extends FOMElement implements AbderaText {
             setAttributeValue(TYPE, "xhtml");
         else
             removeAttribute(TYPE);
-    }
-
-    public final Type getTextType() {
-        return type;
-    }
-
-    public Text setTextType(Type type) {
-        init(type);
         return this;
     }
 
@@ -83,7 +79,7 @@ public class FOMText extends FOMElement implements AbderaText {
         if (value != null) {
             if (this.getFirstChildWithName(Constants.DIV) != null)
                 this.getFirstChildWithName(Constants.DIV).discard();
-            init(Text.Type.XHTML);
+            setTextType(Text.Type.XHTML);
             removeChildren();
             addChild((OMElement)value);
         } else
@@ -110,7 +106,7 @@ public class FOMText extends FOMElement implements AbderaText {
 //    }
 
     public <T extends Element> T setText(Text.Type type, String value) {
-        init(type);
+        setTextType(type);
         if (value != null) {
             OMNode child = this.getFirstOMChild();
             while (child != null) {

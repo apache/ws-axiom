@@ -47,20 +47,24 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     protected FOMContent(String name, OMNamespace namespace, Type type, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);
-        init(type);
+        setContentType(type);
     }
 
     protected FOMContent(QName qname, Type type, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
-        init(type);
+        setContentType(type);
     }
 
     protected FOMContent(String localName, Type type, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
         super(localName, parent, factory, builder);
-        init(type);
+        setContentType(type);
     }
 
-    private void init(Type type) {
+    public final Type getContentType() {
+        return type;
+    }
+
+    public Content setContentType(Type type) {
         this.type = type;
         if (Type.TEXT.equals(type))
             setAttributeValue(TYPE, "text");
@@ -73,14 +77,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         else {
             removeAttribute(TYPE);
         }
-    }
-
-    public final Type getContentType() {
-        return type;
-    }
-
-    public Content setContentType(Type type) {
-        init(type);
         return this;
     }
 
@@ -104,10 +100,10 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
             }
 
             if (value instanceof Div && !type.equals(Content.Type.XML))
-                init(Content.Type.XHTML);
+                setContentType(Content.Type.XHTML);
             else {
                 if (mtype == null) {
-                    init(Content.Type.XML);
+                    setContentType(Content.Type.XML);
                 }
             }
             OMElement el = (OMElement)(value instanceof ElementWrapper ? ((ElementWrapper)value).getInternal() : value);
@@ -214,7 +210,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public <T extends Element> T setText(Content.Type type, String value) {
-        init(type);
+        setContentType(type);
         if (value != null) {
             OMNode child = this.getFirstOMChild();
             while (child != null) {
