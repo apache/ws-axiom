@@ -41,6 +41,7 @@ import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.TextContent;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public aspect AxiomNodeFactorySupport {
     public final OMDocument AxiomNodeFactory.createOMDocument() {
@@ -206,5 +207,40 @@ public aspect AxiomNodeFactorySupport {
     public final OMElement AxiomNodeFactory.createOMElement(String localName, OMContainer parent,
             OMXMLParserWrapper builder) {
         return createAxiomElement(AxiomElement.class, parent, localName, null, builder, false);
+    }
+    
+    public final OMElement AxiomNodeFactory.createOMElement(QName qname, OMContainer parent) {
+        AxiomElement element = createNSAwareElement(AxiomElement.class);
+        if (parent != null) {
+            parent.addChild(element);
+        }
+        element.internalSetLocalName(qname.getLocalPart());
+        String prefix = qname.getPrefix();
+        String namespaceURI = qname.getNamespaceURI();
+        if (namespaceURI.length() > 0) {
+            // The goal here is twofold:
+            //  * check if the namespace needs to be declared;
+            //  * locate an existing OMNamespace object, so that we can avoid creating a new one.
+            OMNamespace ns = element.findNamespace(namespaceURI, prefix);
+            if (ns == null) {
+                if ("".equals(prefix)) {
+                    prefix = OMSerializerUtil.getNextNSPrefix();
+                }
+                ns = element.declareNamespace(namespaceURI, prefix);
+            }
+            element.internalSetNamespace(ns);
+        } else if (prefix.length() > 0) {
+            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+        } else {
+            if (element.getDefaultNamespace() != null) {
+                element.declareDefaultNamespace("");
+            }
+            element.internalSetNamespace(null);
+        }
+        return element;
+    }
+
+    public final OMElement AxiomNodeFactory.createOMElement(QName qname) {
+        return createOMElement(qname, null);
     }
 }

@@ -31,11 +31,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.namespace.QName;
 
 import java.util.Iterator;
 
@@ -57,57 +54,8 @@ public class OMElementImpl extends OMNodeImpl
         initName(localName, ns, generateNSDecl);
     }
 
-    /**
-     * It is assumed that the QName passed contains, at least, the localName for this element.
-     *
-     * @param qname - this should be valid qname according to javax.xml.namespace.QName
-     * @throws OMException
-     */
-    public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
-            throws OMException {
-        super(factory);
-        if (parent != null) {
-            parent.addChild(this);
-        }
-        internalSetLocalName(qname.getLocalPart());
-        internalSetNamespace(handleNamespace(qname));
-    }
-    
     public OMElementImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /** Method handleNamespace. */
-    final OMNamespace handleNamespace(QName qname) {
-        forceExpand();
-
-        // first try to find a namespace from the scope
-        String namespaceURI = qname.getNamespaceURI();
-        if (namespaceURI.length() > 0) {
-            String prefix = qname.getPrefix();
-            OMNamespace ns = findNamespace(namespaceURI, prefix);
-
-            /**
-             * What is left now is
-             *  1. nsURI = null & parent != null, but ns = null
-             *  2. nsURI != null, (parent doesn't have an ns with given URI), but ns = null
-             */
-            if (ns == null) {
-                if ("".equals(prefix)) {
-                    prefix = OMSerializerUtil.getNextNSPrefix();
-                }
-                return declareNamespace(namespaceURI, prefix);
-            } else {
-                return ns;
-            }
-        } else if (qname.getPrefix().length() > 0) {
-            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
-        } else {
-            if (getDefaultNamespace() != null) {
-                declareDefaultNamespace("");
-            }
-            return null;
-        }
     }
 
     public void checkChild(OMNode child) {

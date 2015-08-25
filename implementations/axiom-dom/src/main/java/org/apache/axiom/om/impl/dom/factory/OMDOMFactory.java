@@ -38,7 +38,6 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -156,42 +155,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         } else {
             return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
         }
-    }
-
-    /**
-     * Creates a new OMDOM Element node and adds it to the given parent.
-     *
-     * @see #createOMElement(String, OMNamespace, OMContainer)
-     * @see org.apache.axiom.om.OMFactory#createOMElement( javax.xml.namespace.QName,
-     *      org.apache.axiom.om.OMContainer)
-     */
-    public OMElement createOMElement(QName qname, OMContainer parent)
-            throws OMException {
-        OMNamespaceImpl ns;
-        if (qname.getNamespaceURI().length() == 0) {
-            if (qname.getPrefix().length() > 0) {
-                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
-            }
-            ns = null;
-        } else if (qname.getPrefix().length() != 0) {
-            ns = new OMNamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());
-        } else {
-            ns = new OMNamespaceImpl(qname.getNamespaceURI(), null);
-        }
-        return createOMElement(qname.getLocalPart(), ns, parent);
-    }
-
-    /**
-     * Create an OMElement with the given QName
-     * <p/>
-     * If the QName contains a prefix, we will ensure that an OMNamespace is created mapping the
-     * given namespace to the given prefix.  If no prefix is passed, we'll create a generated one.
-     *
-     * @param qname
-     * @return the new OMElement.
-     */
-    public OMElement createOMElement(QName qname) throws OMException {
-        return createOMElement(qname, null);
     }
 
     /**
