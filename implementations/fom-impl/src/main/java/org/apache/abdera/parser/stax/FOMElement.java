@@ -594,7 +594,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
             obj = ((Content)src).getContentType();
         if (src instanceof Text)
             obj = ((Text)src).getTextType();
-        el = fomfactory.createElement(src.getQName(), (OMContainer)fomfactory.newDocument(), fomfactory, obj);
+        el = fomfactory.createElement(src.getQName(), (OMContainer)fomfactory.newDocument(), obj);
 
         return el;
     }

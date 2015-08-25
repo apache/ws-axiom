@@ -267,7 +267,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
 
     public <T extends Element> T newExtensionElement(QName qname, Base parent) {
         String ns = qname.getNamespaceURI();
-        Element el = (Element)createElement(qname, (OMContainer)parent, this, null);
+        Element el = (Element)createElement(qname, (OMContainer)parent, null);
         return (T)((ATOM_NS.equals(ns) || APP_NS.equals(ns)) ? el : factoriesMap.getElementWrapper(el));
     }
 
@@ -431,70 +431,70 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         return new FOMDiv(DIV, (OMContainer)parent, this);
     }
 
-    protected OMElement createElement(QName qname, OMContainer parent, OMFactory factory, Object objecttype) {
+    protected OMElement createElement(QName qname, OMContainer parent, Object objecttype) {
         OMElement element = null;
         OMNamespace namespace = this.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
         if (FEED.equals(qname)) {
-            element = new FOMFeed(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMFeed(qname.getLocalPart(), namespace, parent, this);
         } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
-            element = new FOMService(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMService(qname.getLocalPart(), namespace, parent, this);
         } else if (ENTRY.equals(qname)) {
-            element = new FOMEntry(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMEntry(qname.getLocalPart(), namespace, parent, this);
         } else if (AUTHOR.equals(qname)) {
-            element = new FOMPerson(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMPerson(qname.getLocalPart(), namespace, parent, this);
         } else if (CATEGORY.equals(qname)) {
-            element = new FOMCategory(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMCategory(qname.getLocalPart(), namespace, parent, this);
         } else if (CONTENT.equals(qname)) {
             Content.Type type = (Content.Type)objecttype;
-            element = new FOMContent(qname.getLocalPart(), namespace, type, parent, factory);
+            element = new FOMContent(qname.getLocalPart(), namespace, type, parent, this);
         } else if (CONTRIBUTOR.equals(qname)) {
-            element = new FOMPerson(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMPerson(qname.getLocalPart(), namespace, parent, this);
         } else if (GENERATOR.equals(qname)) {
-            element = new FOMGenerator(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMGenerator(qname.getLocalPart(), namespace, parent, this);
         } else if (ICON.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
         } else if (ID.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
         } else if (LOGO.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
         } else if (LINK.equals(qname)) {
-            element = new FOMLink(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMLink(qname.getLocalPart(), namespace, parent, this);
         } else if (PUBLISHED.equals(qname)) {
-            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, this);
         } else if (RIGHTS.equals(qname)) {
             Text.Type type = (Text.Type)objecttype;
-            element = new FOMText(type, qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMText(type, qname.getLocalPart(), namespace, parent, this);
         } else if (SOURCE.equals(qname)) {
-            element = new FOMSource(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMSource(qname.getLocalPart(), namespace, parent, this);
         } else if (SUBTITLE.equals(qname)) {
             Text.Type type = (Text.Type)objecttype;
-            element = new FOMText(type, qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMText(type, qname.getLocalPart(), namespace, parent, this);
         } else if (SUMMARY.equals(qname)) {
             Text.Type type = (Text.Type)objecttype;
-            element = new FOMText(type, qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMText(type, qname.getLocalPart(), namespace, parent, this);
         } else if (TITLE.equals(qname)) {
             Text.Type type = (Text.Type)objecttype;
-            element = new FOMText(type, qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMText(type, qname.getLocalPart(), namespace, parent, this);
         } else if (UPDATED.equals(qname)) {
-            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, this);
         } else if (WORKSPACE.equals(qname) || PRE_RFC_WORKSPACE.equals(qname)) {
-            element = new FOMWorkspace(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMWorkspace(qname.getLocalPart(), namespace, parent, this);
         } else if (COLLECTION.equals(qname) || PRE_RFC_COLLECTION.equals(qname)) {
-            element = new FOMCollection(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMCollection(qname.getLocalPart(), namespace, parent, this);
         } else if (NAME.equals(qname)) {
-            element = new FOMElement(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMElement(qname.getLocalPart(), namespace, parent, this);
         } else if (EMAIL.equals(qname)) {
-            element = new FOMElement(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMElement(qname.getLocalPart(), namespace, parent, this);
         } else if (URI.equals(qname)) {
-            element = new FOMIRI(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMIRI(qname.getLocalPart(), namespace, parent, this);
         } else if (CONTROL.equals(qname) || PRE_RFC_CONTROL.equals(qname)) {
-            element = new FOMControl(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMControl(qname.getLocalPart(), namespace, parent, this);
         } else if (DIV.equals(qname)) {
-            element = new FOMDiv(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMDiv(qname.getLocalPart(), namespace, parent, this);
         } else if (CATEGORIES.equals(qname) || PRE_RFC_CATEGORIES.equals(qname)) {
-            element = new FOMCategories(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMCategories(qname.getLocalPart(), namespace, parent, this);
         } else if (EDITED.equals(qname) || PRE_RFC_EDITED.equals(qname)) {
-            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, factory);
+            element = new FOMDateTime(qname.getLocalPart(), namespace, parent, this);
         } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
             element = (OMElement)new FOMExtensibleElement(qname, parent, this);
         } else {
@@ -503,7 +503,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         return element;
     }
 
-    protected OMElement createElement(QName qname, OMContainer parent, FOMBuilder builder) {
+    protected OMElement createElementFromBuilder(QName qname, OMContainer parent, FOMBuilder builder) {
         OMElement element = null;
         if (FEED.equals(qname)) {
             element = new FOMFeed(qname.getLocalPart(), parent, this, builder);

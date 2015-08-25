@@ -91,7 +91,7 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     @Override
     protected OMElement constructNode(OMContainer parent, String name) {
         QName qname = parser.getName();
-        OMElement element = fomfactory.createElement(qname, parent, this);
+        OMElement element = fomfactory.createElementFromBuilder(qname, parent, this);
         if (element == null) {
             element = new FOMElement(qname.getLocalPart(), parent, fomfactory, this);
         }
