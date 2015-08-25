@@ -37,10 +37,9 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 public class FOMText extends FOMElement implements AbderaText {
     protected Type type = Type.TEXT;
 
-    protected FOMText(Type type, String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
+    protected FOMText(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);
-        setTextType(type);
     }
 
     protected FOMText(Type type, QName qname, OMContainer parent, OMFactory factory) throws OMException {

@@ -586,16 +586,13 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     }
 
     protected OMElement _create(OMElement src) {
-        OMElement el = null;
-
         FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Object obj = null;
-        if (src instanceof Content)
-            obj = ((Content)src).getContentType();
-        if (src instanceof Text)
-            obj = ((Text)src).getTextType();
-        el = fomfactory.createElement(src.getQName(), (OMContainer)fomfactory.newDocument(), obj);
-
+        OMElement el = fomfactory.createElement(src.getQName(), (OMContainer)fomfactory.newDocument());
+        if (src instanceof Content) {
+            ((Content)el).setContentType(((Content)src).getContentType());
+        } else if (src instanceof Text) {
+            ((Text)el).setTextType(((Text)src).getTextType());
+        }
         return el;
     }
 

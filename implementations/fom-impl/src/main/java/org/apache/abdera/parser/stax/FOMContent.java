@@ -44,10 +44,9 @@ import org.apache.axiom.util.base64.Base64Utils;
 public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     protected Type type = Type.TEXT;
 
-    protected FOMContent(String name, OMNamespace namespace, Type type, OMContainer parent, OMFactory factory)
+    protected FOMContent(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);
-        setContentType(type);
     }
 
     protected FOMContent(QName qname, Type type, OMContainer parent, OMFactory factory) {
