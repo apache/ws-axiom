@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Service;
 import org.apache.abdera.model.Workspace;
-import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaService;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -37,11 +36,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMService extends FOMExtensibleElement implements AbderaService {
-    public FOMService() {
-        super(Constants.SERVICE, new FOMDocument<Service>(), new FOMFactory());
-        declareAtomNs();
-    }
-
     protected FOMService(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
         declareAtomNs();

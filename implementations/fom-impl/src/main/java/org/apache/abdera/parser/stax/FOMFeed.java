@@ -29,7 +29,6 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Source;
-import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaFeed;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -40,10 +39,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMFeed extends FOMSource implements AbderaFeed {
-    public FOMFeed() {
-        super(Constants.FEED, new FOMDocument<Feed>(), new FOMFactory());
-    }
-
     protected FOMFeed(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }

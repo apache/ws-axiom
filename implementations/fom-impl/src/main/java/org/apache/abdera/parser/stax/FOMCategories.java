@@ -35,11 +35,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
-    public FOMCategories() {
-        super(CATEGORIES, new FOMDocument<Categories>(), new FOMFactory());
-        init();
-    }
-
     protected FOMCategories(String name, OMNamespace namespace, OMContainer parent, OMFactory factory)
         throws OMException {
         super(name, namespace, parent, factory);

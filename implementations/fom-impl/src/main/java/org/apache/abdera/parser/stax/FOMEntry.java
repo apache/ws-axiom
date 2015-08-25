@@ -45,7 +45,6 @@ import org.apache.abdera.model.Source;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.model.Content.Type;
 import org.apache.abdera.parser.stax.util.FOMHelper;
-import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.i18n.text.io.InputStreamDataSource;
 import org.apache.abdera.i18n.iri.IRI;
@@ -59,10 +58,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
-    public FOMEntry() {
-        super(Constants.ENTRY, new FOMDocument<Entry>(), new FOMFactory());
-    }
-
     protected FOMEntry(String name, OMNamespace namespace, OMContainer parent, OMFactory factory) throws OMException {
         super(name, namespace, parent, factory);
     }
