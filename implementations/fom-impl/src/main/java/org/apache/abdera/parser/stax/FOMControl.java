@@ -41,10 +41,6 @@ public class FOMControl extends FOMExtensibleElement implements AbderaControl {
         super(localName, parent, factory, builder);
     }
 
-    protected FOMControl(OMContainer parent, OMFactory factory) throws OMException {
-        super(CONTROL, parent, factory);
-    }
-
     public boolean isDraft() {
         String value = _getElementValue(DRAFT);
         if (value == null)

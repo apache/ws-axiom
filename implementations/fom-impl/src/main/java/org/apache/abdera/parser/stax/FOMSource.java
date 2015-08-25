@@ -55,10 +55,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
         super(name, namespace, parent, factory);
     }
 
-    protected FOMSource(OMContainer parent, OMFactory factory) throws OMException {
-        super(SOURCE, parent, factory);
-    }
-
     protected FOMSource(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }

@@ -50,10 +50,6 @@ public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspac
         super(localName, parent, factory, builder);
     }
 
-    protected FOMWorkspace(OMContainer parent, OMFactory factory) throws OMException {
-        super(WORKSPACE, parent, factory);
-    }
-
     public String getTitle() {
         Text title = this.getFirstChild(TITLE);
         return (title != null) ? title.getValue() : null;

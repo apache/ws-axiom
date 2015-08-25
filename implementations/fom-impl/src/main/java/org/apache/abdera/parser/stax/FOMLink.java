@@ -38,10 +38,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
         super(name, namespace, parent, factory);
     }
 
-    protected FOMLink(OMContainer parent, OMFactory factory) throws OMException {
-        super(LINK, parent, factory);
-    }
-
     protected FOMLink(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }

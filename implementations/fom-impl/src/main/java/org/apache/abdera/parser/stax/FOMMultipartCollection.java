@@ -43,10 +43,6 @@ public class FOMMultipartCollection extends FOMCollection {
         super(localName, parent, factory, builder);
     }
 
-    protected FOMMultipartCollection(OMContainer parent, OMFactory factory) {
-        super(COLLECTION, parent, factory);
-    }
-
     public boolean acceptsMultipart(String mediaType) {
         Map<String, String> accept = getAcceptMultiparted();
         if (accept.size() == 0)

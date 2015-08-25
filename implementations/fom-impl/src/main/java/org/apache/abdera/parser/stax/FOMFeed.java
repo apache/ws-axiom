@@ -51,10 +51,6 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
         super(localName, parent, factory, builder);
     }
 
-    protected FOMFeed(OMContainer parent, OMFactory factory) throws OMException {
-        super(FEED, parent, factory);
-    }
-
     public List<Entry> getEntries() {
         return _getChildrenAsSet(ENTRY);
     }

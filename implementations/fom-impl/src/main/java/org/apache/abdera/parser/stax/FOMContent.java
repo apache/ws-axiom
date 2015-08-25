@@ -60,11 +60,6 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         init(type);
     }
 
-    protected FOMContent(Type type, OMContainer parent, OMFactory factory) throws OMException {
-        super(CONTENT, parent, factory);
-        init(type);
-    }
-
     private void init(Type type) {
         this.type = type;
         if (Type.TEXT.equals(type))

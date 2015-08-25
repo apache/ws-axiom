@@ -50,11 +50,6 @@ public class FOMService extends FOMExtensibleElement implements AbderaService {
         super(localName, parent, factory, builder);
     }
 
-    protected FOMService(OMContainer parent, OMFactory factory) throws OMException {
-        super(SERVICE, parent, factory);
-        declareAtomNs();
-    }
-
     private void declareAtomNs() {
         declareDefaultNamespace(APP_NS);
         declareNamespace(ATOM_NS, "atom");

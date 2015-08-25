@@ -70,10 +70,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
         super(localName, parent, factory, builder);
     }
 
-    protected FOMEntry(OMContainer parent, OMFactory factory) throws OMException {
-        super(ENTRY, parent, factory);
-    }
-
     public Person getAuthor() {
         return (Person)getFirstChildWithName(AUTHOR);
     }

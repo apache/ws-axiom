@@ -42,10 +42,6 @@ public class FOMGenerator extends FOMElement implements AbderaGenerator {
         super(localName, parent, factory, builder);
     }
 
-    protected FOMGenerator(OMContainer parent, OMFactory factory) throws OMException {
-        super(GENERATOR, parent, factory);
-    }
-
     public IRI getUri() {
         String value = getAttributeValue(AURI);
         return (value != null) ? new IRI(value) : null;

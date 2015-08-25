@@ -42,10 +42,6 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
         super(localName, parent, factory, builder);
     }
 
-    protected FOMCategory(OMContainer parent, OMFactory factory) {
-        super(CATEGORY, parent, factory);
-    }
-
     public String getTerm() {
         return getAttributeValue(TERM);
     }

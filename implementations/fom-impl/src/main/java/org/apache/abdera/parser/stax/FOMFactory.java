@@ -103,7 +103,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Service newService(Base parent) {
-        return new FOMService((OMContainer)parent, this);
+        return new FOMService(SERVICE, (OMContainer)parent, this);
     }
 
     public Workspace newWorkspace() {
@@ -111,7 +111,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Workspace newWorkspace(Element parent) {
-        return new FOMWorkspace((OMContainer)parent, this);
+        return new FOMWorkspace(WORKSPACE, (OMContainer)parent, this);
     }
 
     public Collection newCollection() {
@@ -119,11 +119,11 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Collection newCollection(Element parent) {
-        return new FOMCollection((OMContainer)parent, this);
+        return new FOMCollection(COLLECTION, (OMContainer)parent, this);
     }
 
     public Collection newMultipartCollection(Element parent) {
-        return new FOMMultipartCollection((OMContainer)parent, this);
+        return new FOMMultipartCollection(COLLECTION, (OMContainer)parent, this);
     }
 
     public Feed newFeed() {
@@ -142,11 +142,11 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Feed newFeed(Base parent) {
-        return new FOMFeed((OMContainer)parent, this);
+        return new FOMFeed(FEED, (OMContainer)parent, this);
     }
 
     public Entry newEntry(Base parent) {
-        return new FOMEntry((OMContainer)parent, this);
+        return new FOMEntry(ENTRY, (OMContainer)parent, this);
     }
 
     public Category newCategory() {
@@ -154,7 +154,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Category newCategory(Element parent) {
-        return new FOMCategory((OMContainer)parent, this);
+        return new FOMCategory(CATEGORY, (OMContainer)parent, this);
     }
 
     public Content newContent() {
@@ -170,7 +170,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     public Content newContent(Type type, Element parent) {
         if (type == null)
             type = Content.Type.TEXT;
-        Content content = new FOMContent(type, (OMContainer)parent, this);
+        Content content = new FOMContent(CONTENT, type, (OMContainer)parent, this);
         if (type.equals(Content.Type.XML))
             content.setMimeType(XML_MEDIA_TYPE);
         return content;
@@ -208,7 +208,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Generator newGenerator(Element parent) {
-        return new FOMGenerator((OMContainer)parent, this);
+        return new FOMGenerator(GENERATOR, (OMContainer)parent, this);
     }
 
     public IRIElement newID() {
@@ -216,7 +216,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public IRIElement newID(Element parent) {
-        return new FOMIRI(Constants.ID, (OMContainer)parent, this);
+        return newIRIElement(ID, parent);
     }
 
     public IRIElement newIRIElement(QName qname, Element parent) {
@@ -228,7 +228,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Link newLink(Element parent) {
-        return new FOMLink((OMContainer)parent, this);
+        return new FOMLink(LINK, (OMContainer)parent, this);
     }
 
     public Person newPerson(QName qname, Element parent) {
@@ -240,7 +240,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Source newSource(Element parent) {
-        return new FOMSource((OMContainer)parent, this);
+        return new FOMSource(SOURCE, (OMContainer)parent, this);
     }
 
     public Text newText(QName qname, Text.Type type) {
@@ -276,7 +276,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Control newControl(Element parent) {
-        return new FOMControl((OMContainer)parent, this);
+        return new FOMControl(CONTROL, (OMContainer)parent, this);
     }
 
     public DateTime newPublished() {
@@ -593,7 +593,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public Categories newCategories(Base parent) {
-        return new FOMCategories((OMContainer)parent, this);
+        return new FOMCategories(CATEGORIES, (OMContainer)parent, this);
     }
 
     public String newUuidUri() {

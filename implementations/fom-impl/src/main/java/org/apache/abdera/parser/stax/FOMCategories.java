@@ -50,11 +50,6 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
         super(localName, parent, factory, builder);
     }
 
-    protected FOMCategories(OMContainer parent, OMFactory factory) throws OMException {
-        super(CATEGORIES, parent, factory);
-        init();
-    }
-
     private void init() {
         this.declareNamespace(ATOM_NS, "atom");
     }

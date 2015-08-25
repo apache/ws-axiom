@@ -58,10 +58,6 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
         super(localName, parent, factory, builder);
     }
 
-    protected FOMCollection(OMContainer parent, OMFactory factory) {
-        super(COLLECTION, parent, factory);
-    }
-
     public String getTitle() {
         Text title = this.getFirstChild(TITLE);
         return (title != null) ? title.getValue() : null;
