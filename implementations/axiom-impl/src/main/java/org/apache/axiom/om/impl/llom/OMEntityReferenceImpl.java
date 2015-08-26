@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -54,7 +55,7 @@ public class OMEntityReferenceImpl extends OMLeafNode implements AxiomEntityRefe
         return replacementText;
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
         return new OMEntityReferenceImpl(targetParent, name, replacementText, getOMFactory(), false);
     }
 }

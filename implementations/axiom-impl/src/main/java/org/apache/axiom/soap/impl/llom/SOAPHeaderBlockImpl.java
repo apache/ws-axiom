@@ -21,12 +21,12 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
@@ -59,7 +59,7 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         }
     }
     
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         SOAPHeaderBlock clone = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
         copyData(options, clone);
         return clone;

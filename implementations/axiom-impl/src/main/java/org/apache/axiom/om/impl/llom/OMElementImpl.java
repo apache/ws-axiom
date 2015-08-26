@@ -22,12 +22,12 @@ package org.apache.axiom.om.impl.llom;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -83,16 +83,16 @@ public class OMElementImpl extends OMNodeImpl
         return (OMElement)clone(new OMCloneOptions());
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
         return defaultClone(options, targetParent);
     }
     
-    final OMNode defaultClone(OMCloneOptions options, OMContainer targetParent) {
-        OMElement targetElement;
+    final OMNode defaultClone(OMCloneOptions options, AxiomContainer targetParent) {
+        AxiomElement targetElement;
         if (options.isPreserveModel()) {
-            targetElement = createClone(options, targetParent);
+            targetElement = (AxiomElement)createClone(options, targetParent);
         } else {
-            targetElement = getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
+            targetElement = (AxiomElement)getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
@@ -108,7 +108,7 @@ public class OMElementImpl extends OMNodeImpl
         return targetElement;
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         return getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
     }
     

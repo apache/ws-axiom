@@ -20,9 +20,9 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
 public class OMProcessingInstructionImpl extends OMLeafNode implements AxiomProcessingInstruction {
@@ -30,7 +30,7 @@ public class OMProcessingInstructionImpl extends OMLeafNode implements AxiomProc
         super(factory);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
         return getOMFactory().createOMProcessingInstruction(targetParent, coreGetTarget(), coreGetCharacterData().toString());
     }
 }

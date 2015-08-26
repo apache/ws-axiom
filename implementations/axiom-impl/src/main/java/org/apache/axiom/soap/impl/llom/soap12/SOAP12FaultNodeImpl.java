@@ -20,9 +20,9 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -57,7 +57,7 @@ public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12Fault
         return getFaultNodeValue();
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         return ((SOAPFactory)getOMFactory()).createSOAPFaultNode((SOAPFault)targetParent);
     }
 }

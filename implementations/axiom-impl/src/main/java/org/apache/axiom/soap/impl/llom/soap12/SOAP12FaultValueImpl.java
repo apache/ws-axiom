@@ -20,9 +20,9 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -44,7 +44,7 @@ public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12Faul
         }
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         if (targetParent instanceof SOAPFaultCode) {
             return ((SOAPFactory)getOMFactory()).createSOAPFaultValue((SOAPFaultCode)targetParent);
         } else {

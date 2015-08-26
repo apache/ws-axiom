@@ -59,11 +59,11 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
     }
     
     public OMInformationItem clone(OMCloneOptions options) {
-        OMDocument targetDocument;
+        AxiomDocument targetDocument;
         if (options.isPreserveModel()) {
-            targetDocument = createClone(options);
+            targetDocument = (AxiomDocument)createClone(options);
         } else {
-            targetDocument = getOMFactory().createOMDocument();
+            targetDocument = (AxiomDocument)getOMFactory().createOMDocument();
         }
         targetDocument.setXMLVersion(getXMLVersion());
         targetDocument.setXMLEncoding(getXMLEncoding());

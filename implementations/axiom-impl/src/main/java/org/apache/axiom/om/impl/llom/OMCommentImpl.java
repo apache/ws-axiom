@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomComment;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.Policies;
 
 public class OMCommentImpl extends OMLeafNode implements AxiomComment {
@@ -39,7 +40,7 @@ public class OMCommentImpl extends OMLeafNode implements AxiomComment {
         coreSetCharacterData(contentText, Policies.DETACH_POLICY);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
         return getOMFactory().createOMComment(targetParent, coreGetCharacterData().toString());
     }
 }

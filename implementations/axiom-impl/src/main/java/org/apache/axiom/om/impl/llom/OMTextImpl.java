@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomText;
 
 import javax.activation.DataHandler;
@@ -33,7 +33,7 @@ public abstract class OMTextImpl extends OMLeafNode implements AxiomText, OMCons
         super(factory);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
         if (isBinary() && options.isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).

@@ -20,9 +20,9 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
@@ -32,7 +32,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAP
         super(factory);
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         return ((SOAPFactory)getOMFactory()).createSOAPFaultCode((SOAPFault)targetParent);
     }
 }

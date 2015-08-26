@@ -22,9 +22,9 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -98,7 +98,7 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12Fa
         return value == null ? null : value.getTextAsQName();
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         if (targetParent instanceof SOAPFaultSubCode) {
             return ((SOAPFactory)getOMFactory()).createSOAPFaultSubCode((SOAPFaultSubCode)targetParent);
         } else {

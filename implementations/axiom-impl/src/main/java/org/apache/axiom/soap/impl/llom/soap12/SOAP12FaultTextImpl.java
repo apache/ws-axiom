@@ -23,10 +23,10 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -78,7 +78,7 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
         return langAttr == null ? null : langAttr.getAttributeValue();
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
         return ((SOAPFactory)getOMFactory()).createSOAPFaultText((SOAPFaultReason)targetParent);
     }
 }
