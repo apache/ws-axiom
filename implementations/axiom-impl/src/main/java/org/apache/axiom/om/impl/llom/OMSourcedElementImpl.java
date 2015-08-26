@@ -122,7 +122,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
             String uri = ns.getNamespaceURI();
-            definedNamespace = new DeferredNamespace(uri);
+            definedNamespace = new DeferredNamespace(this, uri);
         }
         definedNamespaceSet = true;
     }
@@ -148,7 +148,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
             String uri = qName.getNamespaceURI();
-            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(uri);
+            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(this, uri);
         }
         definedNamespaceSet = true;
     }
@@ -362,7 +362,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                         String prefix = ((QNameAwareOMDataSource)dataSource).getPrefix();
                         if (prefix == null) {
                             // Prefix is unknown
-                            definedNamespace = new DeferredNamespace(namespaceURI);
+                            definedNamespace = new DeferredNamespace(this, namespaceURI);
                         } else {
                             definedNamespace = new OMNamespaceImpl(namespaceURI, prefix);
                         }
@@ -424,7 +424,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         targetOMSE.internalSetLocalName(internalGetLocalName());
         targetOMSE.definedNamespaceSet = definedNamespaceSet;
         if (definedNamespace instanceof DeferredNamespace) {
-            targetOMSE.definedNamespace = targetOMSE.new DeferredNamespace(definedNamespace.getNamespaceURI());
+            targetOMSE.definedNamespace = new DeferredNamespace(targetOMSE, definedNamespace.getNamespaceURI());
         } else {
             targetOMSE.definedNamespace = definedNamespace;
         }
@@ -510,7 +510,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             coreSetBuilder(null);
             if (isLossyPrefix(dataSource)) {
                 // Create a deferred namespace that forces an expand to get the prefix
-                definedNamespace = new DeferredNamespace(definedNamespace.getNamespaceURI());
+                definedNamespace = new DeferredNamespace(this, definedNamespace.getNamespaceURI());
             }
             return oldDS;
         }
@@ -531,56 +531,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
-    class DeferredNamespace implements OMNamespace {
-        
-        final String uri;
-        
-        DeferredNamespace(String ns) {
-            this.uri = ns;
-        }
-
-        public boolean equals(String uri, String prefix) {
-            String thisPrefix = getPrefix();
-            return (this.uri.equals(uri) &&
-                    (thisPrefix == null ? prefix == null :
-                            thisPrefix.equals(prefix)));
-        }
-
-        public String getName() {
-            return uri;
-        }
-
-        public String getNamespaceURI() {
-            return uri;
-        }
-
-        public String getPrefix() {
-            if (!isExpanded()) {
-                forceExpand();
-            }
-            OMNamespace actualNS = getNamespace();
-            return actualNS == null ? "" : actualNS.getPrefix();
-        }
-        
-        public int hashCode() {
-            String thisPrefix = getPrefix();
-            return uri.hashCode() ^ (thisPrefix != null ? thisPrefix.hashCode() : 0);
-        }
-        
-        public boolean equals(Object obj) {
-            if (!(obj instanceof OMNamespace)) {
-                return false;
-            }
-            OMNamespace other = (OMNamespace)obj;
-            String otherPrefix = other.getPrefix();
-            String thisPrefix = getPrefix();
-            return (uri.equals(other.getNamespaceURI()) &&
-                    (thisPrefix == null ? otherPrefix == null :
-                            thisPrefix.equals(otherPrefix)));
-        }
-        
-    }
-
     public Object getObject(Class dataSourceClass) {
         if (dataSource == null || isExpanded || !dataSourceClass.isInstance(dataSource)) {
             return null;
