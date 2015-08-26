@@ -37,7 +37,7 @@ public class NSUnawareElement extends ElementImpl implements DOMNSUnawareElement
     }
 
     @Override
-    ElementImpl createClone0(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+    ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         // TODO
         throw new UnsupportedOperationException();
     }

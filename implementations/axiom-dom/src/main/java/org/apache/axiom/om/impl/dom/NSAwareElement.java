@@ -71,7 +71,7 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
     }
 
     @Override
-    final ElementImpl createClone0(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+    final ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         NSAwareElement clone = (NSAwareElement)coreGetNodeFactory().createNSAwareElement(options.isPreserveModel() ? getElementType() : AxiomElement.class);
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);

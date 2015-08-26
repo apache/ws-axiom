@@ -63,7 +63,7 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
     }
 
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        ElementImpl clone = createClone0(options, targetParent, namespaceRepairing);
+        ElementImpl clone = createClone(options, targetParent, namespaceRepairing);
         NamedNodeMap attributes = getAttributes();
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
@@ -85,7 +85,7 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
         return clone;
     }
 
-    abstract ElementImpl createClone0(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
+    abstract ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
     
     /*
      * DOM-Level 3 methods
