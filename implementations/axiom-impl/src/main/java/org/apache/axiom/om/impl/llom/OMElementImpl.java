@@ -28,8 +28,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,16 +41,6 @@ public class OMElementImpl extends OMNodeImpl
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
     private int lineNumber;
-
-    public OMElementImpl(OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
-                    OMFactory factory, boolean generateNSDecl) {
-        super(factory);
-        coreSetBuilder(builder);
-        if (parent != null) {
-            ((AxiomContainer)parent).addChild(this, builder != null);
-        }
-        initName(localName, ns, generateNSDecl);
-    }
 
     public OMElementImpl(OMFactory factory) {
         super(factory);

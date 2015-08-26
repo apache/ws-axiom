@@ -103,10 +103,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory,
                                 OMDataSource source) {
-        super(null, localName, null, null, factory, false);
+        super(factory);
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
+        internalSetLocalName(localName);
         dataSource = source;
         isExpanded = false;
         // Normalize the namespace. Note that this also covers the case where the
@@ -134,11 +135,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @param source
      */
     public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
-        //create a namespace
-        super(null, qName.getLocalPart(), null, null, factory, false);
+        super(factory);
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
+        internalSetLocalName(qName.getLocalPart());
         dataSource = source;
         isExpanded = false;
         if (!isLossyPrefix(dataSource)) {
