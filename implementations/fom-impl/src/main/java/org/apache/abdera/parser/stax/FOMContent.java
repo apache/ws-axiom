@@ -53,9 +53,8 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         setContentType(type);
     }
 
-    protected FOMContent(String localName, Type type, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
+    protected FOMContent(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
         super(localName, parent, factory, builder);
-        setContentType(type);
     }
 
     public final Type getContentType() {

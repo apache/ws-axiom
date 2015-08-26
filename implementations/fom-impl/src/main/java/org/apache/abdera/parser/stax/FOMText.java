@@ -46,10 +46,9 @@ public class FOMText extends FOMElement implements AbderaText {
         setTextType(type);
     }
 
-    protected FOMText(Type type, String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
+    protected FOMText(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
         throws OMException {
         super(localName, parent, factory, builder);
-        setTextType(type);
     }
 
     public final Type getTextType() {

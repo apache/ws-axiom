@@ -508,10 +508,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         } else if (CATEGORY.equals(qname)) {
             element = new FOMCategory(qname.getLocalPart(), parent, this, builder);
         } else if (CONTENT.equals(qname)) {
-            Content.Type type = builder.getContentType();
-            if (type == null)
-                type = Content.Type.TEXT;
-            element = new FOMContent(qname.getLocalPart(), type, parent, this, builder);
+            element = new FOMContent(qname.getLocalPart(), parent, this, builder);
         } else if (CONTRIBUTOR.equals(qname)) {
             element = new FOMPerson(qname.getLocalPart(), parent, this, builder);
         } else if (GENERATOR.equals(qname)) {
@@ -527,27 +524,15 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         } else if (PUBLISHED.equals(qname)) {
             element = new FOMDateTime(qname.getLocalPart(), parent, this, builder);
         } else if (RIGHTS.equals(qname)) {
-            Text.Type type = builder.getTextType();
-            if (type == null)
-                type = Text.Type.TEXT;
-            element = new FOMText(type, qname.getLocalPart(), parent, this, builder);
+            element = new FOMText(qname.getLocalPart(), parent, this, builder);
         } else if (SOURCE.equals(qname)) {
             element = new FOMSource(qname.getLocalPart(), parent, this, builder);
         } else if (SUBTITLE.equals(qname)) {
-            Text.Type type = builder.getTextType();
-            if (type == null)
-                type = Text.Type.TEXT;
-            element = new FOMText(type, qname.getLocalPart(), parent, this, builder);
+            element = new FOMText(qname.getLocalPart(), parent, this, builder);
         } else if (SUMMARY.equals(qname)) {
-            Text.Type type = builder.getTextType();
-            if (type == null)
-                type = Text.Type.TEXT;
-            element = new FOMText(type, qname.getLocalPart(), parent, this, builder);
+            element = new FOMText(qname.getLocalPart(), parent, this, builder);
         } else if (TITLE.equals(qname)) {
-            Text.Type type = builder.getTextType();
-            if (type == null)
-                type = Text.Type.TEXT;
-            element = new FOMText(type, qname.getLocalPart(), parent, this, builder);
+            element = new FOMText(qname.getLocalPart(), parent, this, builder);
         } else if (UPDATED.equals(qname)) {
             element = new FOMDateTime(qname.getLocalPart(), parent, this, builder);
         } else if (WORKSPACE.equals(qname) || PRE_RFC_WORKSPACE.equals(qname)) {
@@ -570,6 +555,13 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
             element = new FOMDateTime(qname.getLocalPart(), parent, this, builder);
         } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
             element = new FOMExtensibleElement(qname.getLocalPart(), parent, this, builder);
+        }
+        if (element instanceof FOMContent) {
+            Content.Type type = builder.getContentType();
+            ((FOMContent)element).setContentType(type == null ? Content.Type.TEXT : type);
+        } else if (element instanceof FOMText) {
+            Text.Type type = builder.getTextType();
+            ((FOMText)element).setTextType(type == null ? Text.Type.TEXT : type);
         }
         return element;
     }
