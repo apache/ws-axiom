@@ -21,23 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.MimeType;
-import javax.xml.namespace.QName;
 
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.model.Workspace;
 import org.apache.axiom.fom.AbderaWorkspace;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspace {
-    protected FOMWorkspace(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-    }
-
     protected FOMWorkspace(OMFactory factory) {
         super(factory);
     }

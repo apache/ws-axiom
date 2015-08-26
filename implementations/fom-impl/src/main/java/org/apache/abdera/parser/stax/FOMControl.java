@@ -17,19 +17,12 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.model.Control;
 import org.apache.axiom.fom.AbderaControl;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMControl extends FOMExtensibleElement implements AbderaControl {
-    protected FOMControl(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-    }
-
     protected FOMControl(OMFactory factory) {
         super(factory);
     }

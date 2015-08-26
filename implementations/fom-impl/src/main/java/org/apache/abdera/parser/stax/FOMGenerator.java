@@ -17,19 +17,12 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Generator;
 import org.apache.axiom.fom.AbderaGenerator;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 
 public class FOMGenerator extends FOMElement implements AbderaGenerator {
-    protected FOMGenerator(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-    }
-
     protected FOMGenerator(OMFactory factory) {
         super(factory);
     }

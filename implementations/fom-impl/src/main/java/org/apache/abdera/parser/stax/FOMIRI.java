@@ -17,21 +17,13 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.axiom.fom.AbderaIRIElement;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 
 public class FOMIRI extends FOMElement implements AbderaIRIElement {
-    protected FOMIRI(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-    }
-
     protected FOMIRI(OMFactory factory) {
         super(factory);
     }

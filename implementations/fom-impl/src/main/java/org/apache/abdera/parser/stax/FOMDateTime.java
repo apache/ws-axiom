@@ -20,22 +20,14 @@ package org.apache.abdera.parser.stax;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.model.AtomDate;
 import org.apache.abdera.model.DateTime;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaDateTime;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 
 public class FOMDateTime extends FOMElement implements AbderaDateTime {
     private AtomDate value;
-
-    protected FOMDateTime(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-    }
 
     protected FOMDateTime(OMFactory factory) {
         super(factory);

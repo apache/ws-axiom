@@ -17,23 +17,15 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.abdera.model.Person;
 import org.apache.axiom.fom.AbderaPerson;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 
 public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
-    protected FOMPerson(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-    }
-
     protected FOMPerson(OMFactory factory) {
         super(factory);
     }

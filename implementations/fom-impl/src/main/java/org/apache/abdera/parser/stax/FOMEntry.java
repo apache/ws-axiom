@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.activation.MimeType;
-import javax.xml.namespace.QName;
 
 import org.apache.abdera.model.AtomDate;
 import org.apache.abdera.model.Categories;
@@ -49,16 +48,11 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.i18n.text.io.InputStreamDataSource;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.axiom.fom.AbderaEntry;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
-    protected FOMEntry(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-    }
-
     protected FOMEntry(OMFactory factory) {
         super(factory);
     }

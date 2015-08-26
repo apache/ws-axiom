@@ -20,24 +20,17 @@ package org.apache.abdera.parser.stax;
 import java.io.StringWriter;
 import java.util.Iterator;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
 import org.apache.axiom.fom.AbderaDiv;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
-    protected FOMDiv(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-    }
-
     protected FOMDiv(OMFactory factory) {
         super(factory);
     }

@@ -23,23 +23,16 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Source;
 import org.apache.axiom.fom.AbderaFeed;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 public class FOMFeed extends FOMSource implements AbderaFeed {
-    protected FOMFeed(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-    }
-
     protected FOMFeed(OMFactory factory) {
         super(factory);
     }

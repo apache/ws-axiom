@@ -21,30 +21,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.MimeType;
-import javax.xml.namespace.QName;
 
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Service;
 import org.apache.abdera.model.Workspace;
 import org.apache.axiom.fom.AbderaService;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMService extends FOMExtensibleElement implements AbderaService {
-    protected FOMService(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-        declareAtomNs();
-    }
-
     protected FOMService(OMFactory factory) {
         super(factory);
-    }
-
-    private void declareAtomNs() {
-        declareDefaultNamespace(APP_NS);
-        declareNamespace(ATOM_NS, "atom");
     }
 
     public List<Workspace> getWorkspaces() {

@@ -20,7 +20,6 @@ package org.apache.abdera.parser.stax;
 import javax.activation.DataHandler;
 import javax.activation.MimeType;
 import javax.activation.URLDataSource;
-import javax.xml.namespace.QName;
 
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.text.Localizer;
@@ -31,9 +30,7 @@ import org.apache.abdera.model.ElementWrapper;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.fom.AbderaContent;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -41,16 +38,6 @@ import org.apache.axiom.util.base64.Base64Utils;
 @SuppressWarnings("unchecked")
 public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     protected Type type = Type.TEXT;
-
-    protected FOMContent(QName qname, OMContainer parent, OMFactory factory)
-        throws OMException {
-        super(qname, parent, factory);
-    }
-
-    protected FOMContent(QName qname, Type type, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-        setContentType(type);
-    }
 
     protected FOMContent(OMFactory factory) {
         super(factory);

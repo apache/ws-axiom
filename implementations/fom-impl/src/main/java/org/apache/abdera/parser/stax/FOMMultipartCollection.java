@@ -6,12 +6,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.activation.MimeType;
-import javax.xml.namespace.QName;
 
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.util.MimeTypeHelper;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 
 /*
@@ -33,9 +31,8 @@ import org.apache.axiom.om.OMFactory;
  * under the License.
  */
 public class FOMMultipartCollection extends FOMCollection {
-
-    protected FOMMultipartCollection(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
+    protected FOMMultipartCollection(OMFactory factory) {
+        super(factory);
     }
 
     public boolean acceptsMultipart(String mediaType) {

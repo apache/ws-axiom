@@ -21,8 +21,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.iri.IRIHelper;
 import org.apache.abdera.model.AtomDate;
@@ -41,18 +39,12 @@ import org.apache.abdera.model.Source;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaSource;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMSource extends FOMExtensibleElement implements AbderaSource {
-    protected FOMSource(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-    }
-
     protected FOMSource(OMFactory factory) {
         super(factory);
     }

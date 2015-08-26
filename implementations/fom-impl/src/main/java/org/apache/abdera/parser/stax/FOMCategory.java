@@ -17,20 +17,13 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaCategory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 
 public class FOMCategory extends FOMExtensibleElement implements AbderaCategory {
-    protected FOMCategory(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-    }
-
     protected FOMCategory(OMFactory factory) {
         super(factory);
     }

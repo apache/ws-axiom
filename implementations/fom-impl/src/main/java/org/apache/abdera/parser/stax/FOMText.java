@@ -17,33 +17,19 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaText;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings("unchecked")
 public class FOMText extends FOMElement implements AbderaText {
     protected Type type = Type.TEXT;
-
-    protected FOMText(QName qname, OMContainer parent, OMFactory factory)
-        throws OMException {
-        super(qname, parent, factory);
-    }
-
-    protected FOMText(Type type, QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(qname, parent, factory);
-        setTextType(type);
-    }
 
     protected FOMText(OMFactory factory) {
         super(factory);

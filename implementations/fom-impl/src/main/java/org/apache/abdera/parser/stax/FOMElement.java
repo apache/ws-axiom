@@ -61,7 +61,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -72,23 +71,8 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 
 @SuppressWarnings("unchecked")
 public class FOMElement extends OMElementImpl implements AbderaElement, Constants {
-    protected FOMElement(QName qname, OMContainer parent, OMFactory factory) throws OMException {
-        super(parent, qname.getLocalPart(), getOrCreateNamespace(qname, parent, factory), null, factory, true);
-    }
-
     protected FOMElement(OMFactory factory) {
         super(factory);
-    }
-
-    private static OMNamespace getOrCreateNamespace(QName qname, OMContainer parent, OMFactory factory) {
-        String namespace = qname.getNamespaceURI();
-        String prefix = qname.getPrefix();
-        if (parent != null && parent instanceof OMElement) {
-            OMNamespace ns = ((OMElement)parent).findNamespace(namespace, prefix);
-            if (ns != null)
-                return ns;
-        }
-        return factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix());
     }
 
     protected void setParentDocument(Document parent) {

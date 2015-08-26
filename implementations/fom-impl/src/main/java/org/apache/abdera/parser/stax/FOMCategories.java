@@ -20,29 +20,17 @@ package org.apache.abdera.parser.stax;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaCategories;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
-    protected FOMCategories(QName qname, OMContainer parent, OMFactory factory) {
-        super(qname, parent, factory);
-        init();
-    }
-
     protected FOMCategories(OMFactory factory) {
         super(factory);
-    }
-
-    private void init() {
-        this.declareNamespace(ATOM_NS, "atom");
     }
 
     public Categories addCategory(Category category) {
