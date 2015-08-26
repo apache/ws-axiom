@@ -430,7 +430,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     protected FOMElement createElement(QName qname, OMContainer parent) {
-        FOMElement element = null;
+        FOMElement element;
         if (FEED.equals(qname)) {
             element = new FOMFeed(qname, parent, this);
         } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
@@ -496,7 +496,7 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     protected OMElement createElementFromBuilder(QName qname, OMContainer parent, FOMBuilder builder) {
-        OMElement element = null;
+        OMElement element;
         if (FEED.equals(qname)) {
             element = new FOMFeed(qname.getLocalPart(), parent, this, builder);
         } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
@@ -555,6 +555,8 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
             element = new FOMDateTime(qname.getLocalPart(), parent, this, builder);
         } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
             element = new FOMExtensibleElement(qname.getLocalPart(), parent, this, builder);
+        } else {
+            element = new FOMElement(qname.getLocalPart(), parent, this, builder);
         }
         if (element instanceof FOMContent) {
             Content.Type type = builder.getContentType();

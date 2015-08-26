@@ -17,7 +17,6 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.abdera.model.Content;
@@ -90,12 +89,7 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
 
     @Override
     protected OMElement constructNode(OMContainer parent, String name) {
-        QName qname = parser.getName();
-        OMElement element = fomfactory.createElementFromBuilder(qname, parent, this);
-        if (element == null) {
-            element = new FOMElement(qname.getLocalPart(), parent, fomfactory, this);
-        }
-        return element;
+        return fomfactory.createElementFromBuilder(parser.getName(), parent, this);
     }
 
     public <T extends Element> Document<T> getFomDocument() {
