@@ -35,7 +35,6 @@ import org.apache.axiom.fom.AbderaCollection;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMCollection extends FOMExtensibleElement implements AbderaCollection {
@@ -47,8 +46,8 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
         super(qname, parent, factory);
     }
 
-    protected FOMCollection(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMCollection(OMFactory factory) {
+        super(factory);
     }
 
     public String getTitle() {

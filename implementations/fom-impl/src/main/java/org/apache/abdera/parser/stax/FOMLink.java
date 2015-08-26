@@ -30,16 +30,14 @@ import org.apache.axiom.fom.AbderaLink;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     protected FOMLink(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }
 
-    protected FOMLink(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
-        throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMLink(OMFactory factory) {
+        super(factory);
     }
 
     public IRI getHref() {

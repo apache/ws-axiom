@@ -26,15 +26,14 @@ import org.apache.axiom.fom.AbderaIRIElement;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMIRI extends FOMElement implements AbderaIRIElement {
     protected FOMIRI(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }
 
-    protected FOMIRI(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMIRI(OMFactory factory) {
+        super(factory);
     }
 
     public IRI getValue() {

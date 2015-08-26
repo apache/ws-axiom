@@ -46,7 +46,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMSource extends FOMExtensibleElement implements AbderaSource {
@@ -54,9 +53,8 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
         super(qname, parent, factory);
     }
 
-    protected FOMSource(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
-        throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMSource(OMFactory factory) {
+        super(factory);
     }
 
     public Person getAuthor() {

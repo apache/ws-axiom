@@ -24,15 +24,14 @@ import org.apache.abdera.model.Generator;
 import org.apache.axiom.fom.AbderaGenerator;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMGenerator extends FOMElement implements AbderaGenerator {
     protected FOMGenerator(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
     }
 
-    protected FOMGenerator(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMGenerator(OMFactory factory) {
+        super(factory);
     }
 
     public IRI getUri() {

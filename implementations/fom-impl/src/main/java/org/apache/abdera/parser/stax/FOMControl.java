@@ -23,7 +23,6 @@ import org.apache.abdera.model.Control;
 import org.apache.axiom.fom.AbderaControl;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMControl extends FOMExtensibleElement implements AbderaControl {
@@ -31,8 +30,8 @@ public class FOMControl extends FOMExtensibleElement implements AbderaControl {
         super(qname, parent, factory);
     }
 
-    protected FOMControl(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMControl(OMFactory factory) {
+        super(factory);
     }
 
     public boolean isDraft() {

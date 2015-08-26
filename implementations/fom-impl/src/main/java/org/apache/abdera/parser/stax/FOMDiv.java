@@ -32,15 +32,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     protected FOMDiv(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }
 
-    protected FOMDiv(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMDiv(OMFactory factory) {
+        super(factory);
     }
 
     public String[] getXhtmlClass() {

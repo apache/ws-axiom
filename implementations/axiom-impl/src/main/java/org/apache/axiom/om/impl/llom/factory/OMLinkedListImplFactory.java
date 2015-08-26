@@ -295,7 +295,7 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return new CDATASectionImpl(this);
     }
 
-    public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
+    public <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
         CoreNSAwareElement element;
         if (type == AxiomElement.class) {
             element = new OMElementImpl(this);

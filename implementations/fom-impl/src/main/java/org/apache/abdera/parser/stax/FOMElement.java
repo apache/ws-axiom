@@ -68,7 +68,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 
 @SuppressWarnings("unchecked")
@@ -77,8 +76,8 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
         super(parent, qname.getLocalPart(), getOrCreateNamespace(qname, parent, factory), null, factory, true);
     }
 
-    protected FOMElement(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(parent, localName, null, builder, factory, false);
+    protected FOMElement(OMFactory factory) {
+        super(factory);
     }
 
     private static OMNamespace getOrCreateNamespace(QName qname, OMContainer parent, OMFactory factory) {

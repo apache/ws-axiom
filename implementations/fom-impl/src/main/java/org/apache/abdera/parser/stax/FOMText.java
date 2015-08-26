@@ -30,7 +30,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("unchecked")
 public class FOMText extends FOMElement implements AbderaText {
@@ -46,9 +45,8 @@ public class FOMText extends FOMElement implements AbderaText {
         setTextType(type);
     }
 
-    protected FOMText(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
-        throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMText(OMFactory factory) {
+        super(factory);
     }
 
     public final Type getTextType() {

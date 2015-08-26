@@ -28,16 +28,14 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     protected FOMPerson(QName qname, OMContainer parent, OMFactory factory) throws OMException {
         super(qname, parent, factory);
     }
 
-    protected FOMPerson(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
-        throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMPerson(OMFactory factory) {
+        super(factory);
     }
 
     public Element getNameElement() {

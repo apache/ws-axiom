@@ -30,7 +30,6 @@ import org.apache.axiom.fom.AbderaService;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings("deprecation")
 public class FOMService extends FOMExtensibleElement implements AbderaService {
@@ -39,8 +38,8 @@ public class FOMService extends FOMExtensibleElement implements AbderaService {
         declareAtomNs();
     }
 
-    protected FOMService(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMService(OMFactory factory) {
+        super(factory);
     }
 
     private void declareAtomNs() {

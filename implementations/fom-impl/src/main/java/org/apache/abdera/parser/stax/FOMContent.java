@@ -36,7 +36,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.util.base64.Base64Utils;
 
 @SuppressWarnings("unchecked")
@@ -53,8 +52,8 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         setContentType(type);
     }
 
-    protected FOMContent(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMContent(OMFactory factory) {
+        super(factory);
     }
 
     public final Type getContentType() {

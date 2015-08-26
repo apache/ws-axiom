@@ -30,7 +30,6 @@ import org.apache.axiom.fom.AbderaCategories;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
     protected FOMCategories(QName qname, OMContainer parent, OMFactory factory) {
@@ -38,8 +37,8 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
         init();
     }
 
-    protected FOMCategories(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMCategories(OMFactory factory) {
+        super(factory);
     }
 
     private void init() {

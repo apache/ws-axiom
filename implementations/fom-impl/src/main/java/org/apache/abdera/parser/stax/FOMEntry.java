@@ -52,7 +52,6 @@ import org.apache.axiom.fom.AbderaEntry;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
@@ -60,8 +59,8 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
         super(qname, parent, factory);
     }
 
-    protected FOMEntry(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMEntry(OMFactory factory) {
+        super(factory);
     }
 
     public Person getAuthor() {

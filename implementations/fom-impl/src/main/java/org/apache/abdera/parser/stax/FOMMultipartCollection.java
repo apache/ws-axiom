@@ -13,7 +13,6 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -37,10 +36,6 @@ public class FOMMultipartCollection extends FOMCollection {
 
     protected FOMMultipartCollection(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
-    }
-
-    protected FOMMultipartCollection(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
     }
 
     public boolean acceptsMultipart(String mediaType) {

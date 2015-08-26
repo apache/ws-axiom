@@ -29,7 +29,6 @@ import org.apache.axiom.fom.AbderaDateTime;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMDateTime extends FOMElement implements AbderaDateTime {
     private AtomDate value;
@@ -38,9 +37,8 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
         super(qname, parent, factory);
     }
 
-    protected FOMDateTime(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder)
-        throws OMException {
-        super(localName, parent, factory, builder);
+    protected FOMDateTime(OMFactory factory) {
+        super(factory);
     }
 
     public AtomDate getValue() {

@@ -34,15 +34,14 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class FOMFeed extends FOMSource implements AbderaFeed {
     protected FOMFeed(QName qname, OMContainer parent, OMFactory factory) {
         super(qname, parent, factory);
     }
 
-    protected FOMFeed(String localName, OMContainer parent, OMFactory factory, OMXMLParserWrapper builder) {
-        super(localName, parent, factory, builder);
+    protected FOMFeed(OMFactory factory) {
+        super(factory);
     }
 
     public List<Entry> getEntries() {
