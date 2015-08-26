@@ -18,7 +18,9 @@
 package org.apache.abdera.parser.stax;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.activation.MimeType;
 import javax.xml.namespace.QName;
@@ -70,6 +72,44 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory, Constants, ExtensionFactory {
+    private static final Map<QName,Class<? extends FOMElement>> elementTypeMap;
+    
+    static {
+        elementTypeMap = new HashMap<QName,Class<? extends FOMElement>>();
+        elementTypeMap.put(FEED, FOMFeed.class);
+        elementTypeMap.put(SERVICE, FOMService.class);
+        elementTypeMap.put(PRE_RFC_SERVICE, FOMService.class);
+        elementTypeMap.put(ENTRY, FOMEntry.class);
+        elementTypeMap.put(AUTHOR, FOMPerson.class);
+        elementTypeMap.put(CATEGORY, FOMCategory.class);
+        elementTypeMap.put(CONTENT, FOMContent.class);
+        elementTypeMap.put(CONTRIBUTOR, FOMPerson.class);
+        elementTypeMap.put(GENERATOR, FOMGenerator.class);
+        elementTypeMap.put(ICON, FOMIRI.class);
+        elementTypeMap.put(ID, FOMIRI.class);
+        elementTypeMap.put(LOGO, FOMIRI.class);
+        elementTypeMap.put(LINK, FOMLink.class);
+        elementTypeMap.put(PUBLISHED, FOMDateTime.class);
+        elementTypeMap.put(RIGHTS, FOMText.class);
+        elementTypeMap.put(SOURCE, FOMSource.class);
+        elementTypeMap.put(SUBTITLE, FOMText.class);
+        elementTypeMap.put(SUMMARY, FOMText.class);
+        elementTypeMap.put(TITLE, FOMText.class);
+        elementTypeMap.put(UPDATED, FOMDateTime.class);
+        elementTypeMap.put(WORKSPACE, FOMWorkspace.class);
+        elementTypeMap.put(PRE_RFC_WORKSPACE, FOMWorkspace.class);
+        elementTypeMap.put(COLLECTION, FOMCollection.class);
+        elementTypeMap.put(PRE_RFC_COLLECTION, FOMCollection.class);
+        elementTypeMap.put(NAME, FOMElement.class);
+        elementTypeMap.put(EMAIL, FOMElement.class);
+        elementTypeMap.put(URI, FOMIRI.class);
+        elementTypeMap.put(CONTROL, FOMControl.class);
+        elementTypeMap.put(DIV, FOMDiv.class);
+        elementTypeMap.put(CATEGORIES, FOMCategories.class);
+        elementTypeMap.put(PRE_RFC_CATEGORIES, FOMCategories.class);
+        elementTypeMap.put(EDITED, FOMDateTime.class);
+        elementTypeMap.put(PRE_RFC_EDITED, FOMDateTime.class);
+    }
 
     private final ExtensionFactoryMap factoriesMap;
     private final Abdera abdera;
@@ -506,134 +546,28 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
     
     protected FOMElement createElement(QName qname, OMContainer parent) {
-        FOMElement element;
-        if (FEED.equals(qname)) {
-            element = createElement(FOMFeed.class, qname, parent);
-        } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
-            element = createElement(FOMService.class, qname, parent);
-        } else if (ENTRY.equals(qname)) {
-            element = createElement(FOMEntry.class, qname, parent);
-        } else if (AUTHOR.equals(qname)) {
-            element = createElement(FOMPerson.class, qname, parent);
-        } else if (CATEGORY.equals(qname)) {
-            element = createElement(FOMCategory.class, qname, parent);
-        } else if (CONTENT.equals(qname)) {
-            element = createElement(FOMContent.class, qname, parent);
-        } else if (CONTRIBUTOR.equals(qname)) {
-            element = createElement(FOMPerson.class, qname, parent);
-        } else if (GENERATOR.equals(qname)) {
-            element = createElement(FOMGenerator.class, qname, parent);
-        } else if (ICON.equals(qname)) {
-            element = createElement(FOMIRI.class, qname, parent);
-        } else if (ID.equals(qname)) {
-            element = createElement(FOMIRI.class, qname, parent);
-        } else if (LOGO.equals(qname)) {
-            element = createElement(FOMIRI.class, qname, parent);
-        } else if (LINK.equals(qname)) {
-            element = createElement(FOMLink.class, qname, parent);
-        } else if (PUBLISHED.equals(qname)) {
-            element = createElement(FOMDateTime.class, qname, parent);
-        } else if (RIGHTS.equals(qname)) {
-            element = createElement(FOMText.class, qname, parent);
-        } else if (SOURCE.equals(qname)) {
-            element = createElement(FOMSource.class, qname, parent);
-        } else if (SUBTITLE.equals(qname)) {
-            element = createElement(FOMText.class, qname, parent);
-        } else if (SUMMARY.equals(qname)) {
-            element = createElement(FOMText.class, qname, parent);
-        } else if (TITLE.equals(qname)) {
-            element = createElement(FOMText.class, qname, parent);
-        } else if (UPDATED.equals(qname)) {
-            element = createElement(FOMDateTime.class, qname, parent);
-        } else if (WORKSPACE.equals(qname) || PRE_RFC_WORKSPACE.equals(qname)) {
-            element = createElement(FOMWorkspace.class, qname, parent);
-        } else if (COLLECTION.equals(qname) || PRE_RFC_COLLECTION.equals(qname)) {
-            element = createElement(FOMCollection.class, qname, parent);
-        } else if (NAME.equals(qname)) {
-            element = createElement(FOMElement.class, qname, parent);
-        } else if (EMAIL.equals(qname)) {
-            element = createElement(FOMElement.class, qname, parent);
-        } else if (URI.equals(qname)) {
-            element = createElement(FOMIRI.class, qname, parent);
-        } else if (CONTROL.equals(qname) || PRE_RFC_CONTROL.equals(qname)) {
-            element = createElement(FOMControl.class, qname, parent);
-        } else if (DIV.equals(qname)) {
-            element = createElement(FOMDiv.class, qname, parent);
-        } else if (CATEGORIES.equals(qname) || PRE_RFC_CATEGORIES.equals(qname)) {
-            element = createElement(FOMCategories.class, qname, parent);
-        } else if (EDITED.equals(qname) || PRE_RFC_EDITED.equals(qname)) {
-            element = createElement(FOMDateTime.class, qname, parent);
-        } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
-            element = createElement(FOMExtensibleElement.class, qname, parent);
-        } else {
-            element = createElement(FOMExtensibleElement.class, qname, null);
+        Class<? extends FOMElement> elementType = elementTypeMap.get(qname);
+        if (elementType == null) {
+            if (parent instanceof ExtensibleElement || parent instanceof Document) {
+                elementType = FOMExtensibleElement.class;
+            } else {
+                elementType = FOMExtensibleElement.class;
+                parent = null;
+            }
         }
-        return element;
+        return createElement(elementType, qname, parent);
     }
 
     protected OMElement createElementFromBuilder(QName qname, OMContainer parent, FOMBuilder builder) {
-        OMElement element;
-        if (FEED.equals(qname)) {
-            element = createAxiomElement(FOMFeed.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (SERVICE.equals(qname) || PRE_RFC_SERVICE.equals(qname)) {
-            element = createAxiomElement(FOMService.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (ENTRY.equals(qname)) {
-            element = createAxiomElement(FOMEntry.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (AUTHOR.equals(qname)) {
-            element = createAxiomElement(FOMPerson.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (CATEGORY.equals(qname)) {
-            element = createAxiomElement(FOMCategory.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (CONTENT.equals(qname)) {
-            element = createAxiomElement(FOMContent.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (CONTRIBUTOR.equals(qname)) {
-            element = createAxiomElement(FOMPerson.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (GENERATOR.equals(qname)) {
-            element = createAxiomElement(FOMGenerator.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (ICON.equals(qname)) {
-            element = createAxiomElement(FOMIRI.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (ID.equals(qname)) {
-            element = createAxiomElement(FOMIRI.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (LOGO.equals(qname)) {
-            element = createAxiomElement(FOMIRI.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (LINK.equals(qname)) {
-            element = createAxiomElement(FOMLink.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (PUBLISHED.equals(qname)) {
-            element = createAxiomElement(FOMDateTime.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (RIGHTS.equals(qname)) {
-            element = createAxiomElement(FOMText.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (SOURCE.equals(qname)) {
-            element = createAxiomElement(FOMSource.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (SUBTITLE.equals(qname)) {
-            element = createAxiomElement(FOMText.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (SUMMARY.equals(qname)) {
-            element = createAxiomElement(FOMText.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (TITLE.equals(qname)) {
-            element = createAxiomElement(FOMText.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (UPDATED.equals(qname)) {
-            element = createAxiomElement(FOMDateTime.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (WORKSPACE.equals(qname) || PRE_RFC_WORKSPACE.equals(qname)) {
-            element = createAxiomElement(FOMWorkspace.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (COLLECTION.equals(qname) || PRE_RFC_COLLECTION.equals(qname)) {
-            element = createAxiomElement(FOMCollection.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (NAME.equals(qname)) {
-            element = createAxiomElement(FOMElement.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (EMAIL.equals(qname)) {
-            element = createAxiomElement(FOMElement.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (URI.equals(qname)) {
-            element = createAxiomElement(FOMIRI.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (CONTROL.equals(qname) || PRE_RFC_CONTROL.equals(qname)) {
-            element = createAxiomElement(FOMControl.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (DIV.equals(qname)) {
-            element = createAxiomElement(FOMDiv.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (CATEGORIES.equals(qname) || PRE_RFC_CATEGORIES.equals(qname)) {
-            element = createAxiomElement(FOMCategories.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (EDITED.equals(qname) || PRE_RFC_EDITED.equals(qname)) {
-            element = createAxiomElement(FOMDateTime.class, parent, qname.getLocalPart(), null, builder, false);
-        } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
-            element = createAxiomElement(FOMExtensibleElement.class, parent, qname.getLocalPart(), null, builder, false);
-        } else {
-            element = createAxiomElement(FOMElement.class, parent, qname.getLocalPart(), null, builder, false);
+        Class<? extends FOMElement> elementType = elementTypeMap.get(qname);
+        if (elementType == null) {
+            if (parent instanceof ExtensibleElement || parent instanceof Document) {
+                elementType = FOMExtensibleElement.class;
+            } else {
+                elementType = FOMElement.class;
+            }
         }
+        OMElement element = createAxiomElement(elementType, parent, qname.getLocalPart(), null, builder, false);
         if (element instanceof FOMContent) {
             Content.Type type = builder.getContentType();
             ((FOMContent)element).setContentType(type == null ? Content.Type.TEXT : type);
