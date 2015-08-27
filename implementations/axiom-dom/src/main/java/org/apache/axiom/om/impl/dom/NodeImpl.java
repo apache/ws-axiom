@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.core.ClonePolicy;
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
@@ -322,15 +321,6 @@ public abstract class NodeImpl implements DOMNode {
     void checkSameOwnerDocument(Node otherNode) {
         if (!(otherNode instanceof NodeImpl && coreHasSameOwnerDocument((NodeImpl)otherNode))) {
             throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
-        }
-    }
-    
-    ParentNode parentNode() {
-        // TODO: get rid of this
-        if (this instanceof CoreChildNode) {
-            return (ParentNode)((CoreChildNode)this).coreGetParent();
-        } else {
-            return null;
         }
     }
 
