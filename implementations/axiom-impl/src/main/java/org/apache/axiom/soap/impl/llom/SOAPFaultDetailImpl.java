@@ -19,20 +19,11 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomContainer;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultDetail;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements AxiomSOAPFaultDetail {
     public SOAPFaultDetailImpl(OMFactory factory) {
         super(factory);
-    }
-
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        return ((SOAPFactory)getOMFactory()).createSOAPFaultDetail((SOAPFault)targetParent);
     }
 }

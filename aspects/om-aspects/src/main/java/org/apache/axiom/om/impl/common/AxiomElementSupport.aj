@@ -39,6 +39,7 @@ import org.apache.axiom.core.IdentityMapper;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -556,5 +557,18 @@ public aspect AxiomElementSupport {
                 parent.notifyChildComplete();
             }
         }
+    }
+
+    public final AxiomElement AxiomElement.shallowCloneWithoutAttributes(OMCloneOptions options, CoreParentNode targetParent, boolean namespaceRepairing) {
+        AxiomElement clone = coreGetNodeFactory().createNSAwareElement(options.isPreserveModel() ? getElementType() : AxiomElement.class);
+        if (targetParent != null) {
+            targetParent.coreAppendChild(clone, false);
+        }
+        clone.initName(getLocalName(), getNamespace(), namespaceRepairing);
+        copyData(options, clone);
+        return clone;
+    }
+
+    public void AxiomElement.copyData(OMCloneOptions options, AxiomElement clone) {
     }
 }

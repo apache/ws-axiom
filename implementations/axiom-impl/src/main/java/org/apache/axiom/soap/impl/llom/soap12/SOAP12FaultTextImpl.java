@@ -22,15 +22,11 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
@@ -76,9 +72,5 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
         }
 
         return langAttr == null ? null : langAttr.getAttributeValue();
-    }
-
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        return ((SOAPFactory)getOMFactory()).createSOAPFaultText((SOAPFaultReason)targetParent);
     }
 }

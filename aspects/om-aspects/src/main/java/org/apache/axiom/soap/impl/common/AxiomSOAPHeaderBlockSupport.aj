@@ -20,8 +20,12 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.soap.SOAPCloneOptions;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 
@@ -114,6 +118,15 @@ public aspect AxiomSOAPHeaderBlockSupport {
             throw new UnsupportedOperationException("Not supported for " + helper.getSpecName());
         } else {
             _setAttributeValue(attributeQName, helper.formatBoolean(relay));
+        }
+    }
+
+    public final void AxiomSOAPHeaderBlock.copyData(OMCloneOptions options, AxiomElement clone) {
+        // Copy the processed flag.  The other SOAPHeaderBlock information 
+        // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
+        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
+        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
+            ((SOAPHeaderBlock)clone).setProcessed();
         }
     }
 }

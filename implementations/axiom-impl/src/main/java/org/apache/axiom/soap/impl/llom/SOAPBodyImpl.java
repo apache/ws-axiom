@@ -19,19 +19,15 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
@@ -162,9 +158,5 @@ public abstract class SOAPBodyImpl extends SOAPElement
     public void addChild(OMNode child, boolean fromBuilder) {
         this.enableLookAhead = false;
         super.addChild(child, fromBuilder);
-    }
-
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        return ((SOAPFactory)getOMFactory()).createSOAPBody((SOAPEnvelope)targetParent);
     }
 }

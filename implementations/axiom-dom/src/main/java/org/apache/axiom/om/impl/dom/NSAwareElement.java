@@ -72,18 +72,9 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
 
     @Override
     final ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        NSAwareElement clone = (NSAwareElement)coreGetNodeFactory().createNSAwareElement(options.isPreserveModel() ? getElementType() : AxiomElement.class);
-        if (targetParent != null) {
-            targetParent.coreAppendChild(clone, false);
-        }
-        clone.initName(getLocalName(), getNamespace(), namespaceRepairing);
-        copyData(options, clone);
-        return clone;
+        return (ElementImpl)shallowCloneWithoutAttributes(options, targetParent, namespaceRepairing);
     }
 
-    protected void copyData(OMCloneOptions options, NSAwareElement clone) {
-    }
-    
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

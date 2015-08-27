@@ -19,16 +19,13 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.soap.RolePlayer;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -188,9 +185,5 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
         pw.close();
         String text = sw.getBuffer().toString();
         return text;
-    }
-
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        return ((SOAPFactory)getOMFactory()).createSOAPHeader((SOAPEnvelope)targetParent);
     }
 }

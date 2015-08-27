@@ -88,12 +88,7 @@ public class OMElementImpl extends OMNodeImpl
     }
     
     final OMNode defaultClone(OMCloneOptions options, AxiomContainer targetParent) {
-        AxiomElement targetElement;
-        if (options.isPreserveModel()) {
-            targetElement = (AxiomElement)createClone(options, targetParent);
-        } else {
-            targetElement = (AxiomElement)getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
-        }
+        AxiomElement targetElement = shallowCloneWithoutAttributes(options, targetParent, true);
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
             targetElement.declareNamespace(ns);
@@ -108,10 +103,6 @@ public class OMElementImpl extends OMNodeImpl
         return targetElement;
     }
 
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        return getOMFactory().createOMElement(getLocalName(), getNamespace(), targetParent);
-    }
-    
     public final void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

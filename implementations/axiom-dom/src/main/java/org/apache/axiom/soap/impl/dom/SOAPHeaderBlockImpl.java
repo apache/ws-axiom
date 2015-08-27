@@ -19,12 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
-import org.apache.axiom.soap.SOAPCloneOptions;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 public abstract class SOAPHeaderBlockImpl extends NSAwareElement implements AxiomSOAPHeaderBlock {
@@ -46,15 +43,5 @@ public abstract class SOAPHeaderBlockImpl extends NSAwareElement implements Axio
 
     public Object getObject(Class dataSourceClass) {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected final void copyData(OMCloneOptions options, NSAwareElement clone) {
-        // Copy the processed flag.  The other SOAPHeaderBlock information 
-        // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
-        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
-        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
-            ((SOAPHeaderBlock)clone).setProcessed();
-        }
     }
 }

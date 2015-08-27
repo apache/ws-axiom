@@ -26,12 +26,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
-import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 /** Class SOAPHeaderBlockImpl */
@@ -59,24 +55,9 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         }
     }
     
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        SOAPHeaderBlock clone = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
-        copyData(options, clone);
-        return clone;
-    }
-
     protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
-        SOAPHeaderBlock clone = ((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(ds);
+        AxiomSOAPHeaderBlock clone = (AxiomSOAPHeaderBlock)((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(ds);
         copyData(options, clone);
         return clone;
-    }
-
-    private void copyData(OMCloneOptions options, SOAPHeaderBlock targetSHB) {
-        // Copy the processed flag.  The other SOAPHeaderBlock information 
-        // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
-        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
-        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
-            targetSHB.setProcessed();
-        }
     }
 }

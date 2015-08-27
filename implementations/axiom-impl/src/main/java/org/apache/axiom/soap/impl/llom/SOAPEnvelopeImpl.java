@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -31,7 +30,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -39,7 +37,6 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -272,13 +269,5 @@ public class SOAPEnvelopeImpl extends SOAPElement
             
         }
         return null;
-    }
-
-    protected OMElement createClone(OMCloneOptions options, AxiomContainer targetParent) {
-        SOAPEnvelope clone = ((SOAPFactory)getOMFactory()).createSOAPEnvelope(getNamespace());
-        if (targetParent != null) {
-            targetParent.addChild(clone);
-        }
-        return clone;
     }
 }
