@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNSUnawareAttribute;
 import org.apache.axiom.om.OMCloneOptions;
@@ -34,7 +35,7 @@ public class NSUnawareAttribute extends AttrImpl implements DOMNSUnawareAttribut
 
     @Override
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent,
-            boolean namespaceRepairing) {
+            ClonePolicy policy) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }

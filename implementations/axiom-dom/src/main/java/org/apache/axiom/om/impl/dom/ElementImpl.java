@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMAttribute;
@@ -62,14 +63,14 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
         return prefix;
     }
 
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        ElementImpl clone = createClone(options, targetParent, namespaceRepairing);
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+        ElementImpl clone = createClone(options, targetParent, policy);
         NamedNodeMap attributes = getAttributes();
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
-            AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, true, false);
+            AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, policy);
             clonedAttr.coreSetSpecified(attr.coreGetSpecified());
-            if (namespaceRepairing && attr instanceof NSAwareAttribute) {
+            if (policy.repairNamespaces() && attr instanceof NSAwareAttribute) {
                 NSAwareAttribute nsAwareAttr = (NSAwareAttribute)attr;
                 String namespaceURI = nsAwareAttr.coreGetNamespaceURI();
                 if (namespaceURI.length() != 0) {
@@ -85,7 +86,7 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
         return clone;
     }
 
-    abstract ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
+    abstract ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy);
     
     /*
      * DOM-Level 3 methods

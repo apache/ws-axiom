@@ -21,8 +21,10 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMNode;
+import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
@@ -60,7 +62,7 @@ public abstract class NodeImpl implements DOMNode {
         OMCloneOptions options = new OMCloneOptions();
         // This is not specified by the API, but it's compatible with versions before 1.2.14
         options.setPreserveModel(true);
-        NodeImpl clone = clone(options, null, getNodeType() == Node.ATTRIBUTE_NODE ? true : deep, false);
+        NodeImpl clone = clone(options, null, deep ? Policies.DEEP_CLONE : Policies.SHALLOW_CLONE);
         if (!(clone instanceof DocumentImpl)) {
             clone.coreSetOwnerDocument(ownerDocument());
         }
@@ -339,8 +341,8 @@ public abstract class NodeImpl implements DOMNode {
     public abstract OMXMLParserWrapper getBuilder();
     
     public final OMInformationItem clone(OMCloneOptions options) {
-        return (OMInformationItem)clone(options, null, true, true);
+        return (OMInformationItem)clone(options, null, org.apache.axiom.om.impl.common.Policies.CLONE_POLICY);
     }
 
-    abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing);
+    abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy);
 }

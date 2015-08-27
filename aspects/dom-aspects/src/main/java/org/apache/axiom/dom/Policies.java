@@ -19,8 +19,10 @@
 package org.apache.axiom.dom;
 
 import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
@@ -90,6 +92,34 @@ public final class Policies {
     public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             return isForeignDocument ? Action.REJECT : Action.MOVE;
+        }
+    };
+
+    public static final ClonePolicy DEEP_CLONE = new ClonePolicy() {
+        public boolean repairNamespaces() {
+            return false;
+        }
+
+        public boolean cloneAttributes() {
+            return true;
+        }
+
+        public boolean cloneChildren(int nodeType) {
+            return true;
+        }
+    };
+
+    public static final ClonePolicy SHALLOW_CLONE = new ClonePolicy() {
+        public boolean repairNamespaces() {
+            return false;
+        }
+
+        public boolean cloneAttributes() {
+            return true;
+        }
+
+        public boolean cloneChildren(int nodeType) {
+            return nodeType == CoreNode.NS_UNAWARE_ATTRIBUTE_NODE || nodeType == CoreNode.NS_AWARE_ATTRIBUTE_NODE;
         }
     };
 }

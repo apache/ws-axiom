@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNSAwareAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
@@ -56,7 +57,7 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
     }
 
     @Override
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
         // Note: targetParent is always null here
         return new NSAwareAttribute(getLocalName(), getNamespace(), coreGetType(), getOMFactory());
     }

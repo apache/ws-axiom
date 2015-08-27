@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
@@ -52,6 +53,20 @@ public final class Policies {
     public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
         public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
             return isForeignModel ? Action.CLONE : Action.MOVE;
+        }
+    };
+    
+    public static final ClonePolicy CLONE_POLICY = new ClonePolicy() {
+        public boolean repairNamespaces() {
+            return true;
+        }
+
+        public boolean cloneAttributes() {
+            return true;
+        }
+
+        public boolean cloneChildren(int nodeType) {
+            return true;
         }
     };
 }

@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.dom.DOMParentNode;
@@ -149,15 +150,15 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
         return false;
     }
 
-    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
-        ParentNode clone = shallowClone(options, targetParent, namespaceRepairing);
-        if (deep) {
+    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+        ParentNode clone = shallowClone(options, targetParent, policy);
+        if (policy.cloneChildren(coreGetNodeType())) {
             for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-                ((NodeImpl)child).clone(options, clone, true, namespaceRepairing);
+                ((NodeImpl)child).clone(options, clone, policy);
             }
         }
         return clone;
     }
     
-    abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
+    abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy);
 }

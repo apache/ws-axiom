@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import java.util.Iterator;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.om.OMCloneOptions;
@@ -71,8 +72,8 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
     }
 
     @Override
-    final ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        return (ElementImpl)shallowCloneWithoutAttributes(options, targetParent, namespaceRepairing);
+    final ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+        return (ElementImpl)shallowCloneWithoutAttributes(options, targetParent, policy.repairNamespaces());
     }
 
     public void setLineNumber(int lineNumber) {
