@@ -38,4 +38,15 @@ public interface CoreChildNode extends CoreNode {
      *         the builder has not yet started to build the next sibling
      */
     CoreChildNode coreGetNextSiblingIfAvailable();
+
+    /**
+     * Clone this node according to the provided policy.
+     * 
+     * @param policy
+     *            the policy to use when cloning this node (and its children)
+     * @param targetParent
+     *            the node to which the clone should be added; may be <code>null</code>
+     * @return the clone of this node
+     */
+    CoreNode coreClone(ClonePolicy policy, Object options, CoreParentNode targetParent);
 }

@@ -24,8 +24,4 @@ public aspect AxiomCDATASectionSupport {
     public final int AxiomCDATASection.getType() {
         return OMNode.CDATA_SECTION_NODE;
     }
-    
-    public final AxiomText AxiomCDATASection.createInstanceOfSameType() {
-        return (AxiomText)coreGetNodeFactory().createCDATASection();
-    }
 }

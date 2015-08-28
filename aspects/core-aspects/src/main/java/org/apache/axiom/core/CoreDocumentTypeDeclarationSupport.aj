@@ -59,4 +59,9 @@ public aspect CoreDocumentTypeDeclarationSupport {
     public final void CoreDocumentTypeDeclaration.coreSetInternalSubset(String internalSubset) {
         this.internalSubset = internalSubset;
     }
+    
+    public final CoreNode CoreDocumentTypeDeclaration.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

@@ -24,7 +24,9 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.base64.Base64Utils;
 
@@ -122,5 +124,14 @@ public final class TextContent implements CharacterData {
         } else {
             return value.toCharArray();
         }
+    }
+
+    public CharacterData clone(ClonePolicy policy, Object options) {
+        if (binary && options instanceof OMCloneOptions && ((OMCloneOptions)options).isFetchDataHandlers()) {
+            // Force loading of the reference to the DataHandler and ensure that its content is
+            // completely fetched into memory (or temporary storage).
+            ((DataHandler)getDataHandler()).getDataSource();
+        }
+        return new TextContent(this);
     }
 }

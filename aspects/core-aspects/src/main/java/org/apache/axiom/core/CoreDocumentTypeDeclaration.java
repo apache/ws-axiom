@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreDocumentTypeDeclaration extends CoreChildNode {
+public interface CoreDocumentTypeDeclaration extends CoreLeafNode {
 
 }

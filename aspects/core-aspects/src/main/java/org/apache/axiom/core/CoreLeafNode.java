@@ -18,23 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public aspect CoreProcessingInstructionSupport {
-    private String CoreProcessingInstruction.target;
+public interface CoreLeafNode extends CoreChildNode {
 
-    public final int CoreProcessingInstruction.coreGetNodeType() {
-        return PROCESSING_INSTRUCTION_NODE;
-    }
-    
-    public final String CoreProcessingInstruction.coreGetTarget() {
-        return target;
-    }
-    
-    public final void CoreProcessingInstruction.coreSetTarget(String target) {
-        this.target = target;
-    }
-    
-    public final CoreNode CoreProcessingInstruction.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
 }

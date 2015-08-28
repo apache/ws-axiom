@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.core;
 
-
 public interface CoreNode {
     /**
      * The node is a {@link CoreDocument}.
@@ -95,4 +94,13 @@ public interface CoreNode {
      * @return one of the constants defined by {@link CoreNode} identifying the type of node
      */
     int coreGetNodeType();
+
+    /**
+     * Clone this node according to the provided policy.
+     * 
+     * @param policy
+     *            the policy to use when cloning this node (and its children)
+     * @return the clone of this node
+     */
+    CoreNode coreClone(ClonePolicy policy, Object options);
 }

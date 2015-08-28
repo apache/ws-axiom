@@ -24,10 +24,4 @@ public aspect AxiomCharacterDataNodeSupport {
     public final int AxiomCharacterDataNode.getType() {
         return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
     }
-    
-    public final AxiomText AxiomCharacterDataNode.createInstanceOfSameType() {
-        AxiomCharacterDataNode instance = (AxiomCharacterDataNode)coreGetNodeFactory().createCharacterDataNode();
-        instance.coreSetIgnorable(coreIsIgnorable());
-        return instance;
-    }
 }

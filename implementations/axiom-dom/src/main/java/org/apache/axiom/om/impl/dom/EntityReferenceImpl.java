@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMEntityReference;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -57,7 +58,7 @@ public class EntityReferenceImpl extends ChildNode implements AxiomEntityReferen
         return replacementText;
     }
 
-    ChildNode createClone() {
+    ChildNode createClone(OMCloneOptions options) {
         return new EntityReferenceImpl(name, replacementText, getOMFactory());
     }
 

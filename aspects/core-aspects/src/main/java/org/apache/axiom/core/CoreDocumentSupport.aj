@@ -80,4 +80,9 @@ public aspect CoreDocumentSupport {
     public final void CoreDocument.coreSetStandalone(boolean standalone) {
         this.standalone = standalone;
     }
+    
+    public final CoreNode CoreDocument.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

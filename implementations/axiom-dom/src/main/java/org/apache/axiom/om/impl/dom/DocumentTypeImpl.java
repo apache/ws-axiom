@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMDocumentType;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 
@@ -28,7 +29,7 @@ public class DocumentTypeImpl extends LeafNode implements DOMDocumentType, Axiom
         super(factory);
     }
 
-    ChildNode createClone() {
+    ChildNode createClone(OMCloneOptions options) {
         return (ChildNode)getOMFactory().createOMDocType(null, coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 }

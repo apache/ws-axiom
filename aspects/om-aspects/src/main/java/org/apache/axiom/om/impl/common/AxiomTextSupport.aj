@@ -147,15 +147,4 @@ public aspect AxiomTextSupport {
     public final void AxiomText.setContentID(String cid) {
         getTextContent(true).contentID = cid;
     }
-
-    public final AxiomText AxiomText.doClone() {
-        AxiomText clone = createInstanceOfSameType();
-        Object content = coreGetCharacterData();
-        if (content instanceof TextContent) {
-            clone.coreSetCharacterData(new TextContent((TextContent)content), Policies.DETACH_POLICY);
-        } else {
-            clone.coreSetCharacterData(content, Policies.DETACH_POLICY);
-        }
-        return clone;
-    }
 }

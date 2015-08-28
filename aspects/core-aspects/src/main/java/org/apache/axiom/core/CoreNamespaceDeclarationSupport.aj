@@ -22,4 +22,9 @@ public aspect CoreNamespaceDeclarationSupport {
     public final int CoreNamespaceDeclaration.coreGetNodeType() {
         return NAMESPACE_DECLARATION_NODE;
     }
+    
+    public final CoreNode CoreNamespaceDeclaration.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

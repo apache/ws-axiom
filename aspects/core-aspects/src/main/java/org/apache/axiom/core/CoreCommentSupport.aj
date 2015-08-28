@@ -22,4 +22,9 @@ public aspect CoreCommentSupport {
     public final int CoreComment.coreGetNodeType() {
         return COMMENT_NODE;
     }
+    
+    public final CoreNode CoreComment.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

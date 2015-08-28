@@ -22,13 +22,12 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMTextNode;
+import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
-
-import javax.activation.DataHandler;
 
 public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, AxiomText {
     public TextNodeImpl(OMFactory factory) {
@@ -84,15 +83,7 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
         return value != null ? value : "";
     }
 
-    void beforeClone(OMCloneOptions options) {
-        if (isBinary() && options.isFetchDataHandlers()) {
-            // Force loading of the reference to the DataHandler and ensure that its content is
-            // completely fetched into memory (or temporary storage).
-            ((DataHandler)getDataHandler()).getDataSource();
-        }
-    }
-
-    final ChildNode createClone() {
-        return (ChildNode)doClone();
+    final ChildNode createClone(OMCloneOptions options) {
+        return (ChildNode)coreClone(Policies.DEEP_CLONE, options);
     }
 }

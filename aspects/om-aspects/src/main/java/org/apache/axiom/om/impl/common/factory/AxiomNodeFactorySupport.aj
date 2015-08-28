@@ -149,11 +149,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMText AxiomNodeFactory.createOMText(OMContainer parent, OMText source) {
         // TODO: this doesn't necessarily produce a node with the expected OMFactory
-        AxiomText node = ((AxiomText)source).doClone();
-        if (parent != null) {
-            ((OMContainerEx)parent).addChild(node, false);
-        }
-        return node;
+        return (AxiomText)((AxiomText)source).coreClone(Policies.CLONE_POLICY, null, (AxiomContainer)parent);
     }
 
     public final OMText AxiomNodeFactory.createOMText(Object dataHandler, boolean optimize) {

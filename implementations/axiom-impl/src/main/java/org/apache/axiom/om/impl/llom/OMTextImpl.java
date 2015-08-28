@@ -25,8 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomText;
-
-import javax.activation.DataHandler;
+import org.apache.axiom.om.impl.common.Policies;
 
 public abstract class OMTextImpl extends OMLeafNode implements AxiomText, OMConstants {
     public OMTextImpl(OMFactory factory) {
@@ -34,11 +33,6 @@ public abstract class OMTextImpl extends OMLeafNode implements AxiomText, OMCons
     }
 
     OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
-        if (isBinary() && options.isFetchDataHandlers()) {
-            // Force loading of the reference to the DataHandler and ensure that its content is
-            // completely fetched into memory (or temporary storage).
-            ((DataHandler)getDataHandler()).getDataSource();
-        }
-        return getOMFactory().createOMText(targetParent, this);
+        return (OMNode)coreClone(Policies.CLONE_POLICY, options, targetParent);
     }
 }

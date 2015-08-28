@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreEntityReference extends CoreChildNode {
+public interface CoreEntityReference extends CoreLeafNode {
 
 }

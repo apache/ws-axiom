@@ -22,4 +22,8 @@ public aspect CoreCDATASectionSupport {
     public final int CoreCDATASection.coreGetNodeType() {
         return CDATA_SECTION_NODE;
     }
+    
+    public final CoreNode CoreCDATASection.shallowClone(ClonePolicy policy, Object options) {
+        return coreGetNodeFactory().createCDATASection();
+    }
 }

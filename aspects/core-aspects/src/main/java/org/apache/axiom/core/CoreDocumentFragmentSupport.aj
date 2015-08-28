@@ -36,4 +36,9 @@ public aspect CoreDocumentFragmentSupport {
     public final void CoreDocumentFragment.coreSetOwnerDocument(CoreDocument document) {
         ownerDocument = document;
     }
+    
+    public final CoreNode CoreDocumentFragment.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

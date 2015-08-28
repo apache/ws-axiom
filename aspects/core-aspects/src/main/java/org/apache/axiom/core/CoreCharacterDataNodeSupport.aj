@@ -47,4 +47,11 @@ public aspect CoreCharacterDataNodeSupport {
     public final void CoreCharacterDataNode.coreSetCharacterData(Object data, DetachPolicy detachPolicy) {
         this.data = data;
     }
+    
+    public final CoreNode CoreCharacterDataNode.shallowClone(ClonePolicy policy, Object options) {
+        CoreCharacterDataNode clone = coreGetNodeFactory().createCharacterDataNode();
+        clone.data = data instanceof CharacterData ? ((CharacterData)data).clone(policy, options) : data;
+        clone.coreSetIgnorable(coreIsIgnorable());
+        return clone;
+    }
 }

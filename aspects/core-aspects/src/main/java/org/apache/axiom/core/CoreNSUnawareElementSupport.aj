@@ -30,4 +30,9 @@ public aspect CoreNSUnawareElementSupport {
     public final String CoreNSUnawareElement.getImplicitPrefix(String namespaceURI) {
         return null;
     }
+    
+    public final CoreNode CoreNSUnawareElement.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

@@ -287,4 +287,23 @@ public aspect CoreParentNodeSupport {
     public final <T extends CoreElement> NodeIterator<T> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
         return new ElementsIterator<T>(this, axis, type, matcher, namespaceURI, name, exceptionTranslator, detachPolicy);
     }
+
+    public final void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy policy, Object options, CoreNode clone) {
+        if (policy.cloneChildren(coreGetNodeType())) {
+            CoreParentNode targetParent = (CoreParentNode)clone;
+            if (getState() == COMPACT) {
+                Object content = this.content;
+                if (content instanceof CharacterData) {
+                    content = ((CharacterData)content).clone(policy, options);
+                }
+                targetParent.coreSetCharacterData(content, null);
+            } else {
+                CoreChildNode child = coreGetFirstChild();
+                while (child != null) {
+                    child.coreClone(policy, options, targetParent);
+                    child = child.coreGetNextSibling();
+                }
+            }
+        }
+    }
 }

@@ -22,4 +22,9 @@ public aspect CoreEntityReferenceSupport {
     public final int CoreEntityReference.coreGetNodeType() {
         return ENTITY_REFERENCE_NODE;
     }
+    
+    public final CoreNode CoreEntityReference.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

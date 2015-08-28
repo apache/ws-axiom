@@ -208,4 +208,13 @@ public aspect CoreChildNodeSupport {
             internalSetParent(newParent);
         }
     }
+
+    public final CoreNode CoreChildNode.coreClone(ClonePolicy policy, Object options, CoreParentNode targetParent) {
+        CoreChildNode clone = (CoreChildNode)shallowClone(policy, options);
+        if (targetParent != null) {
+            targetParent.coreAppendChild(clone, false);
+        }
+        cloneChildrenIfNecessary(policy, options, clone);
+        return clone;
+    }
 }

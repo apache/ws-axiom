@@ -22,4 +22,9 @@ public aspect CoreNSAwareAttributeSupport {
     public final int CoreNSAwareAttribute.coreGetNodeType() {
         return NS_AWARE_ATTRIBUTE_NODE;
     }
+    
+    public final CoreNode CoreNSAwareAttribute.shallowClone(ClonePolicy policy, Object options) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }
