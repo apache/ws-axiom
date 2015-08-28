@@ -30,12 +30,6 @@ public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomC
     }
 
     final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
-        ChildNode clone = createClone(options);
-        if (targetParent != null) {
-            targetParent.coreAppendChild(clone, false);
-        }
-        return clone;
+        return (ChildNode)coreClone(policy, options, targetParent);
     }
-    
-    abstract ChildNode createClone(OMCloneOptions options);
 }

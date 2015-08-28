@@ -61,7 +61,11 @@ public aspect CoreDocumentTypeDeclarationSupport {
     }
     
     public final CoreNode CoreDocumentTypeDeclaration.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        CoreDocumentTypeDeclaration clone = coreGetNodeFactory().createDocumentTypeDeclaration();
+        clone.coreSetRootName(coreGetRootName());
+        clone.coreSetPublicId(coreGetPublicId());
+        clone.coreSetSystemId(coreGetSystemId());
+        clone.coreSetInternalSubset(coreGetInternalSubset());
+        return clone;
     }
 }

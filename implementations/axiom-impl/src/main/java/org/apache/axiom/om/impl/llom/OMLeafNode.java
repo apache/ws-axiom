@@ -18,11 +18,20 @@
  */
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomLeafNode;
+import org.apache.axiom.om.impl.common.Policies;
+
 
 public abstract class OMLeafNode extends OMNodeImpl implements AxiomLeafNode {
     public OMLeafNode(OMFactory factory) {
         super(factory);
+    }
+
+    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
+        return (OMNode)coreClone(Policies.CLONE_POLICY, options, targetParent);
     }
 }

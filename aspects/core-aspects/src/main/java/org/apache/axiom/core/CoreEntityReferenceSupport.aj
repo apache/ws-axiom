@@ -43,7 +43,9 @@ public aspect CoreEntityReferenceSupport {
     }
     
     public final CoreNode CoreEntityReference.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        CoreEntityReference clone = coreGetNodeFactory().createEntityReference();
+        clone.coreSetName(coreGetName());
+        clone.coreSetReplacementText(coreGetReplacementText());
+        return clone;
     }
 }

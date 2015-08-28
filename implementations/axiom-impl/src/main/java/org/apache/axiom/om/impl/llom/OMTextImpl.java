@@ -19,20 +19,11 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomText;
-import org.apache.axiom.om.impl.common.Policies;
 
-public abstract class OMTextImpl extends OMLeafNode implements AxiomText, OMConstants {
+public abstract class OMTextImpl extends OMLeafNode implements AxiomText {
     public OMTextImpl(OMFactory factory) {
         super(factory);
-    }
-
-    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
-        return (OMNode)coreClone(Policies.CLONE_POLICY, options, targetParent);
     }
 }

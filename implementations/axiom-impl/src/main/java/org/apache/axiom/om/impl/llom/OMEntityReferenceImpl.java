@@ -18,19 +18,11 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 
 public class OMEntityReferenceImpl extends OMLeafNode implements AxiomEntityReference {
     public OMEntityReferenceImpl(OMFactory factory) {
         super(factory);
-    }
-
-    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
-        return ((OMFactoryEx)getOMFactory()).createOMEntityReference(targetParent, coreGetName(), coreGetReplacementText(), false);
     }
 }

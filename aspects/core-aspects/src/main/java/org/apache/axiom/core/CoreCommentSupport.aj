@@ -24,7 +24,6 @@ public aspect CoreCommentSupport {
     }
     
     public final CoreNode CoreComment.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return coreGetNodeFactory().createComment();
     }
 }

@@ -20,17 +20,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMComment;
-import org.apache.axiom.dom.Policies;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomComment;
 
 public class CommentImpl extends LeafNode implements DOMComment, AxiomComment {
     public CommentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    ChildNode createClone(OMCloneOptions options) {
-        return (ChildNode)getOMFactory().createOMComment(null, getData());
     }
 }

@@ -19,18 +19,11 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 
 public class OMDocTypeImpl extends OMLeafNode implements AxiomDocType {
     public OMDocTypeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
-        return getOMFactory().createOMDocType(targetParent, coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 }

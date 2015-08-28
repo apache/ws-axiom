@@ -22,8 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMTextNode;
-import org.apache.axiom.dom.Policies;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.w3c.dom.DOMException;
@@ -81,9 +79,5 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
     public String toString() {
         String value = getData();
         return value != null ? value : "";
-    }
-
-    final ChildNode createClone(OMCloneOptions options) {
-        return (ChildNode)coreClone(Policies.DEEP_CLONE, options);
     }
 }

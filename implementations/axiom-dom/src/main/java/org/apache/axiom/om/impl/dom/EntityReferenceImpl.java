@@ -19,17 +19,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMEntityReference;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 
 public class EntityReferenceImpl extends ChildNode implements AxiomEntityReference, DOMEntityReference {
     public EntityReferenceImpl(OMFactory factory) {
         super(factory);
-    }
-
-    ChildNode createClone(OMCloneOptions options) {
-        return (ChildNode)((OMFactoryEx)getOMFactory()).createOMEntityReference(null, coreGetName(), coreGetReplacementText(), false);
     }
 }

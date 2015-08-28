@@ -34,7 +34,8 @@ public aspect CoreProcessingInstructionSupport {
     }
     
     public final CoreNode CoreProcessingInstruction.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        CoreProcessingInstruction clone = coreGetNodeFactory().createProcessingInstruction();
+        clone.target = target;
+        return clone;
     }
 }
