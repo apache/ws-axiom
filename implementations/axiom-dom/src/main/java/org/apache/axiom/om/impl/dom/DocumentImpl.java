@@ -40,7 +40,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
-import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -100,12 +99,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         NSAwareElement element = new NSAwareElement(null, localName, namespace, null, getOMFactory(), false);
         element.coreSetOwnerDocument(this);
         return element;
-    }
-
-    public EntityReference createEntityReference(String name) throws DOMException {
-        EntityReferenceImpl node = new EntityReferenceImpl(name, null, getOMFactory());
-        node.coreSetOwnerDocument(this);
-        return node;
     }
 
     public DocumentType getDoctype() {

@@ -28,4 +28,5 @@ public interface NodeFactory {
     CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI, String localName, String prefix, String value, String type);
     CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
     CoreProcessingInstruction createProcessingInstruction();
+    CoreEntityReference createEntityReference();
 }

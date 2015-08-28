@@ -19,8 +19,27 @@
 package org.apache.axiom.core;
 
 public aspect CoreEntityReferenceSupport {
+    private String CoreEntityReference.name;
+    private String CoreEntityReference.replacementText;
+    
     public final int CoreEntityReference.coreGetNodeType() {
         return ENTITY_REFERENCE_NODE;
+    }
+    
+    public final String CoreEntityReference.coreGetName() {
+        return name;
+    }
+    
+    public final void CoreEntityReference.coreSetName(String name) {
+        this.name = name;
+    }
+    
+    public final String CoreEntityReference.coreGetReplacementText() {
+        return replacementText;
+    }
+    
+    public final void CoreEntityReference.coreSetReplacementText(String replacementText) {
+        this.replacementText = replacementText;
     }
     
     public final CoreNode CoreEntityReference.shallowClone(ClonePolicy policy, Object options) {

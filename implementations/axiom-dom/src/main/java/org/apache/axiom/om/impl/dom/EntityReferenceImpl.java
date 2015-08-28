@@ -18,87 +18,18 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
-
 import org.apache.axiom.dom.DOMEntityReference;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class EntityReferenceImpl extends ChildNode implements AxiomEntityReference, DOMEntityReference {
-    private final String name;
-    private final String replacementText;
-
-    public EntityReferenceImpl(String name, String replacementText, OMFactory factory) {
+    public EntityReferenceImpl(OMFactory factory) {
         super(factory);
-        this.name = name;
-        this.replacementText = replacementText;
-    }
-
-    public int getType() {
-        return OMNode.ENTITY_REFERENCE_NODE;
-    }
-
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeEntityRef(name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getReplacementText() {
-        return replacementText;
     }
 
     ChildNode createClone(OMCloneOptions options) {
-        return new EntityReferenceImpl(name, replacementText, getOMFactory());
-    }
-
-    public String getNodeName() {
-        return name;
-    }
-
-    public short getNodeType() {
-        return Node.ENTITY_REFERENCE_NODE;
-    }
-
-    public final boolean hasChildNodes() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Node getFirstChild() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Node getLastChild() {
-        throw new UnsupportedOperationException();
-    }
-
-    public final NodeList getChildNodes() {
-        throw new UnsupportedOperationException();
-    }
-
-    public final Node appendChild(Node newChild) throws DOMException {
-        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
-    }
-
-    public final Node removeChild(Node oldChild) throws DOMException {
-        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
-    }
-
-    public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
-    }
-
-    public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+        return (ChildNode)((OMFactoryEx)getOMFactory()).createOMEntityReference(null, coreGetName(), coreGetReplacementText(), false);
     }
 }

@@ -28,6 +28,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -178,6 +179,13 @@ public aspect DOMDocumentSupport {
         pi.coreSetTarget(target);
         pi.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return pi;
+    }
+
+    public final EntityReference DOMDocument.createEntityReference(String name) throws DOMException {
+        DOMEntityReference node = (DOMEntityReference)coreGetNodeFactory().createEntityReference();
+        node.coreSetOwnerDocument(this);
+        node.coreSetName(name);
+        return node;
     }
 
     public final NodeList DOMDocument.getElementsByTagName(String tagname) {

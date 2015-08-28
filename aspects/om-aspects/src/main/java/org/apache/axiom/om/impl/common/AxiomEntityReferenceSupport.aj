@@ -16,21 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
-import org.apache.axiom.om.impl.common.AxiomContainer;
-import org.apache.axiom.om.impl.common.AxiomEntityReference;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
-public class OMEntityReferenceImpl extends OMLeafNode implements AxiomEntityReference {
-    public OMEntityReferenceImpl(OMFactory factory) {
-        super(factory);
+public aspect AxiomEntityReferenceSupport {
+    public final int AxiomEntityReference.getType() {
+        return OMNode.ENTITY_REFERENCE_NODE;
     }
 
-    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
-        return ((OMFactoryEx)getOMFactory()).createOMEntityReference(targetParent, coreGetName(), coreGetReplacementText(), false);
+    public final void AxiomEntityReference.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        serializer.writeEntityRef(coreGetName());
+    }
+
+    public final String AxiomEntityReference.getName() {
+        return coreGetName();
+    }
+
+    public final String AxiomEntityReference.getReplacementText() {
+        return coreGetReplacementText();
     }
 }

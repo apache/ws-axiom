@@ -25,6 +25,7 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
+import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
@@ -37,7 +38,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -215,14 +215,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return new OMCommentImpl(parent, content, this, fromBuilder);
     }
 
-    public OMEntityReference createOMEntityReference(OMContainer parent, String name) {
-        return createOMEntityReference(parent, name, null, false);
-    }
-
-    public OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
-        return new OMEntityReferenceImpl(parent, name, replacementText, this, fromBuilder);
-    }
-
     /**
      * This method is intended only to be used by Axiom intenals when merging Objects from different
      * Axiom implementations to the LLOM implementation.
@@ -375,5 +367,9 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
 
     public CoreProcessingInstruction createProcessingInstruction() {
         return new OMProcessingInstructionImpl(this);
+    }
+
+    public final CoreEntityReference createEntityReference() {
+        return new OMEntityReferenceImpl(this);
     }
 }

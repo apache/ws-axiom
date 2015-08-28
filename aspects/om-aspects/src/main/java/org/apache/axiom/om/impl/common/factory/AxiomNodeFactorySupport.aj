@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -37,6 +38,7 @@ import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.Policies;
@@ -174,6 +176,20 @@ public aspect AxiomNodeFactorySupport {
         AxiomProcessingInstruction node = (AxiomProcessingInstruction)createProcessingInstruction();
         node.coreSetTarget(piTarget);
         node.coreSetCharacterData(piData, Policies.DETACH_POLICY);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(node, fromBuilder);
+        }
+        return node;
+    }
+
+    public final OMEntityReference AxiomNodeFactory.createOMEntityReference(OMContainer parent, String name) {
+        return createOMEntityReference(parent, name, null, false);
+    }
+
+    public final OMEntityReference AxiomNodeFactory.createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
+        AxiomEntityReference node = (AxiomEntityReference)createEntityReference();
+        node.coreSetName(name);
+        node.coreSetReplacementText(replacementText);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }

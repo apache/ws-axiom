@@ -24,10 +24,20 @@ import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public aspect DOMEntityReferenceSupport {
     public final Document DOMEntityReference.getOwnerDocument() {
         return (Document)coreGetOwnerDocument(true);
+    }
+
+    public final short DOMEntityReference.getNodeType() {
+        return Node.ENTITY_REFERENCE_NODE;
+    }
+
+    public final String DOMEntityReference.getNodeName() {
+        return coreGetName();
     }
 
     public final String DOMEntityReference.getNodeValue() {
@@ -71,5 +81,37 @@ public aspect DOMEntityReferenceSupport {
     
     public final CoreElement DOMEntityReference.getNamespaceContext() {
         return coreGetParentElement();
+    }
+
+    public final boolean DOMEntityReference.hasChildNodes() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final Node DOMEntityReference.getFirstChild() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final Node DOMEntityReference.getLastChild() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final NodeList DOMEntityReference.getChildNodes() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final Node DOMEntityReference.appendChild(Node newChild) throws DOMException {
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final Node DOMEntityReference.removeChild(Node oldChild) throws DOMException {
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final Node DOMEntityReference.insertBefore(Node newChild, Node refChild) throws DOMException {
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
+    }
+
+    public final Node DOMEntityReference.replaceChild(Node newChild, Node oldChild) throws DOMException {
+        throw newDOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR);
     }
 }
