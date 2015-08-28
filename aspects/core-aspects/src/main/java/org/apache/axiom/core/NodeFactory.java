@@ -29,4 +29,5 @@ public interface NodeFactory {
     CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
     CoreProcessingInstruction createProcessingInstruction();
     CoreEntityReference createEntityReference();
+    CoreComment createComment();
 }

@@ -26,12 +26,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomComment;
 
 public class CommentImpl extends LeafNode implements DOMComment, AxiomComment {
-    public CommentImpl(String value, OMFactory factory) {
+    public CommentImpl(OMFactory factory) {
         super(factory);
-        coreSetCharacterData(value, Policies.DETACH_POLICY);
     }
 
     ChildNode createClone(OMCloneOptions options) {
-        return new CommentImpl(getData(), getOMFactory());
+        return (ChildNode)getOMFactory().createOMComment(null, getData());
     }
 }

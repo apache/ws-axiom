@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.factory;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
@@ -34,6 +35,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.common.AxiomComment;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 import org.apache.axiom.om.impl.common.AxiomDocument;
@@ -196,6 +198,19 @@ public aspect AxiomNodeFactorySupport {
         return node;
     }
 
+    public final OMComment AxiomNodeFactory.createOMComment(OMContainer parent, String content) {
+        return createOMComment(parent, content, false);
+    }
+
+    public final OMComment AxiomNodeFactory.createOMComment(OMContainer parent, String content, boolean fromBuilder) {
+        AxiomComment node = (AxiomComment)createComment();
+        node.coreSetCharacterData(content, Policies.DETACH_POLICY);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(node, fromBuilder);
+        }
+        return node;
+    }
+    
     public final OMElement AxiomNodeFactory.createOMElement(String localName, OMNamespace ns) {
         return createOMElement(localName, ns, null);
     }

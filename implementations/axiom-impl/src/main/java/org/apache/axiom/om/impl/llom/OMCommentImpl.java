@@ -20,24 +20,14 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomComment;
 import org.apache.axiom.om.impl.common.AxiomContainer;
-import org.apache.axiom.om.impl.common.Policies;
 
 public class OMCommentImpl extends OMLeafNode implements AxiomComment {
-    /**
-     * Constructor OMCommentImpl.
-     *
-     * @param parentNode
-     * @param contentText
-     */
-    public OMCommentImpl(OMContainer parentNode, String contentText,
-                         OMFactory factory, boolean fromBuilder) {
-        super(parentNode, factory, fromBuilder);
-        coreSetCharacterData(contentText, Policies.DETACH_POLICY);
+    public OMCommentImpl(OMFactory factory) {
+        super(factory);
     }
 
     OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {

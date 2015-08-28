@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreEntityReference;
@@ -45,7 +46,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
@@ -197,18 +197,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return new NSAwareAttribute(null, localName, ns, value, this);
     }
 
-    public OMComment createOMComment(OMContainer parent, String content) {
-        return createOMComment(parent, content, false);
-    }
-    
-    public OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
-        CommentImpl comment = new CommentImpl(content, this);
-        if (parent != null) {
-            ((OMContainerEx)parent).addChild(comment, fromBuilder);
-        }
-        return comment;
-    }
-
     /**
      * This method is intended only to be used by Axiom intenals when merging Objects from different
      * Axiom implementations to the DOOM implementation.
@@ -250,9 +238,7 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
             }
             case (OMNode.COMMENT_NODE): {
                 OMComment importedComment = (OMComment) child;
-                OMComment newComment = createOMComment(null, importedComment.getValue());
-                newComment = new CommentImpl(importedComment.getValue(), this);
-                return newComment;
+                return createOMComment(null, importedComment.getValue());
             }
             case (OMNode.DTD_NODE): {
                 OMDocType importedDocType = (OMDocType) child;
@@ -363,5 +349,9 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public final CoreEntityReference createEntityReference() {
         return new EntityReferenceImpl(this);
+    }
+    
+    public final CoreComment createComment() {
+        return new CommentImpl(this);
     }
 }

@@ -35,7 +35,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.DocumentType;
@@ -59,12 +58,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
     // /org.w3c.dom.Document methods
     // /
-
-    public Comment createComment(String data) {
-        CommentImpl comment = new CommentImpl(data, getOMFactory());
-        comment.coreSetOwnerDocument(this);
-        return comment;
-    }
 
     public DocumentFragment createDocumentFragment() {
         DocumentFragmentImpl fragment = new DocumentFragmentImpl(getOMFactory());

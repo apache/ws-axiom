@@ -24,10 +24,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 
 public class FOMComment extends OMCommentImpl implements AbderaComment {
-
-    public FOMComment(OMContainer parent, String contentText,
-            OMFactory factory, boolean fromBuilder) {
-        super(parent, contentText, factory, fromBuilder);
+    public FOMComment(OMFactory factory) {
+        super(factory);
     }
 
     public String getText() {

@@ -23,6 +23,7 @@ import javax.xml.XMLConstants;
 import org.apache.axiom.core.CoreElement;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
+import org.w3c.dom.Comment;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -185,6 +186,13 @@ public aspect DOMDocumentSupport {
         DOMEntityReference node = (DOMEntityReference)coreGetNodeFactory().createEntityReference();
         node.coreSetOwnerDocument(this);
         node.coreSetName(name);
+        return node;
+    }
+
+    public final Comment DOMDocument.createComment(String data) {
+        DOMComment node = (DOMComment)coreGetNodeFactory().createComment();
+        node.coreSetOwnerDocument(this);
+        node.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return node;
     }
 

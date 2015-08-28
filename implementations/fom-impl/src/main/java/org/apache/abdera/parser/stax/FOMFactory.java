@@ -58,12 +58,12 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.util.Version;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -631,11 +631,6 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     @Override
-    public OMComment createOMComment(OMContainer arg0, String arg1) {
-        return new FOMComment(arg0, arg1, this, false);
-    }
-
-    @Override
     public CoreCharacterDataNode createCharacterDataNode() {
         return new FOMCharacterDataNode(this);
     }
@@ -648,5 +643,10 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     @Override
     public CoreProcessingInstruction createProcessingInstruction() {
         return new FOMProcessingInstruction(this);
+    }
+
+    @Override
+    public CoreComment createComment() {
+        return new FOMComment(this);
     }
 }

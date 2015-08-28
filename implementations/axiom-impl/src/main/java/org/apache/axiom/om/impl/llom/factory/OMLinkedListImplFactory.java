@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreEntityReference;
@@ -201,21 +202,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     }
 
     /**
-     * Creates a comment.
-     *
-     * @param parent
-     * @param content
-     * @return Returns OMComment.
-     */
-    public OMComment createOMComment(OMContainer parent, String content) {
-        return createOMComment(parent, content, false);
-    }
-
-    public OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
-        return new OMCommentImpl(parent, content, this, fromBuilder);
-    }
-
-    /**
      * This method is intended only to be used by Axiom intenals when merging Objects from different
      * Axiom implementations to the LLOM implementation.
      *
@@ -371,5 +357,9 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
 
     public final CoreEntityReference createEntityReference() {
         return new OMEntityReferenceImpl(this);
+    }
+    
+    public CoreComment createComment() {
+        return new OMCommentImpl(this);
     }
 }
