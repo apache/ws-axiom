@@ -60,6 +60,7 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.fom.AbderaFactory;
@@ -648,5 +649,10 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     @Override
     public CoreComment createComment() {
         return new FOMComment(this);
+    }
+
+    @Override
+    public CoreNSAwareAttribute createNSAwareAttribute() {
+        return new FOMAttribute(this);
     }
 }

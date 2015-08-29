@@ -15,14 +15,17 @@
  * copyright in this work, please see the NOTICE file in the top level
  * directory of this distribution.
  */
-package org.apache.abdera.parser.stax;
+package org.apache.axiom.fom;
 
-import org.apache.axiom.fom.AbderaAttribute;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.OMAttributeImpl;
+import org.apache.abdera.model.Attribute;
 
-public class FOMAttribute extends OMAttributeImpl implements AbderaAttribute {
-    protected FOMAttribute(OMFactory factory) {
-        super(factory);
+public aspect AbderaAttributeSupport {
+    public final String AbderaAttribute.getText() {
+        return coreGetCharacterData().toString();
+    }
+
+    public final Attribute AbderaAttribute.setText(String text) {
+        coreSetCharacterData(text, Policies.DETACH_POLICY);
+        return this;
     }
 }
