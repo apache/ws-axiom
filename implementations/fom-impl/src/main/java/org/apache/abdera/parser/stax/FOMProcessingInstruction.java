@@ -17,13 +17,10 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.abdera.model.ProcessingInstruction;
 import org.apache.axiom.fom.AbderaProcessingInstruction;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 
-@SuppressWarnings("unchecked")
 public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements AbderaProcessingInstruction {
     FOMProcessingInstruction(OMFactory factory) {
         super(factory);
