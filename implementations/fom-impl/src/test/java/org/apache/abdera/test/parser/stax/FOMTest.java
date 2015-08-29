@@ -31,6 +31,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.activation.MimeType;
@@ -46,6 +47,7 @@ import org.apache.abdera.filter.ListParseFilter;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.rfc4646.Lang;
 import org.apache.abdera.model.AtomDate;
+import org.apache.abdera.model.Attribute;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Content;
@@ -258,6 +260,12 @@ public class FOMTest {
         assertEquals("The feed is is urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6", xpath
             .valueOf("concat('The feed is is ',/a:feed/a:id)", feed));
 
+        List hrefs = xpath.selectNodes("//a:link/@href", feed);
+        assertThat(hrefs).hasSize(2);
+        assertThat(hrefs.get(0)).isInstanceOf(Attribute.class);
+        assertThat(((Attribute)hrefs.get(0)).getText()).isEqualTo("http://example.org/");
+        assertThat(hrefs.get(1)).isInstanceOf(Attribute.class);
+        assertThat(((Attribute)hrefs.get(1)).getText()).isEqualTo("http://example.org/2003/12/13/atom03");
     }
 
     @Test
