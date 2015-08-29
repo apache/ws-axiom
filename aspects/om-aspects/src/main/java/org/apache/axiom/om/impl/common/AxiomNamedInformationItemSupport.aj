@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -165,6 +166,12 @@ public aspect AxiomNamedInformationItemSupport {
         qName = null;
     }
 
+    public final void AxiomNamedInformationItem.coreSetName(CoreNSAwareNamedNode other) {
+        localName = other.coreGetLocalName();
+        namespace = ((AxiomNamedInformationItem)other).getNamespace();
+        qName = null;
+    }
+    
     public void AxiomNamedInformationItem.updateLocalName() {
         throw new IllegalStateException();
     }

@@ -24,7 +24,9 @@ public aspect CoreNSAwareAttributeSupport {
     }
     
     public final CoreNode CoreNSAwareAttribute.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        CoreNSAwareAttribute clone = coreGetNodeFactory().createNSAwareAttribute();
+        clone.coreSetName(this);
+        clone.coreSetType(coreGetType());
+        return clone;
     }
 }

@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.common.Policies;
 
 /** Class OMAttributeImpl */
 public class OMAttributeImpl extends Attribute implements AxiomAttribute {
@@ -31,6 +32,6 @@ public class OMAttributeImpl extends Attribute implements AxiomAttribute {
     }
 
     public OMInformationItem clone(OMCloneOptions options) {
-        return getOMFactory().createOMAttribute(getLocalName(), getNamespace(), getAttributeValue());
+        return (AxiomAttribute)coreClone(Policies.CLONE_POLICY, options);
     }
 }

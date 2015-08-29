@@ -49,7 +49,6 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
 
     @Override
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
-        // Note: targetParent is always null here
-        return new NSAwareAttribute(getLocalName(), getNamespace(), coreGetType(), getOMFactory());
+        return (ParentNode)shallowClone(policy, options);
     }
 }
