@@ -33,9 +33,7 @@ import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
@@ -61,7 +59,6 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMEntityReferenceImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Fault;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultCode;
@@ -177,28 +174,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
         return new OMNamespaceImpl(uri, prefix);
-    }
-
-    /**
-     * Creates attribute.
-     *
-     * @param localName
-     * @param ns
-     * @param value
-     * @return Returns OMAttribute.
-     */
-    public OMAttribute createOMAttribute(String localName,
-                                         OMNamespace ns,
-                                         String value) {
-        if (ns != null && ns.getPrefix() == null) {
-            String namespaceURI = ns.getNamespaceURI();
-            if (namespaceURI.length() == 0) {
-                ns = null;
-            } else {
-                ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
-            }
-        }
-        return new OMAttributeImpl(localName, ns, value, this);
     }
 
     /**
@@ -331,12 +306,8 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         throw new UnsupportedOperationException();
     }
 
-    public CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
-            String localName, String prefix, String value, String type) {
-        return new OMAttributeImpl(
-                localName,
-                namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix),
-                value, this);
+    public CoreNSAwareAttribute createNSAwareAttribute() {
+        return new OMAttributeImpl(this);
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,

@@ -33,7 +33,6 @@ import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.dom.DOMNodeFactory;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -63,7 +62,6 @@ import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Fault;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultCode;
@@ -173,30 +171,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         }
     }
     
-    public OMAttribute createOMAttribute(String localName, OMNamespace ns,
-                                         String value) {
-        if (ns != null && ns.getPrefix() == null) {
-            String namespaceURI = ns.getNamespaceURI();
-            if (namespaceURI.length() == 0) {
-                ns = null;
-            } else {
-                ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
-            }
-        }
-        if (ns != null) {
-            if (ns.getNamespaceURI().length() == 0) {
-                if (ns.getPrefix().length() > 0) {
-                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
-                } else {
-                    ns = null;
-                }
-            } else if (ns.getPrefix().length() == 0) {
-                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
-            }
-        }
-        return new NSAwareAttribute(null, localName, ns, value, this);
-    }
-
     /**
      * This method is intended only to be used by Axiom intenals when merging Objects from different
      * Axiom implementations to the DOOM implementation.
@@ -329,9 +303,8 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return attr;
     }
 
-    public final CoreNSAwareAttribute createAttribute(CoreDocument document, String namespaceURI,
-            String localName, String prefix, String value, String type) {
-        return new NSAwareAttribute((DocumentImpl)document, localName, namespaceURI.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix), value, this);
+    public final CoreNSAwareAttribute createNSAwareAttribute() {
+        return new NSAwareAttribute(this);
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,

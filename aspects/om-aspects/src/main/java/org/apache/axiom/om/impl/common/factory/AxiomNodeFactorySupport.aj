@@ -21,7 +21,9 @@ package org.apache.axiom.om.impl.common.factory;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
@@ -33,6 +35,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
 import org.apache.axiom.om.impl.common.AxiomComment;
@@ -43,6 +46,7 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.AxiomText;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.TextContent;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -269,5 +273,33 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMElement AxiomNodeFactory.createOMElement(QName qname) {
         return createOMElement(qname, null);
+    }
+    
+    public final OMAttribute AxiomNodeFactory.createOMAttribute(String localName, OMNamespace ns, String value) {
+        if (ns != null && ns.getPrefix() == null) {
+            String namespaceURI = ns.getNamespaceURI();
+            if (namespaceURI.length() == 0) {
+                ns = null;
+            } else {
+                ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
+            }
+        }
+        if (ns != null) {
+            if (ns.getNamespaceURI().length() == 0) {
+                if (ns.getPrefix().length() > 0) {
+                    throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+                } else {
+                    ns = null;
+                }
+            } else if (ns.getPrefix().length() == 0) {
+                throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
+            }
+        }
+        AxiomAttribute attr = (AxiomAttribute)createNSAwareAttribute();
+        attr.internalSetLocalName(localName);
+        attr.coreSetCharacterData(value, Policies.DETACH_POLICY);
+        attr.internalSetNamespace(ns);
+        attr.coreSetType(OMConstants.XMLATTRTYPE_CDATA);
+        return attr;
     }
 }

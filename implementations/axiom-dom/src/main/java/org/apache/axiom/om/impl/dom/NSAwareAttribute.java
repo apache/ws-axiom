@@ -21,12 +21,10 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNSAwareAttribute;
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
-import org.apache.axiom.om.impl.common.AxiomText;
 
 public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, DOMNSAwareAttribute {
     // TODO: copy isId?
@@ -37,15 +35,8 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
         coreSetType(type);
     }
     
-    public NSAwareAttribute(DocumentImpl ownerDocument, String localName,
-                    OMNamespace ns, String value, OMFactory factory) {
-        super(ownerDocument, factory);
-        internalSetLocalName(localName);
-        if (value != null && value.length() != 0) {
-            coreAppendChild((AxiomText)factory.createOMText(value), false);
-        }
-        coreSetType(OMConstants.XMLATTRTYPE_CDATA);
-        internalSetNamespace(ns);
+    public NSAwareAttribute(OMFactory factory) {
+        super(null, factory);
     }
 
     public String toString() {

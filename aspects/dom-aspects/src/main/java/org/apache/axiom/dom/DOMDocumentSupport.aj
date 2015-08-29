@@ -170,7 +170,11 @@ public aspect DOMDocumentSupport {
         } else {
             namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
             NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-            return (DOMAttribute)coreGetNodeFactory().createAttribute(this, namespaceURI, localName, prefix, null, null);
+            DOMNSAwareAttribute attr = (DOMNSAwareAttribute)coreGetNodeFactory().createNSAwareAttribute();
+            attr.coreSetOwnerDocument(this);
+            attr.coreSetName(namespaceURI, localName, prefix);
+            // TODO: set type?
+            return attr;
         }
     }
 

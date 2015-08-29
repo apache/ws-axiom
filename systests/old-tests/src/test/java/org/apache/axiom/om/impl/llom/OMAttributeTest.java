@@ -32,36 +32,6 @@ import java.io.StringReader;
 
 public class OMAttributeTest extends TestCase {
 
-    public void testNullLocalName() throws Exception {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        try {
-            factory.createOMAttribute(null, null, null);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        fail("Null localname was accepted!");
-    }
-
-    public void testEmptyLocalName() throws Exception {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        try {
-            factory.createOMAttribute("", null, null);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        fail("Empty localname was accepted!");
-    }
-
-    public void testWhitespaceLocalName() throws Exception {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        try {
-            factory.createOMAttribute("    ", null, null);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        fail("Whitespace localname was accepted!");
-    }
-
     public void testAddAttribute() throws Exception {
         String xmlString =
                 "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header name = \"jhon\"/><soapenv:Body><my:uploadFileUsingMTOM xmlns:my=\"http://localhost/my\"><my:folderName>/home/saliya/Desktop</my:folderName></my:uploadFileUsingMTOM></soapenv:Body><Body>TTTT</Body> </soapenv:Envelope>";
