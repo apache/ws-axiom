@@ -39,4 +39,7 @@ public aspect AxiomCommentSupport {
     public final void AxiomComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeComment(coreGetCharacterData().toString());
     }
+    
+    public final void AxiomComment.buildWithAttachments() {
+    }
 }

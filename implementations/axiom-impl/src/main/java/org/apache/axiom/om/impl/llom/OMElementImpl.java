@@ -110,19 +110,5 @@ public class OMElementImpl extends OMNodeImpl
     public final int getLineNumber() {
         return lineNumber;
     }
-
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMNode#buildAll()
-      */
-    public void buildWithAttachments() {
-        if (getState() == INCOMPLETE) {
-            this.build();
-        }
-        Iterator iterator = getChildren();
-        while (iterator.hasNext()) {
-            OMNode node = (OMNode) iterator.next();
-            node.buildWithAttachments();
-        }
-    }
 }
 

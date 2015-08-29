@@ -571,4 +571,17 @@ public aspect AxiomElementSupport {
 
     public void AxiomElement.copyData(OMCloneOptions options, AxiomElement clone) {
     }
+
+    public final void AxiomElement.buildWithAttachments() {
+        if (getState() == INCOMPLETE) {
+            build();
+        }
+        if (isExpanded()) {
+            OMNode child = getFirstOMChild();
+            while (child != null) {
+                child.buildWithAttachments();
+                child = child.getNextOMSibling();
+            }
+        }
+    }
 }

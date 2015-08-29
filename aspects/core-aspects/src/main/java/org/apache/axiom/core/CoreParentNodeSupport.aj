@@ -38,6 +38,10 @@ public aspect CoreParentNodeSupport {
         flags = (flags & ~Flags.STATE_MASK) | state;
     }
     
+    public boolean CoreParentNode.isExpanded() {
+        return true;
+    }
+    
     public void CoreParentNode.forceExpand() {}
     
     final Content CoreParentNode.getContent(boolean create) {

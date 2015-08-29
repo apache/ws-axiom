@@ -455,27 +455,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public void buildWithAttachments() {
-        
-        // If not done, force the parser to build the elements
-        if (getState() == INCOMPLETE) {
-            this.build();
-        }
-        
-        // If the OMSourcedElement is in in expanded form, then
-        // walk the descendents to make sure they are built. 
-        // If the OMSourcedElement is backed by a OMDataSource,
-        // we don't want to walk the children (because this will result
-        // in an unnecessary translation from OMDataSource to a full OM tree).
-        if (isExpanded()) {
-            Iterator iterator = getChildren();
-            while (iterator.hasNext()) {
-                OMNode node = (OMNode) iterator.next();
-                node.buildWithAttachments();
-            }
-        }
-    }
-
     /**
      * Provide access to the data source encapsulated in OMSourcedElement. 
      * This is usesful when we want to access the raw data in the data source.

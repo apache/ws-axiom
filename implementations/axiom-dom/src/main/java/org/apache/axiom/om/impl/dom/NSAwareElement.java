@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import java.util.Iterator;
-
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSAwareElement;
@@ -94,20 +92,6 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
     public String getNamespaceURI(String prefix) {
         OMNamespace ns = this.findNamespaceURI(prefix);
         return (ns != null) ? ns.getNamespaceURI() : null;
-    }
-
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMNode#buildAll()
-      */
-    public void buildWithAttachments() {
-        if (getState() == INCOMPLETE) {
-            this.build();
-        }
-        Iterator iterator = getChildren();
-        while (iterator.hasNext()) {
-            OMNode node = (OMNode) iterator.next();
-            node.buildWithAttachments();
-        }
     }
 
     public void normalize(DOMConfigurationImpl config) {

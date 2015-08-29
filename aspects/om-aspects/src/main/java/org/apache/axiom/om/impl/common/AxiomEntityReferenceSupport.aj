@@ -39,4 +39,7 @@ public aspect AxiomEntityReferenceSupport {
     public final String AxiomEntityReference.getReplacementText() {
         return coreGetReplacementText();
     }
+    
+    public final void AxiomEntityReference.buildWithAttachments() {
+    }
 }

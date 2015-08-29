@@ -34,4 +34,7 @@ public aspect AxiomDocTypeSupport {
     public final void AxiomDocType.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeDTD(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
+    
+    public final void AxiomDocType.buildWithAttachments() {
+    }
 }

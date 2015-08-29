@@ -61,10 +61,4 @@ public aspect AxiomChildNodeSupport {
         coreDetach(Policies.DETACH_POLICY);
         return this;
     }
-    
-    public void AxiomChildNode.buildWithAttachments() {
-        if (!isComplete()) {
-            build();
-        }
-    }
 }

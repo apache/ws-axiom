@@ -42,4 +42,7 @@ public aspect AxiomProcessingInstructionSupport {
     public final void AxiomProcessingInstruction.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         serializer.writeProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
     }
+    
+    public final void AxiomProcessingInstruction.buildWithAttachments() {
+    }
 }
