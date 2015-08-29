@@ -80,10 +80,13 @@ public final class NSUtil {
                 } else {
                     throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
                 }
-            } else if (checkNameStart && !isNameStartChar(c) || i > 0 && !isNameChar(c)) {
-                throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
-            } else {
+            } else if (checkNameStart) {
+                if (!isNameStartChar(c)) {
+                    throw DOMExceptionTranslator.newDOMException(isNameChar(c) ? DOMException.NAMESPACE_ERR : DOMException.INVALID_CHARACTER_ERR);
+                }
                 checkNameStart = false;
+            } else if (!isNameChar(c)) {
+                throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
         }
         if (checkNameStart) {

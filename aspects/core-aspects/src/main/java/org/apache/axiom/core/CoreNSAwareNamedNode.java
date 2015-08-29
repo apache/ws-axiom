@@ -26,4 +26,5 @@ public interface CoreNSAwareNamedNode {
     String coreGetPrefix();
     void coreSetPrefix(String prefix);
     String coreGetLocalName();
+    void coreSetName(String namespaceURI, String localName, String prefix);
 }

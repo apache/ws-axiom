@@ -203,4 +203,45 @@ public aspect DOMDocumentSupport {
     public final NodeList DOMDocument.getElementsByTagNameNS(String namespaceURI, String localName) {
         return new ElementsByTagNameNS(this, namespaceURI, localName);
     }
+    
+    // TODO: need unit test to check that this method works as expected on an OMSourcedElement
+    public final Node DOMDocument.renameNode(Node node, String namespaceURI, String qualifiedName) {
+        if (!(node instanceof DOMNode && ((DOMNode)node).coreHasSameOwnerDocument(this))) {
+            throw DOMExceptionTranslator.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+        }
+        // TODO: what about an attempt to rename a namespace unaware node?
+        if (!(node instanceof DOMNSAwareNamedNode)) {
+            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_SUPPORTED_ERR);
+        }
+        int i = NSUtil.validateQualifiedName(qualifiedName);
+        String prefix;
+        String localName;
+        if (i == -1) {
+            prefix = "";
+            localName = qualifiedName;
+        } else {
+            prefix = qualifiedName.substring(0, i);
+            localName = qualifiedName.substring(i+1);
+        }
+        namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
+        switch (((DOMNode)node).coreGetNodeType()) {
+            case NS_AWARE_ELEMENT_NODE:
+                NSUtil.validateNamespace(namespaceURI, prefix);
+                ((DOMNSAwareElement)node).coreSetName(namespaceURI, localName, prefix);
+                return node;
+            case NS_AWARE_ATTRIBUTE_NODE:
+                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+                    return (DOMAttribute)coreGetNodeFactory().createNamespaceDeclaration(this, NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute)node).getValue());
+                } else {
+                    NSUtil.validateAttributeName(namespaceURI, localName, prefix);
+                    ((DOMNSAwareAttribute)node).coreSetName(namespaceURI, localName, prefix);
+                    return node;
+                }
+            case NAMESPACE_DECLARATION_NODE:
+                // TODO
+                throw new UnsupportedOperationException();
+            default:
+                throw new IllegalStateException();
+        }
+    }
 }

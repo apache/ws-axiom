@@ -157,6 +157,13 @@ public aspect AxiomNamedInformationItemSupport {
         OMNamespace namespace = getNamespace();
         return namespace == null ? "" : namespace.getPrefix();
     }
+    
+    public final void AxiomNamedInformationItem.coreSetName(String namespaceURI, String localName, String prefix) {
+        this.localName = localName;
+        namespace = namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix);
+        // TODO: need unit test to assert this
+        qName = null;
+    }
 
     public void AxiomNamedInformationItem.updateLocalName() {
         throw new IllegalStateException();

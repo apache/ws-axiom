@@ -260,12 +260,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         throw new UnsupportedOperationException("TODO");
     }
 
-    public Node renameNode(Node node, String namespaceURI, String qualifiedName)
-            throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
     public void setDocumentURI(String documentURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
