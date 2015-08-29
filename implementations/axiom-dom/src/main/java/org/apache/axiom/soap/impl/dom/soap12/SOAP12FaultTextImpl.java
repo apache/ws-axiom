@@ -19,29 +19,15 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.NSAwareAttribute;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 
 public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12FaultText {
-    private OMAttribute langAttr;
-    private final OMNamespace langNamespace;
-
     public SOAP12FaultTextImpl(OMFactory factory) {
         super(factory);
-        // TODO: get rid of this crap
-        this.langNamespace = factory.createOMNamespace(
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
-                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -50,26 +36,5 @@ public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12Fault
                     "Expecting SOAP 1.2 implementation of SOAP FaultReason " +
                             "as the parent. But received some other implementation");
         }
-    }
-
-    public void setLang(String lang) {
-        langAttr =
-                new NSAwareAttribute((DocumentImpl)getOwnerDocument(),
-                             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                             langNamespace,
-                             lang, getOMFactory());
-        this.addAttribute(langAttr);
-    }
-
-    public String getLang() {
-        if (langAttr == null) {
-            langAttr =
-                    this.getAttribute(
-                            new QName(langNamespace.getNamespaceURI(),
-                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
-        }
-
-        return langAttr == null ? null : langAttr.getAttributeValue();
     }
 }

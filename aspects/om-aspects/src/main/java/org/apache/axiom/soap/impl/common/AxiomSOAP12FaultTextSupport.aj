@@ -18,10 +18,31 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.soap.SOAP12Constants;
 
 public aspect AxiomSOAP12FaultTextSupport {
+    private static final OMNamespace LANG_NAMESPACE = new OMNamespaceImpl(
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    private static final QName LANG_QNAME = new QName(
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+            SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
+    
     public final Class<? extends AxiomElement> AxiomSOAP12FaultText.getElementType() {
         return AxiomSOAP12FaultText.class;
+    }
+
+    public final void AxiomSOAP12FaultText.setLang(String lang) {
+        addAttribute(SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME, lang, LANG_NAMESPACE);
+    }
+    
+    public final String AxiomSOAP12FaultText.getLang() {
+        return getAttributeValue(LANG_QNAME);
     }
 }
