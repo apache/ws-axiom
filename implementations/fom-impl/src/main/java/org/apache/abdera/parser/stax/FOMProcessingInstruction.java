@@ -19,9 +19,9 @@ package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaProcessingInstruction;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
+import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
-public class FOMProcessingInstruction extends OMProcessingInstructionImpl implements AbderaProcessingInstruction {
+public class FOMProcessingInstruction extends FOMLeafNode implements AbderaProcessingInstruction, AxiomProcessingInstruction {
     FOMProcessingInstruction(OMFactory factory) {
         super(factory);
     }

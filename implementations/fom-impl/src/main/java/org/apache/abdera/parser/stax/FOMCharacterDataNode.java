@@ -20,13 +20,11 @@ package org.apache.abdera.parser.stax;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.fom.AbderaCharacterDataNode;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.CharacterDataImpl;
+import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
 
-public class FOMCharacterDataNode extends CharacterDataImpl implements AbderaCharacterDataNode {
+public class FOMCharacterDataNode extends FOMTextValue implements AbderaCharacterDataNode, AxiomCharacterDataNode {
 
     public FOMCharacterDataNode(OMFactory factory) {
         super(factory);

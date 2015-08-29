@@ -20,19 +20,19 @@ package org.apache.abdera.parser.stax;
 import org.apache.abdera.model.Comment;
 import org.apache.axiom.fom.AbderaComment;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.OMCommentImpl;
+import org.apache.axiom.om.impl.common.AxiomComment;
 
-public class FOMComment extends OMCommentImpl implements AbderaComment {
+public class FOMComment extends FOMLeafNode implements AbderaComment, AxiomComment {
     public FOMComment(OMFactory factory) {
         super(factory);
     }
 
     public String getText() {
-        return super.getValue();
+        return getValue();
     }
 
     public Comment setText(String text) {
-        super.setValue(text);
+        setValue(text);
         return this;
     }
 

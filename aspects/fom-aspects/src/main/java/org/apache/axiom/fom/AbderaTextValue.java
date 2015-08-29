@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.fom;
 
-import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.abdera.model.TextValue;
 
-public interface AbderaCharacterDataNode extends AbderaTextValue, CoreCharacterDataNode {
+public interface AbderaTextValue extends TextValue, AbderaChildNode {
 
 }

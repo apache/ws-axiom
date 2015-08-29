@@ -20,13 +20,11 @@ package org.apache.abdera.parser.stax;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.fom.AbderaCDATASection;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.CDATASectionImpl;
+import org.apache.axiom.om.impl.common.AxiomCDATASection;
 
-public class FOMCDATASection extends CDATASectionImpl implements AbderaCDATASection {
+public class FOMCDATASection extends FOMTextValue implements AbderaCDATASection, AxiomCDATASection {
 
     public FOMCDATASection(OMFactory factory) {
         super(factory);

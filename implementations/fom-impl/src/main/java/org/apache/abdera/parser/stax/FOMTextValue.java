@@ -16,10 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.fom;
+package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.fom.AbderaTextValue;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.common.AxiomText;
 
-public interface AbderaCharacterDataNode extends AbderaTextValue, CoreCharacterDataNode {
-
+public abstract class FOMTextValue extends FOMLeafNode implements AbderaTextValue, AxiomText {
+    public FOMTextValue(OMFactory factory) {
+        super(factory);
+    }
 }

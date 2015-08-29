@@ -45,16 +45,15 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>om-aspects</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>fom-aspects</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <!-- Already included in axiom-impl -->
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>core-aspects</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -75,6 +74,18 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <configuration>
                     <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>core-aspects</artifactId>
+                        </aspectLibrary>
+                        <aspectLibrary>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>om-aspects</artifactId>
+                        </aspectLibrary>
+                        <aspectLibrary>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>shared-aspects</artifactId>
+                        </aspectLibrary>
                         <aspectLibrary>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>fom-aspects</artifactId>
