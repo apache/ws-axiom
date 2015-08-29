@@ -19,7 +19,6 @@ package org.apache.abdera.parser.stax;
 
 import org.apache.abdera.model.Comment;
 import org.apache.axiom.fom.AbderaComment;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
 
