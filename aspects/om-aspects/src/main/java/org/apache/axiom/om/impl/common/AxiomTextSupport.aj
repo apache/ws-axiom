@@ -103,8 +103,7 @@ public aspect AxiomTextSupport {
         }
     }
 
-    // TODO: should be final, but Abdera overrides this method
-    public Object AxiomText.getDataHandler() {
+    public final DataHandler AxiomText.getDataHandler() {
         Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
             return ((TextContent)content).getDataHandler();

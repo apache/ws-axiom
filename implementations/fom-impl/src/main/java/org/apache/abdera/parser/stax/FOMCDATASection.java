@@ -32,10 +32,6 @@ public class FOMCDATASection extends CDATASectionImpl implements AbderaCDATASect
         super(factory);
     }
 
-    public DataHandler getDataHandler() {
-        return (DataHandler)super.getDataHandler();
-    }
-
     public InputStream getInputStream() {
         try {
             return getDataHandler().getInputStream();
