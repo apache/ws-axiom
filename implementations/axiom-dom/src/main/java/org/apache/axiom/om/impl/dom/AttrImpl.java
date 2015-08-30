@@ -29,9 +29,8 @@ public abstract class AttrImpl extends ParentNode implements DOMAttribute {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
-    AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
+    AttrImpl(OMFactory factory) {
         super(factory);
-        coreSetOwnerDocument(ownerDocument);
     }
 
     // /

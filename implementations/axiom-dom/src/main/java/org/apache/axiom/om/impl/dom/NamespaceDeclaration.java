@@ -27,7 +27,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 
 public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration, AxiomNamespaceDeclaration {
     public NamespaceDeclaration(OMFactory factory) {
-        super(null, factory);
+        super(factory);
     }
 
     @Override

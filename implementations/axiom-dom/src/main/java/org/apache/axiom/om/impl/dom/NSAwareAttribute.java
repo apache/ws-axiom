@@ -27,16 +27,8 @@ import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 
 public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, DOMNSAwareAttribute {
-    // TODO: copy isId?
-    NSAwareAttribute(String localName, OMNamespace namespace, String type, OMFactory factory) {
-        super(null, factory);
-        internalSetLocalName(localName);
-        internalSetNamespace(namespace);
-        coreSetType(type);
-    }
-    
     public NSAwareAttribute(OMFactory factory) {
-        super(null, factory);
+        super(factory);
     }
 
     public String toString() {

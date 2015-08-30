@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMFactory;
 
 public class NSUnawareAttribute extends AttrImpl implements DOMNSUnawareAttribute {
     public NSUnawareAttribute(OMFactory factory) {
-        super(null, factory);
+        super(factory);
     }
 
     public final NodeFactory coreGetNodeFactory() {
