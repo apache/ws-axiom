@@ -47,7 +47,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
@@ -304,12 +303,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration() {
         return new NamespaceDeclaration(this);
-    }
-
-    public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
-        NamespaceDeclaration decl = new NamespaceDeclaration(this);
-        decl.setDeclaredNamespace(namespace);
-        return decl;
     }
 
     public final CoreProcessingInstruction createProcessingInstruction() {

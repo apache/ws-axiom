@@ -50,7 +50,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -365,8 +364,10 @@ public aspect AxiomElementSupport {
 
     public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
         OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        AxiomNamespaceDeclaration decl = (AxiomNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+        decl.setDeclaredNamespace(ns);
         try {
-            coreAppendAttribute(((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns), NodeMigrationPolicy.MOVE_ALWAYS);
+            coreAppendAttribute(decl, NodeMigrationPolicy.MOVE_ALWAYS);
         } catch (NodeMigrationException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
@@ -374,9 +375,10 @@ public aspect AxiomElementSupport {
     }
     
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
+        AxiomNamespaceDeclaration decl = (AxiomNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+        decl.setDeclaredNamespace(ns);
         try {
-            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER,
-                    ((AxiomNodeFactory)getOMFactory()).createNamespaceDeclaration(ns),
+            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl,
                     NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
         } catch (NodeMigrationException ex) {
             throw AxiomExceptionTranslator.translate(ex);

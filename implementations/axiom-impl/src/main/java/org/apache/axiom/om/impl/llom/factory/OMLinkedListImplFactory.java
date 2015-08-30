@@ -45,7 +45,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.llom.CDATASectionImpl;
@@ -310,14 +309,7 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     }
 
     public final CoreNamespaceDeclaration createNamespaceDeclaration() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
-        NamespaceDeclaration decl = new NamespaceDeclaration(this);
-        decl.setDeclaredNamespace(namespace);
-        return decl;
+        return new NamespaceDeclaration(this);
     }
 
     public CoreProcessingInstruction createProcessingInstruction() {
