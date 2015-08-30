@@ -105,7 +105,7 @@
                             <goal>generate-properties</goal>
                         </goals>
                         <configuration>
-                            <name>bootclasspath</name>
+                            <name>surefire.bootclasspath</name>
                             <value>%file%</value>
                             <separator>${path.separator}</separator>
                             <artifacts>
@@ -243,7 +243,7 @@
                 <configuration>
                     <!-- This is necessary to execute the tests with the IBM JRE: we need to endorse the particular Xerces version
                          we want to use because the JRE already contains Xerces. -->
-                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${bootclasspath}</argLine>
+                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${surefire.bootclasspath}</argLine>
                 </configuration>
             </plugin>
         </plugins>
