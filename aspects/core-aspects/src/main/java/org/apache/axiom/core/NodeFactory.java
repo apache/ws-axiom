@@ -23,6 +23,7 @@ public interface NodeFactory {
     CoreDocumentTypeDeclaration createDocumentTypeDeclaration();
     CoreCharacterDataNode createCharacterDataNode();
     CoreCDATASection createCDATASection();
+    CoreNSUnawareElement createNSUnawareElement();
     <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type);
     CoreNSUnawareAttribute createNSUnawareAttribute();
     CoreNSAwareAttribute createNSAwareAttribute();
@@ -30,4 +31,5 @@ public interface NodeFactory {
     CoreProcessingInstruction createProcessingInstruction();
     CoreEntityReference createEntityReference();
     CoreComment createComment();
+    CoreDocumentFragment createDocumentFragment();
 }

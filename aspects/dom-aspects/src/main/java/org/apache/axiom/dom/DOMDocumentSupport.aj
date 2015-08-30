@@ -28,6 +28,7 @@ import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
@@ -142,13 +143,20 @@ public aspect DOMDocumentSupport {
         return text;
     }
 
-    public final CDATASection DOMDocument.createCDATASection(String data) throws DOMException {
+    public final CDATASection DOMDocument.createCDATASection(String data) {
         DOMCDATASection cdataSection = (DOMCDATASection)coreGetNodeFactory().createCDATASection();
         cdataSection.coreSetOwnerDocument(this);
         cdataSection.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return cdataSection;
     }
     
+    public final Element DOMDocument.createElement(String tagName) {
+        DOMNSUnawareElement element = (DOMNSUnawareElement)coreGetNodeFactory().createNSUnawareElement();
+        element.coreSetOwnerDocument(this);
+        element.coreSetName(tagName);
+        return element;
+    }
+
     public final Attr DOMDocument.createAttribute(String name) {
         NSUtil.validateName(name);
         DOMNSUnawareAttribute attr = (DOMNSUnawareAttribute)coreGetNodeFactory().createNSUnawareAttribute();
@@ -156,6 +164,25 @@ public aspect DOMDocumentSupport {
         attr.coreSetName(name);
         attr.coreSetType("CDATA");
         return attr;
+    }
+
+    public final Element DOMDocument.createElementNS(String namespaceURI, String qualifiedName) {
+        int i = NSUtil.validateQualifiedName(qualifiedName);
+        String prefix;
+        String localName;
+        if (i == -1) {
+            prefix = "";
+            localName = qualifiedName;
+        } else {
+            prefix = qualifiedName.substring(0, i);
+            localName = qualifiedName.substring(i+1);
+        }
+        namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
+        NSUtil.validateNamespace(namespaceURI, prefix);
+        DOMNSAwareElement element = coreGetNodeFactory().createNSAwareElement(DOMNSAwareElement.class);
+        element.coreSetOwnerDocument(this);
+        element.coreSetName(namespaceURI, localName, prefix);
+        return element;
     }
 
     public final Attr DOMDocument.createAttributeNS(String namespaceURI, String qualifiedName) {
@@ -205,6 +232,12 @@ public aspect DOMDocumentSupport {
         node.coreSetOwnerDocument(this);
         node.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return node;
+    }
+
+    public final DocumentFragment DOMDocument.createDocumentFragment() {
+        DOMDocumentFragment fragment = (DOMDocumentFragment)coreGetNodeFactory().createDocumentFragment();
+        fragment.coreSetOwnerDocument(this);
+        return fragment;
     }
 
     public final NodeList DOMDocument.getElementsByTagName(String tagname) {

@@ -28,8 +28,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
@@ -42,21 +40,6 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
         super(factory);
     }
     
-    public NSAwareElement(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
-                       OMFactory factory, boolean generateNSDecl) {
-        super(factory);
-        coreSetBuilder(builder);
-        if (parentNode != null) {
-            // TODO: dirty hack to get the correct semantics (reordering) if the parent is a SOAP envelope
-            if (parentNode instanceof AxiomContainer) {
-                ((AxiomContainer)parentNode).addChild(this, builder != null);
-            } else {
-                parentNode.coreAppendChild(this, builder != null);
-            }
-        }
-        initName(localName, ns, generateNSDecl);
-    }
-
     // /
     // /OmElement methods
     // /

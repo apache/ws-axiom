@@ -33,10 +33,8 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomDocument;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -58,41 +56,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
     // /org.w3c.dom.Document methods
     // /
-
-    public DocumentFragment createDocumentFragment() {
-        DocumentFragmentImpl fragment = new DocumentFragmentImpl(getOMFactory());
-        fragment.coreSetOwnerDocument(this);
-        return fragment;
-    }
-
-    public Element createElement(String tagName) throws DOMException {
-        NSUnawareElement element = new NSUnawareElement(getOMFactory());
-        element.coreSetName(tagName);
-        element.coreSetOwnerDocument(this);
-        return element;
-    }
-
-    public Element createElementNS(String namespaceURI, String qualifiedName)
-            throws DOMException {
-
-        if (namespaceURI != null && namespaceURI.length() == 0) {
-            namespaceURI = null;
-        }
-
-        String localName = DOMUtil.getLocalName(qualifiedName);
-        String prefix = DOMUtil.getPrefix(qualifiedName);
-        DOMUtil.validateElementName(namespaceURI, localName, prefix);
-        
-        OMNamespaceImpl namespace;
-        if (namespaceURI == null) {
-            namespace = null;
-        } else {
-            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
-        }
-        NSAwareElement element = new NSAwareElement(null, localName, namespace, null, getOMFactory(), false);
-        element.coreSetOwnerDocument(this);
-        return element;
-    }
 
     public DocumentType getDoctype() {
         Iterator it = getChildren();

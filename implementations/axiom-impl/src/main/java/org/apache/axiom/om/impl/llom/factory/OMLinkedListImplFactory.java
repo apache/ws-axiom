@@ -25,11 +25,13 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
+import org.apache.axiom.core.CoreNSUnawareElement;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMAbstractFactory;
@@ -322,5 +324,13 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
     
     public CoreComment createComment() {
         return new OMCommentImpl(this);
+    }
+
+    public final CoreNSUnawareElement createNSUnawareElement() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final CoreDocumentFragment createDocumentFragment() {
+        throw new UnsupportedOperationException();
     }
 }

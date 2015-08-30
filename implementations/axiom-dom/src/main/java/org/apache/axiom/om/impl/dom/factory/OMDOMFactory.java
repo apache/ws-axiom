@@ -25,13 +25,16 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
+import org.apache.axiom.core.CoreNSUnawareElement;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreProcessingInstruction;
+import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -51,12 +54,14 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
+import org.apache.axiom.om.impl.dom.DocumentFragmentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
 import org.apache.axiom.om.impl.dom.NSAwareAttribute;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
+import org.apache.axiom.om.impl.dom.NSUnawareElement;
 import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
@@ -243,7 +248,7 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
         CoreNSAwareElement element;
-        if (type == AxiomElement.class) {
+        if (type == AxiomElement.class || type == DOMNSAwareElement.class) {
             element = new NSAwareElement(this);
         } else if (type == AxiomSOAPEnvelope.class) {
             element = new SOAPEnvelopeImpl(this);
@@ -315,5 +320,13 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
     
     public final CoreComment createComment() {
         return new CommentImpl(this);
+    }
+
+    public final CoreNSUnawareElement createNSUnawareElement() {
+        return new NSUnawareElement(this);
+    }
+
+    public final CoreDocumentFragment createDocumentFragment() {
+        return new DocumentFragmentImpl(this);
     }
 }
