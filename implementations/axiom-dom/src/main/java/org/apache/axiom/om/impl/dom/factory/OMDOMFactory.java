@@ -108,7 +108,9 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Header;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
+import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
+import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11BodyImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultCodeImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultDetailImpl;
@@ -280,6 +282,8 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
             node = new NSUnawareElement(this);
         } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class || type == DOMProcessingInstruction.class) {
             node = new ProcessingInstructionImpl(this);
+        } else if (type == AxiomSOAPMessage.class) {
+            node = new SOAPMessageImpl(this);
         } else if (type == AxiomSOAPEnvelope.class) {
             node = new SOAPEnvelopeImpl(this);
         } else if (type == AxiomSOAP11Header.class) {

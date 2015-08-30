@@ -24,7 +24,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFactory;
-import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 
 public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements AxiomSOAPFactory {
     public SOAPFactoryImpl(OMLinkedListMetaFactory metaFactory) {
@@ -35,10 +34,6 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
      * @deprecated
      */
     public SOAPFactoryImpl() {
-    }
-
-    public final AxiomSOAPMessage createSOAPMessage() {
-        return new SOAPMessageImpl(this);
     }
 
     public final SOAPMessage createDefaultSOAPMessage() {

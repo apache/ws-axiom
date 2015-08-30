@@ -28,7 +28,6 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFactory;
-import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 
 public abstract class SOAPFactoryImpl extends OMDOMFactory implements AxiomSOAPFactory {
     public SOAPFactoryImpl(OMDOMMetaFactory metaFactory) {
@@ -36,10 +35,6 @@ public abstract class SOAPFactoryImpl extends OMDOMFactory implements AxiomSOAPF
     }
 
     public SOAPFactoryImpl() {
-    }
-
-    public final AxiomSOAPMessage createSOAPMessage() {
-        return new SOAPMessageImpl(this);
     }
 
     public final SOAPMessage createDefaultSOAPMessage() {

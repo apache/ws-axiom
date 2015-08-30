@@ -22,14 +22,14 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 
 public class SOAPMessageImpl extends DocumentImpl implements AxiomSOAPMessage {
-    public SOAPMessageImpl(SOAPFactory factory) {
+    public SOAPMessageImpl(OMFactory factory) {
         super(factory);
     }
 
@@ -48,6 +48,6 @@ public class SOAPMessageImpl extends DocumentImpl implements AxiomSOAPMessage {
     }
 
     protected DocumentImpl createClone(OMCloneOptions options) {
-        return new SOAPMessageImpl((SOAPFactory)getOMFactory());
+        return new SOAPMessageImpl(getOMFactory());
     }
 }

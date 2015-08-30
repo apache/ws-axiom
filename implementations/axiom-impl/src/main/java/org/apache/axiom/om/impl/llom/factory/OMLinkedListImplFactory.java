@@ -88,7 +88,9 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Header;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
+import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
+import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11BodyImpl;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11FaultCodeImpl;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11FaultDetailImpl;
@@ -262,6 +264,8 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
             node = new OMElementImpl(this);
         } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class) {
             node = new OMProcessingInstructionImpl(this);
+        } else if (type == AxiomSOAPMessage.class) {
+            node = new SOAPMessageImpl(this);
         } else if (type == AxiomSOAPEnvelope.class) {
             node = new SOAPEnvelopeImpl(this);
         } else if (type == AxiomSOAP11Header.class) {

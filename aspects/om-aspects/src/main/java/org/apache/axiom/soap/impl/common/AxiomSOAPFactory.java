@@ -23,5 +23,4 @@ import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 
 public interface AxiomSOAPFactory extends AxiomNodeFactory, SOAPFactoryEx {
     SOAPHelper getSOAPHelper();
-    AxiomSOAPMessage createSOAPMessage();
 }
