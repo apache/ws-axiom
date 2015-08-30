@@ -47,7 +47,7 @@ public aspect CoreParentNodeSupport {
     final Content CoreParentNode.getContent(boolean create) {
         if (getState() == COMPACT) {
             Content content = new Content();
-            CoreCharacterDataNode cdata = coreGetNodeFactory().createCharacterDataNode();
+            CoreCharacterDataNode cdata = coreGetNodeFactory().createNode(CoreCharacterDataNode.class);
             cdata.internalSetParent(this);
             cdata.coreSetCharacterData((String)this.content);
             content.firstChild = cdata;

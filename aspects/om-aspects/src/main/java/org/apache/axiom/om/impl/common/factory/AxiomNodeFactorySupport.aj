@@ -53,11 +53,11 @@ import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public aspect AxiomNodeFactorySupport {
     public final OMDocument AxiomNodeFactory.createOMDocument() {
-        return (AxiomDocument)createDocument();
+        return createNode(AxiomDocument.class);
     }
 
     public final OMDocument AxiomNodeFactory.createOMDocument(OMXMLParserWrapper builder) {
-        AxiomDocument document = (AxiomDocument)createDocument();
+        AxiomDocument document = createNode(AxiomDocument.class);
         document.coreSetBuilder(builder);
         return document;
     }
@@ -69,7 +69,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMDocType AxiomNodeFactory.createOMDocType(OMContainer parent, String rootName,
             String publicId, String systemId, String internalSubset, boolean fromBuilder) {
-        AxiomDocType node = (AxiomDocType)createDocumentTypeDeclaration();
+        AxiomDocType node = createNode(AxiomDocType.class);
         node.coreSetRootName(rootName);
         node.coreSetPublicId(publicId);
         node.coreSetSystemId(systemId);
@@ -87,17 +87,17 @@ public aspect AxiomNodeFactorySupport {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE: {
-                node = (AxiomCharacterDataNode)createCharacterDataNode();
+                node = createNode(AxiomCharacterDataNode.class);
                 break;
             }
             case OMNode.SPACE_NODE: {
-                AxiomCharacterDataNode cdata = (AxiomCharacterDataNode)createCharacterDataNode();
+                AxiomCharacterDataNode cdata = createNode(AxiomCharacterDataNode.class);
                 cdata.coreSetIgnorable(true);
                 node = cdata;
                 break;
             }
             case OMNode.CDATA_SECTION_NODE: {
-                node = (AxiomCDATASection)createCDATASection();
+                node = createNode(AxiomCDATASection.class);
                 break;
             }
             default:
@@ -179,7 +179,7 @@ public aspect AxiomNodeFactorySupport {
 
     public final OMProcessingInstruction AxiomNodeFactory.createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
-        AxiomProcessingInstruction node = (AxiomProcessingInstruction)createProcessingInstruction();
+        AxiomProcessingInstruction node = createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
         node.coreSetCharacterData(piData, Policies.DETACH_POLICY);
         if (parent != null) {
@@ -193,7 +193,7 @@ public aspect AxiomNodeFactorySupport {
     }
 
     public final OMEntityReference AxiomNodeFactory.createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
-        AxiomEntityReference node = (AxiomEntityReference)createEntityReference();
+        AxiomEntityReference node = createNode(AxiomEntityReference.class);
         node.coreSetName(name);
         node.coreSetReplacementText(replacementText);
         if (parent != null) {
@@ -207,7 +207,7 @@ public aspect AxiomNodeFactorySupport {
     }
 
     public final OMComment AxiomNodeFactory.createOMComment(OMContainer parent, String content, boolean fromBuilder) {
-        AxiomComment node = (AxiomComment)createComment();
+        AxiomComment node = createNode(AxiomComment.class);
         node.coreSetCharacterData(content, Policies.DETACH_POLICY);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
@@ -222,7 +222,7 @@ public aspect AxiomNodeFactorySupport {
     public final <T extends AxiomElement> T AxiomNodeFactory.createAxiomElement(Class<T> type,
             OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
             boolean generateNSDecl) {
-        T element = createNSAwareElement(type);
+        T element = createNode(type);
         element.coreSetBuilder(builder);
         if (parent != null) {
             ((AxiomContainer)parent).addChild(element, builder != null);
@@ -241,7 +241,7 @@ public aspect AxiomNodeFactorySupport {
     }
     
     public final OMElement AxiomNodeFactory.createOMElement(QName qname, OMContainer parent) {
-        AxiomElement element = createNSAwareElement(AxiomElement.class);
+        AxiomElement element = createNode(AxiomElement.class);
         if (parent != null) {
             parent.addChild(element);
         }
@@ -295,7 +295,7 @@ public aspect AxiomNodeFactorySupport {
                 throw new IllegalArgumentException("Cannot create an unprefixed attribute with a namespace");
             }
         }
-        AxiomAttribute attr = (AxiomAttribute)createNSAwareAttribute();
+        AxiomAttribute attr = createNode(AxiomAttribute.class);
         attr.internalSetLocalName(localName);
         attr.coreSetCharacterData(value, Policies.DETACH_POLICY);
         attr.internalSetNamespace(ns);

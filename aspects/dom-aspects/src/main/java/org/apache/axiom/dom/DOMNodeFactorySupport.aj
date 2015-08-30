@@ -34,7 +34,7 @@ public aspect DOMNodeFactorySupport {
                                    DocumentType doctype) throws DOMException {
 
         // TODO Handle docType stuff
-        Document doc = (Document)createDocument();
+        DOMDocument doc = createNode(DOMDocument.class);
 
         Element element = doc.createElementNS(namespaceURI, qualifiedName);
         doc.appendChild(element);

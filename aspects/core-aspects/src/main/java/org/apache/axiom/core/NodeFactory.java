@@ -19,17 +19,5 @@
 package org.apache.axiom.core;
 
 public interface NodeFactory {
-    CoreDocument createDocument();
-    CoreDocumentTypeDeclaration createDocumentTypeDeclaration();
-    CoreCharacterDataNode createCharacterDataNode();
-    CoreCDATASection createCDATASection();
-    CoreNSUnawareElement createNSUnawareElement();
-    <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type);
-    CoreNSUnawareAttribute createNSUnawareAttribute();
-    CoreNSAwareAttribute createNSAwareAttribute();
-    CoreNamespaceDeclaration createNamespaceDeclaration();
-    CoreProcessingInstruction createProcessingInstruction();
-    CoreEntityReference createEntityReference();
-    CoreComment createComment();
-    CoreDocumentFragment createDocumentFragment();
+    <T extends CoreNode> T createNode(Class<T> type);
 }

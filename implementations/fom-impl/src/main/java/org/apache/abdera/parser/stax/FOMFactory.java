@@ -60,15 +60,31 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
+import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.common.AxiomCDATASection;
+import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.common.AxiomComment;
+import org.apache.axiom.om.impl.common.AxiomDocType;
+import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.common.AxiomEntityReference;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.llom.NamespaceDeclaration;
+import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
+import org.apache.axiom.om.impl.llom.OMEntityReferenceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
@@ -136,11 +152,6 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     public <T extends Element> Document<T> newDocument() {
-        return new FOMDocument(this);
-    }
-
-    @Override
-    public CoreDocument createDocument() {
         return new FOMDocument(this);
     }
 
@@ -477,56 +488,74 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
     }
 
     @Override
-    public <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
-        CoreNSAwareElement element;
-        if (type == AxiomElement.class || type == FOMElement.class) {
-            element = new FOMElement(this);
+    public <T extends CoreNode> T createNode(Class<T> type) {
+        CoreNode node;
+        if (type == CoreCDATASection.class || type == AxiomCDATASection.class || type == FOMCDATASection.class) {
+            node = new FOMCDATASection(this);
+        } else if (type == CoreCharacterDataNode.class || type == AxiomCharacterDataNode.class || type == FOMCharacterDataNode.class) {
+            node = new FOMCharacterDataNode(this);
+        } else if (type == CoreComment.class || type == AxiomComment.class || type == FOMComment.class) {
+            node = new FOMComment(this);
+        } else if (type == CoreDocument.class || type == AxiomDocument.class || type == FOMDocument.class) {
+            node = new FOMDocument(this);
+        } else if (type == CoreDocumentTypeDeclaration.class || type == AxiomDocType.class) {
+            node = new OMDocTypeImpl(this);
+        } else if (type == CoreEntityReference.class || type == AxiomEntityReference.class) {
+            node = new OMEntityReferenceImpl(this);
+        } else if (type == CoreNamespaceDeclaration.class || type == AxiomNamespaceDeclaration.class) {
+            node = new NamespaceDeclaration(this);
+        } else if (type == CoreNSAwareAttribute.class || type == AxiomAttribute.class || type == FOMAttribute.class) {
+            node = new FOMAttribute(this);
+        } else if (type == CoreNSAwareElement.class || type == AxiomElement.class || type == FOMElement.class) {
+            node = new FOMElement(this);
+        } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class || type == FOMProcessingInstruction.class) {
+            node = new FOMProcessingInstruction(this);
         } else if (type == FOMCategories.class) {
-            element = new FOMCategories(this);
+            node = new FOMCategories(this);
         } else if (type == FOMCategory.class) {
-            element = new FOMCategory(this);
+            node = new FOMCategory(this);
         } else if (type == FOMCollection.class) {
-            element = new FOMCollection(this);
+            node = new FOMCollection(this);
         } else if (type == FOMContent.class) {
-            element = new FOMContent(this);
+            node = new FOMContent(this);
         } else if (type == FOMControl.class) {
-            element = new FOMControl(this);
+            node = new FOMControl(this);
         } else if (type == FOMDateTime.class) {
-            element = new FOMDateTime(this);
+            node = new FOMDateTime(this);
         } else if (type == FOMDiv.class) {
-            element = new FOMDiv(this);
+            node = new FOMDiv(this);
         } else if (type == FOMEntry.class) {
-            element = new FOMEntry(this);
+            node = new FOMEntry(this);
         } else if (type == FOMExtensibleElement.class) {
-            element = new FOMExtensibleElement(this);
+            node = new FOMExtensibleElement(this);
         } else if (type == FOMFeed.class) {
-            element = new FOMFeed(this);
+            node = new FOMFeed(this);
         } else if (type == FOMGenerator.class) {
-            element = new FOMGenerator(this);
+            node = new FOMGenerator(this);
         } else if (type == FOMIRI.class) {
-            element = new FOMIRI(this);
+            node = new FOMIRI(this);
         } else if (type == FOMLink.class) {
-            element = new FOMLink(this);
+            node = new FOMLink(this);
         } else if (type == FOMMultipartCollection.class) {
-            element = new FOMMultipartCollection(this);
+            node = new FOMMultipartCollection(this);
         } else if (type == FOMPerson.class) {
-            element = new FOMPerson(this);
+            node = new FOMPerson(this);
         } else if (type == FOMService.class) {
-            element = new FOMService(this);
+            node = new FOMService(this);
         } else if (type == FOMSource.class) {
-            element = new FOMSource(this);
+            node = new FOMSource(this);
         } else if (type == FOMText.class) {
-            element = new FOMText(this);
+            node = new FOMText(this);
         } else if (type == FOMWorkspace.class) {
-            element = new FOMWorkspace(this);
+            node = new FOMWorkspace(this);
         } else {
             throw new IllegalArgumentException(type.getName() + " not supported");
         }
-        return type.cast(element);
+        return type.cast(node);
     }
 
     private <T extends FOMElement> T createElement(Class<T> type, QName qname, OMContainer parent) {
-        T element = createNSAwareElement(type);
+        T element = createNode(type);
         if (parent != null) {
             parent.addChild(element);
         }
@@ -629,30 +658,5 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
 
     public String[] listExtensionFactories() {
         return factoriesMap.listExtensionFactories();
-    }
-
-    @Override
-    public CoreCharacterDataNode createCharacterDataNode() {
-        return new FOMCharacterDataNode(this);
-    }
-
-    @Override
-    public CoreCDATASection createCDATASection() {
-        return new FOMCDATASection(this);
-    }
-
-    @Override
-    public CoreProcessingInstruction createProcessingInstruction() {
-        return new FOMProcessingInstruction(this);
-    }
-
-    @Override
-    public CoreComment createComment() {
-        return new FOMComment(this);
-    }
-
-    @Override
-    public CoreNSAwareAttribute createNSAwareAttribute() {
-        return new FOMAttribute(this);
     }
 }

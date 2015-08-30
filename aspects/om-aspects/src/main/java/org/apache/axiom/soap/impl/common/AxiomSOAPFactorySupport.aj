@@ -38,7 +38,7 @@ import org.apache.axiom.soap.SOAPMessage;
 
 public aspect AxiomSOAPFactorySupport {
     public final <T extends AxiomSOAPElement> T AxiomSOAPFactory.createSOAPElement(Class<T> type, OMElement parent, QName qname, OMXMLParserWrapper builder) {
-        T element = createNSAwareElement(type);
+        T element = createNode(type);
         if (builder != null) {
             element.coreSetBuilder(builder);
         } else if (parent != null) {

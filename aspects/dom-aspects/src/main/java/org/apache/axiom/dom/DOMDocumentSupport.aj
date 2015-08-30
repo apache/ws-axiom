@@ -137,21 +137,21 @@ public aspect DOMDocumentSupport {
     }
     
     public final Text DOMDocument.createTextNode(String data) {
-        DOMText text = (DOMText)coreGetNodeFactory().createCharacterDataNode();
+        DOMText text = coreGetNodeFactory().createNode(DOMText.class);
         text.coreSetOwnerDocument(this);
         text.coreSetCharacterData(data);
         return text;
     }
 
     public final CDATASection DOMDocument.createCDATASection(String data) {
-        DOMCDATASection cdataSection = (DOMCDATASection)coreGetNodeFactory().createCDATASection();
+        DOMCDATASection cdataSection = coreGetNodeFactory().createNode(DOMCDATASection.class);
         cdataSection.coreSetOwnerDocument(this);
         cdataSection.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return cdataSection;
     }
     
     public final Element DOMDocument.createElement(String tagName) {
-        DOMNSUnawareElement element = (DOMNSUnawareElement)coreGetNodeFactory().createNSUnawareElement();
+        DOMNSUnawareElement element = coreGetNodeFactory().createNode(DOMNSUnawareElement.class);
         element.coreSetOwnerDocument(this);
         element.coreSetName(tagName);
         return element;
@@ -159,7 +159,7 @@ public aspect DOMDocumentSupport {
 
     public final Attr DOMDocument.createAttribute(String name) {
         NSUtil.validateName(name);
-        DOMNSUnawareAttribute attr = (DOMNSUnawareAttribute)coreGetNodeFactory().createNSUnawareAttribute();
+        DOMNSUnawareAttribute attr = coreGetNodeFactory().createNode(DOMNSUnawareAttribute.class);
         attr.coreSetOwnerDocument(this);
         attr.coreSetName(name);
         attr.coreSetType("CDATA");
@@ -179,7 +179,7 @@ public aspect DOMDocumentSupport {
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
         NSUtil.validateNamespace(namespaceURI, prefix);
-        DOMNSAwareElement element = coreGetNodeFactory().createNSAwareElement(DOMNSAwareElement.class);
+        DOMNSAwareElement element = coreGetNodeFactory().createNode(DOMNSAwareElement.class);
         element.coreSetOwnerDocument(this);
         element.coreSetName(namespaceURI, localName, prefix);
         return element;
@@ -197,14 +197,14 @@ public aspect DOMDocumentSupport {
             localName = qualifiedName.substring(i+1);
         }
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            DOMNamespaceDeclaration decl = (DOMNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+            DOMNamespaceDeclaration decl = coreGetNodeFactory().createNode(DOMNamespaceDeclaration.class);
             decl.coreSetOwnerDocument(this);
             decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), "");
             return decl;
         } else {
             namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
             NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-            DOMNSAwareAttribute attr = (DOMNSAwareAttribute)coreGetNodeFactory().createNSAwareAttribute();
+            DOMNSAwareAttribute attr = coreGetNodeFactory().createNode(DOMNSAwareAttribute.class);
             attr.coreSetOwnerDocument(this);
             attr.coreSetName(namespaceURI, localName, prefix);
             // TODO: set type?
@@ -213,7 +213,7 @@ public aspect DOMDocumentSupport {
     }
 
     public final ProcessingInstruction DOMDocument.createProcessingInstruction(String target, String data) {
-        DOMProcessingInstruction pi = (DOMProcessingInstruction)coreGetNodeFactory().createProcessingInstruction();
+        DOMProcessingInstruction pi = coreGetNodeFactory().createNode(DOMProcessingInstruction.class);
         pi.coreSetOwnerDocument(this);
         pi.coreSetTarget(target);
         pi.coreSetCharacterData(data, Policies.DETACH_POLICY);
@@ -221,21 +221,21 @@ public aspect DOMDocumentSupport {
     }
 
     public final EntityReference DOMDocument.createEntityReference(String name) throws DOMException {
-        DOMEntityReference node = (DOMEntityReference)coreGetNodeFactory().createEntityReference();
+        DOMEntityReference node = coreGetNodeFactory().createNode(DOMEntityReference.class);
         node.coreSetOwnerDocument(this);
         node.coreSetName(name);
         return node;
     }
 
     public final Comment DOMDocument.createComment(String data) {
-        DOMComment node = (DOMComment)coreGetNodeFactory().createComment();
+        DOMComment node = coreGetNodeFactory().createNode(DOMComment.class);
         node.coreSetOwnerDocument(this);
         node.coreSetCharacterData(data, Policies.DETACH_POLICY);
         return node;
     }
 
     public final DocumentFragment DOMDocument.createDocumentFragment() {
-        DOMDocumentFragment fragment = (DOMDocumentFragment)coreGetNodeFactory().createDocumentFragment();
+        DOMDocumentFragment fragment = coreGetNodeFactory().createNode(DOMDocumentFragment.class);
         fragment.coreSetOwnerDocument(this);
         return fragment;
     }
@@ -275,7 +275,7 @@ public aspect DOMDocumentSupport {
                 return node;
             case NS_AWARE_ATTRIBUTE_NODE:
                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-                    DOMNamespaceDeclaration decl = (DOMNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+                    DOMNamespaceDeclaration decl = coreGetNodeFactory().createNode(DOMNamespaceDeclaration.class);
                     decl.coreSetOwnerDocument(this);
                     // TODO: we should have a generic method to move the content over to the new node
                     decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute)node).getValue());

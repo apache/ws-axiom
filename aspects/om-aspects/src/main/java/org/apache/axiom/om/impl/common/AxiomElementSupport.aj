@@ -364,7 +364,7 @@ public aspect AxiomElementSupport {
 
     public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
         OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        AxiomNamespaceDeclaration decl = (AxiomNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+        AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
         try {
             coreAppendAttribute(decl, NodeMigrationPolicy.MOVE_ALWAYS);
@@ -375,7 +375,7 @@ public aspect AxiomElementSupport {
     }
     
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
-        AxiomNamespaceDeclaration decl = (AxiomNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+        AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
         try {
             coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl,
@@ -562,7 +562,7 @@ public aspect AxiomElementSupport {
     }
 
     public final AxiomElement AxiomElement.shallowCloneWithoutAttributes(OMCloneOptions options, CoreParentNode targetParent, boolean namespaceRepairing) {
-        AxiomElement clone = coreGetNodeFactory().createNSAwareElement(options.isPreserveModel() ? getElementType() : AxiomElement.class);
+        AxiomElement clone = coreGetNodeFactory().createNode(options.isPreserveModel() ? getElementType() : AxiomElement.class);
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);
         }

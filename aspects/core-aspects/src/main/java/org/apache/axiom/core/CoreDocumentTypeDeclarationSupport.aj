@@ -61,7 +61,7 @@ public aspect CoreDocumentTypeDeclarationSupport {
     }
     
     public final CoreNode CoreDocumentTypeDeclaration.shallowClone(ClonePolicy policy, Object options) {
-        CoreDocumentTypeDeclaration clone = coreGetNodeFactory().createDocumentTypeDeclaration();
+        CoreDocumentTypeDeclaration clone = coreGetNodeFactory().createNode(CoreDocumentTypeDeclaration.class);
         clone.coreSetRootName(coreGetRootName());
         clone.coreSetPublicId(coreGetPublicId());
         clone.coreSetSystemId(coreGetSystemId());

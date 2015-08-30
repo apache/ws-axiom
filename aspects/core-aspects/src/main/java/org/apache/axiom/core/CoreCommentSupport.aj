@@ -24,6 +24,6 @@ public aspect CoreCommentSupport {
     }
     
     public final CoreNode CoreComment.shallowClone(ClonePolicy policy, Object options) {
-        return coreGetNodeFactory().createComment();
+        return coreGetNodeFactory().createNode(CoreComment.class);
     }
 }

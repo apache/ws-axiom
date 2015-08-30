@@ -72,7 +72,7 @@ public final class Policies {
         }
 
         public CoreAttribute createAttribute(NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value) {
-            CoreNSUnawareAttribute attr = nodeFactory.createNSUnawareAttribute();
+            CoreNSUnawareAttribute attr = nodeFactory.createNode(CoreNSUnawareAttribute.class);
             attr.coreSetName(name);
             attr.coreSetCharacterData(value, null);
             // TODO: set type?

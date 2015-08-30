@@ -33,9 +33,22 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNSUnawareElement;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
+import org.apache.axiom.dom.DOMCDATASection;
+import org.apache.axiom.dom.DOMComment;
+import org.apache.axiom.dom.DOMDocument;
+import org.apache.axiom.dom.DOMDocumentFragment;
+import org.apache.axiom.dom.DOMDocumentType;
+import org.apache.axiom.dom.DOMEntityReference;
+import org.apache.axiom.dom.DOMNSAwareAttribute;
 import org.apache.axiom.dom.DOMNSAwareElement;
+import org.apache.axiom.dom.DOMNSUnawareAttribute;
+import org.apache.axiom.dom.DOMNSUnawareElement;
+import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.dom.DOMNodeFactory;
+import org.apache.axiom.dom.DOMProcessingInstruction;
+import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -49,7 +62,16 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.common.AxiomCDATASection;
+import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.common.AxiomComment;
+import org.apache.axiom.om.impl.common.AxiomDocType;
+import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.common.AxiomEntityReference;
+import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
@@ -230,103 +252,79 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         }
     }
 
-    public final CoreDocument createDocument() {
-        return new DocumentImpl(this);
-    }
-
-    public final CoreDocumentTypeDeclaration createDocumentTypeDeclaration() {
-        return new DocumentTypeImpl(this);
-    }
-
-    public final CoreCharacterDataNode createCharacterDataNode() {
-        return new TextImpl(this);
-    }
-
-    public CoreCDATASection createCDATASection() {
-        return new CDATASectionImpl(this);
-    }
-
-    public final <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type) {
-        CoreNSAwareElement element;
-        if (type == AxiomElement.class || type == DOMNSAwareElement.class) {
-            element = new NSAwareElement(this);
+    public final <T extends CoreNode> T createNode(Class<T> type) {
+        CoreNode node;
+        if (type == CoreCDATASection.class || type == AxiomCDATASection.class || type == DOMCDATASection.class) {
+            node = new CDATASectionImpl(this);
+        } else if (type == CoreCharacterDataNode.class || type == AxiomCharacterDataNode.class || type == DOMText.class) {
+            node = new TextImpl(this);
+        } else if (type == CoreComment.class || type == AxiomComment.class || type == DOMComment.class) {
+            node = new CommentImpl(this);
+        } else if (type == CoreDocument.class || type == AxiomDocument.class || type == DOMDocument.class) {
+            node = new DocumentImpl(this);
+        } else if (type == CoreDocumentFragment.class || type == DOMDocumentFragment.class) {
+            node = new DocumentFragmentImpl(this);
+        } else if (type == CoreDocumentTypeDeclaration.class || type == AxiomDocType.class || type == DOMDocumentType.class) {
+            node = new DocumentTypeImpl(this);
+        } else if (type == CoreEntityReference.class || type == AxiomEntityReference.class || type == DOMEntityReference.class) {
+            node = new EntityReferenceImpl(this);
+        } else if (type == CoreNamespaceDeclaration.class || type == AxiomNamespaceDeclaration.class || type == DOMNamespaceDeclaration.class) {
+            node = new NamespaceDeclaration(this);
+        } else if (type == CoreNSAwareAttribute.class || type == AxiomAttribute.class || type == DOMNSAwareAttribute.class) {
+            node = new NSAwareAttribute(this);
+        } else if (type == CoreNSAwareElement.class || type == AxiomElement.class || type == DOMNSAwareElement.class) {
+            node = new NSAwareElement(this);
+        } else if (type == CoreNSUnawareAttribute.class || type == DOMNSUnawareAttribute.class) {
+            node = new NSUnawareAttribute(this);
+        } else if (type == CoreNSUnawareElement.class || type == DOMNSUnawareElement.class) {
+            node = new NSUnawareElement(this);
+        } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class || type == DOMProcessingInstruction.class) {
+            node = new ProcessingInstructionImpl(this);
         } else if (type == AxiomSOAPEnvelope.class) {
-            element = new SOAPEnvelopeImpl(this);
+            node = new SOAPEnvelopeImpl(this);
         } else if (type == AxiomSOAP11Header.class) {
-            element = new SOAP11HeaderImpl(this);
+            node = new SOAP11HeaderImpl(this);
         } else if (type == AxiomSOAP12Header.class) {
-            element = new SOAP12HeaderImpl(this);
+            node = new SOAP12HeaderImpl(this);
         } else if (type == AxiomSOAP11HeaderBlock.class) {
-            element = new SOAP11HeaderBlockImpl(this);
+            node = new SOAP11HeaderBlockImpl(this);
         } else if (type == AxiomSOAP12HeaderBlock.class) {
-            element = new SOAP12HeaderBlockImpl(this);
+            node = new SOAP12HeaderBlockImpl(this);
         } else if (type == AxiomSOAP11Body.class) {
-            element = new SOAP11BodyImpl(this);
+            node = new SOAP11BodyImpl(this);
         } else if (type == AxiomSOAP12Body.class) {
-            element = new SOAP12BodyImpl(this);
+            node = new SOAP12BodyImpl(this);
         } else if (type == AxiomSOAP11Fault.class) {
-            element = new SOAP11FaultImpl(this);
+            node = new SOAP11FaultImpl(this);
         } else if (type == AxiomSOAP12Fault.class) {
-            element = new SOAP12FaultImpl(this);
+            node = new SOAP12FaultImpl(this);
         } else if (type == AxiomSOAP11FaultCode.class) {
-            element = new SOAP11FaultCodeImpl(this);
+            node = new SOAP11FaultCodeImpl(this);
         } else if (type == AxiomSOAP12FaultCode.class) {
-            element = new SOAP12FaultCodeImpl(this);
+            node = new SOAP12FaultCodeImpl(this);
         } else if (type == AxiomSOAP12FaultValue.class) {
-            element = new SOAP12FaultValueImpl(this);
+            node = new SOAP12FaultValueImpl(this);
         } else if (type == AxiomSOAP12FaultSubCode.class) {
-            element = new SOAP12FaultSubCodeImpl(this);
+            node = new SOAP12FaultSubCodeImpl(this);
         } else if (type == AxiomSOAP11FaultReason.class) {
-            element = new SOAP11FaultReasonImpl(this);
+            node = new SOAP11FaultReasonImpl(this);
         } else if (type == AxiomSOAP12FaultReason.class) {
-            element = new SOAP12FaultReasonImpl(this);
+            node = new SOAP12FaultReasonImpl(this);
         } else if (type == AxiomSOAP12FaultText.class) {
-            element = new SOAP12FaultTextImpl(this);
+            node = new SOAP12FaultTextImpl(this);
         } else if (type == AxiomSOAP12FaultNode.class) {
-            element = new SOAP12FaultNodeImpl(this);
+            node = new SOAP12FaultNodeImpl(this);
         } else if (type == AxiomSOAP11FaultRole.class) {
-            element = new SOAP11FaultRoleImpl(this);
+            node = new SOAP11FaultRoleImpl(this);
         } else if (type == AxiomSOAP12FaultRole.class) {
-            element = new SOAP12FaultRoleImpl(this);
+            node = new SOAP12FaultRoleImpl(this);
         } else if (type == AxiomSOAP11FaultDetail.class) {
-            element = new SOAP11FaultDetailImpl(this);
+            node = new SOAP11FaultDetailImpl(this);
         } else if (type == AxiomSOAP12FaultDetail.class) {
-            element = new SOAP12FaultDetailImpl(this);
+            node = new SOAP12FaultDetailImpl(this);
         } else {
             throw new IllegalArgumentException();
         }
-        return type.cast(element);
-    }
-
-    public final CoreNSUnawareAttribute createNSUnawareAttribute() {
-        return new NSUnawareAttribute(this);
-    }
-
-    public final CoreNSAwareAttribute createNSAwareAttribute() {
-        return new NSAwareAttribute(this);
-    }
-
-    public final CoreNamespaceDeclaration createNamespaceDeclaration() {
-        return new NamespaceDeclaration(this);
-    }
-
-    public final CoreProcessingInstruction createProcessingInstruction() {
-        return new ProcessingInstructionImpl(this);
-    }
-
-    public final CoreEntityReference createEntityReference() {
-        return new EntityReferenceImpl(this);
-    }
-    
-    public final CoreComment createComment() {
-        return new CommentImpl(this);
-    }
-
-    public final CoreNSUnawareElement createNSUnawareElement() {
-        return new NSUnawareElement(this);
-    }
-
-    public final CoreDocumentFragment createDocumentFragment() {
-        return new DocumentFragmentImpl(this);
+        return type.cast(node);
     }
 }
