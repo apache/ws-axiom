@@ -35,6 +35,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
@@ -52,6 +53,10 @@ import org.apache.axiom.om.impl.common.TextContent;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public aspect AxiomNodeFactorySupport {
+    public final OMNamespace AxiomNodeFactory.createOMNamespace(String uri, String prefix) {
+        return new OMNamespaceImpl(uri, prefix);
+    }
+    
     public final OMDocument AxiomNodeFactory.createOMDocument() {
         return createNode(AxiomDocument.class);
     }
@@ -275,6 +280,19 @@ public aspect AxiomNodeFactorySupport {
         return createOMElement(qname, null);
     }
     
+    public final OMElement AxiomNodeFactory.createOMElement(String localName, String namespaceURI, String prefix) {
+        if (namespaceURI == null) {
+            throw new IllegalArgumentException("namespaceURI must not be null");
+        } else if (namespaceURI.length() == 0) {
+            if (prefix != null && prefix.length() > 0) {
+                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+            }
+            return createOMElement(localName, null);
+        } else {
+            return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
+        }
+    }
+
     public final OMAttribute AxiomNodeFactory.createOMAttribute(String localName, OMNamespace ns, String value) {
         if (ns != null && ns.getPrefix() == null) {
             String namespaceURI = ns.getNamespaceURI();
@@ -302,4 +320,56 @@ public aspect AxiomNodeFactorySupport {
         attr.coreSetType(OMConstants.XMLATTRTYPE_CDATA);
         return attr;
     }
+
+    // <old-and-buggy-code>
+    public final OMNode AxiomNodeFactory.importNode(OMNode child) {
+        int type = child.getType();
+        switch (type) {
+            case OMNode.ELEMENT_NODE: {
+                OMElement childElement = (OMElement) child;
+                OMElement newElement = (new StAXOMBuilder(this, childElement
+                        .getXMLStreamReader())).getDocumentElement();
+                newElement.buildWithAttachments();
+                return newElement;
+            }
+            case OMNode.TEXT_NODE: {
+                OMText importedText = (OMText) child;
+                OMText newText;
+                if (importedText.isBinary()) {
+                    boolean isOptimize = importedText.isOptimized();
+                    newText = createOMText(importedText
+                            .getDataHandler(), isOptimize);
+                } else if (importedText.isCharacters()) {
+                    newText = createOMText(null, importedText
+                            .getTextCharacters(), importedText.getType());
+                } else {
+                    newText = createOMText(null, importedText
+                            .getText()/*, importedText.getOMNodeType()*/);
+                }
+                return newText;
+            }
+
+            case OMNode.PI_NODE: {
+                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+                return createOMProcessingInstruction(null,
+                                                                  importedPI.getTarget(),
+                                                                  importedPI.getValue());
+            }
+            case OMNode.COMMENT_NODE: {
+                OMComment importedComment = (OMComment) child;
+                return createOMComment(null, importedComment.getValue());
+            }
+            case OMNode.DTD_NODE : {
+                OMDocType importedDocType = (OMDocType) child;
+                return createOMDocType(null, importedDocType.getRootName(),
+                        importedDocType.getPublicId(), importedDocType.getSystemId(),
+                        importedDocType.getInternalSubset());
+            }
+            default: {
+                throw new UnsupportedOperationException(
+                        "Not Implemented Yet for the given node type");
+            }
+        }
+    }
+    // </old-and-buggy-code>
 }

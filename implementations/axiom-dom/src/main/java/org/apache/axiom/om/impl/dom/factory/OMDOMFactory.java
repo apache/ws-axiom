@@ -49,19 +49,12 @@ import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.dom.DOMText;
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
@@ -72,7 +65,6 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
@@ -169,28 +161,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         throw new UnsupportedOperationException("Not supported for DOM");
     }
 
-    public OMElement createOMElement(String localName, String namespaceURI, String prefix) {
-        if (namespaceURI == null) {
-            throw new IllegalArgumentException("namespaceURI must not be null");
-        } else if (namespaceURI.length() == 0) {
-            if (prefix != null && prefix.length() > 0) {
-                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
-            }
-            return createOMElement(localName, null);
-        } else {
-            return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
-        }
-    }
-
-    /**
-     * Creates a new OMNamespace.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMNamespace(String, String)
-     */
-    public OMNamespace createOMNamespace(String uri, String prefix) {
-        return new OMNamespaceImpl(uri, prefix);
-    }
-
     public final void validateOMTextParent(OMContainer parent) {
         if (parent instanceof DocumentImpl) {
             throw new OMHierarchyException(
@@ -198,62 +168,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         }
     }
     
-    /**
-     * This method is intended only to be used by Axiom intenals when merging Objects from different
-     * Axiom implementations to the DOOM implementation.
-     *
-     * @param child
-     */
-    public OMNode importNode(OMNode child) {
-        int type = child.getType();
-        switch (type) {
-            case (OMNode.ELEMENT_NODE): {
-                OMElement childElement = (OMElement) child;
-                OMElement newElement = (new StAXOMBuilder(this,
-                                                          childElement.getXMLStreamReader()))
-                        .getDocumentElement();
-                newElement.build();
-                return newElement;
-            }
-            case (OMNode.TEXT_NODE): {
-                OMText importedText = (OMText) child;
-                OMText newText;
-                if (importedText.isBinary()) {
-                    boolean isOptimize = importedText.isOptimized();
-                    newText = createOMText(importedText
-                            .getDataHandler(), isOptimize);
-                } else if (importedText.isCharacters()) {
-                    newText = createOMText(null, importedText.getTextCharacters(), OMNode.TEXT_NODE);
-                } else {
-                    newText = createOMText(importedText.getText());
-                }
-                return newText;
-            }
-
-            case (OMNode.PI_NODE): {
-                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                OMProcessingInstruction newPI =
-                        createOMProcessingInstruction(null, importedPI.getTarget(),
-                                                       importedPI.getValue());
-                return newPI;
-            }
-            case (OMNode.COMMENT_NODE): {
-                OMComment importedComment = (OMComment) child;
-                return createOMComment(null, importedComment.getValue());
-            }
-            case (OMNode.DTD_NODE): {
-                OMDocType importedDocType = (OMDocType) child;
-                return createOMDocType(null, importedDocType.getRootName(),
-                        importedDocType.getPublicId(), importedDocType.getSystemId(),
-                        importedDocType.getInternalSubset());
-            }
-            default: {
-                throw new UnsupportedOperationException(
-                        "Not Implemented Yet for the given node type");
-            }
-        }
-    }
-
     public final <T extends CoreNode> T createNode(Class<T> type) {
         CoreNode node;
         if (type == CoreCDATASection.class || type == AxiomCDATASection.class || type == DOMCDATASection.class) {

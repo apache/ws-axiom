@@ -33,17 +33,10 @@ import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
@@ -54,7 +47,6 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.llom.CDATASectionImpl;
 import org.apache.axiom.om.impl.llom.CharacterDataImpl;
@@ -137,19 +129,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return metaFactory;
     }
 
-    public OMElement createOMElement(String localName, String namespaceURI, String prefix) {
-        if (namespaceURI == null) {
-            throw new IllegalArgumentException("namespaceURI must not be null");
-        } else if (namespaceURI.length() == 0) {
-            if (prefix != null && prefix.length() > 0) {
-                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
-            }
-            return createOMElement(localName, null);
-        } else {
-            return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
-        }
-    }
-
     public OMSourcedElement createOMElement(OMDataSource source) {
         return new OMSourcedElementImpl(this, source);
     }
@@ -173,73 +152,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
      */
     public OMSourcedElement createOMElement(OMDataSource source, QName qname) {
         return new OMSourcedElementImpl(qname, this, source);
-    }
-
-    /**
-     * Method createOMNamespace.
-     *
-     * @param uri
-     * @param prefix
-     * @return Returns OMNamespace.
-     */
-    public OMNamespace createOMNamespace(String uri, String prefix) {
-        return new OMNamespaceImpl(uri, prefix);
-    }
-
-    /**
-     * This method is intended only to be used by Axiom intenals when merging Objects from different
-     * Axiom implementations to the LLOM implementation.
-     *
-     * @param child
-     */
-    public OMNode importNode(OMNode child) {
-        int type = child.getType();
-        switch (type) {
-            case (OMNode.ELEMENT_NODE): {
-                OMElement childElement = (OMElement) child;
-                OMElement newElement = (new StAXOMBuilder(this, childElement
-                        .getXMLStreamReader())).getDocumentElement();
-                newElement.buildWithAttachments();
-                return newElement;
-            }
-            case (OMNode.TEXT_NODE): {
-                OMText importedText = (OMText) child;
-                OMText newText;
-                if (importedText.isBinary()) {
-                    boolean isOptimize = importedText.isOptimized();
-                    newText = createOMText(importedText
-                            .getDataHandler(), isOptimize);
-                } else if (importedText.isCharacters()) {
-                    newText = createOMText(null, importedText
-                            .getTextCharacters(), importedText.getType());
-                } else {
-                    newText = createOMText(null, importedText
-                            .getText()/*, importedText.getOMNodeType()*/);
-                }
-                return newText;
-            }
-
-            case (OMNode.PI_NODE): {
-                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                return createOMProcessingInstruction(null,
-                                                                  importedPI.getTarget(),
-                                                                  importedPI.getValue());
-            }
-            case (OMNode.COMMENT_NODE): {
-                OMComment importedComment = (OMComment) child;
-                return createOMComment(null, importedComment.getValue());
-            }
-            case (OMNode.DTD_NODE) : {
-                OMDocType importedDocType = (OMDocType) child;
-                return createOMDocType(null, importedDocType.getRootName(),
-                        importedDocType.getPublicId(), importedDocType.getSystemId(),
-                        importedDocType.getInternalSubset());
-            }
-            default: {
-                throw new UnsupportedOperationException(
-                        "Not Implemented Yet for the given node type");
-            }
-        }
     }
 
     public <T extends CoreNode> T createNode(Class<T> type) {

@@ -60,5 +60,11 @@ public interface OMFactoryEx extends OMFactory {
     
     OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder);
     
+    /**
+     * This method is intended only to be used by Axiom intenrals when merging nodes from different
+     * Axiom implementations.
+     *
+     * @param child
+     */
     OMNode importNode(OMNode child);
 }
