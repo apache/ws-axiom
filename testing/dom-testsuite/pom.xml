@@ -96,17 +96,28 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>com.github.veithen.alta</groupId>
+                <artifactId>alta-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>generate-test-resources</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>generate-properties</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>xml-apis,xercesImpl</includeArtifactIds>
-                            <outputDirectory>${project.build.directory}/endorsed</outputDirectory>
-                            <stripVersion>true</stripVersion>
+                            <name>bootclasspath</name>
+                            <value>%file%</value>
+                            <separator>${path.separator}</separator>
+                            <artifacts>
+                                <artifact>
+                                    <groupId>xml-apis</groupId>
+                                    <artifactId>xml-apis</artifactId>
+                                </artifact>
+                                <artifact>
+                                    <groupId>xerces</groupId>
+                                    <artifactId>xercesImpl</artifactId>
+                                </artifact>
+                            </artifacts>
                         </configuration>
                     </execution>
                 </executions>
@@ -232,7 +243,7 @@
                 <configuration>
                     <!-- This is necessary to execute the tests with the IBM JRE: we need to endorse the particular Xerces version
                          we want to use because the JRE already contains Xerces. -->
-                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${project.build.directory}/endorsed/xml-apis.jar${path.separator}${project.build.directory}/endorsed/xercesImpl.jar</argLine>
+                    <argLine>${jacoco.surefireArgLine} -Xbootclasspath/p:${bootclasspath}</argLine>
                 </configuration>
             </plugin>
         </plugins>
