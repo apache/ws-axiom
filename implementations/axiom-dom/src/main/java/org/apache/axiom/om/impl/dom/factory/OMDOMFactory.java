@@ -49,7 +49,6 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
@@ -295,25 +294,22 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return type.cast(element);
     }
 
-    public final CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type) {
-        NSUnawareAttribute attr = new NSUnawareAttribute((DocumentImpl)document, this);
-        attr.coreSetName(name);
-        attr.coreSetCharacterData(value, Policies.DETACH_POLICY);
-//        attr.coreSetType(type);
-        return attr;
+    public final CoreNSUnawareAttribute createNSUnawareAttribute() {
+        return new NSUnawareAttribute(this);
     }
 
     public final CoreNSAwareAttribute createNSAwareAttribute() {
         return new NSAwareAttribute(this);
     }
 
-    public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
-            String prefix, String namespaceURI) {
-        return new NamespaceDeclaration((DocumentImpl)document, new OMNamespaceImpl(namespaceURI == null ? "" : namespaceURI, prefix), this);
+    public final CoreNamespaceDeclaration createNamespaceDeclaration() {
+        return new NamespaceDeclaration(this);
     }
 
     public final AxiomNamespaceDeclaration createNamespaceDeclaration(OMNamespace namespace) {
-        return new NamespaceDeclaration(null, namespace, this);
+        NamespaceDeclaration decl = new NamespaceDeclaration(this);
+        decl.setDeclaredNamespace(namespace);
+        return decl;
     }
 
     public final CoreProcessingInstruction createProcessingInstruction() {

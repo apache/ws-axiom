@@ -35,6 +35,10 @@ public aspect AxiomNamespaceDeclarationSupport {
         return declaredNamespace;
     }
     
+    public final void AxiomNamespaceDeclaration.coreSetDeclaredNamespace(String prefix, String namespaceURI) {
+        setDeclaredNamespace(new OMNamespaceImpl(namespaceURI, prefix));
+    }
+    
     public final void AxiomNamespaceDeclaration.setDeclaredNamespace(OMNamespace declaredNamespace) {
         this.declaredNamespace = declaredNamespace;
         coreSetCharacterData(declaredNamespace.getNamespaceURI(), Policies.DETACH_POLICY);

@@ -24,9 +24,9 @@ public interface NodeFactory {
     CoreCharacterDataNode createCharacterDataNode();
     CoreCDATASection createCDATASection();
     <T extends CoreNSAwareElement> T createNSAwareElement(Class<T> type);
-    CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value, String type);
+    CoreNSUnawareAttribute createNSUnawareAttribute();
     CoreNSAwareAttribute createNSAwareAttribute();
-    CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document, String prefix, String namespaceURI);
+    CoreNamespaceDeclaration createNamespaceDeclaration();
     CoreProcessingInstruction createProcessingInstruction();
     CoreEntityReference createEntityReference();
     CoreComment createComment();

@@ -84,8 +84,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
         return ((CoreNSAwareAttribute)attr).coreGetLocalName();
     }
 
-    // TODO: get rid of the CoreDocument argument here
-    public CoreAttribute createAttribute(NodeFactory nodeFactory, CoreDocument document, String namespaceURI, String name, String prefix, String value) {
+    public CoreAttribute createAttribute(NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value) {
         CoreNSAwareAttribute attr = nodeFactory.createNSAwareAttribute();
         attr.coreSetName(namespaceURI, name, prefix);
         attr.coreSetCharacterData(value, null);

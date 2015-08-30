@@ -151,7 +151,11 @@ public aspect DOMDocumentSupport {
     
     public final Attr DOMDocument.createAttribute(String name) {
         NSUtil.validateName(name);
-        return (DOMAttribute)coreGetNodeFactory().createAttribute(this, name, "", "CDATA");
+        DOMNSUnawareAttribute attr = (DOMNSUnawareAttribute)coreGetNodeFactory().createNSUnawareAttribute();
+        attr.coreSetOwnerDocument(this);
+        attr.coreSetName(name);
+        attr.coreSetType("CDATA");
+        return attr;
     }
 
     public final Attr DOMDocument.createAttributeNS(String namespaceURI, String qualifiedName) {
@@ -166,7 +170,10 @@ public aspect DOMDocumentSupport {
             localName = qualifiedName.substring(i+1);
         }
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            return (DOMAttribute)coreGetNodeFactory().createNamespaceDeclaration(this, NSUtil.getDeclaredPrefix(localName, prefix), null);
+            DOMNamespaceDeclaration decl = (DOMNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+            decl.coreSetOwnerDocument(this);
+            decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), "");
+            return decl;
         } else {
             namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
             NSUtil.validateAttributeName(namespaceURI, localName, prefix);
@@ -235,7 +242,12 @@ public aspect DOMDocumentSupport {
                 return node;
             case NS_AWARE_ATTRIBUTE_NODE:
                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-                    return (DOMAttribute)coreGetNodeFactory().createNamespaceDeclaration(this, NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute)node).getValue());
+                    DOMNamespaceDeclaration decl = (DOMNamespaceDeclaration)coreGetNodeFactory().createNamespaceDeclaration();
+                    decl.coreSetOwnerDocument(this);
+                    // TODO: we should have a generic method to move the content over to the new node
+                    decl.coreSetDeclaredNamespace(NSUtil.getDeclaredPrefix(localName, prefix), ((DOMNSAwareAttribute)node).getValue());
+                    // TODO: what about replacing the node in the tree??
+                    return decl;
                 } else {
                     NSUtil.validateAttributeName(namespaceURI, localName, prefix);
                     ((DOMNSAwareAttribute)node).coreSetName(namespaceURI, localName, prefix);

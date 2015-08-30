@@ -72,8 +72,6 @@ public interface AttributeMatcher {
      * 
      * @param nodeFactory
      *            the node factory the should be used to create the attribute
-     * @param document
-     *            the document in which the attribute is created
      * @param namespaceURI
      *            see above
      * @param name
@@ -84,7 +82,7 @@ public interface AttributeMatcher {
      *            see above
      * @return
      */
-    CoreAttribute createAttribute(NodeFactory nodeFactory, CoreDocument document, String namespaceURI, String name, String prefix, String value);
+    CoreAttribute createAttribute(NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value);
     
     /**
      * Update an existing attribute. The values of the <code>prefix</code> and <code>value</code>

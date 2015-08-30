@@ -22,18 +22,12 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 
 public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration, AxiomNamespaceDeclaration {
-    private NamespaceDeclaration(OMFactory factory) {
+    public NamespaceDeclaration(OMFactory factory) {
         super(null, factory);
-    }
-    
-    public NamespaceDeclaration(DocumentImpl ownerDocument, OMNamespace namespace, OMFactory factory) {
-        super(ownerDocument, factory);
-        setDeclaredNamespace(namespace);
     }
 
     @Override

@@ -300,8 +300,7 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return type.cast(element);
     }
 
-    public CoreNSUnawareAttribute createAttribute(CoreDocument document, String name, String value,
-            String type) {
+    public CoreNSUnawareAttribute createNSUnawareAttribute() {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -310,8 +309,7 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return new OMAttributeImpl(this);
     }
 
-    public final CoreNamespaceDeclaration createNamespaceDeclaration(CoreDocument document,
-            String prefix, String namespaceURI) {
+    public final CoreNamespaceDeclaration createNamespaceDeclaration() {
         // TODO
         throw new UnsupportedOperationException();
     }

@@ -29,4 +29,6 @@ public interface CoreNamespaceDeclaration extends CoreAttribute {
      *         namespace
      */
     String coreGetDeclaredPrefix();
+    
+    void coreSetDeclaredNamespace(String prefix, String namespaceURI);
 }

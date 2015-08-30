@@ -118,8 +118,7 @@ public aspect CoreElementSupport {
             attr = attr.coreGetNextAttribute();
         }
         if (attr == null) {
-            CoreDocument document = coreGetOwnerDocument(false);
-            CoreAttribute newAttr = matcher.createAttribute(coreGetNodeFactory(), document, namespaceURI, name, prefix, value);
+            CoreAttribute newAttr = matcher.createAttribute(coreGetNodeFactory(), namespaceURI, name, prefix, value);
             if (previousAttr == null) {
                 internalAppendAttribute(newAttr);
             } else {

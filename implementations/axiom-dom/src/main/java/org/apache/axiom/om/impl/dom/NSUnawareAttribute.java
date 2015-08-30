@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 
 public class NSUnawareAttribute extends AttrImpl implements DOMNSUnawareAttribute {
-    public NSUnawareAttribute(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
+    public NSUnawareAttribute(OMFactory factory) {
+        super(null, factory);
     }
 
     public final NodeFactory coreGetNodeFactory() {
