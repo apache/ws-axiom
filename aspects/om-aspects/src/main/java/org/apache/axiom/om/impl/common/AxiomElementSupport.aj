@@ -68,7 +68,7 @@ public aspect AxiomElementSupport {
     
     public final void AxiomElement.initName(String localName, OMNamespace ns, boolean generateNSDecl) {
         internalSetLocalName(localName);
-        internalSetNamespace(generateNSDecl ? handleNamespace(this, ns, false, true) : ns);
+        internalSetNamespace(generateNSDecl ? NSUtil.handleNamespace(this, ns, false, true) : ns);
     }
     
     final void AxiomElement.beforeSetLocalName() {
@@ -86,7 +86,7 @@ public aspect AxiomElementSupport {
 
     public final void AxiomElement.setNamespace(OMNamespace namespace, boolean decl) {
         forceExpand();
-        internalSetNamespace(handleNamespace(this, namespace, false, decl));
+        internalSetNamespace(NSUtil.handleNamespace(this, namespace, false, decl));
     }
 
     public final OMElement AxiomElement.getFirstElement() {

@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.core.CoreNSAwareNamedNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public aspect AxiomNamedInformationItemSupport {
     /**
@@ -106,49 +105,6 @@ public aspect AxiomNamedInformationItemSupport {
         }
     }
 
-    public final OMNamespace AxiomNamedInformationItem.handleNamespace(AxiomElement context, OMNamespace ns, boolean attr, boolean decl) {
-        String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
-        String prefix = ns == null ? "" : ns.getPrefix();
-        if (namespaceURI.length() == 0) {
-            if (prefix != null && prefix.length() != 0) {
-                throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
-            }
-            if (!attr && decl) {
-                // Special case: no namespace; we need to generate a namespace declaration only if
-                // there is a conflicting namespace declaration (i.e. a declaration for the default
-                // namespace with a non empty URI) is in scope
-                if (context.getDefaultNamespace() != null) {
-                    context.declareDefaultNamespace("");
-                }
-            }
-            return null;
-        } else {
-            if (attr && prefix != null && prefix.length() == 0) {
-                throw new IllegalArgumentException("An attribute with a namespace must be prefixed");
-            }
-            boolean addNSDecl = false;
-            if (context != null && (decl || prefix == null)) {
-                OMNamespace existingNSDecl = context.findNamespace(namespaceURI, prefix);
-                if (existingNSDecl == null
-                        || (prefix != null && !existingNSDecl.getPrefix().equals(prefix))
-                        || (prefix == null && attr && existingNSDecl.getPrefix().length() == 0)) {
-                    addNSDecl = decl;
-                } else {
-                    prefix = existingNSDecl.getPrefix();
-                    ns = existingNSDecl;
-                }
-            }
-            if (prefix == null) {
-                prefix = OMSerializerUtil.getNextNSPrefix();
-                ns = new OMNamespaceImpl(namespaceURI, prefix);
-            }
-            if (addNSDecl) {
-                context.addNamespaceDeclaration(ns);
-            }
-            return ns;
-        }
-    }
-    
     public final String AxiomNamedInformationItem.coreGetNamespaceURI() {
         OMNamespace namespace = getNamespace();
         return namespace == null ? "" : namespace.getNamespaceURI();

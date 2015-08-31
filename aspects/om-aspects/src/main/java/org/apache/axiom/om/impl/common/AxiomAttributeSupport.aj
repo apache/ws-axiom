@@ -30,7 +30,7 @@ public aspect AxiomAttributeSupport {
     }
     
     public final void AxiomAttribute.setNamespace(OMNamespace namespace, boolean decl) {
-        internalSetNamespace(handleNamespace((AxiomElement)getOwner(), namespace, true, decl));
+        internalSetNamespace(NSUtil.handleNamespace((AxiomElement)getOwner(), namespace, true, decl));
     }
     
     public final void AxiomAttribute.setOMNamespace(OMNamespace omNamespace) {
