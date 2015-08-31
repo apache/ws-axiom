@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.common;
+package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.CoreNode;
 
-public aspect AxiomSOAP11BodySupport {
-    public final Class<? extends CoreNode> AxiomSOAP11Body.coreGetNodeClass() {
-        return AxiomSOAP11Body.class;
+public aspect AxiomSourcedElementSupport {
+    public Class<? extends CoreNode> AxiomSourcedElement.coreGetNodeClass() {
+        return AxiomSourcedElement.class;
     }
 }

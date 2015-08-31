@@ -21,6 +21,11 @@ package org.apache.axiom.core;
 public aspect CoreNodeSupport {
     int CoreNode.flags;
 
+    // Default implementation; may be overridden
+    public Class<? extends CoreNode> CoreNode.coreGetNodeClass() {
+        return coreGetNodeType().getInterface();
+    }
+    
     public abstract CoreNode CoreNode.getRootOrOwnerDocument();
 
     /**

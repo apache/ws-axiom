@@ -74,10 +74,6 @@ public aspect AxiomElementSupport {
         forceExpand();
     }
     
-    public Class<? extends AxiomElement> AxiomElement.getElementType() {
-        return AxiomElement.class;
-    }
-    
     public final int AxiomElement.getType() {
         return OMNode.ELEMENT_NODE;
     }
@@ -562,7 +558,7 @@ public aspect AxiomElementSupport {
     }
 
     public final AxiomElement AxiomElement.shallowCloneWithoutAttributes(OMCloneOptions options, CoreParentNode targetParent, boolean namespaceRepairing) {
-        AxiomElement clone = coreGetNodeFactory().createNode(options.isPreserveModel() ? getElementType() : AxiomElement.class);
+        AxiomElement clone = (AxiomElement)coreGetNodeFactory().createNode(options.isPreserveModel() ? coreGetNodeClass() : AxiomElement.class);
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);
         }

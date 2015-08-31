@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.core.CoreNode;
 
 public aspect AxiomSOAPEnvelopeSupport {
-    public final Class<? extends AxiomElement> AxiomSOAPEnvelope.getElementType() {
+    public final Class<? extends CoreNode> AxiomSOAPEnvelope.coreGetNodeClass() {
         return AxiomSOAPEnvelope.class;
     }
 }

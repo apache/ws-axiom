@@ -22,65 +22,75 @@ public enum NodeType {
     /**
      * The node is a {@link CoreDocument}.
      */
-    DOCUMENT,
+    DOCUMENT(CoreDocument.class),
     
     /**
      * The node is a {@link CoreDocumentTypeDeclaration}.
      */
-    DOCUMENT_TYPE_DECLARATION,
+    DOCUMENT_TYPE_DECLARATION(CoreDocumentTypeDeclaration.class),
     
     /**
      * The node is a {@link CoreNSUnawareElement}.
      */
-    NS_UNAWARE_ELEMENT,
+    NS_UNAWARE_ELEMENT(CoreNSUnawareElement.class),
     
     /**
      * The node is a {@link CoreNSAwareElement}.
      */
-    NS_AWARE_ELEMENT,
+    NS_AWARE_ELEMENT(CoreNSAwareElement.class),
     
     /**
      * The node is a {@link CoreNSUnawareAttribute}.
      */
-    NS_UNAWARE_ATTRIBUTE,
+    NS_UNAWARE_ATTRIBUTE(CoreNSUnawareAttribute.class),
     
     /**
      * The node is a {@link CoreNSAwareAttribute}.
      */
-    NS_AWARE_ATTRIBUTE,
+    NS_AWARE_ATTRIBUTE(CoreNSAwareAttribute.class),
     
     /**
      * The node is a {@link CoreNamespaceDeclaration}.
      */
-    NAMESPACE_DECLARATION,
+    NAMESPACE_DECLARATION(CoreNamespaceDeclaration.class),
     
     /**
      * The node is a {@link CoreProcessingInstruction}.
      */
-    PROCESSING_INSTRUCTION,
+    PROCESSING_INSTRUCTION(CoreProcessingInstruction.class),
     
     /**
      * The node is a {@link CoreDocumentFragment}.
      */
-    DOCUMENT_FRAGMENT,
+    DOCUMENT_FRAGMENT(CoreDocumentFragment.class),
     
     /**
      * The node is a {@link CoreCharacterDataNode}.
      */
-    CHARACTER_DATA,
+    CHARACTER_DATA(CoreCharacterDataNode.class),
     
     /**
      * The node is a {@link CoreComment}.
      */
-    COMMENT,
+    COMMENT(CoreComment.class),
     
     /**
      * The node is a {@link CoreCDATASection}.
      */
-    CDATA_SECTION,
+    CDATA_SECTION(CoreCDATASection.class),
     
     /**
      * The node is a {@link CoreEntityReference}.
      */
-    ENTITY_REFERENCE
+    ENTITY_REFERENCE(CoreEntityReference.class);
+
+    private final Class<? extends CoreNode> iface;
+    
+    private NodeType(Class<? extends CoreNode> iface) {
+        this.iface = iface;
+    }
+    
+    public Class<? extends CoreNode> getInterface() {
+        return iface;
+    }
 }

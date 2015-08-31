@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.core.CoreNode;
 
 public aspect AxiomSOAP11FaultCodeSupport {
-    public final Class<? extends AxiomElement> AxiomSOAP11FaultCode.getElementType() {
+    public final Class<? extends CoreNode> AxiomSOAP11FaultCode.coreGetNodeClass() {
         return AxiomSOAP11FaultCode.class;
     }
 }

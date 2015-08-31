@@ -20,8 +20,8 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAP12Constants;
 
@@ -34,7 +34,7 @@ public aspect AxiomSOAP12FaultTextSupport {
             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
     
-    public final Class<? extends AxiomElement> AxiomSOAP12FaultText.getElementType() {
+    public final Class<? extends CoreNode> AxiomSOAP12FaultText.coreGetNodeClass() {
         return AxiomSOAP12FaultText.class;
     }
 
