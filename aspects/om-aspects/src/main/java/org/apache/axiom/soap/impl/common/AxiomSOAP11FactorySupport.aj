@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultNode;
@@ -69,5 +70,14 @@ public aspect AxiomSOAP11FactorySupport {
 
     public final SOAPFaultNode AxiomSOAP11Factory.createSOAPFaultNode() {
         throw new UnsupportedOperationException();
+    }
+
+    public final SOAPEnvelope AxiomSOAP11Factory.getDefaultFaultEnvelope() {
+        SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
+        SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
+        createSOAPFaultCode(fault);
+        createSOAPFaultReason(fault);
+        createSOAPFaultDetail(fault);
+        return defaultEnvelope;
     }
 }

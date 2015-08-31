@@ -36,8 +36,21 @@ import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.soap.SOAPVersion;
 
 public aspect AxiomSOAPFactorySupport {
+    public final String AxiomSOAPFactory.getSoapVersionURI() {
+        return getSOAPHelper().getEnvelopeURI();
+    }
+
+    public final SOAPVersion AxiomSOAPFactory.getSOAPVersion() {
+        return getSOAPHelper().getVersion();
+    }
+    
+    public final OMNamespace AxiomSOAPFactory.getNamespace() {
+        return getSOAPHelper().getNamespace();
+    }
+    
     public final <T extends AxiomSOAPElement> T AxiomSOAPFactory.createSOAPElement(Class<T> type, OMElement parent, QName qname, OMXMLParserWrapper builder) {
         T element = createNode(type);
         if (builder != null) {
@@ -204,5 +217,20 @@ public aspect AxiomSOAPFactorySupport {
 
     public final SOAPFaultDetail AxiomSOAPFactory.createSOAPFaultDetail() {
         return createSOAPFaultDetail(null, null);
+    }
+
+    public final SOAPMessage AxiomSOAPFactory.createDefaultSOAPMessage() {
+        SOAPMessage message = createSOAPMessage();
+        SOAPEnvelope env = createSOAPEnvelope();
+        message.addChild(env);
+        createSOAPBody(env);
+        return message;
+    }
+    
+    public final SOAPEnvelope AxiomSOAPFactory.getDefaultEnvelope() {
+        SOAPEnvelope env = createSOAPEnvelope();
+        createSOAPHeader(env);
+        createSOAPBody(env);
+        return env;
     }
 }

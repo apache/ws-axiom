@@ -19,17 +19,7 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Factory;
 import org.apache.axiom.soap.impl.dom.SOAPFactoryImpl;
 
@@ -41,33 +31,5 @@ public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory
     }
 
     public SOAP12Factory() {
-    }
-
-    public String getSoapVersionURI() {
-        return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
-    }
-
-    public SOAPVersion getSOAPVersion() {
-        return SOAP12Version.getSingleton();
-    }
-
-    public OMNamespace getNamespace() {
-        return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                                 SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-    }
-
-    public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
-        SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
-
-        SOAPFaultCode faultCode = createSOAPFaultCode(fault);
-        createSOAPFaultValue(faultCode);
-
-        SOAPFaultReason reason = createSOAPFaultReason(fault);
-        createSOAPFaultText(reason);
-
-        createSOAPFaultDetail(fault);
-
-        return defaultEnvelope;
     }
 }

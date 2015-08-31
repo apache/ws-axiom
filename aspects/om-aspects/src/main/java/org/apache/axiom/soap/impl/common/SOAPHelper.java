@@ -20,6 +20,8 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -86,6 +88,7 @@ abstract class SOAPHelper {
     };
     
     private final SOAPVersion version;
+    private final OMNamespace namespace;
     private final String specName;
     private final Class<? extends AxiomSOAPHeader> headerClass;
     private final QName headerQName;
@@ -113,6 +116,8 @@ abstract class SOAPHelper {
             Class<? extends AxiomSOAPFaultDetail> faultDetailClass,
             String roleAttributeLocalName, String relayAttributeLocalName) {
         this.version = version;
+        namespace = new OMNamespaceImpl(version.getEnvelopeURI(),
+                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.specName = specName;
         this.headerClass = headerClass;
         headerQName = new QName(version.getEnvelopeURI(), SOAPConstants.HEADER_LOCAL_NAME,
@@ -140,6 +145,14 @@ abstract class SOAPHelper {
         return version;
     }
     
+    final String getEnvelopeURI() {
+        return version.getEnvelopeURI();
+    }
+
+    final OMNamespace getNamespace() {
+        return namespace;
+    }
+
     final String getSpecName() {
         return specName;
     }

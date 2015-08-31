@@ -20,9 +20,6 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPMessage;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFactory;
 
 public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements AxiomSOAPFactory {
@@ -34,20 +31,5 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
      * @deprecated
      */
     public SOAPFactoryImpl() {
-    }
-
-    public final SOAPMessage createDefaultSOAPMessage() {
-        SOAPMessage message = createSOAPMessage();
-        SOAPEnvelope env = createSOAPEnvelope();
-        message.addChild(env);
-        createSOAPBody(env);
-        return message;
-    }
-    
-    public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelope env = createSOAPEnvelope();
-        createSOAPHeader(env);
-        createSOAPBody(env);
-        return env;
     }
 }

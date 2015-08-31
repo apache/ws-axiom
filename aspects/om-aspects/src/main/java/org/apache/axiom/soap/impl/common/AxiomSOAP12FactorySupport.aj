@@ -20,6 +20,7 @@ package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultClassifier;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -104,5 +105,16 @@ public aspect AxiomSOAP12FactorySupport {
 
     public final SOAPFaultNode AxiomSOAP12Factory.createSOAPFaultNode() {
         return createSOAPFaultNode(null, null);
+    }
+
+    public final SOAPEnvelope AxiomSOAP12Factory.getDefaultFaultEnvelope() {
+        SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
+        SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
+        SOAPFaultCode faultCode = createSOAPFaultCode(fault);
+        createSOAPFaultValue(faultCode);
+        SOAPFaultReason reason = createSOAPFaultReason(fault);
+        createSOAPFaultText(reason);
+        createSOAPFaultDetail(fault);
+        return defaultEnvelope;
     }
 }
