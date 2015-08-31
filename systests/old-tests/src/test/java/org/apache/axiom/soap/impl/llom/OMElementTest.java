@@ -77,29 +77,6 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         }
     }
 
-    public void testConstructors() {
-        assertTrue("Namespace having same information, declared in the same context, should share" +
-                " the same namespace object",
-                   firstElement.getNamespace() != secondElement.getNamespace());
-        assertEquals("OMElement children addition has not worked properly", secondElement,
-                     firstElement.getFirstElement());
-
-        OMNamespace testNamespace2 = factory.createOMNamespace("ftp://anotherTest.ws.org", "ws");
-        firstElement.declareNamespace(testNamespace2);
-
-        OMNamespace inheritedSecondNamespace =
-                secondElement.findNamespace(testNamespace2.getNamespaceURI(),
-                                            testNamespace2.getPrefix());
-        assertNotNull("Children should inherit namespaces declared in parent",
-                      inheritedSecondNamespace);
-        assertEquals("inherited namespace uri should be equal",
-                     inheritedSecondNamespace.getNamespaceURI(), testNamespace2.getNamespaceURI());
-        assertEquals("inherited namespace prefix should be equal",
-                     inheritedSecondNamespace.getPrefix(), testNamespace2.getPrefix());
-
-
-    }
-
     public void testChildDetachment() {
         OMNamespace testNamespace2 = factory.createOMNamespace("ftp://anotherTest.ws.org", "ws");
 

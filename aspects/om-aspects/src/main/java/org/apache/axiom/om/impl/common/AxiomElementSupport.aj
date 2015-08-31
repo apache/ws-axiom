@@ -293,19 +293,7 @@ public aspect AxiomElementSupport {
             }
             attr = getOMFactory().createOMAttribute(attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue());
         }
-
-        OMNamespace namespace = attr.getNamespace();
-        if (namespace != null) {
-            String uri = namespace.getNamespaceURI();
-            if (uri.length() > 0) {
-                String prefix = namespace.getPrefix();
-                OMNamespace ns2 = findNamespaceURI(prefix);
-                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
-                    declareNamespace(uri, prefix);
-                }
-            }
-        }
-
+        NSUtil.handleNamespace(this, attr.getNamespace(), true, true);
         internalAppendAttribute(attr);
         return attr;
     }
@@ -442,7 +430,7 @@ public aspect AxiomElementSupport {
             if (parent instanceof OMElement) {
                 namespace = ((OMElement) parent).findNamespace(uri, prefix);
                 // If the prefix has been redeclared, then ignore the binding found on the ancestors
-                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                if (namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
                     namespace = null;
                 }
             }

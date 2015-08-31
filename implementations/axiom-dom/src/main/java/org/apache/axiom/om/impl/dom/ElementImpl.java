@@ -21,6 +21,8 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
+import javax.xml.XMLConstants;
+
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
@@ -41,6 +43,9 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
     }
 
     private final String checkNamespaceIsDeclared(String prefix, String namespaceURI, boolean allowDefaultNamespace, boolean declare) {
+        if (XMLConstants.XML_NS_PREFIX.equals(prefix) && XMLConstants.XML_NS_URI.equals(namespaceURI)) {
+            return XMLConstants.XML_NS_PREFIX;
+        }
         if (prefix == null) {
             if (namespaceURI.length() == 0) {
                 prefix = "";
