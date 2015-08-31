@@ -31,7 +31,7 @@ public aspect CoreNSAwareElementSupport {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
     
-    public final CoreNode CoreNSAwareElement.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreNSAwareElement.shallowClone(ClonePolicy<T> policy, T options) {
         // TODO
         throw new UnsupportedOperationException();
     }

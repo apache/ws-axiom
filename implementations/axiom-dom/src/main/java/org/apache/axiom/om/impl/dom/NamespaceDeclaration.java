@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -31,7 +30,7 @@ public final class NamespaceDeclaration extends AttrImpl implements DOMNamespace
     }
 
     @Override
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+    final <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
         NamespaceDeclaration clone = new NamespaceDeclaration(getOMFactory());
         // TODO: this is ugly, but we are expected to create a shallow clone and can't copy the value;
         //       this will be fixed when the clone code is moved to om-aspects

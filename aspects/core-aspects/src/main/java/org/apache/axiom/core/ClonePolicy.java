@@ -21,8 +21,9 @@ package org.apache.axiom.core;
 /**
  * Defines how an object model tree is to be cloned.
  */
-public interface ClonePolicy {
-    boolean repairNamespaces();
-    boolean cloneAttributes();
-    boolean cloneChildren(NodeType nodeType);
+public interface ClonePolicy<T> {
+    boolean preserveModel(T options);
+    boolean repairNamespaces(T options);
+    boolean cloneAttributes(T options);
+    boolean cloneChildren(T options, NodeType nodeType);
 }

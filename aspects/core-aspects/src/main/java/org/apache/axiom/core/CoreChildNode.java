@@ -48,5 +48,5 @@ public interface CoreChildNode extends CoreNode {
      *            the node to which the clone should be added; may be <code>null</code>
      * @return the clone of this node
      */
-    CoreNode coreClone(ClonePolicy policy, Object options, CoreParentNode targetParent);
+    <T> CoreNode coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent);
 }

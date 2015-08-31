@@ -19,6 +19,6 @@
 package org.apache.axiom.core;
 
 public aspect CoreLeafNodeSupport {
-    public final void CoreLeafNode.cloneChildrenIfNecessary(ClonePolicy policy, Object options, CoreNode clone) {
+    public final <T> void CoreLeafNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
     }
 }

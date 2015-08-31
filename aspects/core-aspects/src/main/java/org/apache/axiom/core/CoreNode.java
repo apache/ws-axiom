@@ -39,5 +39,8 @@ public interface CoreNode {
      *            the policy to use when cloning this node (and its children)
      * @return the clone of this node
      */
-    CoreNode coreClone(ClonePolicy policy, Object options);
+    <T> CoreNode coreClone(ClonePolicy<T> policy, T options);
+    
+    <T> CoreNode shallowClone(ClonePolicy<T> policy, T options);
+    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone);
 }

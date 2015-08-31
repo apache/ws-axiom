@@ -209,7 +209,7 @@ public aspect CoreChildNodeSupport {
         }
     }
 
-    public final CoreNode CoreChildNode.coreClone(ClonePolicy policy, Object options, CoreParentNode targetParent) {
+    public final <T> CoreNode CoreChildNode.coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) {
         CoreChildNode clone = (CoreChildNode)shallowClone(policy, options);
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);

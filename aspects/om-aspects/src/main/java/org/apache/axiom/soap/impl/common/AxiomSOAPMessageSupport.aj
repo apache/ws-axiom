@@ -18,12 +18,17 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 
 public aspect AxiomSOAPMessageSupport {
+    public Class<? extends CoreNode> AxiomSOAPMessage.coreGetNodeClass() {
+        return AxiomSOAPMessage.class;
+    }
+
     // TODO: this violates OO design principles and should disappear in a future Axiom version
     public final void AxiomSOAPMessage.internalSerialize(Serializer serializer, OMOutputFormat format,
             boolean cache, boolean includeXMLDeclaration) throws OutputException {

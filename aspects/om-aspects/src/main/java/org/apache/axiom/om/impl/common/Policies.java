@@ -27,6 +27,7 @@ import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.om.OMCloneOptions;
 
 public final class Policies {
     private Policies() {}
@@ -57,16 +58,20 @@ public final class Policies {
         }
     };
     
-    public static final ClonePolicy CLONE_POLICY = new ClonePolicy() {
-        public boolean repairNamespaces() {
+    public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
+        public boolean preserveModel(OMCloneOptions options) {
+            return options.isPreserveModel();
+        }
+
+        public boolean repairNamespaces(OMCloneOptions options) {
             return true;
         }
 
-        public boolean cloneAttributes() {
+        public boolean cloneAttributes(OMCloneOptions options) {
             return true;
         }
 
-        public boolean cloneChildren(NodeType nodeType) {
+        public boolean cloneChildren(OMCloneOptions options, NodeType nodeType) {
             return true;
         }
     };

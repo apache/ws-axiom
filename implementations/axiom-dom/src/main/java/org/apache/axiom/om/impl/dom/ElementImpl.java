@@ -63,14 +63,14 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
         return prefix;
     }
 
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+    final <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
         ElementImpl clone = createClone(options, targetParent, policy);
         NamedNodeMap attributes = getAttributes();
         for (int i=0, l=attributes.getLength(); i<l; i++) {
             AttrImpl attr = (AttrImpl)attributes.item(i);
             AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, policy);
             clonedAttr.coreSetSpecified(attr.coreGetSpecified());
-            if (policy.repairNamespaces() && attr instanceof NSAwareAttribute) {
+            if (policy.repairNamespaces(options) && attr instanceof NSAwareAttribute) {
                 NSAwareAttribute nsAwareAttr = (NSAwareAttribute)attr;
                 String namespaceURI = nsAwareAttr.coreGetNamespaceURI();
                 if (namespaceURI.length() != 0) {
@@ -86,7 +86,7 @@ public abstract class ElementImpl extends ParentNode implements DOMElement {
         return clone;
     }
 
-    abstract ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy);
+    abstract <T> ElementImpl createClone(T options, ParentNode targetParent, ClonePolicy<T> policy);
     
     /*
      * DOM-Level 3 methods

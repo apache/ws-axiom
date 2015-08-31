@@ -42,7 +42,7 @@ public aspect CoreEntityReferenceSupport {
         this.replacementText = replacementText;
     }
     
-    public final CoreNode CoreEntityReference.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreEntityReference.shallowClone(ClonePolicy<T> policy, T options) {
         CoreEntityReference clone = coreGetNodeFactory().createNode(CoreEntityReference.class);
         clone.coreSetName(coreGetName());
         clone.coreSetReplacementText(coreGetReplacementText());

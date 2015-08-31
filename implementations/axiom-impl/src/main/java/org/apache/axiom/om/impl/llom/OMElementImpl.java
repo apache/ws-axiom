@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.common.Policies;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -88,7 +89,7 @@ public class OMElementImpl extends OMNodeImpl
     }
     
     final OMNode defaultClone(OMCloneOptions options, AxiomContainer targetParent) {
-        AxiomElement targetElement = shallowCloneWithoutAttributes(options, targetParent, true);
+        AxiomElement targetElement = shallowCloneWithoutAttributes(Policies.CLONE_POLICY, options, targetParent, true);
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
             targetElement.declareNamespace(ns);

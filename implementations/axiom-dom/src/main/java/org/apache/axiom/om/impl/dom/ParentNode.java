@@ -150,9 +150,9 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
         return false;
     }
 
-    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+    final <T> NodeImpl clone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
         ParentNode clone = shallowClone(options, targetParent, policy);
-        if (policy.cloneChildren(coreGetNodeType())) {
+        if (policy.cloneChildren(options, coreGetNodeType())) {
             for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
                 ((NodeImpl)child).clone(options, clone, policy);
             }
@@ -160,5 +160,5 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
         return clone;
     }
     
-    abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy);
+    abstract <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy);
 }

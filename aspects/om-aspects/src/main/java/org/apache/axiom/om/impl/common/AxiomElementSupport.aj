@@ -32,6 +32,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
@@ -557,17 +558,17 @@ public aspect AxiomElementSupport {
         }
     }
 
-    public final AxiomElement AxiomElement.shallowCloneWithoutAttributes(OMCloneOptions options, CoreParentNode targetParent, boolean namespaceRepairing) {
-        AxiomElement clone = (AxiomElement)coreGetNodeFactory().createNode(options.isPreserveModel() ? coreGetNodeClass() : AxiomElement.class);
+    public final <T> AxiomElement AxiomElement.shallowCloneWithoutAttributes(ClonePolicy<T> policy, T options, CoreParentNode targetParent, boolean namespaceRepairing) {
+        AxiomElement clone = (AxiomElement)coreGetNodeFactory().createNode(policy.preserveModel(options) ? coreGetNodeClass() : AxiomElement.class);
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);
         }
         clone.initName(getLocalName(), getNamespace(), namespaceRepairing);
-        copyData(options, clone);
+        copyData(policy, options, clone);
         return clone;
     }
 
-    public void AxiomElement.copyData(OMCloneOptions options, AxiomElement clone) {
+    public <T> void AxiomElement.copyData(ClonePolicy<T> policy, T options, AxiomElement clone) {
     }
 
     public final void AxiomElement.buildWithAttachments() {

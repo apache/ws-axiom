@@ -20,7 +20,7 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.impl.common.AxiomElement;
@@ -121,7 +121,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
         }
     }
 
-    public final void AxiomSOAPHeaderBlock.copyData(OMCloneOptions options, AxiomElement clone) {
+    public final <T> void AxiomSOAPHeaderBlock.copyData(ClonePolicy<T> policy, T options, AxiomElement clone) {
         // Copy the processed flag.  The other SOAPHeaderBlock information 
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
         Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;

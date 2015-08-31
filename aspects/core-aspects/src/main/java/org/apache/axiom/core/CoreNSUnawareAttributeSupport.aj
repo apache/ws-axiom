@@ -23,7 +23,7 @@ public aspect CoreNSUnawareAttributeSupport {
         return NodeType.NS_UNAWARE_ATTRIBUTE;
     }
     
-    public final CoreNode CoreNSUnawareAttribute.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreNSUnawareAttribute.shallowClone(ClonePolicy<T> policy, T options) {
         // TODO
         throw new UnsupportedOperationException();
     }

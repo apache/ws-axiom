@@ -33,7 +33,7 @@ public aspect CoreProcessingInstructionSupport {
         this.target = target;
     }
     
-    public final CoreNode CoreProcessingInstruction.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreProcessingInstruction.shallowClone(ClonePolicy<T> policy, T options) {
         CoreProcessingInstruction clone = coreGetNodeFactory().createNode(CoreProcessingInstruction.class);
         clone.target = target;
         return clone;

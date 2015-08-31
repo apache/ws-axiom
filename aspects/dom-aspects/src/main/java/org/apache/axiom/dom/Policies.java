@@ -100,30 +100,40 @@ public final class Policies {
         }
     };
 
-    public static final ClonePolicy DEEP_CLONE = new ClonePolicy() {
-        public boolean repairNamespaces() {
-            return false;
-        }
-
-        public boolean cloneAttributes() {
+    public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
+        public boolean preserveModel(Void options) {
+            // This is not specified by the API, but it's compatible with versions before 1.2.14
             return true;
         }
 
-        public boolean cloneChildren(NodeType nodeType) {
+        public boolean repairNamespaces(Void options) {
+            return false;
+        }
+
+        public boolean cloneAttributes(Void options) {
+            return true;
+        }
+
+        public boolean cloneChildren(Void options, NodeType nodeType) {
             return true;
         }
     };
 
-    public static final ClonePolicy SHALLOW_CLONE = new ClonePolicy() {
-        public boolean repairNamespaces() {
-            return false;
-        }
-
-        public boolean cloneAttributes() {
+    public static final ClonePolicy<Void> SHALLOW_CLONE = new ClonePolicy<Void>() {
+        public boolean preserveModel(Void options) {
+            // This is not specified by the API, but it's compatible with versions before 1.2.14
             return true;
         }
 
-        public boolean cloneChildren(NodeType nodeType) {
+        public boolean repairNamespaces(Void options) {
+            return false;
+        }
+
+        public boolean cloneAttributes(Void options) {
+            return true;
+        }
+
+        public boolean cloneChildren(Void options, NodeType nodeType) {
             return nodeType == NodeType.NS_UNAWARE_ATTRIBUTE || nodeType == NodeType.NS_AWARE_ATTRIBUTE;
         }
     };

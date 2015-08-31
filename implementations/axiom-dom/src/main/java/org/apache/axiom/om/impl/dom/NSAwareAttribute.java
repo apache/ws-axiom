@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNSAwareAttribute;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMAttributeEx;
@@ -40,7 +39,7 @@ public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, A
     }
 
     @Override
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
+    final <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
         return (ParentNode)shallowClone(policy, options);
     }
 }

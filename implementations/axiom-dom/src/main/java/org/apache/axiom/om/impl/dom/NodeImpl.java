@@ -58,10 +58,7 @@ public abstract class NodeImpl implements DOMNode {
     }
 
     public final Node cloneNode(boolean deep) {
-        OMCloneOptions options = new OMCloneOptions();
-        // This is not specified by the API, but it's compatible with versions before 1.2.14
-        options.setPreserveModel(true);
-        NodeImpl clone = clone(options, null, deep ? Policies.DEEP_CLONE : Policies.SHALLOW_CLONE);
+        NodeImpl clone = clone(null, null, deep ? Policies.DEEP_CLONE : Policies.SHALLOW_CLONE);
         if (!(clone instanceof DocumentImpl)) {
             clone.coreSetOwnerDocument(ownerDocument());
         }
@@ -334,5 +331,5 @@ public abstract class NodeImpl implements DOMNode {
         return (OMInformationItem)clone(options, null, org.apache.axiom.om.impl.common.Policies.CLONE_POLICY);
     }
 
-    abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy);
+    abstract <T> NodeImpl clone(T options, ParentNode targetParent, ClonePolicy<T> policy);
 }

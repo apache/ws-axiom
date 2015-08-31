@@ -60,7 +60,7 @@ public aspect CoreDocumentTypeDeclarationSupport {
         this.internalSubset = internalSubset;
     }
     
-    public final CoreNode CoreDocumentTypeDeclaration.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreDocumentTypeDeclaration.shallowClone(ClonePolicy<T> policy, T options) {
         CoreDocumentTypeDeclaration clone = coreGetNodeFactory().createNode(CoreDocumentTypeDeclaration.class);
         clone.coreSetRootName(coreGetRootName());
         clone.coreSetPublicId(coreGetPublicId());

@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.impl.common.Policies;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
@@ -47,7 +48,7 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     
     protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
         AxiomSOAPHeaderBlock clone = (AxiomSOAPHeaderBlock)((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(ds);
-        copyData(options, clone);
+        copyData(Policies.CLONE_POLICY, options, clone);
         return clone;
     }
 }

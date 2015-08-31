@@ -81,8 +81,13 @@ public aspect CoreDocumentSupport {
         this.standalone = standalone;
     }
     
-    public final CoreNode CoreDocument.shallowClone(ClonePolicy policy, Object options) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public final <T> CoreNode CoreDocument.shallowClone(ClonePolicy<T> policy, T options) {
+        CoreDocument clone = (CoreDocument)coreGetNodeFactory().createNode(
+                policy.preserveModel(options) ? coreGetNodeClass() : coreGetNodeType().getInterface());
+        clone.coreSetXmlVersion(coreGetXmlVersion());
+        clone.coreSetXmlEncoding(coreGetXmlEncoding());
+        clone.coreSetStandalone(coreIsStandalone());
+        clone.coreSetInputEncoding(coreGetInputEncoding());
+        return clone;
     }
 }

@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -45,9 +44,5 @@ public class SOAPMessageImpl extends DocumentImpl implements AxiomSOAPMessage {
         if (!(element instanceof SOAPEnvelope)) {
             throw new OMException("Child not allowed; must be a SOAPEnvelope");
         }
-    }
-
-    protected DocumentImpl createClone(OMCloneOptions options) {
-        return new SOAPMessageImpl(getOMFactory());
     }
 }

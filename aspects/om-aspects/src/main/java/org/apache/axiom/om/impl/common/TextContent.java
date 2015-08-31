@@ -126,7 +126,7 @@ public final class TextContent implements CharacterData {
         }
     }
 
-    public CharacterData clone(ClonePolicy policy, Object options) {
+    public <T> CharacterData clone(ClonePolicy<T> policy, T options) {
         if (binary && options instanceof OMCloneOptions && ((OMCloneOptions)options).isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).

@@ -37,7 +37,7 @@ public aspect CoreDocumentFragmentSupport {
         ownerDocument = document;
     }
     
-    public final CoreNode CoreDocumentFragment.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreDocumentFragment.shallowClone(ClonePolicy<T> policy, T options) {
         // TODO
         throw new UnsupportedOperationException();
     }

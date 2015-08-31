@@ -31,7 +31,7 @@ public aspect CoreNSUnawareElementSupport {
         return null;
     }
     
-    public final CoreNode CoreNSUnawareElement.shallowClone(ClonePolicy policy, Object options) {
+    public final <T> CoreNode CoreNSUnawareElement.shallowClone(ClonePolicy<T> policy, T options) {
         // TODO
         throw new UnsupportedOperationException();
     }

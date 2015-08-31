@@ -23,6 +23,6 @@ package org.apache.axiom.core;
  * {@link CoreCharacterDataNode} is either a {@link String} object or an instance of this interface.
  */
 public interface CharacterData {
-    CharacterData clone(ClonePolicy policy, Object options);
+    <T> CharacterData clone(ClonePolicy<T> policy, T options);
     String toString();
 }

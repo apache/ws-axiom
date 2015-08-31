@@ -292,8 +292,8 @@ public aspect CoreParentNodeSupport {
         return new ElementsIterator<T>(this, axis, type, matcher, namespaceURI, name, exceptionTranslator, detachPolicy);
     }
 
-    public final void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy policy, Object options, CoreNode clone) {
-        if (policy.cloneChildren(coreGetNodeType())) {
+    public final <T> void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
+        if (policy.cloneChildren(options, coreGetNodeType())) {
             CoreParentNode targetParent = (CoreParentNode)clone;
             if (getState() == COMPACT) {
                 Object content = this.content;

@@ -27,7 +27,6 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMExceptionTranslator;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -233,24 +232,10 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         throw new UnsupportedOperationException("TODO");
     }
 
-    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
-        DocumentImpl clone;
-        if (options.isPreserveModel()) {
-            clone = createClone(options);
-        } else {
-            clone = new DocumentImpl(getOMFactory());
-        }
-        clone.coreSetXmlVersion(coreGetXmlVersion());
-        clone.coreSetXmlEncoding(coreGetXmlEncoding());
-        clone.coreSetStandalone(coreIsStandalone());
-        clone.coreSetInputEncoding(coreGetInputEncoding());
-        return clone;
+    <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
+        return (ParentNode)shallowClone(policy, options);
     }
 
-    protected DocumentImpl createClone(OMCloneOptions options) {
-        return new DocumentImpl(getOMFactory());
-    }
-    
     public final void build() {
         defaultBuild();
     }

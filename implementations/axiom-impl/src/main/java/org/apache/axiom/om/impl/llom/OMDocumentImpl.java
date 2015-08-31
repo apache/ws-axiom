@@ -20,13 +20,13 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomDocument;
+import org.apache.axiom.om.impl.common.Policies;
 
 import java.util.Iterator;
 
@@ -59,23 +59,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
     }
     
     public OMInformationItem clone(OMCloneOptions options) {
-        AxiomDocument targetDocument;
-        if (options.isPreserveModel()) {
-            targetDocument = (AxiomDocument)createClone(options);
-        } else {
-            targetDocument = (AxiomDocument)getOMFactory().createOMDocument();
-        }
-        targetDocument.setXMLVersion(getXMLVersion());
-        targetDocument.setXMLEncoding(getXMLEncoding());
-        targetDocument.setCharsetEncoding(getCharsetEncoding());
-        targetDocument.setStandalone(isStandalone());
+        AxiomDocument targetDocument = (AxiomDocument)shallowClone(Policies.CLONE_POLICY, options);
         for (Iterator it = getChildren(); it.hasNext(); ) {
             ((OMNodeImpl)it.next()).clone(options, targetDocument);
         }
         return targetDocument;
-    }
-
-    protected OMDocument createClone(OMCloneOptions options) {
-        return getOMFactory().createOMDocument();
     }
 }

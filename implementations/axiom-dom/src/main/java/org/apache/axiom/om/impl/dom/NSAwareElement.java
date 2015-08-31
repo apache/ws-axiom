@@ -53,8 +53,8 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
     }
 
     @Override
-    final ElementImpl createClone(OMCloneOptions options, ParentNode targetParent, ClonePolicy policy) {
-        return (ElementImpl)shallowCloneWithoutAttributes(options, targetParent, policy.repairNamespaces());
+    final <T> ElementImpl createClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
+        return (ElementImpl)shallowCloneWithoutAttributes(policy, options, targetParent, policy.repairNamespaces(options));
     }
 
     public void setLineNumber(int lineNumber) {
