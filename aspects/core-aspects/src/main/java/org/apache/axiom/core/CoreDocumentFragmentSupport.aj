@@ -37,7 +37,6 @@ public aspect CoreDocumentFragmentSupport {
         ownerDocument = document;
     }
     
-    public final <T> CoreNode CoreDocumentFragment.shallowClone(ClonePolicy<T> policy, T options) {
-        return coreGetNodeFactory().createNode(CoreDocumentFragment.class);
+    public final <T> void CoreDocumentFragment.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 }

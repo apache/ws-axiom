@@ -41,6 +41,6 @@ public interface CoreNode {
      */
     <T> CoreNode coreClone(ClonePolicy<T> policy, T options);
     
-    <T> CoreNode shallowClone(ClonePolicy<T> policy, T options);
+    <T> void init(ClonePolicy<T> policy, T options, CoreNode other);
     <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone);
 }

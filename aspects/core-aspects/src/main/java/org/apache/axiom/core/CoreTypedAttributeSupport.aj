@@ -29,11 +29,9 @@ public aspect CoreTypedAttributeSupport {
         this.type = type;
     }
     
-    public final <T> CoreNode CoreTypedAttribute.shallowClone(ClonePolicy<T> policy, T options) {
-        CoreTypedAttribute clone = (CoreTypedAttribute)coreGetNodeFactory().createNode(
-                policy.preserveModel(options) ? coreGetNodeClass() : coreGetNodeType().getInterface());
-        clone.initName(this);
-        clone.coreSetType(coreGetType());
-        return clone;
+    public final <T> void CoreTypedAttribute.init(ClonePolicy<T> policy, T options, CoreNode other) {
+        CoreTypedAttribute o = (CoreTypedAttribute)other;
+        initName(o);
+        coreSetType(o.coreGetType());
     }
 }

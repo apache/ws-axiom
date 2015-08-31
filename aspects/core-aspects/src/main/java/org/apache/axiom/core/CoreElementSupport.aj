@@ -251,19 +251,17 @@ public aspect CoreElementSupport {
         }
     }
 
-    public final <T> CoreNode CoreElement.shallowClone(ClonePolicy<T> policy, T options) {
-        CoreElement clone = (CoreElement)coreGetNodeFactory().createNode(
-                policy.preserveModel(options) ? coreGetNodeClass() : coreGetNodeType().getInterface());
-        clone.initName(this);
-        CoreAttribute attr = coreGetFirstAttribute();
+    public final <T> void CoreElement.init(ClonePolicy<T> policy, T options, CoreNode other) {
+        CoreElement o = (CoreElement)other;
+        initName(o);
+        CoreAttribute attr = o.coreGetFirstAttribute();
         while (attr != null) {
-            clone.internalAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
+            internalAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
             // TODO: needed?
 //            clonedAttr.coreSetSpecified(attr.coreGetSpecified());
             attr = attr.coreGetNextAttribute();
         }
-        clone.initAncillaryData(policy, options, this);
-        return clone;
+        initAncillaryData(policy, options, o);
     }
 
     public <T> void CoreElement.initAncillaryData(ClonePolicy<T> policy, T options, CoreElement other) {

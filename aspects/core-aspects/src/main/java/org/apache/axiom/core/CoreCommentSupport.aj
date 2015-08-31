@@ -23,7 +23,6 @@ public aspect CoreCommentSupport {
         return NodeType.COMMENT;
     }
     
-    public final <T> CoreNode CoreComment.shallowClone(ClonePolicy<T> policy, T options) {
-        return coreGetNodeFactory().createNode(CoreComment.class);
+    public final <T> void CoreComment.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 }

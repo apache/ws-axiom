@@ -23,7 +23,6 @@ public aspect CoreCDATASectionSupport {
         return NodeType.CDATA_SECTION;
     }
     
-    public final <T> CoreNode CoreCDATASection.shallowClone(ClonePolicy<T> policy, T options) {
-        return coreGetNodeFactory().createNode(CoreCDATASection.class);
+    public final <T> void CoreCDATASection.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 }

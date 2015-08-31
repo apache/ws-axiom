@@ -23,10 +23,8 @@ public aspect CoreNamespaceDeclarationSupport {
         return NodeType.NAMESPACE_DECLARATION;
     }
     
-    public final <T> CoreNode CoreNamespaceDeclaration.shallowClone(ClonePolicy<T> policy, T options) {
-        CoreNamespaceDeclaration clone = coreGetNodeFactory().createNode(CoreNamespaceDeclaration.class);
+    public final <T> void CoreNamespaceDeclaration.init(ClonePolicy<T> policy, T options, CoreNode other) {
         // TODO: this is correct but bad for performance with the Axiom API
-        clone.coreSetDeclaredNamespace(coreGetDeclaredPrefix(), "");
-        return clone;
+        coreSetDeclaredNamespace(((CoreNamespaceDeclaration)other).coreGetDeclaredPrefix(), "");
     }
 }

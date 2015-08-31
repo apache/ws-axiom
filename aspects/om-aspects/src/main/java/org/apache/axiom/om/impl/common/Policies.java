@@ -62,7 +62,7 @@ public final class Policies {
     
     public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
         public boolean preserveModel(OMCloneOptions options) {
-            return options.isPreserveModel();
+            return options != null && options.isPreserveModel();
         }
 
         public boolean repairNamespaces(OMCloneOptions options) {
