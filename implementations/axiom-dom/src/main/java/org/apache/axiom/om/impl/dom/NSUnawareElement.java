@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNSUnawareElement;
 import org.apache.axiom.om.OMFactory;
@@ -34,11 +33,5 @@ public class NSUnawareElement extends ElementImpl implements DOMNSUnawareElement
 
     public void build() {
         // Do nothing: the builder never creates NS unaware elements
-    }
-
-    @Override
-    <T> ElementImpl createClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 }

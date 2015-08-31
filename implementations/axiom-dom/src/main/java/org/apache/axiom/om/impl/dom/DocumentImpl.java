@@ -232,10 +232,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         throw new UnsupportedOperationException("TODO");
     }
 
-    <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        return (ParentNode)shallowClone(policy, options);
-    }
-
     public final void build() {
         defaultBuild();
     }

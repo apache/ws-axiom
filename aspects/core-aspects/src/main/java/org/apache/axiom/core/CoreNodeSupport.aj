@@ -68,6 +68,7 @@ public aspect CoreNodeSupport {
     
     public final <T> CoreNode CoreNode.coreClone(ClonePolicy<T> policy, T options) {
         CoreNode clone = shallowClone(policy, options);
+        policy.postProcess(options, clone);
         cloneChildrenIfNecessary(policy, options, clone);
         return clone;
     }

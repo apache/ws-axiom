@@ -21,12 +21,10 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.dom.Policies;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -149,16 +147,4 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
         } while (currentNode != null);
         return false;
     }
-
-    final <T> NodeImpl clone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        ParentNode clone = shallowClone(options, targetParent, policy);
-        if (policy.cloneChildren(options, coreGetNodeType())) {
-            for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-                ((NodeImpl)child).clone(options, clone, policy);
-            }
-        }
-        return clone;
-    }
-    
-    abstract <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy);
 }

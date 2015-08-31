@@ -214,6 +214,7 @@ public aspect CoreChildNodeSupport {
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);
         }
+        policy.postProcess(options, clone);
         cloneChildrenIfNecessary(policy, options, clone);
         return clone;
     }

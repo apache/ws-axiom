@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMDocumentFragment;
 import org.apache.axiom.om.OMFactory;
@@ -32,9 +31,5 @@ public class DocumentFragmentImpl extends ParentNode implements DOMDocumentFragm
 
     public final NodeFactory coreGetNodeFactory() {
         return (NodeFactory)getOMFactory();
-    }
-
-    <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        return new DocumentFragmentImpl(getOMFactory());
     }
 }

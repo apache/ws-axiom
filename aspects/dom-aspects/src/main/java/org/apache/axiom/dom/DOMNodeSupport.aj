@@ -19,6 +19,7 @@
 package org.apache.axiom.dom;
 
 import org.apache.axiom.core.CoreElement;
+import org.w3c.dom.Node;
 
 public aspect DOMNodeSupport {
     // TODO: should eventually have package access
@@ -66,5 +67,13 @@ public aspect DOMNodeSupport {
             namespaceURI = "";
         }
         return namespaceURI.equals(context.coreLookupNamespaceURI("", false));
+    }
+
+    public final Node DOMNode.cloneNode(boolean deep) {
+        DOMNode clone = (DOMNode)coreClone(deep ? Policies.DEEP_CLONE : Policies.SHALLOW_CLONE, null);
+        if (!(clone instanceof DOMDocument)) {
+            clone.coreSetOwnerDocument(coreGetOwnerDocument(true));
+        }
+        return clone;
     }
 }

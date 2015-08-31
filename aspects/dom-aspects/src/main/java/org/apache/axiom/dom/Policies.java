@@ -23,6 +23,7 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
@@ -117,6 +118,9 @@ public final class Policies {
         public boolean cloneChildren(Void options, NodeType nodeType) {
             return true;
         }
+
+        public void postProcess(Void options, CoreNode clone) {
+        }
     };
 
     public static final ClonePolicy<Void> SHALLOW_CLONE = new ClonePolicy<Void>() {
@@ -135,6 +139,9 @@ public final class Policies {
 
         public boolean cloneChildren(Void options, NodeType nodeType) {
             return nodeType == NodeType.NS_UNAWARE_ATTRIBUTE || nodeType == NodeType.NS_AWARE_ATTRIBUTE;
+        }
+
+        public void postProcess(Void options, CoreNode clone) {
         }
     };
 }

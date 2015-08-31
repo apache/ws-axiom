@@ -551,9 +551,6 @@ public aspect AxiomElementSupport {
         return clone;
     }
 
-    public <T> void AxiomElement.copyData(ClonePolicy<T> policy, T options, AxiomElement clone) {
-    }
-
     public final void AxiomElement.buildWithAttachments() {
         if (getState() == INCOMPLETE) {
             build();

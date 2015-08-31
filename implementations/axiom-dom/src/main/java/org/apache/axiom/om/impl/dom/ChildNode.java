@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMChildNode;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomChildNode;
@@ -26,9 +25,5 @@ import org.apache.axiom.om.impl.common.AxiomChildNode;
 public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomChildNode {
     public ChildNode(OMFactory factory) {
         super(factory);
-    }
-
-    final <T> NodeImpl clone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        return (ChildNode)coreClone(policy, options, targetParent);
     }
 }

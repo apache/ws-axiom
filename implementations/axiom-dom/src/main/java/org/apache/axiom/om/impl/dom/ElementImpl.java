@@ -21,78 +21,17 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
-import javax.xml.XMLConstants;
-
-import org.apache.axiom.core.ClonePolicy;
-import org.apache.axiom.core.NodeMigrationException;
-import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMElement;
-import org.apache.axiom.dom.DOMExceptionTranslator;
-import org.apache.axiom.dom.Policies;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.NamedNodeMap;
 
 public abstract class ElementImpl extends ParentNode implements DOMElement {
     public ElementImpl(OMFactory factory) {
         super(factory);
     }
 
-    private final String checkNamespaceIsDeclared(String prefix, String namespaceURI, boolean allowDefaultNamespace, boolean declare) {
-        if (XMLConstants.XML_NS_PREFIX.equals(prefix) && XMLConstants.XML_NS_URI.equals(namespaceURI)) {
-            return XMLConstants.XML_NS_PREFIX;
-        }
-        if (prefix == null) {
-            if (namespaceURI.length() == 0) {
-                prefix = "";
-                declare = false;
-            } else {
-                prefix = coreLookupPrefix(namespaceURI, true);
-                if (prefix != null && (allowDefaultNamespace || prefix.length() != 0)) {
-                    declare = false;
-                } else {
-                    prefix = OMSerializerUtil.getNextNSPrefix();
-                }
-            }
-        } else {
-            String existingNamespaceURI = coreLookupNamespaceURI(prefix, true);
-            declare = declare && !namespaceURI.equals(existingNamespaceURI);
-        }
-        if (declare) {
-            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, prefix, null, namespaceURI);
-        }
-        return prefix;
-    }
-
-    final <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        ElementImpl clone = createClone(options, targetParent, policy);
-        NamedNodeMap attributes = getAttributes();
-        for (int i=0, l=attributes.getLength(); i<l; i++) {
-            AttrImpl attr = (AttrImpl)attributes.item(i);
-            AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, policy);
-            clonedAttr.coreSetSpecified(attr.coreGetSpecified());
-            if (policy.repairNamespaces(options) && attr instanceof NSAwareAttribute) {
-                NSAwareAttribute nsAwareAttr = (NSAwareAttribute)attr;
-                String namespaceURI = nsAwareAttr.coreGetNamespaceURI();
-                if (namespaceURI.length() != 0) {
-                    clone.checkNamespaceIsDeclared(nsAwareAttr.coreGetPrefix(), namespaceURI, false, true);
-                }
-            }
-            try {
-                clone.coreAppendAttribute(clonedAttr, NodeMigrationPolicy.MOVE_ALWAYS);
-            } catch (NodeMigrationException ex) {
-                DOMExceptionTranslator.translate(ex);
-            }
-        }
-        return clone;
-    }
-
-    abstract <T> ElementImpl createClone(T options, ParentNode targetParent, ClonePolicy<T> policy);
-    
     /*
      * DOM-Level 3 methods
      */

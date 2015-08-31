@@ -21,9 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNode;
-import org.apache.axiom.dom.Policies;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
@@ -55,14 +53,6 @@ public abstract class NodeImpl implements DOMNode {
 
     public void normalize() {
         //Parent node should override this 
-    }
-
-    public final Node cloneNode(boolean deep) {
-        NodeImpl clone = clone(null, null, deep ? Policies.DEEP_CLONE : Policies.SHALLOW_CLONE);
-        if (!(clone instanceof DocumentImpl)) {
-            clone.coreSetOwnerDocument(ownerDocument());
-        }
-        return clone;
     }
 
     /*
@@ -328,8 +318,6 @@ public abstract class NodeImpl implements DOMNode {
     public abstract OMXMLParserWrapper getBuilder();
     
     public final OMInformationItem clone(OMCloneOptions options) {
-        return (OMInformationItem)clone(options, null, org.apache.axiom.om.impl.common.Policies.CLONE_POLICY);
+        return (OMInformationItem)coreClone(org.apache.axiom.om.impl.common.Policies.CLONE_POLICY, options);
     }
-
-    abstract <T> NodeImpl clone(T options, ParentNode targetParent, ClonePolicy<T> policy);
 }

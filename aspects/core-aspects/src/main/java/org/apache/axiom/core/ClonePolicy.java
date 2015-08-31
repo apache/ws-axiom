@@ -26,4 +26,16 @@ public interface ClonePolicy<T> {
     boolean repairNamespaces(T options);
     boolean cloneAttributes(T options);
     boolean cloneChildren(T options, NodeType nodeType);
+
+    /**
+     * Post-process a cloned node. This method is called after all information from the original
+     * node has been copied (for elements, this includes the attributes of the element) and the node
+     * has been inserted into the cloned tree, but before any children are added.
+     * 
+     * @param options
+     *            API specific options
+     * @param clone
+     *            the clone to be post-processed
+     */
+    void postProcess(T options, CoreNode clone);
 }

@@ -20,7 +20,9 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
@@ -73,6 +75,21 @@ public final class Policies {
 
         public boolean cloneChildren(OMCloneOptions options, NodeType nodeType) {
             return true;
+        }
+
+        public void postProcess(OMCloneOptions options, CoreNode clone) {
+            if (clone instanceof AxiomElement) {
+                // Repair namespaces
+                AxiomElement element = (AxiomElement)clone;
+                NSUtil.handleNamespace(element, element.getNamespace(), false, true);
+                CoreAttribute attr = element.coreGetFirstAttribute();
+                while (attr != null) {
+                    if (attr instanceof AxiomAttribute) {
+                        NSUtil.handleNamespace(element, ((AxiomAttribute)attr).getNamespace(), true, true);
+                    }
+                    attr = attr.coreGetNextAttribute();
+                }
+            }
         }
     };
 }

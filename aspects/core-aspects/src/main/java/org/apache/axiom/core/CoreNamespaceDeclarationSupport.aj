@@ -24,7 +24,9 @@ public aspect CoreNamespaceDeclarationSupport {
     }
     
     public final <T> CoreNode CoreNamespaceDeclaration.shallowClone(ClonePolicy<T> policy, T options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        CoreNamespaceDeclaration clone = coreGetNodeFactory().createNode(CoreNamespaceDeclaration.class);
+        // TODO: this is correct but bad for performance with the Axiom API
+        clone.coreSetDeclaredNamespace(coreGetDeclaredPrefix(), "");
+        return clone;
     }
 }

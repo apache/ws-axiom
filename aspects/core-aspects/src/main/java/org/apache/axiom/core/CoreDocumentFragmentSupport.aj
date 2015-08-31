@@ -38,7 +38,6 @@ public aspect CoreDocumentFragmentSupport {
     }
     
     public final <T> CoreNode CoreDocumentFragment.shallowClone(ClonePolicy<T> policy, T options) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return coreGetNodeFactory().createNode(CoreDocumentFragment.class);
     }
 }

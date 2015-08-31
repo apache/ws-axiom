@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.om.OMCloneOptions;
@@ -50,11 +49,6 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
 
     public OMElement cloneOMElement() {
         return (OMElement)clone(new OMCloneOptions());
-    }
-
-    @Override
-    final <T> ElementImpl createClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        return (ElementImpl)shallowCloneWithoutAttributes(policy, options, targetParent, policy.repairNamespaces(options));
     }
 
     public void setLineNumber(int lineNumber) {

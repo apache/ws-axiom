@@ -28,13 +28,4 @@ public final class NamespaceDeclaration extends AttrImpl implements DOMNamespace
     public NamespaceDeclaration(OMFactory factory) {
         super(factory);
     }
-
-    @Override
-    final <T> ParentNode shallowClone(T options, ParentNode targetParent, ClonePolicy<T> policy) {
-        NamespaceDeclaration clone = new NamespaceDeclaration(getOMFactory());
-        // TODO: this is ugly, but we are expected to create a shallow clone and can't copy the value;
-        //       this will be fixed when the clone code is moved to om-aspects
-        clone.setDeclaredNamespace(new OMNamespaceImpl("", getDeclaredNamespace().getPrefix()));
-        return clone;
-    }
 }
