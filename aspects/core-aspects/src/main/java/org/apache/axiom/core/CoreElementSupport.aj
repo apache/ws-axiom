@@ -262,12 +262,12 @@ public aspect CoreElementSupport {
 //            clonedAttr.coreSetSpecified(attr.coreGetSpecified());
             attr = attr.coreGetNextAttribute();
         }
-        copyData(policy, options, clone);
+        clone.initAncillaryData(policy, options, this);
         return clone;
     }
 
     abstract void CoreElement.copyName(CoreElement clone);
     
-    public <T> void CoreElement.copyData(ClonePolicy<T> policy, T options, CoreElement clone) {
+    public <T> void CoreElement.initAncillaryData(ClonePolicy<T> policy, T options, CoreElement other) {
     }
 }

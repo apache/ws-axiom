@@ -48,7 +48,7 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     
     protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
         AxiomSOAPHeaderBlock clone = (AxiomSOAPHeaderBlock)((SOAPFactory)getOMFactory()).createSOAPHeaderBlock(ds);
-        copyData(Policies.CLONE_POLICY, options, clone);
+        clone.initAncillaryData(Policies.CLONE_POLICY, options, this);
         return clone;
     }
 }

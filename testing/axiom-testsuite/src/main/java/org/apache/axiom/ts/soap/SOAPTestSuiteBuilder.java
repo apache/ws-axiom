@@ -261,6 +261,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.TRUE));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.FALSE));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, null));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestCloneProcessedWithoutPreservingModel(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
         for (int i=0; i<booleanLiterals.length; i++) {

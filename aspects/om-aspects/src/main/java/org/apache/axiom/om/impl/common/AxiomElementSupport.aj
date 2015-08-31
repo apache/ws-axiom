@@ -547,7 +547,7 @@ public aspect AxiomElementSupport {
             targetParent.coreAppendChild(clone, false);
         }
         clone.initName(getLocalName(), getNamespace(), namespaceRepairing);
-        copyData(policy, options, clone);
+        clone.initAncillaryData(policy, options, this);
         return clone;
     }
 

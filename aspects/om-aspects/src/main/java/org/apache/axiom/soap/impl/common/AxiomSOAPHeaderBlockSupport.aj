@@ -121,12 +121,12 @@ public aspect AxiomSOAPHeaderBlockSupport {
         }
     }
 
-    public final <T> void AxiomSOAPHeaderBlock.copyData(ClonePolicy<T> policy, T options, CoreElement clone) {
+    public final <T> void AxiomSOAPHeaderBlock.initAncillaryData(ClonePolicy<T> policy, T options, CoreElement other) {
         // Copy the processed flag.  The other SOAPHeaderBlock information 
         // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
         Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
-        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
-            ((SOAPHeaderBlock)clone).setProcessed();
+        if ((processedFlag == null && ((SOAPHeaderBlock)other).isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
+            setProcessed();
         }
     }
 }
