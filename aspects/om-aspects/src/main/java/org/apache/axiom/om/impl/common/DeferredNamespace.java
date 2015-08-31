@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMNamespace;
 
 final class DeferredNamespace implements OMNamespace {
-    private final OMSourcedElementImpl element;
+    private final AxiomSourcedElement element;
     
     final String uri;
     
-    DeferredNamespace(OMSourcedElementImpl omSourcedElementImpl, String ns) {
-        element = omSourcedElementImpl;
+    DeferredNamespace(AxiomSourcedElement element, String ns) {
+        this.element = element;
         this.uri = ns;
     }
 

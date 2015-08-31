@@ -60,6 +60,7 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
@@ -72,6 +73,7 @@ import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.om.impl.dom.NSUnawareAttribute;
 import org.apache.axiom.om.impl.dom.NSUnawareElement;
 import org.apache.axiom.om.impl.dom.NamespaceDeclaration;
+import org.apache.axiom.om.impl.dom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
@@ -173,6 +175,8 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
             node = new NSUnawareElement(this);
         } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class || type == DOMProcessingInstruction.class) {
             node = new ProcessingInstructionImpl(this);
+        } else if (type == AxiomSourcedElement.class) {
+            node = new OMSourcedElementImpl(this);
         } else if (type == AxiomSOAPMessage.class) {
             node = new SOAPMessageImpl(this);
         } else if (type == AxiomSOAPEnvelope.class) {

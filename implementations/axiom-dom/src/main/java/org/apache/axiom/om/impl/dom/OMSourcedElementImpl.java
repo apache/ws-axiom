@@ -17,14 +17,13 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.dom;
+package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.OMSourcedElementImpl;
-import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
+import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 
-public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl implements AxiomSOAPHeaderBlock {
-    public SOAPHeaderBlockImpl(OMFactory factory) {
+public class OMSourcedElementImpl extends NSAwareElement implements AxiomSourcedElement {
+    public OMSourcedElementImpl(OMFactory factory) {
         super(factory);
     }
 }

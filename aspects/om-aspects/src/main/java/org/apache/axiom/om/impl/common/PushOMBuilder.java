@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl.common;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -37,11 +37,11 @@ import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
-    private final OMSourcedElementImpl root;
+    private final AxiomSourcedElement root;
     private final OMFactoryEx factory;
     private OMElement parent;
     
-    public PushOMBuilder(OMSourcedElementImpl root) throws XMLStreamException {
+    public PushOMBuilder(AxiomSourcedElement root) throws XMLStreamException {
         this.root = root;
         factory = (OMFactoryEx)root.getOMFactory();
         // Seed the namespace context with the namespace context from the parent
@@ -148,7 +148,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         // Use the internal appendAttribute method instead of addAttribute in order to avoid
         // automatic of a namespace declaration (the OMDataSource is required to produce well formed
         // XML with respect to namespaces, so it will take care of the namespace declarations).
-        ((OMElementImpl)parent).internalAppendAttribute(attr);
+        ((AxiomElement)parent).internalAppendAttribute(attr);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
@@ -156,7 +156,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteNamespace(String prefix, String namespaceURI) {
-        ((OMElementImpl)parent).addNamespaceDeclaration(getOMNamespace(prefix, namespaceURI, true));
+        ((AxiomElement)parent).addNamespaceDeclaration(getOMNamespace(prefix, namespaceURI, true));
     }
 
     protected void doWriteDefaultNamespace(String namespaceURI) {

@@ -57,11 +57,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         new QName("urn:test", "root") };
     
     private final OMMetaFactory metaFactory;
-    private final boolean supportsOMSourcedElement;
     
-    public OMTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement) {
+    public OMTestSuiteBuilder(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
-        this.supportsOMSourcedElement = supportsOMSourcedElement;
     }
     
     protected void addTests() {
@@ -455,10 +453,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope4(metaFactory, variant));
             }
         }
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource1(metaFactory));
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource2(metaFactory));
-        }
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource1(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource2(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMEntityReference(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMEntityReferenceWithNullParent(metaFactory));
@@ -499,104 +495,102 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeSameParent(metaFactory));
-        if (supportsOMSourcedElement) {
-            for (int i=0; i<OMSourcedElementVariant.INSTANCES.length; i++) {
-                OMSourcedElementVariant variant = OMSourcedElementVariant.INSTANCES[i];
-                for (int j=0; j<qnames.length; j++) {
-                    QName qname = qnames[j];
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalName(metaFactory, variant, qname));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespace(metaFactory, variant, qname));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetPrefix(metaFactory, variant, qname));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceURI(metaFactory, variant, qname));
-                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestHasName(metaFactory, variant, qname));
-                }
+        for (int i=0; i<OMSourcedElementVariant.INSTANCES.length; i++) {
+            OMSourcedElementVariant variant = OMSourcedElementVariant.INSTANCES[i];
+            for (int j=0; j<qnames.length; j++) {
+                QName qname = qnames[j];
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalName(metaFactory, variant, qname));
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespace(metaFactory, variant, qname));
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetPrefix(metaFactory, variant, qname));
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceURI(metaFactory, variant, qname));
+                addTest(new org.apache.axiom.ts.om.sourcedelement.TestHasName(metaFactory, variant, qname));
             }
-            for (AddAttributeStrategy strategy : getInstances(AddAttributeStrategy.class)) {
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestAddAttribute(metaFactory, strategy));
-            }
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, false));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneUnknownName(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloseOnComplete(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestDeclareNamespace(metaFactory));
+        }
+        for (AddAttributeStrategy strategy : getInstances(AddAttributeStrategy.class)) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestAddAttribute(metaFactory, strategy));
+        }
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneUnknownName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloseOnComplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestDeclareNamespace(metaFactory));
+        for (ExpansionStrategy es : getInstances(ExpansionStrategy.class)) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestDetach(metaFactory, es));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestDiscard(metaFactory, es));
+        }
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAllAttributes(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAllDeclaredNamespaces(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAttribute(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAttributeValue(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNextOMSiblingIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetReaderException(metaFactory));
+        for (int i=0; i<PushOMDataSourceScenario.INSTANCES.length; i++) {
+            PushOMDataSourceScenario scenario = PushOMDataSourceScenario.INSTANCES[i];
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(metaFactory, scenario, false));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(metaFactory, scenario, true));
+        }
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestInputStreamDS(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1Unqualified(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2DefaultPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2QualifiedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2Unqualified(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3DefaultPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3QualifiedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3Unqualified(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
+        for (int i=0; i<PushOMDataSourceScenario.INSTANCES.length; i++) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestPushOMDataSourceExpansion(metaFactory, PushOMDataSourceScenario.INSTANCES[i]));
+        }
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded(metaFactory));
+        for (ElementContext ec : getInstances(ElementContext.class)) {
             for (ExpansionStrategy es : getInstances(ExpansionStrategy.class)) {
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestDetach(metaFactory, es));
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestDiscard(metaFactory, es));
-            }
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAllAttributes(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAllDeclaredNamespaces(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAttribute(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetAttributeValue(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNextOMSiblingIncomplete(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetReaderException(metaFactory));
-            for (int i=0; i<PushOMDataSourceScenario.INSTANCES.length; i++) {
-                PushOMDataSourceScenario scenario = PushOMDataSourceScenario.INSTANCES[i];
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(metaFactory, scenario, false));
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource(metaFactory, scenario, true));
-            }
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestInputStreamDS(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1Unqualified(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2DefaultPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2QualifiedPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2Unqualified(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3DefaultPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3QualifiedPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3Unqualified(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
-            for (int i=0; i<PushOMDataSourceScenario.INSTANCES.length; i++) {
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestPushOMDataSourceExpansion(metaFactory, PushOMDataSourceScenario.INSTANCES[i]));
-            }
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded(metaFactory));
-            for (ElementContext ec : getInstances(ElementContext.class)) {
-                for (ExpansionStrategy es : getInstances(ExpansionStrategy.class)) {
-                    for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
-                        for (int count = 1; count <= 2; count++) {
-                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, ec, es, ss, false, count));
-                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, ec, es, ss, false, count));
+                for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
+                    for (int count = 1; count <= 2; count++) {
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, ec, es, ss, false, count));
+                        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, ec, es, ss, false, count));
+                        if (ec != ElementContext.ORPHAN) {
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, ec, es, ss, true, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, ec, es, ss, true, count));
+                        }
+                        if (es != ExpansionStrategy.PARTIAL) {
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, ec, es, ss, false, count));
+                            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, ec, es, ss, false, count));
                             if (ec != ElementContext.ORPHAN) {
-                                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, false, ec, es, ss, true, count));
-                                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, false, true, ec, es, ss, true, count));
-                            }
-                            if (es != ExpansionStrategy.PARTIAL) {
-                                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, ec, es, ss, false, count));
-                                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, ec, es, ss, false, count));
-                                if (ec != ElementContext.ORPHAN) {
-                                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, ec, es, ss, true, count));
-                                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, ec, es, ss, true, count));
-                                }
+                                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, false, ec, es, ss, true, count));
+                                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerialize(metaFactory, true, true, ec, es, ss, true, count));
                             }
                         }
                     }
                 }
             }
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource(metaFactory));
-            for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeOMDataSourceWritingToOutputStream(metaFactory, ss, false));
-                addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeOMDataSourceWritingToOutputStream(metaFactory, ss, true));
-            }
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSource(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, false));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, true));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestGetName(metaFactory));
-            for (int events = 0; events < 7; events++) {
-                addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching(metaFactory, events));
-            }
+        }
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource(metaFactory));
+        for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeOMDataSourceWritingToOutputStream(metaFactory, ss, false));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeOMDataSourceWritingToOutputStream(metaFactory, ss, true));
+        }
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSource(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestGetName(metaFactory));
+        for (int events = 0; events < 7; events++) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching(metaFactory, events));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource(metaFactory));
