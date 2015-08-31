@@ -50,8 +50,7 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     private Text setTitle(String title, Text.Type type) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Text text = fomfactory.newText(PREFIXED_TITLE, type);
+        Text text = getFactory().newText(PREFIXED_TITLE, type);
         text.setValue(title);
         this._setChild(PREFIXED_TITLE, (OMElement)text);
         return text;
@@ -194,7 +193,7 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Categories addCategories() {
-        return ((FOMFactory)getOMFactory()).newCategories(this);
+        return getFactory().newCategories(this);
     }
 
     public Collection addCategories(Categories categories) {
@@ -203,14 +202,14 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public Categories addCategories(String href) {
-        Categories cats = ((FOMFactory)getOMFactory()).newCategories();
+        Categories cats = getFactory().newCategories();
         cats.setHref(href);
         addCategories(cats);
         return cats;
     }
 
     public Categories addCategories(List<Category> categories, boolean fixed, String scheme) {
-        Categories cats = ((FOMFactory)getOMFactory()).newCategories();
+        Categories cats = getFactory().newCategories();
         cats.setFixed(fixed);
         if (scheme != null)
             cats.setScheme(scheme);

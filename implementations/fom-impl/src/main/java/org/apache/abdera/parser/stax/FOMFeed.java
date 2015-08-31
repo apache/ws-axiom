@@ -47,8 +47,7 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     }
 
     public Entry addEntry() {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        return fomfactory.newEntry(this);
+        return getFactory().newEntry(this);
     }
 
     public Feed insertEntry(Entry entry) {
@@ -62,14 +61,13 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     }
 
     public Entry insertEntry() {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Entry entry = fomfactory.newEntry((Feed)null);
+        Entry entry = getFactory().newEntry((Feed)null);
         insertEntry(entry);
         return entry;
     }
 
     public Source getAsSource() {
-        FOMSource source = (FOMSource)((FOMFactory)getOMFactory()).newSource(null);
+        FOMSource source = (FOMSource)getFactory().newSource(null);
         for (Iterator<?> i = this.getChildElements(); i.hasNext();) {
             FOMElement child = (FOMElement)i.next();
             if (!child.getQName().equals(ENTRY)) {

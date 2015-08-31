@@ -60,8 +60,7 @@ public class FOMService extends FOMExtensibleElement implements AbderaService {
     }
 
     public Workspace addWorkspace(String title) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Workspace workspace = fomfactory.newWorkspace(this);
+        Workspace workspace = getFactory().newWorkspace(this);
         workspace.setTitle(title);
         return workspace;
     }

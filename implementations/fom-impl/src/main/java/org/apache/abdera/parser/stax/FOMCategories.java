@@ -39,15 +39,13 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Category addCategory(String term) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Category category = factory.newCategory(this);
+        Category category = getFactory().newCategory(this);
         category.setTerm(term);
         return category;
     }
 
     public Category addCategory(String scheme, String term, String label) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Category category = factory.newCategory(this);
+        Category category = getFactory().newCategory(this);
         category.setTerm(term);
         category.setScheme(scheme);
         category.setLabel(label);

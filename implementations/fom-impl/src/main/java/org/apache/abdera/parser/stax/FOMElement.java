@@ -36,6 +36,7 @@ import javax.activation.MimeType;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.abdera.factory.Factory;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.iri.IRIHelper;
 import org.apache.abdera.i18n.rfc4646.Lang;
@@ -373,8 +374,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
             setTextElement(qname, null, false);
             return null;
         }
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Text text = fomfactory.newText(qname, Text.Type.TEXT);
+        Text text = getFactory().newText(qname, Text.Type.TEXT);
         text.setValue(value);
         setTextElement(qname, text, false);
         return text;
@@ -385,8 +385,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
             setTextElement(qname, null, false);
             return null;
         }
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Text text = fomfactory.newText(qname, Text.Type.HTML);
+        Text text = getFactory().newText(qname, Text.Type.HTML);
         if (baseUri != null)
             text.setBaseUri(baseUri);
         text.setValue(value);
@@ -399,8 +398,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
             setTextElement(qname, null, false);
             return null;
         }
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Text text = fomfactory.newText(qname, Text.Type.XHTML);
+        Text text = getFactory().newText(qname, Text.Type.XHTML);
         if (baseUri != null)
             text.setBaseUri(baseUri);
         text.setValue(value);
@@ -482,7 +480,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
     protected Element _parse(String value, IRI baseUri) throws ParseException, UnsupportedEncodingException {
         if (value == null)
             return null;
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
+        Factory fomfactory = getFactory();
         Parser parser = fomfactory.newParser();
         ParserOptions options = parser.getDefaultParserOptions();
         options.setFactory(fomfactory);

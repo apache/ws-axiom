@@ -41,8 +41,7 @@ public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspac
     }
 
     private Text setTitle(String title, Text.Type type) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Text text = fomfactory.newText(PREFIXED_TITLE, type);
+        Text text = getFactory().newText(PREFIXED_TITLE, type);
         text.setValue(title);
         this._setChild(PREFIXED_TITLE, (OMElement)text);
         return text;
@@ -89,16 +88,14 @@ public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspac
     }
 
     public Collection addCollection(String title, String href) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Collection collection = fomfactory.newCollection(this);
+        Collection collection = getFactory().newCollection(this);
         collection.setTitle(title);
         collection.setHref(href);
         return collection;
     }
 
     public Collection addMultipartCollection(String title, String href) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Collection collection = fomfactory.newMultipartCollection(this);
+        Collection collection = ((FOMFactory)getFactory()).newMultipartCollection(this);
         collection.setTitle(title);
         collection.setHref(href);
         return collection;

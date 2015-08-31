@@ -63,15 +63,13 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Person addAuthor(String name) {
-        FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
-        Person person = fomfactory.newAuthor(this);
+        Person person = getFactory().newAuthor(this);
         person.setName(name);
         return person;
     }
 
     public Person addAuthor(String name, String email, String uri) {
-        FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
-        Person person = fomfactory.newAuthor(this);
+        Person person = getFactory().newAuthor(this);
         person.setName(name);
         person.setEmail(email);
         person.setUri(uri);
@@ -103,15 +101,13 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Category addCategory(String term) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Category category = factory.newCategory(this);
+        Category category = getFactory().newCategory(this);
         category.setTerm(term);
         return category;
     }
 
     public Category addCategory(String scheme, String term, String label) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Category category = factory.newCategory(this);
+        Category category = getFactory().newCategory(this);
         category.setTerm(term);
         category.setScheme(scheme);
         category.setLabel(label);
@@ -128,15 +124,13 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Person addContributor(String name) {
-        FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
-        Person person = fomfactory.newContributor(this);
+        Person person = getFactory().newContributor(this);
         person.setName(name);
         return person;
     }
 
     public Person addContributor(String name, String email, String uri) {
-        FOMFactory fomfactory = (FOMFactory)this.getOMFactory();
-        Person person = fomfactory.newContributor(this);
+        Person person = getFactory().newContributor(this);
         person.setName(name);
         person.setEmail(email);
         person.setUri(uri);
@@ -181,8 +175,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
                 id.setValue(value);
             return id;
         } else {
-            FOMFactory fomfactory = (FOMFactory)getOMFactory();
-            IRIElement iri = fomfactory.newID(this);
+            IRIElement iri = getFactory().newID(this);
             iri.setValue((normalize) ? IRI.normalizeString(value) : value);
             return iri;
         }
@@ -210,8 +203,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Link addLink(String href, String rel) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Link link = fomfactory.newLink(this);
+        Link link = getFactory().newLink(this);
         link.setHref(href);
         if (rel != null)
             link.setRel(rel);
@@ -219,8 +211,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Link addLink(String href, String rel, String type, String title, String hreflang, long length) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Link link = fomfactory.newLink(this);
+        Link link = getFactory().newLink(this);
         link.setHref(href);
         link.setRel(rel);
         link.setMimeType(type);
@@ -240,8 +231,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Text setRights(String value) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newRights();
+        Text text = getFactory().newRights();
         text.setValue(value);
         setRightsElement(text);
         return text;
@@ -256,16 +246,14 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Text setRights(String value, Text.Type type) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newRights(type);
+        Text text = getFactory().newRights(type);
         text.setValue(value);
         setRightsElement(text);
         return text;
     }
 
     public Text setRights(Div value) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newRights(Text.Type.XHTML);
+        Text text = getFactory().newRights(Text.Type.XHTML);
         text.setValueElement(value);
         setRightsElement(text);
         return text;
@@ -285,8 +273,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Text setSubtitle(String value) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newSubtitle();
+        Text text = getFactory().newSubtitle();
         text.setValue(value);
         setSubtitleElement(text);
         return text;
@@ -301,16 +288,14 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Text setSubtitle(String value, Text.Type type) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newSubtitle(type);
+        Text text = getFactory().newSubtitle(type);
         text.setValue(value);
         setSubtitleElement(text);
         return text;
     }
 
     public Text setSubtitle(Div value) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newSubtitle(Text.Type.XHTML);
+        Text text = getFactory().newSubtitle(Text.Type.XHTML);
         text.setValueElement(value);
         setSubtitleElement(text);
         return text;
@@ -330,8 +315,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Text setTitle(String value) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newTitle();
+        Text text = getFactory().newTitle();
         text.setValue(value);
         setTitleElement(text);
         return text;
@@ -346,16 +330,14 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Text setTitle(String value, Text.Type type) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newTitle(type);
+        Text text = getFactory().newTitle(type);
         text.setValue(value);
         setTitleElement(text);
         return text;
     }
 
     public Text setTitle(Div value) {
-        FOMFactory factory = (FOMFactory)this.getOMFactory();
-        Text text = factory.newTitle(Text.Type.XHTML);
+        Text text = getFactory().newTitle(Text.Type.XHTML);
         text.setValueElement(value);
         setTitleElement(text);
         return text;
@@ -397,8 +379,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
             dte.setValue(value);
             return dte;
         } else {
-            FOMFactory fomfactory = (FOMFactory)getOMFactory();
-            DateTime dt = fomfactory.newUpdated(this);
+            DateTime dt = getFactory().newUpdated(this);
             dt.setValue(value);
             return dt;
         }
@@ -425,8 +406,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Generator setGenerator(String uri, String version, String value) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Generator generator = fomfactory.newGenerator(this);
+        Generator generator = getFactory().newGenerator(this);
         if (uri != null)
             generator.setUri(uri);
         if (version != null)
@@ -453,8 +433,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
             _removeChildren(ICON, false);
             return null;
         }
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        IRIElement iri = fomfactory.newIcon(this);
+        IRIElement iri = getFactory().newIcon(this);
         iri.setValue(value);
         return iri;
     }
@@ -482,8 +461,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
             _removeChildren(LOGO, false);
             return null;
         }
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        IRIElement iri = fomfactory.newLogo(this);
+        IRIElement iri = getFactory().newLogo(this);
         iri.setValue(value);
         return iri;
     }
@@ -567,7 +545,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Feed getAsFeed() {
-        FOMFeed feed = (FOMFeed)((FOMFactory)getOMFactory()).newFeed();
+        FOMFeed feed = (FOMFeed)getFactory().newFeed();
         for (Iterator i = this.getChildElements(); i.hasNext();) {
             FOMElement child = (FOMElement)i.next();
             if (!child.getQName().equals(ENTRY)) {

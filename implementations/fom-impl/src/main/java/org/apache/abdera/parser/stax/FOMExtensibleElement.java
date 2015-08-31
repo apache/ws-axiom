@@ -69,10 +69,9 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends Element> T addExtension(QName qname) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
         String prefix = qname.getPrefix();
         declareIfNecessary(qname.getNamespaceURI(), prefix);
-        return (T)fomfactory.newExtensionElement(qname, this);
+        return (T)getFactory().newExtensionElement(qname, this);
     }
 
     public <T extends Element> T addExtension(String namespace, String localpart, String prefix) {
@@ -82,8 +81,7 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public Element addSimpleExtension(QName qname, String value) {
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Element el = fomfactory.newElement(qname, this);
+        Element el = getFactory().newElement(qname, this);
         el.setText(value);
         String prefix = qname.getPrefix();
         declareIfNecessary(qname.getNamespaceURI(), prefix);

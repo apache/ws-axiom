@@ -170,7 +170,7 @@ public class FOMDocument<T extends Element> extends OMDocumentImpl implements Ab
     }
 
     public Object clone() {
-        Document<T> doc = ((FOMFactory)getOMFactory()).newDocument();
+        Document<T> doc = getFactory().newDocument();
         OMDocument omdoc = (OMDocument)doc;
         for (Iterator i = getChildren(); i.hasNext();) {
             OMNode node = (OMNode)i.next();
