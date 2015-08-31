@@ -102,9 +102,9 @@ public final class Policies {
     };
 
     public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
-        public boolean preserveModel(Void options) {
+        public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
             // This is not specified by the API, but it's compatible with versions before 1.2.14
-            return true;
+            return node.coreGetNodeClass();
         }
 
         public boolean repairNamespaces(Void options) {
@@ -124,9 +124,9 @@ public final class Policies {
     };
 
     public static final ClonePolicy<Void> SHALLOW_CLONE = new ClonePolicy<Void>() {
-        public boolean preserveModel(Void options) {
+        public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
             // This is not specified by the API, but it's compatible with versions before 1.2.14
-            return true;
+            return node.coreGetNodeClass();
         }
 
         public boolean repairNamespaces(Void options) {

@@ -68,8 +68,7 @@ public aspect CoreNodeSupport {
     
     // TODO: merge this into internalClone once it is no longer referenced elsewhere
     public final <T> CoreNode CoreNode.shallowClone(ClonePolicy<T> policy, T options) {
-        CoreNode clone = coreGetNodeFactory().createNode(
-                policy.preserveModel(options) ? coreGetNodeClass() : coreGetNodeType().getInterface());
+        CoreNode clone = coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
         clone.init(policy, options, this);
         return clone;
     }

@@ -124,9 +124,9 @@ public aspect AxiomNamedInformationItemSupport {
 
     public final void AxiomNamedInformationItem.initName(CoreNamedNode other) {
         AxiomNamedInformationItem o = (AxiomNamedInformationItem)other;
-        localName = o.coreGetLocalName();
-        namespace = o.getNamespace();
-        qName = null;
+        localName = o.localName;
+        namespace = o.namespace;
+        qName = o.qName;
     }
     
     public void AxiomNamedInformationItem.updateLocalName() {

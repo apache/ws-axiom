@@ -61,8 +61,14 @@ public final class Policies {
     };
     
     public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
-        public boolean preserveModel(OMCloneOptions options) {
-            return options != null && options.isPreserveModel();
+        public Class<? extends CoreNode> getTargetNodeClass(OMCloneOptions options, CoreNode node) {
+            if (options != null && options.isPreserveModel()) {
+                return node.coreGetNodeClass();
+            } else if (options != null && options.isCopyOMDataSources() && node instanceof AxiomSourcedElement) {
+                return AxiomSourcedElement.class;
+            } else {
+                return node.coreGetNodeType().getInterface();
+            }
         }
 
         public boolean repairNamespaces(OMCloneOptions options) {

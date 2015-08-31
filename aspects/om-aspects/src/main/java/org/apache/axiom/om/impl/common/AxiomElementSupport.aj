@@ -542,7 +542,7 @@ public aspect AxiomElementSupport {
     }
 
     public final <T> AxiomElement AxiomElement.shallowCloneWithoutAttributes(ClonePolicy<T> policy, T options, CoreParentNode targetParent, boolean namespaceRepairing) {
-        AxiomElement clone = (AxiomElement)coreGetNodeFactory().createNode(policy.preserveModel(options) ? coreGetNodeClass() : AxiomElement.class);
+        AxiomElement clone = (AxiomElement)coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
         if (targetParent != null) {
             targetParent.coreAppendChild(clone, false);
         }
