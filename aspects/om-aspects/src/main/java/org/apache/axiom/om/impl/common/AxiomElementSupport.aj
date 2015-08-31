@@ -32,7 +32,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
@@ -40,7 +39,6 @@ import org.apache.axiom.core.IdentityMapper;
 import org.apache.axiom.core.NodeMigrationException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -541,14 +539,8 @@ public aspect AxiomElementSupport {
         }
     }
 
-    public final <T> AxiomElement AxiomElement.shallowCloneWithoutAttributes(ClonePolicy<T> policy, T options, CoreParentNode targetParent, boolean namespaceRepairing) {
-        AxiomElement clone = (AxiomElement)coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
-        if (targetParent != null) {
-            targetParent.coreAppendChild(clone, false);
-        }
-        clone.initName(getLocalName(), getNamespace(), namespaceRepairing);
-        clone.initAncillaryData(policy, options, this);
-        return clone;
+    public final OMElement AxiomElement.cloneOMElement() {
+        return (OMElement)clone(null);
     }
 
     public final void AxiomElement.buildWithAttachments() {

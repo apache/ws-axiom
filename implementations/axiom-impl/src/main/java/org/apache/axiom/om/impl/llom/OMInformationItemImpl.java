@@ -18,13 +18,7 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.impl.common.AxiomInformationItem;
-import org.apache.axiom.om.impl.common.Policies;
 
 public abstract class OMInformationItemImpl implements AxiomInformationItem {
-    public final OMInformationItem clone(OMCloneOptions options) {
-        return (OMInformationItem)coreClone(Policies.CLONE_POLICY, options);
-    }
 }

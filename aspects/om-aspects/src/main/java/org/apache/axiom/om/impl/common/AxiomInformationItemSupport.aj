@@ -19,9 +19,15 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMInformationItem;
 
 public aspect AxiomInformationItemSupport {
     public final NodeFactory AxiomInformationItem.coreGetNodeFactory() {
         return (NodeFactory)getOMFactory();
+    }
+
+    public final OMInformationItem AxiomInformationItem.clone(OMCloneOptions options) {
+        return (OMInformationItem)coreClone(Policies.CLONE_POLICY, options);
     }
 }

@@ -22,9 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMNode;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
@@ -316,8 +314,4 @@ public abstract class NodeImpl implements DOMNode {
     // /
 
     public abstract OMXMLParserWrapper getBuilder();
-    
-    public final OMInformationItem clone(OMCloneOptions options) {
-        return (OMInformationItem)coreClone(org.apache.axiom.om.impl.common.Policies.CLONE_POLICY, options);
-    }
 }

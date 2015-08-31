@@ -47,10 +47,6 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
         setNamespace(namespace, true);
     }
 
-    public OMElement cloneOMElement() {
-        return (OMElement)clone(new OMCloneOptions());
-    }
-
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

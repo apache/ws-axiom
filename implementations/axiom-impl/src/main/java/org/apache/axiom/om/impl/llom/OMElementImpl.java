@@ -19,27 +19,18 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.Policies;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Iterator;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
         implements AxiomElement, OMConstants {
-
-    private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
     private int lineNumber;
 
@@ -71,17 +62,6 @@ public class OMElementImpl extends OMNodeImpl
 
     public final void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
-    }
-
-    public final OMElement cloneOMElement() {
-        
-        if (log.isDebugEnabled()) {
-            log.debug("cloneOMElement start");
-            log.debug("  element string =" + getLocalName());
-            log.debug(" isComplete = " + isComplete());
-            log.debug("  builder = " + getBuilder());
-        }
-        return (OMElement)clone(new OMCloneOptions());
     }
 
     public final void setLineNumber(int lineNumber) {
