@@ -458,11 +458,6 @@ public aspect AxiomElementSupport {
      * the prefix of a known namespace URI.
      */
     private OMNamespace AxiomElement.findDeclaredNamespace(String uri, String prefix) {
-        // Seems weird, but necessary for compatibility with older versions
-        if (uri != null && prefix != null && prefix.length() == 0) {
-            prefix = null;
-        }
-        
         CoreAttribute attr = coreGetFirstAttribute();
         while (attr != null) {
             if (attr instanceof AxiomNamespaceDeclaration) {

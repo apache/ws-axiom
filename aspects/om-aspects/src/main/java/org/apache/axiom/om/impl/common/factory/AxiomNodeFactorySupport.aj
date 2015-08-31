@@ -260,7 +260,7 @@ public aspect AxiomNodeFactorySupport {
             // The goal here is twofold:
             //  * check if the namespace needs to be declared;
             //  * locate an existing OMNamespace object, so that we can avoid creating a new one.
-            OMNamespace ns = element.findNamespace(namespaceURI, prefix);
+            OMNamespace ns = element.findNamespace(namespaceURI, prefix.length() == 0 ? null : prefix);
             if (ns == null) {
                 if ("".equals(prefix)) {
                     prefix = OMSerializerUtil.getNextNSPrefix();

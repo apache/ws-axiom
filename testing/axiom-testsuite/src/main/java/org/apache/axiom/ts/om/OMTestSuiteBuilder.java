@@ -452,6 +452,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
             if (variant.isSupportsContainer() && variant.isSupportsDefaultNamespace()) {
                 addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope3(metaFactory, variant));
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope4(metaFactory, variant));
             }
         }
         if (supportsOMSourcedElement) {
