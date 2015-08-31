@@ -18,12 +18,31 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 
-public class FOMMetaFactory extends OMLinkedListMetaFactory {
+public final class FOMMetaFactory extends AbstractOMMetaFactory {
+    public static final FOMMetaFactory INSTANCE = new FOMMetaFactory();
+    
     private final OMFactory omFactory = new FOMFactory();
+    
+    private FOMMetaFactory() {}
     
     public OMFactory getOMFactory() {
         return omFactory;
+    }
+
+    public SOAPFactory getSOAP11Factory() {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFactory getSOAP12Factory() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public AxiomSOAPMessage createSOAPMessage() {
+        throw new UnsupportedOperationException();
     }
 }

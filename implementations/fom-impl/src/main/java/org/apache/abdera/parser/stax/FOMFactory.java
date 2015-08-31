@@ -71,6 +71,7 @@ import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
@@ -82,13 +83,13 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.llom.NamespaceDeclaration;
 import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
 import org.apache.axiom.om.impl.llom.OMEntityReferenceImpl;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory, Constants, ExtensionFactory {
+public class FOMFactory implements AbderaFactory, AxiomNodeFactory, Constants, ExtensionFactory {
     private static final Map<QName,Class<? extends FOMElement>> elementTypeMap;
     
     static {
@@ -145,6 +146,10 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
             new ExtensionFactoryMap((f != null) ? new ArrayList<ExtensionFactory>(f)
                 : new ArrayList<ExtensionFactory>());
         this.abdera = abdera;
+    }
+
+    public OMMetaFactory getMetaFactory() {
+        return FOMMetaFactory.INSTANCE;
     }
 
     public Parser newParser() {
@@ -487,7 +492,6 @@ public class FOMFactory extends OMLinkedListImplFactory implements AbderaFactory
         return createElement(FOMDiv.class, DIV, (OMContainer)parent);
     }
 
-    @Override
     public <T extends CoreNode> T createNode(Class<T> type) {
         CoreNode node;
         if (type == CoreCDATASection.class || type == AxiomCDATASection.class || type == FOMCDATASection.class) {
