@@ -19,19 +19,18 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -389,51 +388,36 @@ public class OMSourcedElementImpl extends OMElementImpl implements AxiomSourcedE
         }
     }
 
-    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
+    public <T> void initSource(ClonePolicy<T> policy, T options, CoreElement other) {
+        OMSourcedElementImpl o = (OMSourcedElementImpl)other;
         // If already expanded or this is not an OMDataSourceExt, then
         // create a copy of the OM Tree
-        OMDataSource ds = getDataSource();
-        if (!options.isCopyOMDataSources() ||
+        OMDataSource ds = o.getDataSource();
+        if (!(options instanceof OMCloneOptions) || !((OMCloneOptions)options).isCopyOMDataSources() ||
             ds == null || 
-            isExpanded() || 
+            o.isExpanded() || 
             !(ds instanceof OMDataSourceExt)) {
-            return defaultClone(options, targetParent);
+            return;
         }
         
         // If copying is destructive, then copy the OM tree
         OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
         if (sourceDS.isDestructiveRead() ||
             sourceDS.isDestructiveWrite()) {
-            return defaultClone(options, targetParent);
+            return;
         }
         OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
         if (targetDS == null) {
-            return defaultClone(options, targetParent);
+            return;
         }
         // Otherwise create a target OMSE with the copied DataSource
-        OMSourcedElementImpl targetOMSE;
-        if (options.isPreserveModel()) {
-            targetOMSE = (OMSourcedElementImpl)createClone(options, targetDS);
+        init(targetDS);
+        definedNamespaceSet = o.definedNamespaceSet;
+        if (o.definedNamespace instanceof DeferredNamespace) {
+            definedNamespace = new DeferredNamespace(this, o.definedNamespace.getNamespaceURI());
         } else {
-            targetOMSE = (OMSourcedElementImpl)getOMFactory().createOMElement(targetDS);
+            definedNamespace = o.definedNamespace;
         }
-        
-        targetOMSE.internalSetLocalName(internalGetLocalName());
-        targetOMSE.definedNamespaceSet = definedNamespaceSet;
-        if (definedNamespace instanceof DeferredNamespace) {
-            targetOMSE.definedNamespace = new DeferredNamespace(targetOMSE, definedNamespace.getNamespaceURI());
-        } else {
-            targetOMSE.definedNamespace = definedNamespace;
-        }
-        
-        if (targetParent != null) {
-            targetParent.addChild(targetOMSE);
-        }
-        return targetOMSE;
-    }
-
-    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
-        return getOMFactory().createOMElement(ds);
     }
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)

@@ -20,12 +20,8 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMInformationItem;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomChildNode;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl extends OMSerializableImpl implements AxiomChildNode {
@@ -62,10 +58,4 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements AxiomChil
             internalUnsetParent(null);
         }
     }
-
-    public final OMInformationItem clone(OMCloneOptions options) {
-        return clone(options, null);
-    }
-
-    abstract OMNode clone(OMCloneOptions options, AxiomContainer targetParent);
 }

@@ -84,26 +84,6 @@ public class OMElementImpl extends OMNodeImpl
         return (OMElement)clone(new OMCloneOptions());
     }
 
-    OMNode clone(OMCloneOptions options, AxiomContainer targetParent) {
-        return defaultClone(options, targetParent);
-    }
-    
-    final OMNode defaultClone(OMCloneOptions options, AxiomContainer targetParent) {
-        AxiomElement targetElement = shallowCloneWithoutAttributes(Policies.CLONE_POLICY, options, targetParent, true);
-        for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
-            targetElement.declareNamespace(ns);
-        }
-        for (Iterator it = getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = (OMAttribute)it.next();
-            targetElement.addAttribute(attr);
-        }
-        for (Iterator it = getChildren(); it.hasNext(); ) {
-            ((OMNodeImpl)it.next()).clone(options, targetElement);
-        }
-        return targetElement;
-    }
-
     public final void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

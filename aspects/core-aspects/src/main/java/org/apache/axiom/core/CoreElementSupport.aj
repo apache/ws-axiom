@@ -253,17 +253,24 @@ public aspect CoreElementSupport {
 
     public final <T> void CoreElement.init(ClonePolicy<T> policy, T options, CoreNode other) {
         CoreElement o = (CoreElement)other;
+        initSource(policy, options, o);
         initName(o);
-        CoreAttribute attr = o.coreGetFirstAttribute();
-        while (attr != null) {
-            internalAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
-            // TODO: needed?
-//            clonedAttr.coreSetSpecified(attr.coreGetSpecified());
-            attr = attr.coreGetNextAttribute();
+        if (isExpanded()) {
+            CoreAttribute attr = o.coreGetFirstAttribute();
+            while (attr != null) {
+                internalAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
+                // TODO: needed?
+//                clonedAttr.coreSetSpecified(attr.coreGetSpecified());
+                attr = attr.coreGetNextAttribute();
+            }
         }
         initAncillaryData(policy, options, o);
     }
 
+    // This is basically a hook for OMSourcedElement
+    public <T> void CoreElement.initSource(ClonePolicy<T> policy, T options, CoreElement other) {
+    }
+    
     public <T> void CoreElement.initAncillaryData(ClonePolicy<T> policy, T options, CoreElement other) {
     }
 }

@@ -293,8 +293,8 @@ public aspect CoreParentNodeSupport {
     }
 
     public final <T> void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
-        if (policy.cloneChildren(options, coreGetNodeType())) {
-            CoreParentNode targetParent = (CoreParentNode)clone;
+        CoreParentNode targetParent = (CoreParentNode)clone;
+        if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
             if (getState() == COMPACT) {
                 Object content = this.content;
                 if (content instanceof CharacterData) {

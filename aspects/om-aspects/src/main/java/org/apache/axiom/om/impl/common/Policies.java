@@ -84,7 +84,7 @@ public final class Policies {
         }
 
         public void postProcess(OMCloneOptions options, CoreNode clone) {
-            if (clone instanceof AxiomElement) {
+            if (clone instanceof AxiomElement && ((AxiomElement)clone).isExpanded()) {
                 // Repair namespaces
                 AxiomElement element = (AxiomElement)clone;
                 NSUtil.handleNamespace(element, element.getNamespace(), false, true);

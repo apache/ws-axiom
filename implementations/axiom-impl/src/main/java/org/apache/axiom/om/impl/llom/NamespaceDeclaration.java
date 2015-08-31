@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
@@ -26,11 +25,5 @@ import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 public final class NamespaceDeclaration extends Attribute implements AxiomNamespaceDeclaration {
     public NamespaceDeclaration(OMFactory factory) {
         super(factory);
-    }
-
-    public OMInformationItem clone(OMCloneOptions options) {
-        NamespaceDeclaration decl = new NamespaceDeclaration(getOMFactory());
-        decl.setDeclaredNamespace(getDeclaredNamespace());
-        return decl;
     }
 }

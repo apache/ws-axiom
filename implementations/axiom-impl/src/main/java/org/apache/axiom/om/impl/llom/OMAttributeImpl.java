@@ -19,9 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.Policies;
 
@@ -29,9 +27,5 @@ import org.apache.axiom.om.impl.common.Policies;
 public class OMAttributeImpl extends Attribute implements AxiomAttribute {
     public OMAttributeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public OMInformationItem clone(OMCloneOptions options) {
-        return (AxiomAttribute)coreClone(Policies.CLONE_POLICY, options);
     }
 }
