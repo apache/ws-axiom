@@ -24,8 +24,8 @@ public aspect CoreCharacterDataNodeSupport {
      */
     private Object CoreCharacterDataNode.data;
     
-    public final int CoreCharacterDataNode.coreGetNodeType() {
-        return CHARACTER_DATA_NODE;
+    public final NodeType CoreCharacterDataNode.coreGetNodeType() {
+        return NodeType.CHARACTER_DATA;
     }
     
     public final boolean CoreCharacterDataNode.coreIsIgnorable() {

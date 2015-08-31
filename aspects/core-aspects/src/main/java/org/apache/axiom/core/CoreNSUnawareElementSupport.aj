@@ -19,8 +19,8 @@
 package org.apache.axiom.core;
 
 public aspect CoreNSUnawareElementSupport {
-    public final int CoreNSUnawareElement.coreGetNodeType() {
-        return NS_UNAWARE_ELEMENT_NODE;
+    public final NodeType CoreNSUnawareElement.coreGetNodeType() {
+        return NodeType.NS_UNAWARE_ELEMENT;
     }
     
     public final String CoreNSUnawareElement.getImplicitNamespaceURI(String prefix) {

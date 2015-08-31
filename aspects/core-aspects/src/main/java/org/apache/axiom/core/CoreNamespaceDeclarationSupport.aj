@@ -19,8 +19,8 @@
 package org.apache.axiom.core;
 
 public aspect CoreNamespaceDeclarationSupport {
-    public final int CoreNamespaceDeclaration.coreGetNodeType() {
-        return NAMESPACE_DECLARATION_NODE;
+    public final NodeType CoreNamespaceDeclaration.coreGetNodeType() {
+        return NodeType.NAMESPACE_DECLARATION;
     }
     
     public final CoreNode CoreNamespaceDeclaration.shallowClone(ClonePolicy policy, Object options) {

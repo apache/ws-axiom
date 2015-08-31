@@ -19,8 +19,8 @@
 package org.apache.axiom.core;
 
 public aspect CoreNSAwareAttributeSupport {
-    public final int CoreNSAwareAttribute.coreGetNodeType() {
-        return NS_AWARE_ATTRIBUTE_NODE;
+    public final NodeType CoreNSAwareAttribute.coreGetNodeType() {
+        return NodeType.NS_AWARE_ATTRIBUTE;
     }
     
     public final CoreNode CoreNSAwareAttribute.shallowClone(ClonePolicy policy, Object options) {

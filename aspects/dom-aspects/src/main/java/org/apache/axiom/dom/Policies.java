@@ -23,13 +23,13 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
-import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeMigrationPolicy;
+import org.apache.axiom.core.NodeType;
 
 public final class Policies {
     private Policies() {}
@@ -109,7 +109,7 @@ public final class Policies {
             return true;
         }
 
-        public boolean cloneChildren(int nodeType) {
+        public boolean cloneChildren(NodeType nodeType) {
             return true;
         }
     };
@@ -123,8 +123,8 @@ public final class Policies {
             return true;
         }
 
-        public boolean cloneChildren(int nodeType) {
-            return nodeType == CoreNode.NS_UNAWARE_ATTRIBUTE_NODE || nodeType == CoreNode.NS_AWARE_ATTRIBUTE_NODE;
+        public boolean cloneChildren(NodeType nodeType) {
+            return nodeType == NodeType.NS_UNAWARE_ATTRIBUTE || nodeType == NodeType.NS_AWARE_ATTRIBUTE;
         }
     };
 }

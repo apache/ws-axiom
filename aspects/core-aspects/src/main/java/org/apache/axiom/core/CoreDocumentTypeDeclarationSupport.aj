@@ -24,8 +24,8 @@ public aspect CoreDocumentTypeDeclarationSupport {
     private String CoreDocumentTypeDeclaration.systemId;
     private String CoreDocumentTypeDeclaration.internalSubset;
     
-    public final int CoreDocumentTypeDeclaration.coreGetNodeType() {
-        return DOCUMENT_TYPE_DECLARATION_NODE;
+    public final NodeType CoreDocumentTypeDeclaration.coreGetNodeType() {
+        return NodeType.DOCUMENT_TYPE_DECLARATION;
     }
     
     public final String CoreDocumentTypeDeclaration.coreGetRootName() {

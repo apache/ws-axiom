@@ -269,11 +269,11 @@ public aspect DOMDocumentSupport {
         }
         namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
         switch (((DOMNode)node).coreGetNodeType()) {
-            case NS_AWARE_ELEMENT_NODE:
+            case NS_AWARE_ELEMENT:
                 NSUtil.validateNamespace(namespaceURI, prefix);
                 ((DOMNSAwareElement)node).coreSetName(namespaceURI, localName, prefix);
                 return node;
-            case NS_AWARE_ATTRIBUTE_NODE:
+            case NS_AWARE_ATTRIBUTE:
                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
                     DOMNamespaceDeclaration decl = coreGetNodeFactory().createNode(DOMNamespaceDeclaration.class);
                     decl.coreSetOwnerDocument(this);
@@ -286,7 +286,7 @@ public aspect DOMDocumentSupport {
                     ((DOMNSAwareAttribute)node).coreSetName(namespaceURI, localName, prefix);
                     return node;
                 }
-            case NAMESPACE_DECLARATION_NODE:
+            case NAMESPACE_DECLARATION:
                 // TODO
                 throw new UnsupportedOperationException();
             default:

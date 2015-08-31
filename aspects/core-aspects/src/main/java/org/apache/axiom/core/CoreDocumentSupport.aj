@@ -24,8 +24,8 @@ public aspect CoreDocumentSupport {
     private String CoreDocument.xmlEncoding;
     private boolean CoreDocument.standalone;
     
-    public final int CoreDocument.coreGetNodeType() {
-        return DOCUMENT_NODE;
+    public final NodeType CoreDocument.coreGetNodeType() {
+        return NodeType.DOCUMENT;
     }
     
     public final CoreNode CoreDocument.getRootOrOwnerDocument() {

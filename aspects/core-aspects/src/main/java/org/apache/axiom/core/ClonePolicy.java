@@ -24,5 +24,5 @@ package org.apache.axiom.core;
 public interface ClonePolicy {
     boolean repairNamespaces();
     boolean cloneAttributes();
-    boolean cloneChildren(int nodeType);
+    boolean cloneChildren(NodeType nodeType);
 }

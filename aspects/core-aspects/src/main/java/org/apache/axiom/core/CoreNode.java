@@ -19,71 +19,6 @@
 package org.apache.axiom.core;
 
 public interface CoreNode {
-    /**
-     * The node is a {@link CoreDocument}.
-     */
-    int DOCUMENT_NODE = 0;
-    
-    /**
-     * The node is a {@link CoreDocumentTypeDeclaration}.
-     */
-    int DOCUMENT_TYPE_DECLARATION_NODE = 1;
-    
-    /**
-     * The node is a {@link CoreNSUnawareElement}.
-     */
-    int NS_UNAWARE_ELEMENT_NODE = 2;
-    
-    /**
-     * The node is a {@link CoreNSAwareElement}.
-     */
-    int NS_AWARE_ELEMENT_NODE = 3;
-    
-    /**
-     * The node is a {@link CoreNSUnawareAttribute}.
-     */
-    int NS_UNAWARE_ATTRIBUTE_NODE = 4;
-    
-    /**
-     * The node is a {@link CoreNSAwareAttribute}.
-     */
-    int NS_AWARE_ATTRIBUTE_NODE = 5;
-    
-    /**
-     * The node is a {@link CoreNamespaceDeclaration}.
-     */
-    int NAMESPACE_DECLARATION_NODE = 6;
-    
-    /**
-     * The node is a {@link CoreProcessingInstruction}.
-     */
-    int PROCESSING_INSTRUCTION_NODE = 7;
-    
-    /**
-     * The node is a {@link CoreDocumentFragment}.
-     */
-    int DOCUMENT_FRAGMENT_NODE = 8;
-    
-    /**
-     * The node is a {@link CoreCharacterDataNode}.
-     */
-    int CHARACTER_DATA_NODE = 9;
-    
-    /**
-     * The node is a {@link CoreComment}.
-     */
-    int COMMENT_NODE = 10;
-    
-    /**
-     * The node is a {@link CoreCDATASection}.
-     */
-    int CDATA_SECTION_NODE = 11;
-    
-    /**
-     * The node is a {@link CoreEntityReference}.
-     */
-    int ENTITY_REFERENCE_NODE = 12;
-    
     void coreSetOwnerDocument(CoreDocument document);
     
     NodeFactory coreGetNodeFactory();
@@ -91,9 +26,9 @@ public interface CoreNode {
     /**
      * Get the node type.
      * 
-     * @return one of the constants defined by {@link CoreNode} identifying the type of node
+     * @return the node type
      */
-    int coreGetNodeType();
+    NodeType coreGetNodeType();
 
     /**
      * Clone this node according to the provided policy.

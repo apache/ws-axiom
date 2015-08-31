@@ -19,8 +19,8 @@
 package org.apache.axiom.core;
 
 public aspect CoreCDATASectionSupport {
-    public final int CoreCDATASection.coreGetNodeType() {
-        return CDATA_SECTION_NODE;
+    public final NodeType CoreCDATASection.coreGetNodeType() {
+        return NodeType.CDATA_SECTION;
     }
     
     public final CoreNode CoreCDATASection.shallowClone(ClonePolicy policy, Object options) {

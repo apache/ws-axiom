@@ -22,8 +22,8 @@ public aspect CoreEntityReferenceSupport {
     private String CoreEntityReference.name;
     private String CoreEntityReference.replacementText;
     
-    public final int CoreEntityReference.coreGetNodeType() {
-        return ENTITY_REFERENCE_NODE;
+    public final NodeType CoreEntityReference.coreGetNodeType() {
+        return NodeType.ENTITY_REFERENCE;
     }
     
     public final String CoreEntityReference.coreGetName() {

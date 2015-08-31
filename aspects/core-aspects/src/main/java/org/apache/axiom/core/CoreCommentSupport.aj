@@ -19,8 +19,8 @@
 package org.apache.axiom.core;
 
 public aspect CoreCommentSupport {
-    public final int CoreComment.coreGetNodeType() {
-        return COMMENT_NODE;
+    public final NodeType CoreComment.coreGetNodeType() {
+        return NodeType.COMMENT;
     }
     
     public final CoreNode CoreComment.shallowClone(ClonePolicy policy, Object options) {
