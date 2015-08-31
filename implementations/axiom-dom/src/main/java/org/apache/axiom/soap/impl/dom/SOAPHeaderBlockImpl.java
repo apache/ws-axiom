@@ -19,14 +19,29 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 public abstract class SOAPHeaderBlockImpl extends NSAwareElement implements AxiomSOAPHeaderBlock {
     public SOAPHeaderBlockImpl(OMFactory factory) {
         super(factory);
+    }
+
+    public final void init(OMDataSource source) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final void init(String localName, OMNamespace ns, OMDataSource source) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final void init(QName qName, OMDataSource source) {
+        throw new UnsupportedOperationException();
     }
 
     public OMDataSource getDataSource() {

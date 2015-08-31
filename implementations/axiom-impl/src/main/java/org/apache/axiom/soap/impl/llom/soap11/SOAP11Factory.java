@@ -20,14 +20,12 @@
 package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
@@ -64,17 +62,6 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
 
     public SOAPVersion getSOAPVersion() {
         return SOAP11Version.getSingleton();
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
-        return new SOAP11HeaderBlockImpl(this, source);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns,
-                                                 OMDataSource ds) 
-        throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, ns, this, ds);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

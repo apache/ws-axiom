@@ -19,11 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
@@ -31,16 +28,6 @@ import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP11HeaderBlock {
     public SOAP11HeaderBlockImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public SOAP11HeaderBlockImpl(SOAPFactory factory, OMDataSource source) {
-        super(factory, source);
-    }
-
-    public SOAP11HeaderBlockImpl(String localName, OMNamespace ns,
-                                 SOAPFactory factory, 
-                                 OMDataSource ds) {
-        super(localName, ns, factory, ds);
     }
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {

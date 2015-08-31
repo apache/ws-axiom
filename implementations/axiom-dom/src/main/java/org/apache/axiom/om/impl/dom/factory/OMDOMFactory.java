@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreComment;
@@ -50,11 +48,8 @@ import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
@@ -141,24 +136,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
 
     public OMMetaFactory getMetaFactory() {
         return metaFactory;
-    }
-
-    public OMSourcedElement createOMElement(OMDataSource source) {
-        throw new UnsupportedOperationException("Not supported for DOM");
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMFactory#createOMElement(org.apache.axiom.om.OMDataSource, java.lang.String, org.apache.axiom.om.OMNamespace)
-     */
-    public OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
-        throw new UnsupportedOperationException("Not supported for DOM");
-    }
-
-    /**
-     * Unsupported.
-     */
-    public OMSourcedElement createOMElement(OMDataSource source, QName qname) {
-        throw new UnsupportedOperationException("Not supported for DOM");
     }
 
     public final void validateOMTextParent(OMContainer parent) {

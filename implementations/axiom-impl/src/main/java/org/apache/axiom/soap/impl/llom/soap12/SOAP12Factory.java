@@ -20,7 +20,6 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
@@ -30,7 +29,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Factory;
@@ -66,17 +64,6 @@ public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                    SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
-        return new SOAP12HeaderBlockImpl(this, source);
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns,
-                                                 OMDataSource ds) 
-        throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl(localName, ns, this, ds);
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {

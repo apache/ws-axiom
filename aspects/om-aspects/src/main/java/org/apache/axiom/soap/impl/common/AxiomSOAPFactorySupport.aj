@@ -20,6 +20,7 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -107,6 +108,18 @@ public aspect AxiomSOAPFactorySupport {
 
     public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, SOAPHeader parent, OMXMLParserWrapper builder) {
         return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), parent, localName, null, builder, false);
+    }
+
+    public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(OMDataSource source) {
+        AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
+        element.init(source);
+        return element;
+    }
+
+    public final SOAPHeaderBlock AxiomSOAPFactory.createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) {
+        AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
+        element.init(localName, ns, ds);
+        return element;
     }
 
     public final SOAPBody AxiomSOAPFactory.createSOAPBody(SOAPEnvelope parent, OMXMLParserWrapper builder) {

@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.AxiomContainer;
+import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.om.impl.common.OMDataSourceUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -58,7 +59,7 @@ import java.util.Iterator;
  * #forceExpand()} method) before the base class method is called. This will typically involve a
  * heavy overhead penalty, so should be avoided if possible.</p>
  */
-public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElement {
+public class OMSourcedElementImpl extends OMElementImpl implements AxiomSourcedElement {
     
     /** Data source for element data. */
     private OMDataSource dataSource;
@@ -87,8 +88,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
     }
     
-    public OMSourcedElementImpl(OMFactory factory, OMDataSource source) {
-        super(factory);
+    public void init(OMDataSource source) {
         dataSource = source;
         isExpanded = false;
     }
@@ -101,9 +101,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @param factory
      * @param source
      */
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory,
-                                OMDataSource source) {
-        super(factory);
+    public void init(String localName, OMNamespace ns, OMDataSource source) {
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
@@ -134,8 +132,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @param factory
      * @param source
      */
-    public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
-        super(factory);
+    public void init(QName qName, OMDataSource source) {
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }

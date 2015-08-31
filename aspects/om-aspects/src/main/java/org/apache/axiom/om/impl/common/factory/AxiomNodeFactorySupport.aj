@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -32,6 +33,7 @@ import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -46,6 +48,7 @@ import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.Policies;
@@ -291,6 +294,24 @@ public aspect AxiomNodeFactorySupport {
         } else {
             return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
         }
+    }
+
+    public final OMSourcedElement AxiomNodeFactory.createOMElement(OMDataSource source) {
+        AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
+        element.init(source);
+        return element;
+    }
+
+    public final OMSourcedElement AxiomNodeFactory.createOMElement(OMDataSource source, String localName, OMNamespace ns) {
+        AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
+        element.init(localName, ns, source);
+        return element;
+    }
+
+    public final OMSourcedElement AxiomNodeFactory.createOMElement(OMDataSource source, QName qname) {
+        AxiomSourcedElement element = createNode(AxiomSourcedElement.class);
+        element.init(qname, source);
+        return element;
     }
 
     public final OMAttribute AxiomNodeFactory.createOMAttribute(String localName, OMNamespace ns, String value) {

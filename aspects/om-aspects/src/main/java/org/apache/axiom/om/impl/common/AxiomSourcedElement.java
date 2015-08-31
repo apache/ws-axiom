@@ -16,24 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.common;
 
-package org.apache.axiom.soap.impl.llom.soap12;
+import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
-import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMSourcedElement;
 
-public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP12HeaderBlock {
-    public SOAP12HeaderBlockImpl(OMFactory factory) {
-        super(factory);
-    }
-
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!(parent instanceof SOAP12HeaderImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP12HeaderImpl as parent, got " + parent.getClass());
-        }
-    }
+public interface AxiomSourcedElement extends OMSourcedElement, AxiomElement {
+    void init(OMDataSource source);
+    void init(String localName, OMNamespace ns, OMDataSource source);
+    void init(QName qName, OMDataSource source);
 }

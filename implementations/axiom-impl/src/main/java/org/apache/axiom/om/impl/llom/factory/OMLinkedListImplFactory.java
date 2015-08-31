@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.llom.factory;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreComment;
@@ -33,10 +31,7 @@ import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
@@ -47,6 +42,7 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
 import org.apache.axiom.om.impl.llom.CDATASectionImpl;
 import org.apache.axiom.om.impl.llom.CharacterDataImpl;
@@ -129,31 +125,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
         return metaFactory;
     }
 
-    public OMSourcedElement createOMElement(OMDataSource source) {
-        return new OMSourcedElementImpl(this, source);
-    }
-
-    /**
-     * Construct element with arbitrary data source.
-     *
-     * @param source
-     * @param localName
-     * @param ns
-     */
-    public OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
-        return new OMSourcedElementImpl(localName, ns, this, source);
-    }
-
-    /**
-     * Construct element with arbitrary data source.
-     * 
-     * @param source the data source
-     * @param qname the name of the element produced by the data source
-     */
-    public OMSourcedElement createOMElement(OMDataSource source, QName qname) {
-        return new OMSourcedElementImpl(qname, this, source);
-    }
-
     public <T extends CoreNode> T createNode(Class<T> type) {
         CoreNode node;
         if (type == CoreCDATASection.class || type == AxiomCDATASection.class) {
@@ -176,6 +147,8 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
             node = new OMElementImpl(this);
         } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class) {
             node = new OMProcessingInstructionImpl(this);
+        } else if (type == AxiomSourcedElement.class) {
+            node = new OMSourcedElementImpl(this);
         } else if (type == AxiomSOAPMessage.class) {
             node = new SOAPMessageImpl(this);
         } else if (type == AxiomSOAPEnvelope.class) {

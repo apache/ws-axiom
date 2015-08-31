@@ -19,12 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFactory;
@@ -51,13 +48,4 @@ public abstract class SOAPFactoryImpl extends OMDOMFactory implements AxiomSOAPF
         createSOAPBody(env);
         return env;
     }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
-    }
-
 }
