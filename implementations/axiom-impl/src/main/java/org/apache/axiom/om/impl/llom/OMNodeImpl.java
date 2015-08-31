@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomChildNode;
 
@@ -32,30 +31,5 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements AxiomChil
      */
     public OMNodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /**
-     * Method setParent.
-     *
-     * @param element
-     */
-    public void coreSetParent(CoreParentNode element) {
-        CoreParentNode currentParent = coreGetParent();
-
-        if (currentParent == element) {
-            return;
-        }
-
-        //If we are asked to assign a new parent in place
-        //of an existing one. We should detach this node
-        //from the previous parent.
-        if (element != null) {
-            if (currentParent != null) {
-                this.detach();
-            }
-            internalSetParent(element);
-        } else {
-            internalUnsetParent(null);
-        }
     }
 }
