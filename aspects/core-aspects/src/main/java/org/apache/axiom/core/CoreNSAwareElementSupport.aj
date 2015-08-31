@@ -30,8 +30,4 @@ public aspect CoreNSAwareElementSupport {
     public final String CoreNSAwareElement.getImplicitPrefix(String namespaceURI) {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
-    
-    final void CoreNSAwareElement.copyName(CoreElement clone) {
-        ((CoreNSAwareElement)clone).coreSetName(this);
-    }
 }

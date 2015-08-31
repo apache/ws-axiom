@@ -254,7 +254,7 @@ public aspect CoreElementSupport {
     public final <T> CoreNode CoreElement.shallowClone(ClonePolicy<T> policy, T options) {
         CoreElement clone = (CoreElement)coreGetNodeFactory().createNode(
                 policy.preserveModel(options) ? coreGetNodeClass() : coreGetNodeType().getInterface());
-        copyName(clone);
+        clone.initName(this);
         CoreAttribute attr = coreGetFirstAttribute();
         while (attr != null) {
             clone.internalAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
@@ -266,8 +266,6 @@ public aspect CoreElementSupport {
         return clone;
     }
 
-    abstract void CoreElement.copyName(CoreElement clone);
-    
     public <T> void CoreElement.initAncillaryData(ClonePolicy<T> policy, T options, CoreElement other) {
     }
 }

@@ -22,11 +22,4 @@ public aspect CoreNSAwareAttributeSupport {
     public final NodeType CoreNSAwareAttribute.coreGetNodeType() {
         return NodeType.NS_AWARE_ATTRIBUTE;
     }
-    
-    public final <T> CoreNode CoreNSAwareAttribute.shallowClone(ClonePolicy<T> policy, T options) {
-        CoreNSAwareAttribute clone = coreGetNodeFactory().createNode(CoreNSAwareAttribute.class);
-        clone.coreSetName(this);
-        clone.coreSetType(coreGetType());
-        return clone;
-    }
 }

@@ -28,4 +28,12 @@ public aspect CoreTypedAttributeSupport {
     public final void CoreTypedAttribute.coreSetType(String type) {
         this.type = type;
     }
+    
+    public final <T> CoreNode CoreTypedAttribute.shallowClone(ClonePolicy<T> policy, T options) {
+        CoreTypedAttribute clone = (CoreTypedAttribute)coreGetNodeFactory().createNode(
+                policy.preserveModel(options) ? coreGetNodeClass() : coreGetNodeType().getInterface());
+        clone.initName(this);
+        clone.coreSetType(coreGetType());
+        return clone;
+    }
 }

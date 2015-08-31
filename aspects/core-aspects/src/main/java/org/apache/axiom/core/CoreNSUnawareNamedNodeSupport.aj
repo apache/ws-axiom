@@ -28,4 +28,8 @@ public aspect CoreNSUnawareNamedNodeSupport {
     public final void CoreNSUnawareNamedNode.coreSetName(String name) {
         this.name = name;
     }
+    
+    public final void CoreNSUnawareNamedNode.initName(CoreNamedNode other) {
+        coreSetName(((CoreNSUnawareNamedNode)other).coreGetName());
+    }
 }

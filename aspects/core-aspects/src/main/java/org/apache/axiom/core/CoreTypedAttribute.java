@@ -21,7 +21,7 @@ package org.apache.axiom.core;
 /**
  * Represents an attribute information item that is not a namespace declaration.
  */
-public interface CoreTypedAttribute extends CoreAttribute {
+public interface CoreTypedAttribute extends CoreAttribute, CoreNamedNode {
     String coreGetType();
     void coreSetType(String type);
 }
