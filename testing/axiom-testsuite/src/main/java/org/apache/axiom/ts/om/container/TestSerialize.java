@@ -37,15 +37,15 @@ import org.apache.commons.io.IOUtils;
 import org.xml.sax.InputSource;
 
 public class TestSerialize extends ConformanceTestCase {
-    private final OMContainerFactory containerFactory;
+    private final OMContainerExtractor containerExtractor;
     private final SerializationStrategy serializationStrategy;
     
     public TestSerialize(OMMetaFactory metaFactory, XMLSample file,
-            OMContainerFactory containerFactory, SerializationStrategy serializationStrategy) {
+            OMContainerExtractor containerExtractor, SerializationStrategy serializationStrategy) {
         super(metaFactory, file);
-        this.containerFactory = containerFactory;
+        this.containerExtractor = containerExtractor;
         this.serializationStrategy = serializationStrategy;
-        containerFactory.addTestParameters(this);
+        containerExtractor.addTestParameters(this);
         serializationStrategy.addTestParameters(this);
     }
 
@@ -53,10 +53,10 @@ public class TestSerialize extends ConformanceTestCase {
         OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
                 TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString()));
         try {
-            OMContainer container = containerFactory.getContainer(builder);
+            OMContainer container = containerExtractor.getContainer(builder);
             // We need to clone the InputSource objects so that we can dump their contents
             // if the test fails
-            InputSource control[] = duplicateInputSource(containerFactory.getControl(file.getInputStream()));
+            InputSource control[] = duplicateInputSource(containerExtractor.getControl(file.getInputStream()));
             XML actual = serializationStrategy.serialize(container);
             try {
                 // Configure the InputSources such that external entities can be resolved

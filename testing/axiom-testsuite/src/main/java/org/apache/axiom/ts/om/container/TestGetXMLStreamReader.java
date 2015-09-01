@@ -38,17 +38,17 @@ import org.xml.sax.InputSource;
  */
 public class TestGetXMLStreamReader extends ConformanceTestCase {
     private final BuilderFactory builderFactory;
-    private final OMContainerFactory containerFactory;
+    private final OMContainerExtractor containerExtractor;
     private final boolean cache;
     
     public TestGetXMLStreamReader(OMMetaFactory metaFactory, XMLSample file,
-            BuilderFactory builderFactory, OMContainerFactory containerFactory, boolean cache) {
+            BuilderFactory builderFactory, OMContainerExtractor containerExtractor, boolean cache) {
         super(metaFactory, file);
         this.builderFactory = builderFactory;
-        this.containerFactory = containerFactory;
+        this.containerExtractor = containerExtractor;
         this.cache = cache;
         builderFactory.addTestParameters(this);
-        containerFactory.addTestParameters(this);
+        containerExtractor.addTestParameters(this);
         addTestParameter("cache", cache);
     }
     
@@ -59,8 +59,8 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
             try {
                 OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(file.getUrl().toString()));
                 try {
-                    XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
-                    XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual));
+                    XMLStreamReader actual = containerExtractor.getContainer(builder).getXMLStreamReader(cache);
+                    XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(containerExtractor.filter(expected), containerExtractor.filter(actual));
                     builderFactory.configureXMLStreamReaderComparator(comparator);
                     comparator.compare();
                 } finally {

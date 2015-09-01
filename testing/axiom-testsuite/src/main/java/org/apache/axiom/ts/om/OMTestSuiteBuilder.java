@@ -34,8 +34,7 @@ import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.NoNamespaceStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
-import org.apache.axiom.ts.om.container.OMContainerFactory;
-import org.apache.axiom.ts.om.container.OMElementFactory;
+import org.apache.axiom.ts.om.container.OMContainerExtractor;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
 import org.apache.axiom.ts.om.factory.CreateOMElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
@@ -46,11 +45,6 @@ import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private static final OMContainerFactory[] containerFactories = {
-        OMContainerFactory.DOCUMENT,
-        new OMElementFactory(false),
-        new OMElementFactory(true) };
-    
     private static final QName[] qnames = {
         new QName("root"),
         new QName("urn:test", "root", "p"),
@@ -138,18 +132,17 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
-            for (int j=0; j<containerFactories.length; j++) {
-                OMContainerFactory cf = containerFactories[j];
+            for (OMContainerExtractor ce : getInstances(OMContainerExtractor.class)) {
                 for (BuilderFactory bf : getInstances(BuilderFactory.class)) {
-                    addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, bf, cf, true));
-                    addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, bf, cf, false));
+                    addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, bf, ce, true));
+                    addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, bf, ce, false));
                 }
                 // On a document containing entity references, serialization tests will only work correctly if
                 // the entire document is serialized (so that the DTD is available)
-                if (!file.hasEntityReferences() || cf == OMContainerFactory.DOCUMENT) {
+                if (!file.hasEntityReferences() || ce == OMContainerExtractor.DOCUMENT) {
                     for (SerializationStrategy ss : getInstances(SerializationStrategy.class)) {
                         if (ss.supportsInternalSubset() || !file.hasInternalSubset()) {
-                            addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, containerFactories[j], ss));
+                            addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, ce, ss));
                         }
                     }
                 }

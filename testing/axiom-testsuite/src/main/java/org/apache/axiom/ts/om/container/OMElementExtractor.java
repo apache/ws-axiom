@@ -34,10 +34,10 @@ import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class OMElementFactory implements OMContainerFactory {
+final class OMElementExtractor extends OMContainerExtractor {
     private final boolean detached;
     
-    public OMElementFactory(boolean detached) {
+    OMElementExtractor(boolean detached) {
         this.detached = detached;
     }
 

@@ -24,6 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.xml.sax.InputSource;
@@ -31,8 +32,8 @@ import org.xml.sax.InputSource;
 /**
  * Extracts an {@link OMContainer} instance from a test file.
  */
-public interface OMContainerFactory extends Dimension {
-    OMContainerFactory DOCUMENT = new OMContainerFactory() {
+public abstract class OMContainerExtractor extends Multiton implements Dimension {
+    public static final OMContainerExtractor DOCUMENT = new OMContainerExtractor() {
         public void addTestParameters(MatrixTestCase testCase) {
             testCase.addTestParameter("container", "document");
         }
@@ -50,6 +51,11 @@ public interface OMContainerFactory extends Dimension {
         }
     };
     
+    public static final OMElementExtractor ELEMENT = new OMElementExtractor(false);
+    public static final OMElementExtractor ELEMENT_DETACHED = new OMElementExtractor(false);
+    
+    OMContainerExtractor() {}
+    
     /**
      * Prepare a control document that has the same content as the container returned by
      * {@link #getContainer(OMXMLParserWrapper)}.
@@ -59,7 +65,7 @@ public interface OMContainerFactory extends Dimension {
      * @return the {@link InputSource} for the control document
      * @throws Exception
      */
-    InputSource getControl(InputStream testFileContent) throws Exception;
+    public abstract InputSource getControl(InputStream testFileContent) throws Exception;
     
     /**
      * Extract the {@link OMContainer} from the given test file.
@@ -67,7 +73,7 @@ public interface OMContainerFactory extends Dimension {
      * @param builder the builder for the test file
      * @return the container
      */
-    OMContainer getContainer(OMXMLParserWrapper builder);
+    public abstract OMContainer getContainer(OMXMLParserWrapper builder);
     
     /**
      * Filter the given stream so that its content matches the content of the container returned by
@@ -77,5 +83,5 @@ public interface OMContainerFactory extends Dimension {
      *            the original stream reader representing the content of the test file
      * @return the filtered stream reader
      */
-    XMLStreamReader filter(XMLStreamReader reader);
+    public abstract XMLStreamReader filter(XMLStreamReader reader);
 }
