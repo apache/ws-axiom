@@ -19,9 +19,9 @@ package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaAttribute;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.llom.OMAttributeImpl;
+import org.apache.axiom.om.impl.common.AxiomAttribute;
 
-public class FOMAttribute extends OMAttributeImpl implements AbderaAttribute {
+public final class FOMAttribute extends FOMAbstractAttribute implements AbderaAttribute, AxiomAttribute {
     protected FOMAttribute(OMFactory factory) {
         super(factory);
     }

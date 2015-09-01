@@ -18,12 +18,18 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.fom.AbderaChildNode;
+import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomLeafNode;
+import org.apache.axiom.om.impl.common.AxiomInformationItem;
 
-public abstract class FOMLeafNode extends FOMChildNode implements AxiomLeafNode, AbderaChildNode {
-    public FOMLeafNode(OMFactory factory) {
-        super(factory);
+abstract class FOMInformationItem implements AxiomInformationItem, AbderaNode {
+    private final OMFactory factory;
+
+    FOMInformationItem(OMFactory factory) {
+        this.factory = factory;
+    }
+
+    public final OMFactory getOMFactory() {
+        return factory;
     }
 }

@@ -22,7 +22,7 @@ import org.apache.axiom.fom.AbderaComment;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomComment;
 
-public class FOMComment extends FOMLeafNode implements AbderaComment, AxiomComment {
+public final class FOMComment extends FOMLeafNode implements AbderaComment, AxiomComment {
     public FOMComment(OMFactory factory) {
         super(factory);
     }

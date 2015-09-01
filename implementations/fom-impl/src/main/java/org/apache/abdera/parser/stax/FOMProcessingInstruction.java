@@ -21,7 +21,7 @@ import org.apache.axiom.fom.AbderaProcessingInstruction;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
-public class FOMProcessingInstruction extends FOMLeafNode implements AbderaProcessingInstruction, AxiomProcessingInstruction {
+public final class FOMProcessingInstruction extends FOMLeafNode implements AbderaProcessingInstruction, AxiomProcessingInstruction {
     FOMProcessingInstruction(OMFactory factory) {
         super(factory);
     }

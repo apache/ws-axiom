@@ -84,9 +84,6 @@ import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
-import org.apache.axiom.om.impl.llom.NamespaceDeclaration;
-import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
-import org.apache.axiom.om.impl.llom.OMEntityReferenceImpl;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMFactory implements AbderaFactory, AxiomNodeFactory, Constants, ExtensionFactory {
@@ -503,11 +500,11 @@ public class FOMFactory implements AbderaFactory, AxiomNodeFactory, Constants, E
         } else if (type == CoreDocument.class || type == AxiomDocument.class || type == FOMDocument.class) {
             node = new FOMDocument(this);
         } else if (type == CoreDocumentTypeDeclaration.class || type == AxiomDocType.class) {
-            node = new OMDocTypeImpl(this);
+            node = new FOMDocType(this);
         } else if (type == CoreEntityReference.class || type == AxiomEntityReference.class) {
-            node = new OMEntityReferenceImpl(this);
+            node = new FOMEntityReference(this);
         } else if (type == CoreNamespaceDeclaration.class || type == AxiomNamespaceDeclaration.class) {
-            node = new NamespaceDeclaration(this);
+            node = new FOMNamespaceDeclaration(this);
         } else if (type == CoreNSAwareAttribute.class || type == AxiomAttribute.class || type == FOMAttribute.class) {
             node = new FOMAttribute(this);
         } else if (type == CoreNSAwareElement.class || type == AxiomElement.class || type == FOMElement.class) {

@@ -24,7 +24,7 @@ import org.apache.axiom.fom.AbderaCDATASection;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 
-public class FOMCDATASection extends FOMTextValue implements AbderaCDATASection, AxiomCDATASection {
+public final class FOMCDATASection extends FOMTextValue implements AbderaCDATASection, AxiomCDATASection {
 
     public FOMCDATASection(OMFactory factory) {
         super(factory);

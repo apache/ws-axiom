@@ -18,12 +18,11 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.fom.AbderaChildNode;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomLeafNode;
+import org.apache.axiom.om.impl.common.AxiomSerializable;
 
-public abstract class FOMLeafNode extends FOMChildNode implements AxiomLeafNode, AbderaChildNode {
-    public FOMLeafNode(OMFactory factory) {
+abstract class FOMSerializable extends FOMInformationItem implements AxiomSerializable {
+    FOMSerializable(OMFactory factory) {
         super(factory);
     }
 }
