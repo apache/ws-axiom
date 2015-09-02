@@ -68,10 +68,10 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.llom.OMElementImpl;
+import org.apache.axiom.om.impl.common.AxiomElement;
 
 @SuppressWarnings("unchecked")
-public class FOMElement extends OMElementImpl implements AbderaElement, Constants {
+public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement, Constants {
     protected FOMElement(OMFactory factory) {
         super(factory);
     }
@@ -633,7 +633,7 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
 
     public <T extends Element> T declareNS(String uri, String prefix) {
         if (!isDeclared(uri, prefix)) {
-            super.declareNamespace(uri, prefix);
+            declareNamespace(uri, prefix);
         }
         return (T)this;
     }
@@ -716,8 +716,8 @@ public class FOMElement extends OMElementImpl implements AbderaElement, Constant
      * consumed, only that that particular element has been completely parsed.
      */
     public <T extends Base> T complete() {
-        if (!isComplete() && builder != null)
-            super.build();
+        if (!isComplete() && getBuilder() != null)
+            build();
         return (T)this;
     }
 

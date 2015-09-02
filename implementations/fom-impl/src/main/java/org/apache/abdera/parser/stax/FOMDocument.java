@@ -29,7 +29,6 @@ import java.util.List;
 import javax.activation.MimeType;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.abdera.factory.Factory;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.rfc4646.Lang;
 import org.apache.abdera.model.Base;
@@ -49,11 +48,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.llom.OMDocumentImpl;
+import org.apache.axiom.om.impl.common.AxiomDocument;
 
 @SuppressWarnings("unchecked")
-public class FOMDocument<T extends Element> extends OMDocumentImpl implements AbderaDocument<T> {
+public class FOMDocument<T extends Element> extends FOMSerializable implements AbderaDocument<T>, AxiomDocument {
 
     private static final long serialVersionUID = -3255339511063344662L;
     protected IRI base = null;
@@ -209,10 +207,6 @@ public class FOMDocument<T extends Element> extends OMDocumentImpl implements Ab
         return this;
     }
 
-    public Factory getFactory() {
-        return (Factory)this.getOMFactory();
-    }
-
     public String[] getProcessingInstruction(String target) {
         List<String> values = new ArrayList<String>();
         for (Iterator i = getChildren(); i.hasNext();) {
@@ -302,7 +296,7 @@ public class FOMDocument<T extends Element> extends OMDocumentImpl implements Ab
     }
 
     public XMLVersion getXmlVersion() {
-        return XmlUtil.getVersion(super.getXMLVersion());
+        return XmlUtil.getVersion(getXMLVersion());
     }
 
     public WriterOptions getDefaultWriterOptions() {
