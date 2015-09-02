@@ -35,6 +35,7 @@ import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.NoNamespaceStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
 import org.apache.axiom.ts.om.container.OMContainerExtractor;
+import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
 import org.apache.axiom.ts.om.factory.CreateOMElementVariant;
 import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
@@ -147,6 +148,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                     }
                 }
             }
+        }
+        for (OMContainerFactory cf : getInstances(OMContainerFactory.class)) {
+            addTest(new org.apache.axiom.ts.om.container.TestAddChildWithIncompleteSibling(metaFactory, cf));
         }
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement(metaFactory));

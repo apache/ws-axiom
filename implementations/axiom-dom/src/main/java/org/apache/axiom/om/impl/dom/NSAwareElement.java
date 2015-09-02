@@ -84,10 +84,6 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
         super.normalize(config);
     }
 
-    public final void build() {
-        defaultBuild();
-    }
-
     public final void checkChild(OMNode child) {
     }
 }

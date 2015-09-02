@@ -126,6 +126,7 @@ public aspect CoreParentNodeSupport {
     public final void CoreParentNode.coreAppendChild(CoreChildNode child, boolean fromBuilder) {
         CoreParentNode parent = child.coreGetParent();
         if (!fromBuilder) {
+            // TODO: this is wrong; we only need to build the node locally, but build() builds incomplete children as well
             build();
         }
         Content content = getContent(true);

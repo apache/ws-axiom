@@ -232,10 +232,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         throw new UnsupportedOperationException("TODO");
     }
 
-    public final void build() {
-        defaultBuild();
-    }
-
     public final void checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {

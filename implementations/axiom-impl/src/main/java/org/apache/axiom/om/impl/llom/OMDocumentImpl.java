@@ -48,8 +48,4 @@ public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument 
 
     protected void checkDocumentElement(OMElement element) {
     }
-
-    public void build() {
-        defaultBuild();
-    }
 }

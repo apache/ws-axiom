@@ -145,23 +145,32 @@ public aspect AxiomContainerSupport {
         }
     }
     
-    public void AxiomContainer.defaultBuild() {
+    public final void AxiomContainer.build() {
         OMXMLParserWrapper builder = getBuilder();
-        if (getState() == AxiomContainer.DISCARDED) {
-            if (builder != null) {
-                ((StAXBuilder)builder).debugDiscarded(this);
+        // builder is null. Meaning this is a programatical created element but it has children which are not completed
+        // Build them all.
+        if (builder == null && getState() == INCOMPLETE) {
+            for (Iterator childrenIterator = this.getChildren(); childrenIterator.hasNext();) {
+                OMNode omNode = (OMNode) childrenIterator.next();
+                omNode.build();
             }
-            throw new NodeUnavailableException();
-        }
-        if (builder != null && builder.isCompleted()) {
-            log.debug("Builder is already complete.");
-        }
-        while (!isComplete()) {
-
-            builder.next();    
-            if (builder.isCompleted() && !isComplete()) {
-                log.debug("Builder is complete.  Setting OMObject to complete.");
-                setComplete(true);
+        } else {
+            if (getState() == AxiomContainer.DISCARDED) {
+                if (builder != null) {
+                    ((StAXBuilder)builder).debugDiscarded(this);
+                }
+                throw new NodeUnavailableException();
+            }
+            if (builder != null && builder.isCompleted()) {
+                log.debug("Builder is already complete.");
+            }
+            while (!isComplete()) {
+    
+                builder.next();    
+                if (builder.isCompleted() && !isComplete()) {
+                    log.debug("Builder is complete.  Setting OMObject to complete.");
+                    setComplete(true);
+                }
             }
         }
     }

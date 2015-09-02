@@ -41,25 +41,6 @@ public class OMElementImpl extends OMNodeImpl
     public void checkChild(OMNode child) {
     }
 
-    public final void build() throws OMException {
-        /**
-         * builder is null. Meaning this is a programatical created element but it has children which are not completed
-         * Build them all.
-         */
-        if (getBuilder() == null && getState() == INCOMPLETE) {
-            for (Iterator childrenIterator = this.getChildren(); childrenIterator.hasNext();) {
-                OMNode omNode = (OMNode) childrenIterator.next();
-                omNode.build();
-            }
-        } else {
-            defaultBuild();
-        }
-
-    }
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-
     public final void setNamespace(OMNamespace namespace) {
         setNamespace(namespace, true);
     }
