@@ -19,33 +19,12 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument {
-    /**
-     * Create a <code>OMDocument</code> given the <code>OMFactory</code>
-     *
-     * @param factory The <code>OMFactory</code> that created this instace
-     */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public final void checkChild(OMNode child) {
-        if (child instanceof OMElement) {
-            if (getOMDocumentElement() != null) {
-                throw new OMException("Document element already exists");
-            } else {
-                checkDocumentElement((OMElement)child);
-            }
-        }
-    }
-
-    protected void checkDocumentElement(OMElement element) {
     }
 }

@@ -21,14 +21,11 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMExceptionTranslator;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomDocument;
@@ -230,19 +227,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
     public void setStrictErrorChecking(boolean strictErrorChecking) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
-    }
-
-    public final void checkChild(OMNode child) {
-        if (child instanceof OMElement) {
-            if (getOMDocumentElement() != null) {
-                throw new OMException("Document element already exists");
-            } else {
-                checkDocumentElement((OMElement)child);
-            }
-        }
-    }
-
-    protected void checkDocumentElement(OMElement element) {
     }
 
     public final void setPrefix(String prefix) throws DOMException {

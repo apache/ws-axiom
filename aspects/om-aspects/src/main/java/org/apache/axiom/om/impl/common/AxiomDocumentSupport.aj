@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
@@ -110,5 +111,18 @@ public aspect AxiomDocumentSupport {
 
     public final void AxiomDocument.setComplete(boolean complete) {
         coreSetState(complete ? COMPLETE : INCOMPLETE);
+    }
+
+    public final void AxiomDocument.checkChild(OMNode child) {
+        if (child instanceof OMElement) {
+            if (getOMDocumentElement() != null) {
+                throw new OMException("Document element already exists");
+            } else {
+                checkDocumentElement((OMElement)child);
+            }
+        }
+    }
+
+    public void AxiomDocument.checkDocumentElement(OMElement element) {
     }
 }

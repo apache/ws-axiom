@@ -19,38 +19,13 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomElement;
 
-import java.util.Iterator;
-
 /** Class OMElementImpl */
-public class OMElementImpl extends OMNodeImpl
-        implements AxiomElement, OMConstants {
-    
-    private int lineNumber;
-
+public class OMElementImpl extends OMNodeImpl implements AxiomElement {
     public OMElementImpl(OMFactory factory) {
         super(factory);
-    }
-
-    public void checkChild(OMNode child) {
-    }
-
-    public final void setNamespace(OMNamespace namespace) {
-        setNamespace(namespace, true);
-    }
-
-    public final void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public final int getLineNumber() {
-        return lineNumber;
     }
 }
 

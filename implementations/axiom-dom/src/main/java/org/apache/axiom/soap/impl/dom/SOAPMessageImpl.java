@@ -40,7 +40,7 @@ public class SOAPMessageImpl extends DocumentImpl implements AxiomSOAPMessage {
         setOMDocumentElement(envelope);
     }
 
-    protected void checkDocumentElement(OMElement element) {
+    public void checkDocumentElement(OMElement element) {
         if (!(element instanceof SOAPEnvelope)) {
             throw new OMException("Child not allowed; must be a SOAPEnvelope");
         }

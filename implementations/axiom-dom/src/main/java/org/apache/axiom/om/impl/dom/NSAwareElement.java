@@ -21,40 +21,19 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSAwareElement;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomElement;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
 public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, AxiomElement,
         OMConstants {
 
-    private int lineNumber;
-
     public NSAwareElement(OMFactory factory) {
         super(factory);
     }
     
-    // /
-    // /OmElement methods
-    // /
-
-    public void setNamespace(OMNamespace namespace) {
-        setNamespace(namespace, true);
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
     /**
      * Returns the namespace uri, given the prefix. If it is not found at this element, searches the
      * parent.
@@ -82,8 +61,5 @@ public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, Ax
             }
         }
         super.normalize(config);
-    }
-
-    public final void checkChild(OMNode child) {
     }
 }
