@@ -28,11 +28,13 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -59,6 +61,10 @@ public class OMXMLBuilderFactory {
      * {@link XMLStreamConstants#END_ELEMENT} event. This means that this method can be used in a
      * well defined way to build an object model from a fragment (corresponding to a single element)
      * of the document represented by the stream reader.
+     * <p>
+     * The builder supports the {@link XMLStreamReader} extension defined by
+     * {@link DataHandlerReader} as well as the legacy extension mechanism defined in the
+     * documentation of {@link XMLStreamReaderUtils}.
      * <p>
      * The returned builder also performs namespace repairing, i.e. it adds appropriate namespace
      * declarations if undeclared namespaces appear in the StAX stream.

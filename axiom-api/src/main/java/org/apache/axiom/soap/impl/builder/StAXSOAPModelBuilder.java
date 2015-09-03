@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -50,24 +51,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * StAX based builder that produces a SOAP infoset model.
- * It builds SOAP specific objects such as {@link SOAPEnvelope}, {@link SOAPHeader},
- * {@link org.apache.axiom.soap.SOAPHeaderBlock} and {@link SOAPBody}.
- * <p>
- * This builder offers two different ways to handle SOAP versions:
- * <ul>
- *   <li>Either the SOAP version is specified when the builder is constructed. If the specified
- *       version doesn't match the envelope namespace of the actual message, an exception is
- *       triggered. This approach should be used when the SOAP version is known from information
- *       other than the content of the message. For example, in the HTTP case it is possible
- *       to identify the SOAP version based on the <tt>Content-Type</tt> header.</li>
- *   <li>If no SOAP version is specified, the builder will automatically detect it from the
- *       envelope namespace. It will then build the object model using the
- *       {@link SOAPFactory} implementation corresponding to that SOAP version.</li>
- * </ul>
- * In both cases, the {@link SOAPFactory} is retrieved either from the {@link OMMetaFactory}
- * specified when the builder is constructed, or if none is specified, from the default
- * meta factory returned by {@link OMAbstractFactory#getMetaFactory()}.
+ * Internal implementation class.
  */
 public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
     /**
@@ -92,24 +76,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     private SOAPBuilderHelper builderHelper;
 
     /**
-     * Constructor.
-     *
-     * @param parser the parser to read the SOAP message from
-     * @param soapVersion the namespace URI corresponding to the expected SOAP version
-     *                    of the message
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         this(OMAbstractFactory.getMetaFactory(), parser, soapVersion);
     }
 
     /**
-     * Constructor.
-     *
-     * @param metaFactory the meta factory used to get the appropriate {@link SOAPFactory}
-     *                    implementation
-     * @param parser the parser to read the SOAP message from
-     * @param soapVersion the namespace URI corresponding to the expected SOAP version
-     *                    of the message
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
             String soapVersion) {
@@ -119,9 +93,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
     
     /**
-     * Constructor.
-     * 
-     * @param parser the parser to read the SOAP message from
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
         this(OMAbstractFactory.getMetaFactory(), parser);
@@ -137,11 +109,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
     
     /**
-     * Constructor.
-     * 
-     * @param metaFactory the meta factory used to get the appropriate {@link SOAPFactory}
-     *                    implementation
-     * @param parser the parser to read the SOAP message from
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
         this(metaFactory, parser, null, null);
@@ -158,12 +126,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
     
     /**
-     * Constructor.
-     * 
-     * @param parser the parser to read the SOAP message from
-     * @param factory the SOAP factory to use
-     * @param soapVersion the namespace URI corresponding to the expected SOAP version
-     *                    of the message
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         this(parser, factory, soapVersion, null, null);

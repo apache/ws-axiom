@@ -39,6 +39,9 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.activation.TestDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
@@ -65,9 +68,9 @@ public class JAXBCustomBuilderTest {
         return document;
     }
     
-    private void test(DataHandler dh, StAXOMBuilder builder, boolean same, boolean usesAttachments, boolean expectBareReader) throws IOException {
+    private void test(DataHandler dh, OMXMLParserWrapper builder, boolean same, boolean usesAttachments, boolean expectBareReader) throws IOException {
         JAXBCustomBuilder customBuilder = new JAXBCustomBuilder(jaxbContext, expectBareReader);
-        builder.registerCustomBuilderForPayload(customBuilder);
+        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(customBuilder);
         builder.getDocumentElement().build();
         MyDocument myDocument = (MyDocument)customBuilder.getJaxbObject();
         if (same) {
@@ -86,14 +89,14 @@ public class JAXBCustomBuilderTest {
         OutputStream out = blob.getOutputStream();
         createTestDocument(dh).serialize(out);
         out.close();
-        test(dh, new StAXOMBuilder(blob.getInputStream()), false, false, true);
+        test(dh, OMXMLBuilderFactory.createOMBuilder(blob.getInputStream()), false, false, true);
     }
     
     @Test
     public void testWithDataHandlerReaderExtension() throws Exception {
         DataHandler dh = new DataHandler(new TestDataSource('X', Integer.MAX_VALUE));
         OMElement document = createTestDocument(dh);
-        test(dh, new StAXOMBuilder(document.getXMLStreamReader()), true, true, false);
+        test(dh, OMXMLBuilderFactory.createStAXOMBuilder(document.getXMLStreamReader()), true, true, false);
     }
     
     @Test
@@ -106,6 +109,6 @@ public class JAXBCustomBuilderTest {
         createTestDocument(dh).serialize(out, format);
         out.close();
         Attachments attachments = new Attachments(blob.getInputStream(), format.getContentType());
-        test(dh, new XOPAwareStAXOMBuilder(attachments.getRootPartInputStream(), attachments), false, true, true);
+        test(dh, OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments), false, true, true);
     }
 }

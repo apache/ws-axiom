@@ -160,7 +160,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     }
     
     public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        return new StAXOMBuilder(omFactory, getXMLStreamReader(parser));
+        return new StAXOMBuilder(omFactory, getXMLStreamReader(parser), (Detachable)null, (Closeable)null);
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
@@ -190,7 +190,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
                     toInputSource((StreamSource)source));
         } else {
             try {
-                return new StAXOMBuilder(omFactory, StAXUtils.getXMLInputFactory().createXMLStreamReader(source));
+                return new StAXOMBuilder(omFactory, StAXUtils.getXMLInputFactory().createXMLStreamReader(source), (Detachable)null, (Closeable)null);
             } catch (XMLStreamException ex) {
                 throw new OMException(ex);
             }
@@ -199,7 +199,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node,
             boolean expandEntityReferences) {
-        return new StAXOMBuilder(omFactory, new DOMXMLStreamReader(node, expandEntityReferences));
+        return new StAXOMBuilder(omFactory, new DOMXMLStreamReader(node, expandEntityReferences), (Detachable)null, (Closeable)null);
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,

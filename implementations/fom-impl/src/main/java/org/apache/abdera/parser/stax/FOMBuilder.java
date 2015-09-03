@@ -17,6 +17,8 @@
  */
 package org.apache.abdera.parser.stax;
 
+import java.io.Closeable;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.abdera.model.Content;
@@ -29,6 +31,7 @@ import org.apache.abdera.util.Constants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 @SuppressWarnings("unchecked")
@@ -38,7 +41,7 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     private final ParserOptions parserOptions;
 
     public FOMBuilder(FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
-        super(factory, new FOMStAXFilter(parser, parserOptions));
+        super(factory, new FOMStAXFilter(parser, parserOptions), (Detachable)null, (Closeable)null);
         this.parserOptions = parserOptions;
         this.fomfactory = factory;
     }

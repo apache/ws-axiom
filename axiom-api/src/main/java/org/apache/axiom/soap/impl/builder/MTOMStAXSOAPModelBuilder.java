@@ -23,6 +23,7 @@ import java.io.Closeable;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
@@ -33,11 +34,17 @@ import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
+/**
+ * Internal implementation class.
+ */
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XOPBuilder {
     
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
     private final Attachments attachments;
 
+    /**
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
+     */
     public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
                                     SOAPFactory factory, Attachments attachments,
                                     String soapVersion) {
@@ -47,8 +54,7 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
     }
 
     /**
-     * @param reader
-     * @param attachments
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
                                     Attachments attachments, String soapVersion) {
@@ -57,6 +63,9 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
         this.attachments = attachments;
     }
 
+    /**
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
+     */
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
                                     Attachments attachments) {
         super(new XOPDecodingStreamReader(reader, new AttachmentsMimePartProvider(

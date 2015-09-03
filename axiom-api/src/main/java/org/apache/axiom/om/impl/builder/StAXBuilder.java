@@ -52,11 +52,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * OM should be able to be built from any data source. And the model it builds may be a SOAP
- * specific one or just an XML model. This class will give some common functionality of OM Building
- * from StAX.
+ * Internal implementation class.
  */
-public abstract class StAXBuilder implements OMXMLParserWrapper {
+public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
 
     private static final Log log = LogFactory.getLog(StAXBuilder.class);
     
@@ -151,23 +149,14 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
     
     /**
-     * Constructor StAXBuilder.
-     * This constructor is used if the parser is at the beginning (START_DOCUMENT).
-     *
-     * @param omFactory
-     * @param parser
+     * @deprecated
      */
     protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser) {
         this(omFactory, parser, null, null);
     }
     
     /**
-     * Constructor StAXBuilder.
-     * This constructor is used if the parser is not at the START_DOCUMENT.
-     *
-     * @param omFactory
-     * @param parser
-     * @param encoding
+     * @deprecated
      */
     protected StAXBuilder(OMFactory omFactory, 
                           XMLStreamReader parser, 
@@ -184,9 +173,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     /**
-     * Constructor StAXBuilder.
-     *
-     * @param parser
+     * @deprecated
      */
     protected StAXBuilder(XMLStreamReader parser) {
         this(OMAbstractFactory.getOMFactory(), parser);
@@ -668,14 +655,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     public abstract int next() throws OMException;
     
-    /**
-     * Register a CustomBuilder associated with the indicated QName.
-     * The CustomBuilder will be used when an element of that qname is encountered.
-     * @param qName
-     * @param maxDepth indicate the maximum depth that this qname will be found. (root = 0)
-     * @param customBuilder
-     * @return replaced CustomBuilder or null
-     */
     public CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
         CustomBuilder old = null;
         if (customBuilders == null) {
@@ -691,13 +670,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
     
     
-    /**
-     * Register a CustomBuilder for a payload.
-     * The payload is defined as the elements inside a SOAPBody or the 
-     * document element of a REST message.
-     * @param customBuilder
-     * @return replaced CustomBuilder or null
-     */
     public CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
         CustomBuilder old = null;
         this.customBuilderForPayload = customBuilder;

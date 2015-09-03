@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.util.StAXUtils;
@@ -48,37 +49,36 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
- * StAX based builder that produces a pure XML infoset compliant object model.
- * <p>
- * This class supports the {@link XMLStreamReader} extension defined by
- * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} as well as the legacy extension mechanism
- * defined in the documentation of {@link org.apache.axiom.util.stax.XMLStreamReaderUtils}.
- * <h3>Error handling</h3>
+ * Internal implementation class.
+ */
+/* Implementation note about error handling
+ * ----------------------------------------
+ * 
  * Usually, code that uses StAX directly just stops processing of an XML document
  * once the first parsing error has been reported. However, since Axiom
  * uses deferred parsing, and client code accesses the XML infoset using
  * an object model, things are more complicated. Indeed, if the XML
  * document is not well formed, the corresponding error might be reported
  * as a runtime exception by any call to a method of an OM node.
- * <p>
+ * 
  * Typically the client code will have some error handling that will intercept
  * runtime exceptions and take appropriate action. Very often this error handling
  * code might want to access the object model again, for example to log the request that caused the
  * failure. This causes no problem except if the runtime exception was caused by a
  * parsing error, in which case Axiom would again try to pull events from the parser.
- * <p>
+ * 
  * This would lead to a situation where Axiom accesses a parser that has reported a parsing
  * error before. While one would expect that after a first error reported by the parser, all
  * subsequent invocations of the parser will fail, this is not the case for all parsers
  * (at least not in all situations). Instead, the parser might be left in an inconsistent
  * state after the error. E.g. AXIOM-34 describes a case where Woodstox
- * encounters an error in {@link XMLStreamReader#getText()} but continues to return
+ * encounters an error in XMLStreamReader#getText() but continues to return
  * (incorrect) events afterwards. The explanation for this behaviour might be that
  * the situation described here is quite uncommon when StAX is used directly (i.e. not through
  * Axiom).
- * <p>
+ * 
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
- * them during a call to {@link #next()}.
+ * them during a call to next().
  */
 public class StAXOMBuilder extends StAXBuilder {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
@@ -107,66 +107,49 @@ public class StAXOMBuilder extends StAXBuilder {
     }
     
     /**
-     * Constructor StAXOMBuilder.
-     *
-     * @param ombuilderFactory
-     * @param parser
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
     }
 
     /**
-     * Constructor linked to existing element.
-     *
-     * @param factory
-     * @param parser
-     * @param element
-     * @param characterEncoding of existing element
+     * For internal use only.
      */
     public StAXOMBuilder(OMFactory factory, 
                          XMLStreamReader parser, 
                          OMElement element, 
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
-        super(factory, parser, characterEncoding);  
+        super(factory, parser, characterEncoding, null, null);  
         elementLevel = 1;
         target = (OMContainerEx)element;
         populateOMElement(element);
     }
     
     /**
-     * Constructor linked to existing element.
-     *
-     * @param factory
-     * @param parser
-     * @param element
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXOMBuilder(OMFactory factory, XMLStreamReader parser, OMElement element) {
         this(factory, parser, element, null);
     }
 
     /**
-     * @param filePath - Path to the XML file
-     * @throws XMLStreamException
-     * @throws FileNotFoundException
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXOMBuilder(String filePath) throws XMLStreamException, FileNotFoundException {
         this(StAXUtils.createXMLStreamReader(new FileInputStream(filePath)));
     }
 
     /**
-     * Constructor StAXOMBuilder.
-     *
-     * @param parser
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXOMBuilder(XMLStreamReader parser) {
         this(OMAbstractFactory.getOMFactory(), parser);
     }
 
     /**
-     * @param inStream - instream which contains the XML
-     * @throws XMLStreamException
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
         this(StAXUtils.createXMLStreamReader(inStream));

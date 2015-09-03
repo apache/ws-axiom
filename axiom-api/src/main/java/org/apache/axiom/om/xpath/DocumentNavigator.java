@@ -28,8 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.jaxen.BaseXPath;
 import org.jaxen.DefaultNavigator;
 import org.jaxen.FunctionCallException;
@@ -549,7 +548,7 @@ public class DocumentNavigator extends DefaultNavigator {
                 URL url = new URL(uri);
                 in = url.openStream();
             }
-            return new StAXOMBuilder(StAXUtils.createXMLStreamReader(in)).getDocument();
+            return OMXMLBuilderFactory.createOMBuilder(in).getDocument();
         } catch (Exception e) {
             if (in != null) {
                 try {

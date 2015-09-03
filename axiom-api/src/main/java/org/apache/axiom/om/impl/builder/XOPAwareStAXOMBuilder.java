@@ -23,6 +23,7 @@ import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
@@ -43,10 +44,7 @@ public class XOPAwareStAXOMBuilder
     Attachments attachments;
 
     /**
-     * Constructor StAXOMBuilder.
-     *
-     * @param ombuilderFactory
-     * @param parser
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public XOPAwareStAXOMBuilder(OMFactory ombuilderFactory,
                                  XMLStreamReader parser, Attachments attachments) {
@@ -56,11 +54,7 @@ public class XOPAwareStAXOMBuilder
     }
 
     /**
-     * Constructor linked to existing element.
-     *
-     * @param factory
-     * @param parser
-     * @param element
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public XOPAwareStAXOMBuilder(OMFactory factory, XMLStreamReader parser,
                                  OMElement element, Attachments attachments) {
@@ -70,9 +64,7 @@ public class XOPAwareStAXOMBuilder
     }
 
     /**
-     * @param filePath - Path to the XML file
-     * @throws XMLStreamException
-     * @throws FileNotFoundException
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public XOPAwareStAXOMBuilder(String filePath, Attachments attachments)
             throws XMLStreamException,
@@ -83,8 +75,7 @@ public class XOPAwareStAXOMBuilder
     }
 
     /**
-     * @param inStream - instream which contains the XML
-     * @throws XMLStreamException
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public XOPAwareStAXOMBuilder(InputStream inStream, Attachments attachments)
             throws XMLStreamException {
@@ -94,9 +85,7 @@ public class XOPAwareStAXOMBuilder
     }
 
     /**
-     * Constructor StAXXOPAwareOMBuilder.
-     *
-     * @param parser
+     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
      */
     public XOPAwareStAXOMBuilder(XMLStreamReader parser, Attachments attachments) {
         super(new XOPDecodingStreamReader(parser, new AttachmentsMimePartProvider(
