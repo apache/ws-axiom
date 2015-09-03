@@ -20,15 +20,15 @@ package org.apache.abdera.parser.stax.util;
 import java.util.Iterator;
 
 import org.apache.abdera.model.Element;
-import org.apache.abdera.parser.stax.FOMFactory;
+import org.apache.axiom.fom.AbderaFactory;
 
 @SuppressWarnings("unchecked")
 public class FOMElementIteratorWrapper implements Iterator {
 
     private final Iterator<?> iterator;
-    private final FOMFactory factory;
+    private final AbderaFactory factory;
 
-    public FOMElementIteratorWrapper(FOMFactory factory, Iterator<?> iterator) {
+    public FOMElementIteratorWrapper(AbderaFactory factory, Iterator<?> iterator) {
         this.iterator = iterator;
         this.factory = factory;
     }

@@ -17,16 +17,47 @@
  */
 package org.apache.abdera.parser.stax.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 
+import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Link;
-import org.apache.abdera.parser.stax.FOMLink;
 
 public class FOMLinkIterator extends FOMElementIterator {
+    private static final Map<String, String> REL_EQUIVS = new HashMap<String, String>();
+    static {
+        REL_EQUIVS.put(Link.REL_ALTERNATE_IANA, Link.REL_ALTERNATE);
+        REL_EQUIVS.put(Link.REL_CURRENT_IANA, Link.REL_CURRENT);
+        REL_EQUIVS.put(Link.REL_ENCLOSURE_IANA, Link.REL_ENCLOSURE);
+        REL_EQUIVS.put(Link.REL_FIRST_IANA, Link.REL_FIRST);
+        REL_EQUIVS.put(Link.REL_LAST_IANA, Link.REL_LAST);
+        REL_EQUIVS.put(Link.REL_NEXT_IANA, Link.REL_NEXT);
+        REL_EQUIVS.put(Link.REL_PAYMENT_IANA, Link.REL_PAYMENT);
+        REL_EQUIVS.put(Link.REL_PREVIOUS_IANA, Link.REL_PREVIOUS);
+        REL_EQUIVS.put(Link.REL_RELATED_IANA, Link.REL_RELATED);
+        REL_EQUIVS.put(Link.REL_SELF_IANA, Link.REL_SELF);
+        REL_EQUIVS.put(Link.REL_VIA_IANA, Link.REL_VIA);
+        REL_EQUIVS.put(Link.REL_REPLIES_IANA, Link.REL_REPLIES);
+        REL_EQUIVS.put(Link.REL_LICENSE_IANA, Link.REL_LICENSE);
+        REL_EQUIVS.put(Link.REL_EDIT_IANA, Link.REL_EDIT);
+        REL_EQUIVS.put(Link.REL_EDIT_MEDIA_IANA, Link.REL_EDIT_MEDIA);
+        REL_EQUIVS.put(Link.REL_SERVICE_IANA, Link.REL_SERVICE);
+    }
+
+    private static final String getRelEquiv(String val) {
+        try {
+            val = IRI.normalizeString(val);
+        } catch (Exception e) {
+        }
+        String rel = REL_EQUIVS.get(val);
+        return (rel != null) ? rel : val;
+    }
 
     public FOMLinkIterator(Element parent, Class<?> _class, QName attribute, String value, String defaultValue) {
-        super(parent, _class, attribute, value != null ? FOMLink.getRelEquiv(value) : Link.REL_ALTERNATE, defaultValue);
+        super(parent, _class, attribute, value != null ? getRelEquiv(value) : Link.REL_ALTERNATE, defaultValue);
     }
 
     public FOMLinkIterator(Element parent, Class<?> _class) {
@@ -35,7 +66,7 @@ public class FOMLinkIterator extends FOMElementIterator {
 
     protected boolean isMatch(Element el) {
         if (attribute != null) {
-            String val = FOMLink.getRelEquiv(el.getAttributeValue(attribute));
+            String val = getRelEquiv(el.getAttributeValue(attribute));
             return ((val == null && value == null) || (val == null && value != null && value
                 .equalsIgnoreCase(defaultValue)) || (val != null && val.equalsIgnoreCase(value)));
         }

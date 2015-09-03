@@ -17,9 +17,6 @@
  */
 package org.apache.abdera.parser.stax;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.activation.MimeType;
 
 import org.apache.abdera.i18n.iri.IRI;
@@ -118,35 +115,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
         else
             removeAttribute(LENGTH);
         return this;
-    }
-
-    private static final Map<String, String> REL_EQUIVS = new HashMap<String, String>();
-    static {
-        REL_EQUIVS.put(REL_ALTERNATE_IANA, REL_ALTERNATE);
-        REL_EQUIVS.put(REL_CURRENT_IANA, REL_CURRENT);
-        REL_EQUIVS.put(REL_ENCLOSURE_IANA, REL_ENCLOSURE);
-        REL_EQUIVS.put(REL_FIRST_IANA, REL_FIRST);
-        REL_EQUIVS.put(REL_LAST_IANA, REL_LAST);
-        REL_EQUIVS.put(REL_NEXT_IANA, REL_NEXT);
-        REL_EQUIVS.put(REL_PAYMENT_IANA, REL_PAYMENT);
-        REL_EQUIVS.put(REL_PREVIOUS_IANA, REL_PREVIOUS);
-        REL_EQUIVS.put(REL_RELATED_IANA, REL_RELATED);
-        REL_EQUIVS.put(REL_SELF_IANA, REL_SELF);
-        REL_EQUIVS.put(REL_VIA_IANA, REL_VIA);
-        REL_EQUIVS.put(REL_REPLIES_IANA, REL_REPLIES);
-        REL_EQUIVS.put(REL_LICENSE_IANA, REL_LICENSE);
-        REL_EQUIVS.put(REL_EDIT_IANA, REL_EDIT);
-        REL_EQUIVS.put(REL_EDIT_MEDIA_IANA, REL_EDIT_MEDIA);
-        REL_EQUIVS.put(REL_SERVICE_IANA, REL_SERVICE);
-    }
-
-    public static final String getRelEquiv(String val) {
-        try {
-            val = IRI.normalizeString(val);
-        } catch (Exception e) {
-        }
-        String rel = REL_EQUIVS.get(val);
-        return (rel != null) ? rel : val;
     }
 
     public String getValue() {

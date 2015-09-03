@@ -18,7 +18,7 @@
 package org.apache.abdera.parser.stax.util;
 
 import org.apache.abdera.model.Element;
-import org.apache.abdera.parser.stax.FOMFactory;
+import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.traverse.OMFilterIterator;
@@ -32,7 +32,7 @@ public class FOMExtensionIterator extends OMFilterIterator {
      */
     private String namespace = null;
     private String extns = null;
-    private FOMFactory factory = null;
+    private AbderaFactory factory = null;
 
     /**
      * Constructor OMChildrenQNameIterator.
@@ -43,7 +43,7 @@ public class FOMExtensionIterator extends OMFilterIterator {
     public FOMExtensionIterator(OMElement parent) {
         super(parent.getChildren());
         this.namespace = parent.getQName().getNamespaceURI();
-        this.factory = (FOMFactory)parent.getOMFactory();
+        this.factory = (AbderaFactory)parent.getOMFactory();
     }
 
     public FOMExtensionIterator(OMElement parent, String extns) {
