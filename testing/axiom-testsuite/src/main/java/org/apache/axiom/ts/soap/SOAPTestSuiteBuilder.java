@@ -141,6 +141,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
             }
         }
+        addTest(new org.apache.axiom.ts.soap.envelope.TestAddElementAfterBody(metaFactory, spec, false));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestAddElementAfterBody(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, spec));
         if (supportsOMSourcedElement) {
@@ -324,7 +326,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.soap11.builder.TestBuilder(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestSetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultcode.TestGetValue(metaFactory));
@@ -344,7 +345,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion3(metaFactory));
         }
         addTest(new org.apache.axiom.ts.soap12.builder.TestBuilder(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming(metaFactory, true));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming(metaFactory, false));

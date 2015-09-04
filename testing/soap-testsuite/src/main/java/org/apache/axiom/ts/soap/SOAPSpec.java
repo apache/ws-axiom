@@ -50,7 +50,8 @@ public abstract class SOAPSpec extends Multiton {
             "http://schemas.xmlsoap.org/soap/actor/next",
             new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"),
             new QName("http://schemas.xmlsoap.org/soap/envelope/", "Server"),
-            new String[] { "soap-1.1.xsd" }) {
+            new String[] { "soap-1.1.xsd" },
+            true) {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP12;
         }
@@ -75,7 +76,8 @@ public abstract class SOAPSpec extends Multiton {
             "http://www.w3.org/2003/05/soap-envelope/role/next",
             new QName("http://www.w3.org/2003/05/soap-envelope", "Sender"),
             new QName("http://www.w3.org/2003/05/soap-envelope", "Receiver"),
-            new String[] { "xml.xsd", "soap-1.2.xsd" }) {
+            new String[] { "xml.xsd", "soap-1.2.xsd" },
+            false) {
         public SOAPSpec getAltSpec() {
             return SOAPSpec.SOAP11;
         }
@@ -106,12 +108,13 @@ public abstract class SOAPSpec extends Multiton {
     private final QName receiverFaultCode;
     private final String[] schemaResources;
     private Schema schema;
+    private final boolean allowsElementsAfterBody;
     
     private SOAPSpec(String name, String contentType, String envelopeNamespaceURI, BooleanLiteral[] booleanLiterals,
             QName faultCodeQName, QName faultValueQName, QName faultSubCodeQName, QName faultReasonQName,
             QName faultTextQName, QName faultNodeQName, QName faultRoleQName, QName faultDetailQName,
             String nextRoleURI, QName senderFaultCode, QName receiverFaultCode,
-            String[] schemaResources) {
+            String[] schemaResources, boolean allowsElementsAfterBody) {
         this.name = name;
         this.contentType = contentType;
         this.envelopeNamespaceURI = envelopeNamespaceURI;
@@ -132,6 +135,7 @@ public abstract class SOAPSpec extends Multiton {
         this.senderFaultCode = senderFaultCode;
         this.receiverFaultCode = receiverFaultCode;
         this.schemaResources = schemaResources;
+        this.allowsElementsAfterBody = allowsElementsAfterBody;
     }
     
     public final String getName() {
@@ -281,5 +285,9 @@ public abstract class SOAPSpec extends Multiton {
             }
         }
         return schema;
+    }
+
+    public final boolean isAllowsElementsAfterBody() {
+        return allowsElementsAfterBody;
     }
 }
