@@ -29,7 +29,4 @@ public class SOAP11Factory extends SOAPFactoryImpl implements AxiomSOAP11Factory
     public SOAP11Factory(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }
-    
-    public SOAP11Factory() {
-    }
 }

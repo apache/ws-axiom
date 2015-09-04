@@ -30,7 +30,6 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
@@ -112,13 +111,6 @@ public class OMLinkedListImplFactory implements AxiomNodeFactory {
      */
     protected OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
-    }
-    
-    /**
-     * @deprecated Use {@link OMAbstractFactory#getOMFactory()} to get an instance of this class.
-     */
-    public OMLinkedListImplFactory() {
-        this(new OMLinkedListMetaFactory());
     }
 
     public OMMetaFactory getMetaFactory() {

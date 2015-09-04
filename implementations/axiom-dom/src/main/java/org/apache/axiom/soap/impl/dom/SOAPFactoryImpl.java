@@ -27,7 +27,4 @@ public abstract class SOAPFactoryImpl extends OMDOMFactory implements AxiomSOAPF
     public SOAPFactoryImpl(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }
-
-    public SOAPFactoryImpl() {
-    }
 }

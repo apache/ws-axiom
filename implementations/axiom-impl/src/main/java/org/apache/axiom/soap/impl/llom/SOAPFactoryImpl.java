@@ -26,10 +26,4 @@ public abstract class SOAPFactoryImpl extends OMLinkedListImplFactory implements
     public SOAPFactoryImpl(OMLinkedListMetaFactory metaFactory) {
         super(metaFactory);
     }
-
-    /**
-     * @deprecated
-     */
-    public SOAPFactoryImpl() {
-    }
 }

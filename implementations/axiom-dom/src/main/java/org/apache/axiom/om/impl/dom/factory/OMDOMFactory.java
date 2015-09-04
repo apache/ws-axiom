@@ -132,10 +132,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         this.metaFactory = metaFactory;
     }
 
-    public OMDOMFactory() {
-        this(new OMDOMMetaFactory());
-    }
-
     public OMMetaFactory getMetaFactory() {
         return metaFactory;
     }

@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Factory;
 import org.apache.axiom.soap.impl.llom.SOAPFactoryImpl;
@@ -34,12 +33,5 @@ public class SOAP12Factory extends SOAPFactoryImpl implements AxiomSOAP12Factory
      */
     public SOAP12Factory(OMLinkedListMetaFactory metaFactory) {
         super(metaFactory);
-    }
-
-    /**
-     * @deprecated Use {@link OMAbstractFactory#getSOAP12Factory()} to get an instance of this
-     *             class.
-     */
-    public SOAP12Factory() {
     }
 }
