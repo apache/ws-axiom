@@ -24,12 +24,10 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM;
-import org.apache.axiom.ts.om.container.TestGetXMLStreamReader;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
-import org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements;
 import org.apache.axiom.ts.om.element.sr.TestClose;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
@@ -55,17 +53,11 @@ public class OMImplementationTest extends TestCase {
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         
-        // TODO
-        builder.exclude(TestSerializationWithTwoNonBuiltOMElements.class);
-        
         // TODO: need to evaluate if the test case is correct
         builder.exclude(TestGetSAXSourceWithPushOMDataSource.class, "(&(scenario=getNamespaceContext)(serializeParent=false))");
         
         // TODO: test case needing review
         builder.exclude(TestClose.class);
-        
-        // TODO: test issue: DOOM doesn't preserve attribute order
-        builder.exclude(TestGetXMLStreamReader.class, "(&(file=large.xml))");
         
         return builder.build();
     }
