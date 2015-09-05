@@ -1011,6 +1011,7 @@
                                 
                                 <!-- RAT doesn't recognize this one as notes file -->
                                 <exclude>RELEASE-NOTE.txt</exclude>
+                                <exclude>src/site/markdown/release-notes/**</exclude>
                                 <!-- SVG files are not edited by hand, so license headers would be lost anyway -->
                                 <exclude>**/*.svg</exclude>
                                 <!-- License file from Jaxen (see LEGAL-74 & WSCOMMONS-545) -->

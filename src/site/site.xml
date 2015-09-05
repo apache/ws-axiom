@@ -44,6 +44,15 @@
         </menu>
         <menu name="Documentation">
             <item name="Overview" href="documentation.html"/>
+            <item name="Release notes" collapse="true" href="release-notes/index.html">
+                <item name="1.2.9" href="release-notes/1.2.9.html"/>
+                <item name="1.2.10" href="release-notes/1.2.10.html"/>
+                <item name="1.2.11" href="release-notes/1.2.11.html"/>
+                <item name="1.2.12" href="release-notes/1.2.12.html"/>
+                <item name="1.2.13" href="release-notes/1.2.13.html"/>
+                <item name="1.2.14" href="release-notes/1.2.14.html"/>
+                <item name="1.2.15" href="release-notes/1.2.15.html"/>
+            </item>
             <item name="Quick start samples" href="quickstart-samples.html"/>
             <item name="User guide" href="userguide/userguide.html"/>
             <item name="Developer guide" href="devguide/devguide.html"/>
