@@ -119,8 +119,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>add-tracking-code</id>
@@ -129,44 +129,46 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source><![CDATA[
-                                import javax.xml.parsers.*
-                                import javax.xml.transform.*
-                                import javax.xml.transform.dom.*
-                                import javax.xml.transform.stream.*
-                                import javax.xml.xpath.*
-                                
-                                import groovy.io.FileType
-                                
-                                def siteXml = new File(basedir, '../src/site/site.xml')
-                                def javadocDir = new File(project.reporting.outputDirectory)
-                                
-                                // Extract tracking code from site.xml
-                                def builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                                def xpath = XPathFactory.newInstance().newXPath()
-                                def nodes = xpath.evaluate('/project/body/head/*', builder.parse(siteXml), XPathConstants.NODESET)
-                                def transformer = TransformerFactory.newInstance().newTransformer()
-                                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, 'yes')
-                                def sw = new StringWriter()
-                                def result = new StreamResult(sw)
-                                nodes.each({ node -> transformer.transform(new DOMSource(node), result) })
-                                def trackingCode = sw.toString()
-                                
-                                // Inject tracking code into Javadoc HTML files
-                                javadocDir.eachFileRecurse(FileType.FILES, { file ->
-                                    if (file.name.endsWith('.html')) {
-                                        def lines = file.readLines('UTF-8')
-                                        def out = file.newPrintWriter('UTF-8')
-                                        lines.each({ line ->
-                                            if (line == '</head>') {
-                                                out.println(trackingCode)
-                                            }
-                                            out.println(line)
-                                        })
-                                        out.close()
-                                    }
-                                })
-                            ]]></source>
+                            <scripts>
+                                <script><![CDATA[
+                                    import javax.xml.parsers.*
+                                    import javax.xml.transform.*
+                                    import javax.xml.transform.dom.*
+                                    import javax.xml.transform.stream.*
+                                    import javax.xml.xpath.*
+                                    
+                                    import groovy.io.FileType
+                                    
+                                    def siteXml = new File(basedir, '../src/site/site.xml')
+                                    def javadocDir = new File(project.reporting.outputDirectory)
+                                    
+                                    // Extract tracking code from site.xml
+                                    def builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                                    def xpath = XPathFactory.newInstance().newXPath()
+                                    def nodes = xpath.evaluate('/project/body/head/*', builder.parse(siteXml), XPathConstants.NODESET)
+                                    def transformer = TransformerFactory.newInstance().newTransformer()
+                                    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, 'yes')
+                                    def sw = new StringWriter()
+                                    def result = new StreamResult(sw)
+                                    nodes.each({ node -> transformer.transform(new DOMSource(node), result) })
+                                    def trackingCode = sw.toString()
+                                    
+                                    // Inject tracking code into Javadoc HTML files
+                                    javadocDir.eachFileRecurse(FileType.FILES, { file ->
+                                        if (file.name.endsWith('.html')) {
+                                            def lines = file.readLines('UTF-8')
+                                            def out = file.newPrintWriter('UTF-8')
+                                            lines.each({ line ->
+                                                if (line == '</head>') {
+                                                    out.println(trackingCode)
+                                                }
+                                                out.println(line)
+                                            })
+                                            out.close()
+                                        }
+                                    })
+                                ]]></script>
+                            </scripts>
                         </configuration>
                     </execution>
                 </executions>

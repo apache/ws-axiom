@@ -66,8 +66,8 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -75,10 +75,10 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>
+                            <scripts>
                                 <!-- This generates a list of the files in src/main/resources/org/apache/axiom/ts/xml/bulk.
                                      This is useful when loading these files from the classpath. -->
-                                <![CDATA[
+                                <script><![CDATA[
                                     def filelist = new File(project.build.directory, "generated-resources/org/apache/axiom/ts/xml/bulk/filelist");
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
@@ -87,8 +87,8 @@
                                             filelist.append("$it.name\n");
                                         }
                                     })
-                                ]]>
-                            </source>
+                                ]]></script>
+                            </scripts>
                         </configuration>
                     </execution>
                 </executions>

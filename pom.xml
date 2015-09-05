@@ -593,9 +593,16 @@
                     <version>2.2-beta-5</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>groovy-maven-plugin</artifactId>
-                    <version>2.0</version>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>1.5</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-all</artifactId>
+                            <version>2.4.4</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <artifactId>maven-antrun-plugin</artifactId>
@@ -645,8 +652,8 @@
                             <pluginExecutions>
                                 <pluginExecution>
                                     <pluginExecutionFilter>
-                                        <groupId>org.codehaus.gmaven</groupId>
-                                        <artifactId>groovy-maven-plugin</artifactId>
+                                        <groupId>org.codehaus.gmavenplus</groupId>
+                                        <artifactId>gmavenplus-plugin</artifactId>
                                         <versionRange>[0.0.0,)</versionRange>
                                         <goals>
                                             <goal>execute</goal>
@@ -729,8 +736,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>initialize</id>
@@ -739,33 +746,35 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>
-                                import java.io.File
-                                
-                                <!-- Avoid chicken and egg problem with jar-resource-bundle -->
-                                if (project.packaging == 'pom') {
-                                    project.properties['skipRemoteResources'] = 'true'
-                                }
-                                
-                                <!-- Since we don't generate Maven sites for submodules the project URLs computed by Maven
-                                     (parent project URL + artifact ID) are wrong. Make sure that the URL is explicitly set
-                                     to the right location, at least for modules that deploy artifacts. -->
-                                if (project.properties['skipDeploy'] == 'false' &amp;&amp; project.properties['skipSite'] == 'true' &amp;&amp; project.url != 'http://ws.apache.org/axiom/') {
-                                    throw new Error('Invalid project URL')
-                                }
-                                
-                                <!-- Create the temporary directory specified in the surefire configuration -->
-                                new File(project.build.directory, 'tmp').mkdirs()
-                                
-                                <!-- Skip Jacoco if necessary -->
-                                if (System.properties['skipTests'] == 'true') {
-                                    println 'Disabling JaCoCo because tests are skipped'
-                                    project.properties['skipJacoco'] = 'true'
-                                } else if (System.properties['java.specification.version'] == '1.8') {
-                                    println 'WARNING: Java 1.8 not supported; disabling JaCoCo'
-                                    project.properties['skipJacoco'] = 'true'
-                                }
-                            </source>
+                            <scripts>
+                                <script><![CDATA[
+                                    import java.io.File
+                                    
+                                    // Avoid chicken and egg problem with jar-resource-bundle
+                                    if (project.packaging == 'pom') {
+                                        project.properties['skipRemoteResources'] = 'true'
+                                    }
+                                    
+                                    // Since we don't generate Maven sites for submodules the project URLs computed by Maven
+                                    // (parent project URL + artifact ID) are wrong. Make sure that the URL is explicitly set
+                                    // to the right location, at least for modules that deploy artifacts.
+                                    if (project.properties['skipDeploy'] == 'false' && project.properties['skipSite'] == 'true' && project.url != 'http://ws.apache.org/axiom/') {
+                                        throw new Error('Invalid project URL')
+                                    }
+                                    
+                                    // Create the temporary directory specified in the surefire configuration
+                                    new File(project.build.directory, 'tmp').mkdirs()
+                                    
+                                    // Skip Jacoco if necessary
+                                    if (System.properties['skipTests'] == 'true') {
+                                        println 'Disabling JaCoCo because tests are skipped'
+                                        project.properties['skipJacoco'] = 'true'
+                                    } else if (System.properties['java.specification.version'] == '1.8') {
+                                        println 'WARNING: Java 1.8 not supported; disabling JaCoCo'
+                                        project.properties['skipJacoco'] = 'true'
+                                    }
+                                ]]></script>
+                            </scripts>
                         </configuration>
                     </execution>
                     <execution>
@@ -775,11 +784,13 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>
-                                if (project.properties['skipJacoco'] == 'true' || !new File(project.build.directory, 'jacoco.exec').exists()) {
-                                    project.properties['skipJacocoAttach'] = 'true'
-                                }
-                            </source>
+                            <scripts>
+                                <script>
+                                    if (project.properties['skipJacoco'] == 'true' || !new File(project.build.directory, 'jacoco.exec').exists()) {
+                                        project.properties['skipJacocoAttach'] = 'true'
+                                    }
+                                </script>
+                            </scripts>
                         </configuration>
                     </execution>
                 </executions>

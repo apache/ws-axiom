@@ -65,8 +65,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
                 <executions>
                     <execution>
                         <!-- Need this to pass information to the hook scripts. Once maven-invoker-plugin 1.9 is released,
@@ -78,18 +78,20 @@
                         </goals>
                         <inherited>false</inherited>
                         <configuration>
-                            <source>
-                                import java.io.*
-                                import java.util.*
-                                
-                                dir = new File(project.build.directory, "it")
-                                dir.mkdirs()
-                                props = new Properties()
-                                props.setProperty("version", project.version)
-                                stream = new FileOutputStream(new File(dir, "script.properties"))
-                                props.store(stream, null)
-                                stream.close()
-                            </source>
+                            <scripts>
+                                <script>
+                                    import java.io.*
+                                    import java.util.*
+                                    
+                                    dir = new File(project.build.directory, "it")
+                                    dir.mkdirs()
+                                    props = new Properties()
+                                    props.setProperty("version", project.version)
+                                    stream = new FileOutputStream(new File(dir, "script.properties"))
+                                    props.store(stream, null)
+                                    stream.close()
+                                </script>
+                            </scripts>
                         </configuration>
                     </execution>
                 </executions>

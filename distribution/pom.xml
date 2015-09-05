@@ -96,8 +96,8 @@
         <finalName>axiom-${project.version}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>generate-timestamp</id>
@@ -106,11 +106,13 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <source>
-                                import java.util.Date 
-                                import java.text.MessageFormat 
-                                project.properties['build_date'] = MessageFormat.format("{0,date,MMMMM dd, yyyy}", new Date())
-                            </source>
+                            <scripts>
+                                <script>
+                                    import java.util.Date 
+                                    import java.text.MessageFormat 
+                                    project.properties['build_date'] = MessageFormat.format("{0,date,MMMMM dd, yyyy}", new Date())
+                                </script>
+                            </scripts>
                         </configuration>
                     </execution>
                 </executions>
