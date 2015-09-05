@@ -30,17 +30,13 @@
     <packaging>pom</packaging>
 
     <name>Implementations</name>
-    <url>http://ws.apache.org/axiom/</url>
+    <description>Object model implementations built using Axiom</description>
 
     <modules>
         <module>axiom-impl</module>
         <module>axiom-dom</module>
         <module>fom-impl</module>
     </modules>
-
-    <properties>
-        <skipSite>true</skipSite>
-    </properties>
 
     <build>
         <plugins>
@@ -117,4 +113,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

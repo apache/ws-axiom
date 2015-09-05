@@ -31,7 +31,6 @@
 
     <name>Abdera Model (FOM) Implementation</name>
     <description>Implementation of Abdera's Feed Object Model. Can be used as a drop in replacement for the abdera-parser artifact.</description>
-    <url>http://ws.apache.org/axiom/</url>
 
     <dependencies>
         <dependency>
@@ -116,4 +115,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

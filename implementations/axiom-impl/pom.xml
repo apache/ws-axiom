@@ -29,9 +29,8 @@
     <artifactId>axiom-impl</artifactId>
     <packaging>bundle</packaging>
 
-    <name>Axiom Impl</name>
-    <description>The Axiom default implementation.</description>
-    <url>http://ws.apache.org/axiom/</url>
+    <name>LLOM</name>
+    <description>The default implementation of the Axiom API.</description>
 
     <dependencies>
         <dependency>
@@ -124,4 +123,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

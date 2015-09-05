@@ -29,9 +29,8 @@
     <artifactId>axiom-dom</artifactId>
     <packaging>bundle</packaging>
 
-    <name>Axiom DOM</name>
-    <description>The Axiom DOM implementation.</description>
-    <url>http://ws.apache.org/axiom/</url>
+    <name>DOOM</name>
+    <description>An implementation of the Axiom API that also implements DOM.</description>
 
     <dependencies>
         <dependency>
@@ -140,4 +139,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <inherited>false</inherited>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

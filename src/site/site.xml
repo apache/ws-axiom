@@ -64,6 +64,7 @@
             <item name="Privacy Policy" href="privacy-policy.html"/>
         </menu>
         <menu name="Modules">
+            <item name="Implementations" href="implementations/index.html"/>
             <item name="Google Truth extension for XML" href="testing/xml-truth/index.html"/>
         </menu>
     </body>
