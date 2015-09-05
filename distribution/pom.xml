@@ -126,7 +126,7 @@
                                 <!-- Process the release note for the current release, converting relative URLs to absolute ones -->
                                 <script>
                                     def release_version = project.version.replaceAll("-SNAPSHOT", "")
-                                    def release_note = new File("../src/site/markdown/release-notes/" + release_version + ".md")
+                                    def release_note = new File(project.basedir, "../src/site/markdown/release-notes/" + release_version + ".md")
                                     new File(project.build.directory).mkdirs()
                                     def out = new File(project.build.directory, "RELEASE-NOTE.txt").newPrintWriter('UTF-8')
                                     release_note.readLines('UTF-8').each({ line ->
