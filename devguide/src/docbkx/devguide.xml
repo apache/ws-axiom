@@ -1054,18 +1054,9 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </listitem>
                 <listitem>
                     <para>
-                        Prepare the release note. This should include a description of the major
-                        changes in the release as well as a list of resolved JIRA issues. Note that
-                        both <filename>index.apt</filename> and <filename>RELEASE-NOTE.txt</filename>
-                        need to be updated.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Add an entry for the release to the <filename>download.xml.vm</filename> file and
-                        change the links for older releases so that they point to <literal>archive.apache.org</literal>
-                        (Since the Axiom project doesn't use branches and produces releases directly from the trunk,
-                        there should only be a single mirrored release).
+                        Complete the release note (<filename>src/site/markdown/release-notes/<replaceable>version</replaceable>.md</filename>).
+                        It should include a description of the major
+                        changes in the release as well as a list of resolved JIRA issues.
                     </para>
                 </listitem>
             </itemizedlist>

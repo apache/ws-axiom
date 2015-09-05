@@ -39,7 +39,7 @@
             <item name="Issue Tracking" href="issue-tracking.html"/>
         </menu>
         <menu name="Downloads">
-            <item name="Releases" href="download.cgi"/>
+            <item name="Releases" href="download.html"/>
             <item name="Source Code" href="source-repository.html"/>
         </menu>
         <menu name="Documentation">
