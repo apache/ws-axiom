@@ -139,7 +139,7 @@
                                     
                                     import groovy.io.FileType
                                     
-                                    def siteXml = new File(basedir, '../src/site/site.xml')
+                                    def siteXml = new File(project.basedir, '../src/site/site.xml')
                                     def javadocDir = new File(project.reporting.outputDirectory)
                                     
                                     // Extract tracking code from site.xml
