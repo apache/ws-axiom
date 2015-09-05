@@ -88,9 +88,6 @@ public aspect AxiomNodeFactorySupport {
         return node;
     }
 
-    public void AxiomNodeFactory.validateOMTextParent(OMContainer parent) {
-    }
-    
     private AxiomText AxiomNodeFactory.createAxiomText(OMContainer parent, Object content, int type, boolean fromBuilder) {
         AxiomText node;
         switch (type) {
@@ -112,7 +109,6 @@ public aspect AxiomNodeFactorySupport {
                 throw new IllegalArgumentException("Invalid node type");
         }
         if (parent != null) {
-            validateOMTextParent(parent);
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }
         node.coreSetCharacterData(content, Policies.DETACH_POLICY);

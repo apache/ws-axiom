@@ -18,18 +18,19 @@
  */
 package org.apache.axiom.dom;
 
-import org.w3c.dom.Node;
+import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.NodeFilter;
+import org.apache.axiom.core.NodeType;
 
-public aspect DOMChildNodeSupport {
-    public final Node DOMChildNode.getParentNode() {
-        return (Node)coreGetParent();
-    }
+final class DocumentWhitespaceFilter implements NodeFilter {
+    final static DocumentWhitespaceFilter INSTANCE = new DocumentWhitespaceFilter();
     
-    public final Node DOMChildNode.getNextSibling() {
-        return (Node)coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
-    }
-    
-    public final Node DOMChildNode.getPreviousSibling() {
-        return (Node)coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
+    private DocumentWhitespaceFilter() {}
+
+    public boolean accept(CoreNode node) {
+        return node.coreGetNodeType() != NodeType.CHARACTER_DATA
+                || !(((CoreCharacterDataNode)node).coreGetParent() instanceof CoreDocument);
     }
 }

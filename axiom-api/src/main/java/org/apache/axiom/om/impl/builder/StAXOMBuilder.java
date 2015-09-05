@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -237,17 +236,7 @@ public class StAXOMBuilder extends StAXBuilder {
                     target = null;
                     break;
                 case XMLStreamConstants.SPACE:
-                    try {
-                        OMNode node = createOMText(XMLStreamConstants.SPACE);
-                        if (node == null) {
-                            continue;
-                        }
-                    } catch (OMHierarchyException ex) {
-                        // The OM implementation doesn't allow text nodes at the current
-                        // position in the tree. Since it is only whitespace, we can safely
-                        // skip this event.
-                        continue;
-                    }
+                    createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
                     createComment();

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.dom.builder;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,13 +27,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
 /**
- * Test that whitespace around the document element is discarded. Indeed, DOM doesn't allow text
- * nodes as children of a document and we need to check that the builder silently discards the
- * corresponding events received from the parser.
+ * Test that whitespace around the document element is discarded (or not visible). Indeed, DOM
+ * doesn't allow text nodes as children of a document.
  */
 public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
     public TestWhitespaceAroundDocumentElement(DocumentBuilderFactory dbf) {
@@ -39,11 +41,21 @@ public class TestWhitespaceAroundDocumentElement extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader("<!-- --> <root/> ")));
+        Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(" <!-- --> <root/> ")));
         Node child = doc.getFirstChild();
         do {
-            assertFalse(child instanceof Text);
+            assertThat(child).isNotInstanceOf(Text.class);
             child = child.getNextSibling();
         } while (child != null);
+        
+        child = doc.getLastChild();
+        do {
+            assertThat(child).isNotInstanceOf(Text.class);
+            child = child.getPreviousSibling();
+        } while (child != null);
+        
+        NodeList children = doc.getChildNodes();
+        assertThat(children.getLength()).isEqualTo(2);
+        assertThat(children.item(1)).isSameAs(doc.getDocumentElement());
     }
 }

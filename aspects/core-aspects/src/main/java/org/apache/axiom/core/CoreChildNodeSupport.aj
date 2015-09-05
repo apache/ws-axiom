@@ -89,6 +89,14 @@ public aspect CoreChildNodeSupport {
         return previousSibling;
     }
     
+    public final CoreChildNode CoreChildNode.coreGetPreviousSibling(NodeFilter filter) {
+        CoreChildNode sibling = coreGetPreviousSibling();
+        while (sibling != null && !filter.accept(sibling)) {
+            sibling = sibling.coreGetPreviousSibling();
+        }
+        return sibling;
+    }
+    
     public final void CoreChildNode.coreSetPreviousSibling(CoreChildNode previousSibling) {
         this.previousSibling = previousSibling;
     }
@@ -113,6 +121,14 @@ public aspect CoreChildNodeSupport {
         return nextSibling;
     }
 
+    public final CoreChildNode CoreChildNode.coreGetNextSibling(NodeFilter filter) {
+        CoreChildNode sibling = coreGetNextSibling();
+        while (sibling != null && !filter.accept(sibling)) {
+            sibling = sibling.coreGetNextSibling();
+        }
+        return sibling;
+    }
+    
     public final void CoreChildNode.coreInsertSiblingAfter(CoreChildNode sibling) {
         CoreParentNode parent = coreGetParent();
         // TODO: don't use OMException here

@@ -47,8 +47,6 @@ import org.apache.axiom.dom.DOMNamespaceDeclaration;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.dom.DOMText;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
@@ -136,13 +134,6 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
         return metaFactory;
     }
 
-    public final void validateOMTextParent(OMContainer parent) {
-        if (parent instanceof DocumentImpl) {
-            throw new OMHierarchyException(
-                    "DOM doesn't support text nodes as children of a document");
-        }
-    }
-    
     public final <T extends CoreNode> T createNode(Class<T> type) {
         CoreNode node;
         if (type == CoreCDATASection.class || type == AxiomCDATASection.class || type == DOMCDATASection.class) {

@@ -55,11 +55,11 @@ public aspect DOMParentNodeSupport {
     }
 
     public final Node DOMParentNode.getFirstChild() {
-        return (Node)coreGetFirstChild();
+        return (Node)coreGetFirstChild(DocumentWhitespaceFilter.INSTANCE);
     }
 
     public final Node DOMParentNode.getLastChild() {
-        return (Node)coreGetLastChild();
+        return (Node)coreGetLastChild(DocumentWhitespaceFilter.INSTANCE);
     }
 
     public final boolean DOMParentNode.hasChildNodes() {

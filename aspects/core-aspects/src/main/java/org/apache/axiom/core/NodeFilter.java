@@ -16,20 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.core;
 
-import org.w3c.dom.Node;
-
-public aspect DOMChildNodeSupport {
-    public final Node DOMChildNode.getParentNode() {
-        return (Node)coreGetParent();
-    }
-    
-    public final Node DOMChildNode.getNextSibling() {
-        return (Node)coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
-    }
-    
-    public final Node DOMChildNode.getPreviousSibling() {
-        return (Node)coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
-    }
+public interface NodeFilter {
+    boolean accept(CoreNode node);
 }

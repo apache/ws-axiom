@@ -118,11 +118,27 @@ public aspect CoreParentNodeSupport {
         return firstChild;
     }
 
+    public final CoreChildNode CoreParentNode.coreGetFirstChild(NodeFilter filter) {
+        CoreChildNode child = coreGetFirstChild();
+        while (child != null && !filter.accept(child)) {
+            child = child.coreGetNextSibling();
+        }
+        return child;
+    }
+    
     public final CoreChildNode CoreParentNode.coreGetLastChild() {
         build();
         return coreGetLastKnownChild();
     }
 
+    public final CoreChildNode CoreParentNode.coreGetLastChild(NodeFilter filter) {
+        CoreChildNode child = coreGetLastChild();
+        while (child != null && !filter.accept(child)) {
+            child = child.coreGetPreviousSibling();
+        }
+        return child;
+    }
+    
     public final void CoreParentNode.coreAppendChild(CoreChildNode child, boolean fromBuilder) {
         CoreParentNode parent = child.coreGetParent();
         if (!fromBuilder) {
