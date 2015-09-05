@@ -56,9 +56,8 @@
             <filtered>true</filtered>
         </file>
         <file>
-            <source>../RELEASE-NOTE.txt</source>
+            <source>${project.build.directory}/RELEASE-NOTE.txt</source>
             <outputDirectory>/</outputDirectory>
-            <filtered>true</filtered>
         </file>
     </files>
     <dependencySets>

@@ -67,9 +67,8 @@
         <exclude>%regex[(?!((?!${project.build.directory}/)[^/]+/)*src/)(.*/)?pom\.xml\.releaseBackup]</exclude>
         <exclude>%regex[(?!((?!${project.build.directory}/)[^/]+/)*src/)(.*/)?release\.properties]</exclude>
         
-        <!-- These files are included below (with filtering) -->
+        <!-- This file is included below (with filtering) -->
         <exclude>README.txt</exclude>
-        <exclude>RELEASE-NOTE.txt</exclude>
       </excludes>
     </fileSet>
     <!-- license, readme, etc. calculated at build time -->
@@ -85,9 +84,8 @@
       <filtered>true</filtered>
     </file>
     <file>
-      <source>../RELEASE-NOTE.txt</source>
+      <source>${project.build.directory}/RELEASE-NOTE.txt</source>
       <outputDirectory>/</outputDirectory>
-      <filtered>true</filtered>
     </file>
   </files>
 </assembly>
