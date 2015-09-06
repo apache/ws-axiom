@@ -578,6 +578,7 @@
                     <configuration>
                         <tagBase>https://svn.apache.org/repos/asf/webservices/axiom/tags</tagBase>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
                         <!-- The default value "clean verify" is not appropriate. If the install
                              phase is not executed, then the current build will pick up artifacts
                              from a previous build. -->
