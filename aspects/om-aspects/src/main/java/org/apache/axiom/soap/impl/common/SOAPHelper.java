@@ -36,6 +36,7 @@ import org.apache.axiom.soap.SOAPVersion;
  */
 abstract class SOAPHelper {
     static final SOAPHelper SOAP11 = new SOAPHelper(SOAP11Version.getSingleton(), "SOAP 1.1",
+            AxiomSOAP11Envelope.class,
             AxiomSOAP11Header.class,
             AxiomSOAP11HeaderBlock.class,
             AxiomSOAP11Body.class,
@@ -62,6 +63,7 @@ abstract class SOAPHelper {
     };
     
     static final SOAPHelper SOAP12 = new SOAPHelper(SOAP12Version.getSingleton(), "SOAP 1.2",
+            AxiomSOAP12Envelope.class,
             AxiomSOAP12Header.class,
             AxiomSOAP12HeaderBlock.class,
             AxiomSOAP12Body.class,
@@ -90,6 +92,7 @@ abstract class SOAPHelper {
     private final SOAPVersion version;
     private final OMNamespace namespace;
     private final String specName;
+    private final Class<? extends AxiomSOAPEnvelope> envelopeClass;
     private final Class<? extends AxiomSOAPHeader> headerClass;
     private final QName headerQName;
     private final Class<? extends AxiomSOAPHeaderBlock> headerBlockClass;
@@ -106,6 +109,7 @@ abstract class SOAPHelper {
     private final QName relayAttributeQName;
     
     private SOAPHelper(SOAPVersion version, String specName,
+            Class<? extends AxiomSOAPEnvelope> envelopeClass,
             Class<? extends AxiomSOAPHeader> headerClass,
             Class<? extends AxiomSOAPHeaderBlock> headerBlockClass,
             Class<? extends AxiomSOAPBody> bodyClass,
@@ -119,6 +123,7 @@ abstract class SOAPHelper {
         namespace = new OMNamespaceImpl(version.getEnvelopeURI(),
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         this.specName = specName;
+        this.envelopeClass = envelopeClass;
         this.headerClass = headerClass;
         headerQName = new QName(version.getEnvelopeURI(), SOAPConstants.HEADER_LOCAL_NAME,
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
@@ -155,6 +160,10 @@ abstract class SOAPHelper {
 
     final String getSpecName() {
         return specName;
+    }
+
+    final Class<? extends AxiomSOAPEnvelope> getEnvelopeClass() {
+        return envelopeClass;
     }
 
     final Class<? extends AxiomSOAPHeader> getHeaderClass() {

@@ -91,11 +91,11 @@ public aspect AxiomSOAPFactorySupport {
     }
     
     public final SOAPEnvelope AxiomSOAPFactory.createSOAPEnvelope(OMNamespace ns) {
-        return createAxiomElement(AxiomSOAPEnvelope.class, null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, null, true);
+        return createAxiomElement(getSOAPHelper().getEnvelopeClass(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, null, true);
     }
 
     public final SOAPEnvelope AxiomSOAPFactory.createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
-        return createAxiomElement(AxiomSOAPEnvelope.class, message, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, null, builder, false);
+        return createAxiomElement(getSOAPHelper().getEnvelopeClass(), message, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, null, builder, false);
     }
 
     public final SOAPHeader AxiomSOAPFactory.createSOAPHeader(SOAPEnvelope parent, OMXMLParserWrapper builder) {

@@ -18,14 +18,14 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMNode;
 
-public aspect AxiomSOAPEnvelopeSupport {
-    /**
-     * Check that a node is allowed as a child of a SOAP envelope.
-     * 
-     * @param child
-     */
-    // TODO: this should be integrated into the checkChild API
-    public abstract void AxiomSOAPEnvelope.internalCheckChild(OMNode child);
+public aspect AxiomSOAP11EnvelopeSupport {
+    public final Class<? extends CoreNode> AxiomSOAP11Envelope.coreGetNodeClass() {
+        return AxiomSOAP11Envelope.class;
+    }
+    
+    public final void AxiomSOAP11Envelope.internalCheckChild(OMNode child) {
+    }
 }

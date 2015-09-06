@@ -75,6 +75,7 @@ import org.apache.axiom.om.impl.dom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
+import org.apache.axiom.soap.impl.common.AxiomSOAP11Envelope;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Fault;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultCode;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultDetail;
@@ -83,6 +84,7 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultRole;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Header;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Body;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12Envelope;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Fault;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultCode;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultDetail;
@@ -94,11 +96,10 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultValue;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Header;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
-import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
-import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11BodyImpl;
+import org.apache.axiom.soap.impl.dom.soap11.SOAP11EnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultCodeImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultDetailImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultImpl;
@@ -107,6 +108,7 @@ import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultRoleImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11HeaderBlockImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11HeaderImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12BodyImpl;
+import org.apache.axiom.soap.impl.dom.soap12.SOAP12EnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultCodeImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultDetailImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
@@ -166,8 +168,10 @@ public class OMDOMFactory implements AxiomNodeFactory, DOMNodeFactory {
             node = new OMSourcedElementImpl(this);
         } else if (type == AxiomSOAPMessage.class) {
             node = new SOAPMessageImpl(this);
-        } else if (type == AxiomSOAPEnvelope.class) {
-            node = new SOAPEnvelopeImpl(this);
+        } else if (type == AxiomSOAP11Envelope.class) {
+            node = new SOAP11EnvelopeImpl(this);
+        } else if (type == AxiomSOAP12Envelope.class) {
+            node = new SOAP12EnvelopeImpl(this);
         } else if (type == AxiomSOAP11Header.class) {
             node = new SOAP11HeaderImpl(this);
         } else if (type == AxiomSOAP12Header.class) {

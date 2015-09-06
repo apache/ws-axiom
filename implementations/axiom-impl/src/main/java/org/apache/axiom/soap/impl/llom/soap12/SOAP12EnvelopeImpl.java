@@ -16,16 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.common;
+package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.soap.impl.common.AxiomSOAP12Envelope;
+import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 
-public aspect AxiomSOAPEnvelopeSupport {
-    /**
-     * Check that a node is allowed as a child of a SOAP envelope.
-     * 
-     * @param child
-     */
-    // TODO: this should be integrated into the checkChild API
-    public abstract void AxiomSOAPEnvelope.internalCheckChild(OMNode child);
+public class SOAP12EnvelopeImpl extends SOAPEnvelopeImpl implements AxiomSOAP12Envelope {
+    public SOAP12EnvelopeImpl(OMFactory factory) {
+        super(factory);
+    }
 }

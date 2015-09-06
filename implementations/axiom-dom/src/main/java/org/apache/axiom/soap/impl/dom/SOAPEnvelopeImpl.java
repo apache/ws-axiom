@@ -32,7 +32,6 @@ import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -46,7 +45,7 @@ import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 
-public class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
+public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         OMConstants {
 
     public SOAPEnvelopeImpl(OMFactory factory) {
@@ -72,27 +71,8 @@ public class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         return header != null ? header : ((SOAPFactory)getOMFactory()).createSOAPHeader(this);
     }
 
-    /**
-     * Check that a node is allowed as a child of a SOAP envelope.
-     * 
-     * @param child
-     */
-    // TODO: this should be integrated into the checkChild API
-    private void internalCheckChild(OMNode child) {
-        if ((child instanceof OMElement)
-                && !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
-            throw new SOAPProcessingException(
-                    "SOAP Envelope can not have children other than SOAP Header and Body",
-                    SOAP12Constants.FAULT_CODE_SENDER);
-        }
-    }
-
     public void addChild(OMNode child, boolean fromBuilder) {
-        // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
-        // node types when appending to SOAP 1.1 envelope.
-        if (getVersion() instanceof SOAP12Version) {
-            internalCheckChild(child);
-        }
+        internalCheckChild(child);
 
         if (child instanceof SOAPHeader) {
             // The SOAPHeader is added before the SOAPBody
