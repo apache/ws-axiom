@@ -264,13 +264,9 @@ public aspect CoreElementSupport {
                 attr = attr.coreGetNextAttribute();
             }
         }
-        initAncillaryData(policy, options, o);
     }
 
     // This is basically a hook for OMSourcedElement
     public <T> void CoreElement.initSource(ClonePolicy<T> policy, T options, CoreElement other) {
-    }
-    
-    public <T> void CoreElement.initAncillaryData(ClonePolicy<T> policy, T options, CoreElement other) {
     }
 }

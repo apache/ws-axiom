@@ -70,6 +70,7 @@ public aspect CoreNodeSupport {
     public final <T> CoreNode CoreNode.shallowClone(ClonePolicy<T> policy, T options) {
         CoreNode clone = coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
         clone.init(policy, options, this);
+        clone.initAncillaryData(policy, options, this);
         return clone;
     }
 
@@ -85,5 +86,8 @@ public aspect CoreNodeSupport {
     
     public final <T> CoreNode CoreNode.coreClone(ClonePolicy<T> policy, T options) {
         return internalClone(policy, options, null);
+    }
+    
+    public <T> void CoreNode.initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 }
