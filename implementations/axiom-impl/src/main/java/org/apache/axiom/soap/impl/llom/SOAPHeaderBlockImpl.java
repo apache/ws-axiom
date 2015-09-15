@@ -21,18 +21,12 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
 
 /** Class SOAPHeaderBlockImpl */
 public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         implements AxiomSOAPHeaderBlock {
-
-    public SOAPHeaderBlockImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void internalSetParent(CoreParentNode element) {
         super.internalSetParent(element);
 

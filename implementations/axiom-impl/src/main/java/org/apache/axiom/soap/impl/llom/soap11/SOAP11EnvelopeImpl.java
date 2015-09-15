@@ -18,12 +18,9 @@
  */
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Envelope;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 
 public class SOAP11EnvelopeImpl extends SOAPEnvelopeImpl implements AxiomSOAP11Envelope {
-    public SOAP11EnvelopeImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

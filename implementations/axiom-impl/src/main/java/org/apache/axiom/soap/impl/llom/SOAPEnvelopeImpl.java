@@ -50,10 +50,6 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
         implements AxiomSOAPEnvelope, OMConstants {
     private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
 
-    public SOAPEnvelopeImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public SOAPVersion getVersion() {
         return ((SOAPFactory)getOMFactory()).getSOAPVersion();
     }

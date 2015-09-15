@@ -20,11 +20,8 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMDocumentType;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 
 public class DocumentTypeImpl extends LeafNode implements DOMDocumentType, AxiomDocType {
-    public DocumentTypeImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -47,10 +46,6 @@ import javax.xml.namespace.QName;
 
 public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         OMConstants {
-
-    public SOAPEnvelopeImpl(OMFactory factory) {
-        super(factory);
-    }
 
     public SOAPVersion getVersion() {
         return ((SOAPFactory)getOMFactory()).getSOAPVersion();

@@ -49,10 +49,10 @@ public class TestCloneIncomplete extends SOAPTestCase {
         OMInformationItem clone = message.clone(options);
         if (preserveModel) {
             assertTrue(clone instanceof SOAPMessage);
+            assertSame(soapFactory, clone.getOMFactory());
         } else {
             assertTrue(clone instanceof OMDocument);
             assertFalse(clone instanceof SOAPMessage);
         }
-        assertSame(soapFactory, clone.getOMFactory());
     }
 }

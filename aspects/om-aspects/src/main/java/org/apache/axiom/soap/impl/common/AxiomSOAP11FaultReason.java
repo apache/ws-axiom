@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-public interface AxiomSOAP11FaultReason extends AxiomSOAPFaultReason {
+public interface AxiomSOAP11FaultReason extends AxiomSOAPFaultReason, AxiomSOAP11Element {
 
 }

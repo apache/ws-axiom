@@ -30,10 +30,6 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP12Header {
-    public SOAP12HeaderImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public Iterator extractHeaderBlocks(String role) {
         return new OMChildrenWithSpecificAttributeIterator(getFirstOMChild(),
                                                            new QName(

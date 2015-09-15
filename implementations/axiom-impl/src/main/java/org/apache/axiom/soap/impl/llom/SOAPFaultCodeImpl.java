@@ -23,7 +23,5 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
-    public SOAPFaultCodeImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

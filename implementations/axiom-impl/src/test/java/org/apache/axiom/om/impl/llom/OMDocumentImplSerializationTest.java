@@ -24,6 +24,6 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 
 public class OMDocumentImplSerializationTest extends OMDocumentSerilizationTestBase {
     public OMDocumentImplSerializationTest() {
-        super(new OMLinkedListMetaFactory());
+        super(OMLinkedListMetaFactory.INSTANCE);
     }
 }

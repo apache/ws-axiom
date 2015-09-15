@@ -27,7 +27,6 @@ import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
 import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
-import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
 import org.w3c.dom.DOMImplementation;
@@ -36,13 +35,13 @@ import org.w3c.dom.DOMImplementation;
  * Meta factory for the DOOM implementation.
  */
 public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFactory {
-    // This singleton is necessary to support the no-arg constructor in DOOMDocumentBuilderFactory.
-    // Since that method is deprecated, this singleton should disappear in Axiom 1.3.
     public static final OMDOMMetaFactory INSTANCE = new OMDOMMetaFactory();
     
     private final OMDOMFactory omFactory = new OMDOMFactory(this);
     private final SOAPFactory soap11Factory = new SOAP11Factory(this);
     private final SOAPFactory soap12Factory = new SOAP12Factory(this);
+
+    private OMDOMMetaFactory() {}
     
     public OMFactory getOMFactory() {
         return omFactory;
@@ -57,7 +56,7 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
     }
 
     public AxiomSOAPMessage createSOAPMessage() {
-        return new SOAPMessageImpl(null);
+        return DOOMNodeFactory.INSTANCE.createNode(AxiomSOAPMessage.class);
     }
 
     public DocumentBuilderFactory newDocumentBuilderFactory() {

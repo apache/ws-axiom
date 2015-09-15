@@ -25,17 +25,12 @@ import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.dom.Policies;
-import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public abstract class ParentNode extends NodeImpl implements DOMParentNode {
-    protected ParentNode(OMFactory factory) {
-        super(factory);
-    }
-
     // /
     // /DOM Node methods
     // /

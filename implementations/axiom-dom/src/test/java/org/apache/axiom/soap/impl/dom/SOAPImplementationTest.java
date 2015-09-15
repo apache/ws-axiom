@@ -26,7 +26,7 @@ import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false, false);
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(OMDOMMetaFactory.INSTANCE, false, false);
         
         // TODO: currently broken; need a better solution for parent checks
         builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent1.class);

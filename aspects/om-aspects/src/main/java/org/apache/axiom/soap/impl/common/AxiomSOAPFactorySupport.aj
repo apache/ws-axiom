@@ -74,11 +74,14 @@ public aspect AxiomSOAPFactorySupport {
     }
 
     public final SOAPMessage AxiomSOAPFactory.createSOAPMessage() {
-        return createNode(AxiomSOAPMessage.class);
+        AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
+        message.initSOAPFactory(this);
+        return message;
     }
 
     public final SOAPMessage AxiomSOAPFactory.createSOAPMessage(OMXMLParserWrapper builder) {
         AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
+        message.initSOAPFactory(this);
         // Null check for Spring-WS compatibility
         if (builder != null) {
             message.coreSetBuilder(builder);

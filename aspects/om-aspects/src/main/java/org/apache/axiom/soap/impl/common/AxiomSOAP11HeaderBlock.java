@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-public interface AxiomSOAP11HeaderBlock extends AxiomSOAPHeaderBlock {
+public interface AxiomSOAP11HeaderBlock extends AxiomSOAPHeaderBlock, AxiomSOAP11Element {
 
 }

@@ -22,16 +22,11 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMTextNode;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomText;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 
 public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, AxiomText {
-    public TextNodeImpl(OMFactory factory) {
-        super(factory);
-    }
-
     /**
      * Breaks this node into two nodes at the specified offset, keeping both in the tree as
      * siblings. After being split, this node will contain all the content up to the offset point. A

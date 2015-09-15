@@ -18,17 +18,38 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 public aspect AxiomSOAPMessageSupport {
+    private SOAPFactory AxiomSOAPMessage.factory;
+
     public Class<? extends CoreNode> AxiomSOAPMessage.coreGetNodeClass() {
         return AxiomSOAPMessage.class;
     }
 
+    public final void AxiomSOAPMessage.initSOAPFactory(SOAPFactory factory) {
+        this.factory = factory;
+    }
+    
+    public final <T> void AxiomSOAPMessage.initAncillaryData(ClonePolicy<T> policy, T options, CoreNode other) {
+        factory = (SOAPFactory)((AxiomSOAPMessage)other).getOMFactory();
+    }
+    
+    public final OMFactory AxiomSOAPMessage.getOMFactory() {
+        if (factory == null) {
+            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
+        }
+        return factory;
+    }
+    
     // TODO: this violates OO design principles and should disappear in a future Axiom version
     public final void AxiomSOAPMessage.internalSerialize(Serializer serializer, OMOutputFormat format,
             boolean cache, boolean includeXMLDeclaration) throws OutputException {

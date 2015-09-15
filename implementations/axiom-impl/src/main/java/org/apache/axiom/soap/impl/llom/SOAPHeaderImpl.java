@@ -48,10 +48,6 @@ import javax.xml.namespace.QName;
 public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
     private static final Log log = LogFactory.getLog(SOAPHeaderImpl.class);
     
-    public SOAPHeaderImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
             throws OMException {
         

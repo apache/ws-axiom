@@ -20,17 +20,12 @@
 package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultReason;
 import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP11FaultReason {
-    public SOAP11FaultReasonImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void addSOAPText(SOAPFaultText soapFaultText)
             throws SOAPProcessingException {
         throw new UnsupportedOperationException("addSOAPText() not allowed for SOAP 1.1!");

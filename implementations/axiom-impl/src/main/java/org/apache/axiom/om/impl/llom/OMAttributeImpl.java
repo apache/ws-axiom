@@ -19,13 +19,9 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
-import org.apache.axiom.om.impl.common.Policies;
 
 /** Class OMAttributeImpl */
 public class OMAttributeImpl extends Attribute implements AxiomAttribute {
-    public OMAttributeImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

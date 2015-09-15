@@ -32,10 +32,8 @@ import org.apache.axiom.ts.dom.W3CTestCase;
 public class DOMImplementationTest extends TestCase {
     public static TestSuite suite() {
         DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new DocumentBuilderFactoryFactory() {
-            private final OMDOMMetaFactory metaFactory = new OMDOMMetaFactory();
-            
             public DocumentBuilderFactory newInstance() {
-                return metaFactory.newDocumentBuilderFactory();
+                return OMDOMMetaFactory.INSTANCE.newDocumentBuilderFactory();
             }
         }, new DOMFeature[] { DOMFeature.ENTITIES, DOMFeature.NOTATIONS, DOMFeature.TYPE_INFO, DOMFeature.BASE_URI });
         

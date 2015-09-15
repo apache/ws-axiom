@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultReason;
@@ -29,10 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements AxiomSOAPFaultReason {
-    public SOAPFaultReasonImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public List getAllSoapTexts() {
         List faultTexts = new ArrayList(1);
         Iterator childrenIter = this.getChildren();

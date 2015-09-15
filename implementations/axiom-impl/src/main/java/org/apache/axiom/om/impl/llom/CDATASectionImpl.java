@@ -18,11 +18,8 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 
 public class CDATASectionImpl extends OMTextImpl implements AxiomCDATASection {
-    public CDATASectionImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

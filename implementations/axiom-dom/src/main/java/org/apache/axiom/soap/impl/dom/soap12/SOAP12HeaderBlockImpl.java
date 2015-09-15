@@ -20,16 +20,11 @@
 package org.apache.axiom.soap.impl.dom.soap12;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP12HeaderBlock {
-    public SOAP12HeaderBlockImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12HeaderImpl)) {
             throw new SOAPProcessingException(

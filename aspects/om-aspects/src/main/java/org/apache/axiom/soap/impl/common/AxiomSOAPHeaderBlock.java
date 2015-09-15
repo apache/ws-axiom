@@ -22,5 +22,5 @@ import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
 public interface AxiomSOAPHeaderBlock extends AxiomSOAPElement, AxiomSourcedElement, SOAPHeaderBlock {
-    SOAPHelper getSOAPHelper();
+
 }

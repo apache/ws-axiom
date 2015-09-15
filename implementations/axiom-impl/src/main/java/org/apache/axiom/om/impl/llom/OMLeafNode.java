@@ -18,11 +18,8 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomLeafNode;
 
 public abstract class OMLeafNode extends OMNodeImpl implements AxiomLeafNode {
-    public OMLeafNode(OMFactory factory) {
-        super(factory);
-    }
+
 }

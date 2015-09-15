@@ -19,11 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFault;
 
 public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFault {
-    public SOAPFaultImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

@@ -19,21 +19,8 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomSerializable;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 public abstract class OMSerializableImpl extends OMInformationItemImpl implements AxiomSerializable {
-    private OMFactory factory;
 
-    public OMSerializableImpl(OMFactory factory) {
-        this.factory = factory;
-    }
-    
-    public final OMFactory getOMFactory() {
-        if (factory == null) {
-            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
-        }
-        return factory;
-    }
 }

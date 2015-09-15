@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12Header;
@@ -30,10 +29,6 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP12Header {
-    public SOAP12HeaderImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public Iterator extractHeaderBlocks(String role) {
         return new OMChildrenWithSpecificAttributeIterator(getFirstOMChild(),
                                                            new QName(

@@ -36,10 +36,6 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12Fa
     private SOAPFaultValue value;
     private SOAPFaultSubCode subCode;
     
-    public SOAP12FaultSubCodeImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!((parent instanceof SOAP12FaultSubCodeImpl) ||
                 (parent instanceof SOAP12FaultCodeImpl))) {

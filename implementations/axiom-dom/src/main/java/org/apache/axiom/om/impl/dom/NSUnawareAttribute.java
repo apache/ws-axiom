@@ -18,16 +18,8 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNSUnawareAttribute;
-import org.apache.axiom.om.OMFactory;
 
 public class NSUnawareAttribute extends AttrImpl implements DOMNSUnawareAttribute {
-    public NSUnawareAttribute(OMFactory factory) {
-        super(factory);
-    }
 
-    public final NodeFactory coreGetNodeFactory() {
-        return ((NodeFactory)getOMFactory());
-    }
 }

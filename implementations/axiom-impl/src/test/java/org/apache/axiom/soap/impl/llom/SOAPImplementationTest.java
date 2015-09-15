@@ -27,7 +27,7 @@ import org.apache.axiom.ts.soap.envelope.TestClone;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true, true);
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(OMLinkedListMetaFactory.INSTANCE, true, true);
         
         // TODO
         builder.exclude(TestClone.class, "(message=soap/soap11/soapfault2.xml)");

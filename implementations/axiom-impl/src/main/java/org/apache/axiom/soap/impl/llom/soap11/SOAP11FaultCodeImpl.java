@@ -30,10 +30,6 @@ import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 import javax.xml.namespace.QName;
 
 public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP11FaultCode {
-    public SOAP11FaultCodeImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
         throw new UnsupportedOperationException();
     }

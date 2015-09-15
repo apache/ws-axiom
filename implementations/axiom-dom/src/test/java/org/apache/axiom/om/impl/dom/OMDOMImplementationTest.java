@@ -26,7 +26,7 @@ import org.apache.axiom.ts.omdom.OMDOMTestSuiteBuilder;
 
 public class OMDOMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMDOMTestSuiteBuilder builder = new OMDOMTestSuiteBuilder(new OMDOMMetaFactory());
+        OMDOMTestSuiteBuilder builder = new OMDOMTestSuiteBuilder(OMDOMMetaFactory.INSTANCE);
         return builder.build();
     }
 }

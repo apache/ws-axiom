@@ -23,15 +23,10 @@ import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMElement;
-import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 
 public abstract class ElementImpl extends ParentNode implements DOMElement {
-    public ElementImpl(OMFactory factory) {
-        super(factory);
-    }
-
     /*
      * DOM-Level 3 methods
      */

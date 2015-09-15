@@ -19,13 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultRole;
 
-public abstract class SOAPFaultRoleImpl extends SOAPElement implements
-        AxiomSOAPFaultRole {
+public abstract class SOAPFaultRoleImpl extends SOAPElement implements AxiomSOAPFaultRole {
 
-    public SOAPFaultRoleImpl(OMFactory factory) {
-        super(factory);
-    }
 }

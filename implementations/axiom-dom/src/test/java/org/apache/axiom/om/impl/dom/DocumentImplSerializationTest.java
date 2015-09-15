@@ -24,6 +24,6 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 
 public class DocumentImplSerializationTest extends OMDocumentSerilizationTestBase {
     public DocumentImplSerializationTest() {
-        super(new OMDOMMetaFactory());
+        super(OMDOMMetaFactory.INSTANCE);
     }
 }

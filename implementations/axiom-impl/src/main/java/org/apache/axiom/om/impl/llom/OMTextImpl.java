@@ -19,11 +19,8 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomText;
 
 public abstract class OMTextImpl extends OMLeafNode implements AxiomText {
-    public OMTextImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

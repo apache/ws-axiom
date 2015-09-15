@@ -19,12 +19,9 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument {
-    public OMDocumentImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

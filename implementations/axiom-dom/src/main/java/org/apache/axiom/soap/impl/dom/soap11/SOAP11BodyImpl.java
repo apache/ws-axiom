@@ -19,12 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
 import org.apache.axiom.soap.impl.dom.SOAPBodyImpl;
 
 public class SOAP11BodyImpl extends SOAPBodyImpl implements AxiomSOAP11Body {
-    public SOAP11BodyImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

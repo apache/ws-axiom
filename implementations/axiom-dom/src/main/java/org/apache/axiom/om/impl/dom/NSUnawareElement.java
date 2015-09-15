@@ -18,19 +18,9 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNSUnawareElement;
-import org.apache.axiom.om.OMFactory;
 
 public class NSUnawareElement extends ElementImpl implements DOMNSUnawareElement {
-    public NSUnawareElement(OMFactory factory) {
-        super(factory);
-    }
-
-    public final NodeFactory coreGetNodeFactory() {
-        return ((NodeFactory)getOMFactory());
-    }
-
     public void build() {
         // Do nothing: the builder never creates NS unaware elements
     }

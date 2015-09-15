@@ -20,6 +20,7 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -27,6 +28,7 @@ import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
 
 /**
@@ -46,7 +48,13 @@ abstract class SOAPHelper {
             AxiomSOAP11FaultRole.class,
             AxiomSOAP11FaultDetail.class,
             SOAP11Constants.ATTR_ACTOR, null) {
-        public Boolean parseBoolean(String literal) {
+        @Override
+        SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
+            return metaFactory.getSOAP11Factory();
+        }
+
+        @Override
+        Boolean parseBoolean(String literal) {
             if (literal.equals("1")) {
                 return Boolean.TRUE;
             } else if (literal.equals("0")) {
@@ -57,7 +65,7 @@ abstract class SOAPHelper {
         }
 
         @Override
-        public String formatBoolean(boolean value) {
+        String formatBoolean(boolean value) {
             return value ? "1" : "0";
         }
     };
@@ -73,7 +81,13 @@ abstract class SOAPHelper {
             AxiomSOAP12FaultRole.class,
             AxiomSOAP12FaultDetail.class,
             SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY) {
-        public Boolean parseBoolean(String literal) {
+        @Override
+        SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
+            return metaFactory.getSOAP12Factory();
+        }
+
+        @Override
+        Boolean parseBoolean(String literal) {
             if (literal.equals("true") || literal.equals("1")) {
                 return Boolean.TRUE;
             } else if (literal.equals("false") || literal.equals("0")) {
@@ -84,7 +98,7 @@ abstract class SOAPHelper {
         }
 
         @Override
-        public String formatBoolean(boolean value) {
+        String formatBoolean(boolean value) {
             return String.valueOf(value);
         }
     };
@@ -149,6 +163,8 @@ abstract class SOAPHelper {
     final SOAPVersion getVersion() {
         return version;
     }
+    
+    abstract SOAPFactory getSOAPFactory(OMMetaFactory metaFactory);
     
     final String getEnvelopeURI() {
         return version.getEnvelopeURI();

@@ -20,7 +20,8 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMInformationItem;
+import org.apache.axiom.om.OMMetaFactory;
 
 public interface AxiomInformationItem extends OMInformationItem, CoreNode {
-
+    OMMetaFactory getMetaFactory();
 }

@@ -19,11 +19,8 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 
 public class OMDocTypeImpl extends OMLeafNode implements AxiomDocType {
-    public OMDocTypeImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

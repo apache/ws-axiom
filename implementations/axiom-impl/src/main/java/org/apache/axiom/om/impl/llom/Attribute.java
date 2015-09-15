@@ -19,16 +19,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.om.OMFactory;
 
 public abstract class Attribute extends OMInformationItemImpl implements CoreAttribute {
-    private OMFactory factory;
 
-    public Attribute(OMFactory factory) {
-        this.factory = factory;
-    }
-    
-    public final OMFactory getOMFactory() {
-        return factory;
-    }
 }

@@ -20,6 +20,6 @@ package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.soap.SOAPFaultNode;
 
-public interface AxiomSOAP12FaultNode extends AxiomSOAPElement, SOAPFaultNode {
+public interface AxiomSOAP12FaultNode extends AxiomSOAP12Element, SOAPFaultNode {
 
 }

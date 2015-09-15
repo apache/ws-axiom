@@ -19,11 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultDetail;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements AxiomSOAPFaultDetail {
-    public SOAPFaultDetailImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

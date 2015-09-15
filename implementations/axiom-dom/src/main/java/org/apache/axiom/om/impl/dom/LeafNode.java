@@ -19,10 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMLeafNode;
-import org.apache.axiom.om.OMFactory;
 
 public abstract class LeafNode extends ChildNode implements DOMLeafNode {
-    public LeafNode(OMFactory factory) {
-        super(factory);
-    }
+
 }

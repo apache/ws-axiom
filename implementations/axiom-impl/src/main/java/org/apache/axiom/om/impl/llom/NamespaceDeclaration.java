@@ -23,7 +23,5 @@ import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 
 public final class NamespaceDeclaration extends Attribute implements AxiomNamespaceDeclaration {
-    public NamespaceDeclaration(OMFactory factory) {
-        super(factory);
-    }
+
 }

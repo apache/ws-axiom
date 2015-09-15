@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAPFaultText;
 
-public interface AxiomSOAP12FaultText extends AxiomSOAPElement, SOAPFaultText {
+public interface AxiomSOAP12FaultText extends AxiomSOAP12Element, SOAPFaultText {
 
 }

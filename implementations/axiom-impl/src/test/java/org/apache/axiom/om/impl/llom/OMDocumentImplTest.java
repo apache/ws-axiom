@@ -24,6 +24,6 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 
 public class OMDocumentImplTest extends OMDocumentTestBase {
     public OMDocumentImplTest() {
-        super(new OMLinkedListMetaFactory());
+        super(OMLinkedListMetaFactory.INSTANCE);
     }
 }

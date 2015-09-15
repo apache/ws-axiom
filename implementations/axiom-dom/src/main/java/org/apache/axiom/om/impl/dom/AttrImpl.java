@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMAttribute;
-import org.apache.axiom.om.OMFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.TypeInfo;
 
@@ -28,10 +27,6 @@ import org.w3c.dom.TypeInfo;
 public abstract class AttrImpl extends ParentNode implements DOMAttribute {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
-
-    AttrImpl(OMFactory factory) {
-        super(factory);
-    }
 
     // /
     // /org.w3c.dom.Attr methods

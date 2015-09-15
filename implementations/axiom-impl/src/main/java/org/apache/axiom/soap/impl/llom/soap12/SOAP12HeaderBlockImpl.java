@@ -26,10 +26,6 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12HeaderBlock;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP12HeaderBlock {
-    public SOAP12HeaderBlockImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12HeaderImpl)) {
             throw new SOAPProcessingException(

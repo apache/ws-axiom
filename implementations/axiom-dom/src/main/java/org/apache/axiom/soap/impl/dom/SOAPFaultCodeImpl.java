@@ -19,16 +19,11 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
-    public SOAPFaultCodeImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public SOAPFaultSubCode getSubCode() {
         return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }

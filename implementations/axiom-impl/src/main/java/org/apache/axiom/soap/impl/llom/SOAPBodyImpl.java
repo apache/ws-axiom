@@ -42,10 +42,6 @@ public abstract class SOAPBodyImpl extends SOAPElement
     private String lookAheadLocalName = null;
     private OMNamespace lookAheadNS = null;
 
-    public SOAPBodyImpl(OMFactory factory) {
-        super(factory);
-    }
-
     /**
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
      * object.

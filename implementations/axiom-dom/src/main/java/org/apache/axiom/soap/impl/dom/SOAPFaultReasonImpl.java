@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -33,10 +32,6 @@ import java.util.List;
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         AxiomSOAPFaultReason {
     protected SOAPFaultText text;
-
-    public SOAPFaultReasonImpl(OMFactory factory) {
-        super(factory);
-    }
 
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, text, soapFaultText);

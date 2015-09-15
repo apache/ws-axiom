@@ -28,10 +28,6 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
-    public SOAP12FaultReasonImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void addSOAPText(SOAPFaultText soapFaultText)
             throws SOAPProcessingException {
         if (!(soapFaultText instanceof SOAP12FaultTextImpl)) {

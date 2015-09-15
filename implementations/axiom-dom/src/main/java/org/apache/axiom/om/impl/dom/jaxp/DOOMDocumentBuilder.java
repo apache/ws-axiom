@@ -19,10 +19,12 @@
 
 package org.apache.axiom.om.impl.dom.jaxp;
 
+import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -84,9 +86,7 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
      * @see javax.xml.parsers.DocumentBuilder#newDocument()
      */
     public Document newDocument() {
-        DocumentImpl documentImpl = new DocumentImpl(factory);
-        documentImpl.setComplete(true);
-        return documentImpl;
+        return DOOMNodeFactory.INSTANCE.createNode(DOMDocument.class);
     }
 
     public void setEntityResolver(EntityResolver er) {

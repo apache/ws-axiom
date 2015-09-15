@@ -21,10 +21,12 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNode;
-import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -38,15 +40,12 @@ public abstract class NodeImpl implements DOMNode {
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
 
-    /** Factory that created this node */
-    private OMFactory factory;
-
-    //
-    // Constructors
-    //
-
-    protected NodeImpl(OMFactory factory) {
-        this.factory = factory;
+    public final NodeFactory coreGetNodeFactory() {
+        return DOOMNodeFactory.INSTANCE;
+    }
+    
+    public final OMMetaFactory getMetaFactory() {
+        return OMDOMMetaFactory.INSTANCE;
     }
 
     public void normalize() {
@@ -283,14 +282,6 @@ public abstract class NodeImpl implements DOMNode {
             return userData.get(key);
         }
         return null;
-    }
-
-    /** Returns the <code>OMFactory</code> that created this node */
-    public final OMFactory getOMFactory() {
-        if (factory == null) {
-            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
-        }
-        return factory;
     }
 
     /**

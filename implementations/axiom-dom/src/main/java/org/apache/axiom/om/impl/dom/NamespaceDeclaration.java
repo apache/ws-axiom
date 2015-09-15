@@ -18,14 +18,9 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 
 public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration, AxiomNamespaceDeclaration {
-    public NamespaceDeclaration(OMFactory factory) {
-        super(factory);
-    }
+
 }

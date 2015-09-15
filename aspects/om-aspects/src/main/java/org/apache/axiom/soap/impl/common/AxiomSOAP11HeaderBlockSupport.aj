@@ -21,10 +21,6 @@ package org.apache.axiom.soap.impl.common;
 import org.apache.axiom.core.CoreNode;
 
 public aspect AxiomSOAP11HeaderBlockSupport {
-    public final SOAPHelper AxiomSOAP11HeaderBlock.getSOAPHelper() {
-        return SOAPHelper.SOAP11;
-    }
-
     public final Class<? extends CoreNode> AxiomSOAP11HeaderBlock.coreGetNodeClass() {
         return AxiomSOAP11HeaderBlock.class;
     }

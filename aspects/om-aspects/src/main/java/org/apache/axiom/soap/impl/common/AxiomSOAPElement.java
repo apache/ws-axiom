@@ -23,5 +23,6 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public interface AxiomSOAPElement extends AxiomElement {
+    SOAPHelper getSOAPHelper();
     void checkParent(OMElement parent) throws SOAPProcessingException;
 }

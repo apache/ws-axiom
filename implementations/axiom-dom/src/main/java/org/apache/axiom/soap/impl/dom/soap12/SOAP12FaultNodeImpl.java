@@ -20,16 +20,11 @@
 package org.apache.axiom.soap.impl.dom.soap12;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 
 public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
-    public SOAP12FaultNodeImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(

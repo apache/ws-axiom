@@ -18,8 +18,10 @@
  */
 package org.apache.abdera.parser.stax;
 
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.common.AxiomInformationItem;
 
 abstract class FOMInformationItem implements AxiomInformationItem, AbderaNode {
@@ -27,6 +29,14 @@ abstract class FOMInformationItem implements AxiomInformationItem, AbderaNode {
 
     FOMInformationItem(OMFactory factory) {
         this.factory = factory;
+    }
+
+    public final NodeFactory coreGetNodeFactory() {
+        return (NodeFactory)factory;
+    }
+
+    public final OMMetaFactory getMetaFactory() {
+        return FOMMetaFactory.INSTANCE;
     }
 
     public final OMFactory getOMFactory() {

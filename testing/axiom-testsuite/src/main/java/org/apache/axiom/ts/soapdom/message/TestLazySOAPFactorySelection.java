@@ -18,18 +18,13 @@
  */
 package org.apache.axiom.ts.soapdom.message;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class TestLazySOAPFactorySelection extends SOAPTestCase {
     public TestLazySOAPFactorySelection(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -42,12 +37,8 @@ public class TestLazySOAPFactorySelection extends SOAPTestCase {
         SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 SOAPSampleSet.NO_HEADER.getMessage(spec).getInputStream(), null).getSOAPMessage();
         
-        // At this stage, the SOAPFactory instance has not yet been determined.
-        // However, if we cast the SOAPMessage to a Document and use it to create e new Element,
-        // then that element must have the right factory.
-        Element element = ((Document)message).createElementNS("urn:test", "p:test");
-        
-        SOAPFactory soapFactoryFromNewElement = (SOAPFactory)((OMElement)element).getOMFactory();
-        assertThat(soapFactoryFromNewElement).isSameAs(soapFactory);
+        // In some Axiom versions, this failed because at this stage, the SOAPFactory instance
+        // has not yet been determined.
+        ((Document)message).createElementNS("urn:test", "p:test");
     }
 }

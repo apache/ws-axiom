@@ -26,10 +26,6 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultRole;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
 
 public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP12FaultRole {
-    public SOAP12FaultRoleImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(

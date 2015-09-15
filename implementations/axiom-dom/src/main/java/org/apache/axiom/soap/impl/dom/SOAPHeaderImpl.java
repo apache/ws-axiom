@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -42,10 +41,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {
-    public SOAPHeaderImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
             throws OMException {
         

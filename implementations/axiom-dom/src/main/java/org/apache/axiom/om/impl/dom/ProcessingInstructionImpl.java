@@ -20,11 +20,8 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMProcessingInstruction;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
 public class ProcessingInstructionImpl extends LeafNode implements DOMProcessingInstruction, AxiomProcessingInstruction {
-    public ProcessingInstructionImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

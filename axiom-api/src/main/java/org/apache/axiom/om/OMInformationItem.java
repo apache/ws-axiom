@@ -18,13 +18,27 @@
  */
 package org.apache.axiom.om;
 
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPMessage;
+
 /**
  * Represents an information item in an XML document. This is the super-interface for all
  * information items known by Axiom.
  */
 public interface OMInformationItem {
     /**
-     * Get the {@link OMFactory} that created this information item.
+     * Get the {@link OMFactory} corresponding to the type of this information item. For information
+     * items created using one of the methods defined by {@link OMFactory}, this is the instance
+     * returned by {@link OMMetaFactory#getOMFactory()} (for the {@link OMMetaFactory} corresponding
+     * to the implementation of the Axiom API this information item belongs to). For information
+     * items created by one of the methods defined by {@link SOAPFactory}, this is the
+     * {@link SOAPFactory} instance for the corresponding SOAP version.
+     * <p>
+     * This means that the returned factory will be a {@link SOAPFactory} only if the method is
+     * called on a {@link SOAPMessage} or an {@link OMElement} that implements one of the SOAP
+     * specific extension interfaces.
+     * 
+     * @return the {@link OMFactory} corresponding to this information item
      */
     OMFactory getOMFactory();
 

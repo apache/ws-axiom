@@ -19,11 +19,8 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 
 public class OMSourcedElementImpl extends OMElementImpl implements AxiomSourcedElement {
-    public OMSourcedElementImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

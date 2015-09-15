@@ -19,12 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.dom.NSAwareElement;
 import org.apache.axiom.soap.impl.common.AxiomSOAPElement;
 
 public abstract class SOAPElement extends NSAwareElement implements AxiomSOAPElement {
-    public SOAPElement(OMFactory factory) {
-        super(factory);
-    }
+
 }

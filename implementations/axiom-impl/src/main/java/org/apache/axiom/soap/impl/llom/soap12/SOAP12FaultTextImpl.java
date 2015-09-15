@@ -26,10 +26,6 @@ import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
 public class SOAP12FaultTextImpl extends SOAPElement implements AxiomSOAP12FaultText {
-    public SOAP12FaultTextImpl(OMFactory factory) {
-        super(factory);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultReasonImpl)) {
             throw new SOAPProcessingException(

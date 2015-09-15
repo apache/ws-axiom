@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -30,10 +29,6 @@ import org.apache.axiom.soap.impl.common.AxiomSOAPBody;
 
 public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
         OMConstants {
-    public SOAPBodyImpl(OMFactory factory) {
-        super(factory);
-    }
-
     /**
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code> object.
      *

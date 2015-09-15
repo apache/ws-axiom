@@ -26,7 +26,6 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMExceptionTranslator;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomDocument;
 import org.w3c.dom.Attr;
@@ -46,10 +45,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
     protected Hashtable identifiers;
     
-    public DocumentImpl(OMFactory factory) {
-        super(factory);
-    }
-
     // /org.w3c.dom.Document methods
     // /
 

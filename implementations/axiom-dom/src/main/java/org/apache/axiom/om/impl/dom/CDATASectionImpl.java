@@ -20,11 +20,8 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMCDATASection;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 
 public class CDATASectionImpl extends TextNodeImpl implements DOMCDATASection, AxiomCDATASection {
-    public CDATASectionImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

@@ -21,15 +21,10 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.soap.impl.common.AxiomSOAPElement;
 
 public abstract class SOAPElement extends OMElementImpl implements AxiomSOAPElement {
-    public SOAPElement(OMFactory factory) {
-        super(factory);
-    }
-
     public void internalSetParent(CoreParentNode element) {
         super.internalSetParent(element);
 

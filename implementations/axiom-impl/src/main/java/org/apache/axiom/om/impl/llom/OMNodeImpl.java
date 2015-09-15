@@ -19,17 +19,9 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomChildNode;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl extends OMSerializableImpl implements AxiomChildNode {
-    /**
-     * Constructor OMNodeImpl
-     *
-     * @param factory The <code>OMFactory</code> that created this
-     */
-    public OMNodeImpl(OMFactory factory) {
-        super(factory);
-    }
+
 }

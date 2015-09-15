@@ -23,6 +23,6 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 
 public class DocumentImplTest extends OMDocumentTestBase {
     public DocumentImplTest() {
-        super(new OMDOMMetaFactory());
+        super(OMDOMMetaFactory.INSTANCE);
     }
 }
