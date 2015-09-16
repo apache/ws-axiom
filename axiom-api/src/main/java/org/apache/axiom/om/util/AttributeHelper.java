@@ -35,7 +35,7 @@ public class AttributeHelper {
      */
     public static void importOMAttribute(OMAttribute omAttribute, OMElement omElement) {
         // first check whether the given OMAttribute has the same OMFactory
-        if (omAttribute.getOMFactory().getClass().isInstance(omElement.getOMFactory())) {
+        if (omAttribute.getOMFactory().getMetaFactory() == omElement.getOMFactory().getMetaFactory()) {
             omElement.addAttribute(omAttribute);
         } else {
             OMNamespace ns = omAttribute.getNamespace();

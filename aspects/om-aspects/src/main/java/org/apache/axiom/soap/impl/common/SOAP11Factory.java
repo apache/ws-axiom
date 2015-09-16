@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -27,52 +29,56 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 
-public aspect AxiomSOAP11FactorySupport {
-    public final SOAPHelper AxiomSOAP11Factory.getSOAPHelper() {
+public class SOAP11Factory extends SOAPFactoryImpl {
+    public SOAP11Factory(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
+        super(metaFactory, nodeFactory);
+    }
+
+    public final SOAPHelper getSOAPHelper() {
         return SOAPHelper.SOAP11;
     }
 
-    public final SOAPFaultValue AxiomSOAP11Factory.createSOAPFaultValue(SOAPFaultCode parent) {
+    public final SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultValue AxiomSOAP11Factory.createSOAPFaultValue(SOAPFaultSubCode parent) {
+    public final SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent) {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultValue AxiomSOAP11Factory.createSOAPFaultValue() {
+    public final SOAPFaultValue createSOAPFaultValue() {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultSubCode AxiomSOAP11Factory.createSOAPFaultSubCode(SOAPFaultCode parent) {
+    public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent) {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultSubCode AxiomSOAP11Factory.createSOAPFaultSubCode(SOAPFaultSubCode parent) {
+    public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent) {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultSubCode AxiomSOAP11Factory.createSOAPFaultSubCode() {
+    public final SOAPFaultSubCode createSOAPFaultSubCode() {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultText AxiomSOAP11Factory.createSOAPFaultText(SOAPFaultReason parent) {
+    public final SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultText AxiomSOAP11Factory.createSOAPFaultText() {
+    public final SOAPFaultText createSOAPFaultText() {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultNode AxiomSOAP11Factory.createSOAPFaultNode(SOAPFault parent) {
+    public final SOAPFaultNode createSOAPFaultNode(SOAPFault parent) {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPFaultNode AxiomSOAP11Factory.createSOAPFaultNode() {
+    public final SOAPFaultNode createSOAPFaultNode() {
         throw new UnsupportedOperationException();
     }
 
-    public final SOAPEnvelope AxiomSOAP11Factory.getDefaultFaultEnvelope() {
+    public final SOAPEnvelope getDefaultFaultEnvelope() {
         SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
         createSOAPFaultCode(fault);

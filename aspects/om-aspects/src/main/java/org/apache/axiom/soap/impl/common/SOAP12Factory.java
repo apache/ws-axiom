@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -29,85 +31,90 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
 
-public aspect AxiomSOAP12FactorySupport {
-    public final SOAPHelper AxiomSOAP12Factory.getSOAPHelper() {
+public class SOAP12Factory extends SOAPFactoryImpl implements SOAP12FactoryEx {
+    public SOAP12Factory(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
+        super(metaFactory, nodeFactory);
+    }
+
+    public final SOAPHelper getSOAPHelper() {
         return SOAPHelper.SOAP12;
     }
 
-    private SOAPFaultValue AxiomSOAP12Factory.internalCreateSOAPFaultValue(SOAPFaultClassifier parent, OMXMLParserWrapper builder) {
+    private SOAPFaultValue internalCreateSOAPFaultValue(SOAPFaultClassifier parent, OMXMLParserWrapper builder) {
         return createSOAPElement(AxiomSOAP12FaultValue.class, parent, SOAP12Constants.QNAME_FAULT_VALUE, builder);
     }
 
-    public final SOAPFaultValue AxiomSOAP12Factory.createSOAPFaultValue(SOAPFaultCode parent, OMXMLParserWrapper builder) {
+    public final SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent, OMXMLParserWrapper builder) {
         return internalCreateSOAPFaultValue(parent, builder);
     }
 
-    public final SOAPFaultValue AxiomSOAP12Factory.createSOAPFaultValue(SOAPFaultSubCode parent, OMXMLParserWrapper builder) {
+    public final SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent, OMXMLParserWrapper builder) {
         return internalCreateSOAPFaultValue(parent, builder);
     }
 
-    public final SOAPFaultValue AxiomSOAP12Factory.createSOAPFaultValue(SOAPFaultCode parent) {
+    public final SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) {
         return internalCreateSOAPFaultValue(parent, null);
     }
 
-    public final SOAPFaultValue AxiomSOAP12Factory.createSOAPFaultValue(SOAPFaultSubCode parent) {
+    public final SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent) {
         return internalCreateSOAPFaultValue(parent, null);
     }
 
-    public final SOAPFaultValue AxiomSOAP12Factory.createSOAPFaultValue() {
+    public final SOAPFaultValue createSOAPFaultValue() {
         return internalCreateSOAPFaultValue(null, null);
     }
 
-    private SOAPFaultSubCode AxiomSOAP12Factory.internalCreateSOAPFaultSubCode(SOAPFaultClassifier parent, OMXMLParserWrapper builder) {
+    private SOAPFaultSubCode internalCreateSOAPFaultSubCode(SOAPFaultClassifier parent, OMXMLParserWrapper builder) {
         return createSOAPElement(AxiomSOAP12FaultSubCode.class, parent, SOAP12Constants.QNAME_FAULT_SUBCODE, builder);
     }
 
-    public final SOAPFaultSubCode AxiomSOAP12Factory.createSOAPFaultSubCode(SOAPFaultCode parent, OMXMLParserWrapper builder) {
+    public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent, OMXMLParserWrapper builder) {
         return internalCreateSOAPFaultSubCode(parent, builder);
     }
 
-    public final SOAPFaultSubCode AxiomSOAP12Factory.createSOAPFaultSubCode(SOAPFaultSubCode parent, OMXMLParserWrapper builder) {
+    public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent, OMXMLParserWrapper builder) {
         return internalCreateSOAPFaultSubCode(parent, builder);
     }
 
-    public final SOAPFaultSubCode AxiomSOAP12Factory.createSOAPFaultSubCode(SOAPFaultCode parent) {
+    public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent) {
         return internalCreateSOAPFaultSubCode(parent, null);
     }
 
-    public final SOAPFaultSubCode AxiomSOAP12Factory.createSOAPFaultSubCode(SOAPFaultSubCode parent) {
+    public final SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent) {
         return internalCreateSOAPFaultSubCode(parent, null);
     }
 
-    public final SOAPFaultSubCode AxiomSOAP12Factory.createSOAPFaultSubCode() {
+    public final SOAPFaultSubCode createSOAPFaultSubCode() {
         return internalCreateSOAPFaultSubCode(null, null);
     }
 
-    public final SOAPFaultText AxiomSOAP12Factory.createSOAPFaultText(SOAPFaultReason parent, OMXMLParserWrapper builder) {
+    public final SOAPFaultText createSOAPFaultText(SOAPFaultReason parent, OMXMLParserWrapper builder) {
         return createSOAPElement(AxiomSOAP12FaultText.class, parent, SOAP12Constants.QNAME_FAULT_TEXT, builder);
     }
 
-    public final SOAPFaultText AxiomSOAP12Factory.createSOAPFaultText(SOAPFaultReason parent) {
+    public final SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) {
         return createSOAPFaultText(parent, null);
     }
 
-    public final SOAPFaultText AxiomSOAP12Factory.createSOAPFaultText() {
+    public final SOAPFaultText createSOAPFaultText() {
         return createSOAPFaultText(null, null);
     }
 
-    public final SOAPFaultNode AxiomSOAP12Factory.createSOAPFaultNode(SOAPFault parent, OMXMLParserWrapper builder) {
+    public final SOAPFaultNode createSOAPFaultNode(SOAPFault parent, OMXMLParserWrapper builder) {
         return createSOAPElement(AxiomSOAP12FaultNode.class, parent, SOAP12Constants.QNAME_FAULT_NODE, builder);
     }
 
-    public final SOAPFaultNode AxiomSOAP12Factory.createSOAPFaultNode(SOAPFault parent) {
+    public final SOAPFaultNode createSOAPFaultNode(SOAPFault parent) {
         return createSOAPFaultNode(parent, null);
     }
 
-    public final SOAPFaultNode AxiomSOAP12Factory.createSOAPFaultNode() {
+    public final SOAPFaultNode createSOAPFaultNode() {
         return createSOAPFaultNode(null, null);
     }
 
-    public final SOAPEnvelope AxiomSOAP12Factory.getDefaultFaultEnvelope() {
+    public final SOAPEnvelope getDefaultFaultEnvelope() {
         SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
         SOAPFaultCode faultCode = createSOAPFaultCode(fault);

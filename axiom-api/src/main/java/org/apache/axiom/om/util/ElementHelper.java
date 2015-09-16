@@ -169,7 +169,7 @@ public class ElementHelper {
      */
     public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
         // first check whether the given OMElement has the same omFactory
-        if (omElement.getOMFactory().getClass().isInstance(omFactory)) {
+        if (omElement.getOMFactory().getMetaFactory() == omFactory.getMetaFactory()) {
             return omElement;
         } else {
             OMElement documentElement = omFactory.getMetaFactory().createStAXOMBuilder(

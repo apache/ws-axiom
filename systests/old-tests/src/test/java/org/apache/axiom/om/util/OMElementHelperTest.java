@@ -42,8 +42,8 @@ public class OMElementHelperTest extends TestCase {
         OMElement importedElement = ElementHelper
                 .importOMElement(documentElement, OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory());
         assertTrue(importedElement != documentElement);
-        assertTrue(importedElement.getOMFactory().getClass().isInstance(
-                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory()));
+        assertTrue(importedElement.getOMFactory() ==
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory());
         
         documentElement.close(false);
     }

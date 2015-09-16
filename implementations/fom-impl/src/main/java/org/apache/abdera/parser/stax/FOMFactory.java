@@ -67,11 +67,11 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomAttribute;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
@@ -83,10 +83,10 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
-import org.apache.axiom.om.impl.common.factory.AxiomNodeFactory;
+import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMFactory implements AbderaFactory, AxiomNodeFactory, Constants, ExtensionFactory {
+public class FOMFactory extends OMFactoryImpl implements AbderaFactory, NodeFactory, Constants, ExtensionFactory {
     private static final Map<QName,Class<? extends FOMElement>> elementTypeMap;
     
     static {
@@ -138,15 +138,12 @@ public class FOMFactory implements AbderaFactory, AxiomNodeFactory, Constants, E
     }
 
     public FOMFactory(Abdera abdera) {
+        super(FOMMetaFactory.INSTANCE, null);
         List<ExtensionFactory> f = abdera.getConfiguration().getExtensionFactories();
         factoriesMap =
             new ExtensionFactoryMap((f != null) ? new ArrayList<ExtensionFactory>(f)
                 : new ArrayList<ExtensionFactory>());
         this.abdera = abdera;
-    }
-
-    public OMMetaFactory getMetaFactory() {
-        return FOMMetaFactory.INSTANCE;
     }
 
     public Parser newParser() {
