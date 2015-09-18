@@ -43,6 +43,7 @@
         <module>testutils</module>
         <module>xml-testsuite</module>
         <module>xml-truth</module>
+        <module>fom-testsuite</module>
     </modules>
 
     <build>

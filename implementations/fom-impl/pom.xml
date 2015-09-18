@@ -74,6 +74,11 @@
             <artifactId>truth</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fom-testsuite</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
