@@ -26,13 +26,8 @@ import org.apache.abdera.model.Category;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaCategories;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
-    protected FOMCategories(OMFactory factory) {
-        super(factory);
-    }
-
     public Categories addCategory(Category category) {
         addChild((OMElement)category);
         return this;

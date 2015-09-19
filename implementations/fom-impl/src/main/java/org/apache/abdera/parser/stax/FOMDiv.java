@@ -27,14 +27,9 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
 import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
-    protected FOMDiv(OMFactory factory) {
-        super(factory);
-    }
-
     public String[] getXhtmlClass() {
         String _class = getAttributeValue(CLASS);
         String[] classes = null;

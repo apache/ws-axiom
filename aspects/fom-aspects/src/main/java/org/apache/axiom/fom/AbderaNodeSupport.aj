@@ -20,17 +20,30 @@ package org.apache.axiom.fom;
 
 import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Element;
+import org.apache.axiom.core.CoreNode;
 
 public aspect AbderaNodeSupport {
-    public final Factory AbderaNode.getFactory() {
-        return (Factory)coreGetNodeFactory();
+    private AbderaFactory AbderaNode.factory;
+    
+    public final void AbderaNode.updateFiliation(CoreNode creator) {
+        setFactory(((AbderaNode)creator).factory);
     }
     
+    public final void AbderaNode.setFactory(AbderaFactory factory) {
+        if (this.factory != null) {
+            throw new IllegalStateException();
+        }
+        this.factory = factory;
+    }
+    
+    public final Factory AbderaNode.getFactory() {
+        return factory;
+    }
+
     public final Element AbderaNode.getWrapped(Element internal) {
         if (internal == null) {
             return null;
         } else {
-            AbderaFactory factory = (AbderaFactory)coreGetNodeFactory();
             return factory.getElementWrapper(internal);
         }
     }

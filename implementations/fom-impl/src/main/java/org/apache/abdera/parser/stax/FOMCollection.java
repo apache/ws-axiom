@@ -32,17 +32,12 @@ import org.apache.abdera.model.Text;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.fom.AbderaCollection;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMCollection extends FOMExtensibleElement implements AbderaCollection {
 
     private static final String[] ENTRY = {"application/atom+xml;type=\"entry\""};
     private static final String[] EMPTY = new String[0];
-
-    protected FOMCollection(OMFactory factory) {
-        super(factory);
-    }
 
     public String getTitle() {
         Text title = this.getFirstChild(TITLE);

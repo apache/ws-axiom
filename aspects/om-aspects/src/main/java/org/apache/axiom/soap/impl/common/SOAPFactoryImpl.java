@@ -62,7 +62,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
     
     public final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname, OMXMLParserWrapper builder) {
-        T element = nodeFactory.createNode(type);
+        T element = createNode(type);
         if (builder != null) {
             element.coreSetBuilder(builder);
         } else if (parent != null) {
@@ -84,13 +84,13 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
 
     public final SOAPMessage createSOAPMessage() {
-        AxiomSOAPMessage message = nodeFactory.createNode(AxiomSOAPMessage.class);
+        AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
         message.initSOAPFactory(this);
         return message;
     }
 
     public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
-        AxiomSOAPMessage message = nodeFactory.createNode(AxiomSOAPMessage.class);
+        AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
         message.initSOAPFactory(this);
         // Null check for Spring-WS compatibility
         if (builder != null) {
@@ -137,13 +137,13 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
-        AxiomSOAPHeaderBlock element = nodeFactory.createNode(getSOAPHelper().getHeaderBlockClass());
+        AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
         element.init(source);
         return element;
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) {
-        AxiomSOAPHeaderBlock element = nodeFactory.createNode(getSOAPHelper().getHeaderBlockClass());
+        AxiomSOAPHeaderBlock element = createNode(getSOAPHelper().getHeaderBlockClass());
         element.init(localName, ns, ds);
         return element;
     }

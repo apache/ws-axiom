@@ -18,11 +18,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomSerializable;
 
 abstract class FOMSerializable extends FOMInformationItem implements AxiomSerializable {
-    FOMSerializable(OMFactory factory) {
-        super(factory);
-    }
+
 }

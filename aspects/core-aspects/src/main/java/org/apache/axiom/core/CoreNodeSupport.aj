@@ -26,6 +26,15 @@ public aspect CoreNodeSupport {
         return coreGetNodeType().getInterface();
     }
     
+    public final <T extends CoreNode> T CoreNode.coreCreateNode(Class<T> type) {
+        T node = coreGetNodeFactory().createNode(type);
+        node.updateFiliation(this);
+        return node;
+    }
+    
+    public void CoreNode.updateFiliation(CoreNode creator) {
+    }
+    
     public abstract CoreNode CoreNode.getRootOrOwnerDocument();
 
     /**

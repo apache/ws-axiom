@@ -29,14 +29,9 @@ import org.apache.abdera.parser.stax.util.FOMExtensionIterator;
 import org.apache.abdera.parser.stax.util.FOMList;
 import org.apache.axiom.fom.AbderaExtensibleElement;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("unchecked")
 public class FOMExtensibleElement extends FOMElement implements AbderaExtensibleElement {
-    protected FOMExtensibleElement(OMFactory factory) {
-        super(factory);
-    }
-
     public List<Element> getExtensions() {
         return new FOMList<Element>(new FOMExtensionIterator(this));
     }

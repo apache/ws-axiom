@@ -44,7 +44,6 @@ import org.apache.axiom.fom.AbderaDocument;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -61,14 +60,6 @@ public class FOMDocument<T extends Element> extends FOMSerializable implements A
     protected String language = null;
     protected String slug = null;
     protected boolean preserve = true;
-
-    public FOMDocument() {
-        super(new FOMFactory());
-    }
-
-    protected FOMDocument(OMFactory factory) {
-        super(factory);
-    }
 
     public T getRoot() {
         FOMFactory factory = (FOMFactory)getFactory();

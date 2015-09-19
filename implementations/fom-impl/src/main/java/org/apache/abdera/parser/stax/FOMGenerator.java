@@ -20,13 +20,8 @@ package org.apache.abdera.parser.stax;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Generator;
 import org.apache.axiom.fom.AbderaGenerator;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMGenerator extends FOMElement implements AbderaGenerator {
-    protected FOMGenerator(OMFactory factory) {
-        super(factory);
-    }
-
     public IRI getUri() {
         String value = getAttributeValue(AURI);
         return (value != null) ? new IRI(value) : null;

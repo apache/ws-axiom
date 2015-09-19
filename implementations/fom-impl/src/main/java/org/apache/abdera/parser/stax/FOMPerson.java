@@ -23,13 +23,8 @@ import org.apache.abdera.model.IRIElement;
 import org.apache.abdera.model.Person;
 import org.apache.axiom.fom.AbderaPerson;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
-    protected FOMPerson(OMFactory factory) {
-        super(factory);
-    }
-
     public Element getNameElement() {
         return (Element)getFirstChildWithName(NAME);
     }

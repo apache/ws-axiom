@@ -27,14 +27,9 @@ import org.apache.abdera.model.Text;
 import org.apache.abdera.model.Workspace;
 import org.apache.axiom.fom.AbderaWorkspace;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspace {
-    protected FOMWorkspace(OMFactory factory) {
-        super(factory);
-    }
-
     public String getTitle() {
         Text title = this.getFirstChild(TITLE);
         return (title != null) ? title.getValue() : null;

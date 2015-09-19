@@ -23,7 +23,5 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomText;
 
 public abstract class FOMTextValue extends FOMLeafNode implements AbderaTextValue, AxiomText {
-    public FOMTextValue(OMFactory factory) {
-        super(factory);
-    }
+
 }

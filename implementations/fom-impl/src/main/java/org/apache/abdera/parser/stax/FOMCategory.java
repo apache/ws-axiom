@@ -21,13 +21,8 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaCategory;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMCategory extends FOMExtensibleElement implements AbderaCategory {
-    protected FOMCategory(OMFactory factory) {
-        super(factory);
-    }
-
     public String getTerm() {
         return getAttributeValue(TERM);
     }

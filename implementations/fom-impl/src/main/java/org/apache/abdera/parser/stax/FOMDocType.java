@@ -18,11 +18,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomDocType;
 
-final class FOMDocType extends FOMLeafNode implements AxiomDocType {
-    FOMDocType(OMFactory factory) {
-        super(factory);
-    }
+public final class FOMDocType extends FOMLeafNode implements AxiomDocType {
+
 }

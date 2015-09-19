@@ -25,11 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomCDATASection;
 
 public final class FOMCDATASection extends FOMTextValue implements AbderaCDATASection, AxiomCDATASection {
-
-    public FOMCDATASection(OMFactory factory) {
-        super(factory);
-    }
-
     public InputStream getInputStream() {
         try {
             return getDataHandler().getInputStream();

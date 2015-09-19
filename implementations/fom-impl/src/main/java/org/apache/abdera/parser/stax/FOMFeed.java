@@ -29,14 +29,9 @@ import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Source;
 import org.apache.axiom.fom.AbderaFeed;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 public class FOMFeed extends FOMSource implements AbderaFeed {
-    protected FOMFeed(OMFactory factory) {
-        super(factory);
-    }
-
     public List<Entry> getEntries() {
         return _getChildrenAsSet(ENTRY);
     }

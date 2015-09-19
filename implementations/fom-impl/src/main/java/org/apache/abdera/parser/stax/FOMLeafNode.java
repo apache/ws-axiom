@@ -19,11 +19,8 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaChildNode;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomLeafNode;
 
 public abstract class FOMLeafNode extends FOMChildNode implements AxiomLeafNode, AbderaChildNode {
-    public FOMLeafNode(OMFactory factory) {
-        super(factory);
-    }
+
 }

@@ -40,15 +40,10 @@ import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMSource extends FOMExtensibleElement implements AbderaSource {
-    protected FOMSource(OMFactory factory) {
-        super(factory);
-    }
-
     public Person getAuthor() {
         return (Person)getFirstChildWithName(AUTHOR);
     }

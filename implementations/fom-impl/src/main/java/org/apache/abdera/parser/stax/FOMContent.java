@@ -31,17 +31,12 @@ import org.apache.abdera.util.Constants;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.fom.AbderaContent;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.util.base64.Base64Utils;
 
 @SuppressWarnings("unchecked")
 public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     protected Type type = Type.TEXT;
-
-    protected FOMContent(OMFactory factory) {
-        super(factory);
-    }
 
     public final Type getContentType() {
         return type;

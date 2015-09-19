@@ -24,14 +24,9 @@ import org.apache.abdera.model.AtomDate;
 import org.apache.abdera.model.DateTime;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaDateTime;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMDateTime extends FOMElement implements AbderaDateTime {
     private AtomDate value;
-
-    protected FOMDateTime(OMFactory factory) {
-        super(factory);
-    }
 
     public AtomDate getValue() {
         if (value == null) {

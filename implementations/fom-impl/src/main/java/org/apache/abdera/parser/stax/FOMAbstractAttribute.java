@@ -19,10 +19,7 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.om.OMFactory;
 
 abstract class FOMAbstractAttribute extends FOMInformationItem implements CoreAttribute {
-    FOMAbstractAttribute(OMFactory factory) {
-        super(factory);
-    }
+
 }

@@ -84,8 +84,8 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
         return ((CoreNSAwareAttribute)attr).coreGetLocalName();
     }
 
-    public CoreAttribute createAttribute(NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value) {
-        CoreNSAwareAttribute attr = nodeFactory.createNode(CoreNSAwareAttribute.class);
+    public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) {
+        CoreNSAwareAttribute attr = element.coreCreateNode(CoreNSAwareAttribute.class);
         attr.coreSetName(namespaceURI, name, prefix);
         attr.coreSetCharacterData(value, null);
         return attr;

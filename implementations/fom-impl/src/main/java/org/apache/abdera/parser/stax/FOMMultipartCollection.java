@@ -10,7 +10,6 @@ import javax.activation.MimeType;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.util.MimeTypeHelper;
-import org.apache.axiom.om.OMFactory;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -31,10 +30,6 @@ import org.apache.axiom.om.OMFactory;
  * under the License.
  */
 public class FOMMultipartCollection extends FOMCollection {
-    protected FOMMultipartCollection(OMFactory factory) {
-        super(factory);
-    }
-
     public boolean acceptsMultipart(String mediaType) {
         Map<String, String> accept = getAcceptMultiparted();
         if (accept.size() == 0)

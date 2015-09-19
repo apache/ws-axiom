@@ -27,14 +27,9 @@ import org.apache.abdera.model.Service;
 import org.apache.abdera.model.Workspace;
 import org.apache.axiom.fom.AbderaService;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMService extends FOMExtensibleElement implements AbderaService {
-    protected FOMService(OMFactory factory) {
-        super(factory);
-    }
-
     public List<Workspace> getWorkspaces() {
         List<Workspace> list = _getChildrenAsSet(WORKSPACE);
         if (list == null || list.size() == 0)

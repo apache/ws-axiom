@@ -73,10 +73,6 @@ import org.apache.axiom.om.impl.common.AxiomElement;
 
 @SuppressWarnings("unchecked")
 public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement, Constants {
-    protected FOMElement(OMFactory factory) {
-        super(factory);
-    }
-
     protected void setParentDocument(Document parent) {
         ((OMContainer)parent).addChild(this);
     }

@@ -19,14 +19,9 @@ package org.apache.abdera.parser.stax;
 
 import org.apache.abdera.model.Control;
 import org.apache.axiom.fom.AbderaControl;
-import org.apache.axiom.om.OMFactory;
 
 @SuppressWarnings("deprecation")
 public class FOMControl extends FOMExtensibleElement implements AbderaControl {
-    protected FOMControl(OMFactory factory) {
-        super(factory);
-    }
-
     public boolean isDraft() {
         String value = _getElementValue(DRAFT);
         if (value == null)

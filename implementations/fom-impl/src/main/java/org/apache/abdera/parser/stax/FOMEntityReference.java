@@ -18,11 +18,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomEntityReference;
 
-final class FOMEntityReference extends FOMLeafNode implements AxiomEntityReference {
-    FOMEntityReference(OMFactory factory) {
-        super(factory);
-    }
+public final class FOMEntityReference extends FOMLeafNode implements AxiomEntityReference {
+
 }

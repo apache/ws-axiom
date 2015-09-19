@@ -22,13 +22,13 @@ import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.core.NodeType;
 
@@ -72,8 +72,8 @@ public final class Policies {
             return ((DOMAttribute)attr).getName();
         }
 
-        public CoreAttribute createAttribute(NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value) {
-            CoreNSUnawareAttribute attr = nodeFactory.createNode(CoreNSUnawareAttribute.class);
+        public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) {
+            CoreNSUnawareAttribute attr = element.coreCreateNode(CoreNSUnawareAttribute.class);
             attr.coreSetName(name);
             attr.coreSetCharacterData(value, null);
             // TODO: set type?

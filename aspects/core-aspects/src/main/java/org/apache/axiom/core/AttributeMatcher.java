@@ -70,8 +70,8 @@ public interface AttributeMatcher {
      * <code>prefix</code> and <code>value</code> parameters are those passed to
      * {@link CoreElement#coreSetAttribute(AttributeMatcher, String, String, String, String)}.
      * 
-     * @param nodeFactory
-     *            the node factory the should be used to create the attribute
+     * @param element
+     *            the instance to be used to invoke {@link CoreNode#coreCreateNode(Class)}
      * @param namespaceURI
      *            see above
      * @param name
@@ -82,7 +82,7 @@ public interface AttributeMatcher {
      *            see above
      * @return
      */
-    CoreAttribute createAttribute(NodeFactory nodeFactory, String namespaceURI, String name, String prefix, String value);
+    CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value);
     
     /**
      * Update an existing attribute. The values of the <code>prefix</code> and <code>value</code>

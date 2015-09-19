@@ -23,13 +23,8 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Link;
 import org.apache.axiom.fom.AbderaLink;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMLink extends FOMExtensibleElement implements AbderaLink {
-    protected FOMLink(OMFactory factory) {
-        super(factory);
-    }
-
     public IRI getHref() {
         return _getUriValue(getAttributeValue(HREF));
     }

@@ -23,6 +23,8 @@ public interface CoreNode {
     
     NodeFactory coreGetNodeFactory();
     
+    <T extends CoreNode> T coreCreateNode(Class<T> type);
+    
     /**
      * Get the node type.
      * 

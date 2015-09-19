@@ -24,16 +24,11 @@ import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings("unchecked")
 public class FOMText extends FOMElement implements AbderaText {
     protected Type type = Type.TEXT;
-
-    protected FOMText(OMFactory factory) {
-        super(factory);
-    }
 
     public final Type getTextType() {
         return type;

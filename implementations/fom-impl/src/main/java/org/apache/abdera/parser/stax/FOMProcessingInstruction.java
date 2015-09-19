@@ -18,14 +18,9 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaProcessingInstruction;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 
 public final class FOMProcessingInstruction extends FOMLeafNode implements AbderaProcessingInstruction, AxiomProcessingInstruction {
-    FOMProcessingInstruction(OMFactory factory) {
-        super(factory);
-    }
-
     public String toString() {
         java.io.CharArrayWriter w = new java.io.CharArrayWriter();
         try {

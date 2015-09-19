@@ -21,13 +21,8 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.axiom.fom.AbderaIRIElement;
-import org.apache.axiom.om.OMFactory;
 
 public class FOMIRI extends FOMElement implements AbderaIRIElement {
-    protected FOMIRI(OMFactory factory) {
-        super(factory);
-    }
-
     public IRI getValue() {
         return _getUriValue(getText());
     }

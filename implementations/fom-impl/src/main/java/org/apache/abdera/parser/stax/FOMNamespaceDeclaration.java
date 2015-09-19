@@ -18,11 +18,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
 
-final class FOMNamespaceDeclaration extends FOMAbstractAttribute implements AxiomNamespaceDeclaration {
-    FOMNamespaceDeclaration(OMFactory factory) {
-        super(factory);
-    }
+public final class FOMNamespaceDeclaration extends FOMAbstractAttribute implements AxiomNamespaceDeclaration {
+
 }

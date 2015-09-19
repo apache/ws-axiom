@@ -56,37 +56,17 @@ import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.util.Version;
-import org.apache.axiom.core.CoreCDATASection;
-import org.apache.axiom.core.CoreCharacterDataNode;
-import org.apache.axiom.core.CoreComment;
-import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.CoreDocumentTypeDeclaration;
-import org.apache.axiom.core.CoreEntityReference;
-import org.apache.axiom.core.CoreNSAwareAttribute;
-import org.apache.axiom.core.CoreNSAwareElement;
-import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.CoreProcessingInstruction;
-import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.fom.AbderaFactory;
+import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.AxiomAttribute;
-import org.apache.axiom.om.impl.common.AxiomCDATASection;
-import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
-import org.apache.axiom.om.impl.common.AxiomComment;
-import org.apache.axiom.om.impl.common.AxiomDocType;
-import org.apache.axiom.om.impl.common.AxiomDocument;
-import org.apache.axiom.om.impl.common.AxiomElement;
-import org.apache.axiom.om.impl.common.AxiomEntityReference;
-import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
-import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMFactory extends OMFactoryImpl implements AbderaFactory, NodeFactory, Constants, ExtensionFactory {
+public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constants, ExtensionFactory {
     private static final Map<QName,Class<? extends FOMElement>> elementTypeMap;
     
     static {
@@ -138,7 +118,7 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, NodeFact
     }
 
     public FOMFactory(Abdera abdera) {
-        super(FOMMetaFactory.INSTANCE, null);
+        super(FOMMetaFactory.INSTANCE, FOMNodeFactory.INSTANCE);
         List<ExtensionFactory> f = abdera.getConfiguration().getExtensionFactories();
         factoriesMap =
             new ExtensionFactoryMap((f != null) ? new ArrayList<ExtensionFactory>(f)
@@ -146,12 +126,17 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, NodeFact
         this.abdera = abdera;
     }
 
+    @Override
+    protected void initNode(CoreNode node) {
+        ((FOMInformationItem)node).setFactory(this);
+    }
+
     public Parser newParser() {
         return new FOMParser(abdera);
     }
 
     public <T extends Element> Document<T> newDocument() {
-        return new FOMDocument(this);
+        return createNode(FOMDocument.class);
     }
 
     public Service newService(Base parent) {
@@ -484,72 +469,6 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, NodeFact
 
     public Div newDiv(Base parent) {
         return createElement(FOMDiv.class, DIV, (OMContainer)parent);
-    }
-
-    public <T extends CoreNode> T createNode(Class<T> type) {
-        CoreNode node;
-        if (type == CoreCDATASection.class || type == AxiomCDATASection.class || type == FOMCDATASection.class) {
-            node = new FOMCDATASection(this);
-        } else if (type == CoreCharacterDataNode.class || type == AxiomCharacterDataNode.class || type == FOMCharacterDataNode.class) {
-            node = new FOMCharacterDataNode(this);
-        } else if (type == CoreComment.class || type == AxiomComment.class || type == FOMComment.class) {
-            node = new FOMComment(this);
-        } else if (type == CoreDocument.class || type == AxiomDocument.class || type == FOMDocument.class) {
-            node = new FOMDocument(this);
-        } else if (type == CoreDocumentTypeDeclaration.class || type == AxiomDocType.class) {
-            node = new FOMDocType(this);
-        } else if (type == CoreEntityReference.class || type == AxiomEntityReference.class) {
-            node = new FOMEntityReference(this);
-        } else if (type == CoreNamespaceDeclaration.class || type == AxiomNamespaceDeclaration.class) {
-            node = new FOMNamespaceDeclaration(this);
-        } else if (type == CoreNSAwareAttribute.class || type == AxiomAttribute.class || type == FOMAttribute.class) {
-            node = new FOMAttribute(this);
-        } else if (type == CoreNSAwareElement.class || type == AxiomElement.class || type == FOMElement.class) {
-            node = new FOMElement(this);
-        } else if (type == CoreProcessingInstruction.class || type == AxiomProcessingInstruction.class || type == FOMProcessingInstruction.class) {
-            node = new FOMProcessingInstruction(this);
-        } else if (type == FOMCategories.class) {
-            node = new FOMCategories(this);
-        } else if (type == FOMCategory.class) {
-            node = new FOMCategory(this);
-        } else if (type == FOMCollection.class) {
-            node = new FOMCollection(this);
-        } else if (type == FOMContent.class) {
-            node = new FOMContent(this);
-        } else if (type == FOMControl.class) {
-            node = new FOMControl(this);
-        } else if (type == FOMDateTime.class) {
-            node = new FOMDateTime(this);
-        } else if (type == FOMDiv.class) {
-            node = new FOMDiv(this);
-        } else if (type == FOMEntry.class) {
-            node = new FOMEntry(this);
-        } else if (type == FOMExtensibleElement.class) {
-            node = new FOMExtensibleElement(this);
-        } else if (type == FOMFeed.class) {
-            node = new FOMFeed(this);
-        } else if (type == FOMGenerator.class) {
-            node = new FOMGenerator(this);
-        } else if (type == FOMIRI.class) {
-            node = new FOMIRI(this);
-        } else if (type == FOMLink.class) {
-            node = new FOMLink(this);
-        } else if (type == FOMMultipartCollection.class) {
-            node = new FOMMultipartCollection(this);
-        } else if (type == FOMPerson.class) {
-            node = new FOMPerson(this);
-        } else if (type == FOMService.class) {
-            node = new FOMService(this);
-        } else if (type == FOMSource.class) {
-            node = new FOMSource(this);
-        } else if (type == FOMText.class) {
-            node = new FOMText(this);
-        } else if (type == FOMWorkspace.class) {
-            node = new FOMWorkspace(this);
-        } else {
-            throw new IllegalArgumentException(type.getName() + " not supported");
-        }
-        return type.cast(node);
     }
 
     private <T extends FOMElement> T createElement(Class<T> type, QName qname, OMContainer parent) {
