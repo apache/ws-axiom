@@ -16,26 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.fom;
+package org.apache.axiom.ts.fom.attribute;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.namespace.QName;
 
 import org.apache.abdera.Abdera;
-import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.abdera.model.Element;
+import org.apache.axiom.ts.fom.AbderaTestCase;
 
-public class FOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private final Abdera abdera;
-
-    public FOMTestSuiteBuilder(Abdera abdera) {
-        this.abdera = abdera;
+public class TestSetAttributeValueQNameRemove extends AbderaTestCase {
+    public TestSetAttributeValueQNameRemove(Abdera abdera) {
+        super(abdera);
     }
 
     @Override
-    protected void addTests() {
-        addTest(new org.apache.axiom.ts.fom.attribute.TestGetFactory(abdera));
-        addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameNew(abdera, new QName("attr")));
-        addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameNew(abdera, new QName("urn:test", "attr")));
-        addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameNew(abdera, new QName("urn:test", "attr", "p")));
-        addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameRemove(abdera));
+    protected void runTest() throws Throwable {
+        Element element = abdera.getFactory().newElement(new QName("test"));
+        QName qname = new QName("urn:test", "attr", "p");
+        element.setAttributeValue(qname, "value");
+        assertThat(element.getAttributes()).containsExactly(qname);
+        element.setAttributeValue(qname, null);
+        assertThat(element.getAttributes()).isEmpty();
     }
 }

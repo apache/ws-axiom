@@ -58,6 +58,7 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.fom.AbderaElement;
+import org.apache.axiom.fom.Policies;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -209,27 +210,10 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public <T extends Element> T setAttributeValue(QName qname, String value) {
-        OMAttribute attr = this.getAttribute(qname);
-        if (attr != null && value != null) {
-            attr.setAttributeValue(value);
+        if (value == null) {
+            coreRemoveAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
         } else {
-            if (value != null) {
-                String uri = qname.getNamespaceURI();
-                String prefix = qname.getPrefix();
-                OMFactory factory = getOMFactory();
-                if (uri != null) {
-                    OMNamespace ns = findNamespace(uri, prefix);
-                    if (ns == null)
-                        ns = factory.createOMNamespace(uri, prefix);
-                    attr = factory.createOMAttribute(qname.getLocalPart(), ns, value);
-                } else {
-                    attr = factory.createOMAttribute(qname.getLocalPart(), null, value);
-                }
-                if (attr != null)
-                    addAttribute(attr);
-            } else if (attr != null) {
-                removeAttribute(attr);
-            }
+            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
         }
         return (T)this;
     }

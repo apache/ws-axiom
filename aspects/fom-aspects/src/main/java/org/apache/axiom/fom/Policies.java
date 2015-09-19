@@ -18,11 +18,13 @@
  */
 package org.apache.axiom.fom;
 
+import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
+import org.apache.axiom.core.NSAwareAttributeMatcher;
 
-final class Policies {
+public final class Policies {
     private Policies() {}
     
     public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
@@ -30,4 +32,6 @@ final class Policies {
             return null;
         }
     };
+    
+    public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(DETACH_POLICY, false, false);
 }

@@ -20,30 +20,33 @@ package org.apache.axiom.ts.fom.attribute;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.apache.abdera.Abdera;
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Attribute;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.ts.fom.AbderaTestCase;
 
-/**
- * Tests that an {@link Attribute} added using {@link Element#setAttributeValue(String, String)}
- * inherits the factory from the element.
- */
-public class TestGetFactory extends AbderaTestCase {
-    public TestGetFactory(Abdera abdera) {
+public class TestSetAttributeValueQNameNew extends AbderaTestCase {
+    private final QName qname;
+    
+    public TestSetAttributeValueQNameNew(Abdera abdera, QName qname) {
         super(abdera);
+        this.qname = qname;
+        addTestParameter("qname", qname.toString());
+        addTestParameter("prefix", qname.getPrefix());
     }
 
     @Override
     protected void runTest() throws Throwable {
-        Factory factory = abdera.getFactory();
-        Element element = factory.newElement(new QName("test"));
-        element.setAttributeValue("attr", "value");
-        Object xpathResult = abdera.getXPath().selectSingleNode("./@attr", element);
-        assertThat(xpathResult).isInstanceOf(Attribute.class);
-        assertThat(((Attribute)xpathResult).getFactory()).isSameAs(factory);
+        Element element = abdera.getFactory().newElement(new QName("test"));
+        element.setAttributeValue(qname, "value");
+        assertThat(element.getAttributeValue(qname)).isEqualTo("value");
+        List<QName> attrs = element.getAttributes();
+        assertThat(attrs).hasSize(1);
+        QName actualQName = attrs.get(0);
+        assertThat(actualQName).isEqualTo(qname);
+        assertThat(actualQName.getPrefix()).isEqualTo(qname.getPrefix());
     }
 }
