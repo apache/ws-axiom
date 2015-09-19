@@ -28,7 +28,7 @@ public final class Policies {
     private Policies() {}
     
     public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode parent) {
+        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
             return null;
         }
     };

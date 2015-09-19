@@ -54,6 +54,7 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.element.TestGetNamespaceNormalized(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestInsertBeforeIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttribute(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttributeNode(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttributeNSNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestReplaceChildFirstIncomplete(metaFactory));

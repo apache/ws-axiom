@@ -25,18 +25,20 @@ import java.util.NoSuchElementException;
 final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
     private final Class<T> type;
     private final Mapper<T,S> mapper;
+    private final DetachPolicy detachPolicy;
     private CoreAttribute currentAttribute;
     private CoreAttribute nextAttribute;
     private boolean nextAttributeSet;
     
-    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<T,S> mapper) {
+    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy) {
         this.type = type;
         this.mapper = mapper;
+        this.detachPolicy = detachPolicy;
         nextAttribute = firstAttribute;
         nextAttributeSet = true;
     }
     
-    static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper) {
+    static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy) {
         CoreAttribute attribute = element.coreGetFirstAttribute();
         while (attribute != null && !type.isInstance(attribute)) {
             attribute = attribute.coreGetNextAttribute();
@@ -44,7 +46,7 @@ final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> 
         if (attribute == null) {
             return Collections.<S>emptyList().iterator();
         } else {
-            return new AttributeIterator<T,S>(attribute, type, mapper);
+            return new AttributeIterator<T,S>(attribute, type, mapper, detachPolicy);
         }
     }
     
@@ -78,7 +80,7 @@ final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> 
         } else {
             // Ensure that the next attribute is known before we remove the current one.
             hasNext();
-            currentAttribute.coreRemove();
+            currentAttribute.coreRemove(detachPolicy);
             currentAttribute = null;
         }
     }

@@ -34,23 +34,15 @@ public interface CoreAttribute extends NonDeferringParentNode, CoreCharacterData
     boolean coreHasOwnerElement();
     
     /**
-     * Remove this attribute from its owner element. The attribute will keep its current owner
-     * document.
+     * Remove this attribute from its owner element.
      * 
+     * @param detachPolicy
+     *            the detach policy that determines the new owner document for the attribute
      * @return <code>true</code> if the attribute had an owner element and has been removed from
      *         that element; <code>false</code> if the attribute didn't have an owner element and no
      *         changes have been made
      */
-    boolean coreRemove();
-    
-    /**
-     * Remove this attribute from its owner element and assign it to a new owner document. The owner
-     * document will always be changed, even if the attribute has no owner element.
-     * 
-     * @return <code>true</code> if the attribute had an owner element and has been removed from
-     *         that element; <code>false</code> if the attribute didn't have an owner element
-     */
-    boolean coreRemove(CoreDocument document);
+    boolean coreRemove(DetachPolicy detachPolicy);
     
     /**
      * Get the attribute immediately following the current attribute.

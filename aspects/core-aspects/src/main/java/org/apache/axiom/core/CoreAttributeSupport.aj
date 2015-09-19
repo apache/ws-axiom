@@ -96,19 +96,11 @@ public aspect CoreAttributeSupport {
         nextAttribute = attr;
     }
 
-    public final boolean CoreAttribute.coreRemove() {
-        return remove(false, null);
-    }
-
-    public final boolean CoreAttribute.coreRemove(CoreDocument document) {
-        return remove(true, document);
-    }
-
-    private boolean CoreAttribute.remove(boolean newOwnerDocument, CoreDocument ownerDocument) {
+    public final boolean CoreAttribute.coreRemove(DetachPolicy detachPolicy) {
         if (owner instanceof CoreElement) {
             CoreElement ownerElement = (CoreElement)owner;
             CoreAttribute previousAttr = coreGetPreviousAttribute();
-            owner = newOwnerDocument ? ownerDocument : coreGetOwnerDocument(false); // TODO: create?
+            owner = detachPolicy.getNewOwnerDocument(ownerElement);
             if (previousAttr == null) {
                 ownerElement.internalSetFirstAttribute(nextAttribute);
             } else {
@@ -117,9 +109,6 @@ public aspect CoreAttributeSupport {
             nextAttribute = null;
             return true;
         } else {
-            if (newOwnerDocument) {
-                owner = ownerDocument;
-            }
             return false;
         }
     }

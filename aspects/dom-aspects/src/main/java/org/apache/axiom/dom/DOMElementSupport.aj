@@ -164,22 +164,22 @@ public aspect DOMElementSupport {
         if (attr.coreGetOwnerElement() != this) {
             throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
         } else {
-            attr.coreRemove();
+            attr.coreRemove(Policies.DETACH_POLICY);
         }
         return attr;
     }
 
     public final void DOMElement.removeAttribute(String name) throws DOMException {
         // Specs: "If no attribute with this name is found, this method has no effect."
-        coreRemoveAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name);
+        coreRemoveAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name, Policies.DETACH_POLICY);
     }
 
     public final void DOMElement.removeAttributeNS(String namespaceURI, String localName) throws DOMException {
         // Specs: "If no attribute with this local name and namespace URI is found, this method has no effect."
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            coreRemoveAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
+            coreRemoveAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName, Policies.DETACH_POLICY);
         } else {
-            coreRemoveAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
+            coreRemoveAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName, Policies.DETACH_POLICY);
         }
     }
     

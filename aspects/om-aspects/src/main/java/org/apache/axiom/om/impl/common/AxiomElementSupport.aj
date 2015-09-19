@@ -317,7 +317,7 @@ public aspect AxiomElementSupport {
     
     @SuppressWarnings("rawtypes")
     public final Iterator AxiomElement.getAllAttributes() {
-        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper);
+        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper, Policies.DETACH_POLICY);
     }
     
     public final OMAttribute AxiomElement.getAttribute(QName qname) {
@@ -344,7 +344,7 @@ public aspect AxiomElementSupport {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
         }
-        ((AxiomAttribute)attr).coreRemove(null);
+        ((AxiomAttribute)attr).coreRemove(Policies.DETACH_POLICY);
     }
 
     public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
@@ -372,7 +372,7 @@ public aspect AxiomElementSupport {
     
     @SuppressWarnings("rawtypes")
     public final Iterator AxiomElement.getAllDeclaredNamespaces() {
-        return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE);
+        return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE, Policies.DETACH_POLICY);
     }
 
     public final OMNamespace AxiomElement.declareNamespace(OMNamespace namespace) {

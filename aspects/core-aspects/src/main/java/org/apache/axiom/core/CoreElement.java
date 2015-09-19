@@ -157,9 +157,9 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @return <code>true</code> if a matching attribute was found (and has been removed),
      *         <code>false</code> if no matching attribute was found
      */
-    boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name);
+    boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, DetachPolicy detachPolicy);
     
-    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper);
+    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy);
     
     /**
      * Look up the namespace URI associated to the given prefix.

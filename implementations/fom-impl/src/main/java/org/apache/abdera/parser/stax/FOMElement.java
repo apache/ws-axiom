@@ -211,7 +211,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
 
     public <T extends Element> T setAttributeValue(QName qname, String value) {
         if (value == null) {
-            coreRemoveAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
+            coreRemoveAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), Policies.DETACH_POLICY);
         } else {
             coreSetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
         }

@@ -19,17 +19,18 @@
 package org.apache.axiom.core;
 
 /**
- * Determines how child nodes are detached.
+ * Determines how nodes are detached from an object model tree.
  */
 public interface DetachPolicy {
     /**
-     * Get the new owner document for the child node (or group of child nodes) to be detached. This
-     * method is called before any child node is detached.
+     * Get the new owner document for the node (or group of child nodes) to be detached. This method
+     * is called before any node is detached.
      * 
-     * @param parent
-     *            the parent of the child node (or group of child nodes) to be detached
+     * @param owner
+     *            The owner of the node (or group of child nodes) to be detached. For child nodes,
+     *            this is the parent node. For attributes, this is the owner element.
      * @return the new owner document or <code>null</code> to (lazily) create a new owner document
-     *         for each child node
+     *         for the node(s)
      */
-    CoreDocument getNewOwnerDocument(CoreParentNode parent);
+    CoreDocument getNewOwnerDocument(CoreParentNode owner);
 }

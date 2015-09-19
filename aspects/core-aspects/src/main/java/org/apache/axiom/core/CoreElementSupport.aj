@@ -78,7 +78,7 @@ public aspect CoreElementSupport {
 //                        throw new UnsupportedOperationException();
                         return attr;
                     } else {
-                        attr.coreRemove();
+                        attr.coreRemove(null); // TODO
                         return attr;
                     }
                 case CLONE:
@@ -168,18 +168,18 @@ public aspect CoreElementSupport {
         }
     }
 
-    public final boolean CoreElement.coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name) {
+    public final boolean CoreElement.coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, DetachPolicy detachPolicy) {
         CoreAttribute att = coreGetAttribute(matcher, namespaceURI, name);
         if (att != null) {
-            att.coreRemove();
+            att.coreRemove(detachPolicy);
             return true;
         } else {
             return false;
         }
     }
 
-    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper) {
-        return AttributeIterator.create(this, type, mapper);
+    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy) {
+        return AttributeIterator.create(this, type, mapper, detachPolicy);
     }
 
     public abstract String CoreElement.getImplicitNamespaceURI(String prefix);
