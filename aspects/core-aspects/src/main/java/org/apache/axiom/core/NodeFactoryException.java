@@ -16,14 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.fom.impl;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.NodeFactoryImpl;
+public class NodeFactoryException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
 
-public final class FOMNodeFactory extends NodeFactoryImpl {
-    public static final FOMNodeFactory INSTANCE = new FOMNodeFactory();
-    
-    private FOMNodeFactory() {
-        super(FOMNodeFactory.class.getClassLoader(), "org.apache.abdera.parser.stax");
+    public NodeFactoryException(String message) {
+        super(message);
+    }
+
+    public NodeFactoryException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

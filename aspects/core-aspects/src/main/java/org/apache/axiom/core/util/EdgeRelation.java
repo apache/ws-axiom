@@ -16,14 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.fom.impl;
+package org.apache.axiom.core.util;
 
-import org.apache.axiom.core.NodeFactoryImpl;
-
-public final class FOMNodeFactory extends NodeFactoryImpl {
-    public static final FOMNodeFactory INSTANCE = new FOMNodeFactory();
-    
-    private FOMNodeFactory() {
-        super(FOMNodeFactory.class.getClassLoader(), "org.apache.abdera.parser.stax");
-    }
+public interface EdgeRelation<T> {
+    boolean isEdge(T from, T to);
 }
