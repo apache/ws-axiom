@@ -28,24 +28,25 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public final class TextContent implements CharacterData {
-    final String value;
+    private final String value;
     
-    final String mimeType;
+    private final String mimeType;
     
     /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
-    String contentID;
+    private String contentID;
     
     /**
      * Contains a {@link DataHandler} or {@link DataHandlerProvider} object if the text node
      * represents base64 encoded binary data.
      */
-    Object dataHandlerObject;
+    private Object dataHandlerObject;
 
-    boolean optimize;
-    boolean binary;
+    private boolean optimize;
+    private boolean binary;
     
     TextContent(String value) {
         this.value = value;
@@ -82,6 +83,40 @@ public final class TextContent implements CharacterData {
         this.dataHandlerObject = other.dataHandlerObject;
         this.optimize = other.optimize;
         this.binary = other.binary;
+    }
+
+    boolean isOptimize() {
+        return optimize;
+    }
+
+    void setOptimize(boolean optimize) {
+        this.optimize = optimize;
+        if (optimize) {
+            binary = true;
+        }
+    }
+
+    boolean isBinary() {
+        return binary;
+    }
+
+    void setBinary(boolean binary) {
+        this.binary = binary;
+    }
+
+    String getContentID() {
+        if (contentID == null) {
+            contentID = UIDGenerator.generateContentId();
+        }
+        return contentID;
+    }
+
+    void setContentID(String contentID) {
+        this.contentID = contentID;
+    }
+
+    Object getDataHandlerObject() {
+        return dataHandlerObject;
     }
 
     DataHandler getDataHandler() {

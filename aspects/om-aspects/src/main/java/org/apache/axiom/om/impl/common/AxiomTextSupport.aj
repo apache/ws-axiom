@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
-import org.apache.axiom.util.UIDGenerator;
 
 public aspect AxiomTextSupport {
     private TextContent AxiomText.getTextContent(boolean force) {
@@ -46,28 +45,25 @@ public aspect AxiomTextSupport {
     
     public final boolean AxiomText.isBinary() {
         TextContent textContent = getTextContent(false);
-        return textContent != null && textContent.binary;
+        return textContent != null && textContent.isBinary();
     }
 
     public final void AxiomText.setBinary(boolean binary) {
         TextContent textContent = getTextContent(binary);
         if (textContent != null) {
-            textContent.binary = binary;
+            textContent.setBinary(binary);
         }
     }
 
     public final boolean AxiomText.isOptimized() {
         TextContent textContent = getTextContent(false);
-        return textContent != null && textContent.optimize;
+        return textContent != null && textContent.isOptimize();
     }
 
     public final void AxiomText.setOptimize(boolean optimize) {
         TextContent textContent = getTextContent(optimize);
         if (textContent != null) {
-            textContent.optimize = optimize;
-            if (optimize) {
-                textContent.binary = true;
-            }
+            setOptimize(optimize);
         }
     }
     
@@ -113,23 +109,22 @@ public aspect AxiomTextSupport {
     }
 
     public final String AxiomText.getContentID() {
-        TextContent textContent = getTextContent(true);
-        if (textContent.contentID == null) {
-            textContent.contentID = UIDGenerator.generateContentId();
-        }
-        return textContent.contentID;
+        return getTextContent(true).getContentID();
     }
 
     public final void AxiomText.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
             TextContent textContent = (TextContent)content;
-            if (!textContent.binary) {
-                serializer.writeText(getType(), textContent.value);
-            } else if (textContent.dataHandlerObject instanceof DataHandlerProvider) {
-                serializer.writeDataHandler((DataHandlerProvider)textContent.dataHandlerObject, textContent.contentID, textContent.optimize);
+            if (textContent.isBinary()) {
+                Object dataHandlerObject = textContent.getDataHandlerObject();
+                if (dataHandlerObject instanceof DataHandlerProvider) {
+                    serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, textContent.getContentID(), textContent.isOptimize());
+                } else {
+                    serializer.writeDataHandler(textContent.getDataHandler(), textContent.getContentID(), textContent.isOptimize());
+                }
             } else {
-                serializer.writeDataHandler(textContent.getDataHandler(), textContent.contentID, textContent.optimize);
+                serializer.writeText(getType(), textContent.toString());
             }
         } else {
             serializer.writeText(getType(), (String)content);
@@ -144,6 +139,6 @@ public aspect AxiomTextSupport {
     }
 
     public final void AxiomText.setContentID(String cid) {
-        getTextContent(true).contentID = cid;
+        getTextContent(true).setContentID(cid);
     }
 }
