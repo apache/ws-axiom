@@ -19,7 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMNamespaceDeclaration;
-import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 
 public final class NamespaceDeclaration extends AttrImpl implements DOMNamespaceDeclaration, AxiomNamespaceDeclaration {
 

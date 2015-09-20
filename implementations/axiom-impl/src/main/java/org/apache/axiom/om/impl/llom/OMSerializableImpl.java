@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomSerializable;
+import org.apache.axiom.om.impl.intf.AxiomSerializable;
 
 public abstract class OMSerializableImpl extends OMInformationItemImpl implements AxiomSerializable {
 

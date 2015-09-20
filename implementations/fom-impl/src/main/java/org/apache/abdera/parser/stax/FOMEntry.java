@@ -26,10 +26,14 @@ import java.util.List;
 import javax.activation.DataHandler;
 import javax.activation.MimeType;
 
+import org.apache.abdera.i18n.iri.IRI;
+import org.apache.abdera.i18n.iri.IRISyntaxException;
+import org.apache.abdera.i18n.text.io.InputStreamDataSource;
 import org.apache.abdera.model.AtomDate;
 import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Content;
+import org.apache.abdera.model.Content.Type;
 import org.apache.abdera.model.Control;
 import org.apache.abdera.model.DateTime;
 import org.apache.abdera.model.Div;
@@ -42,11 +46,8 @@ import org.apache.abdera.model.Link;
 import org.apache.abdera.model.Person;
 import org.apache.abdera.model.Source;
 import org.apache.abdera.model.Text;
-import org.apache.abdera.model.Content.Type;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.abdera.util.MimeTypeHelper;
-import org.apache.abdera.i18n.text.io.InputStreamDataSource;
-import org.apache.abdera.i18n.iri.IRI;
 import org.apache.axiom.fom.AbderaEntry;
 import org.apache.axiom.om.OMElement;
 

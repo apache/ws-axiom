@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.impl.common.AxiomInformationItem;
+import org.apache.axiom.om.impl.intf.AxiomInformationItem;
 import org.apache.axiom.om.impl.llom.factory.LLOMNodeFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 

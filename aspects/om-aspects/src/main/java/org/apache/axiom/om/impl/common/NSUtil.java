@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public final class NSUtil {

@@ -18,7 +18,7 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.impl.common.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 
 public final class FOMNamespaceDeclaration extends FOMAbstractAttribute implements AxiomNamespaceDeclaration {
 

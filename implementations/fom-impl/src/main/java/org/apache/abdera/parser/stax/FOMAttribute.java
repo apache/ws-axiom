@@ -18,7 +18,7 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaAttribute;
-import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.intf.AxiomAttribute;
 
 public final class FOMAttribute extends FOMAbstractAttribute implements AbderaAttribute, AxiomAttribute {
 

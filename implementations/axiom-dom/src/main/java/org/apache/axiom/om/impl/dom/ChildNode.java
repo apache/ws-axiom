@@ -19,7 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMChildNode;
-import org.apache.axiom.om.impl.common.AxiomChildNode;
+import org.apache.axiom.om.impl.intf.AxiomChildNode;
 
 public abstract class ChildNode extends NodeImpl implements DOMChildNode, AxiomChildNode {
 

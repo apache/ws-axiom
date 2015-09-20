@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomEntityReference;
+import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 
 public class OMEntityReferenceImpl extends OMLeafNode implements AxiomEntityReference {
 

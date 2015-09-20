@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.AxiomContainer;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
+import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -41,6 +41,10 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFactoryEx {
     public SOAPFactoryImpl(OMMetaFactory metaFactory, NodeFactory nodeFactory) {

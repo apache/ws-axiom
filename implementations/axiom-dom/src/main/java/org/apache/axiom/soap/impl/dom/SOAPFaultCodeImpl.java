@@ -21,7 +21,7 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.impl.common.AxiomSOAPFaultCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultCode;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
     public SOAPFaultSubCode getSubCode() {

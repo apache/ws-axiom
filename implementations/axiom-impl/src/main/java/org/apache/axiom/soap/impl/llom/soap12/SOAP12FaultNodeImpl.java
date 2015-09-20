@@ -20,9 +20,8 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultNode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
 public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {

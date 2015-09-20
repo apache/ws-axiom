@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomAttribute;
+import org.apache.axiom.om.impl.intf.AxiomAttribute;
 
 /** Class OMAttributeImpl */
 public class OMAttributeImpl extends Attribute implements AxiomAttribute {

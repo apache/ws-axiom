@@ -20,7 +20,7 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.impl.dom.OMSourcedElementImpl;
-import org.apache.axiom.soap.impl.common.AxiomSOAPHeaderBlock;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 
 public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl implements AxiomSOAPHeaderBlock {
 

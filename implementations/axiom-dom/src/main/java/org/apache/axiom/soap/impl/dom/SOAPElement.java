@@ -20,7 +20,7 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.impl.dom.NSAwareElement;
-import org.apache.axiom.soap.impl.common.AxiomSOAPElement;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
 public abstract class SOAPElement extends NSAwareElement implements AxiomSOAPElement {
 

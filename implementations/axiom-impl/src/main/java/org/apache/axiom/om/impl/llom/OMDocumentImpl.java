@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomDocument;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements AxiomDocument {

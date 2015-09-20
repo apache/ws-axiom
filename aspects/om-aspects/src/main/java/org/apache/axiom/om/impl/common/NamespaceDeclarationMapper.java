@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 
 public class NamespaceDeclarationMapper implements Mapper<AxiomNamespaceDeclaration,OMNamespace> {
     public static final NamespaceDeclarationMapper INSTANCE = new NamespaceDeclarationMapper();

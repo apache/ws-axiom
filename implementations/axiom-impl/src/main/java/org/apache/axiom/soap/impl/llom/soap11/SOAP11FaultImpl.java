@@ -20,9 +20,8 @@
 package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP11Fault;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11Fault;
 import org.apache.axiom.soap.impl.llom.SOAPFaultImpl;
 
 public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {

@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.intf.AxiomDocType;
 
 public aspect AxiomDocTypeSupport {
     public final int AxiomDocType.getType() {

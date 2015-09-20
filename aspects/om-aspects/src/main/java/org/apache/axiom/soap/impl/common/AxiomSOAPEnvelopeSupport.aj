@@ -19,6 +19,7 @@
 package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 
 public aspect AxiomSOAPEnvelopeSupport {
     /**

@@ -28,8 +28,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultSubCode;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultSubCode;
 
 public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12FaultSubCode {
     private SOAPFaultValue value;

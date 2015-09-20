@@ -18,7 +18,7 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.impl.common.AxiomDocType;
+import org.apache.axiom.om.impl.intf.AxiomDocType;
 
 public final class FOMDocType extends FOMLeafNode implements AxiomDocType {
 

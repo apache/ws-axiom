@@ -19,8 +19,7 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaTextValue;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.AxiomText;
+import org.apache.axiom.om.impl.intf.AxiomText;
 
 public abstract class FOMTextValue extends FOMLeafNode implements AbderaTextValue, AxiomText {
 

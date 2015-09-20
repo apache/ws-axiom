@@ -20,9 +20,8 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12FaultRole;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultRole;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
 
 public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP12FaultRole {

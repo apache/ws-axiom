@@ -19,12 +19,11 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -41,9 +40,9 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
-
-import javax.xml.namespace.QName;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /** Class SOAPEnvelopeImpl */
 public abstract class SOAPEnvelopeImpl extends SOAPElement

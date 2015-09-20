@@ -26,6 +26,11 @@ import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11Fault;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultDetail;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultRole;
 
 public aspect AxiomSOAP11FaultSupport {
     private static final Class<?>[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,

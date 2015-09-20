@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomChildNode;
+import org.apache.axiom.om.impl.intf.AxiomChildNode;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl extends OMSerializableImpl implements AxiomChildNode {

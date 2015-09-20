@@ -26,6 +26,12 @@ import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Fault;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultDetail;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultRole;
 
 public aspect AxiomSOAP12FaultSupport {
     private static final Class<?>[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,

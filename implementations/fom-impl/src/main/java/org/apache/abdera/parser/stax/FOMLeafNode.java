@@ -19,7 +19,7 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaChildNode;
-import org.apache.axiom.om.impl.common.AxiomLeafNode;
+import org.apache.axiom.om.impl.intf.AxiomLeafNode;
 
 public abstract class FOMLeafNode extends FOMChildNode implements AxiomLeafNode, AbderaChildNode {
 

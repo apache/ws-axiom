@@ -20,7 +20,7 @@ package org.apache.abdera.parser.stax;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
 public final class FOMMetaFactory extends AbstractOMMetaFactory {
     public static final FOMMetaFactory INSTANCE = new FOMMetaFactory();

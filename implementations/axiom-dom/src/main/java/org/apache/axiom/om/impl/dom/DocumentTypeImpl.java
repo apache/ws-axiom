@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMDocumentType;
-import org.apache.axiom.om.impl.common.AxiomDocType;
+import org.apache.axiom.om.impl.intf.AxiomDocType;
 
 public class DocumentTypeImpl extends LeafNode implements DOMDocumentType, AxiomDocType {
 

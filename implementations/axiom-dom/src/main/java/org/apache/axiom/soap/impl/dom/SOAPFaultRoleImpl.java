@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.soap.impl.common.AxiomSOAPFaultRole;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultRole;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements AxiomSOAPFaultRole {
 

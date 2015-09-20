@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMCDATASection;
-import org.apache.axiom.om.impl.common.AxiomCDATASection;
+import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 
 public class CDATASectionImpl extends TextNodeImpl implements DOMCDATASection, AxiomCDATASection {
 

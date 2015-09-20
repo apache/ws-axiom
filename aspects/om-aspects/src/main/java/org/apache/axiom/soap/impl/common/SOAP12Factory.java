@@ -32,6 +32,11 @@ import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultSubCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultText;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public class SOAP12Factory extends SOAPFactoryImpl implements SOAP12FactoryEx {
     public SOAP12Factory(OMMetaFactory metaFactory, NodeFactory nodeFactory) {

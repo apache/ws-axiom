@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.axiom.fom.AbderaCharacterDataNode;
-import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 
 public final class FOMCharacterDataNode extends FOMTextValue implements AbderaCharacterDataNode, AxiomCharacterDataNode {
     public InputStream getInputStream() {

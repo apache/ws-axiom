@@ -19,6 +19,7 @@
 package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Header;
 
 public aspect AxiomSOAP12HeaderSupport {
     public final Class<? extends CoreNode> AxiomSOAP12Header.coreGetNodeClass() {

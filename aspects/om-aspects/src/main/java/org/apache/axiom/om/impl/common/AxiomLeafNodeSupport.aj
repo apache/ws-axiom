@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.intf.AxiomLeafNode;
 
 public aspect AxiomLeafNodeSupport {
     public final void AxiomLeafNode.serialize(OutputStream output) throws XMLStreamException {

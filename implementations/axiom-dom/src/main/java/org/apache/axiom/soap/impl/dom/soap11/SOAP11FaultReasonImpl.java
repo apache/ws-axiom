@@ -22,8 +22,8 @@ package org.apache.axiom.soap.impl.dom.soap11;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultReason;
 import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP11FaultReason {
     public void addSOAPText(SOAPFaultText soapFaultText)

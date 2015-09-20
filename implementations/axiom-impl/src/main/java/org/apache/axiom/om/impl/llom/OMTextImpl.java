@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomText;
+import org.apache.axiom.om.impl.intf.AxiomText;
 
 public abstract class OMTextImpl extends OMLeafNode implements AxiomText {
 

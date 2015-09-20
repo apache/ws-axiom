@@ -30,11 +30,11 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.AxiomSourcedElement;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

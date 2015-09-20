@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.common;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 public aspect AxiomSOAPBodySupport {
     public final SOAPFault AxiomSOAPBody.addFault(Exception e) throws OMException {

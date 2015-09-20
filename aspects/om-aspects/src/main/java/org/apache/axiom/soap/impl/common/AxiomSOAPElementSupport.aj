@@ -19,6 +19,7 @@
 package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
 public aspect AxiomSOAPElementSupport {
     public final OMFactory AxiomSOAPElement.getOMFactory() {

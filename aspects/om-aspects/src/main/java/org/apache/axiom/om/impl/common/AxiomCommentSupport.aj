@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.intf.AxiomComment;
 
 public aspect AxiomCommentSupport {
     public final int AxiomComment.getType() {

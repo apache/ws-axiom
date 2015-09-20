@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
 public class OMProcessingInstructionImpl extends OMLeafNode implements AxiomProcessingInstruction {
 

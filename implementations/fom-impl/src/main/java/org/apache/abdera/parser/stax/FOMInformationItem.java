@@ -23,7 +23,7 @@ import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.impl.common.AxiomInformationItem;
+import org.apache.axiom.om.impl.intf.AxiomInformationItem;
 
 abstract class FOMInformationItem implements AxiomInformationItem, AbderaNode {
     public final NodeFactory coreGetNodeFactory() {

@@ -30,6 +30,9 @@ import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.impl.intf.AxiomAttribute;
+import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public final class Policies {
     private Policies() {}

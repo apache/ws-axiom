@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.soap.impl.common.AxiomSOAP11Body;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11Body;
 import org.apache.axiom.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP11BodyImpl extends SOAPBodyImpl implements AxiomSOAP11Body {

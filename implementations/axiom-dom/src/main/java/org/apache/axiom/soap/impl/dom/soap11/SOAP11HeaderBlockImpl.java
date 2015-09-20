@@ -21,8 +21,8 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP11HeaderBlock;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11HeaderBlock;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl implements AxiomSOAP11HeaderBlock {
     public void checkParent(OMElement parent) throws SOAPProcessingException {

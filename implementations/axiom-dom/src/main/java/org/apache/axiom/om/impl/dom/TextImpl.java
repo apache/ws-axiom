@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMText;
-import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 
 public class TextImpl extends TextNodeImpl implements DOMText, AxiomCharacterDataNode {
 

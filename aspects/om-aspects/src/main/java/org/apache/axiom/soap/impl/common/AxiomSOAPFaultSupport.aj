@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFault;
 
 public aspect AxiomSOAPFaultSupport {
     public final void AxiomSOAPFault.setException(Exception e) {

@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
+import org.apache.axiom.om.impl.intf.AxiomInformationItem;
 
 public aspect AxiomInformationItemSupport {
     public OMFactory AxiomInformationItem.getOMFactory() {

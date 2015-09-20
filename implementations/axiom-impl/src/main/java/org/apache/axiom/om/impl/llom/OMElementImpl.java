@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl implements AxiomElement {

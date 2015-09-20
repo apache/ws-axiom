@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomLeafNode;
+import org.apache.axiom.om.impl.intf.AxiomLeafNode;
 
 public abstract class OMLeafNode extends OMNodeImpl implements AxiomLeafNode {
 

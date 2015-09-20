@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMComment;
-import org.apache.axiom.om.impl.common.AxiomComment;
+import org.apache.axiom.om.impl.intf.AxiomComment;
 
 public class CommentImpl extends LeafNode implements DOMComment, AxiomComment {
 

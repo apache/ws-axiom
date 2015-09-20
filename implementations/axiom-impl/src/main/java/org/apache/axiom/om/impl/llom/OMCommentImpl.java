@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomComment;
+import org.apache.axiom.om.impl.intf.AxiomComment;
 
 public class OMCommentImpl extends OMLeafNode implements AxiomComment {
 

@@ -18,7 +18,7 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.impl.common.AxiomEntityReference;
+import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 
 public final class FOMEntityReference extends FOMLeafNode implements AxiomEntityReference {
 

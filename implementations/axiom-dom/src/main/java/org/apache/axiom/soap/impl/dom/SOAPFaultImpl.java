@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.soap.impl.common.AxiomSOAPFault;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFault;
 
 public abstract class SOAPFaultImpl extends SOAPElement implements AxiomSOAPFault {
 

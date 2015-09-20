@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -31,7 +30,7 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.soap.impl.common.AxiomSOAPBody;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement

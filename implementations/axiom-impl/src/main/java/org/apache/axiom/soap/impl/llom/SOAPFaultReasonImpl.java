@@ -19,13 +19,13 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.impl.common.AxiomSOAPFaultReason;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPFaultText;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultReason;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements AxiomSOAPFaultReason {
     public List getAllSoapTexts() {

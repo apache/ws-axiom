@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAPBody;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
         OMConstants {

@@ -26,6 +26,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
+import org.apache.axiom.om.impl.intf.AxiomSerializable;
 
 public aspect AxiomSerializableSupport {
     public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {

@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.impl.common.AxiomSourcedElement;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public class OMSourcedElementImpl extends NSAwareElement implements AxiomSourcedElement {
 

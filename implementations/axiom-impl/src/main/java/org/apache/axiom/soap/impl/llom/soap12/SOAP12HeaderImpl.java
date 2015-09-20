@@ -19,15 +19,14 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12Header;
-import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
+import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import java.util.Iterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Header;
+import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP12Header {
     public Iterator extractHeaderBlocks(String role) {

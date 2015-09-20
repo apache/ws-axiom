@@ -18,7 +18,7 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.axiom.om.impl.common.AxiomSerializable;
+import org.apache.axiom.om.impl.intf.AxiomSerializable;
 
 abstract class FOMSerializable extends FOMInformationItem implements AxiomSerializable {
 

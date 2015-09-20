@@ -19,9 +19,14 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -29,20 +34,14 @@ import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAPHeader;
 import org.apache.axiom.soap.impl.common.Checker;
 import org.apache.axiom.soap.impl.common.HeaderIterator;
 import org.apache.axiom.soap.impl.common.MURoleChecker;
 import org.apache.axiom.soap.impl.common.RoleChecker;
 import org.apache.axiom.soap.impl.common.RolePlayerChecker;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.namespace.QName;
 
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHeader {

@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.intf.AxiomText;
+import org.apache.axiom.om.impl.intf.TextContent;
 
 public aspect AxiomTextSupport {
     private TextContent AxiomText.getTextContent(boolean force) {

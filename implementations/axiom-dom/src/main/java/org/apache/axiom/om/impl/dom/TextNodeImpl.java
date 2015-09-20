@@ -22,7 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
 
 import org.apache.axiom.dom.DOMTextNode;
-import org.apache.axiom.om.impl.common.AxiomText;
+import org.apache.axiom.om.impl.intf.AxiomText;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 

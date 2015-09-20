@@ -21,8 +21,8 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultRole;
 import org.apache.axiom.soap.impl.dom.SOAPFaultRoleImpl;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultRole;
 
 public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl implements AxiomSOAP11FaultRole {
     public void checkParent(OMElement parent) throws SOAPProcessingException {

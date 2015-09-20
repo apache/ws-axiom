@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomDocType;
+import org.apache.axiom.om.impl.intf.AxiomDocType;
 
 public class OMDocTypeImpl extends OMLeafNode implements AxiomDocType {
 

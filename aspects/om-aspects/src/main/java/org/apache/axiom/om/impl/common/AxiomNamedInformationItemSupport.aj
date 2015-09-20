@@ -23,6 +23,9 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.core.CoreNamedNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomNamedInformationItem;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public aspect AxiomNamedInformationItemSupport {
     /**

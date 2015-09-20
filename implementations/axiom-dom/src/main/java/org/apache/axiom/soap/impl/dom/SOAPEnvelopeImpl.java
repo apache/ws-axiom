@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -38,11 +40,9 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.soap.impl.common.AxiomSOAPEnvelope;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
-
-import javax.xml.namespace.QName;
 
 public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         OMConstants {

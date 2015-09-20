@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.om.impl.intf.AxiomCoreParentNode;
+
 public aspect AxiomCoreParentNodeSupport {
     public final boolean AxiomCoreParentNode.isComplete() {
         int state = getState();

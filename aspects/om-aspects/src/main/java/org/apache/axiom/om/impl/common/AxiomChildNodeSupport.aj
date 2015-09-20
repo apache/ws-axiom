@@ -22,6 +22,8 @@ import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.intf.AxiomChildNode;
+import org.apache.axiom.om.impl.intf.AxiomContainer;
 
 public aspect AxiomChildNodeSupport {
     public final OMContainer AxiomChildNode.getParent() {

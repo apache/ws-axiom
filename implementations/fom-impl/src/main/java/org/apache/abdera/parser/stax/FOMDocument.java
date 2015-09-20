@@ -47,7 +47,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.impl.common.AxiomDocument;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 
 @SuppressWarnings("unchecked")
 public class FOMDocument<T extends Element> extends FOMSerializable implements AbderaDocument<T>, AxiomDocument {

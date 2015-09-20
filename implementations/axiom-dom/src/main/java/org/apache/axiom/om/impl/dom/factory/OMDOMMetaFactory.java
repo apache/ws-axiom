@@ -26,9 +26,9 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.common.SOAP11Factory;
 import org.apache.axiom.soap.impl.common.SOAP12Factory;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.w3c.dom.DOMImplementation;
 
 /**

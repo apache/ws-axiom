@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.soap.impl.common.AxiomSOAP12Envelope;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Envelope;
 
 public class SOAP12EnvelopeImpl extends SOAPEnvelopeImpl implements AxiomSOAP12Envelope {
 

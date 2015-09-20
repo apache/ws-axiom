@@ -19,7 +19,7 @@ package org.apache.abdera.parser.stax;
 
 import org.apache.abdera.model.Comment;
 import org.apache.axiom.fom.AbderaComment;
-import org.apache.axiom.om.impl.common.AxiomComment;
+import org.apache.axiom.om.impl.intf.AxiomComment;
 
 public final class FOMComment extends FOMLeafNode implements AbderaComment, AxiomComment {
     public String getText() {

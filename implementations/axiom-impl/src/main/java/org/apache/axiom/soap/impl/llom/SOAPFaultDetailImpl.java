@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.soap.impl.common.AxiomSOAPFaultDetail;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultDetail;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements AxiomSOAPFaultDetail {
 

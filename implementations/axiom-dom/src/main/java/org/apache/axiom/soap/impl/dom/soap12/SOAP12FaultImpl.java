@@ -21,8 +21,8 @@ package org.apache.axiom.soap.impl.dom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP12Fault;
 import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Fault;
 
 public class SOAP12FaultImpl extends SOAPFaultImpl implements AxiomSOAP12Fault {
     public void checkParent(OMElement parent) throws SOAPProcessingException {

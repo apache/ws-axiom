@@ -23,7 +23,7 @@ import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMNSAwareElement;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
 public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, AxiomElement,

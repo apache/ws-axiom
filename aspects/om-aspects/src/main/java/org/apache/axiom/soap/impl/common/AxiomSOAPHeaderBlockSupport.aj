@@ -28,6 +28,8 @@ import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public aspect AxiomSOAPHeaderBlockSupport {
     private boolean AxiomSOAPHeaderBlock.processed;

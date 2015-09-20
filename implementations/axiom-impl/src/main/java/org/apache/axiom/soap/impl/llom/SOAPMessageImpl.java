@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAPMessage;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
 public class SOAPMessageImpl extends OMDocumentImpl implements AxiomSOAPMessage {
     public SOAPEnvelope getSOAPEnvelope() throws SOAPProcessingException {

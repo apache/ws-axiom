@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.common;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultDetail;
 
 public aspect AxiomSOAPFaultDetailSupport {
     public final void AxiomSOAPFaultDetail.addDetailEntry(OMElement detailElement) {

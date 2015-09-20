@@ -22,11 +22,12 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.AxiomElement;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
 public aspect AxiomSOAPMessageSupport {
     private SOAPFactory AxiomSOAPMessage.factory;

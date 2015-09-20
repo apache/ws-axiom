@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.soap.impl.common.AxiomSOAP12Envelope;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Envelope;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 
 public class SOAP12EnvelopeImpl extends SOAPEnvelopeImpl implements AxiomSOAP12Envelope {

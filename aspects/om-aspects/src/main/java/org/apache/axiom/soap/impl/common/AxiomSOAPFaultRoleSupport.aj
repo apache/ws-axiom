@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultRole;
+
 public aspect AxiomSOAPFaultRoleSupport {
     public final void AxiomSOAPFaultRole.setRoleValue(String uri) {
         setText(uri);

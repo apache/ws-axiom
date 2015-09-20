@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 
 public aspect AxiomCharacterDataNodeSupport {
     public final int AxiomCharacterDataNode.getType() {

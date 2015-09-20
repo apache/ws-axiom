@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12Element;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
+
 public aspect AxiomSOAP12ElementSupport {
     public final SOAPHelper AxiomSOAP12Element.getSOAPHelper() {
         return SOAPHelper.SOAP12;

@@ -19,14 +19,14 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.AxiomSOAP11FaultCode;
 import org.apache.axiom.soap.impl.dom.SOAPFaultCodeImpl;
-
-import javax.xml.namespace.QName;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
 
 public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP11FaultCode {
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {

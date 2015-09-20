@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.intf.AxiomCoreLeafNode;
 
 public aspect AxiomCoreLeafNodeSupport {
     public final OMXMLParserWrapper AxiomCoreLeafNode.getBuilder() {

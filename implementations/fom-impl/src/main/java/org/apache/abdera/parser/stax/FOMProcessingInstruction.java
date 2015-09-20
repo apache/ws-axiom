@@ -18,7 +18,7 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.axiom.fom.AbderaProcessingInstruction;
-import org.apache.axiom.om.impl.common.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
 public final class FOMProcessingInstruction extends FOMLeafNode implements AbderaProcessingInstruction, AxiomProcessingInstruction {
     public String toString() {

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.common.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 
 public class CharacterDataImpl extends OMTextImpl implements AxiomCharacterDataNode {
 

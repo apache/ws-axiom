@@ -20,6 +20,8 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.intf.AxiomAttribute;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
 public aspect AxiomAttributeSupport {
     public final OMElement AxiomAttribute.getOwner() {
