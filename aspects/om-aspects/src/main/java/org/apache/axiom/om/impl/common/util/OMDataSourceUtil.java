@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.util;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;

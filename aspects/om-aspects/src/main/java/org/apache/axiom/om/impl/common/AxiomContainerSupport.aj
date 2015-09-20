@@ -30,6 +30,8 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -43,13 +45,16 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
@@ -339,6 +344,76 @@ public aspect AxiomContainerSupport {
             writer.flush();
         } finally {
             writer.close();
+        }
+    }
+
+    final void AxiomContainer.serializeChildren(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        if (getState() == AxiomContainer.DISCARDED) {
+            StAXBuilder builder = (StAXBuilder)getBuilder();
+            if (builder != null) {
+                builder.debugDiscarded(this);
+            }
+            throw new NodeUnavailableException();
+        }
+        if (cache) {
+            AxiomChildNode child = (AxiomChildNode)getFirstOMChild();
+            while (child != null) {
+                child.internalSerialize(serializer, format, true);
+                child = (AxiomChildNode)child.getNextOMSibling();
+            }
+        } else {
+            // First, recursively serialize all child nodes that have already been created
+            AxiomChildNode child = (AxiomChildNode)coreGetFirstChildIfAvailable();
+            while (child != null) {
+                child.internalSerialize(serializer, format, cache);
+                child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
+            }
+            // Next, if the container is incomplete, disable caching (temporarily)
+            // and serialize the nodes that have not been built yet by copying the
+            // events from the underlying XMLStreamReader.
+            if (!isComplete() && getBuilder() != null) {
+                StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+                XMLStreamReader reader = builder.disableCaching();
+                DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
+                boolean first = true;
+                int depth = 0;
+                loop: while (true) {
+                    int event;
+                    if (first) {
+                        event = reader.getEventType();
+                        first = false;
+                    } else {
+                        try {
+                            event = reader.next();
+                        } catch (XMLStreamException ex) {
+                            throw new DeferredParsingException(ex);
+                        }
+                    }
+                    switch (event) {
+                        case XMLStreamReader.START_ELEMENT:
+                            depth++;
+                            break;
+                        case XMLStreamReader.END_ELEMENT:
+                            if (depth == 0) {
+                                break loop;
+                            } else {
+                                depth--;
+                            }
+                            break;
+                        case XMLStreamReader.END_DOCUMENT:
+                            if (depth != 0) {
+                                // If we get here, then we have seen a START_ELEMENT event without
+                                // a matching END_ELEMENT
+                                throw new IllegalStateException();
+                            }
+                            break loop;
+                    }
+                    // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
+                    // the container. This is the responsibility of the caller.
+                    serializer.copyEvent(reader, dataHandlerReader);
+                }
+                builder.reenableCaching(this);
+            }
         }
     }
 

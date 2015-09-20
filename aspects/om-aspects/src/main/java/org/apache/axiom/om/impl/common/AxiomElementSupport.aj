@@ -509,7 +509,7 @@ public aspect AxiomElementSupport {
     public final void AxiomElement.defaultInternalSerialize(Serializer serializer, OMOutputFormat format,
             boolean cache) throws OutputException {
         serializer.serializeStartpart(this);
-        serializer.serializeChildren(this, format, cache);
+        serializeChildren(serializer, format, cache);
         serializer.writeEndElement();
     }
 

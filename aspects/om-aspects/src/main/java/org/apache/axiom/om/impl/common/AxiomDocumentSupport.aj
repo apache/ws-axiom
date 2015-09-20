@@ -72,7 +72,7 @@ public aspect AxiomDocumentSupport {
                 serializer.writeStartDocument(encoding, version);
             }
         }
-        serializer.serializeChildren(this, format, cache);
+        serializeChildren(serializer, format, cache);
         serializer.writeEndDocument();
     }
 

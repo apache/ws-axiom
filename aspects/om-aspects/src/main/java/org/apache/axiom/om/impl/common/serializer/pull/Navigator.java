@@ -63,7 +63,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.OMDataSourceUtil;
+import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.commons.logging.Log;
