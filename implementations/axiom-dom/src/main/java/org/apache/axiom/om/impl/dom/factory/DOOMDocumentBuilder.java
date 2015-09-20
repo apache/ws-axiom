@@ -17,14 +17,12 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.dom.jaxp;
+package org.apache.axiom.om.impl.dom.factory;
 
 import org.apache.axiom.dom.DOMDocument;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -41,7 +39,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class DOOMDocumentBuilder extends DocumentBuilder {
+final class DOOMDocumentBuilder extends DocumentBuilder {
     private final OMFactory factory;
     private final StAXParserConfiguration parserConfiguration;
     private final Schema schema;
@@ -98,11 +96,10 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
     }
 
     public Document parse(InputSource inputSource) throws SAXException, IOException {
-        OMXMLParserWrapper builder = factory.getMetaFactory().createOMBuilder(factory,
-                parserConfiguration, inputSource);
-        DocumentImpl doc = (DocumentImpl) builder.getDocument();
-        doc.close(true);
-        return doc;
+        OMDocument document = factory.getMetaFactory().createOMBuilder(factory,
+                parserConfiguration, inputSource).getDocument();
+        document.close(true);
+        return (Document)document;
     }
 
     public Document parse(InputStream is) throws SAXException, IOException {

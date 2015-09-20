@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom.jaxp;
+package org.apache.axiom.om.impl.dom.factory;
 
 import javax.xml.stream.XMLInputFactory;
 
