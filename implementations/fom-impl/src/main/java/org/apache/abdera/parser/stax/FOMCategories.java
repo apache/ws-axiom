@@ -25,7 +25,6 @@ import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaCategories;
-import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
@@ -103,19 +102,8 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
         return this;
     }
 
-    public IRI getHref() {
-        return IRIUtil.getUriValue(getAttributeValue(HREF));
-    }
-
-    public IRI getResolvedHref() {
-        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
-    }
-
     public Categories setHref(String href) {
-        if (href != null)
-            setAttributeValue(HREF, (new IRI(href)).toString());
-        else
-            removeAttribute(HREF);
+        internalSetHref(href);
         return this;
     }
 

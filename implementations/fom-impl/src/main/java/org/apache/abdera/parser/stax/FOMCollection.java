@@ -23,7 +23,6 @@ import java.util.List;
 
 import javax.activation.MimeType;
 
-import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Collection;
@@ -31,7 +30,6 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.fom.AbderaCollection;
-import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 
 @SuppressWarnings("deprecation")
@@ -68,19 +66,8 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
         return getFirstChild(TITLE);
     }
 
-    public IRI getHref() {
-        return IRIUtil.getUriValue(getAttributeValue(HREF));
-    }
-
-    public IRI getResolvedHref() {
-        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
-    }
-
     public Collection setHref(String href) {
-        if (href != null)
-            setAttributeValue(HREF, (new IRI(href).toString()));
-        else
-            removeAttribute(HREF);
+        internalSetHref(href);
         return this;
     }
 

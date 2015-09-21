@@ -18,8 +18,24 @@
  */
 package org.apache.axiom.fom;
 
-import org.apache.abdera.model.Link;
+import static org.apache.abdera.util.Constants.HREF;
 
-public interface AbderaLink extends Link, AbderaExtensibleElement, HrefAttributeSupport {
+import org.apache.abdera.i18n.iri.IRI;
 
+public aspect HrefAttributeSupportMixin {
+    public final IRI HrefAttributeSupport.getHref() {
+        return IRIUtil.getUriValue(getAttributeValue(HREF));
+    }
+
+    public final IRI HrefAttributeSupport.getResolvedHref() {
+        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
+    }
+
+    public final void HrefAttributeSupport.internalSetHref(String href) {
+        if (href != null) {
+            setAttributeValue(HREF, (new IRI(href)).toString());
+        } else {
+            removeAttribute(HREF);
+        }
+    }
 }

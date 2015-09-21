@@ -19,26 +19,13 @@ package org.apache.abdera.parser.stax;
 
 import javax.activation.MimeType;
 
-import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Link;
 import org.apache.axiom.fom.AbderaLink;
-import org.apache.axiom.fom.IRIUtil;
 
 public class FOMLink extends FOMExtensibleElement implements AbderaLink {
-    public IRI getHref() {
-        return IRIUtil.getUriValue(getAttributeValue(HREF));
-    }
-
-    public IRI getResolvedHref() {
-        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
-    }
-
     public Link setHref(String href) {
-        if (href != null)
-            setAttributeValue(HREF, (new IRI(href)).toString());
-        else
-            removeAttribute(HREF);
+        internalSetHref(href);
         return this;
     }
 

@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.fom;
 
-import org.apache.abdera.model.Link;
-
-public interface AbderaLink extends Link, AbderaExtensibleElement, HrefAttributeSupport {
+public interface HrefAttributeSupport extends AbderaElement {
 
 }

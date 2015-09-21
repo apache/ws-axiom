@@ -20,6 +20,6 @@ package org.apache.axiom.fom;
 
 import org.apache.abdera.model.Collection;
 
-public interface AbderaCollection extends Collection, AbderaExtensibleElement {
+public interface AbderaCollection extends Collection, AbderaExtensibleElement, HrefAttributeSupport {
 
 }
