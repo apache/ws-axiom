@@ -18,8 +18,13 @@
  */
 package org.apache.axiom.fom;
 
-public aspect AbderaElementSupport {
-    public final void AbderaElement._removeAllChildren() {
-        coreRemoveChildren(Policies.DETACH_POLICY);
+import org.apache.abdera.model.Base;
+import org.apache.abdera.model.Element;
+
+public aspect AbderaChildNodeMixin {
+    @SuppressWarnings("unchecked")
+    public final <T extends Base> T AbderaChildNode.getParentElement() {
+        T parent = (T)coreGetParent();
+        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 }

@@ -19,7 +19,7 @@ package org.apache.axiom.fom;
 
 import org.apache.abdera.model.Attribute;
 
-public aspect AbderaAttributeSupport {
+public aspect AbderaAttributeMixin {
     public final String AbderaAttribute.getText() {
         return coreGetCharacterData().toString();
     }

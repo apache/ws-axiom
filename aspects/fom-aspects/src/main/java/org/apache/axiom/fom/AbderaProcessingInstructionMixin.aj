@@ -18,33 +18,16 @@
  */
 package org.apache.axiom.fom;
 
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Element;
-import org.apache.axiom.core.CoreNode;
+import org.apache.abdera.model.ProcessingInstruction;
 
-public aspect AbderaNodeSupport {
-    private AbderaFactory AbderaNode.factory;
-    
-    public final void AbderaNode.updateFiliation(CoreNode creator) {
-        setFactory(((AbderaNode)creator).factory);
-    }
-    
-    public final void AbderaNode.setFactory(AbderaFactory factory) {
-        if (this.factory != null) {
-            throw new IllegalStateException();
-        }
-        this.factory = factory;
-    }
-    
-    public final Factory AbderaNode.getFactory() {
-        return factory;
+public aspect AbderaProcessingInstructionMixin {
+    public final String AbderaProcessingInstruction.getText() {
+        return coreGetCharacterData().toString();
     }
 
-    public final Element AbderaNode.getWrapped(Element internal) {
-        if (internal == null) {
-            return null;
-        } else {
-            return factory.getElementWrapper(internal);
-        }
+    @SuppressWarnings("unchecked")
+    public final <T extends ProcessingInstruction> T AbderaProcessingInstruction.setText(String text) {
+        coreSetCharacterData(text, Policies.DETACH_POLICY);
+        return (T)this;
     }
 }
