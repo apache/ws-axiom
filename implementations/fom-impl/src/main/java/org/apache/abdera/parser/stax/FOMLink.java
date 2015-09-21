@@ -19,7 +19,6 @@ package org.apache.abdera.parser.stax;
 
 import javax.activation.MimeType;
 
-import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Link;
 import org.apache.axiom.fom.AbderaLink;
 
@@ -45,10 +44,6 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
         } catch (javax.activation.MimeTypeParseException e) {
             throw new org.apache.abdera.util.MimeTypeParseException(e);
         }
-    }
-
-    public void setMimeType(MimeType type) {
-        setAttributeValue(TYPE, (type != null) ? type.toString() : null);
     }
 
     public Link setMimeType(String type) {
@@ -99,16 +94,4 @@ public class FOMLink extends FOMExtensibleElement implements AbderaLink {
             removeAttribute(LENGTH);
         return this;
     }
-
-    public String getValue() {
-        return getText();
-    }
-
-    public void setValue(String value) {
-        if (value != null)
-            ((Element)this).setText(value);
-        else
-            _removeAllChildren();
-    }
-
 }
