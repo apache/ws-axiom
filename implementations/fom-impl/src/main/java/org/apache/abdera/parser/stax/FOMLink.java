@@ -23,14 +23,15 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Link;
 import org.apache.axiom.fom.AbderaLink;
+import org.apache.axiom.fom.IRIUtil;
 
 public class FOMLink extends FOMExtensibleElement implements AbderaLink {
     public IRI getHref() {
-        return _getUriValue(getAttributeValue(HREF));
+        return IRIUtil.getUriValue(getAttributeValue(HREF));
     }
 
     public IRI getResolvedHref() {
-        return _resolve(getResolvedBaseUri(), getHref());
+        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
     }
 
     public Link setHref(String href) {

@@ -58,6 +58,7 @@ import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.fom.AbderaElement;
+import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.fom.Policies;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -155,7 +156,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public IRI getBaseUri() {
-        IRI uri = _getUriValue(getAttributeValue(BASE));
+        IRI uri = IRIUtil.getUriValue(getAttributeValue(BASE));
         if (IRIHelper.isJavascriptUri(uri) || IRIHelper.isMailtoUri(uri)) {
             uri = null;
         }
@@ -172,7 +173,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
 
     public IRI getResolvedBaseUri() {
         IRI baseUri = null;
-        IRI uri = _getUriValue(getAttributeValue(BASE));
+        IRI uri = IRIUtil.getUriValue(getAttributeValue(BASE));
         if (IRIHelper.isJavascriptUri(uri) || IRIHelper.isMailtoUri(uri)) {
             uri = null;
         }
@@ -190,7 +191,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public <T extends Element> T setBaseUri(IRI base) {
-        setAttributeValue(BASE, _getStringValue(base));
+        setAttributeValue(BASE, IRIUtil.getStringValue(base));
         return (T)this;
     }
 
@@ -229,18 +230,6 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         } else if (e != null && element == null) {
             e.discard();
         }
-    }
-
-    protected IRI _getUriValue(String v) {
-        return (v != null) ? new IRI(v) : null;
-    }
-
-    protected String _getStringValue(IRI uri) {
-        return (uri != null) ? uri.toString() : null;
-    }
-
-    protected IRI _resolve(IRI base, IRI value) {
-        return base != null ? base.resolve(value) : value;
     }
 
     public void writeTo(OutputStream out, WriterOptions options) throws IOException {

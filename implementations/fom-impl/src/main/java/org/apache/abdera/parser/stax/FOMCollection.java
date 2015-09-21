@@ -31,6 +31,7 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.fom.AbderaCollection;
+import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 
 @SuppressWarnings("deprecation")
@@ -68,11 +69,11 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
     }
 
     public IRI getHref() {
-        return _getUriValue(getAttributeValue(HREF));
+        return IRIUtil.getUriValue(getAttributeValue(HREF));
     }
 
     public IRI getResolvedHref() {
-        return _resolve(getResolvedBaseUri(), getHref());
+        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
     }
 
     public Collection setHref(String href) {

@@ -23,6 +23,7 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaText;
+import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
@@ -155,7 +156,7 @@ public class FOMText extends FOMElement implements AbderaText {
                     if (getAttributeValue(BASE) != null)
                         return super.getBaseUri().resolve(el.getAttributeValue(BASE));
                     else
-                        return _getUriValue(el.getAttributeValue(BASE));
+                        return IRIUtil.getUriValue(el.getAttributeValue(BASE));
                 }
             }
         }

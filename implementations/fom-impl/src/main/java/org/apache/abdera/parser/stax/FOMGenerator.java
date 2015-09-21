@@ -20,15 +20,15 @@ package org.apache.abdera.parser.stax;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Generator;
 import org.apache.axiom.fom.AbderaGenerator;
+import org.apache.axiom.fom.IRIUtil;
 
 public class FOMGenerator extends FOMElement implements AbderaGenerator {
     public IRI getUri() {
-        String value = getAttributeValue(AURI);
-        return (value != null) ? new IRI(value) : null;
+        return IRIUtil.getUriValue(getAttributeValue(AURI));
     }
 
     public IRI getResolvedUri() {
-        return _resolve(getResolvedBaseUri(), getUri());
+        return IRIUtil.resolve(getResolvedBaseUri(), getUri());
     }
 
     public Generator setUri(String uri) {

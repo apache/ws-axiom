@@ -21,10 +21,11 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.axiom.fom.AbderaIRIElement;
+import org.apache.axiom.fom.IRIUtil;
 
 public class FOMIRI extends FOMElement implements AbderaIRIElement {
     public IRI getValue() {
-        return _getUriValue(getText());
+        return IRIUtil.getUriValue(getText());
     }
 
     public IRIElement setValue(String iri) {
@@ -36,7 +37,7 @@ public class FOMIRI extends FOMElement implements AbderaIRIElement {
     }
 
     public IRI getResolvedValue() {
-        return _resolve(getResolvedBaseUri(), getValue());
+        return IRIUtil.resolve(getResolvedBaseUri(), getValue());
     }
 
     public IRIElement setNormalizedValue(String uri) {
