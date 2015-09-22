@@ -17,81 +17,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import javax.activation.MimeType;
-
-import org.apache.abdera.model.Link;
 import org.apache.axiom.fom.AbderaLink;
 
 public class FOMLink extends FOMExtensibleElement implements AbderaLink {
-    public Link setHref(String href) {
-        internalSetHref(href);
-        return this;
-    }
 
-    public String getRel() {
-        return getAttributeValue(REL);
-    }
-
-    public Link setRel(String rel) {
-        setAttributeValue(REL, rel);
-        return this;
-    }
-
-    public MimeType getMimeType() {
-        try {
-            String type = getAttributeValue(TYPE);
-            return (type != null) ? new MimeType(type) : null;
-        } catch (javax.activation.MimeTypeParseException e) {
-            throw new org.apache.abdera.util.MimeTypeParseException(e);
-        }
-    }
-
-    public Link setMimeType(String type) {
-        try {
-            if (type != null)
-                setAttributeValue(TYPE, (new MimeType(type)).toString());
-            else
-                removeAttribute(TYPE);
-        } catch (javax.activation.MimeTypeParseException e) {
-            throw new org.apache.abdera.util.MimeTypeParseException(e);
-        }
-        return this;
-    }
-
-    public String getHrefLang() {
-        return getAttributeValue(HREFLANG);
-    }
-
-    public Link setHrefLang(String lang) {
-        if (lang != null)
-            setAttributeValue(HREFLANG, lang);
-        else
-            removeAttribute(HREFLANG);
-        return this;
-    }
-
-    public String getTitle() {
-        return getAttributeValue(ATITLE);
-    }
-
-    public Link setTitle(String title) {
-        if (title != null)
-            setAttributeValue(ATITLE, title);
-        else
-            removeAttribute(ATITLE);
-        return this;
-    }
-
-    public long getLength() {
-        String l = getAttributeValue(LENGTH);
-        return (l != null) ? Long.valueOf(l) : -1;
-    }
-
-    public Link setLength(long length) {
-        if (length > -1)
-            setAttributeValue(LENGTH, (length >= 0) ? String.valueOf(length) : "0");
-        else
-            removeAttribute(LENGTH);
-        return this;
-    }
 }
