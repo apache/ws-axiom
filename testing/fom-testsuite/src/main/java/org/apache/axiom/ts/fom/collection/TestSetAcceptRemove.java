@@ -16,24 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.fom;
+package org.apache.axiom.ts.fom.collection;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.abdera.Abdera;
-import org.apache.axiom.ts.fom.collection.TestSetAcceptRemove;
-import org.apache.axiom.ts.fom.control.TestSetUnsetDraft;
+import org.apache.abdera.model.Collection;
+import org.apache.axiom.ts.fom.AbderaTestCase;
 
-public class AbderaTest extends TestCase {
-    public static TestSuite suite() {
-        FOMTestSuiteBuilder builder = new FOMTestSuiteBuilder(new Abdera());
-        
-        // Doesn't work because _setElementValue creates an OMElementImpl instead of a FOMElement
-        builder.exclude(TestSetUnsetDraft.class);
-        // Fails with ConcurrentModificationException
-        builder.exclude(TestSetAcceptRemove.class);
-        
-        return builder.build();
+/**
+ * Tests that {@link Collection#setAccept(String...)} with an empty array removes any existing
+ * <code>accept</code> element.
+ */
+public class TestSetAcceptRemove extends AbderaTestCase {
+    public TestSetAcceptRemove(Abdera abdera) {
+        super(abdera);
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
+        Collection collection = abdera.getFactory().newCollection();
+        collection.setAccept("image/png", "image/jpeg");
+        collection.setAccept();
+        assertThat(collection.getFirstChild()).isNull();
     }
 }

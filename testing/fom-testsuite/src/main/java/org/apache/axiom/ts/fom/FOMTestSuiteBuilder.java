@@ -37,5 +37,9 @@ public class FOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameNew(abdera, new QName("urn:test", "attr")));
         addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameNew(abdera, new QName("urn:test", "attr", "p")));
         addTest(new org.apache.axiom.ts.fom.attribute.TestSetAttributeValueQNameRemove(abdera));
+        addTest(new org.apache.axiom.ts.fom.collection.TestSetAccept(abdera));
+        addTest(new org.apache.axiom.ts.fom.collection.TestSetAcceptRemove(abdera));
+        addTest(new org.apache.axiom.ts.fom.control.TestIsDraft(abdera));
+        addTest(new org.apache.axiom.ts.fom.control.TestSetUnsetDraft(abdera));
     }
 }

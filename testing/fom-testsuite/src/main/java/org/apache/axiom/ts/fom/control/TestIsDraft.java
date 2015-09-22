@@ -16,24 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.fom;
+package org.apache.axiom.ts.fom.control;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.abdera.Abdera;
-import org.apache.axiom.ts.fom.collection.TestSetAcceptRemove;
-import org.apache.axiom.ts.fom.control.TestSetUnsetDraft;
+import org.apache.abdera.factory.Factory;
+import org.apache.abdera.model.Control;
+import org.apache.abdera.util.Constants;
+import org.apache.axiom.ts.fom.AbderaTestCase;
 
-public class AbderaTest extends TestCase {
-    public static TestSuite suite() {
-        FOMTestSuiteBuilder builder = new FOMTestSuiteBuilder(new Abdera());
-        
-        // Doesn't work because _setElementValue creates an OMElementImpl instead of a FOMElement
-        builder.exclude(TestSetUnsetDraft.class);
-        // Fails with ConcurrentModificationException
-        builder.exclude(TestSetAcceptRemove.class);
-        
-        return builder.build();
+public class TestIsDraft extends AbderaTestCase {
+    public TestIsDraft(Abdera abdera) {
+        super(abdera);
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
+        Factory factory = abdera.getFactory();
+        Control control = factory.newControl();
+        factory.newElement(Constants.DRAFT, control).setText("yes");
+        assertThat(control.isDraft()).isTrue();
     }
 }

@@ -341,11 +341,6 @@ public class FOMTest {
         assertEquals("a", contributor.getName());
         assertEquals("b", contributor.getEmail());
         assertEquals("c", contributor.getUri().toString());
-        Control control = factory.newControl();
-        assertNotNull(control);
-        control = factory.newControl();
-        control.setDraft(true);
-        assertTrue(control.isDraft());
         Date now = new Date();
         DateTime dateTime = factory.newDateTime(Constants.UPDATED, null);
         dateTime.setValue(AtomDate.valueOf(now));

@@ -57,6 +57,8 @@ import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.fom.Policies;
@@ -472,15 +474,22 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     protected void _removeChildren(QName qname, boolean many) {
-        if (many) {
-            for (Iterator i = getChildrenWithName(qname); i.hasNext();) {
-                OMElement element = (OMElement)i.next();
-                element.discard();
+        CoreChildNode child = coreGetFirstChild();
+        while (child != null) {
+            if (child instanceof CoreNSAwareElement) {
+                CoreNSAwareElement element = (CoreNSAwareElement)child;
+                if (element.coreGetLocalName().equals(qname.getLocalPart())
+                        && element.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
+                    child = child.coreGetNextSibling();
+                    element.coreDetach(Policies.DETACH_POLICY);
+                    if (many) {
+                        continue;
+                    } else {
+                        return;
+                    }
+                }
             }
-        } else {
-            OMElement element = getFirstChildWithName(qname);
-            if (element != null)
-                element.discard();
+            child = child.coreGetNextSibling();
         }
     }
 
