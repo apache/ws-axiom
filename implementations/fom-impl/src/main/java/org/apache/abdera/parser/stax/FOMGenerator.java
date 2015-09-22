@@ -32,10 +32,7 @@ public class FOMGenerator extends FOMElement implements AbderaGenerator {
     }
 
     public Generator setUri(String uri) {
-        if (uri != null)
-            setAttributeValue(AURI, (new IRI(uri)).toString());
-        else
-            removeAttribute(AURI);
+        setAttributeValue(AURI, IRIUtil.normalize(uri));
         return this;
     }
 
@@ -44,10 +41,7 @@ public class FOMGenerator extends FOMElement implements AbderaGenerator {
     }
 
     public Generator setVersion(String version) {
-        if (version != null)
-            setAttributeValue(VERSION, version);
-        else
-            removeAttribute(VERSION);
+        setAttributeValue(VERSION, version);
         return this;
     }
 

@@ -21,6 +21,7 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaCategory;
+import org.apache.axiom.fom.IRIUtil;
 
 public class FOMCategory extends FOMExtensibleElement implements AbderaCategory {
     public String getTerm() {
@@ -28,23 +29,16 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
     }
 
     public Category setTerm(String term) {
-        if (term != null)
-            setAttributeValue(TERM, term);
-        else
-            removeAttribute(TERM);
+        setAttributeValue(TERM, term);
         return this;
     }
 
     public IRI getScheme() {
-        String value = getAttributeValue(SCHEME);
-        return (value != null) ? new IRI(value) : null;
+        return IRIUtil.getUriValue(getAttributeValue(SCHEME));
     }
 
     public Category setScheme(String scheme) {
-        if (scheme != null)
-            setAttributeValue(SCHEME, new IRI(scheme).toString());
-        else
-            removeAttribute(SCHEME);
+        setAttributeValue(SCHEME, IRIUtil.normalize(scheme));
         return this;
     }
 
@@ -53,10 +47,7 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
     }
 
     public Category setLabel(String label) {
-        if (label != null)
-            setAttributeValue(LABEL, label);
-        else
-            removeAttribute(LABEL);
+        setAttributeValue(LABEL, label);
         return this;
     }
 

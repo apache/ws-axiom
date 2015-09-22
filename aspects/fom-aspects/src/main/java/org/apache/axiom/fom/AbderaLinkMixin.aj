@@ -54,10 +54,7 @@ public aspect AbderaLinkMixin {
 
     public final Link AbderaLink.setMimeType(String type) {
         try {
-            if (type != null)
-                setAttributeValue(TYPE, (new MimeType(type)).toString());
-            else
-                removeAttribute(TYPE);
+            setAttributeValue(TYPE, type == null ? null : (new MimeType(type)).toString());
         } catch (javax.activation.MimeTypeParseException e) {
             throw new org.apache.abdera.util.MimeTypeParseException(e);
         }
@@ -69,10 +66,7 @@ public aspect AbderaLinkMixin {
     }
 
     public final Link AbderaLink.setHrefLang(String lang) {
-        if (lang != null)
-            setAttributeValue(HREFLANG, lang);
-        else
-            removeAttribute(HREFLANG);
+        setAttributeValue(HREFLANG, lang);
         return this;
     }
 
@@ -81,10 +75,7 @@ public aspect AbderaLinkMixin {
     }
 
     public final Link AbderaLink.setTitle(String title) {
-        if (title != null)
-            setAttributeValue(ATITLE, title);
-        else
-            removeAttribute(ATITLE);
+        setAttributeValue(ATITLE, title);
         return this;
     }
 

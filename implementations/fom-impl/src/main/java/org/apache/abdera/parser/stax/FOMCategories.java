@@ -25,6 +25,7 @@ import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaCategories;
+import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 
 public class FOMCategories extends FOMExtensibleElement implements AbderaCategories {
@@ -95,10 +96,7 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     }
 
     public Categories setScheme(String scheme) {
-        if (scheme != null)
-            setAttributeValue(SCHEME, new IRI(scheme).toString());
-        else
-            removeAttribute(SCHEME);
+        setAttributeValue(SCHEME, IRIUtil.normalize(scheme));
         return this;
     }
 

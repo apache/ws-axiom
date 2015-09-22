@@ -48,18 +48,12 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public Div setId(String id) {
-        if (id != null)
-            setAttributeValue(AID, id);
-        else
-            removeAttribute(AID);
+        setAttributeValue(AID, id);
         return this;
     }
 
     public Div setTitle(String title) {
-        if (title != null)
-            setAttributeValue(ATITLE, title);
-        else
-            removeAttribute(ATITLE);
+        setAttributeValue(ATITLE, title);
         return this;
     }
 

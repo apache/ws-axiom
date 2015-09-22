@@ -32,10 +32,6 @@ public aspect HrefAttributeSupportMixin {
     }
 
     public final void HrefAttributeSupport.internalSetHref(String href) {
-        if (href != null) {
-            setAttributeValue(HREF, (new IRI(href)).toString());
-        } else {
-            removeAttribute(HREF);
-        }
+        setAttributeValue(HREF, IRIUtil.normalize(href));
     }
 }

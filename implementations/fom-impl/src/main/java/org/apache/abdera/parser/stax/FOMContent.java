@@ -108,10 +108,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 
     public Content setMimeType(String type) {
         try {
-            if (type != null)
-                setAttributeValue(TYPE, (new MimeType(type)).toString());
-            else
-                removeAttribute(TYPE);
+            setAttributeValue(TYPE, type == null ? null : (new MimeType(type)).toString());
         } catch (javax.activation.MimeTypeParseException e) {
             throw new org.apache.abdera.util.MimeTypeParseException(e);
         }
@@ -127,10 +124,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setSrc(String src) {
-        if (src != null)
-            setAttributeValue(SRC, (new IRI(src)).toString());
-        else
-            removeAttribute(SRC);
+        setAttributeValue(SRC, IRIUtil.normalize(src));
         return this;
     }
 

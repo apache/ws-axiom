@@ -34,4 +34,8 @@ public final class IRIUtil {
     public static IRI resolve(IRI base, IRI value) {
         return base != null ? base.resolve(value) : value;
     }
+
+    public static String normalize(String iri) {
+        return iri == null ? null : new IRI(iri).toString();
+    }
 }
