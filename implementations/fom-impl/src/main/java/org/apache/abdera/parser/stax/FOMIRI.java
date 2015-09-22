@@ -18,7 +18,6 @@
 package org.apache.abdera.parser.stax;
 
 import org.apache.abdera.i18n.iri.IRI;
-import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.axiom.fom.AbderaIRIElement;
 import org.apache.axiom.fom.IRIUtil;
@@ -30,7 +29,7 @@ public class FOMIRI extends FOMElement implements AbderaIRIElement {
 
     public IRIElement setValue(String iri) {
         if (iri != null)
-            ((Element)this).setText((new IRI(iri)).toString());
+            setText((new IRI(iri)).toString());
         else
             _removeAllChildren();
         return this;

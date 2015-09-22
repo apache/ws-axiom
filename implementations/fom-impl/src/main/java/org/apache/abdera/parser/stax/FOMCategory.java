@@ -19,7 +19,6 @@ package org.apache.abdera.parser.stax;
 
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Category;
-import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaCategory;
 import org.apache.axiom.fom.IRIUtil;
 
@@ -57,7 +56,7 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
 
     public void setValue(String value) {
         if (value != null)
-            ((Element)this).setText(value);
+            setText(value);
         else
             _removeAllChildren();
     }

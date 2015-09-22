@@ -274,7 +274,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
             if (element != null && element instanceof Div)
                 setValueElement((Div)element);
         } else {
-            ((Element)this).setText(wrappedValue);
+            setText(wrappedValue);
         }
         return this;
     }

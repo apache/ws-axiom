@@ -22,7 +22,6 @@ import java.util.Date;
 
 import org.apache.abdera.model.AtomDate;
 import org.apache.abdera.model.DateTime;
-import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaDateTime;
 
 public class FOMDateTime extends FOMElement implements AbderaDateTime {
@@ -38,7 +37,7 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     public DateTime setValue(AtomDate dateTime) {
         value = null;
         if (dateTime != null)
-            ((Element)this).setText(dateTime.getValue());
+            setText(dateTime.getValue());
         else
             _removeAllChildren();
         return this;
@@ -47,7 +46,7 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     public DateTime setDate(Date date) {
         value = null;
         if (date != null)
-            ((Element)this).setText(AtomDate.valueOf(date).getValue());
+            setText(AtomDate.valueOf(date).getValue());
         else
             _removeAllChildren();
         return this;
@@ -56,7 +55,7 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
     public DateTime setCalendar(Calendar date) {
         value = null;
         if (date != null)
-            ((Element)this).setText(AtomDate.valueOf(date).getValue());
+            setText(AtomDate.valueOf(date).getValue());
         else
             _removeAllChildren();
         return this;
@@ -64,14 +63,14 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
 
     public DateTime setTime(long date) {
         value = null;
-        ((Element)this).setText(AtomDate.valueOf(date).getValue());
+        setText(AtomDate.valueOf(date).getValue());
         return this;
     }
 
     public DateTime setString(String date) {
         value = null;
         if (date != null)
-            ((Element)this).setText(AtomDate.valueOf(date).getValue());
+            setText(AtomDate.valueOf(date).getValue());
         else
             _removeAllChildren();
         return this;
