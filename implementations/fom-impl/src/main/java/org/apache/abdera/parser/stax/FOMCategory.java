@@ -49,16 +49,4 @@ public class FOMCategory extends FOMExtensibleElement implements AbderaCategory 
         setAttributeValue(LABEL, label);
         return this;
     }
-
-    public String getValue() {
-        return getText();
-    }
-
-    public void setValue(String value) {
-        if (value != null)
-            setText(value);
-        else
-            _removeAllChildren();
-    }
-
 }
