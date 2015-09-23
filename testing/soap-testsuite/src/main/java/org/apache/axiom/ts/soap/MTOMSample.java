@@ -18,24 +18,10 @@
  */
 package org.apache.axiom.ts.soap;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import org.apache.axiom.ts.xml.MessageContent;
+import org.apache.axiom.ts.xml.XOPSample;
 
-import javax.mail.BodyPart;
-import javax.mail.internet.MimeMultipart;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-public class MTOMSample extends MIMESample {
+public class MTOMSample extends XOPSample {
     public static final MTOMSample SAMPLE1 = new MTOMSample("sample1.msg",
             "multipart/related; " +
             "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
@@ -63,40 +49,6 @@ public class MTOMSample extends MIMESample {
             "boundary=\"----=_Part_542_1447667749.1430736561148\"");
     
     private MTOMSample(String name, String contentType) {
-        super("mtom/" + name, contentType);
-    }
-    
-    public InputStream getInlinedMessage() {
-        try {
-            MimeMultipart mp = getMultipart();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            Document rootPart = documentBuilderFactory.newDocumentBuilder().parse(
-                    mp.getBodyPart(0).getInputStream());
-            process(rootPart.getDocumentElement(), mp);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            TransformerFactory.newInstance().newTransformer().transform(
-                    new DOMSource(rootPart), new StreamResult(baos));
-            return new ByteArrayInputStream(baos.toByteArray());
-        } catch (Exception ex) {
-            throw new Error(ex);
-        }
-    }
-    
-    private void process(Element element, MimeMultipart mp) throws Exception {
-        if (element.getNamespaceURI().equals("http://www.w3.org/2004/08/xop/include")
-                && element.getLocalName().equals("Include")) {
-            String cid = element.getAttribute("href").substring(4);
-            BodyPart part = mp.getBodyPart("<" + cid + ">");
-            String base64 = Base64.encodeBase64String(IOUtils.toByteArray(part.getInputStream()));
-            element.getParentNode().replaceChild(
-                    element.getOwnerDocument().createTextNode(base64), element);
-        } else {
-            for (Node child = element.getFirstChild(); child != null; child = child.getNextSibling()) {
-                if (child instanceof Element) {
-                    process((Element)child, mp);
-                }
-            }
-        }
+        super(MessageContent.fromClasspath(MTOMSample.class, "mtom/" + name), contentType);
     }
 }

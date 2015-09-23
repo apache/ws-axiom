@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.ts.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,19 +29,16 @@ import javax.mail.internet.ContentType;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.ParseException;
 
-import org.apache.axiom.ts.xml.MessageContent;
-import org.apache.axiom.ts.xml.MessageSample;
-
 public abstract class MIMESample extends MessageSample {
     private final String contentType;
     private MimeMultipart multipart;
     
-    MIMESample(String name, String contentType) {
-        super(MessageContent.fromClasspath(MIMESample.class, name));
+    protected MIMESample(MessageContent content, String contentType) {
+        super(content);
         this.contentType = contentType;
     }
 
-    public String getContentType() {
+    public final String getContentType() {
         return contentType;
     }
     
@@ -55,7 +52,7 @@ public abstract class MIMESample extends MessageSample {
         }
     }
     
-    public String getStart() {
+    public final String getStart() {
         String start = getParameter("start");
         if (start.startsWith("<") && start.endsWith(">")) {
             return start.substring(1, start.length()-1);
@@ -64,7 +61,7 @@ public abstract class MIMESample extends MessageSample {
         }
     }
     
-    public String getBoundary() {
+    public final String getBoundary() {
         return getParameter("boundary");
     }
     

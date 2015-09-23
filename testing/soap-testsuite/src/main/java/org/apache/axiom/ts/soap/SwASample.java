@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.soap;
 
+import org.apache.axiom.ts.xml.MIMESample;
+import org.apache.axiom.ts.xml.MessageContent;
+
 public class SwASample extends MIMESample {
     public static final SwASample SAMPLE1 = new SwASample("sample1.msg",
             "multipart/related; " +
@@ -26,6 +29,6 @@ public class SwASample extends MIMESample {
             "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"");
 
     private SwASample(String name, String contentType) {
-        super("swa/" + name, contentType);
+        super(MessageContent.fromClasspath(SwASample.class, "swa/" + name), contentType);
     }
 }

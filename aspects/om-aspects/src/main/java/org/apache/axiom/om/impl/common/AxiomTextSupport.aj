@@ -65,7 +65,7 @@ public aspect AxiomTextSupport {
     public final void AxiomText.setOptimize(boolean optimize) {
         TextContent textContent = getTextContent(optimize);
         if (textContent != null) {
-            setOptimize(optimize);
+            textContent.setOptimize(optimize);
         }
     }
     
