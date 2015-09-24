@@ -33,13 +33,12 @@ import java.util.ListIterator;
  * caller. This gives us a hybrid approach. We create an internal iterator, then create a List from that, the iterator
  * is consumed as the list is used. The List itself is unmodifiable.
  */
-@SuppressWarnings("unchecked")
 public class FOMList<T> extends java.util.AbstractCollection<T> implements List<T> {
 
-    private final Iterator<T> i;
+    private final Iterator<? extends T> i;
     private final List<T> buffer = new ArrayList<T>();
 
-    public FOMList(Iterator<T> i) {
+    public FOMList(Iterator<? extends T> i) {
         this.i = i;
     }
 
@@ -93,11 +92,11 @@ public class FOMList<T> extends java.util.AbstractCollection<T> implements List<
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(Collection c) {
+    public boolean addAll(Collection<? extends T> c) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(int index, Collection c) {
+    public boolean addAll(int index, Collection<? extends T> c) {
         throw new UnsupportedOperationException();
     }
 
@@ -110,7 +109,7 @@ public class FOMList<T> extends java.util.AbstractCollection<T> implements List<
         return buffer.contains(o);
     }
 
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(Collection<?> c) {
         for (Object o : c)
             if (contains(o))
                 return true;
@@ -148,11 +147,11 @@ public class FOMList<T> extends java.util.AbstractCollection<T> implements List<
         throw new UnsupportedOperationException();
     }
 
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(Collection<?> c) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(Collection<?> c) {
         throw new UnsupportedOperationException();
     }
 
@@ -170,21 +169,21 @@ public class FOMList<T> extends java.util.AbstractCollection<T> implements List<
         return buffer.toArray();
     }
 
-    public Object[] toArray(Object[] a) {
+    public <U> U[] toArray(U[] a) {
         buffer(-1);
         return buffer.toArray(a);
     }
 
     private class BufferIterator<M> implements ListIterator<M> {
 
-        private FOMList set = null;
+        private FOMList<M> set = null;
         private int counter = 0;
 
-        BufferIterator(FOMList set) {
+        BufferIterator(FOMList<M> set) {
             this.set = set;
         }
 
-        BufferIterator(FOMList set, int index) {
+        BufferIterator(FOMList<M> set, int index) {
             this.set = set;
             this.counter = index;
         }

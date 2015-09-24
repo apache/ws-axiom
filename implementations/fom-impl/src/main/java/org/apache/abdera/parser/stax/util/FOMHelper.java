@@ -25,14 +25,28 @@ import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Link;
 import org.apache.abdera.util.Constants;
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.fom.AbderaCategory;
+import org.apache.axiom.fom.AbderaElement;
+import org.apache.axiom.fom.FOMExceptionTranslator;
+import org.apache.axiom.fom.Policies;
 import org.apache.axiom.util.UIDGenerator;
 
 @SuppressWarnings("unchecked")
 public class FOMHelper implements Constants {
+    private static final ElementMatcher<AbderaCategory> CATEGORY_BY_SCHEME = new ElementMatcher<AbderaCategory>() {
+        public boolean matches(AbderaCategory element, String namespaceURI, String name) {
+            String scheme = element.getAttributeValue(SCHEME);
+            return scheme != null && scheme.equals(name);
+        }
+    };
 
-    public static List<Category> getCategories(Element element, String scheme) {
-        Iterator i = new FOMElementIterator(element, Category.class, SCHEME, scheme, null);
-        return new FOMList<Category>(i);
+    public static List<Category> getCategories(AbderaElement element, String scheme) {
+        // TODO: we should probably set detachPolicy to null
+        return new FOMList<Category>(element.coreGetElements(
+                Axis.CHILDREN, AbderaCategory.class, CATEGORY_BY_SCHEME, null, scheme,
+                FOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY));
     }
 
     public static List<Link> getLinks(Element element, String rel) {
