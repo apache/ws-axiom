@@ -42,7 +42,6 @@ import org.apache.abdera.i18n.iri.IRIHelper;
 import org.apache.abdera.i18n.rfc4646.Lang;
 import org.apache.abdera.model.Base;
 import org.apache.abdera.model.Content;
-import org.apache.abdera.model.Div;
 import org.apache.abdera.model.Document;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.ElementWrapper;
@@ -338,57 +337,6 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
             _setChild(qname, (OMElement)text);
         } else
             _removeChildren(qname, false);
-    }
-
-    protected Text setTextText(QName qname, String value) {
-        if (value == null) {
-            setTextElement(qname, null, false);
-            return null;
-        }
-        Text text = getFactory().newText(qname, Text.Type.TEXT);
-        text.setValue(value);
-        setTextElement(qname, text, false);
-        return text;
-    }
-
-    protected Text setHtmlText(QName qname, String value, IRI baseUri) {
-        if (value == null) {
-            setTextElement(qname, null, false);
-            return null;
-        }
-        Text text = getFactory().newText(qname, Text.Type.HTML);
-        if (baseUri != null)
-            text.setBaseUri(baseUri);
-        text.setValue(value);
-        setTextElement(qname, text, false);
-        return text;
-    }
-
-    protected Text setXhtmlText(QName qname, String value, IRI baseUri) {
-        if (value == null) {
-            setTextElement(qname, null, false);
-            return null;
-        }
-        Text text = getFactory().newText(qname, Text.Type.XHTML);
-        if (baseUri != null)
-            text.setBaseUri(baseUri);
-        text.setValue(value);
-        setTextElement(qname, text, false);
-        return text;
-    }
-
-    protected Text setXhtmlText(QName qname, Div value, IRI baseUri) {
-        if (value == null) {
-            setTextElement(qname, null, false);
-            return null;
-        }
-        FOMFactory fomfactory = (FOMFactory)getOMFactory();
-        Text text = fomfactory.newText(qname, Text.Type.XHTML);
-        if (baseUri != null)
-            text.setBaseUri(baseUri);
-        text.setValueElement(value);
-        setTextElement(qname, text, false);
-        return text;
     }
 
     public void setText(String text) {
