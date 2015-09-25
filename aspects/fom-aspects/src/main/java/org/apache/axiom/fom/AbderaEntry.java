@@ -20,6 +20,6 @@ package org.apache.axiom.fom;
 
 import org.apache.abdera.model.Entry;
 
-public interface AbderaEntry extends Entry, AbderaExtensibleElement {
+public interface AbderaEntry extends Entry, AbderaExtensibleElement, Categorizable {
 
 }

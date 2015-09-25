@@ -80,14 +80,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
         return person;
     }
 
-    public List<Category> getCategories() {
-        return _getChildrenAsSet(CATEGORY);
-    }
-
-    public List<Category> getCategories(String scheme) {
-        return FOMHelper.getCategories(this, scheme);
-    }
-
     public Entry addCategory(Category category) {
         Element el = category.getParentElement();
         if (el != null && el instanceof Categories) {
@@ -102,20 +94,6 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
         }
         addChild((OMElement)category);
         return this;
-    }
-
-    public Category addCategory(String term) {
-        Category category = getFactory().newCategory(this);
-        category.setTerm(term);
-        return category;
-    }
-
-    public Category addCategory(String scheme, String term, String label) {
-        Category category = getFactory().newCategory(this);
-        category.setTerm(term);
-        category.setScheme(scheme);
-        category.setLabel(label);
-        return category;
     }
 
     public Content getContentElement() {

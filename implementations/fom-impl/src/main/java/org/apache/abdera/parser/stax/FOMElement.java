@@ -52,7 +52,6 @@ import org.apache.abdera.parser.ParseException;
 import org.apache.abdera.parser.Parser;
 import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.parser.stax.util.FOMElementIteratorWrapper;
-import org.apache.abdera.parser.stax.util.FOMList;
 import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
@@ -60,6 +59,7 @@ import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.fom.AbderaElement;
+import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.fom.Policies;
 import org.apache.axiom.om.OMAttribute;
@@ -217,7 +217,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return (T)this;
     }
 
-    protected <E extends Element> List<E> _getChildrenAsSet(QName qname) {
+    public <E extends Element> List<E> _getChildrenAsSet(QName qname) {
         FOMFactory factory = (FOMFactory)getFactory();
         return new FOMList(new FOMElementIteratorWrapper(factory, getChildrenWithName(qname)));
     }

@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
-import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaCategories;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
@@ -32,29 +31,6 @@ public class FOMCategories extends FOMExtensibleElement implements AbderaCategor
     public Categories addCategory(Category category) {
         addChild((OMElement)category);
         return this;
-    }
-
-    public Category addCategory(String term) {
-        Category category = getFactory().newCategory(this);
-        category.setTerm(term);
-        return category;
-    }
-
-    public Category addCategory(String scheme, String term, String label) {
-        Category category = getFactory().newCategory(this);
-        category.setTerm(term);
-        category.setScheme(scheme);
-        category.setLabel(label);
-        return category;
-
-    }
-
-    public List<Category> getCategories() {
-        return _getChildrenAsSet(CATEGORY);
-    }
-
-    public List<Category> getCategories(String scheme) {
-        return FOMHelper.getCategories(this, scheme);
     }
 
     private List<Category> copyCategoriesWithScheme(List<Category> cats) {

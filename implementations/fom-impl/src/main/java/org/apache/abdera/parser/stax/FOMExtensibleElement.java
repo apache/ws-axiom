@@ -26,8 +26,8 @@ import org.apache.abdera.model.ElementWrapper;
 import org.apache.abdera.model.ExtensibleElement;
 import org.apache.abdera.parser.stax.util.FOMElementIteratorWrapper;
 import org.apache.abdera.parser.stax.util.FOMExtensionIterator;
-import org.apache.abdera.parser.stax.util.FOMList;
 import org.apache.axiom.fom.AbderaExtensibleElement;
+import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.om.OMElement;
 
 @SuppressWarnings("unchecked")

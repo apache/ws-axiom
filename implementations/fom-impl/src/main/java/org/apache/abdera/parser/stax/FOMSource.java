@@ -71,14 +71,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
         return person;
     }
 
-    public List<Category> getCategories() {
-        return _getChildrenAsSet(CATEGORY);
-    }
-
-    public List<Category> getCategories(String scheme) {
-        return FOMHelper.getCategories(this, scheme);
-    }
-
     public <T extends Source> T addCategory(Category category) {
         Element el = category.getParentElement();
         if (el != null && el instanceof Categories) {
@@ -93,20 +85,6 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
         }
         addChild((OMElement)category);
         return (T)this;
-    }
-
-    public Category addCategory(String term) {
-        Category category = getFactory().newCategory(this);
-        category.setTerm(term);
-        return category;
-    }
-
-    public Category addCategory(String scheme, String term, String label) {
-        Category category = getFactory().newCategory(this);
-        category.setTerm(term);
-        category.setScheme(scheme);
-        category.setLabel(label);
-        return category;
     }
 
     public List<Person> getContributors() {

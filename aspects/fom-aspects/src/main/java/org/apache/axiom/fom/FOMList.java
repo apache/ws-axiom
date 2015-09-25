@@ -15,7 +15,7 @@
  * copyright in this work, please see the NOTICE file in the top level
  * directory of this distribution.
  */
-package org.apache.abdera.parser.stax.util;
+package org.apache.axiom.fom;
 
 import java.util.ArrayList;
 import java.util.Collection;

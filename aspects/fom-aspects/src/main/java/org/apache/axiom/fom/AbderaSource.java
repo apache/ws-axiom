@@ -20,6 +20,6 @@ package org.apache.axiom.fom;
 
 import org.apache.abdera.model.Source;
 
-public interface AbderaSource extends Source, AbderaExtensibleElement {
+public interface AbderaSource extends Source, AbderaExtensibleElement, Categorizable {
 
 }

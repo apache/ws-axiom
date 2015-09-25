@@ -18,9 +18,13 @@
  */
 package org.apache.axiom.fom;
 
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.abdera.model.Element;
 import org.apache.axiom.core.CoreNSAwareElement;
 
 public interface AbderaElement extends Element, AbderaChildNode, CoreNSAwareElement {
-
+    <E extends Element> List<E> _getChildrenAsSet(QName qname);
 }
