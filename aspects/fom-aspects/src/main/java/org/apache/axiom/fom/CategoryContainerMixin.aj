@@ -26,7 +26,7 @@ import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
 
 // TODO: also handle addCategory(Category) here
-public aspect CategorizableMixin {
+public aspect CategoryContainerMixin {
     private static final ElementMatcher<AbderaCategory> CATEGORY_BY_SCHEME = new ElementMatcher<AbderaCategory>() {
         public boolean matches(AbderaCategory element, String namespaceURI, String name) {
             String scheme = element.getAttributeValue(Constants.SCHEME);
@@ -34,13 +34,13 @@ public aspect CategorizableMixin {
         }
     };
 
-    public final Category Categorizable.addCategory(String term) {
+    public final Category CategoryContainer.addCategory(String term) {
         Category category = getFactory().newCategory(this);
         category.setTerm(term);
         return category;
     }
 
-    public final Category Categorizable.addCategory(String scheme, String term, String label) {
+    public final Category CategoryContainer.addCategory(String scheme, String term, String label) {
         Category category = getFactory().newCategory(this);
         category.setTerm(term);
         category.setScheme(scheme);
@@ -48,11 +48,11 @@ public aspect CategorizableMixin {
         return category;
     }
 
-    public final List<Category> Categorizable.getCategories() {
+    public final List<Category> CategoryContainer.getCategories() {
         return _getChildrenAsSet(Constants.CATEGORY);
     }
 
-    public final List<Category> Categorizable.getCategories(String scheme) {
+    public final List<Category> CategoryContainer.getCategories(String scheme) {
         // TODO: we should probably set detachPolicy to null
         return new FOMList<Category>(coreGetElements(
                 Axis.CHILDREN, AbderaCategory.class, CATEGORY_BY_SCHEME, null, scheme,

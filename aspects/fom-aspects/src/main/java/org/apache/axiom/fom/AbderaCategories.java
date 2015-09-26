@@ -20,6 +20,6 @@ package org.apache.axiom.fom;
 
 import org.apache.abdera.model.Categories;
 
-public interface AbderaCategories extends Categories, AbderaExtensibleElement, HrefAttributeSupport, Categorizable {
+public interface AbderaCategories extends Categories, AbderaExtensibleElement, HrefAttributeSupport, CategoryContainer {
 
 }

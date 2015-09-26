@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.fom;
 
-public interface Categorizable extends AbderaElement {
+public interface CategoryContainer extends AbderaElement {
 
 }
