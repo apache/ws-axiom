@@ -1,5 +1,10 @@
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.ACCEPT;
+import static org.apache.abdera.util.Constants.ALTERNATE;
+import static org.apache.abdera.util.Constants.LN_ALTERNATE_MULTIPART_RELATED;
+import static org.apache.abdera.util.Constants.PRE_RFC_ACCEPT;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;

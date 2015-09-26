@@ -17,6 +17,11 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.BASE;
+import static org.apache.abdera.util.Constants.LANG;
+import static org.apache.abdera.util.Constants.TYPE;
+import static org.apache.abdera.util.Constants.XHTML_NS;
+
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
 import org.apache.abdera.model.Element;

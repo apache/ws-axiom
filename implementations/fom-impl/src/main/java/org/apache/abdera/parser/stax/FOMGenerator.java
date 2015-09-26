@@ -17,6 +17,9 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.AURI;
+import static org.apache.abdera.util.Constants.VERSION;
+
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Generator;
 import org.apache.axiom.fom.AbderaGenerator;

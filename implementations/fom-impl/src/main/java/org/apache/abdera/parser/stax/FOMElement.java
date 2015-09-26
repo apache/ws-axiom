@@ -17,6 +17,10 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.BASE;
+import static org.apache.abdera.util.Constants.LANG;
+import static org.apache.abdera.util.Constants.SPACE;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,7 +55,6 @@ import org.apache.abdera.parser.ParseException;
 import org.apache.abdera.parser.Parser;
 import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.parser.stax.util.FOMElementIteratorWrapper;
-import org.apache.abdera.util.Constants;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
@@ -74,7 +77,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 
 @SuppressWarnings("unchecked")
-public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement, Constants {
+public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement {
     protected void setParentDocument(Document parent) {
         ((OMContainer)parent).addChild(this);
     }

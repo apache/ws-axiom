@@ -17,6 +17,8 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.ENTRY;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;

@@ -17,6 +17,21 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.AUTHOR;
+import static org.apache.abdera.util.Constants.COLLECTION;
+import static org.apache.abdera.util.Constants.CONTRIBUTOR;
+import static org.apache.abdera.util.Constants.ENTRY;
+import static org.apache.abdera.util.Constants.GENERATOR;
+import static org.apache.abdera.util.Constants.ICON;
+import static org.apache.abdera.util.Constants.ID;
+import static org.apache.abdera.util.Constants.LINK;
+import static org.apache.abdera.util.Constants.LOGO;
+import static org.apache.abdera.util.Constants.PRE_RFC_COLLECTION;
+import static org.apache.abdera.util.Constants.RIGHTS;
+import static org.apache.abdera.util.Constants.SUBTITLE;
+import static org.apache.abdera.util.Constants.TITLE;
+import static org.apache.abdera.util.Constants.UPDATED;
+
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;

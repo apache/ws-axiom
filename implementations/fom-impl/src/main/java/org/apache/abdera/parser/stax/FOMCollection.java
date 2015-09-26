@@ -17,6 +17,13 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.ACCEPT;
+import static org.apache.abdera.util.Constants.CATEGORIES;
+import static org.apache.abdera.util.Constants.PREFIXED_TITLE;
+import static org.apache.abdera.util.Constants.PRE_RFC_ACCEPT;
+import static org.apache.abdera.util.Constants.PRE_RFC_CATEGORIES;
+import static org.apache.abdera.util.Constants.TITLE;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

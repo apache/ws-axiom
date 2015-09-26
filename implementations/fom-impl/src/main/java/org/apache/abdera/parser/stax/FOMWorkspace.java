@@ -17,6 +17,11 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.COLLECTION;
+import static org.apache.abdera.util.Constants.PREFIXED_TITLE;
+import static org.apache.abdera.util.Constants.PRE_RFC_COLLECTION;
+import static org.apache.abdera.util.Constants.TITLE;
+
 import java.util.ArrayList;
 import java.util.List;
 

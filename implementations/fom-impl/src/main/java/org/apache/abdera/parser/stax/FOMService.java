@@ -17,6 +17,9 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.PRE_RFC_WORKSPACE;
+import static org.apache.abdera.util.Constants.WORKSPACE;
+
 import java.util.ArrayList;
 import java.util.List;
 

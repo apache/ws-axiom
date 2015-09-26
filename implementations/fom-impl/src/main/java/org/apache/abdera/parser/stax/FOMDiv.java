@@ -17,6 +17,11 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.AID;
+import static org.apache.abdera.util.Constants.ATITLE;
+import static org.apache.abdera.util.Constants.CLASS;
+import static org.apache.abdera.util.Constants.XHTML_NS;
+
 import java.io.StringWriter;
 import java.util.Iterator;
 

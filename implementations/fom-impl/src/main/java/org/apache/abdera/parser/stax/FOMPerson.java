@@ -17,6 +17,10 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.EMAIL;
+import static org.apache.abdera.util.Constants.NAME;
+import static org.apache.abdera.util.Constants.URI;
+
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;

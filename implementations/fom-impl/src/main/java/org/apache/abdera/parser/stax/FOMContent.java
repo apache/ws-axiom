@@ -17,6 +17,12 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.BASE;
+import static org.apache.abdera.util.Constants.LANG;
+import static org.apache.abdera.util.Constants.SRC;
+import static org.apache.abdera.util.Constants.TYPE;
+import static org.apache.abdera.util.Constants.XHTML_NS;
+
 import javax.activation.DataHandler;
 import javax.activation.MimeType;
 import javax.activation.URLDataSource;

@@ -17,6 +17,11 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.DRAFT;
+import static org.apache.abdera.util.Constants.NO;
+import static org.apache.abdera.util.Constants.PRE_RFC_DRAFT;
+import static org.apache.abdera.util.Constants.YES;
+
 import org.apache.abdera.model.Control;
 import org.apache.axiom.fom.AbderaControl;
 

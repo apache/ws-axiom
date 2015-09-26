@@ -17,6 +17,23 @@
  */
 package org.apache.abdera.parser.stax;
 
+import static org.apache.abdera.util.Constants.APP_NS;
+import static org.apache.abdera.util.Constants.AUTHOR;
+import static org.apache.abdera.util.Constants.CONTENT;
+import static org.apache.abdera.util.Constants.CONTRIBUTOR;
+import static org.apache.abdera.util.Constants.CONTROL;
+import static org.apache.abdera.util.Constants.EDITED;
+import static org.apache.abdera.util.Constants.ID;
+import static org.apache.abdera.util.Constants.LINK;
+import static org.apache.abdera.util.Constants.PRE_RFC_CONTROL;
+import static org.apache.abdera.util.Constants.PRE_RFC_EDITED;
+import static org.apache.abdera.util.Constants.PUBLISHED;
+import static org.apache.abdera.util.Constants.RIGHTS;
+import static org.apache.abdera.util.Constants.SOURCE;
+import static org.apache.abdera.util.Constants.SUMMARY;
+import static org.apache.abdera.util.Constants.TITLE;
+import static org.apache.abdera.util.Constants.UPDATED;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
