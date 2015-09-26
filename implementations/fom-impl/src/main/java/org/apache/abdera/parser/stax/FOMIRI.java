@@ -28,10 +28,7 @@ public class FOMIRI extends FOMElement implements AbderaIRIElement {
     }
 
     public IRIElement setValue(String iri) {
-        if (iri != null)
-            setText((new IRI(iri)).toString());
-        else
-            _removeAllChildren();
+        setText(IRIUtil.normalize(iri));
         return this;
     }
 

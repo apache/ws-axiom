@@ -36,28 +36,19 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
 
     public DateTime setValue(AtomDate dateTime) {
         value = null;
-        if (dateTime != null)
-            setText(dateTime.getValue());
-        else
-            _removeAllChildren();
+        setText(dateTime == null ? null : dateTime.getValue());
         return this;
     }
 
     public DateTime setDate(Date date) {
         value = null;
-        if (date != null)
-            setText(AtomDate.valueOf(date).getValue());
-        else
-            _removeAllChildren();
+        setText(date == null ? null : AtomDate.valueOf(date).getValue());
         return this;
     }
 
     public DateTime setCalendar(Calendar date) {
         value = null;
-        if (date != null)
-            setText(AtomDate.valueOf(date).getValue());
-        else
-            _removeAllChildren();
+        setText(date == null ? null : AtomDate.valueOf(date).getValue());
         return this;
     }
 
@@ -69,10 +60,7 @@ public class FOMDateTime extends FOMElement implements AbderaDateTime {
 
     public DateTime setString(String date) {
         value = null;
-        if (date != null)
-            setText(AtomDate.valueOf(date).getValue());
-        else
-            _removeAllChildren();
+        setText(date == null ? null : AtomDate.valueOf(date).getValue());
         return this;
     }
 
