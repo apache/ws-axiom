@@ -30,7 +30,6 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.iri.IRISyntaxException;
 import org.apache.abdera.i18n.text.io.InputStreamDataSource;
 import org.apache.abdera.model.AtomDate;
-import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Content;
 import org.apache.abdera.model.Content.Type;
@@ -81,18 +80,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addCategory(Category category) {
-        Element el = category.getParentElement();
-        if (el != null && el instanceof Categories) {
-            Categories cats = category.getParentElement();
-            category = (Category)category.clone();
-            try {
-                if (category.getScheme() == null && cats.getScheme() != null)
-                    category.setScheme(cats.getScheme().toString());
-            } catch (Exception e) {
-                // Do nothing, shouldn't happen
-            }
-        }
-        addChild((OMElement)category);
+        internalAddCategory(category);
         return this;
     }
 

@@ -25,7 +25,6 @@ import org.apache.abdera.util.Constants;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
 
-// TODO: also handle addCategory(Category) here
 public aspect CategoryContainerMixin {
     private static final ElementMatcher<AbderaCategory> CATEGORY_BY_SCHEME = new ElementMatcher<AbderaCategory>() {
         public boolean matches(AbderaCategory element, String namespaceURI, String name) {

@@ -18,8 +18,23 @@
  */
 package org.apache.axiom.fom;
 
-import org.apache.abdera.model.Entry;
+import org.apache.abdera.model.Categories;
+import org.apache.abdera.model.Category;
+import org.apache.abdera.model.Element;
 
-public interface AbderaEntry extends Entry, AbderaExtensibleElement, Categorizable {
-
+public aspect CategorizableMixin {
+    public final void Categorizable.internalAddCategory(Category category) {
+        Element el = category.getParentElement();
+        if (el != null && el instanceof Categories) {
+            Categories cats = category.getParentElement();
+            category = (Category)category.clone();
+            try {
+                if (category.getScheme() == null && cats.getScheme() != null)
+                    category.setScheme(cats.getScheme().toString());
+            } catch (Exception e) {
+                // Do nothing, shouldn't happen
+            }
+        }
+        coreAppendChild((AbderaCategory)category, false);
+    }
 }

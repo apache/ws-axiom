@@ -24,12 +24,10 @@ import java.util.List;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.i18n.iri.IRIHelper;
 import org.apache.abdera.model.AtomDate;
-import org.apache.abdera.model.Categories;
 import org.apache.abdera.model.Category;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.DateTime;
 import org.apache.abdera.model.Div;
-import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Generator;
 import org.apache.abdera.model.IRIElement;
@@ -72,18 +70,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addCategory(Category category) {
-        Element el = category.getParentElement();
-        if (el != null && el instanceof Categories) {
-            Categories cats = category.getParentElement();
-            category = (Category)category.clone();
-            try {
-                if (category.getScheme() == null && cats.getScheme() != null)
-                    category.setScheme(cats.getScheme().toString());
-            } catch (Exception e) {
-                // Do nothing, shouldn't happen
-            }
-        }
-        addChild((OMElement)category);
+        internalAddCategory(category);
         return (T)this;
     }
 
