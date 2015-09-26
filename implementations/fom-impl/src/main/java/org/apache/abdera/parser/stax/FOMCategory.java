@@ -17,36 +17,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import org.apache.abdera.i18n.iri.IRI;
-import org.apache.abdera.model.Category;
 import org.apache.axiom.fom.AbderaCategory;
-import org.apache.axiom.fom.IRIUtil;
 
 public class FOMCategory extends FOMExtensibleElement implements AbderaCategory {
-    public String getTerm() {
-        return getAttributeValue(TERM);
-    }
 
-    public Category setTerm(String term) {
-        setAttributeValue(TERM, term);
-        return this;
-    }
-
-    public IRI getScheme() {
-        return IRIUtil.getUriValue(getAttributeValue(SCHEME));
-    }
-
-    public Category setScheme(String scheme) {
-        setAttributeValue(SCHEME, IRIUtil.normalize(scheme));
-        return this;
-    }
-
-    public String getLabel() {
-        return getAttributeValue(LABEL);
-    }
-
-    public Category setLabel(String label) {
-        setAttributeValue(LABEL, label);
-        return this;
-    }
 }
