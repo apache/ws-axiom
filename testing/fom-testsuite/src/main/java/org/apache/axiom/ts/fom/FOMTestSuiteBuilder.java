@@ -43,5 +43,6 @@ public class FOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.fom.control.TestSetUnsetDraft(abdera));
         addTest(new org.apache.axiom.ts.fom.entry.TestAddCategoryFromCategories(abdera));
         addTest(new org.apache.axiom.ts.fom.entry.TestGetCategoriesByScheme(abdera));
+        addTest(new org.apache.axiom.ts.fom.person.TestSetEmail(abdera));
     }
 }
