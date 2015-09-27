@@ -34,23 +34,20 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setNameElement(Element element) {
-        if (element != null)
-            _setChild(NAME, (OMElement)element);
-        else
-            _removeChildren(NAME, false);
+        _setChild(NAME, (OMElement)element);
         return this;
     }
 
     public Element setName(String name) {
+        Element el;
         if (name != null) {
-            Element el = getFactory().newName(null);
+            el = getFactory().newName();
             el.setText(name);
-            _setChild(NAME, (OMElement)el);
-            return el;
         } else {
-            _removeChildren(NAME, false);
-            return null;
+            el = null;
         }
+        _setChild(NAME, (OMElement)el);
+        return el;
     }
 
     public String getName() {
@@ -63,23 +60,20 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setEmailElement(Element element) {
-        if (element != null)
-            _setChild(EMAIL, (OMElement)element);
-        else
-            _removeChildren(EMAIL, false);
+        _setChild(EMAIL, (OMElement)element);
         return this;
     }
 
     public Element setEmail(String email) {
+        Element el;
         if (email != null) {
-            Element el = getFactory().newEmail(null);
+            el = getFactory().newEmail();
             el.setText(email);
-            _setChild(EMAIL, (OMElement)el);
-            return el;
         } else {
-            _removeChildren(EMAIL, false);
-            return null;
+            el = null;
         }
+        _setChild(EMAIL, (OMElement)el);
+        return el;
     }
 
     public String getEmail() {
@@ -92,23 +86,20 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setUriElement(IRIElement uri) {
-        if (uri != null)
-            _setChild(URI, (OMElement)uri);
-        else
-            _removeChildren(URI, false);
+        _setChild(URI, (OMElement)uri);
         return this;
     }
 
     public IRIElement setUri(String uri) {
+        IRIElement el;
         if (uri != null) {
-            IRIElement el = getFactory().newUri(null);
+            el = getFactory().newUri();
             el.setValue(uri);
-            _setChild(URI, (OMElement)el);
-            return el;
         } else {
-            _removeChildren(URI, false);
-            return null;
+            el = null;
         }
+        _setChild(URI, (OMElement)el);
+        return el;
     }
 
     public IRI getUri() {

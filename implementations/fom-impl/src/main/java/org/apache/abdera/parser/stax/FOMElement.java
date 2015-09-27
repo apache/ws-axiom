@@ -336,10 +336,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     protected <T extends Text> void setTextElement(QName qname, T text, boolean many) {
-        if (text != null) {
-            _setChild(qname, (OMElement)text);
-        } else
-            _removeChildren(qname, false);
+        _setChild(qname, (OMElement)text);
     }
 
     public void setText(String text) {

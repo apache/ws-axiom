@@ -117,10 +117,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setIdElement(IRIElement id) {
-        if (id != null)
-            _setChild(ID, (OMElement)id);
-        else
-            _removeChildren(ID, false);
+        _setChild(ID, (OMElement)id);
         return (T)this;
     }
 
@@ -327,10 +324,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setUpdatedElement(DateTime updated) {
-        if (updated != null)
-            _setChild(UPDATED, (OMElement)updated);
-        else
-            _removeChildren(UPDATED, false);
+        _setChild(UPDATED, (OMElement)updated);
         return (T)this;
     }
 
@@ -373,10 +367,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setGenerator(Generator generator) {
-        if (generator != null)
-            _setChild(GENERATOR, (OMElement)generator);
-        else
-            _removeChildren(GENERATOR, false);
+        _setChild(GENERATOR, (OMElement)generator);
         return (T)this;
     }
 
@@ -396,10 +387,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setIconElement(IRIElement iri) {
-        if (iri != null)
-            _setChild(ICON, (OMElement)iri);
-        else
-            _removeChildren(ICON, false);
+        _setChild(ICON, (OMElement)iri);
         return (T)this;
     }
 
@@ -424,10 +412,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setLogoElement(IRIElement iri) {
-        if (iri != null)
-            _setChild(LOGO, (OMElement)iri);
-        else
-            _removeChildren(LOGO, false);
+        _setChild(LOGO, (OMElement)iri);
         return (T)this;
     }
 
@@ -501,12 +486,8 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setCollection(Collection collection) {
-        if (collection != null) {
-            _removeChildren(PRE_RFC_COLLECTION, true);
-            _setChild(COLLECTION, (OMElement)collection);
-        } else {
-            _removeChildren(COLLECTION, false);
-        }
+        _removeChildren(PRE_RFC_COLLECTION, true);
+        _setChild(COLLECTION, (OMElement)collection);
         return (T)this;
     }
 

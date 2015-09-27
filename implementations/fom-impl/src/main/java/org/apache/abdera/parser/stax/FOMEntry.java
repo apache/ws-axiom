@@ -106,11 +106,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setContentElement(Content content) {
-        if (content != null) {
-            _setChild(CONTENT, (OMElement)content);
-        } else {
-            _removeChildren(CONTENT, false);
-        }
+        _setChild(CONTENT, (OMElement)content);
         return this;
     }
 
@@ -301,10 +297,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setIdElement(IRIElement id) {
-        if (id != null)
-            _setChild(ID, (OMElement)id);
-        else
-            _removeChildren(ID, false);
+        _setChild(ID, (OMElement)id);
         return this;
     }
 
@@ -385,10 +378,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setPublishedElement(DateTime dateTime) {
-        if (dateTime != null)
-            _setChild(PUBLISHED, (OMElement)dateTime);
-        else
-            _removeChildren(PUBLISHED, false);
+        _setChild(PUBLISHED, (OMElement)dateTime);
         return this;
     }
 
@@ -468,13 +458,9 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setSource(Source source) {
-        if (source != null) {
-            if (source instanceof Feed)
-                source = ((Feed)source).getAsSource();
-            _setChild(SOURCE, (OMElement)source);
-        } else {
-            _removeChildren(SOURCE, false);
-        }
+        if (source instanceof Feed)
+            source = ((Feed)source).getAsSource();
+        _setChild(SOURCE, (OMElement)source);
         return this;
     }
 
@@ -567,10 +553,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setUpdatedElement(DateTime updated) {
-        if (updated != null)
-            _setChild(UPDATED, (OMElement)updated);
-        else
-            _removeChildren(UPDATED, false);
+        _setChild(UPDATED, (OMElement)updated);
         return this;
     }
 
@@ -613,10 +596,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     public void setEditedElement(DateTime updated) {
         declareNamespace(APP_NS, "app");
         _removeChildren(PRE_RFC_EDITED, false);
-        if (updated != null)
-            _setChild(EDITED, (OMElement)updated);
-        else
-            _removeChildren(EDITED, false);
+        _setChild(EDITED, (OMElement)updated);
     }
 
     public Date getEdited() {
@@ -668,10 +648,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
 
     public Entry setControl(Control control) {
         _removeChildren(PRE_RFC_CONTROL, true);
-        if (control != null)
-            _setChild(CONTROL, (OMElement)control);
-        else
-            _removeChildren(CONTROL, false);
+        _setChild(CONTROL, (OMElement)control);
         return this;
     }
 
