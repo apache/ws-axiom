@@ -27,7 +27,6 @@ import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
-import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -49,19 +48,6 @@ public final class Policies {
             false);
 
     public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(DETACH_POLICY);
-    
-    public static final NodeMigrationPolicy ATTRIBUTE_MIGRATION_POLICY = new NodeMigrationPolicy() {
-        public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
-            // TODO: doesn't look correct for foreign documents
-            return Action.CLONE;
-        }
-    };
-    
-    public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
-        public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
-            return isForeignModel ? Action.CLONE : Action.MOVE;
-        }
-    };
     
     public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
         public Class<? extends CoreNode> getTargetNodeClass(OMCloneOptions options, CoreNode node) {

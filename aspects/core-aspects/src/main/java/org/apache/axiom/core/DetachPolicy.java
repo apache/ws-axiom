@@ -22,6 +22,12 @@ package org.apache.axiom.core;
  * Determines how nodes are detached from an object model tree.
  */
 public interface DetachPolicy {
+    public static final DetachPolicy NEW_DOCUMENT = new DetachPolicy() {
+        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
+            return null;
+        }
+    };
+    
     /**
      * Get the new owner document for the node (or group of child nodes) to be detached. This method
      * is called before any node is detached.

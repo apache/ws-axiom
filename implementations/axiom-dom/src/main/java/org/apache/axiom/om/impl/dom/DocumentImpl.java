@@ -28,7 +28,6 @@ import java.util.Vector;
 
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMExceptionTranslator;
 import org.apache.axiom.om.OMNode;
@@ -102,11 +101,7 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
                 if (sourceAttrs != null) {
                     int length = sourceAttrs.getLength();
                     for (int index = 0; index < length; index++) {
-                        try {
-                            ((ElementImpl)newElement).coreAppendAttribute((AttrImpl)importNode(sourceAttrs.item(index), true), NodeMigrationPolicy.MOVE_ALWAYS);
-                        } catch (CoreModelException ex) {
-                            throw DOMExceptionTranslator.translate(ex);
-                        }
+                        ((ElementImpl)newElement).coreAppendAttribute((AttrImpl)importNode(sourceAttrs.item(index), true));
                     }
                 }
                 newNode = newElement;

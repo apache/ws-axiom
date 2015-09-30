@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.mock;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
@@ -26,28 +29,21 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/**
- * Tests the behavior of {@link Element#removeAttributeNode(Attr)} if the given attribute is not
- * owned by the element.
- */
-public class TestRemoveAttributeNotOwner extends DOMTestCase {
-    public TestRemoveAttributeNotOwner(DocumentBuilderFactory dbf) {
+public class TestSetAttributeNodeNSForeignImplementation extends DOMTestCase {
+    public TestSetAttributeNodeNSForeignImplementation(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
+    @Override
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        Element element1 = document.createElementNS(null, "test");
-        Attr attr1 = document.createAttributeNS(null, "attr");
-        element1.setAttributeNodeNS(attr1);
-        Element element2 = document.createElementNS(null, "test");
-        Attr attr2 = document.createAttributeNS(null, "attr");
-        element2.setAttributeNodeNS(attr2);
+        Element element = document.createElementNS(null, "test");
+        Attr attr = mock(Attr.class);
         try {
-            element1.removeAttributeNode(attr2);
+            element.setAttributeNodeNS(attr);
             fail("Expected DOMException");
         } catch (DOMException ex) {
-            assertEquals(DOMException.NOT_FOUND_ERR, ex.code);
+            assertThat(ex.code).isEqualTo(DOMException.WRONG_DOCUMENT_ERR);
         }
     }
 }

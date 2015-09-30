@@ -56,47 +56,9 @@ public aspect CoreElementSupport {
         return attr;
     }
 
-    private CoreAttribute CoreElement.accept(CoreAttribute attr, NodeMigrationPolicy policy) throws NodeMigrationException {
-        boolean hasParent = attr.coreHasOwnerElement();
-        boolean isForeignDocument = !coreHasSameOwnerDocument(attr);
-        boolean isForeignModel = attr.coreGetNodeFactory() != coreGetNodeFactory();
-        if (hasParent || isForeignDocument || isForeignModel) {
-            switch (policy.getAction(hasParent, isForeignDocument, isForeignModel)) {
-                case REJECT:
-                    if (isForeignDocument) {
-                        // Note that since isForeignModel implies isForeignDocument, we also get here
-                        // if isForeignModel is true.
-                        throw new WrongDocumentException();
-                    } else {
-                        // We get here if isForeignDocument and isForeignModel are false. Since at least
-                        // one of the three booleans must be true, this implies that hasParent is true.
-                        throw new NodeInUseException();
-                    }
-                case MOVE:
-                    if (isForeignDocument || isForeignModel) {
-                        // TODO
-//                        throw new UnsupportedOperationException();
-                        return attr;
-                    } else {
-                        attr.coreRemove(null); // TODO
-                        return attr;
-                    }
-                case CLONE:
-                    // TODO: probably we need to distinguish between cloning an attribute from the same model and importing it from another model (does that actually ever occur?)
-                    throw new UnsupportedOperationException();
-//                    return cloneAttribute(attr);
-                default:
-                    // Should never get here unless new values are added to the enum
-                    throw new IllegalStateException();
-            }
-        } else {
-            return attr;
-        }
-    }
-
-    public final void CoreElement.coreAppendAttribute(CoreAttribute attr, NodeMigrationPolicy policy) throws NodeMigrationException {
-        // TODO: we should probably check if the attribute is already owned by the element
-        internalAppendAttribute(accept(attr, policy));
+    public final void CoreElement.coreAppendAttribute(CoreAttribute attr) {
+        attr.coreRemove(DetachPolicy.NEW_DOCUMENT);
+        internalAppendAttribute(attr);
     }
 
     private void CoreElement.internalAppendAttribute(CoreAttribute attr) {
@@ -129,13 +91,12 @@ public aspect CoreElementSupport {
         }
     }
     
-    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute coreAttr, NodeMigrationPolicy policy, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument, ReturnValue returnValue) throws NodeMigrationException {
-        if (coreAttr.coreGetOwnerElement() == this) {
+    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument) {
+        if (attr.coreGetOwnerElement() == this) {
             // TODO: document this and add assertion
-            // TODO: take returnValue into account
-            return coreAttr;
+            return attr;
         }
-        CoreAttribute attr = accept(coreAttr, policy);
+        attr.coreRemove(DetachPolicy.NEW_DOCUMENT);
         String namespaceURI = matcher.getNamespaceURI(attr);
         String name = matcher.getName(attr); 
         CoreAttribute existingAttr = coreGetFirstAttribute();
@@ -161,11 +122,7 @@ public aspect CoreElementSupport {
             attr.internalSetNextAttribute(existingAttr.coreGetNextAttribute());
             existingAttr.internalSetNextAttribute(null);
         }
-        switch (returnValue) {
-            case ADDED_ATTRIBUTE: return attr;
-            case REPLACED_ATTRIBUTE: return existingAttr;
-            default: return null;
-        }
+        return existingAttr;
     }
 
     public final boolean CoreElement.coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, DetachPolicy detachPolicy) {

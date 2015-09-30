@@ -22,30 +22,6 @@ import java.util.Iterator;
 
 public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, CoreNamedNode, DeferringParentNode {
     /**
-     * Specifies the value that should be returned by
-     * {@link CoreElement#coreSetAttribute(AttributeMatcher, String, String, CoreAttribute, NodeMigrationPolicy, ReturnValue)}.
-     */
-    public enum ReturnValue {
-        /**
-         * Nothing should be returned.
-         */
-        NONE,
-        
-        /**
-         * The method will return the attribute that was effectively added to the element (which may
-         * be a clone of the attribute requested to be added if
-         * {@link NodeMigrationPolicy.Action#CLONE} is used).
-         */
-        ADDED_ATTRIBUTE,
-        
-        /**
-         * The method will return the attribute that was replaced by the new attribute, or
-         * <code>null</code> if no matching attribute existed.
-         */
-        REPLACED_ATTRIBUTE,
-    }
-    
-    /**
      * Get the first attribute of this element.
      * 
      * @return the first attribute, or <code>null</code> if this element has no attributes
@@ -103,16 +79,13 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * Add a new attribute or replace an existing attribute based on a given
      * {@link AttributeMatcher}. If a matching attribute on this element is found, it is replaced by
      * the specified attribute. If no matching attribute is found, then the specified attribute is
-     * added to this element. If the attribute is already owned by this element, then calling this method
-     * has no effect.
+     * added to this element. If the attribute is already owned by this element, then calling this
+     * method has no effect.
      * 
      * @param matcher
      *            the {@link AttributeMatcher} implementation to use
      * @param attr
      *            the new attribute to add
-     * @param policy
-     *            the policy to apply if the attribute already has an owner element or belongs to a
-     *            different document
      * @param changeDocumentOfReplacedAttribute
      *            specifies if the owner document of the replaced attribute (if any) should be
      *            changed
@@ -121,12 +94,10 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      *            attribute will have its own owner document (which may be created lazily at a later
      *            moment); only meaningful if <code>changeDocumentOfReplacedAttribute</code> is
      *            <code>true</code
-     * @param returnValue
-     *            specifies the expected return value of the method
-     * @return the attribute as specified by the <code>returnValue</code> parameter
-     * @throws NodeMigrationException 
+     * @return the attribute that was replaced by the new attribute, or <code>null</code> if no
+     *         matching attribute existed.
      */
-    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, NodeMigrationPolicy policy, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument, ReturnValue returnValue) throws NodeMigrationException;
+    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument);
 
     /**
      * Append an attribute to this element. The attribute is simply added at the end of the list of
@@ -135,13 +106,8 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * 
      * @param attr
      *            the attribute to append
-     * @param policy
-     *            the policy to apply if the attribute already has an owner element or belongs to a
-     *            different document
-     * @throws NodeMigrationException
-     *             if appending the attribute was rejected by the policy
      */
-    void coreAppendAttribute(CoreAttribute attr, NodeMigrationPolicy policy) throws NodeMigrationException;
+    void coreAppendAttribute(CoreAttribute attr);
     
     /**
      * Remove an attribute based on a given {@link AttributeMatcher}.

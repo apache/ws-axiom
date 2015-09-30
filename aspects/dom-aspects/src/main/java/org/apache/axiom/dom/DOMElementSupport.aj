@@ -22,7 +22,6 @@ import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreElement;
-import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.ElementAction;
@@ -136,12 +135,21 @@ public aspect DOMElementSupport {
     }
     
     public final Attr DOMElement.setAttributeNodeNS(Attr _newAttr) throws DOMException {
+        if (!(_newAttr instanceof DOMAttribute)) {
+            throw DOMExceptionTranslator.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+        }
         DOMAttribute newAttr = (DOMAttribute)_newAttr;
-        if (newAttr.coreGetOwnerElement() == this) {
+        CoreElement owner = newAttr.coreGetOwnerElement();
+        if (owner == this) {
             // This means that the "new" attribute is already linked to the element
             // and replaces itself.
             return newAttr;
+        } else if (owner != null) {
+            throw DOMExceptionTranslator.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
         } else {
+            if (!coreHasSameOwnerDocument(newAttr)) {
+                throw DOMExceptionTranslator.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+            }
             AttributeMatcher matcher;
             if (newAttr instanceof CoreNSAwareAttribute) {
                 matcher = Policies.DOM2_ATTRIBUTE_MATCHER;
@@ -151,22 +159,22 @@ public aspect DOMElementSupport {
                 // Must be a DOM1 (namespace unaware) attribute
                 matcher = Policies.DOM1_ATTRIBUTE_MATCHER;
             }
-            try {
-                return (DOMAttribute)coreSetAttribute(matcher, newAttr, Policies.ATTRIBUTE_MIGRATION_POLICY, false, null, ReturnValue.REPLACED_ATTRIBUTE);
-            } catch (CoreModelException ex) {
-                throw DOMExceptionTranslator.translate(ex);
-            }
+            return (DOMAttribute)coreSetAttribute(matcher, newAttr, false, null);
         }
     }
 
     public final Attr DOMElement.removeAttributeNode(Attr oldAttr) throws DOMException {
-        DOMAttribute attr = (DOMAttribute)oldAttr;
-        if (attr.coreGetOwnerElement() != this) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
+        if (oldAttr instanceof DOMAttribute) {
+            DOMAttribute attr = (DOMAttribute)oldAttr;
+            if (attr.coreGetOwnerElement() != this) {
+                throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
+            } else {
+                attr.coreRemove(Policies.DETACH_POLICY);
+            }
+            return attr;
         } else {
-            attr.coreRemove(Policies.DETACH_POLICY);
+            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
         }
-        return attr;
     }
 
     public final void DOMElement.removeAttribute(String name) throws DOMException {

@@ -24,8 +24,6 @@ import java.util.ResourceBundle;
 
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ExceptionTranslator;
-import org.apache.axiom.core.NodeInUseException;
-import org.apache.axiom.core.WrongDocumentException;
 import org.w3c.dom.DOMException;
 
 public final class DOMExceptionTranslator implements ExceptionTranslator {
@@ -73,13 +71,7 @@ public final class DOMExceptionTranslator implements ExceptionTranslator {
     }
 
     public static RuntimeException translate(CoreModelException ex) {
-        if (ex instanceof WrongDocumentException) {
-            return newDOMException(DOMException.WRONG_DOCUMENT_ERR);
-        } else if (ex instanceof NodeInUseException) {
-            return newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
-        } else {
-            throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
-        }
+        throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
     }
 
     public RuntimeException toUncheckedException(CoreModelException ex) {

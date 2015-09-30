@@ -149,7 +149,8 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixEmptyNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixExplicitMasked(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixImplicitMasked(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNotOwner(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNodeForeignImplementation(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNodeNotOwner(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
@@ -168,6 +169,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildSingle(dbf, false));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildSingle(dbf, true));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSForeignImplementation(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSInUse(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));

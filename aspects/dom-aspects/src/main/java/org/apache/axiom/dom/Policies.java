@@ -29,7 +29,6 @@ import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
-import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.core.NodeType;
 
 public final class Policies {
@@ -89,18 +88,6 @@ public final class Policies {
 
     public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(DETACH_POLICY);
     
-    public static final NodeMigrationPolicy ATTRIBUTE_MIGRATION_POLICY = new NodeMigrationPolicy() {
-        public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
-            return Action.REJECT;
-        }
-    };
-    
-    public static final NodeMigrationPolicy NODE_MIGRATION_POLICY = new NodeMigrationPolicy() {
-        public Action getAction(boolean hasParent, boolean isForeignDocument, boolean isForeignModel) {
-            return isForeignDocument ? Action.REJECT : Action.MOVE;
-        }
-    };
-
     public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
         public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {
             // This is not specified by the API, but it's compatible with versions before 1.2.14

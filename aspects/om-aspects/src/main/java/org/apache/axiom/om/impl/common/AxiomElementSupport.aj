@@ -36,8 +36,6 @@ import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.IdentityMapper;
-import org.apache.axiom.core.NodeMigrationException;
-import org.apache.axiom.core.NodeMigrationPolicy;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -280,11 +278,7 @@ public aspect AxiomElementSupport {
     }
     
     public final void AxiomElement.internalAppendAttribute(OMAttribute attr) {
-        try {
-            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
-        } catch (NodeMigrationException ex) {
-            AxiomExceptionTranslator.translate(ex);
-        }
+        coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, true, null);
     }
     
     public final OMAttribute AxiomElement.addAttribute(OMAttribute attr){
@@ -355,23 +349,14 @@ public aspect AxiomElementSupport {
         OMNamespace ns = new OMNamespaceImpl(uri, prefix);
         AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
-        try {
-            coreAppendAttribute(decl, NodeMigrationPolicy.MOVE_ALWAYS);
-        } catch (NodeMigrationException ex) {
-            throw AxiomExceptionTranslator.translate(ex);
-        }
+        coreAppendAttribute(decl);
         return ns;
     }
     
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
         AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
-        try {
-            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl,
-                    NodeMigrationPolicy.MOVE_ALWAYS, true, null, ReturnValue.NONE);
-        } catch (NodeMigrationException ex) {
-            throw AxiomExceptionTranslator.translate(ex);
-        }
+        coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl, true, null);
     }
     
     @SuppressWarnings("rawtypes")
