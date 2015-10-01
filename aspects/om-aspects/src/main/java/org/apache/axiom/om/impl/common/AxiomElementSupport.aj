@@ -278,7 +278,7 @@ public aspect AxiomElementSupport {
     }
     
     public final void AxiomElement.internalAppendAttribute(OMAttribute attr) {
-        coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, true, null);
+        coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, Policies.DETACH_POLICY);
     }
     
     public final OMAttribute AxiomElement.addAttribute(OMAttribute attr){
@@ -356,7 +356,7 @@ public aspect AxiomElementSupport {
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
         AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
-        coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl, true, null);
+        coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl, Policies.DETACH_POLICY);
     }
     
     @SuppressWarnings("rawtypes")

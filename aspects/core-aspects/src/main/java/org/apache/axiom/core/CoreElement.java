@@ -86,18 +86,12 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      *            the {@link AttributeMatcher} implementation to use
      * @param attr
      *            the new attribute to add
-     * @param changeDocumentOfReplacedAttribute
-     *            specifies if the owner document of the replaced attribute (if any) should be
-     *            changed
-     * @param newDocument
-     *            the new owner document for the replaced attribute, or <code>null</code> if the
-     *            attribute will have its own owner document (which may be created lazily at a later
-     *            moment); only meaningful if <code>changeDocumentOfReplacedAttribute</code> is
-     *            <code>true</code
+     * @param detachPolicy
+     *            determines the new owner document for the replaced attribute
      * @return the attribute that was replaced by the new attribute, or <code>null</code> if no
      *         matching attribute existed.
      */
-    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument);
+    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, DetachPolicy detachPolicy);
 
     /**
      * Append an attribute to this element. The attribute is simply added at the end of the list of

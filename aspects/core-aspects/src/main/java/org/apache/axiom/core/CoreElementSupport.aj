@@ -91,7 +91,7 @@ public aspect CoreElementSupport {
         }
     }
     
-    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, boolean changeDocumentOfReplacedAttribute, CoreDocument newDocument) {
+    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, DetachPolicy detachPolicy) {
         if (attr.coreGetOwnerElement() == this) {
             // TODO: document this and add assertion
             return attr;
@@ -118,7 +118,7 @@ public aspect CoreElementSupport {
             } else {
                 previousAttr.internalSetNextAttribute(attr);
             }
-            existingAttr.internalUnsetOwnerElement(changeDocumentOfReplacedAttribute ? newDocument : coreGetOwnerDocument(true));
+            existingAttr.internalUnsetOwnerElement(detachPolicy.getNewOwnerDocument(this));
             attr.internalSetNextAttribute(existingAttr.coreGetNextAttribute());
             existingAttr.internalSetNextAttribute(null);
         }

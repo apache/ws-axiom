@@ -159,7 +159,7 @@ public aspect DOMElementSupport {
                 // Must be a DOM1 (namespace unaware) attribute
                 matcher = Policies.DOM1_ATTRIBUTE_MATCHER;
             }
-            return (DOMAttribute)coreSetAttribute(matcher, newAttr, false, null);
+            return (DOMAttribute)coreSetAttribute(matcher, newAttr, Policies.DETACH_POLICY);
         }
     }
 
