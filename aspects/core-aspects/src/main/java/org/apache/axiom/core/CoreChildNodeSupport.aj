@@ -207,14 +207,14 @@ public aspect CoreChildNodeSupport {
                 parent.getContent(true).firstChild = nextSibling;
             } else {
                 previousSibling.nextSibling = nextSibling;
-                previousSibling = null;
             }
             if (nextSibling == null) {
                 parent.getContent(true).lastChild = previousSibling;
             } else {
                 nextSibling.previousSibling = previousSibling;
-                nextSibling = null;
             }
+            nextSibling = null;
+            previousSibling = null;
             if (newParent == null) {
                 internalUnsetParent(detachPolicy.getNewOwnerDocument(parent));
             }

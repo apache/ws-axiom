@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
 public aspect AxiomDocumentSupport {
     public final OMElement AxiomDocument.getOMDocumentElement() {
@@ -35,17 +36,11 @@ public aspect AxiomDocumentSupport {
         if (documentElement == null) {
             throw new IllegalArgumentException("documentElement must not be null");
         }
-        OMElement existingDocumentElement = getOMDocumentElement();
+        AxiomElement existingDocumentElement = (AxiomElement)coreGetDocumentElement();
         if (existingDocumentElement == null) {
             addChild(documentElement);
         } else {
-            OMNode nextSibling = existingDocumentElement.getNextOMSibling();
-            existingDocumentElement.detach();
-            if (nextSibling == null) {
-                addChild(documentElement);
-            } else {
-                nextSibling.insertSiblingBefore(documentElement);
-            }
+            existingDocumentElement.coreReplaceWith((AxiomElement)documentElement, Policies.DETACH_POLICY);
         }
     }
 
