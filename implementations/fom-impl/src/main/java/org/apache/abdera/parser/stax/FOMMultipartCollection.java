@@ -15,6 +15,7 @@ import javax.activation.MimeType;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.util.MimeTypeHelper;
+import org.apache.axiom.fom.AbderaElement;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -53,11 +54,11 @@ public class FOMMultipartCollection extends FOMCollection {
 
     public Map<String, String> getAcceptMultiparted() {
         Map<String, String> accept = new HashMap<String, String>();
-        Iterator<?> i = getChildrenWithName(ACCEPT);
+        Iterator<AbderaElement> i = _getChildrenWithName(ACCEPT);
         if (i == null || !i.hasNext())
-            i = getChildrenWithName(PRE_RFC_ACCEPT);
+            i = _getChildrenWithName(PRE_RFC_ACCEPT);
         while (i.hasNext()) {
-            Element e = (Element)i.next();
+            Element e = i.next();
             String t = e.getText();
             if (t != null) {
                 if (e.getAttributeValue(ALTERNATE) != null && e.getAttributeValue(ALTERNATE).trim().length() > 0) {

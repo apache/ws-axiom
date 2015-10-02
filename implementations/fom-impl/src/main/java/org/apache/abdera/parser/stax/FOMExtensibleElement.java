@@ -42,7 +42,7 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
 
     public <T extends Element> List<T> getExtensions(QName qname) {
         FOMFactory factory = (FOMFactory)this.getFactory();
-        return new FOMList<T>(new FOMElementIteratorWrapper(factory, getChildrenWithName(qname)));
+        return new FOMList<T>(new FOMElementIteratorWrapper(factory, _getChildrenWithName(qname)));
     }
 
     public <T extends Element> T getExtension(QName qname) {

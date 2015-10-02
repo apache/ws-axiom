@@ -58,10 +58,13 @@ import org.apache.abdera.parser.stax.util.FOMElementIteratorWrapper;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
+import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.AbderaText;
+import org.apache.axiom.fom.FOMExceptionTranslator;
 import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.fom.Policies;
@@ -220,9 +223,15 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return (T)this;
     }
 
+    protected final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
+        return coreGetElements(Axis.CHILDREN, AbderaElement.class, ElementMatcher.BY_QNAME,
+                qname.getNamespaceURI(), qname.getLocalPart(), FOMExceptionTranslator.INSTANCE,
+                Policies.DETACH_POLICY);
+    }
+
     public <E extends Element> List<E> _getChildrenAsSet(QName qname) {
         FOMFactory factory = (FOMFactory)getFactory();
-        return new FOMList(new FOMElementIteratorWrapper(factory, getChildrenWithName(qname)));
+        return new FOMList(new FOMElementIteratorWrapper(factory, _getChildrenWithName(qname)));
     }
 
     protected void _setChild(QName qname, Element element) {

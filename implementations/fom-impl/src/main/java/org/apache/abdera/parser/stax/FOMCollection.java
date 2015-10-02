@@ -37,6 +37,7 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.fom.AbderaCollection;
+import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.om.OMElement;
 
 @SuppressWarnings("deprecation")
@@ -80,11 +81,11 @@ public class FOMCollection extends FOMExtensibleElement implements AbderaCollect
 
     public String[] getAccept() {
         List<String> accept = new ArrayList<String>();
-        Iterator<?> i = getChildrenWithName(ACCEPT);
+        Iterator<AbderaElement> i = _getChildrenWithName(ACCEPT);
         if (i == null || !i.hasNext())
-            i = getChildrenWithName(PRE_RFC_ACCEPT);
+            i = _getChildrenWithName(PRE_RFC_ACCEPT);
         while (i.hasNext()) {
-            Element e = (Element)i.next();
+            Element e = i.next();
             String t = e.getText();
             if (t != null) {
                 accept.add(t.trim());
