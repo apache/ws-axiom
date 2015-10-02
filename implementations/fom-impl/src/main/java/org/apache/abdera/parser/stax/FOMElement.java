@@ -223,7 +223,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return (T)this;
     }
 
-    protected final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
+    public final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
         return coreGetElements(Axis.CHILDREN, AbderaElement.class, ElementMatcher.BY_QNAME,
                 qname.getNamespaceURI(), qname.getLocalPart(), FOMExceptionTranslator.INSTANCE,
                 Policies.DETACH_POLICY);
@@ -234,7 +234,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return new FOMList(new FOMElementIteratorWrapper(factory, _getChildrenWithName(qname)));
     }
 
-    protected void _setChild(QName qname, Element element) {
+    public void _setChild(QName qname, Element element) {
         AbderaElement e = null;
         CoreChildNode child = coreGetFirstChild();
         while (child != null) {
@@ -328,7 +328,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return (T)this;
     }
 
-    protected void _setElementValue(QName qname, String value) {
+    public void _setElementValue(QName qname, String value) {
         OMElement element = this.getFirstChildWithName(qname);
         if (element != null && value != null) {
             element.setText(value);
@@ -344,7 +344,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         }
     }
 
-    protected String _getElementValue(QName qname) {
+    public String _getElementValue(QName qname) {
         String value = null;
         OMElement element = this.getFirstChildWithName(qname);
         if (element != null)
@@ -442,7 +442,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return (T)this;
     }
 
-    protected void _removeChildren(QName qname, boolean many) {
+    public void _removeChildren(QName qname, boolean many) {
         CoreChildNode child = coreGetFirstChild();
         while (child != null) {
             if (child instanceof CoreNSAwareElement) {

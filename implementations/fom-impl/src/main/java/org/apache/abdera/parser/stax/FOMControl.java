@@ -17,33 +17,8 @@
  */
 package org.apache.abdera.parser.stax;
 
-import static org.apache.abdera.util.Constants.DRAFT;
-import static org.apache.abdera.util.Constants.NO;
-import static org.apache.abdera.util.Constants.PRE_RFC_DRAFT;
-import static org.apache.abdera.util.Constants.YES;
-
-import org.apache.abdera.model.Control;
 import org.apache.axiom.fom.AbderaControl;
 
-@SuppressWarnings("deprecation")
 public class FOMControl extends FOMExtensibleElement implements AbderaControl {
-    public boolean isDraft() {
-        String value = _getElementValue(DRAFT);
-        if (value == null)
-            value = _getElementValue(PRE_RFC_DRAFT);
-        return (value != null && YES.equalsIgnoreCase(value));
-    }
-
-    public Control setDraft(boolean draft) {
-        _removeChildren(PRE_RFC_DRAFT, true);
-        _setElementValue(DRAFT, (draft) ? YES : NO);
-        return this;
-    }
-
-    public Control unsetDraft() {
-        _removeChildren(PRE_RFC_DRAFT, true);
-        _removeChildren(DRAFT, true);
-        return this;
-    }
 
 }

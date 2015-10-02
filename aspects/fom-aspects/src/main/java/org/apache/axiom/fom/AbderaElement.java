@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.fom;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -27,4 +28,9 @@ import org.apache.axiom.core.CoreNSAwareElement;
 
 public interface AbderaElement extends Element, AbderaChildNode, CoreNSAwareElement {
     <E extends Element> List<E> _getChildrenAsSet(QName qname);
+    void _setChild(QName qname, Element element);
+    Iterator<AbderaElement> _getChildrenWithName(QName qname);
+    void _removeChildren(QName qname, boolean many);
+    String _getElementValue(QName qname);
+    void _setElementValue(QName qname, String value);
 }
