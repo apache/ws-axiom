@@ -26,7 +26,6 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.IRIElement;
 import org.apache.abdera.model.Person;
 import org.apache.axiom.fom.AbderaPerson;
-import org.apache.axiom.om.OMElement;
 
 public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     public Element getNameElement() {
@@ -34,7 +33,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setNameElement(Element element) {
-        _setChild(NAME, (OMElement)element);
+        _setChild(NAME, element);
         return this;
     }
 
@@ -46,7 +45,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
         } else {
             el = null;
         }
-        _setChild(NAME, (OMElement)el);
+        _setChild(NAME, el);
         return el;
     }
 
@@ -60,7 +59,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setEmailElement(Element element) {
-        _setChild(EMAIL, (OMElement)element);
+        _setChild(EMAIL, element);
         return this;
     }
 
@@ -72,7 +71,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
         } else {
             el = null;
         }
-        _setChild(EMAIL, (OMElement)el);
+        _setChild(EMAIL, el);
         return el;
     }
 
@@ -86,7 +85,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Person setUriElement(IRIElement uri) {
-        _setChild(URI, (OMElement)uri);
+        _setChild(URI, uri);
         return this;
     }
 
@@ -98,7 +97,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
         } else {
             el = null;
         }
-        _setChild(URI, (OMElement)el);
+        _setChild(URI, el);
         return el;
     }
 

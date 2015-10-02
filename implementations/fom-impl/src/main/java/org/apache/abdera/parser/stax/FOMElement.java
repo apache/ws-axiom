@@ -61,6 +61,7 @@ import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.fom.AbderaElement;
+import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.fom.Policies;
@@ -224,15 +225,26 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return new FOMList(new FOMElementIteratorWrapper(factory, getChildrenWithName(qname)));
     }
 
-    protected void _setChild(QName qname, OMElement element) {
-        OMElement e = getFirstChildWithName(qname);
+    protected void _setChild(QName qname, Element element) {
+        AbderaElement e = null;
+        CoreChildNode child = coreGetFirstChild();
+        while (child != null) {
+            if (child instanceof AbderaElement) {
+                AbderaElement candidate = (AbderaElement)child;
+                if (candidate.coreGetLocalName().equals(qname.getLocalPart())
+                        && candidate.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
+                    e = candidate;
+                    break;
+                }
+            }
+            child = child.coreGetNextSibling();
+        }
         if (e == null && element != null) {
-            addChild(element);
+            coreAppendChild((AbderaElement)element, false);
         } else if (e != null && element != null) {
-            e.insertSiblingBefore(element);
-            e.discard();
+            e.coreReplaceWith((AbderaElement)element, Policies.DETACH_POLICY);
         } else if (e != null && element == null) {
-            e.discard();
+            e.coreDetach(Policies.DETACH_POLICY);
         }
     }
 
@@ -336,7 +348,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     protected <T extends Text> void setTextElement(QName qname, T text, boolean many) {
-        _setChild(qname, (OMElement)text);
+        _setChild(qname, text);
     }
 
     public void setText(String text) {

@@ -106,7 +106,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setContentElement(Content content) {
-        _setChild(CONTENT, (OMElement)content);
+        _setChild(CONTENT, content);
         return this;
     }
 
@@ -297,7 +297,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setIdElement(IRIElement id) {
-        _setChild(ID, (OMElement)id);
+        _setChild(ID, id);
         return this;
     }
 
@@ -378,7 +378,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setPublishedElement(DateTime dateTime) {
-        _setChild(PUBLISHED, (OMElement)dateTime);
+        _setChild(PUBLISHED, dateTime);
         return this;
     }
 
@@ -460,7 +460,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     public Entry setSource(Source source) {
         if (source instanceof Feed)
             source = ((Feed)source).getAsSource();
-        _setChild(SOURCE, (OMElement)source);
+        _setChild(SOURCE, source);
         return this;
     }
 
@@ -553,7 +553,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry setUpdatedElement(DateTime updated) {
-        _setChild(UPDATED, (OMElement)updated);
+        _setChild(UPDATED, updated);
         return this;
     }
 
@@ -596,7 +596,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     public void setEditedElement(DateTime updated) {
         declareNamespace(APP_NS, "app");
         _removeChildren(PRE_RFC_EDITED, false);
-        _setChild(EDITED, (OMElement)updated);
+        _setChild(EDITED, updated);
     }
 
     public Date getEdited() {
@@ -648,7 +648,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
 
     public Entry setControl(Control control) {
         _removeChildren(PRE_RFC_CONTROL, true);
-        _setChild(CONTROL, (OMElement)control);
+        _setChild(CONTROL, control);
         return this;
     }
 

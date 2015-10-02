@@ -203,25 +203,48 @@ public aspect CoreChildNodeSupport {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             beforeDetach();
-            CoreDocument newOwnerDocument = newParent != null ? null : detachPolicy.getNewOwnerDocument(parent);
             if (previousSibling == null) {
                 parent.getContent(true).firstChild = nextSibling;
             } else {
                 previousSibling.nextSibling = nextSibling;
+                previousSibling = null;
             }
             if (nextSibling == null) {
                 parent.getContent(true).lastChild = previousSibling;
             } else {
                 nextSibling.previousSibling = previousSibling;
+                nextSibling = null;
             }
-            previousSibling = null;
-            nextSibling = null;
             if (newParent == null) {
-                internalUnsetParent(newOwnerDocument);
+                internalUnsetParent(detachPolicy.getNewOwnerDocument(parent));
             }
         }
         if (newParent != null) {
             internalSetParent(newParent);
+        }
+    }
+
+    public final void CoreChildNode.coreReplaceWith(CoreChildNode newNode, DetachPolicy detachPolicy) {
+        newNode.coreDetach(DetachPolicy.NEW_DOCUMENT);
+        CoreParentNode parent = coreGetParent();
+        if (parent != null) {
+            beforeDetach();
+            if (previousSibling == null) {
+                parent.getContent(true).firstChild = newNode;
+            } else {
+                previousSibling.nextSibling = newNode;
+                newNode.previousSibling = previousSibling;
+                previousSibling = null;
+            }
+            if (nextSibling == null) {
+                parent.getContent(true).lastChild = newNode;
+            } else {
+                nextSibling.previousSibling = newNode;
+                newNode.nextSibling = nextSibling;
+                nextSibling = null;
+            }
+            internalUnsetParent(detachPolicy.getNewOwnerDocument(parent));
+            newNode.internalSetParent(parent);
         }
     }
 

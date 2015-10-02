@@ -43,7 +43,7 @@ public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspac
     private Text setTitle(String title, Text.Type type) {
         Text text = getFactory().newText(PREFIXED_TITLE, type);
         text.setValue(title);
-        this._setChild(PREFIXED_TITLE, (OMElement)text);
+        this._setChild(PREFIXED_TITLE, text);
         return text;
     }
 

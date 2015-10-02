@@ -117,7 +117,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setIdElement(IRIElement id) {
-        _setChild(ID, (OMElement)id);
+        _setChild(ID, id);
         return (T)this;
     }
 
@@ -324,7 +324,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setUpdatedElement(DateTime updated) {
-        _setChild(UPDATED, (OMElement)updated);
+        _setChild(UPDATED, updated);
         return (T)this;
     }
 
@@ -367,7 +367,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setGenerator(Generator generator) {
-        _setChild(GENERATOR, (OMElement)generator);
+        _setChild(GENERATOR, generator);
         return (T)this;
     }
 
@@ -387,7 +387,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setIconElement(IRIElement iri) {
-        _setChild(ICON, (OMElement)iri);
+        _setChild(ICON, iri);
         return (T)this;
     }
 
@@ -412,7 +412,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T setLogoElement(IRIElement iri) {
-        _setChild(LOGO, (OMElement)iri);
+        _setChild(LOGO, iri);
         return (T)this;
     }
 
@@ -487,7 +487,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
 
     public <T extends Source> T setCollection(Collection collection) {
         _removeChildren(PRE_RFC_COLLECTION, true);
-        _setChild(COLLECTION, (OMElement)collection);
+        _setChild(COLLECTION, collection);
         return (T)this;
     }
 

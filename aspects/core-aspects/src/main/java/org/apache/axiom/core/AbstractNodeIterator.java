@@ -139,10 +139,8 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
     }
 
     public final void replace(CoreChildNode newNode) throws CoreModelException {
-        // TODO
-        throw new UnsupportedOperationException();
-//        // Move to next node before replacing the current one
-//        hasNext();
-//        ((CoreChildNode)currentNode).coreReplaceWith(newNode);
+        // Move to next node before replacing the current one
+        hasNext();
+        ((CoreChildNode)currentNode).coreReplaceWith(newNode, detachPolicy);
     }
 }
