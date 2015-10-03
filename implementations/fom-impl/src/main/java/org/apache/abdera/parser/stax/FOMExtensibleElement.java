@@ -47,7 +47,7 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
 
     public <T extends Element> T getExtension(QName qname) {
         FOMFactory factory = (FOMFactory)getFactory();
-        T t = (T)this.getFirstChildWithName(qname);
+        T t = (T)_getFirstChildWithName(qname);
         return (T)((t != null) ? factory.getElementWrapper(t) : null);
     }
 
@@ -144,7 +144,7 @@ public class FOMExtensibleElement extends FOMElement implements AbderaExtensible
     }
 
     public <T extends Element> T addExtension(QName qname, QName before) {
-        OMElement el = getFirstChildWithName(before);
+        OMElement el = (OMElement)_getFirstChildWithName(before);
         T element = (T)getFactory().newElement(qname);
         if (el == null) {
             addExtension(element);

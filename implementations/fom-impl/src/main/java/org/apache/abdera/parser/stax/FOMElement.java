@@ -143,7 +143,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public <T extends Element> T getFirstChild(QName qname) {
-        return (T)getWrapped((Element)this.getFirstChildWithName(qname));
+        return (T)getWrapped(_getFirstChildWithName(qname));
     }
 
     public Lang getLanguageTag() {
@@ -234,20 +234,23 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return new FOMList(new FOMElementIteratorWrapper(factory, _getChildrenWithName(qname)));
     }
 
-    public void _setChild(QName qname, Element element) {
-        AbderaElement e = null;
+    public final AbderaElement _getFirstChildWithName(QName qname) {
         CoreChildNode child = coreGetFirstChild();
         while (child != null) {
             if (child instanceof AbderaElement) {
                 AbderaElement candidate = (AbderaElement)child;
                 if (candidate.coreGetLocalName().equals(qname.getLocalPart())
                         && candidate.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
-                    e = candidate;
-                    break;
+                    return candidate;
                 }
             }
             child = child.coreGetNextSibling();
         }
+        return null;
+    }
+
+    public void _setChild(QName qname, Element element) {
+        AbderaElement e = _getFirstChildWithName(qname);
         if (e == null && element != null) {
             coreAppendChild((AbderaElement)element, false);
         } else if (e != null && element != null) {
@@ -329,7 +332,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public void _setElementValue(QName qname, String value) {
-        OMElement element = this.getFirstChildWithName(qname);
+        OMElement element = (OMElement)_getFirstChildWithName(qname);
         if (element != null && value != null) {
             element.setText(value);
         } else if (element != null && value == null) {
@@ -346,14 +349,14 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
 
     public String _getElementValue(QName qname) {
         String value = null;
-        OMElement element = this.getFirstChildWithName(qname);
+        AbderaElement element = _getFirstChildWithName(qname);
         if (element != null)
             value = element.getText();
         return getMustPreserveWhitespace() || value == null ? value : value.trim();
     }
 
     protected <T extends Text> T getTextElement(QName qname) {
-        return (T)getFirstChildWithName(qname);
+        return (T)_getFirstChildWithName(qname);
     }
 
     protected <T extends Text> void setTextElement(QName qname, T text, boolean many) {

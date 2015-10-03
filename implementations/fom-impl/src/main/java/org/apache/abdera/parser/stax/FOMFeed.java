@@ -48,7 +48,7 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     }
 
     public Feed insertEntry(Entry entry) {
-        OMElement el = getFirstChildWithName(ENTRY);
+        OMElement el = (OMElement)_getFirstChildWithName(ENTRY);
         if (el == null) {
             addEntry(entry);
         } else {
@@ -83,7 +83,7 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
     @Override
     public void addChild(OMNode node) {
         if (isComplete() && node instanceof OMElement && !(node instanceof Entry)) {
-            OMElement el = this.getFirstChildWithName(ENTRY);
+            OMElement el = (OMElement)_getFirstChildWithName(ENTRY);
             if (el != null) {
                 el.insertSiblingBefore(node);
                 return;

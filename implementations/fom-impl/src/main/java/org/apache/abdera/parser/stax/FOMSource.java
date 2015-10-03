@@ -58,7 +58,7 @@ import org.apache.axiom.om.OMNode;
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     public Person getAuthor() {
-        return (Person)getFirstChildWithName(AUTHOR);
+        return (Person)_getFirstChildWithName(AUTHOR);
     }
 
     public List<Person> getAuthors() {
@@ -113,7 +113,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement getIdElement() {
-        return (IRIElement)getFirstChildWithName(ID);
+        return (IRIElement)_getFirstChildWithName(ID);
     }
 
     public <T extends Source> T setIdElement(IRIElement id) {
@@ -320,7 +320,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public DateTime getUpdatedElement() {
-        return (DateTime)getFirstChildWithName(UPDATED);
+        return (DateTime)_getFirstChildWithName(UPDATED);
     }
 
     public <T extends Source> T setUpdatedElement(DateTime updated) {
@@ -363,7 +363,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Generator getGenerator() {
-        return (Generator)getFirstChildWithName(GENERATOR);
+        return (Generator)_getFirstChildWithName(GENERATOR);
     }
 
     public <T extends Source> T setGenerator(Generator generator) {
@@ -383,7 +383,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement getIconElement() {
-        return (IRIElement)getFirstChildWithName(ICON);
+        return (IRIElement)_getFirstChildWithName(ICON);
     }
 
     public <T extends Source> T setIconElement(IRIElement iri) {
@@ -408,7 +408,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public IRIElement getLogoElement() {
-        return (IRIElement)getFirstChildWithName(LOGO);
+        return (IRIElement)_getFirstChildWithName(LOGO);
     }
 
     public <T extends Source> T setLogoElement(IRIElement iri) {

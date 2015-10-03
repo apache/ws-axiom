@@ -29,7 +29,7 @@ import org.apache.axiom.fom.AbderaPerson;
 
 public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     public Element getNameElement() {
-        return (Element)getFirstChildWithName(NAME);
+        return (Element)_getFirstChildWithName(NAME);
     }
 
     public Person setNameElement(Element element) {
@@ -55,7 +55,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public Element getEmailElement() {
-        return (Element)getFirstChildWithName(EMAIL);
+        return (Element)_getFirstChildWithName(EMAIL);
     }
 
     public Person setEmailElement(Element element) {
@@ -81,7 +81,7 @@ public class FOMPerson extends FOMExtensibleElement implements AbderaPerson {
     }
 
     public IRIElement getUriElement() {
-        return (IRIElement)getFirstChildWithName(URI);
+        return (IRIElement)_getFirstChildWithName(URI);
     }
 
     public Person setUriElement(IRIElement uri) {

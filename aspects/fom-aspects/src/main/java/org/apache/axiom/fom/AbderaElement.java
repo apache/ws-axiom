@@ -33,4 +33,5 @@ public interface AbderaElement extends Element, AbderaChildNode, CoreNSAwareElem
     void _removeChildren(QName qname, boolean many);
     String _getElementValue(QName qname);
     void _setElementValue(QName qname, String value);
+    AbderaElement _getFirstChildWithName(QName qname);
 }

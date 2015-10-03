@@ -54,13 +54,13 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Div getValueElement() {
-        return (Div)this.getFirstChildWithName(Constants.DIV);
+        return (Div)_getFirstChildWithName(Constants.DIV);
     }
 
     public Text setValueElement(Div value) {
         if (value != null) {
-            if (this.getFirstChildWithName(Constants.DIV) != null)
-                this.getFirstChildWithName(Constants.DIV).discard();
+            if (_getFirstChildWithName(Constants.DIV) != null)
+                _getFirstChildWithName(Constants.DIV).discard();
             setTextType(Text.Type.XHTML);
             removeChildren();
             addChild((OMElement)value);
@@ -76,7 +76,7 @@ public class FOMText extends FOMElement implements AbderaText {
         } else if (Type.HTML.equals(type)) {
             val = getText();
         } else if (Type.XHTML.equals(type)) {
-            FOMDiv div = (FOMDiv)this.getFirstChildWithName(Constants.DIV);
+            FOMDiv div = (FOMDiv)_getFirstChildWithName(Constants.DIV);
             val = (div != null) ? div.getInternalValue() : null;
         }
         return val;
@@ -128,7 +128,7 @@ public class FOMText extends FOMElement implements AbderaText {
 
     public String getWrappedValue() {
         if (Type.XHTML.equals(type)) {
-            return this.getFirstChildWithName(Constants.DIV).toString();
+            return _getFirstChildWithName(Constants.DIV).toString();
         } else {
             return getValue();
         }

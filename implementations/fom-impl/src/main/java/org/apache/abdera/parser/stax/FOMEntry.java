@@ -70,7 +70,7 @@ import org.apache.axiom.om.OMElement;
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     public Person getAuthor() {
-        return (Person)getFirstChildWithName(AUTHOR);
+        return (Person)_getFirstChildWithName(AUTHOR);
     }
 
     public List<Person> getAuthors() {
@@ -102,7 +102,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Content getContentElement() {
-        return (Content)getFirstChildWithName(CONTENT);
+        return (Content)_getFirstChildWithName(CONTENT);
     }
 
     public Entry setContentElement(Content content) {
@@ -293,7 +293,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public IRIElement getIdElement() {
-        return (IRIElement)getFirstChildWithName(ID);
+        return (IRIElement)_getFirstChildWithName(ID);
     }
 
     public Entry setIdElement(IRIElement id) {
@@ -374,7 +374,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public DateTime getPublishedElement() {
-        return (DateTime)getFirstChildWithName(PUBLISHED);
+        return (DateTime)_getFirstChildWithName(PUBLISHED);
     }
 
     public Entry setPublishedElement(DateTime dateTime) {
@@ -454,7 +454,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Source getSource() {
-        return (Source)getFirstChildWithName(SOURCE);
+        return (Source)_getFirstChildWithName(SOURCE);
     }
 
     public Entry setSource(Source source) {
@@ -549,7 +549,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public DateTime getUpdatedElement() {
-        return (DateTime)getFirstChildWithName(UPDATED);
+        return (DateTime)_getFirstChildWithName(UPDATED);
     }
 
     public Entry setUpdatedElement(DateTime updated) {
@@ -587,9 +587,9 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public DateTime getEditedElement() {
-        DateTime dt = (DateTime)getFirstChildWithName(EDITED);
+        DateTime dt = (DateTime)_getFirstChildWithName(EDITED);
         if (dt == null)
-            dt = (DateTime)getFirstChildWithName(PRE_RFC_EDITED);
+            dt = (DateTime)_getFirstChildWithName(PRE_RFC_EDITED);
         return dt;
     }
 
@@ -640,9 +640,9 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Control getControl() {
-        Control control = (Control)getFirstChildWithName(CONTROL);
+        Control control = (Control)_getFirstChildWithName(CONTROL);
         if (control == null)
-            control = (Control)getFirstChildWithName(PRE_RFC_CONTROL);
+            control = (Control)_getFirstChildWithName(PRE_RFC_CONTROL);
         return control;
     }
 

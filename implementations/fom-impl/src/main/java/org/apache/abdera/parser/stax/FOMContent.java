@@ -175,7 +175,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         } else if (Type.HTML.equals(type)) {
             val = getText();
         } else if (Type.XHTML.equals(type)) {
-            FOMDiv div = (FOMDiv)this.getFirstChildWithName(Constants.DIV);
+            FOMDiv div = (FOMDiv)_getFirstChildWithName(Constants.DIV);
             if (div != null)
                 val = div.getInternalValue();
         } else if (Type.XML.equals(type)) {
@@ -262,7 +262,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 
     public String getWrappedValue() {
         if (Type.XHTML.equals(type)) {
-            return this.getFirstChildWithName(Constants.DIV).toString();
+            return _getFirstChildWithName(Constants.DIV).toString();
         } else {
             return getText();
         }
