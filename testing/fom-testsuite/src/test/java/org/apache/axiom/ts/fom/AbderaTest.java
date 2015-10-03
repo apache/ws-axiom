@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 import org.apache.abdera.Abdera;
 import org.apache.axiom.ts.fom.collection.TestSetAcceptRemove;
 import org.apache.axiom.ts.fom.control.TestSetUnsetDraft;
+import org.apache.axiom.ts.fom.feed.TestAddAuthorWithExistingEntry2;
 
 public class AbderaTest extends TestCase {
     public static TestSuite suite() {
@@ -33,6 +34,8 @@ public class AbderaTest extends TestCase {
         builder.exclude(TestSetUnsetDraft.class);
         // Fails with ConcurrentModificationException
         builder.exclude(TestSetAcceptRemove.class);
+        // Broken in Abdera 1.1.3
+        builder.exclude(TestAddAuthorWithExistingEntry2.class);
         
         return builder.build();
     }
