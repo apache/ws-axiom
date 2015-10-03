@@ -27,6 +27,7 @@ import org.apache.abdera.model.Element;
 import org.apache.axiom.core.CoreNSAwareElement;
 
 public interface AbderaElement extends Element, AbderaChildNode, CoreNSAwareElement {
+    void _addChild(AbderaElement element);
     <E extends Element> List<E> _getChildrenAsSet(QName qname);
     void _setChild(QName qname, Element element);
     Iterator<AbderaElement> _getChildrenWithName(QName qname);

@@ -27,6 +27,7 @@ import org.apache.abdera.model.Div;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
+import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
@@ -63,7 +64,7 @@ public class FOMText extends FOMElement implements AbderaText {
                 _getFirstChildWithName(Constants.DIV).discard();
             setTextType(Text.Type.XHTML);
             removeChildren();
-            addChild((OMElement)value);
+            _addChild((AbderaDiv)value);
         } else
             _removeAllChildren();
         return this;

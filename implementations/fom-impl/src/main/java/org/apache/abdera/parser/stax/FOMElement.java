@@ -82,6 +82,10 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 
 @SuppressWarnings("unchecked")
 public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement {
+    public void _addChild(AbderaElement element) {
+        coreAppendChild(element, false);
+    }
+    
     protected void setParentDocument(Document parent) {
         ((OMContainer)parent).addChild(this);
     }

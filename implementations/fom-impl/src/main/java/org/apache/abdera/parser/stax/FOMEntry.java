@@ -65,7 +65,8 @@ import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.axiom.fom.AbderaEntry;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.fom.AbderaLink;
+import org.apache.axiom.fom.AbderaPerson;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
@@ -78,7 +79,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addAuthor(Person person) {
-        addChild((OMElement)person);
+        _addChild((AbderaPerson)person);
         return this;
     }
 
@@ -274,7 +275,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addContributor(Person person) {
-        addChild((OMElement)person);
+        _addChild((AbderaPerson)person);
         return this;
     }
 
@@ -346,7 +347,7 @@ public class FOMEntry extends FOMExtensibleElement implements AbderaEntry {
     }
 
     public Entry addLink(Link link) {
-        addChild((OMElement)link);
+        _addChild((AbderaLink)link);
         return this;
     }
 

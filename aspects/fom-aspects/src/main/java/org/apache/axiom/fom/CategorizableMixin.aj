@@ -35,6 +35,6 @@ public aspect CategorizableMixin {
                 // Do nothing, shouldn't happen
             }
         }
-        coreAppendChild((AbderaCategory)category, false);
+        _addChild((AbderaCategory)category);
     }
 }

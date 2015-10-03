@@ -51,8 +51,9 @@ import org.apache.abdera.model.Person;
 import org.apache.abdera.model.Source;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.stax.util.FOMHelper;
+import org.apache.axiom.fom.AbderaLink;
+import org.apache.axiom.fom.AbderaPerson;
 import org.apache.axiom.fom.AbderaSource;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
@@ -66,7 +67,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addAuthor(Person person) {
-        addChild((OMElement)person);
+        _addChild((AbderaPerson)person);
         return (T)this;
     }
 
@@ -94,7 +95,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addContributor(Person person) {
-        addChild((OMElement)person);
+        _addChild((AbderaPerson)person);
         return (T)this;
     }
 
@@ -166,7 +167,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public <T extends Source> T addLink(Link link) {
-        addChild((OMElement)link);
+        _addChild((AbderaLink)link);
         return (T)this;
     }
 

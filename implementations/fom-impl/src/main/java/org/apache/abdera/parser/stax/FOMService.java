@@ -29,6 +29,7 @@ import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Service;
 import org.apache.abdera.model.Workspace;
 import org.apache.axiom.fom.AbderaService;
+import org.apache.axiom.fom.AbderaWorkspace;
 import org.apache.axiom.om.OMElement;
 
 @SuppressWarnings("deprecation")
@@ -53,7 +54,7 @@ public class FOMService extends FOMExtensibleElement implements AbderaService {
     }
 
     public Service addWorkspace(Workspace workspace) {
-        addChild((OMElement)workspace);
+        _addChild((AbderaWorkspace)workspace);
         return this;
     }
 

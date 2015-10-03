@@ -36,6 +36,7 @@ import org.apache.abdera.model.ElementWrapper;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.fom.AbderaContent;
+import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
@@ -91,9 +92,9 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
                     setContentType(Content.Type.XML);
                 }
             }
-            OMElement el = (OMElement)(value instanceof ElementWrapper ? ((ElementWrapper)value).getInternal() : value);
+            AbderaElement el = (AbderaElement)(value instanceof ElementWrapper ? ((ElementWrapper)value).getInternal() : value);
             removeChildren();
-            addChild(el);
+            _addChild(el);
         } else {
             _removeAllChildren();
         }

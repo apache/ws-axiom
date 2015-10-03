@@ -30,7 +30,7 @@ import org.apache.abdera.model.Category;
 
 public aspect AbderaCategoriesMixin {
     public final Categories AbderaCategories.addCategory(Category category) {
-        coreAppendChild((AbderaCategory)category, false);
+        _addChild((AbderaCategory)category);
         return this;
     }
 

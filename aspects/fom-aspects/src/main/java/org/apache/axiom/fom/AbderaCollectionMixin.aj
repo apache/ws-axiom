@@ -187,7 +187,7 @@ public aspect AbderaCollectionMixin {
     }
 
     public final Collection AbderaCollection.addCategories(Categories categories) {
-        coreAppendChild((AbderaCategories)categories, false);
+        _addChild((AbderaCategories)categories);
         return this;
     }
 

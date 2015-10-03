@@ -474,7 +474,12 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constant
     private <T extends FOMElement> T createElement(Class<T> type, QName qname, OMContainer parent) {
         T element = createNode(type);
         if (parent != null) {
-            parent.addChild(element);
+            // TODO: not very elegant
+            if (parent instanceof FOMElement) {
+                ((FOMElement)parent)._addChild(element);
+            } else {
+                parent.addChild(element);
+            }
         }
         String namespace = qname.getNamespaceURI();
         String prefix = qname.getPrefix();

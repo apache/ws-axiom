@@ -30,6 +30,7 @@ import javax.activation.MimeType;
 import org.apache.abdera.model.Collection;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.model.Workspace;
+import org.apache.axiom.fom.AbderaCollection;
 import org.apache.axiom.fom.AbderaWorkspace;
 import org.apache.axiom.om.OMElement;
 
@@ -83,7 +84,7 @@ public class FOMWorkspace extends FOMExtensibleElement implements AbderaWorkspac
     }
 
     public Workspace addCollection(Collection collection) {
-        addChild((OMElement)collection);
+        _addChild((AbderaCollection)collection);
         return this;
     }
 
