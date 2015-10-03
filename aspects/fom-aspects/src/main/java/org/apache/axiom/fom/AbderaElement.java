@@ -24,6 +24,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.abdera.model.Element;
+import org.apache.abdera.model.Text;
 import org.apache.axiom.core.CoreNSAwareElement;
 
 public interface AbderaElement extends Element, AbderaChildNode, CoreNSAwareElement {
@@ -35,4 +36,7 @@ public interface AbderaElement extends Element, AbderaChildNode, CoreNSAwareElem
     String _getElementValue(QName qname);
     void _setElementValue(QName qname, String value);
     AbderaElement _getFirstChildWithName(QName qname);
+    <T extends Text> T getTextElement(QName qname);
+    <T extends Text> void setTextElement(QName qname, T text, boolean many);
+    String getText(QName qname);
 }

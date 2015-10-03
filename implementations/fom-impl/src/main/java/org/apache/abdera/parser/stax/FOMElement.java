@@ -36,7 +36,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.activation.DataHandler;
-import javax.activation.MimeType;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
@@ -49,13 +48,11 @@ import org.apache.abdera.model.Content;
 import org.apache.abdera.model.Document;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.ElementWrapper;
-import org.apache.abdera.model.Link;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.ParseException;
 import org.apache.abdera.parser.Parser;
 import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.parser.stax.util.FOMElementIteratorWrapper;
-import org.apache.abdera.util.MimeTypeHelper;
 import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.core.Axis;
@@ -63,7 +60,6 @@ import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.fom.AbderaElement;
-import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.fom.FOMExceptionTranslator;
 import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.fom.IRIUtil;
@@ -359,11 +355,11 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return getMustPreserveWhitespace() || value == null ? value : value.trim();
     }
 
-    protected <T extends Text> T getTextElement(QName qname) {
+    public final <T extends Text> T getTextElement(QName qname) {
         return (T)_getFirstChildWithName(qname);
     }
 
-    protected <T extends Text> void setTextElement(QName qname, T text, boolean many) {
+    public final <T extends Text> void setTextElement(QName qname, T text, boolean many) {
         _setChild(qname, text);
     }
 
@@ -399,7 +395,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return getMustPreserveWhitespace() ? value : value.trim();
     }
 
-    protected String getText(QName qname) {
+    public final String getText(QName qname) {
         Text text = getTextElement(qname);
         return (text != null) ? text.getValue() : null;
     }
@@ -570,19 +566,6 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
                 break;
         }
         return locale;
-    }
-
-    protected Link selectLink(List<Link> links, String type, String hreflang) {
-        for (Link link : links) {
-            MimeType mt = link.getMimeType();
-            boolean typematch = MimeTypeHelper.isMatch((mt != null) ? mt.toString() : null, type);
-            boolean langmatch =
-                "*".equals(hreflang) || ((hreflang != null) ? hreflang.equals(link.getHrefLang())
-                    : link.getHrefLang() == null);
-            if (typematch && langmatch)
-                return link;
-        }
-        return null;
     }
 
     public <T extends Element> T declareNS(String uri, String prefix) {

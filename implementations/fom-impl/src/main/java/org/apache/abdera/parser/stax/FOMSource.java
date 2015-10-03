@@ -54,6 +54,7 @@ import org.apache.abdera.parser.stax.util.FOMHelper;
 import org.apache.axiom.fom.AbderaLink;
 import org.apache.axiom.fom.AbderaPerson;
 import org.apache.axiom.fom.AbderaSource;
+import org.apache.axiom.fom.LinkUtil;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
@@ -493,7 +494,7 @@ public class FOMSource extends FOMExtensibleElement implements AbderaSource {
     }
 
     public Link getAlternateLink(String type, String hreflang) {
-        return selectLink(getLinks(Link.REL_ALTERNATE), type, hreflang);
+        return LinkUtil.selectLink(getLinks(Link.REL_ALTERNATE), type, hreflang);
     }
 
     public IRI getAlternateLinkResolvedHref(String type, String hreflang) {
