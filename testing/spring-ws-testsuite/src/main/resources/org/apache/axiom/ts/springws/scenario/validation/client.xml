@@ -21,9 +21,9 @@
        xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd">
-    <oxm:jaxb2-marshaller id="marshaller" contextPath="org.apache.axiom.ts.springws.scenario.validation"/>
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
+    <oxm:jaxb2-marshaller id="marshaller" context-path="org.apache.axiom.ts.springws.scenario.validation"/>
     <bean class="org.apache.axiom.ts.springws.scenario.validation.StockQuoteClient">
         <constructor-arg>
             <bean class="org.springframework.ws.client.core.WebServiceTemplate">

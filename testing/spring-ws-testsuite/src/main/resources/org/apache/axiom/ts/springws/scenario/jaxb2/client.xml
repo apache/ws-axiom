@@ -21,8 +21,8 @@
        xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd">
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.0.xsd">
     <oxm:jaxb2-marshaller id="marshaller">
         <oxm:class-to-be-bound name="org.apache.axiom.ts.springws.scenario.jaxb2.GetQuoteRequest"/>
         <oxm:class-to-be-bound name="org.apache.axiom.ts.springws.scenario.jaxb2.GetQuoteResponse"/>
