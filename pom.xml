@@ -260,7 +260,7 @@
         <shade.plugin.version>2.3</shade.plugin.version>
         <jacoco.version>0.6.3.201306030806</jacoco.version>
         <spring.version>4.0.5.RELEASE</spring.version>
-        <springws.version>2.2.0.RELEASE</springws.version>
+        <springws.version>2.2.2.RELEASE</springws.version>
         
         <skipDeploy>false</skipDeploy>
         <skipSite>false</skipSite>
