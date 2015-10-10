@@ -866,9 +866,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <!-- Note: 1.9 contains a call to a Java 7 specific method (java.nio.CharBuffer.subSequence(II)Ljava/nio/CharBuffer;)
-                           that is triggered when an undefined reference is found. This breaks error reporting on Java 6. -->
-                <version>1.8</version>
+                <version>1.14</version>
                 <executions>
                     <execution>
                         <id>check</id>
