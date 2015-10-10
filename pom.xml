@@ -258,7 +258,7 @@
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
         <shade.plugin.version>2.3</shade.plugin.version>
-        <jacoco.version>0.6.3.201306030806</jacoco.version>
+        <jacoco.version>0.7.5.201505241946</jacoco.version>
         <spring.version>4.0.5.RELEASE</spring.version>
         <springws.version>2.2.2.RELEASE</springws.version>
         
@@ -795,9 +795,6 @@
                                     // Skip Jacoco if necessary
                                     if (System.properties['skipTests'] == 'true') {
                                         println 'Disabling JaCoCo because tests are skipped'
-                                        project.properties['skipJacoco'] = 'true'
-                                    } else if (System.properties['java.specification.version'] == '1.8') {
-                                        println 'WARNING: Java 1.8 not supported; disabling JaCoCo'
                                         project.properties['skipJacoco'] = 'true'
                                     }
                                 ]]></script>
