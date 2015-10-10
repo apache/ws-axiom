@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMException;
  * are not related to the content in the message itself. Problems not related to the message itself
  * are generally errors in processing, such as the inability to communicate with an upstream
  * server.
- * <p/>
+ * <p>
  * The <CODE>SOAPFault</CODE> interface provides methods for retrieving the information contained in
  * a <CODE> SOAPFault</CODE> object and for setting the fault code, the fault actor, and a string
  * describing the fault. B fault code is one of the codes defined in the SOAP 1.1 specification that
@@ -93,9 +93,9 @@ public interface SOAPFault extends OMElement {
 
     /**
      * Returns Exception if there is one in the SOAP fault.
-     * <p/>
-     * If the exception is like; <SOAPFault> <Detail> <Exception> stack trace goes here </Exception>
-     * </Detail> </SOAPFault>
+     * <p>
+     * If the exception is like; &lt;SOAPFault&gt; &lt;Detail&gt; &lt;Exception&gt; stack trace goes
+     * here &lt;/Exception&gt; &lt;/Detail&gt; &lt;/SOAPFault&gt;
      *
      * @return Returns Exception.
      * @throws org.apache.axiom.om.OMException

@@ -58,8 +58,9 @@ import org.w3c.dom.Text;
  * Axiom implementations supporting this feature MUST conform to the Axiom API as well as the DOM
  * API, and nodes created by the implementation MUST implement both the Axiom interfaces and the DOM
  * interfaces corresponding, as specified by the following table:
- * <table border="2" rules="all" cellpadding="4" cellspacing="0">
  * <p>
+ * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+ * <caption>Mapping between Axiom and DOM interfaces</caption>
  * <tr>
  * <th>Axiom interface</th>
  * <th>DOM interface</th>

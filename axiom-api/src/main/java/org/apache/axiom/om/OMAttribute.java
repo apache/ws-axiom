@@ -24,7 +24,7 @@ public interface OMAttribute extends OMNamedInformationItem {
     /**
      * Get the attribute value.
      * 
-     * @return the attribute value; never <code>null</code
+     * @return the attribute value; never <code>null</code>
      */
     String getAttributeValue();
 

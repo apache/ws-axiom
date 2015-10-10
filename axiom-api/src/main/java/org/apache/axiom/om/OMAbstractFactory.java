@@ -55,7 +55,6 @@ import org.apache.axiom.soap.SOAPFactory;
  * Note that while {@link #getMetaFactory()} always returns the same instance, the other methods
  * may return new instances on every invocation, depending on the {@link OMMetaFactory}
  * implementation.
- * <p>
  */
 public class OMAbstractFactory {
     /**

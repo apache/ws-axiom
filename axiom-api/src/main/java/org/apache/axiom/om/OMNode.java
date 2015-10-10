@@ -26,14 +26,12 @@ import java.io.Writer;
 
 /**
  * Defines the base interface used by most of the XML object model within Axis.
- * <p/>
- * <p/>
+ * <p>
  * This tree model for XML captures the idea of deferring the construction of child nodes until they
  * are needed. The <code>isComplete</code> function identifies whether or not a particular node has
  * been fully parsed. A node may not be fully parsed, for example, if all of the children of an
  * element have not yet been parsed. </p>
- * <p/>
- * <p/>
+ * <p>
  * In comparison to DOM, in this model, you will not find document fragments, or entities. In
  * addition, while {@link OMDocument} and {@link OMAttribute} exist, neither is an extension of
  * <code>OMNode</code>. </p>
@@ -97,8 +95,7 @@ public interface OMNode extends OMSerializable {
 
     /**
      * Returns the parent containing node.
-     * <p/>
-     * <p/>
+     * <p>
      * Returns the parent container, which may be either an {@link OMDocument} or {@link OMElement}.
      *
      * @return The {@link OMContainer} of the node.
@@ -114,8 +111,7 @@ public interface OMNode extends OMSerializable {
 
     /**
      * Removes a node (and all of its children) from its containing parent.
-     * <p/>
-     * <p/>
+     * <p>
      * Removes a node from its parent. Partially complete nodes will be completed before they are
      * detached from the model. A node cannot be detached until its next sibling has been identified,
      * so that the next sibling and parent can be updated appropriately. Please note that this will not
@@ -132,8 +128,7 @@ public interface OMNode extends OMSerializable {
 
     /**
      * Discards a node.
-     * <p/>
-     * <p/>
+     * <p>
      * Discard goes to the parser level and if the element is not completely built, then it will be
      * completely skipped at the parser level. </p>
      *

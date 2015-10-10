@@ -139,7 +139,7 @@ public final class UIDGenerator {
      * must match the <tt>msg-id</tt> production, which is defined by RFC2822 as
      * follows:
      * <pre>
-     * msg-id        = [CFWS] "&lt;" id-left "@" id-right ">" [CFWS]
+     * msg-id        = [CFWS] "&lt;" id-left "@" id-right "&gt;" [CFWS]
      * id-left       = dot-atom-text / no-fold-quote / obs-id-left
      * id-right      = dot-atom-text / no-fold-literal / obs-id-right
      * dot-atom-text = 1*atext *("." 1*atext)
@@ -172,7 +172,7 @@ public final class UIDGenerator {
      * <p>
      * Valid MIME boundaries are defined by the following production in RFC2046:
      * <pre>
-     * boundary      := 0*69&lt;bchars> bcharsnospace
+     * boundary      := 0*69&lt;bchars&gt; bcharsnospace
      * bchars        := bcharsnospace / " "
      * bcharsnospace := DIGIT / ALPHA / "'" / "(" / ")" /
      *                  "+" / "_" / "," / "-" / "." /
@@ -183,8 +183,8 @@ public final class UIDGenerator {
      * <tt>Content-Type</tt> header), it will require quoting if it contains characters from
      * the following production:
      * <pre>
-     * tspecials := "(" / ")" / "&lt;" / ">" / "@" /
-     *              "," / ";" / ":" / "\" / &lt;"> /
+     * tspecials := "(" / ")" / "&lt;" / "&gt;" / "@" /
+     *              "," / ";" / ":" / "\" / &lt;"&gt; /
      *              "/" / "[" / "]" / "?" / "="</pre>
      * <p>
      * This method produces a boundary that doesn't contain any of these characters and

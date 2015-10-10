@@ -599,7 +599,7 @@ public class DocumentNavigator extends DefaultNavigator {
     /**
      * Translates a namespace prefix to a namespace URI, <b>possibly</b> considering a particular
      * element node.
-     * <p/>
+     * <p>
      * Strictly speaking, prefix-to-URI translation should occur irrespective of any element in the
      * document.  This method is provided to allow a non-conforming ease-of-use enhancement. </p>
      *
@@ -646,7 +646,7 @@ public class DocumentNavigator extends DefaultNavigator {
 
     /**
      * Returns the parent of the given context node.
-     * <p/>
+     * <p>
      * The parent of any node must either be a document node or an element node.
      *
      * @param contextNode the context node

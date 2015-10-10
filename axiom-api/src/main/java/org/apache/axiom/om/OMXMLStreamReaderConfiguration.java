@@ -66,13 +66,13 @@ public class OMXMLStreamReaderConfiguration {
      * <pre>
      * &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
      *                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-     *                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-     *   &lt;soapenv:Body>
-     *     &lt;ns:echo xmlns:ns="urn:test">
-     *       &lt;in xsi:type="xsd:string">test&lt;/in>
-     *     &lt;/ns:echo>
-     *   &lt;/soapenv:Body>
-     * &lt;/soapenv:Envelope>
+     *                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+     *   &lt;soapenv:Body&gt;
+     *     &lt;ns:echo xmlns:ns="urn:test"&gt;
+     *       &lt;in xsi:type="xsd:string"&gt;test&lt;/in&gt;
+     *     &lt;/ns:echo&gt;
+     *   &lt;/soapenv:Body&gt;
+     * &lt;/soapenv:Envelope&gt;
      * </pre>
      * <p>
      * When {@link OMContainer#getXMLStreamReader(boolean)} is invoked on the {@link OMElement}

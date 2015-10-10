@@ -37,10 +37,10 @@ import javax.activation.MimeType;
  * parameter := attribute "=" value
  * attribute := token
  * value := token / quoted-string
- * token := 1*&lt;any (US-ASCII) CHAR except SPACE, CTLs, or tspecials>
- * tspecials := "(" / ")" / "&lt;" / ">" / "@" / "," / ";" / ":" / "\" / &lt;"> / "/" / "[" / "]" / "?" / "="
- * quoted-string := &lt;"> *(qtext/quoted-pair) &lt;">
- * qtext := &lt;any CHAR excepting &lt;">, "\" & CR, and including linear-white-space>
+ * token := 1*&lt;any (US-ASCII) CHAR except SPACE, CTLs, or tspecials&gt;
+ * tspecials := "(" / ")" / "&lt;" / "&gt;" / "@" / "," / ";" / ":" / "\" / &lt;"&gt; / "/" / "[" / "]" / "?" / "="
+ * quoted-string := &lt;"&gt; *(qtext/quoted-pair) &lt;"&gt;
+ * qtext := &lt;any CHAR excepting &lt;"&gt;, "\" &amp; CR, and including linear-white-space&gt;
  * quoted-pair := "\" CHAR
  * </pre>
  * <p>

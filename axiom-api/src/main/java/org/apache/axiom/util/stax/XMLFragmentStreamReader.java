@@ -33,19 +33,19 @@ import javax.xml.stream.XMLStreamReader;
  * the sequence of events appear as a complete document.
  * <p>
  * Assume for example that the parent reader is parsing the following document:
- * <pre>&lt;a>&lt;b>text&lt;/b>&lt;/a></pre>
- * If the current event is <code>&lt;b></code> when the wrapper is created, it will produce
+ * <pre>&lt;a&gt;&lt;b&gt;text&lt;/b&gt;&lt;/a&gt;</pre>
+ * If the current event is <code>&lt;b&gt;</code> when the wrapper is created, it will produce
  * the following sequence of events:
  * <p>
  * <ul>
  *   <li>A synthetic START_DOCUMENT event.</li>
- *   <li>START_ELEMENT, CHARACTERS and END_ELEMENT events for <code>&lt;b>text&lt;/b></code>.
+ *   <li>START_ELEMENT, CHARACTERS and END_ELEMENT events for <code>&lt;b&gt;text&lt;/b&gt;</code>.
  *       For these events, the wrapper directly delegates to the parent reader.</li>
  *   <li>A synthetic END_DOCUMENT event.</li>
  * </ul>
  * After all events have been consumed from the wrapper, the current event on the parent reader
  * will be the event following the last END_ELEMENT of the fragment. In the example above this
- * will be <code>&lt;/a></code>.
+ * will be <code>&lt;/a&gt;</code>.
  * <p>
  * The wrapper will release the reference to the parent reader when {@link #close()} is called.
  * For obvious reasons, the wrapper will never call {@link XMLStreamReader#close()} on the parent

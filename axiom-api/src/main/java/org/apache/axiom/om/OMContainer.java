@@ -39,8 +39,8 @@ import java.util.Iterator;
 
 /**
  * Captures the operations related to containment shared by both a document and an element.
- * <p/>
- * <p>Exposes the ability to add, find, and iterate over the children of a document or element.</p>
+ * <p>
+ * Exposes the ability to add, find, and iterate over the children of a document or element.</p>
  */
 public interface OMContainer extends OMSerializable {
     /**
@@ -65,7 +65,6 @@ public interface OMContainer extends OMSerializable {
 
     /**
      * Returns an iterator for child nodes matching the given QName.
-     * <p/>
      *
      * @param elementQName The QName specifying namespace and local name to match.
      * @return Returns an iterator of {@link OMElement} items that match the given QName
@@ -75,7 +74,6 @@ public interface OMContainer extends OMSerializable {
     
     /**
      * Returns an iterator for child nodes matching the local name.
-     * <p/>
      *
      * @param localName 
      * @return Returns an iterator of {@link OMElement} items that match the given localName
@@ -84,7 +82,6 @@ public interface OMContainer extends OMSerializable {
     
     /**
      * Returns an iterator for child nodes matching the namespace uri.
-     * <p/>
      *
      * @param uri 
      * @return Returns an iterator of {@link OMElement} items that match the given uri
@@ -283,6 +280,8 @@ public interface OMContainer extends OMSerializable {
      * consuming the reader are different:
      * <p>
      * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <caption>Side effects of consuming events from the reader returned by
+     * {@link #getXMLStreamReader(boolean)}</caption>
      * <tr>
      * <th>State</th>
      * <th><code>cache</code></th>
@@ -339,7 +338,7 @@ public interface OMContainer extends OMSerializable {
      * {@link XOPEncodingStreamReader} instead.</li>
      * <li>Some existing code uses the {@link OMAttachmentAccessor} interface of the returned
      * reader to fetch attachments using {@link OMAttachmentAccessor#getDataHandler(String)}. There
-     * is no reason anymore to do so:</li>
+     * is no reason anymore to do so:
      * <ul>
      * <li>When {@link OMXMLStreamReader#setInlineMTOM(boolean)} is used to disable MTOM inlining,
      * {@link OMAttachmentAccessor#getDataHandler(String)} must be used to retrieve the binary
@@ -356,6 +355,7 @@ public interface OMContainer extends OMSerializable {
      * doesn't give access to the attachments in the SwA case (neither in 1.2.9 nor in previous
      * versions).</li>
      * </ul>
+     * </li>
      * </ul>
      * <p>
      * Code making any of these assumptions should be fixed, so that only {@link XMLStreamReader}
@@ -397,7 +397,7 @@ public interface OMContainer extends OMSerializable {
      * {@link ContentHandler#endPrefixMapping(String)} events also for namespace mappings declared
      * on the ancestors of the element. To understand why this is important, consider the following
      * example:
-     * <pre>&lt;root xmlns:ns="urn:ns">&lt;element attr="ns:someThing"/>&lt;root></pre>
+     * <pre>&lt;root xmlns:ns="urn:ns"&gt;&lt;element attr="ns:someThing"/&gt;&lt;root&gt;</pre>
      * <p>
      * In that case, to correctly interpret the attribute value, the SAX content handler must be
      * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts

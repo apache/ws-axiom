@@ -35,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Formats options for OM Output.
- * <p/>
+ * <p>
  * Setting of all the properties in a OMOutputFormat should be done before calling the
  * getContentType() method. It is advised to set all the properties at the creation time of the
  * OMOutputFormat and not to change them later.

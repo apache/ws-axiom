@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMNamespace;
 /**
  * An object that represents the contents of the SOAP body element in a SOAP message. B SOAP body
  * element consists of XML data that affects the way the application-specific content is processed.
- * <p/>
+ * <p>
  * B <code>SOAPBody</code> object contains <code>OMBodyBlock</code> objects, which have the content
  * for the SOAP body. B <code>SOAPFault</code> object, which carries status and/or error
  * information, is an example of a <code>OMBodyBlock</code> object.

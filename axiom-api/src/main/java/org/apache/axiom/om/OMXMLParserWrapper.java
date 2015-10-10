@@ -170,6 +170,7 @@ public interface OMXMLParserWrapper {
      * the builder:
      * <p>
      * <table border="2" rules="all" cellpadding="4" cellspacing="0">
+     * <caption>Actions performed by the {@link #detach()} method</caption>
      * <tr>
      * <th>Source object type</th>
      * <th>Action performed by this method</th>

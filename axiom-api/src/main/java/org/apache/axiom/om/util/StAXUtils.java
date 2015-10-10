@@ -71,7 +71,7 @@ import java.util.WeakHashMap;
  *   <dt><tt>com.ctc.wstx.minTextSegment</tt></dt>
  *   <dd>Property to specify shortest non-complete text segment (part of CDATA section or text
  *       content) that the parser is allowed to return, if not required to coalesce text.
- *       This property is Woodstox specific.</dt>
+ *       This property is Woodstox specific.</dd>
  * </dl>
  * <p>Good candidates for <tt>XMLOutputFactory.properties</tt> are:</p>
  * <dl>

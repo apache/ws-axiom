@@ -52,7 +52,7 @@ import org.apache.commons.logging.LogFactory;
  * MTOMXMLStreamWriter is an XML + Attachments stream writer.
  * 
  * For the moment this assumes that transport takes the decision of whether to optimize or not by
- * looking at whether the MTOM optimize is enabled & also looking at the OM tree whether it has any
+ * looking at whether the MTOM optimize is enabled and also looking at the OM tree whether it has any
  * optimizable content.
  */
 public class MTOMXMLStreamWriter implements XMLStreamWriter {

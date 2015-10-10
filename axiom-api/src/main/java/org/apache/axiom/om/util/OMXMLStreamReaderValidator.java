@@ -23,22 +23,8 @@ import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 
 import javax.activation.DataHandler;
 
-// TODO: this needs reformatting; the (generated) Javadoc is unreadable!
 /**
- * There are several places in the code where events are passed from 
- * a source to a consumer using XMLStreamReader events. 
- * 
- *     OMXMLStreamReader (impl)--> consumer of XMLStreamReader events
- * 
- * This simple class can be interjected as a filter and used to do some simple validation.
- * Validating the events coming from source (impl) can help find and correct errors 
- * when they occur.  Otherwise the errors may be caught much further downstream and hard to fix.
- * 
- *    OMXMLStreamReader (impl)--> OMXMLStreamReaderValiator-> consumer of XMLStreamReader events
- * 
- * 
- * In the initial version, the XMStreamValidator ensures that the start element events match the 
- * end element events.
+ * Subclass of {@link XMLStreamReaderValidator} that also implements {@link OMXMLStreamReader}.
  *
  * @see org.apache.axiom.om.OMElement#getXMLStreamReader(boolean)
  */

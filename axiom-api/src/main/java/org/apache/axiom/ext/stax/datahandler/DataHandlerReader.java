@@ -103,7 +103,7 @@ public interface DataHandlerReader {
      * <li>If the content ID has been extracted from an <tt>href</tt> attribute, it MUST NOT
      * contain the <tt>cid:</tt> prefix.</li>
      * <li>If it has been extracted from a <tt>Content-ID</tt> MIME header, it MUST NOT be
-     * enclosed in angles (<tt>&lt;></tt>).</li>
+     * enclosed in angles (<tt>&lt;&gt;</tt>).</li>
      * </ul>
      * <p>
      * A consumer MAY use the return value of this method in contexts where it is desirable to

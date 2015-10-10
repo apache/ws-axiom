@@ -29,22 +29,12 @@ import javax.xml.stream.XMLStreamReader;
 
 import java.util.Stack;
 
-// TODO: this needs reformatting; the (generated) Javadoc is unreadable!
 /**
- * There are several places in the code where events are passed from 
- * a source to a consumer using XMLStreamReader events. 
- * 
- *     XMLStreamReader (impl)--> consumer of XMLStreamReader events
- * 
- * This simple class can be interjected as a filter and used to do some simple validation.
- * Validating the events coming from source (impl) can help find and correct errors 
- * when they occur.  Otherwise the errors may be caught much further downstream and hard to fix.
- * 
- *    XMLStreamReader (impl)--> XMLStreamReaderValiator-> consumer of XMLStreamReader events
- * 
- * 
- * In the initial version, the XMStreamValidator ensures that the start element events match the 
- * end element events.
+ * {@link XMLStreamReader} wrapper that performs some simple consistency checks on the events
+ * returned by the wrapper reader. This is most useful for custom {@link XMLStreamReader}
+ * implementations. Validating events can help find and correct errors when they occur. Otherwise
+ * the errors may be caught much further downstream and hard to fix. In its current version, the
+ * validator ensures that the start element events match the end element events.
  */
 public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
 

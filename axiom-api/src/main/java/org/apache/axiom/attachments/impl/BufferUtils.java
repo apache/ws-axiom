@@ -255,7 +255,6 @@ public class BufferUtils {
      * @param limit
      * @return 1 if DataHandler data is bigger than limit, 0 if DataHandler data is smaller or
      * -1 if an error occurs or unsupported.
-     * @throws IOException
      */
     public static int doesDataHandlerExceedLimit(DataHandler dh, int limit){
         //If Optimized Threshold not set return true.

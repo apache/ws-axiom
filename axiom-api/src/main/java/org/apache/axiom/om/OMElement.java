@@ -182,12 +182,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     
     /**
      * Finds a namespace with the given uri and prefix, in the scope of the hierarchy.
-     * <p/>
-     * <p>Searches from the current element and goes up the hiararchy until a match is found. If no
+     * <p>
+     * Searches from the current element and goes up the hiararchy until a match is found. If no
      * match is found, returns <tt>null</tt>.</p>
-     * <p/>
-     * <p>Either <tt>prefix</tt> or <tt>uri</tt> should be null.  Results are undefined if both are
-     * specified.</p>
+     * <p>
+     * Either <tt>prefix</tt> or <tt>uri</tt> should be null.  Results are undefined if both are
+     * specified.
      *
      * @param uri    The namespace to look for.  If this is specified, <tt>prefix</tt> should be
      *               null.
@@ -427,7 +427,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * This method iterates over all the text children of the element and concatenates
      * them to a single string. Only direct children will be considered, i.e. the text
      * is not extracted recursively. For example the return value for
-     * <tt>&lt;element>A&lt;child>B&lt;/child>C&lt;/element></tt> will be <tt>AC</tt>.
+     * <tt>&lt;element&gt;A&lt;child&gt;B&lt;/child&gt;C&lt;/element&gt;</tt> will be <tt>AC</tt>.
      * <p>
      * All whitespace will be preserved.
      *
