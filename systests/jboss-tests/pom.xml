@@ -32,8 +32,8 @@
     <name>JBoss Tests</name>
 
     <properties>
-        <jboss.version>7.1.1.Final</jboss.version>
-        <jboss.home>${project.build.directory}/jboss-as-${jboss.version}</jboss.home>
+        <jboss.version>8.2.1.Final</jboss.version>
+        <jboss.home>${project.build.directory}/wildfly-${jboss.version}</jboss.home>
     </properties>
 
     <dependencies>
@@ -51,12 +51,12 @@
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
-            <version>1.0.3.Final</version>
+            <version>1.1.2.Final-wildfly-1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-arquillian-container-managed</artifactId>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-arquillian-container-managed</artifactId>
             <version>${jboss.version}</version>
             <scope>test</scope>
         </dependency>
@@ -89,6 +89,10 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <!-- We would prefer using wildfly-server-provisioning-maven-plugin to
+                             provision the server, but unfortunately the JBoss community is still
+                             unable to ensure that all required artifacts are available from Maven
+                             central and the JBoss Maven repository isn't stable. -->
                         <id>unpack-jboss</id>
                         <phase>generate-test-resources</phase>
                         <goals>
@@ -97,8 +101,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.jboss.as</groupId>
-                                    <artifactId>jboss-as-dist</artifactId>
+                                    <groupId>org.wildfly</groupId>
+                                    <artifactId>wildfly-dist</artifactId>
                                     <version>${jboss.version}</version>
                                     <type>zip</type>
                                     <overWrite>false</overWrite>
@@ -125,6 +129,7 @@
                         <configuration>
                             <portNames>
                                 <portName>jboss.managementPort</portName>
+                                <portName>jboss.httpPort</portName>
                             </portNames>
                         </configuration>
                     </execution>

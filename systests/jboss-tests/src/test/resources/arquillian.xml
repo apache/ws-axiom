@@ -25,7 +25,7 @@
             <property name="jbossHome">${jboss.home}</property>
             <!-- Arquillian gets confused if there is an extra space at the beginning of the arg line.
                  Therefore we need to add a dummy argument to avoid that problem if JaCoCo is skipped. -->
-            <property name="javaVmArguments">-Ddummy ${jacoco.jbossArgLine} -Djboss.management.native.port=${jboss.managementPort}</property>
+            <property name="javaVmArguments">-Ddummy ${jacoco.jbossArgLine} -Djboss.management.port=${jboss.managementPort} -Djboss.http.port=${jboss.httpPort}</property>
             <property name="managementPort">${jboss.managementPort}</property>
         </configuration>
     </container>
