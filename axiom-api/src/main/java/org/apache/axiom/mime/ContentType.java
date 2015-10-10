@@ -61,7 +61,6 @@ import javax.activation.MimeType;
  * Note that this class doesn't override {@link Object#equals(Object)} because there is no
  * meaningful way to compare content types with parameters.
  */
-// TODO: this class should override toString, but we don't need it yet...
 public final class ContentType {
     private final MediaType mediaType;
     private final String[] parameters;
