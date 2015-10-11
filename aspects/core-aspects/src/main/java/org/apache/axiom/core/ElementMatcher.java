@@ -101,7 +101,7 @@ public interface ElementMatcher<T extends CoreElement> {
     /**
      * Check if the given element matches. The values of the <code>namespaceURI</code> and
      * <code>name</code> parameters are those passed to
-     * {@link CoreParentNode#coreGetElements(Axis, Class, ElementMatcher, String, String)}.
+     * {@link CoreParentNode#coreGetElements(Axis, Class, ElementMatcher, String, String, ExceptionTranslator, DetachPolicy)}.
      * 
      * @param element
      *            the element to check

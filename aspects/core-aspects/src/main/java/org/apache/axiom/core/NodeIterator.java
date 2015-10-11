@@ -32,7 +32,7 @@ import java.util.Iterator;
  * allowed to throw {@link UnsupportedOperationException}.
  * <li>A {@link ConcurrentModificationException} MUST be thrown when the iterator is used after the
  * last node returned by {@link Iterator#next()} has been removed using a method other than
- * {@link Iterator#remove()} (e.g. {@link CoreChildNode#coreDetach()}).
+ * {@link Iterator#remove()} (e.g. {@link CoreChildNode#coreDetach(DetachPolicy)}).
  * <li>If a {@link CoreModelException} occurs inside {@link Iterator#hasNext()},
  * {@link Iterator#next()} or {@link Iterator#remove()}, then the implementation MUST use the
  * supplied {@link ExceptionTranslator} to translate that checked exception into an unchecked

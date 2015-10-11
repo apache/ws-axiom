@@ -34,15 +34,15 @@ import org.apache.axiom.ts.dimension.AddAttributeStrategy;
  * new namespace declaration if an equivalent namespace declaration exists but is masked.
  * The test attempts to create the following XML:
  * <pre>
- * &lt;a xmlns:p="urn:ns1">
- *   &lt;b xmlns:p="urn:ns2">
- *     &lt;c xmlns:p="urn:ns1" p:attr="test"/>
- *   &lt;/b>
- * &lt;/a></pre>
- * It only explicitly creates the namespace declarations on <tt>&lt;a></tt> and
- * <tt>&lt;b></tt>. When adding the attribute to <tt>&lt;c></tt>, Axiom must generate
- * a new namespace declaration because the declaration on <tt>&lt;a></tt> is masked
- * by the one on <tt>&lt;b></tt>.
+ * &lt;a xmlns:p="urn:ns1"&gt;
+ *   &lt;b xmlns:p="urn:ns2"&gt;
+ *     &lt;c xmlns:p="urn:ns1" p:attr="test"/&gt;
+ *   &lt;/b&gt;
+ * &lt;/a&gt;</pre>
+ * It only explicitly creates the namespace declarations on <tt>&lt;a&gt;</tt> and
+ * <tt>&lt;b&gt;</tt>. When adding the attribute to <tt>&lt;c&gt;</tt>, Axiom must generate
+ * a new namespace declaration because the declaration on <tt>&lt;a&gt;</tt> is masked
+ * by the one on <tt>&lt;b&gt;</tt>.
  * <p>
  * Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
  */

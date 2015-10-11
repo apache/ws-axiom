@@ -24,8 +24,7 @@ import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 /**
  * Builds a test suite for Axiom implementations that also implement DOM. Note that this test suite
  * only contains tests that depend on Axiom specific features. Pure DOM tests (that are executable
- * with a standard DOM implementation) should go to
- * {@link org.apache.axiom.ts.dom.DOMTestSuiteBuilder}.
+ * with a standard DOM implementation) should go to <code>dom-testsuite</code>.
  */
 public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final DOMMetaFactory metaFactory;

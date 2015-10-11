@@ -23,7 +23,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 /**
  * A local interface we can use to make "header checker" objects which can be used by
  * HeaderIterators to filter results.  This really SHOULD be done with anonymous classes:
- * <p/>
+ * <pre>
  * public void getHeadersByRole(final String role) {
  *     return new HeaderIterator() {
  *         public boolean checkHeader(SOAPHeaderBlock header) {
@@ -32,8 +32,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
  *             return false;
  *         }
  *     }
- * }
- * <p/>
+ * }</pre>
  * ...but there appears to be some kind of weird problem with the JVM not correctly scoping the
  * passed "role" value in a situation like the above.  As such, we have to make Checker objects
  * instead (sigh).

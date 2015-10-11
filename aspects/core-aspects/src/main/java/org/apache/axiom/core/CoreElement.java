@@ -59,18 +59,18 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @param namespaceURI
      *            the <code>namespaceURI</code> parameter to pass to
      *            {@link AttributeMatcher#matches(CoreAttribute, String, String)} and
-     *            {@link AttributeMatcher#createAttribute(NodeFactory, CoreDocument, String, String, String, String)}
+     *            {@link AttributeMatcher#createAttribute(CoreElement, String, String, String, String)}
      * @param name
      *            the <code>name</code> parameter to pass to
      *            {@link AttributeMatcher#matches(CoreAttribute, String, String)} and
-     *            {@link AttributeMatcher#createAttribute(NodeFactory, CoreDocument, String, String, String, String)}
+     *            {@link AttributeMatcher#createAttribute(CoreElement, String, String, String, String)}
      * @param prefix
      *            the <code>prefix</code> parameter to pass to
-     *            {@link AttributeMatcher#createAttribute(NodeFactory, CoreDocument, String, String, String, String)}
+     *            {@link AttributeMatcher#createAttribute(CoreElement, String, String, String, String)}
      *            and {@link AttributeMatcher#update(CoreAttribute, String, String)}
      * @param value
      *            the <code>value</code> parameter to pass to
-     *            {@link AttributeMatcher#createAttribute(NodeFactory, CoreDocument, String, String, String, String)}
+     *            {@link AttributeMatcher#createAttribute(CoreElement, String, String, String, String)}
      *            and {@link AttributeMatcher#update(CoreAttribute, String, String)}
      */
     void coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value);

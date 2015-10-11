@@ -31,9 +31,9 @@ package org.apache.axiom.core;
  * <dt><code>prefix</code>
  * <dd>The prefix to be used when creating a new attribute or updating an existing one.
  * </dl>
- * If the namespace URI is the emtpy string, then this class will also match namespace unaware
+ * If the namespace URI is the empty string, then this class will also match namespace unaware
  * attributes. Note that the class doesn't match namespace declarations (for which
- * {@link AttributeMatcher#NAMESPACE_DECLARATION} can be used).
+ * {@link NamespaceDeclarationMatcher} can be used).
  */
 public final class NSAwareAttributeMatcher implements AttributeMatcher {
     private final DetachPolicy detachPolicy;
@@ -52,8 +52,8 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
      * @param updatePrefix
      *            Specifies if the prefix of an existing attribute should be updated (based on the
      *            value of the <code>prefix</code> parameter. If this is <code>false</code>, then
-     *            <code>prefix</prefix> is only used when creating new attributes and prefixes of
-     * existing attributes are preserved (i.e. only their value is updated).
+     *            <code>prefix</code> is only used when creating new attributes and prefixes of
+     *            existing attributes are preserved (i.e. only their value is updated).
      */
     public NSAwareAttributeMatcher(DetachPolicy detachPolicy, boolean matchNSUnawareAttributes,
             boolean updatePrefix) {

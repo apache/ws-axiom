@@ -47,7 +47,7 @@ import org.xml.sax.ContentHandler;
  *   descendant elements or attributes (but may be used in the value of an attribute).</li>   
  * </ol>
  * Example:
- * <pre>&lt;root xmlns:ns="urn:ns">&lt;element attr="ns:someThing"/>&lt;root></pre>
+ * <pre>&lt;root xmlns:ns="urn:ns"&gt;&lt;element attr="ns:someThing"/&gt;&lt;root&gt;</pre>
  * In that case, when constructing an {@link SAXSource} from the child element, the namespace
  * mapping for the <tt>ns</tt> prefix should be visible to the consumer. Otherwise it would not
  * be able to interpret the attribute value correctly. This is relevant e.g. when validating
