@@ -31,22 +31,42 @@ import java.io.OutputStream;
  */
 public class ByteStreamComparator extends OutputStream {
     private final InputStream in;
+    private final String name1;
+    private final String name2;
     private final byte[] compareBuffer = new byte[1024];
     private int position;
     
-    public ByteStreamComparator(InputStream in) {
+    /**
+     * Constructor.
+     * 
+     * @param in
+     *            the stream to compare to
+     * @param name1
+     *            the name of the stream passed as argument; used in error messages
+     * @param name2
+     *            a name for the stream represented by the data written to this instance; used in
+     *            error messages
+     */
+    public ByteStreamComparator(InputStream in, String name1, String name2) {
         this.in = in;
+        this.name1 = name1;
+        this.name2 = name2;
+    }
+
+    @Deprecated
+    public ByteStreamComparator(InputStream in) {
+        this(in, "s1", "s2");
     }
 
     public void write(byte[] buffer, int off, int len) throws IOException {
         while (len > 0) {
             int c = in.read(compareBuffer, 0, Math.min(compareBuffer.length, len));
             if (c == -1) {
-                fail("The two streams have different lengths");
+                fail("The two streams have different lengths: len(" + name1 + ") = " + position + " < len(" + name2 + ")");
             }
             for (int i=0; i<c; i++) {
                 if (buffer[off] != compareBuffer[i]) {
-                    fail("Byte mismatch at position " + position);
+                    fail("Byte mismatch: " + name1 + "[" + position + "] = " + compareBuffer[i] + " != " + name2 + "[" + position + "] = " + buffer[off]);
                 }
                 off++;
                 len--;
@@ -60,7 +80,7 @@ public class ByteStreamComparator extends OutputStream {
 
     public void close() throws IOException {
         if (in.read() != -1) {
-            fail("The two streams have different lengths");
+            fail("The two streams have different lengths: len(" + name1 + ") > len(" + name2 + ") = " + position);
         }
     }
 
