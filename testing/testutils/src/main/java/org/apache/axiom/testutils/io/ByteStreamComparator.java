@@ -19,11 +19,11 @@
 
 package org.apache.axiom.testutils.io;
 
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import junit.framework.Assert;
 
 /**
  * {@link OutputStream} implementation that compares the data written to it with another character
@@ -42,11 +42,11 @@ public class ByteStreamComparator extends OutputStream {
         while (len > 0) {
             int c = in.read(compareBuffer, 0, Math.min(compareBuffer.length, len));
             if (c == -1) {
-                Assert.fail("The two streams have different lengths");
+                fail("The two streams have different lengths");
             }
             for (int i=0; i<c; i++) {
                 if (buffer[off] != compareBuffer[i]) {
-                    Assert.fail("Byte mismatch at position " + position);
+                    fail("Byte mismatch at position " + position);
                 }
                 off++;
                 len--;
@@ -60,7 +60,7 @@ public class ByteStreamComparator extends OutputStream {
 
     public void close() throws IOException {
         if (in.read() != -1) {
-            Assert.fail("The two streams have different lengths");
+            fail("The two streams have different lengths");
         }
     }
 
