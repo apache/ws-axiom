@@ -40,8 +40,8 @@ public class TestGetNamespaceContext extends DialectTestCase {
     }
 
     // Copy & paste from XMLStreamReaderComparator
-    private Set toPrefixSet(Iterator it) {
-        Set set = new HashSet();
+    private Set<String> toPrefixSet(Iterator<?> it) {
+        Set<String> set = new HashSet<String>();
         while (it.hasNext()) {
             String prefix = (String)it.next();
             // TODO: Woodstox returns null instead of "" for the default namespace.
@@ -55,8 +55,8 @@ public class TestGetNamespaceContext extends DialectTestCase {
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         InputStream in = testResource.getInputStream();
-        Set/*<String>*/ prefixes = new HashSet();
-        Set/*<String>*/ namespaceURIs = new HashSet();
+        Set<String> prefixes = new HashSet<String>();
+        Set<String> namespaceURIs = new HashSet<String>();
         prefixes.add("");
         try {
             ScopedNamespaceContext refNc = new ScopedNamespaceContext();
@@ -82,14 +82,12 @@ public class TestGetNamespaceContext extends DialectTestCase {
                 }
                 if (depth > 0) {
                     NamespaceContext nc = reader.getNamespaceContext();
-                    for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
-                        String prefix = (String)it.next();
+                    for (String prefix : prefixes) {
                         String expectedUri = refNc.getNamespaceURI(prefix);
                         String actualUri = nc.getNamespaceURI(prefix);
                         assertEquals("Namespace URI for prefix '" + prefix + "'", expectedUri, actualUri);
                     }
-                    for (Iterator it = namespaceURIs.iterator(); it.hasNext(); ) {
-                        String namespaceURI = (String)it.next();
+                    for (String namespaceURI : namespaceURIs) {
                         assertEquals(
                                 "Prefix for namespace URI '" + namespaceURI + "'",
                                 refNc.getPrefix(namespaceURI),

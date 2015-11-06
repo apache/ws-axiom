@@ -43,7 +43,7 @@ public final class StAXImplementation {
         return name;
     }
 
-    private Object newFactory(Class type) {
+    private <T> T newFactory(Class<T> type) {
         String className = props == null ? null : props.getProperty(type.getName());
         if (className == null) {
             // We do the lookup ourselves instead of using the StAX API. This allows
@@ -62,9 +62,9 @@ public final class StAXImplementation {
                 throw new FactoryConfigurationError(ex);
             }
         }
-        Object factory;
+        T factory;
         try {
-            factory = classLoader.loadClass(className).newInstance();
+            factory = classLoader.loadClass(className).asSubclass(type).newInstance();
         } catch (Exception ex) {
             throw new FactoryConfigurationError(ex);
         }
@@ -80,7 +80,7 @@ public final class StAXImplementation {
     }
     
     public XMLInputFactory newXMLInputFactory() {
-        return (XMLInputFactory)newFactory(XMLInputFactory.class);
+        return newFactory(XMLInputFactory.class);
     }
     
     public XMLInputFactory newNormalizedXMLInputFactory() {
@@ -92,7 +92,7 @@ public final class StAXImplementation {
     }
 
     public XMLOutputFactory newXMLOutputFactory() {
-        return (XMLOutputFactory)newFactory(XMLOutputFactory.class);
+        return newFactory(XMLOutputFactory.class);
     }
     
     public XMLOutputFactory newNormalizedXMLOutputFactory() {

@@ -19,7 +19,6 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -30,15 +29,15 @@ import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private final List/*<StAXImplementation>*/ implementations = new ArrayList();
+    private final List<StAXImplementation> implementations = new ArrayList<StAXImplementation>();
     
     public void addImplementation(StAXImplementation implementation) {
         implementations.add(implementation);
     }
     
     protected void addTests() {
-        for (Iterator it = implementations.iterator(); it.hasNext(); ) {
-            addTests((StAXImplementation)it.next());
+        for (StAXImplementation impl : implementations) {
+            addTests(impl);
         }
     }
 
@@ -65,8 +64,8 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         //   because UTF-16BE or UTF-16LE may be interpreted as an indication that
         //   there should be no BOM.
         // Therefore we accept both results.
-        addTest(new TestGetEncodingFromDetection(staxImpl, "UnicodeBig", new String[] { "UTF-16", "UTF-16BE" } ));
-        addTest(new TestGetEncodingFromDetection(staxImpl, "UnicodeLittle", new String[] { "UTF-16", "UTF-16LE" }));
+        addTest(new TestGetEncodingFromDetection(staxImpl, "UnicodeBig", "UTF-16", "UTF-16BE"));
+        addTest(new TestGetEncodingFromDetection(staxImpl, "UnicodeLittle", "UTF-16", "UTF-16LE"));
         // Here there is no doubt; if the encoding is UTF-16 without BOM, then the
         // parser should report the detected byte order.
         addTest(new TestGetEncodingFromDetection(staxImpl, "UnicodeBigUnmarked", "UTF-16BE"));
@@ -96,12 +95,11 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.DTD, true));
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceContextImplicitNamespaces(staxImpl));
-        for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
-            XMLSample file = (XMLSample)it.next();
+        for (XMLSample sample : Multiton.getInstances(XMLSample.class)) {
             // Some parsers have problems with external subsets; anyway the test files with
             // DTDs are not essential for this test.
-            if (!file.hasExternalSubset()) {
-                addTest(new TestGetNamespaceContext(staxImpl, file));
+            if (!sample.hasExternalSubset()) {
+                addTest(new TestGetNamespaceContext(staxImpl, sample));
             }
         }
         addTest(new TestGetNamespacePrefixDefaultNamespace(staxImpl));

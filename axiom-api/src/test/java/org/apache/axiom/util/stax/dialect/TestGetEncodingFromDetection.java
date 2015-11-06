@@ -34,19 +34,15 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class TestGetEncodingFromDetection extends DialectTestCase {
     private final String javaEncoding;
-    private final Set xmlEncodings;
+    private final Set<String> xmlEncodings;
 
-    public TestGetEncodingFromDetection(StAXImplementation staxImpl, String javaEncoding, String[] xmlEncodings) {
+    public TestGetEncodingFromDetection(StAXImplementation staxImpl, String javaEncoding, String... xmlEncodings) {
         super(staxImpl);
         this.javaEncoding = javaEncoding;
-        this.xmlEncodings = new HashSet(Arrays.asList(xmlEncodings));
+        this.xmlEncodings = new HashSet<String>(Arrays.asList(xmlEncodings));
         addTestParameter("javaEncoding", javaEncoding);
     }
     
-    public TestGetEncodingFromDetection(StAXImplementation staxImpl, String javaEncoding, String xmlEncoding) {
-        this(staxImpl, javaEncoding, new String[] { xmlEncoding });
-    }
-
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(

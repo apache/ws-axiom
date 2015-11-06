@@ -37,12 +37,12 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         return url;
     }
     
-    public Enumeration getResources(String name) throws IOException {
+    public Enumeration<URL> getResources(String name) throws IOException {
         // Make sure that we return our own resources first. Otherwise, if an API performs
         // JDK 1.3 service discovery using getResources instead of getResource, we would
         // have a problem.
-        Vector resources = new Vector();
-        Enumeration e = findResources(name);
+        Vector<URL> resources = new Vector<URL>();
+        Enumeration<URL> e = findResources(name);
         while (e.hasMoreElements()) {
             resources.add(e.nextElement());
         }
@@ -53,11 +53,11 @@ public class ParentLastURLClassLoader extends URLClassLoader {
         return resources.elements();
     }
 
-    protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         if (name.startsWith("javax.")) {
             return super.loadClass(name, resolve);
         } else {
-            Class c = findLoadedClass(name);
+            Class<?> c = findLoadedClass(name);
             if (c == null) {
                 try {
                     c = findClass(name);
