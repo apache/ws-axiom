@@ -57,8 +57,8 @@ public class DialectTestSuite extends TestSuite {
         // Neither SJSXP nor XLXP report whitespace in prolog
         builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
         
+        addParsersFromDirectory(builder, new File("parsers"));
         addParsersFromFile(builder, new File(targetDir, "parsers.list"));
-        addParsersFromDirectory(builder, new File(targetDir, "parsers"));
         
         // SJSXP and XLXP don't report whitespace in prolog
         builder.exclude(TestGetTextInProlog.class, "(|(implementation=sjsxp-1.0.1.jar)(implementation=com.ibm.ws.prereq.xlxp.jar))");
