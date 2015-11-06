@@ -42,22 +42,20 @@ public class DialectTestSuite extends TestSuite {
         
         File targetDir = new File("target");
         
-        // On Java 1.6 and above, also add the StAX implementation from the JRE
-        if (!System.getProperty("java.version").startsWith("1.5")) {
-            Properties props = new Properties();
-            if (System.getProperty("java.vendor").startsWith("IBM")) {
-                // Necessary for IBM Java 1.6. Note that IBM Java 1.7 also supports
-                // the com.sun.xml.internal.stream.* factories.
-                props.setProperty("javax.xml.stream.XMLInputFactory", "com.ibm.xml.xlxp.api.stax.XMLInputFactoryImpl");
-                props.setProperty("javax.xml.stream.XMLOutputFactory", "com.ibm.xml.xlxp.api.stax.XMLOutputFactoryImpl");
-            } else {
-                props.setProperty("javax.xml.stream.XMLInputFactory", "com.sun.xml.internal.stream.XMLInputFactoryImpl");
-                props.setProperty("javax.xml.stream.XMLOutputFactory", "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
-            }
-            builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), props));
-            // Neither SJSXP nor XLXP report whitespace in prolog
-            builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
+        // Add the StAX implementation from the JRE
+        Properties props = new Properties();
+        if (System.getProperty("java.vendor").startsWith("IBM")) {
+            // Necessary for IBM Java 1.6. Note that IBM Java 1.7 also supports
+            // the com.sun.xml.internal.stream.* factories.
+            props.setProperty("javax.xml.stream.XMLInputFactory", "com.ibm.xml.xlxp.api.stax.XMLInputFactoryImpl");
+            props.setProperty("javax.xml.stream.XMLOutputFactory", "com.ibm.xml.xlxp.api.stax.XMLOutputFactoryImpl");
+        } else {
+            props.setProperty("javax.xml.stream.XMLInputFactory", "com.sun.xml.internal.stream.XMLInputFactoryImpl");
+            props.setProperty("javax.xml.stream.XMLOutputFactory", "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
         }
+        builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), props));
+        // Neither SJSXP nor XLXP report whitespace in prolog
+        builder.exclude(TestGetTextInProlog.class, "(implementation=JRE)");
         
         addParsersFromFile(builder, new File(targetDir, "parsers.list"));
         addParsersFromDirectory(builder, new File(targetDir, "parsers"));
