@@ -827,6 +827,8 @@
                                         println 'Disabling JaCoCo because tests are skipped'
                                         project.properties['skipJacoco'] = 'true'
                                     }
+                                    
+                                    project.properties['javadoc.nolint.param'] = System.properties['java.specification.version'] == '1.7' ? '' : '-Xdoclint:none';
                                 ]]></script>
                             </scripts>
                         </configuration>
@@ -1073,7 +1075,7 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
-                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                    <additionalparam>${javadoc.nolint.param}</additionalparam>
                                 </configuration>
                             </execution>
                         </executions>
