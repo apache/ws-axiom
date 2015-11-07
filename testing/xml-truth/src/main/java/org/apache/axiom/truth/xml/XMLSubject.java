@@ -35,9 +35,13 @@ import org.apache.axiom.truth.xml.spi.XML;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.Subject;
 
+/**
+ * Propositions for objects representing XML data.
+ */
 public final class XMLSubject extends Subject<XMLSubject,Object> {
     private final XML xml;
-    private final Set<Event> ignoredEvents = new HashSet<Event>();
+    private boolean ignoreComments;
+    private boolean ignoreElementContentWhitespace;
     private boolean ignoreWhitespace;
     private boolean ignoreWhitespaceInPrologAndEpilog;
     private boolean ignorePrologAndEpilog;
@@ -52,69 +56,228 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
         xml = XMLTruth.xml(subject);
     }
 
+    /**
+     * Ignore comments; same as {@code ignoringComments(true)}.
+     * 
+     * @return {@code this}
+     */
     public XMLSubject ignoringComments() {
-        ignoredEvents.add(Event.COMMENT);
-        return this;
+        return ignoringComments(true);
     }
     
+    /**
+     * Specifies if comments should be ignored.
+     * 
+     * @param value
+     *            {@code true} if comments should be ignored, {@code false} otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringComments(boolean value) {
+        ignoreComments = value;
+        return this;
+    }
+
+    /**
+     * Ignore element content whitespace; same as {@code ignoringElementContentWhitespace(true)}.
+     * 
+     * @return {@code this}
+     */
     public XMLSubject ignoringElementContentWhitespace() {
-        ignoredEvents.add(Event.WHITESPACE);
-        return this;
+        return ignoringElementContentWhitespace(true);
     }
     
-    public XMLSubject ignoringWhitespace() {
-        ignoredEvents.add(Event.WHITESPACE);
-        ignoreWhitespace = true;
-        return this;
-    }
-    
-    public XMLSubject ignoringWhitespaceInPrologAndEpilog() {
-        ignoreWhitespaceInPrologAndEpilog = true;
-        return this;
-    }
-    
-    public XMLSubject ignoringPrologAndEpilog() {
-        ignorePrologAndEpilog = true;
+    /**
+     * Specifies if element content whitespace should be ignored. Note
+     * that this only has an effect for documents that have a DTD.
+     * 
+     * @param value
+     *            {@code true} if element content whitespace should be ignored, {@code false}
+     *            otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringElementContentWhitespace(boolean value) {
+        ignoreElementContentWhitespace = true;
         return this;
     }
     
     /**
-     * Ignore all namespace declarations.
+     * Ignore all whitespace; same as {@code ignoringWhitespace(true)}.
+     * 
+     * @return {@code this}
+     */
+    public XMLSubject ignoringWhitespace() {
+        return ignoringWhitespace(true);
+    }
+    
+    /**
+     * Specifies if whitespace should be ignored.
+     * 
+     * @param value
+     *            {@code true} if all text nodes that contain only whitespace should be ignored,
+     *            {@code false} otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringWhitespace(boolean value) {
+        ignoreWhitespace = value;
+        return this;
+    }
+    
+    /**
+     * Ignore whitespace in the prolog and epilog; same as
+     * {@code ignoringWhitespaceInPrologAndEpilog(true)}.
+     * 
+     * @return {@code this}
+     */
+    public XMLSubject ignoringWhitespaceInPrologAndEpilog() {
+        return ignoringWhitespaceInPrologAndEpilog(true);
+    }
+    
+    /**
+     * Specifies if whitespace in the prolog and epilog should be ignored. This is especially useful
+     * when working with DOM documents because DOM strips whitespace from the prolog and epilog.
+     * 
+     * @param value
+     *            {@code true} if whitespace in the prolog and epilog should be ignored,
+     *            {@code false} otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringWhitespaceInPrologAndEpilog(boolean value) {
+        ignoreWhitespaceInPrologAndEpilog = value;
+        return this;
+    }
+    
+    /**
+     * Ignore the prolog and epilog entirely; same as {@code ignoringPrologAndEpilog(true)}.
+     * 
+     * @return {@code this}
+     */
+    public XMLSubject ignoringPrologAndEpilog() {
+        return ignoringPrologAndEpilog(true);
+    }
+    
+    /**
+     * Specifies if the prolog and epilog should be ignored entirely.
+     * 
+     * @param value
+     *            {@code true} if (text, comment and document type declaration) nodes in the prolog
+     *            and epilog should be ignored, {@code false} otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringPrologAndEpilog(boolean value) {
+        ignorePrologAndEpilog = value;
+        return this;
+    }
+    
+    /**
+     * Ignore all namespace declarations; same as {@code ignoringNamespaceDeclarations(true)}.
      * 
      * @return <code>this</code>
      */
     public XMLSubject ignoringNamespaceDeclarations() {
-        ignoreNamespaceDeclarations = true;
-        return this;
+        return ignoringNamespaceDeclarations(true);
     }
     
-    public XMLSubject ignoringNamespacePrefixes() {
-        ignoreNamespacePrefixes = true;
+    /**
+     * Specifies if namespace declarations should be ignored.
+     * 
+     * @param value
+     *            {@code true} if namespace declarations should be ignored, {@code false} otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringNamespaceDeclarations(boolean value) {
+        ignoreNamespaceDeclarations = value;
         return this;
     }
     
     /**
-     * Ignore redundant namespace declarations. A namespace declaration is considered redundant if
-     * its presence doesn't modify the namespace context.
+     * Ignore namespace prefixes; same as {@code ignoringNamespacePrefixes(true)}.
      * 
-     * @return <code>this</code>
+     * @return {@code this}
      */
-    public XMLSubject ignoringRedundantNamespaceDeclarations() {
-        ignoreRedundantNamespaceDeclarations = true;
+    public XMLSubject ignoringNamespacePrefixes() {
+        return ignoringNamespacePrefixes(true);
+    }
+    
+    /**
+     * Specifies if namespace prefixes should be ignored.
+     * 
+     * @param value
+     *            {@code true} if namespace prefixes are ignored when comparing elements and
+     *            attributes, {@code false} otherwise
+     * @return {@code this}
+     */
+    public XMLSubject ignoringNamespacePrefixes(boolean value) {
+        ignoreNamespacePrefixes = value;
         return this;
     }
     
+    /**
+     * Ignore redundant namespace declarations; same as
+     * {@code ignoringRedundantNamespaceDeclarations(true)}.
+     * 
+     * @return {@code this}
+     */
+    public XMLSubject ignoringRedundantNamespaceDeclarations() {
+        return ignoringRedundantNamespaceDeclarations(true);
+    }
+    
+    /**
+     * Specify if redundant namespace declarations should be ignored. A namespace declaration is
+     * considered redundant if its presence doesn't modify the namespace context.
+     * 
+     * @param value
+     *            {@code true} if redundant namespace declarations should be ignored, {@code false}
+     *            if all namespace declarations should be compared
+     * @return {@code this}
+     */
+    public XMLSubject ignoringRedundantNamespaceDeclarations(boolean value) {
+        ignoreRedundantNamespaceDeclarations = value;
+        return this;
+    }
+    
+    /**
+     * Expand entity references; same as {@code expandingEntityReferences(true)}.
+     * 
+     * @return {@code this}
+     */
     public XMLSubject expandingEntityReferences() {
         return expandingEntityReferences(true);
     }
     
+    /**
+     * Specifies if entity references should be expanded.
+     * 
+     * @param value
+     *            {@code true} if entity references should be expanded and their replacement
+     *            compared, {@code false} if the entity references themselves should be compared
+     * @return {@code this}
+     */
     public XMLSubject expandingEntityReferences(boolean value) {
         expandEntityReferences = value;
         return this;
     }
     
+    /**
+     * Treat element content whitespace as simple text nodes; same as
+     * {@code treatingElementContentWhitespaceAsText(true)}.
+     * 
+     * @return {@code this}
+     */
     public XMLSubject treatingElementContentWhitespaceAsText() {
-        treatWhitespaceAsText = true;
+        return treatingElementContentWhitespaceAsText(true);
+    }
+    
+    /**
+     * Specifies how element content whitespace is to be treated. Use this when comparing a document
+     * that has a DTD with a document that doesn't.
+     * 
+     * @param value
+     *            {@code true} if element whitespace should be considered as text nodes,
+     *            {@code false} if element whitespace should be considered as a distinct node type
+     * @return {@code this}
+     */
+    public XMLSubject treatingElementContentWhitespaceAsText(boolean value) {
+        treatWhitespaceAsText = value;
         return this;
     }
     
@@ -151,6 +314,13 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
                     return event;
                 }
             };
+        }
+        final Set<Event> ignoredEvents = new HashSet<Event>();
+        if (ignoreComments) {
+            ignoredEvents.add(Event.COMMENT);
+        }
+        if (ignoreWhitespace || ignoreElementContentWhitespace) {
+            ignoredEvents.add(Event.WHITESPACE);
         }
         if (!ignoredEvents.isEmpty()) {
             traverser = new Filter(traverser) {
@@ -207,6 +377,12 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
         return result;
     }
     
+    /**
+     * Fails unless the subject represents the same XML as the given object.
+     * 
+     * @param other
+     *            the object to compare with
+     */
     public void hasSameContentAs(Object other) {
         try {
             Traverser actual = createTraverser(xml);

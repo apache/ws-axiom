@@ -38,9 +38,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
+import com.google.common.truth.AbstractVerb.DelegatedVerb;
 import com.google.common.truth.FailureStrategy;
 import com.google.common.truth.SubjectFactory;
+import com.google.common.truth.Truth;
 
+/**
+ * Google Truth extension for XML.
+ */
 public final class XMLTruth {
     private static final SubjectFactory<XMLSubject,Object> SUBJECT_FACTORY = new SubjectFactory<XMLSubject,Object>() {
         @Override
@@ -192,10 +197,27 @@ public final class XMLTruth {
     
     private XMLTruth() {}
 
+    /**
+     * Get the {@link SubjectFactory} to be used with {@link Truth#assertAbout(SubjectFactory)}.
+     * 
+     * @return a {@link SubjectFactory} for {@link XMLSubject} instances
+     */
     public static SubjectFactory<XMLSubject,Object> xml() {
         return SUBJECT_FACTORY;
     }
 
+    /**
+     * Prepare XML data so that it will be accessed through a particular API. Use this method for
+     * objects that represent XML data, but that implement more than one API supported by the
+     * factory returned by {@link #xml()} (e.g. DOM and the Axiom API).
+     * 
+     * @param type
+     *            the API to use (e.g. {@link Document}
+     * @param object
+     *            an object implementing that API
+     * @return an object that can be passed to {@link DelegatedVerb#that(Object)} or
+     *         {@link XMLSubject#hasSameContentAs(Object)}
+     */
     public static <T> Object xml(Class<T> type, T object) {
         return createXML(type, object);
     }

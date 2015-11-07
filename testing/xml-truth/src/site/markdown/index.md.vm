@@ -20,3 +20,37 @@
 Introduction
 ------------
 
+This `xml-truth` module provides a [Google Truth](https://github.com/google/truth) extension to
+compare XML data. It can be used as an alternative to [XMLUnit](http://www.xmlunit.org/). The basic
+usage is as follows:
+
+    assertAbout(xml()).that(actual).hasSameContentAs(expected);
+
+This relies on the following static imports being present:
+
+    import static com.google.common.truth.Truth.assertAbout;
+    import static org.apache.axiom.truth.xml.XMLTruth.xml;
+
+`actual` and `expected` are objects that represent XML data. The following types are currently
+supported:
+
+*   `InputStream`, `Reader`, `String` and `byte[]` with XML data to be parsed
+
+*   `javax.xml.transform.stream.StreamSource` and `org.xml.sax.InputSource`
+
+*   DOM `Document` or `Element` nodes
+
+*   `java.net.URL`
+
+By default, comparison is strict. E.g. the following assertion would fail:
+
+    assertAbout(xml()).that("<p:a xmlns:p='urn:ns'/>").hasSameContentAs("<a xmlns='urn:ns'/>");
+
+To control how the comparison is performed, use the relevant methods on the
+[`XMLSubject`](apidocs/org/apache/axiom/truth/xml/XMLSubject.html) object returned by `that()`:
+
+    assertAbout(xml())
+            .that("<p:a xmlns:p='urn:ns'/>")
+            .ignoringNamespacePrefixes()
+            .ignoringNamespaceDeclarations()
+            .hasSameContentAs("<a xmlns='urn:ns'/>");
