@@ -196,7 +196,11 @@ public final class XMLTruth {
         return SUBJECT_FACTORY;
     }
 
-    public static <T> XML xml(Class<T> type, T object) {
+    public static <T> Object xml(Class<T> type, T object) {
+        return createXML(type, object);
+    }
+
+    private static <T> XML createXML(Class<T> type, T object) {
         XMLFactory<?> factory = null;
         for (XMLFactory<?> candidate : factories) {
             Class<?> expectedType = candidate.getExpectedType();
@@ -211,15 +215,15 @@ public final class XMLTruth {
         if (factory == null) {
             throw new IllegalArgumentException();
         } else {
-            return xml(factory, object);
+            return createXML0(factory, object);
         }
     }
     
     static XML xml(Object object) {
-        return xml((Class<Object>)null, object);
+        return createXML(null, object);
     }
     
-    private static <T> XML xml(XMLFactory<T> factory, Object object) {
+    private static <T> XML createXML0(XMLFactory<T> factory, Object object) {
         return factory.createXML(factory.getExpectedType().cast(object));
     }
 }

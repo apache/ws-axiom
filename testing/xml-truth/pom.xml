@@ -71,6 +71,10 @@
                         <reports>
                             <report>javadoc-no-fork</report>
                         </reports>
+                        <configuration>
+                            <!-- Internal API that may change without notice -->
+                            <excludePackageNames>org.apache.axiom.truth.xml.spi</excludePackageNames>
+                        </configuration>
                     </reportSet>
                 </reportSets>
             </plugin>
