@@ -28,6 +28,10 @@
 
     <artifactId>fom-testsuite</artifactId>
 
+    <properties>
+        <skipSite>true</skipSite>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.abdera</groupId>
