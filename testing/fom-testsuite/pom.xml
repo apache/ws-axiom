@@ -28,6 +28,12 @@
 
     <artifactId>fom-testsuite</artifactId>
 
+    <name>FOM Test Suite</name>
+    <description>
+        FOM test suite (validated against the original Abdera implementation).
+    </description>
+    <url>http://ws.apache.org/axiom/</url>
+
     <properties>
         <skipSite>true</skipSite>
     </properties>
