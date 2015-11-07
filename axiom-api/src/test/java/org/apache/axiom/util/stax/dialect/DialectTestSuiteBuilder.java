@@ -52,6 +52,7 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestDisallowDoctypeDeclWithDenialOfService(staxImpl));
         addTest(new TestDisallowDoctypeDeclWithExternalSubset(staxImpl));
         addTest(new TestDisallowDoctypeDeclWithInternalSubset(staxImpl));
+        addTest(new TestDTDReader(staxImpl));
         addTest(new TestEnableCDataReporting(staxImpl));
         addTest(new TestGetAttributeNamespaceWithNoPrefix(staxImpl));
         addTest(new TestGetCharacterEncodingScheme(staxImpl));

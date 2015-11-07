@@ -24,12 +24,27 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
     public SJSXPStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
+    }
+
+    @Override
+    public Object getProperty(String name) {
+        if (DTDReader.PROPERTY.equals(name)) {
+            return new AbstractDTDReader(getParent()) {
+                @Override
+                protected String getDocumentTypeDeclaration(XMLStreamReader reader) {
+                    return reader.getText();
+                }
+            };
+        } else {
+            return super.getProperty(name);
+        }
     }
 
     public String getCharacterEncodingScheme() {

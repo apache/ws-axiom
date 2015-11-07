@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE root PUBLIC "-//TEST//Dummy DTD//EN" "dtd-full.dtd" [
+  <!ENTITY testentref "test">
+]>
+<root>
+    &testentref;
+</root>

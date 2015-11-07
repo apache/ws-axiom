@@ -75,7 +75,7 @@ public class SAXResultSAXParserTest extends AbstractTestCase {
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
         for (XMLSample file : getInstances(XMLSample.class)) {
             // TODO
-            if (file.getName().equals("entity-reference-external-subset.xml") && name.equals("crimson")) {
+            if (file.hasExternalSubset() && name.equals("crimson")) {
                 continue;
             }
             suite.addTest(new SAXResultSAXParserTest(

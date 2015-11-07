@@ -23,20 +23,22 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.DTDReader;
 
-final class XLXP1DTDReaderImpl implements DTDReader {
+abstract class AbstractDTDReader implements DTDReader {
     private final XMLStreamReader reader;
     private String rootName;
     private String publicId;
     private String systemId;
 
-    XLXP1DTDReaderImpl(XMLStreamReader reader) {
+    AbstractDTDReader(XMLStreamReader reader) {
         this.reader = reader;
     }
+
+    protected abstract String getDocumentTypeDeclaration(XMLStreamReader reader);
 
     private void parse() {
         if (rootName == null) {
             try {
-                Scanner scanner = new Scanner((String)reader.getProperty("javax.xml.stream.dtd.declaration"));
+                Scanner scanner = new Scanner(getDocumentTypeDeclaration(reader));
                 scanner.expect("<!DOCTYPE");
                 scanner.skipSpace();
                 rootName = scanner.getName();

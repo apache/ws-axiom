@@ -45,6 +45,12 @@ public class XMLSample extends MessageSample {
     
     public static final XMLSample ENTITY_REFERENCE_NESTED = new XMLSample("entity-reference-nested.xml");
     
+    /**
+     * An XML document that has a document type declaration with a system ID, public ID and internal
+     * subset.
+     */
+    public static final XMLSample DTD_FULL = new XMLSample("dtd-full.xml");
+    
     private static final DocumentBuilder documentBuilder;
     
     static {

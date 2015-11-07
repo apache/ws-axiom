@@ -67,7 +67,7 @@ final class XMLSampleProperties {
             }
             reader.close();
         } catch (XMLStreamException ex) {
-            throw new Error("Unable to parse " + sample.getUrl());
+            throw new Error("Unable to parse " + sample.getUrl(), ex);
         }
         this.hasDTD = hasDTD;
         this.hasExternalSubset = hasExternalSubset;
