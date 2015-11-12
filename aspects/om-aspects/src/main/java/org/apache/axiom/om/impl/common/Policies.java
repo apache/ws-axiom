@@ -21,9 +21,7 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
@@ -36,11 +34,7 @@ import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 public final class Policies {
     private Policies() {}
     
-    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
-            return null;
-        }
-    };
+    public static final DetachPolicy DETACH_POLICY = DetachPolicy.NEW_DOCUMENT;
     
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
             DETACH_POLICY,

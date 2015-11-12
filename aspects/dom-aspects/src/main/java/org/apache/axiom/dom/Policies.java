@@ -21,11 +21,9 @@ package org.apache.axiom.dom;
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
@@ -34,11 +32,7 @@ import org.apache.axiom.core.NodeType;
 public final class Policies {
     private Policies() {}
     
-    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
-            return owner.coreGetOwnerDocument(true);
-        }
-    };
+    public static final DetachPolicy DETACH_POLICY = DetachPolicy.SAME_DOCUMENT;
     
     /**
      * {@link AttributeMatcher} implementation that matches attributes based on their name, i.e.
