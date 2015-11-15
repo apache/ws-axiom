@@ -32,5 +32,9 @@ public final class FOMSemantics implements Semantics {
         return DetachPolicy.NEW_DOCUMENT;
     }
     
+    public boolean isUseStrictNamespaceLookup() {
+        return true;
+    }
+
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(INSTANCE, false, false);
 }

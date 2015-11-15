@@ -41,6 +41,10 @@ public final class AxiomSemantics implements Semantics {
         return DetachPolicy.NEW_DOCUMENT;
     }
     
+    public boolean isUseStrictNamespaceLookup() {
+        return true;
+    }
+
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
             INSTANCE,
             false,  // Axiom doesn't support namespace unaware attributes

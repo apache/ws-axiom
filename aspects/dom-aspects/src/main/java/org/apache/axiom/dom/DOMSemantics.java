@@ -39,6 +39,10 @@ public final class DOMSemantics implements Semantics {
         return DetachPolicy.SAME_DOCUMENT;
     }
     
+    public boolean isUseStrictNamespaceLookup() {
+        return false;
+    }
+
     /**
      * {@link AttributeMatcher} implementation that matches attributes based on their name, i.e.
      * based on the prefix and local name for namespace aware attributes. Parameters are defined as

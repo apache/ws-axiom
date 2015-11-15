@@ -135,8 +135,8 @@ public aspect CoreElementSupport {
 
     public abstract String CoreElement.getImplicitNamespaceURI(String prefix);
     
-    public final String CoreElement.coreLookupNamespaceURI(String prefix, boolean strict) {
-        if (!strict) {
+    public final String CoreElement.coreLookupNamespaceURI(String prefix, Semantics semantics) {
+        if (!semantics.isUseStrictNamespaceLookup()) {
             String namespaceURI = getImplicitNamespaceURI(prefix);
             if (namespaceURI != null) {
                 return namespaceURI;
@@ -152,7 +152,7 @@ public aspect CoreElementSupport {
         }
         CoreElement parentElement = coreGetParentElement();
         if (parentElement != null) {
-            return parentElement.coreLookupNamespaceURI(prefix, strict);
+            return parentElement.coreLookupNamespaceURI(prefix, semantics);
         } else if (prefix.length() == 0) {
             return "";
         } else {
@@ -162,11 +162,11 @@ public aspect CoreElementSupport {
 
     public abstract String CoreElement.getImplicitPrefix(String namespaceURI);
     
-    public final String CoreElement.coreLookupPrefix(String namespaceURI, boolean strict) {
+    public final String CoreElement.coreLookupPrefix(String namespaceURI, Semantics semantics) {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
         }
-        if (!strict) {
+        if (!semantics.isUseStrictNamespaceLookup()) {
             String prefix = getImplicitPrefix(namespaceURI);
             if (prefix != null) {
                 return prefix;
@@ -182,10 +182,10 @@ public aspect CoreElementSupport {
         }
         CoreElement parentElement = coreGetParentElement();
         if (parentElement != null) {
-            String prefix = parentElement.coreLookupPrefix(namespaceURI, strict);
+            String prefix = parentElement.coreLookupPrefix(namespaceURI, semantics);
             // The prefix declared on one of the ancestors may be masked by another
             // namespace declaration on this element (or one of its descendants).
-            if (!strict && getImplicitNamespaceURI(prefix) != null) {
+            if (!semantics.isUseStrictNamespaceLookup() && getImplicitNamespaceURI(prefix) != null) {
                 return null;
             }
             for (CoreAttribute attr = coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {

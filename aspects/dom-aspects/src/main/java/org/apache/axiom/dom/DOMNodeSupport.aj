@@ -41,7 +41,7 @@ public aspect DOMNodeSupport {
         } else if (prefix.length() == 0) {
             return null;
         }
-        String namespaceURI = context.coreLookupNamespaceURI(prefix, false);
+        String namespaceURI = context.coreLookupNamespaceURI(prefix, DOMSemantics.INSTANCE);
         return namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI;
     }
 
@@ -53,7 +53,7 @@ public aspect DOMNodeSupport {
         if (namespaceURI == null) {
             return null;
         } else {
-            String prefix = context.coreLookupPrefix(namespaceURI, false);
+            String prefix = context.coreLookupPrefix(namespaceURI, DOMSemantics.INSTANCE);
             return prefix == null || prefix.length() == 0 ? null : prefix;
         }
     }
@@ -66,7 +66,7 @@ public aspect DOMNodeSupport {
         if (namespaceURI == null) {
             namespaceURI = "";
         }
-        return namespaceURI.equals(context.coreLookupNamespaceURI("", false));
+        return namespaceURI.equals(context.coreLookupNamespaceURI("", DOMSemantics.INSTANCE));
     }
 
     public final Node DOMNode.cloneNode(boolean deep) {
