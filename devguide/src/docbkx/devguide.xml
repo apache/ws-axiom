@@ -1113,27 +1113,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <procedure>
                 <step>
                     <para>
-                        Update the release date in <filename>download.xml.vm</filename> and <filename>index.apt</filename>.
-                    </para>
-                </step>
-                <step>
-                    <para>
-                        Temporarily disable the Jenkins build(s) for Axiom, in order to avoid accidental
-                        deployment of the release candidate to the local repository of a Jenkins executor
-                        if the release process fails somewhere in the middle and/or a Jenkins build
-                        starts at the wrong moment.
-                    </para>
-                </step>
-                <step>
-                    <para>
                         Start the release process with the following command:
                     </para>
                     <screen>mvn release:prepare</screen>
                     <para>
-                        When asked for the "SCM release tag or label", override the default value
-                        (<literal>axiom-x.y.z</literal>) by entering a tag in the form
-                        <literal>x.y.z</literal>, which is compatible with the tag names used for
-                        previous releases.
+                        When asked for the "SCM release tag or label", keep the default value
+                        (<literal>x.y.z</literal>).
                     </para>
                     <para>
                         The above command will create a tag in Subversion and increment the version
@@ -1218,11 +1203,6 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                             </para>
                         </listitem>
                     </itemizedlist>
-                </step>
-                <step>
-                    <para>
-                        Reenable the Jenkins build(s).
-                    </para>
                 </step>
             </procedure>
             <para>
