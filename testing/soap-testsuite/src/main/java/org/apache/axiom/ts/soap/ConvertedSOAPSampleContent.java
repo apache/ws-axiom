@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axiom.datatype.DOMHelper;
+import org.apache.axiom.datatype.xsd.XSQNameType;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.xml.ComputedMessageContent;
 import org.w3c.dom.Attr;
@@ -40,15 +43,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 final class ConvertedSOAPSampleContent extends ComputedMessageContent {
-    private static Map<String,String> faultCodeMap = new HashMap<String,String>();
+    private static Map<QName,QName> faultCodeMap = new HashMap<>();
     
     static {
         faultCodeMap.put(
-                SOAPSpec.SOAP12.getSenderFaultCode().getLocalPart(),
-                SOAPSpec.SOAP11.getSenderFaultCode().getLocalPart());
+                SOAPSpec.SOAP12.getSenderFaultCode(),
+                SOAPSpec.SOAP11.getSenderFaultCode());
         faultCodeMap.put(
-                SOAPSpec.SOAP12.getReceiverFaultCode().getLocalPart(),
-                SOAPSpec.SOAP11.getReceiverFaultCode().getLocalPart());
+                SOAPSpec.SOAP12.getReceiverFaultCode(),
+                SOAPSpec.SOAP11.getReceiverFaultCode());
     }
     
     private final SOAPSample soap12Message;
@@ -112,25 +115,17 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
                 child = nextChild;
             }
         } else if (type == SOAPFaultChild.CODE) {
-            final Element value = getChild(element, SOAPFaultChild.VALUE);
-            element.setTextContent(transform(value.getTextContent(), new TextTransformer() {
-                @Override
-                public String transform(String in) {
-                    int idx = in.indexOf(':');
-                    if (idx == -1) {
-                        return in;
-                    }
-                    String prefix = in.substring(0, idx);
-                    if (!SOAPSpec.SOAP12.getEnvelopeNamespaceURI().equals(value.lookupNamespaceURI(prefix))) {
-                        return in;
-                    }
-                    String newCode = faultCodeMap.get(in.substring(idx+1));
-                    if (newCode == null) {
-                        return in;
-                    }
-                    return prefix + ":" + newCode;
-                }
-            }));
+            Element value = getChild(element, SOAPFaultChild.VALUE);
+            String[] whitespace = getSurroundingWhitespace(value.getTextContent());
+            QName qname;
+            try {
+                qname = DOMHelper.getValue(value, XSQNameType.INSTANCE);
+            } catch (ParseException ex) {
+                throw new Error(ex);
+            }
+            QName newQName = faultCodeMap.get(qname);
+            DOMHelper.setValue(element, XSQNameType.INSTANCE, newQName == null ? qname : newQName);
+            element.setTextContent(reapplyWhitespace(element.getTextContent(), whitespace));
         } else if (type == SOAPFaultChild.REASON) {
             Element text = getChild(element, SOAPFaultChild.TEXT);
             element.setTextContent(text.getTextContent());
@@ -210,19 +205,19 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
         return " \r\n\t".indexOf(c) != -1;
     }
     
-    private static String transform(String text, TextTransformer transformer) {
+    private static String[] getSurroundingWhitespace(String text) {
         int start = 0;
         while (isWhitespace(text.charAt(start))) {
-            if (++start == text.length()) {
-                return text;
-            }
+            start++;
         }
         int end = text.length();
         while (isWhitespace(text.charAt(end-1))) {
             end--;
         }
-        return text.substring(0, start)
-                + transformer.transform(text.substring(start, end))
-                + text.substring(end);
+        return new String[] { text.substring(0, start), text.substring(end) };
+    }
+    
+    private static String reapplyWhitespace(String text, String[] surroundingWhitespace) {
+        return surroundingWhitespace[0] + text + surroundingWhitespace[1];
     }
 }

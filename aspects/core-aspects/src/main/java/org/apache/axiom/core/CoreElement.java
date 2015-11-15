@@ -18,7 +18,10 @@
  */
 package org.apache.axiom.core;
 
+import java.text.ParseException;
 import java.util.Iterator;
+
+import org.apache.axiom.datatype.Type;
 
 public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, CoreNamedNode, DeferringParentNode {
     /**
@@ -153,4 +156,6 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
     // TODO: wrong Javadoc: null vs. empty string
     // TODO: we can support default namespaces!
     String coreLookupPrefix(String namespaceURI, Semantics semantics);
+    
+    <T> T coreGetValue(Type<T> type, Semantics semantics) throws ParseException;
 }

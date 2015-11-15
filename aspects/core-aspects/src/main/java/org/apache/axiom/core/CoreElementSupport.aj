@@ -18,7 +18,10 @@
  */
 package org.apache.axiom.core;
 
+import java.text.ParseException;
 import java.util.Iterator;
+
+import org.apache.axiom.datatype.Type;
 
 public aspect CoreElementSupport {
     private CoreAttribute CoreElement.firstAttribute;
@@ -219,5 +222,19 @@ public aspect CoreElementSupport {
 
     // This is basically a hook for OMSourcedElement
     public <T> void CoreElement.initSource(ClonePolicy<T> policy, T options, CoreElement other) {
+    }
+    
+    public final <T> T CoreElement.coreGetValue(Type<T> type, Semantics semantics) throws ParseException {
+        Object characterData = coreGetCharacterData(ElementAction.RETURN_NULL);
+        if (characterData == null) {
+            throw new ParseException("Element has mixed content", 0);
+        } else {
+            return type.parse(characterData.toString(), ContextAccessorImpl.INSTANCE, this, semantics);
+        }
+    }
+    
+    public final <T> void CoreElement.coreSetValue(Type<T> type, T value, Semantics semantics) {
+        // TODO: actually set value
+        type.format(value, ContextAccessorImpl.INSTANCE, this, semantics);
     }
 }

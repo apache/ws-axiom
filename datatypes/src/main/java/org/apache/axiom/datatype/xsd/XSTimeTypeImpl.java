@@ -16,8 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap;
+package org.apache.axiom.datatype.xsd;
 
-interface TextTransformer {
-    String transform(String in);
+final class XSTimeTypeImpl extends TemporalType<XSTime> implements XSTimeType {
+    @Override
+    boolean hasDatePart() {
+        return false;
+    }
+
+    @Override
+    boolean hasTimePart() {
+        return true;
+    }
+
+    @Override
+    XSTime createInstance(boolean bc, String aeon, int year, int month, int day, int hour,
+            int minute, int second, int nanoSecond, String nanoSecondFraction,
+            SimpleTimeZone timeZone) {
+        return new XSTimeImpl(hour, minute, second, nanoSecond, nanoSecondFraction, timeZone);
+    }
 }
