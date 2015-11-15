@@ -59,7 +59,7 @@ final class Scanner {
             if (peek() == quoteChar) {
                 return s.substring(start, pos++);
             } else {
-                throw new XMLStreamException("Untermined quoted string");
+                throw new XMLStreamException("Unterminated quoted string");
             }
         } else {
             throw new XMLStreamException("Expected quote char at position " + pos);
