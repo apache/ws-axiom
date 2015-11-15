@@ -108,12 +108,7 @@
                         <link>http://download.oracle.com/docs/cd/E17802_01/webservices/webservices/docs/1.5/api/</link>
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
-                    <breakiterator>true</breakiterator>
-                    <!-- The notimestamp, windowtitle and bottom parameters are chosen to minimize the number
-                         of changes between releases (to avoid mass changes when committing the site for a new release) -->
-                    <notimestamp>true</notimestamp>
                     <windowtitle>Apache Axiom</windowtitle>
-                    <bottom>Copyright © {organizationName}. All Rights Reserved.</bottom>
                     <!-- doctitle only appears in the summary and we should include the version there -->
                     <doctitle>Apache Axiom ${project.version}</doctitle>
                 </configuration>
