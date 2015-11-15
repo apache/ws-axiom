@@ -89,6 +89,19 @@
                     <argLine>${jacoco.surefireArgLine}</argLine>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- For some reason maven-source-plugin causes problems here; deactivate it -->
+                        <id>source-jars</id>
+                        <phase>none</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
