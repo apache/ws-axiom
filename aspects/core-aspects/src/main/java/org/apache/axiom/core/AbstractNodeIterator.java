@@ -26,7 +26,7 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
     private final Axis axis;
     private final Class<T> type;
     private final ExceptionTranslator exceptionTranslator;
-    private final DetachPolicy detachPolicy;
+    private final Semantics semantics;
     private CoreNode currentNode;
     
     /**
@@ -38,12 +38,12 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
     private boolean hasNext;
     private int depth;
     
-    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
+    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, ExceptionTranslator exceptionTranslator, Semantics semantics) {
         this.startNode = startNode;
         this.axis = axis;
         this.type = type;
         this.exceptionTranslator = exceptionTranslator;
-        this.detachPolicy = detachPolicy;
+        this.semantics = semantics;
     }
 
     protected abstract boolean matches(CoreNode node) throws CoreModelException;
@@ -130,7 +130,7 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
         hasNext();
         if (currentNode instanceof CoreChildNode) {
 //            try {
-                ((CoreChildNode)currentNode).coreDetach(detachPolicy);
+                ((CoreChildNode)currentNode).coreDetach(semantics);
 //            } catch (CoreModelException ex) {
 //                throw exceptionTranslator.toUncheckedException(ex);
 //            }
@@ -141,6 +141,6 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
     public final void replace(CoreChildNode newNode) throws CoreModelException {
         // Move to next node before replacing the current one
         hasNext();
-        ((CoreChildNode)currentNode).coreReplaceWith(newNode, detachPolicy);
+        ((CoreChildNode)currentNode).coreReplaceWith(newNode, semantics);
     }
 }

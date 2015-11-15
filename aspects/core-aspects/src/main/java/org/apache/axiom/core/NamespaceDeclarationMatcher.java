@@ -34,10 +34,10 @@ package org.apache.axiom.core;
  * </dl>
  */
 public final class NamespaceDeclarationMatcher implements AttributeMatcher {
-    private final DetachPolicy detachPolicy;
+    private final Semantics semantics;
     
-    public NamespaceDeclarationMatcher(DetachPolicy detachPolicy) {
-        this.detachPolicy = detachPolicy;
+    public NamespaceDeclarationMatcher(Semantics semantics) {
+        this.semantics = semantics;
     }
 
     public boolean matches(CoreAttribute attr, String namespaceURI, String name) {
@@ -64,6 +64,6 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
     }
 
     public void update(CoreAttribute attr, String prefix, String value) {
-        attr.coreSetCharacterData(value, detachPolicy);
+        attr.coreSetCharacterData(value, semantics);
     }
 }

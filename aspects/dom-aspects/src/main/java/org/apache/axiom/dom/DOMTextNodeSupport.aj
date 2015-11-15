@@ -87,7 +87,7 @@ public aspect DOMTextNodeSupport {
             DOMTextNode next;
             do {
                 next = current == last ? null : (DOMTextNode)current.coreGetNextSibling();
-                current.coreDetach(Policies.DETACH_POLICY);
+                current.coreDetach(DOMSemantics.INSTANCE);
                 current = next;
             } while (next != null);
         }

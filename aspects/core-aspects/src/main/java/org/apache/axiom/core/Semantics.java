@@ -18,22 +18,9 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
-
 /**
- * Interface for parent nodes.
+ * Defines the semantics of a particular API.
  */
-public interface CoreParentNode extends CoreNode {
-    int COMPLETE = 0;
-    int INCOMPLETE = 1;
-    int DISCARDED = 2;
-    int COMPACT = 3;
-    
-    OMXMLParserWrapper getBuilder();
-    void coreSetBuilder(OMXMLParserWrapper builder);
-    int getState();
-    void coreSetState(int state);
-    void build();
-
-    <T extends CoreElement> NodeIterator<T> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, Semantics semantics);
+public interface Semantics {
+    DetachPolicy getDetachPolicy();
 }

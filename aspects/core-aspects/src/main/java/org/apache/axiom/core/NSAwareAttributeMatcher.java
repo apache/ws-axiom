@@ -36,15 +36,15 @@ package org.apache.axiom.core;
  * {@link NamespaceDeclarationMatcher} can be used).
  */
 public final class NSAwareAttributeMatcher implements AttributeMatcher {
-    private final DetachPolicy detachPolicy;
+    private final Semantics semantics;
     private final boolean matchNSUnawareAttributes;
     private final boolean updatePrefix;
     
     /**
      * Constructor.
      * 
-     * @param detachPolicy
-     *            Specifies the {@link DetachPolicy} to be used by
+     * @param semantics
+     *            Specifies the {@link Semantics} to be used by
      *            {@link #update(CoreAttribute, String, String)}.
      * @param matchNSUnawareAttributes
      *            Specifies if {@link CoreNSUnawareAttribute} instances can also be matched. Only
@@ -55,9 +55,9 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
      *            <code>prefix</code> is only used when creating new attributes and prefixes of
      *            existing attributes are preserved (i.e. only their value is updated).
      */
-    public NSAwareAttributeMatcher(DetachPolicy detachPolicy, boolean matchNSUnawareAttributes,
+    public NSAwareAttributeMatcher(Semantics semantics, boolean matchNSUnawareAttributes,
             boolean updatePrefix) {
-        this.detachPolicy = detachPolicy;
+        this.semantics = semantics;
         this.matchNSUnawareAttributes = matchNSUnawareAttributes;
         this.updatePrefix = updatePrefix;
     }
@@ -92,7 +92,7 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
     }
 
     public void update(CoreAttribute attr, String prefix, String value) {
-        attr.coreSetCharacterData(value, detachPolicy);
+        attr.coreSetCharacterData(value, semantics);
         if (updatePrefix && attr instanceof CoreNSAwareAttribute) {
             ((CoreNSAwareAttribute)attr).coreSetPrefix(prefix);
         }

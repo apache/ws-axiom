@@ -57,18 +57,13 @@ public aspect CoreElementSupport {
     }
 
     public final void CoreElement.coreAppendAttribute(CoreAttribute attr) {
-        attr.coreRemove(DetachPolicy.NEW_DOCUMENT);
-        internalAppendAttribute(attr);
-    }
-
-    private void CoreElement.internalAppendAttribute(CoreAttribute attr) {
         // TODO: we should probably check if the attribute is already owned by the element
-        attr.internalSetOwnerElement(this);
+        attr.internalRemove(null, this);
         CoreAttribute lastAttribute = coreGetLastAttribute();
         if (lastAttribute == null) {
             firstAttribute = attr;
         } else {
-            lastAttribute.insertAttributeAfter(attr);
+            lastAttribute.internalSetNextAttribute(attr);
         }
     }
 
@@ -82,7 +77,7 @@ public aspect CoreElementSupport {
         if (attr == null) {
             CoreAttribute newAttr = matcher.createAttribute(this, namespaceURI, name, prefix, value);
             if (previousAttr == null) {
-                internalAppendAttribute(newAttr);
+                coreAppendAttribute(newAttr);
             } else {
                 previousAttr.insertAttributeAfter(newAttr);
             }
@@ -91,12 +86,12 @@ public aspect CoreElementSupport {
         }
     }
     
-    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, DetachPolicy detachPolicy) {
+    public final CoreAttribute CoreElement.coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, Semantics semantics) {
         if (attr.coreGetOwnerElement() == this) {
             // TODO: document this and add assertion
             return attr;
         }
-        attr.coreRemove(DetachPolicy.NEW_DOCUMENT);
+        attr.internalRemove(null, this);
         String namespaceURI = matcher.getNamespaceURI(attr);
         String name = matcher.getName(attr); 
         CoreAttribute existingAttr = coreGetFirstAttribute();
@@ -105,7 +100,6 @@ public aspect CoreElementSupport {
             previousAttr = existingAttr;
             existingAttr = existingAttr.coreGetNextAttribute();
         }
-        attr.internalSetOwnerElement(this);
         if (existingAttr == null) {
             if (previousAttr == null) {
                 firstAttribute = attr;
@@ -118,25 +112,25 @@ public aspect CoreElementSupport {
             } else {
                 previousAttr.internalSetNextAttribute(attr);
             }
-            existingAttr.internalUnsetOwnerElement(detachPolicy.getNewOwnerDocument(this));
+            existingAttr.internalUnsetOwnerElement(semantics.getDetachPolicy().getNewOwnerDocument(this));
             attr.internalSetNextAttribute(existingAttr.coreGetNextAttribute());
             existingAttr.internalSetNextAttribute(null);
         }
         return existingAttr;
     }
 
-    public final boolean CoreElement.coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, DetachPolicy detachPolicy) {
+    public final boolean CoreElement.coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics) {
         CoreAttribute att = coreGetAttribute(matcher, namespaceURI, name);
         if (att != null) {
-            att.coreRemove(detachPolicy);
+            att.coreRemove(semantics);
             return true;
         } else {
             return false;
         }
     }
 
-    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy) {
-        return AttributeIterator.create(this, type, mapper, detachPolicy);
+    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
+        return AttributeIterator.create(this, type, mapper, semantics);
     }
 
     public abstract String CoreElement.getImplicitNamespaceURI(String prefix);
@@ -215,7 +209,7 @@ public aspect CoreElementSupport {
         if (isExpanded()) {
             CoreAttribute attr = o.coreGetFirstAttribute();
             while (attr != null) {
-                internalAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
+                coreAppendAttribute((CoreAttribute)attr.coreClone(policy, options));
                 // TODO: needed?
 //                clonedAttr.coreSetSpecified(attr.coreGetSpecified());
                 attr = attr.coreGetNextAttribute();

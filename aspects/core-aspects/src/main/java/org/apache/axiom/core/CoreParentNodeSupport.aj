@@ -186,7 +186,7 @@ public aspect CoreParentNodeSupport {
         fragmentContent.lastChild = null;
     }
 
-    public final void CoreParentNode.coreRemoveChildren(DetachPolicy detachPolicy) {
+    public final void CoreParentNode.coreRemoveChildren(Semantics semantics) {
         if (getState() == COMPACT) {
             coreSetState(COMPLETE);
             content = null;
@@ -205,7 +205,7 @@ public aspect CoreParentNodeSupport {
                 updateState = false;
             }
             if (child != null) {
-                CoreDocument newOwnerDocument = detachPolicy.getNewOwnerDocument(this);
+                CoreDocument newOwnerDocument = semantics.getDetachPolicy().getNewOwnerDocument(this);
                 do {
                     CoreChildNode nextSibling = child.nextSibling;
                     child.previousSibling = null;
@@ -288,16 +288,16 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final void CoreParentNode.coreSetCharacterData(Object data, DetachPolicy detachPolicy) {
-        coreRemoveChildren(detachPolicy);
+    public final void CoreParentNode.coreSetCharacterData(Object data, Semantics semantics) {
+        coreRemoveChildren(semantics);
         if (data != null && (data instanceof CharacterData || ((String)data).length() > 0)) {
             coreSetState(COMPACT);
             content = data;
         }
     }
     
-    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Class<T> type, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
-        return new AbstractNodeIterator<T>(this, axis, type, exceptionTranslator, detachPolicy) {
+    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Class<T> type, ExceptionTranslator exceptionTranslator, Semantics semantics) {
+        return new AbstractNodeIterator<T>(this, axis, type, exceptionTranslator, semantics) {
             @Override
             protected boolean matches(CoreNode node) throws CoreModelException {
                 return true;
@@ -305,8 +305,8 @@ public aspect CoreParentNodeSupport {
         };
     }
     
-    public final <T extends CoreElement> NodeIterator<T> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
-        return new ElementsIterator<T>(this, axis, type, matcher, namespaceURI, name, exceptionTranslator, detachPolicy);
+    public final <T extends CoreElement> NodeIterator<T> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, Semantics semantics) {
+        return new ElementsIterator<T>(this, axis, type, matcher, namespaceURI, name, exceptionTranslator, semantics);
     }
 
     public final <T> void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {

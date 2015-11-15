@@ -34,6 +34,6 @@ public aspect DOMCommentSupport {
     }
 
     public final void DOMComment.setData(String data) {
-        coreSetCharacterData(data, Policies.DETACH_POLICY);
+        coreSetCharacterData(data, DOMSemantics.INSTANCE);
     }
 }

@@ -80,6 +80,6 @@ public aspect DOMDocumentFragmentSupport {
     }
 
     public final void DOMDocumentFragment.setTextContent(String textContent) {
-        coreSetCharacterData(textContent, Policies.DETACH_POLICY);
+        coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
     }
 }

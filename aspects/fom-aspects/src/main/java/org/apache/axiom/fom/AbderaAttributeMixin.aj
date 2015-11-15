@@ -25,7 +25,7 @@ public aspect AbderaAttributeMixin {
     }
 
     public final Attribute AbderaAttribute.setText(String text) {
-        coreSetCharacterData(text, Policies.DETACH_POLICY);
+        coreSetCharacterData(text, FOMSemantics.INSTANCE);
         return this;
     }
 }

@@ -196,7 +196,7 @@ public aspect AxiomElementSupport {
     
     // Not final because overridden in Abdera
     public void AxiomElement.setText(String text) {
-        coreSetCharacterData(text, Policies.DETACH_POLICY);
+        coreSetCharacterData(text, AxiomSemantics.INSTANCE);
     }
 
     public final void AxiomElement.setText(QName qname) {
@@ -278,7 +278,7 @@ public aspect AxiomElementSupport {
     }
     
     public final void AxiomElement.internalAppendAttribute(OMAttribute attr) {
-        coreSetAttribute(Policies.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, Policies.DETACH_POLICY);
+        coreSetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, (AxiomAttribute)attr, AxiomSemantics.INSTANCE);
     }
     
     public final OMAttribute AxiomElement.addAttribute(OMAttribute attr){
@@ -315,11 +315,11 @@ public aspect AxiomElementSupport {
     
     @SuppressWarnings("rawtypes")
     public final Iterator AxiomElement.getAllAttributes() {
-        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper, Policies.DETACH_POLICY);
+        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper, AxiomSemantics.INSTANCE);
     }
     
     public final OMAttribute AxiomElement.getAttribute(QName qname) {
-        return (AxiomAttribute)coreGetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
+        return (AxiomAttribute)coreGetAttribute(AxiomSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart());
     }
 
     // TODO: overridden in fom-impl
@@ -342,7 +342,7 @@ public aspect AxiomElementSupport {
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
         }
-        ((AxiomAttribute)attr).coreRemove(Policies.DETACH_POLICY);
+        ((AxiomAttribute)attr).coreRemove(AxiomSemantics.INSTANCE);
     }
 
     public final OMNamespace AxiomElement.addNamespaceDeclaration(String uri, String prefix) {
@@ -356,12 +356,12 @@ public aspect AxiomElementSupport {
     public final void AxiomElement.addNamespaceDeclaration(OMNamespace ns) {
         AxiomNamespaceDeclaration decl = coreGetNodeFactory().createNode(AxiomNamespaceDeclaration.class);
         decl.setDeclaredNamespace(ns);
-        coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, decl, Policies.DETACH_POLICY);
+        coreSetAttribute(AxiomSemantics.NAMESPACE_DECLARATION_MATCHER, decl, AxiomSemantics.INSTANCE);
     }
     
     @SuppressWarnings("rawtypes")
     public final Iterator AxiomElement.getAllDeclaredNamespaces() {
-        return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE, Policies.DETACH_POLICY);
+        return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
     public final OMNamespace AxiomElement.declareNamespace(OMNamespace namespace) {

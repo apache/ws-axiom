@@ -195,11 +195,11 @@ public aspect CoreChildNodeSupport {
     
     void CoreChildNode.beforeDetach() {}
     
-    public final void CoreChildNode.coreDetach(DetachPolicy detachPolicy) {
-        internalDetach(detachPolicy, null);
+    public final void CoreChildNode.coreDetach(Semantics semantics) {
+        internalDetach(semantics, null);
     }
     
-    final void CoreChildNode.internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent) {
+    final void CoreChildNode.internalDetach(Semantics semantics, CoreParentNode newParent) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             beforeDetach();
@@ -216,7 +216,7 @@ public aspect CoreChildNodeSupport {
             nextSibling = null;
             previousSibling = null;
             if (newParent == null) {
-                internalUnsetParent(detachPolicy.getNewOwnerDocument(parent));
+                internalUnsetParent(semantics.getDetachPolicy().getNewOwnerDocument(parent));
             }
         }
         if (newParent != null) {
@@ -224,10 +224,10 @@ public aspect CoreChildNodeSupport {
         }
     }
 
-    public final void CoreChildNode.coreReplaceWith(CoreChildNode newNode, DetachPolicy detachPolicy) {
-        newNode.coreDetach(DetachPolicy.NEW_DOCUMENT);
+    public final void CoreChildNode.coreReplaceWith(CoreChildNode newNode, Semantics semantics) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
+            newNode.internalDetach(null, parent);
             beforeDetach();
             if (previousSibling == null) {
                 parent.getContent(true).firstChild = newNode;
@@ -243,8 +243,7 @@ public aspect CoreChildNodeSupport {
                 newNode.nextSibling = nextSibling;
                 nextSibling = null;
             }
-            internalUnsetParent(detachPolicy.getNewOwnerDocument(parent));
-            newNode.internalSetParent(parent);
+            internalUnsetParent(semantics.getDetachPolicy().getNewOwnerDocument(parent));
         }
     }
 

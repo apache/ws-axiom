@@ -44,7 +44,7 @@ public aspect AxiomAttributeSupport {
     }
     
     public final void AxiomAttribute.setAttributeValue(String value) {
-        coreSetCharacterData(value, Policies.DETACH_POLICY);
+        coreSetCharacterData(value, AxiomSemantics.INSTANCE);
     }
     
     public final String AxiomAttribute.getAttributeType() {

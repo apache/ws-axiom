@@ -40,7 +40,7 @@ public aspect AxiomDocumentSupport {
         if (existingDocumentElement == null) {
             addChild(documentElement);
         } else {
-            existingDocumentElement.coreReplaceWith((AxiomElement)documentElement, Policies.DETACH_POLICY);
+            existingDocumentElement.coreReplaceWith((AxiomElement)documentElement, AxiomSemantics.INSTANCE);
         }
     }
 

@@ -66,7 +66,7 @@ public aspect DOMAttributeSupport {
     }
     
     public final void DOMAttribute.setValue(String value) {
-        coreSetCharacterData(value, Policies.DETACH_POLICY);
+        coreSetCharacterData(value, DOMSemantics.INSTANCE);
     }
     
     public final CoreElement DOMAttribute.getNamespaceContext() {

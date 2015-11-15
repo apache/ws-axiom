@@ -19,19 +19,18 @@
 package org.apache.axiom.fom;
 
 import org.apache.axiom.core.AttributeMatcher;
-import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
+import org.apache.axiom.core.Semantics;
 
-public final class Policies {
-    private Policies() {}
+public final class FOMSemantics implements Semantics {
+    public static final FOMSemantics INSTANCE = new FOMSemantics();
     
-    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
-            return null;
-        }
-    };
+    private FOMSemantics() {}
     
-    public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(DETACH_POLICY, false, false);
+    public DetachPolicy getDetachPolicy() {
+        return DetachPolicy.NEW_DOCUMENT;
+    }
+    
+    public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(INSTANCE, false, false);
 }

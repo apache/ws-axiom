@@ -39,7 +39,7 @@ public interface CoreChildNode extends CoreNode {
      */
     CoreChildNode coreGetNextSiblingIfAvailable();
 
-    void coreDetach(DetachPolicy detachPolicy);
+    void coreDetach(Semantics semantics);
 
     /**
      * Clone this node according to the provided policy.

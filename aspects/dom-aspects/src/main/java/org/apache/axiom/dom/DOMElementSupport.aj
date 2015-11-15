@@ -76,14 +76,14 @@ public aspect DOMElementSupport {
     }
     
     public final Attr DOMElement.getAttributeNode(String name) {
-        return (DOMAttribute)coreGetAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name);
+        return (DOMAttribute)coreGetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name);
     }
 
     public final Attr DOMElement.getAttributeNodeNS(String namespaceURI, String localName) {
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            return (DOMAttribute)coreGetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
+            return (DOMAttribute)coreGetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName);
         } else {
-            return (DOMAttribute)coreGetAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
+            return (DOMAttribute)coreGetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName);
         }
     }
     
@@ -107,7 +107,7 @@ public aspect DOMElementSupport {
 
     public final void DOMElement.setAttribute(String name, String value) {
         NSUtil.validateName(name);
-        coreSetAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name, null, value);
+        coreSetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name, null, value);
     }
 
     public final void DOMElement.setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
@@ -122,11 +122,11 @@ public aspect DOMElementSupport {
             localName = qualifiedName.substring(i+1);
         }
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            coreSetAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, NSUtil.getDeclaredPrefix(localName, prefix), null, value);
+            coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, NSUtil.getDeclaredPrefix(localName, prefix), null, value);
         } else {
             namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
             NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-            coreSetAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
+            coreSetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
         }
     }
 
@@ -152,14 +152,14 @@ public aspect DOMElementSupport {
             }
             AttributeMatcher matcher;
             if (newAttr instanceof CoreNSAwareAttribute) {
-                matcher = Policies.DOM2_ATTRIBUTE_MATCHER;
+                matcher = DOMSemantics.DOM2_ATTRIBUTE_MATCHER;
             } else if (newAttr instanceof CoreNamespaceDeclaration) {
-                matcher = Policies.NAMESPACE_DECLARATION_MATCHER;
+                matcher = DOMSemantics.NAMESPACE_DECLARATION_MATCHER;
             } else {
                 // Must be a DOM1 (namespace unaware) attribute
-                matcher = Policies.DOM1_ATTRIBUTE_MATCHER;
+                matcher = DOMSemantics.DOM1_ATTRIBUTE_MATCHER;
             }
-            return (DOMAttribute)coreSetAttribute(matcher, newAttr, Policies.DETACH_POLICY);
+            return (DOMAttribute)coreSetAttribute(matcher, newAttr, DOMSemantics.INSTANCE);
         }
     }
 
@@ -169,7 +169,7 @@ public aspect DOMElementSupport {
             if (attr.coreGetOwnerElement() != this) {
                 throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
             } else {
-                attr.coreRemove(Policies.DETACH_POLICY);
+                attr.coreRemove(DOMSemantics.INSTANCE);
             }
             return attr;
         } else {
@@ -179,15 +179,15 @@ public aspect DOMElementSupport {
 
     public final void DOMElement.removeAttribute(String name) throws DOMException {
         // Specs: "If no attribute with this name is found, this method has no effect."
-        coreRemoveAttribute(Policies.DOM1_ATTRIBUTE_MATCHER, null, name, Policies.DETACH_POLICY);
+        coreRemoveAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name, DOMSemantics.INSTANCE);
     }
 
     public final void DOMElement.removeAttributeNS(String namespaceURI, String localName) throws DOMException {
         // Specs: "If no attribute with this local name and namespace URI is found, this method has no effect."
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            coreRemoveAttribute(Policies.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName, Policies.DETACH_POLICY);
+            coreRemoveAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, localName.equals(XMLConstants.XMLNS_ATTRIBUTE) ? "" : localName, DOMSemantics.INSTANCE);
         } else {
-            coreRemoveAttribute(Policies.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName, Policies.DETACH_POLICY);
+            coreRemoveAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI == null ? "" : namespaceURI, localName, DOMSemantics.INSTANCE);
         }
     }
     
@@ -196,7 +196,7 @@ public aspect DOMElementSupport {
     }
 
     public final void DOMElement.setTextContent(String textContent) {
-        coreSetCharacterData(textContent, Policies.DETACH_POLICY);
+        coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
     }
 
     public final NodeList DOMElement.getElementsByTagName(String tagname) {

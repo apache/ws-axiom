@@ -62,8 +62,8 @@ import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.FOMExceptionTranslator;
 import org.apache.axiom.fom.FOMList;
+import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.IRIUtil;
-import org.apache.axiom.fom.Policies;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -216,9 +216,9 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
 
     public <T extends Element> T setAttributeValue(QName qname, String value) {
         if (value == null) {
-            coreRemoveAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), Policies.DETACH_POLICY);
+            coreRemoveAttribute(FOMSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), FOMSemantics.INSTANCE);
         } else {
-            coreSetAttribute(Policies.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
+            coreSetAttribute(FOMSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
         }
         return (T)this;
     }
@@ -226,7 +226,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     public final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
         return coreGetElements(Axis.CHILDREN, AbderaElement.class, ElementMatcher.BY_QNAME,
                 qname.getNamespaceURI(), qname.getLocalPart(), FOMExceptionTranslator.INSTANCE,
-                Policies.DETACH_POLICY);
+                FOMSemantics.INSTANCE);
     }
 
     public <E extends Element> List<E> _getChildrenAsSet(QName qname) {
@@ -254,9 +254,9 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         if (e == null && element != null) {
             coreAppendChild((AbderaElement)element, false);
         } else if (e != null && element != null) {
-            e.coreReplaceWith((AbderaElement)element, Policies.DETACH_POLICY);
+            e.coreReplaceWith((AbderaElement)element, FOMSemantics.INSTANCE);
         } else if (e != null && element == null) {
-            e.coreDetach(Policies.DETACH_POLICY);
+            e.coreDetach(FOMSemantics.INSTANCE);
         }
     }
 
@@ -453,7 +453,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
                 if (element.coreGetLocalName().equals(qname.getLocalPart())
                         && element.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
                     child = child.coreGetNextSibling();
-                    element.coreDetach(Policies.DETACH_POLICY);
+                    element.coreDetach(FOMSemantics.INSTANCE);
                     if (many) {
                         continue;
                     } else {

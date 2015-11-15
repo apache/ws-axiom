@@ -70,7 +70,7 @@ public aspect DOMNodeSupport {
     }
 
     public final Node DOMNode.cloneNode(boolean deep) {
-        DOMNode clone = (DOMNode)coreClone(deep ? Policies.DEEP_CLONE : Policies.SHALLOW_CLONE, null);
+        DOMNode clone = (DOMNode)coreClone(deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE, null);
         if (!(clone instanceof DOMDocument)) {
             clone.coreSetOwnerDocument(coreGetOwnerDocument(true));
         }
