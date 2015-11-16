@@ -23,42 +23,23 @@ import java.text.ParseException;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.datatype.ContextAccessor;
+import org.apache.axiom.datatype.TypeHelper;
 import org.apache.axiom.datatype.UnexpectedCharacterException;
-import org.apache.axiom.datatype.UnexpectedEndOfStringException;
 
 final class XSQNameTypeImpl implements XSQNameType {
     public <S,O> QName parse(String literal, ContextAccessor<S,O> contextAccessor, S contextObject, O options)
             throws ParseException {
-        int len = literal.length();
-        int start = -1;
-        int end = -1;
+        final int start = TypeHelper.getStartIndex(literal);
+        final int end = TypeHelper.getEndIndex(literal);
         int colonIndex = -1;
-        for (int index = 0; index<len; index++) {
-            char c = literal.charAt(index);
-            if (Util.isWhitespace(c)) {
-                if (start != -1 && end == -1) {
-                    end = index;
-                }
-            } else {
-                if (start == -1) {
-                    start = index;
-                } else if (end != -1) {
+        for (int index = start; index<end; index++) {
+            // TODO: we should check that the literal is a valid NCName
+            if (literal.charAt(index) == ':') {
+                if (colonIndex != -1) {
                     throw new UnexpectedCharacterException(literal, index);
                 }
-                // TODO: we should check that the literal is a valid NCName
-                if (literal.charAt(index) == ':') {
-                    if (colonIndex != -1) {
-                        throw new UnexpectedCharacterException(literal, index);
-                    }
-                    colonIndex = index;
-                }
+                colonIndex = index;
             }
-        }
-        if (start == -1) {
-            throw new UnexpectedEndOfStringException(literal);
-        }
-        if (end == -1) {
-            end = len;
         }
         String prefix;
         String localPart;

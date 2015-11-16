@@ -20,19 +20,21 @@ package org.apache.axiom.datatype.xsd;
 
 import java.text.ParseException;
 
+import org.apache.axiom.datatype.AbstractInvariantType;
+import org.apache.axiom.datatype.TypeHelper;
 import org.apache.axiom.datatype.UnexpectedCharacterException;
 import org.apache.axiom.datatype.UnexpectedEndOfStringException;
 
-abstract class TemporalType<T> extends AbstractWhitespaceCollapsingInvariantType<T> {
+abstract class TemporalType<T> extends AbstractInvariantType<T> {
     abstract boolean hasDatePart();
     abstract boolean hasTimePart();
     abstract T createInstance(boolean bc, String aeon, int year, int month, int day, int hour,
             int minute, int second, int nanoSecond, String nanoSecondFraction,
             SimpleTimeZone timeZone);
     
-    @Override
-    protected final T parse(String literal, int begin, int end) throws ParseException {
-        int index = begin;
+    public final T parse(String literal) throws ParseException {
+        final int end = TypeHelper.getEndIndex(literal);
+        int index = TypeHelper.getStartIndex(literal);
         boolean bc;
         String aeon;
         int year;
