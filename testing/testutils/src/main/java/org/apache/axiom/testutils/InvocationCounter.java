@@ -66,14 +66,14 @@ public class InvocationCounter {
      * @return the proxy instance
      */
     public Object createProxy(Object target) {
-        Set ifaces = new HashSet();
-        Class clazz = target.getClass();
+        Set<Class<?>> ifaces = new HashSet<>();
+        Class<?> clazz = target.getClass();
         do {
             ifaces.addAll(Arrays.asList(clazz.getInterfaces()));
             clazz = clazz.getSuperclass();
         } while (clazz != null);
         return Proxy.newProxyInstance(InvocationCounter.class.getClassLoader(),
-                (Class[])ifaces.toArray(new Class[ifaces.size()]), new InvocationHandlerImpl(target));
+                ifaces.toArray(new Class<?>[ifaces.size()]), new InvocationHandlerImpl(target));
     }
 
     /**

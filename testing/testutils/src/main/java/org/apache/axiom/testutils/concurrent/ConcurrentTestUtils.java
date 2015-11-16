@@ -20,14 +20,13 @@
 package org.apache.axiom.testutils.concurrent;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ConcurrentTestUtils {
 
     public static void testThreadSafety(final Action action) throws Throwable {
         int threadCount = 10;
-        final List results = new ArrayList(threadCount);
+        final List<Throwable> results = new ArrayList<>(threadCount);
         for (int i=0; i<threadCount; i++) {
             new Thread(new Runnable() {
                 public void run() {
@@ -52,8 +51,7 @@ public class ConcurrentTestUtils {
                 results.wait();
             }
         }
-        for (Iterator it = results.iterator(); it.hasNext(); ) {
-            Throwable result = (Throwable)it.next();
+        for (Throwable result : results) {
             if (result != null) {
                 throw result;
             }

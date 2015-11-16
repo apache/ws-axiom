@@ -49,7 +49,7 @@ public abstract class MatrixTestSuiteBuilder {
         }
     }
     
-    private final List<Exclude> excludes = new ArrayList<Exclude>();
+    private final List<Exclude> excludes = new ArrayList<>();
     private TestSuite suite;
     
     public final void exclude(Class<? extends MatrixTestCase> testClass, String filter) {

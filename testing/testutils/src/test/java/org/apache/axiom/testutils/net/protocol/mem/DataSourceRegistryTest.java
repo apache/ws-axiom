@@ -36,7 +36,7 @@ public class DataSourceRegistryTest extends TestCase {
             // We must be able to connect to the URL after converting it to a String
             URL url = new URL(registration.getURL().toString());
             URLConnection connection = url.openConnection();
-            IOTestUtils.compareStreams(connection.getInputStream(), ds.getInputStream());
+            IOTestUtils.compareStreams(connection.getInputStream(), "actual", ds.getInputStream(), "expected");
         } finally {
             registration.unregister();
         }

@@ -46,8 +46,8 @@ import java.util.ServiceLoader;
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class Multiton {
-    private static final Map<Class<?>,List<?>> instancesMap = new HashMap<Class<?>,List<?>>();
-    private static final Map<Class,List<AdapterFactory>> adapterFactoryMap = new HashMap<Class,List<AdapterFactory>>();
+    private static final Map<Class<?>,List<?>> instancesMap = new HashMap<>();
+    private static final Map<Class,List<AdapterFactory>> adapterFactoryMap = new HashMap<>();
     private final Adapters adapters = new Adapters();
     
     static {
@@ -57,7 +57,7 @@ public abstract class Multiton {
             Class clazz = ((Class<?>)((ParameterizedType)adapterFactory.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0]).asSubclass(Multiton.class);
             List<AdapterFactory> adapterFactories = adapterFactoryMap.get(clazz);
             if (adapterFactories == null) {
-                adapterFactories = new ArrayList<AdapterFactory>();
+                adapterFactories = new ArrayList<>();
                 adapterFactoryMap.put(clazz, adapterFactories);
             }
             adapterFactories.add(adapterFactory);
@@ -75,7 +75,7 @@ public abstract class Multiton {
     public static synchronized <T extends Multiton> List<T> getInstances(Class<T> multitonClass) {
         List<T> instances = (List<T>)instancesMap.get(multitonClass);
         if (instances == null) {
-            instances = new ArrayList<T>();
+            instances = new ArrayList<>();
             for (Field field : multitonClass.getDeclaredFields()) {
                 int mod = field.getModifiers();
                 if (Modifier.isPublic(mod) && Modifier.isStatic(mod) && Modifier.isFinal(mod)

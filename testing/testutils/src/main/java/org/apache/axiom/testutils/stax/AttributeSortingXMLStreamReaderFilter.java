@@ -49,7 +49,7 @@ final class AttributeSortingXMLStreamReaderFilter extends StreamReaderDelegate {
         if (indexMap == null) {
             int n = super.getAttributeCount();
             indexMap = new int[n];
-            SortedMap<String,Integer> map = new TreeMap<String,Integer>();
+            SortedMap<String,Integer> map = new TreeMap<>();
             for (int i=0; i<n; i++) {
                 map.put(super.getAttributeName(i).toString(), i);
             }

@@ -315,7 +315,7 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
                 }
             };
         }
-        final Set<Event> ignoredEvents = new HashSet<Event>();
+        final Set<Event> ignoredEvents = new HashSet<>();
         if (ignoreComments) {
             ignoredEvents.add(Event.COMMENT);
         }
@@ -370,7 +370,7 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
     }
     
     private static Map<QName,String> extractPrefixes(Set<QName> qnames) {
-        Map<QName,String> result = new HashMap<QName,String>();
+        Map<QName,String> result = new HashMap<>();
         for (QName qname : qnames) {
             result.put(qname, qname.getPrefix());
         }
