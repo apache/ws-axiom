@@ -214,13 +214,13 @@ public abstract class SOAPSpec extends Multiton {
      * @return an array with the recognized boolean literals
      */
     public final BooleanLiteral[] getBooleanLiterals() {
-        return (BooleanLiteral[])booleanLiterals.clone();
+        return booleanLiterals.clone();
     }
 
-    private static List getReps(BooleanLiteral[] literals) {
-        List result = new ArrayList(literals.length);
-        for (int i=0; i<literals.length; i++) {
-            result.add(literals[i].getLexicalRepresentation());
+    private static List<String> getReps(BooleanLiteral[] literals) {
+        List<String> result = new ArrayList<>(literals.length);
+        for (BooleanLiteral literal : literals) {
+            result.add(literal.getLexicalRepresentation());
         }
         return result;
     }
@@ -239,15 +239,15 @@ public abstract class SOAPSpec extends Multiton {
      * @return an array of invalid boolean literals
      */
     public final String[] getInvalidBooleanLiterals() {
-        Set result = new LinkedHashSet();
+        Set<String> result = new LinkedHashSet<>();
         result.addAll(getReps(getAltSpec().booleanLiterals));
-        List valid = getReps(booleanLiterals);
+        List<String> valid = getReps(booleanLiterals);
         result.removeAll(valid);
         result.add("invalid");
         if (valid.contains("true")) {
             result.add("TRUE");
         }
-        return (String[])result.toArray(new String[result.size()]);
+        return result.toArray(new String[result.size()]);
     }
     
     /**

@@ -54,7 +54,7 @@ public class SOAPSample extends XMLSample {
     
     @Instances
     private static SOAPSample[] instances() {
-        List<SOAPSample> instances = new ArrayList<SOAPSample>();
+        List<SOAPSample> instances = new ArrayList<>();
         for (SOAPSampleSet set : getInstances(SOAPSampleSet.class)) {
             for (SOAPSpec spec : getInstances(SOAPSpec.class)) {
                 instances.add(set.getMessage(spec));

@@ -52,19 +52,19 @@ public class XMLStreamReaderComparator {
     private boolean compareCharacterEncodingScheme = true;
     private boolean compareEncoding = true;
     private boolean sortAttributes = false;
-    private final LinkedList<QName> path = new LinkedList<QName>();
+    private final LinkedList<QName> path = new LinkedList<>();
     
     /**
      * Set collecting all prefixes seen in the document to be able to test
      * {@link XMLStreamReader#getNamespaceURI(String)}.
      */
-    private final Set<String> prefixes = new HashSet<String>();
+    private final Set<String> prefixes = new HashSet<>();
     
     /**
      * Set collecting all namespace URIs seen in the document to be able to
      * test {@link NamespaceContext#getPrefix(String)}.
      */
-    private final Set<String> namespaceURIs = new HashSet<String>();
+    private final Set<String> namespaceURIs = new HashSet<>();
     
     public XMLStreamReaderComparator(XMLStreamReader expected, XMLStreamReader actual) {
         this.expected = expected;
@@ -160,7 +160,7 @@ public class XMLStreamReaderComparator {
     }
     
     private Set<String> toPrefixSet(Iterator<?> it) {
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         while (it.hasNext()) {
             String prefix = (String)it.next();
             // TODO: Woodstox returns null instead of "" for the default namespace.
@@ -273,8 +273,8 @@ public class XMLStreamReaderComparator {
             assertSameResult("getName");
             Integer namespaceCount = (Integer)assertSameResult("getNamespaceCount");
             if (namespaceCount != null) {
-                Map<String,String> expectedNamespaces = new HashMap<String,String>();
-                Map<String,String> actualNamespaces = new HashMap<String,String>();
+                Map<String,String> expectedNamespaces = new HashMap<>();
+                Map<String,String> actualNamespaces = new HashMap<>();
                 for (int i=0; i<namespaceCount.intValue(); i++) {
                     String expectedPrefix = expected.getNamespacePrefix(i);
                     String expectedNamespaceURI = expected.getNamespaceURI(i);
