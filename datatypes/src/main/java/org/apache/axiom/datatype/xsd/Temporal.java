@@ -21,13 +21,19 @@ package org.apache.axiom.datatype.xsd;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+/**
+ * A temporal value. This is the base interface for {@link XSDate}, {@link XSTime} and
+ * {@link XSDateTime}.
+ */
 public interface Temporal {
     /**
+     * Convert this value to a calendar. For {@link XSDate} and {@link XSTime}, only the
+     * corresponding fields are filled in and all other fields are left unspecified.
      * 
      * @param defaultTimeZone
      *            the time zone to use if this temporal object has no time zone; may be
      *            <code>null</code>
-     * @return
+     * @return the calendar
      * @throws NoTimeZoneException
      *             if this temporal object doesn't have a time zone and no default time zone was
      *             specified
@@ -35,7 +41,7 @@ public interface Temporal {
     GregorianCalendar getCalendar(TimeZone defaultTimeZone);
     
     /**
-     * Determine if this temporal object has a time zone.
+     * Determine if this temporal value has a time zone.
      * 
      * @return <code>true</code> if the object has a time zone, <code>false</code> otherwise
      */
