@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import java.text.ParseException;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.ClonePolicy;
@@ -64,10 +66,9 @@ public aspect AxiomSOAPHeaderBlockSupport {
     private boolean AxiomSOAPHeaderBlock.getBooleanAttributeValue(String key, QName qname) {
         String literal = getAttributeValue(key, qname);
         if (literal != null) {
-            Boolean value = getSOAPHelper().parseBoolean(literal);
-            if (value != null) {
-                return value.booleanValue();
-            } else {
+            try {
+                return getSOAPHelper().getBooleanType().parse(literal);
+            } catch (ParseException ex) {
                 throw new SOAPProcessingException(
                         "Invalid value for attribute " + qname.getLocalPart() + " in header block " + getQName());
             }
@@ -82,17 +83,17 @@ public aspect AxiomSOAPHeaderBlockSupport {
     
     public final void AxiomSOAPHeaderBlock.setMustUnderstand(String mustUnderstand) throws SOAPProcessingException {
         SOAPHelper helper = getSOAPHelper();
-        Boolean value = helper.parseBoolean(mustUnderstand);
-        if (value != null) {
-            _setAttributeValue(helper.getMustUnderstandAttributeQName(), mustUnderstand);
-        } else {
+        try {
+            helper.getBooleanType().parse(mustUnderstand);
+        } catch (ParseException ex) {
             throw new SOAPProcessingException("Invalid value for mustUnderstand attribute");
         }
+        _setAttributeValue(helper.getMustUnderstandAttributeQName(), mustUnderstand);
     }
 
     public final void AxiomSOAPHeaderBlock.setMustUnderstand(boolean mustUnderstand) {
         SOAPHelper helper = getSOAPHelper();
-        _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.formatBoolean(mustUnderstand));
+        _setAttributeValue(helper.getMustUnderstandAttributeQName(), helper.getBooleanType().format(mustUnderstand));
     }
 
     public final String AxiomSOAPHeaderBlock.getRole() {
@@ -119,7 +120,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
         if (attributeQName == null) {
             throw new UnsupportedOperationException("Not supported for " + helper.getSpecName());
         } else {
-            _setAttributeValue(attributeQName, helper.formatBoolean(relay));
+            _setAttributeValue(attributeQName, helper.getBooleanType().format(relay));
         }
     }
 

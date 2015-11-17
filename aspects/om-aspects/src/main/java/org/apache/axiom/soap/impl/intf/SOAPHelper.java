@@ -20,6 +20,8 @@ package org.apache.axiom.soap.impl.intf;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.datatype.InvariantType;
+import org.apache.axiom.datatype.xsd.XSBooleanType;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -47,26 +49,11 @@ public abstract class SOAPHelper {
             AxiomSOAP11FaultReason.class,
             AxiomSOAP11FaultRole.class,
             AxiomSOAP11FaultDetail.class,
-            SOAP11Constants.ATTR_ACTOR, null) {
+            SOAP11Constants.ATTR_ACTOR, null,
+            SOAP11BooleanType.INSTANCE) {
         @Override
         public SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
             return metaFactory.getSOAP11Factory();
-        }
-
-        @Override
-        public Boolean parseBoolean(String literal) {
-            if (literal.equals("1")) {
-                return Boolean.TRUE;
-            } else if (literal.equals("0")) {
-                return Boolean.FALSE;
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public String formatBoolean(boolean value) {
-            return value ? "1" : "0";
         }
     };
     
@@ -80,26 +67,11 @@ public abstract class SOAPHelper {
             AxiomSOAP12FaultReason.class,
             AxiomSOAP12FaultRole.class,
             AxiomSOAP12FaultDetail.class,
-            SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY) {
+            SOAP12Constants.SOAP_ROLE, SOAP12Constants.SOAP_RELAY,
+            XSBooleanType.INSTANCE) {
         @Override
         public SOAPFactory getSOAPFactory(OMMetaFactory metaFactory) {
             return metaFactory.getSOAP12Factory();
-        }
-
-        @Override
-        public Boolean parseBoolean(String literal) {
-            if (literal.equals("true") || literal.equals("1")) {
-                return Boolean.TRUE;
-            } else if (literal.equals("false") || literal.equals("0")) {
-                return Boolean.FALSE;
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public String formatBoolean(boolean value) {
-            return String.valueOf(value);
         }
     };
     
@@ -121,6 +93,7 @@ public abstract class SOAPHelper {
     private final QName mustUnderstandAttributeQName;
     private final QName roleAttributeQName;
     private final QName relayAttributeQName;
+    private final InvariantType<Boolean> booleanType;
     
     private SOAPHelper(SOAPVersion version, String specName,
             Class<? extends AxiomSOAPEnvelope> envelopeClass,
@@ -132,7 +105,8 @@ public abstract class SOAPHelper {
             Class<? extends AxiomSOAPFaultReason> faultReasonClass,
             Class<? extends AxiomSOAPFaultRole> faultRoleClass,
             Class<? extends AxiomSOAPFaultDetail> faultDetailClass,
-            String roleAttributeLocalName, String relayAttributeLocalName) {
+            String roleAttributeLocalName, String relayAttributeLocalName,
+            InvariantType<Boolean> booleanType) {
         this.version = version;
         namespace = new OMNamespaceImpl(version.getEnvelopeURI(),
                 SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
@@ -158,6 +132,7 @@ public abstract class SOAPHelper {
                 version.getEnvelopeURI(), roleAttributeLocalName, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         relayAttributeQName = relayAttributeLocalName == null ? null :
             new QName(version.getEnvelopeURI(), relayAttributeLocalName, SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+        this.booleanType = booleanType;
     }
     
     public final SOAPVersion getVersion() {
@@ -254,6 +229,7 @@ public abstract class SOAPHelper {
         return relayAttributeQName;
     }
 
-    public abstract Boolean parseBoolean(String literal);
-    public abstract String formatBoolean(boolean value);
+    public InvariantType<Boolean> getBooleanType() {
+        return booleanType;
+    }
 }
