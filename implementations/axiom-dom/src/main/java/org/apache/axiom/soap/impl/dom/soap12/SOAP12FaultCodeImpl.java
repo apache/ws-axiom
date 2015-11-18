@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -68,16 +67,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
         return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
-    public void setValue(QName value) {
-        SOAPFaultValue valueElement = getValue();
-        if (valueElement == null) {
-            valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
-        }
-        valueElement.setText(value);
-    }
-
-    public QName getValueAsQName() {
-        SOAPFaultValue value = getValue();
-        return value == null ? null : value.getTextAsQName();
+    public SOAPFaultSubCode getSubCode() {
+        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 }
