@@ -16,11 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.common;
 
-package org.apache.axiom.soap.impl.dom;
+import javax.xml.namespace.QName;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultCode;
+import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
 
-public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
-
+public aspect AxiomSOAP12FaultClassifierSupport {
+    public final QName AxiomSOAP12FaultClassifier.getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
+    }
+    
+    public final void AxiomSOAP12FaultClassifier.setValue(QName value) {
+        SOAPFaultValue valueElement = getValue();
+        if (valueElement == null) {
+            valueElement = ((SOAP12Factory)getOMFactory()).internalCreateSOAPFaultValue(this, null);
+        }
+        valueElement.setText(value);
+    }
 }

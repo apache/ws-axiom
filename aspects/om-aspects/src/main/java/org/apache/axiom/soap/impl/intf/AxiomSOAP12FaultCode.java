@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.soap.impl.intf;
 
-public interface AxiomSOAP12FaultCode extends AxiomSOAPFaultCode, AxiomSOAP12Element {
+public interface AxiomSOAP12FaultCode extends AxiomSOAPFaultCode, AxiomSOAP12FaultClassifier {
 
 }
