@@ -35,6 +35,10 @@ public class SOAPProcessingException extends OMException {
         super(cause);
     }
 
+    public SOAPProcessingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     /**
      * @param messageText - this will appear as the Text in the Reason information item of SOAP
      *                    Fault
