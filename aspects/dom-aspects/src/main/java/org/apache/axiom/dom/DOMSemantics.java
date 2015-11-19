@@ -28,12 +28,21 @@ import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.Semantics;
 
-public final class Policies {
-    private Policies() {}
+public final class DOMSemantics implements Semantics {
+    public static final DOMSemantics INSTANCE = new DOMSemantics();
     
-    public static final DetachPolicy DETACH_POLICY = DetachPolicy.SAME_DOCUMENT;
+    private DOMSemantics() {}
     
+    public DetachPolicy getDetachPolicy() {
+        return DetachPolicy.SAME_DOCUMENT;
+    }
+    
+    public boolean isUseStrictNamespaceLookup() {
+        return false;
+    }
+
     /**
      * {@link AttributeMatcher} implementation that matches attributes based on their name, i.e.
      * based on the prefix and local name for namespace aware attributes. Parameters are defined as
@@ -74,13 +83,13 @@ public final class Policies {
         }
 
         public void update(CoreAttribute attr, String prefix, String value) {
-            attr.coreSetCharacterData(value, DETACH_POLICY);
+            attr.coreSetCharacterData(value, INSTANCE);
         }
     };
     
-    public static final AttributeMatcher DOM2_ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(DETACH_POLICY, true, true);
+    public static final AttributeMatcher DOM2_ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(INSTANCE, true, true);
 
-    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(DETACH_POLICY);
+    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(INSTANCE);
     
     public static final ClonePolicy<Void> DEEP_CLONE = new ClonePolicy<Void>() {
         public Class<? extends CoreNode> getTargetNodeClass(Void options, CoreNode node) {

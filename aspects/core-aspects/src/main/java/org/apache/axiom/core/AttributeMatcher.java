@@ -29,7 +29,7 @@ public interface AttributeMatcher {
      * {@link CoreElement#coreSetAttribute(AttributeMatcher, String, String, String, String)}, or
      * they are determined by the return values of {@link #getNamespaceURI(CoreAttribute)} and
      * {@link #getName(CoreAttribute)} if
-     * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, DetachPolicy)}
+     * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, Semantics)}
      * is used. It is
      * not required that these parameters strictly represent the namespace URI and local name of the
      * attribute. Their exact meaning is defined by the particular {@link AttributeMatcher}
@@ -47,7 +47,7 @@ public interface AttributeMatcher {
 
     /**
      * Get the <tt>namespaceURI</tt> parameter for an existing attribute. This method is used by
-     * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, DetachPolicy)}
+     * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, Semantics)}
      * which passes its return value as parameter to {@link #matches(CoreAttribute, String, String)}.
      * 
      * @param attr the attribute
@@ -57,7 +57,7 @@ public interface AttributeMatcher {
     
     /**
      * Get the <tt>name</tt> parameter for an existing attribute. This method is used by
-     * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, DetachPolicy)}
+     * {@link CoreElement#coreSetAttribute(AttributeMatcher, CoreAttribute, Semantics)}
      * which passes its return value as parameter to {@link #matches(CoreAttribute, String, String)}.
      * 
      * @param attr the attribute

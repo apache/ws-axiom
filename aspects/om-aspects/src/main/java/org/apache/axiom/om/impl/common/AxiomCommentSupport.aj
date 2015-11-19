@@ -34,7 +34,7 @@ public aspect AxiomCommentSupport {
     }
 
     public void AxiomComment.setValue(String text) {
-        coreSetCharacterData(text, Policies.DETACH_POLICY);
+        coreSetCharacterData(text, AxiomSemantics.INSTANCE);
     }
     
     public final void AxiomComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {

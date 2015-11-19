@@ -26,22 +26,31 @@ import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NamespaceDeclarationMatcher;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.Semantics;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-public final class Policies {
-    private Policies() {}
+public final class AxiomSemantics implements Semantics {
+    public static final AxiomSemantics INSTANCE = new AxiomSemantics();
     
-    public static final DetachPolicy DETACH_POLICY = DetachPolicy.NEW_DOCUMENT;
+    private AxiomSemantics() {}
     
+    public DetachPolicy getDetachPolicy() {
+        return DetachPolicy.NEW_DOCUMENT;
+    }
+    
+    public boolean isUseStrictNamespaceLookup() {
+        return true;
+    }
+
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
-            DETACH_POLICY,
+            INSTANCE,
             false,  // Axiom doesn't support namespace unaware attributes
             false);
 
-    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(DETACH_POLICY);
+    public static final AttributeMatcher NAMESPACE_DECLARATION_MATCHER = new NamespaceDeclarationMatcher(INSTANCE);
     
     public static final ClonePolicy<OMCloneOptions> CLONE_POLICY = new ClonePolicy<OMCloneOptions>() {
         public Class<? extends CoreNode> getTargetNodeClass(OMCloneOptions options, CoreNode node) {

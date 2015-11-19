@@ -16,22 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.fom;
+package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.core.AttributeMatcher;
-import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.core.DetachPolicy;
-import org.apache.axiom.core.NSAwareAttributeMatcher;
+import javax.xml.namespace.QName;
 
-public final class Policies {
-    private Policies() {}
+import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
+
+public aspect AxiomSOAP12FaultClassifierSupport {
+    public final QName AxiomSOAP12FaultClassifier.getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
+    }
     
-    public static final DetachPolicy DETACH_POLICY = new DetachPolicy() {
-        public CoreDocument getNewOwnerDocument(CoreParentNode owner) {
-            return null;
+    public final void AxiomSOAP12FaultClassifier.setValue(QName value) {
+        SOAPFaultValue valueElement = getValue();
+        if (valueElement == null) {
+            valueElement = ((SOAP12Factory)getOMFactory()).internalCreateSOAPFaultValue(this, null);
         }
-    };
-    
-    public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(DETACH_POLICY, false, false);
+        valueElement.setText(value);
+    }
 }

@@ -187,11 +187,11 @@ public aspect AxiomContainerSupport {
     }
     
     public void AxiomContainer.removeChildren() {
-        coreRemoveChildren(Policies.DETACH_POLICY);
+        coreRemoveChildren(AxiomSemantics.INSTANCE);
     }
     
     public Iterator AxiomContainer.getChildren() {
-        return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
+        return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomExceptionTranslator.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
     public Iterator AxiomContainer.getChildrenWithLocalName(String localName) {
@@ -229,7 +229,7 @@ public aspect AxiomContainerSupport {
     }
     
     public Iterator AxiomContainer.getDescendants(boolean includeSelf) {
-        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
+        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomExceptionTranslator.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
     public OMElement AxiomContainer.getFirstChildWithName(QName elementQName) throws OMException {

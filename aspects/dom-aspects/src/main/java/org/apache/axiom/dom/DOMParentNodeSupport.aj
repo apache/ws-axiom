@@ -68,7 +68,7 @@ public aspect DOMParentNodeSupport {
 
     public final Node DOMParentNode.removeChild(Node oldChild) throws DOMException {
         if (oldChild.getParentNode() == this) {
-            ((CoreChildNode)oldChild).coreDetach(Policies.DETACH_POLICY);
+            ((CoreChildNode)oldChild).coreDetach(DOMSemantics.INSTANCE);
             return oldChild;
         } else {
             throw newDOMException(DOMException.NOT_FOUND_ERR);

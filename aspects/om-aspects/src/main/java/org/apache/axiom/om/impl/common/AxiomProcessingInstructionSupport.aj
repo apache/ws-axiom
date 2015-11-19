@@ -37,7 +37,7 @@ public aspect AxiomProcessingInstructionSupport {
     }
 
     public final void AxiomProcessingInstruction.setValue(String value) {
-        coreSetCharacterData(value, Policies.DETACH_POLICY);
+        coreSetCharacterData(value, AxiomSemantics.INSTANCE);
     }
     
     public final void AxiomProcessingInstruction.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {

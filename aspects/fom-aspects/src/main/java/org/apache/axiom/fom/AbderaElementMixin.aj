@@ -20,6 +20,6 @@ package org.apache.axiom.fom;
 
 public aspect AbderaElementMixin {
     public final void AbderaElement._removeAllChildren() {
-        coreRemoveChildren(Policies.DETACH_POLICY);
+        coreRemoveChildren(FOMSemantics.INSTANCE);
     }
 }

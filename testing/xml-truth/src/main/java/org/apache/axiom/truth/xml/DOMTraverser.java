@@ -154,7 +154,7 @@ final class DOMTraverser implements Traverser {
             Attr attr = (Attr)attributes.item(i);
             if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
                 if (result == null) {
-                    result = new HashMap<QName,String>();
+                    result = new HashMap<>();
                 }
                 result.put(getQName(attr), attr.getValue());
             }
@@ -170,7 +170,7 @@ final class DOMTraverser implements Traverser {
             Attr attr = (Attr)attributes.item(i);
             if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
                 if (result == null) {
-                    result = new HashMap<String,String>();
+                    result = new HashMap<>();
                 }
                 String prefix = attr.getPrefix();
                 result.put(XMLConstants.XMLNS_ATTRIBUTE.equals(prefix) ? attr.getLocalName() : "", attr.getValue());

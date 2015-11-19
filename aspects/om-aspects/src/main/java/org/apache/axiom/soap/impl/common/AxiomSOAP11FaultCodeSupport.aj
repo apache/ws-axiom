@@ -18,11 +18,39 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.soap.SOAPFaultSubCode;
+import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
 
 public aspect AxiomSOAP11FaultCodeSupport {
     public final Class<? extends CoreNode> AxiomSOAP11FaultCode.coreGetNodeClass() {
         return AxiomSOAP11FaultCode.class;
+    }
+
+    public final SOAPFaultValue AxiomSOAP11FaultCode.getValue() {
+        return null;
+    }
+
+    public final void AxiomSOAP11FaultCode.setValue(SOAPFaultValue value) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final SOAPFaultSubCode AxiomSOAP11FaultCode.getSubCode() {
+        return null;
+    }
+
+    public final void AxiomSOAP11FaultCode.setSubCode(SOAPFaultSubCode subCode) {
+        throw new UnsupportedOperationException();
+    }
+
+    public final QName AxiomSOAP11FaultCode.getValueAsQName() {
+        return getTextAsQName();
+    }
+
+    public final void AxiomSOAP11FaultCode.setValue(QName value) {
+        setText(value);
     }
 }

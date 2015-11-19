@@ -24,8 +24,8 @@ final class ElementsIterator<T extends CoreElement> extends AbstractNodeIterator
     private final String namespaceURI;
     private final String name;
 
-    public ElementsIterator(CoreParentNode startNode, Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, DetachPolicy detachPolicy) {
-        super(startNode, axis, type, exceptionTranslator, detachPolicy);
+    public ElementsIterator(CoreParentNode startNode, Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, Semantics semantics) {
+        super(startNode, axis, type, exceptionTranslator, semantics);
         this.type = type;
         this.matcher = matcher;
         this.namespaceURI = namespaceURI;

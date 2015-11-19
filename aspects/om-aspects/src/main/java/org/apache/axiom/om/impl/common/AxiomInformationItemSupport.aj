@@ -29,6 +29,6 @@ public aspect AxiomInformationItemSupport {
     }
     
     public final OMInformationItem AxiomInformationItem.clone(OMCloneOptions options) {
-        return (OMInformationItem)coreClone(Policies.CLONE_POLICY, options);
+        return (OMInformationItem)coreClone(AxiomSemantics.CLONE_POLICY, options);
     }
 }

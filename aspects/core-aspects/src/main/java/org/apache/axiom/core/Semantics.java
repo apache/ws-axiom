@@ -16,11 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.core;
 
-package org.apache.axiom.soap.impl.dom;
-
-import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultCode;
-
-public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
-
+/**
+ * Defines the semantics of a particular API.
+ */
+public interface Semantics {
+    DetachPolicy getDetachPolicy();
+    
+    /**
+     * Determine how namespace lookups are performed.
+     * 
+     * @return {@code true} if only namespace declarations are taken into account. {@code false} if
+     *         the prefixes of the element and its ancestors are also taken into account (limited to
+     *         instanced of {@link CoreNSAwareElement}), even if no explicit namespace declarations
+     *         exists for these prefixes.
+     */
+    boolean isUseStrictNamespaceLookup();
 }

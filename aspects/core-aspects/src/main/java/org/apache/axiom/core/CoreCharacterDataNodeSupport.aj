@@ -44,7 +44,7 @@ public aspect CoreCharacterDataNodeSupport {
         this.data = data;
     }
     
-    public final void CoreCharacterDataNode.coreSetCharacterData(Object data, DetachPolicy detachPolicy) {
+    public final void CoreCharacterDataNode.coreSetCharacterData(Object data, Semantics semantics) {
         this.data = data;
     }
     

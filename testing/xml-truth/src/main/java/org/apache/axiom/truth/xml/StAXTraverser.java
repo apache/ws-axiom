@@ -101,7 +101,7 @@ final class StAXTraverser implements Traverser {
         if (attributeCount == 0) {
             return null;
         } else {
-            Map<QName,String> attributes = new HashMap<QName,String>();
+            Map<QName,String> attributes = new HashMap<>();
             for (int i=0; i<attributeCount; i++) {
                 attributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
@@ -115,7 +115,7 @@ final class StAXTraverser implements Traverser {
         if (namespaceCount == 0) {
             return null;
         } else {
-            Map<String,String> namespaces = new HashMap<String,String>();
+            Map<String,String> namespaces = new HashMap<>();
             for (int i=0; i<namespaceCount; i++) {
                 namespaces.put(Strings.nullToEmpty(reader.getNamespacePrefix(i)), reader.getNamespaceURI(i));
             }

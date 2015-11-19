@@ -47,7 +47,7 @@ public class SOAP12Factory extends SOAPFactoryImpl implements SOAP12FactoryEx {
         return SOAPHelper.SOAP12;
     }
 
-    private SOAPFaultValue internalCreateSOAPFaultValue(SOAPFaultClassifier parent, OMXMLParserWrapper builder) {
+    final SOAPFaultValue internalCreateSOAPFaultValue(SOAPFaultClassifier parent, OMXMLParserWrapper builder) {
         return createSOAPElement(AxiomSOAP12FaultValue.class, parent, SOAP12Constants.QNAME_FAULT_VALUE, builder);
     }
 

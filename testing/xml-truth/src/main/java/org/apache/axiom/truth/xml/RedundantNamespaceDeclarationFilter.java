@@ -34,7 +34,7 @@ final class RedundantNamespaceDeclarationFilter extends Filter {
     private static final Map<String,String> implicitNamespaces;
     
     static {
-        implicitNamespaces = new HashMap<String,String>();
+        implicitNamespaces = new HashMap<>();
         implicitNamespaces.put("", "");
         implicitNamespaces.put(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
         implicitNamespaces.put(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
@@ -44,7 +44,7 @@ final class RedundantNamespaceDeclarationFilter extends Filter {
     
     RedundantNamespaceDeclarationFilter(Traverser parent) {
         super(parent);
-        stack = new ArrayList<Map<String,String>>(10);
+        stack = new ArrayList<>(10);
         stack.add(implicitNamespaces);
     }
 

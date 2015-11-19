@@ -36,13 +36,13 @@ public interface CoreAttribute extends NonDeferringParentNode, CoreCharacterData
     /**
      * Remove this attribute from its owner element.
      * 
-     * @param detachPolicy
-     *            the detach policy that determines the new owner document for the attribute
+     * @param semantics
+     *            the API semantics to use; determines the new owner document for the attribute
      * @return <code>true</code> if the attribute had an owner element and has been removed from
      *         that element; <code>false</code> if the attribute didn't have an owner element and no
      *         changes have been made
      */
-    boolean coreRemove(DetachPolicy detachPolicy);
+    boolean coreRemove(Semantics semantics);
     
     /**
      * Get the attribute immediately following the current attribute.

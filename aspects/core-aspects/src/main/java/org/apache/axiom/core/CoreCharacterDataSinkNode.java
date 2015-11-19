@@ -19,5 +19,5 @@
 package org.apache.axiom.core;
 
 public interface CoreCharacterDataSinkNode {
-    void coreSetCharacterData(Object data, DetachPolicy detachPolicy);
+    void coreSetCharacterData(Object data, Semantics semantics);
 }

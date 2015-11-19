@@ -86,12 +86,12 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      *            the {@link AttributeMatcher} implementation to use
      * @param attr
      *            the new attribute to add
-     * @param detachPolicy
+     * @param semantics
      *            determines the new owner document for the replaced attribute
      * @return the attribute that was replaced by the new attribute, or <code>null</code> if no
      *         matching attribute existed.
      */
-    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, DetachPolicy detachPolicy);
+    CoreAttribute coreSetAttribute(AttributeMatcher matcher, CoreAttribute attr, Semantics semantics);
 
     /**
      * Append an attribute to this element. The attribute is simply added at the end of the list of
@@ -117,9 +117,9 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @return <code>true</code> if a matching attribute was found (and has been removed),
      *         <code>false</code> if no matching attribute was found
      */
-    boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, DetachPolicy detachPolicy);
+    boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics);
     
-    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy);
+    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, Semantics semantics);
     
     /**
      * Look up the namespace URI associated to the given prefix.
@@ -127,17 +127,14 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @param prefix
      *            The prefix to look for. If this parameter is the empty string, then the URI of the
      *            default namespace will be returned.
-     * @param strict
-     *            If this parameter is set to <code>true</code>, only namespace declarations will be
-     *            taken into account. If set to <code>false</code> the prefixes of the element and
-     *            its ancestors are also taken into account (limited to instanced of
-     *            {@link CoreNSAwareElement}), even if no explicit namespace declarations exists for
-     *            these prefixes.
+     * @param semantics
+     *            The API semantics to use.
      * @return the namespace URI or <code>null</code> if the prefix is not bound; if the prefix is
      *         the empty string and no default namespace declaration exists, then an empty string is
      *         returned
+     * @see Semantics#isUseStrictNamespaceLookup()
      */
-    String coreLookupNamespaceURI(String prefix, boolean strict);
+    String coreLookupNamespaceURI(String prefix, Semantics semantics);
     
     /**
      * Find a prefix associated to the given namespace URI. Default namespaces are not taken into
@@ -146,17 +143,14 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      * @param namespaceURI
      *            The namespace URI to look for. This parameter must not be <code>null</code> (XML
      *            forbids to bind a prefix to the null namespace).
-     * @param strict
-     *            If this parameter is set to <code>true</code>, only namespace declarations will be
-     *            taken into account. If set to <code>false</code> the prefixes of the element and
-     *            its ancestors are also taken into account (limited to instanced of
-     *            {@link CoreNSAwareElement}), even if no explicit namespace declarations exists for
-     *            these prefixes.
+     * @param semantics
+     *            The API semantics to use.
      * @return a prefix bound to the given namespace URI or <code>null</code> if none is found
      * @throws IllegalArgumentException
      *             if <code>namespaceURI</code> is <code>null</code>
+     * @see Semantics#isUseStrictNamespaceLookup()
      */
     // TODO: wrong Javadoc: null vs. empty string
     // TODO: we can support default namespaces!
-    String coreLookupPrefix(String namespaceURI, boolean strict);
+    String coreLookupPrefix(String namespaceURI, Semantics semantics);
 }

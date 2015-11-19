@@ -40,7 +40,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 final class ConvertedSOAPSampleContent extends ComputedMessageContent {
-    private static Map<String,String> faultCodeMap = new HashMap<String,String>();
+    private static Map<String,String> faultCodeMap = new HashMap<>();
     
     static {
         faultCodeMap.put(

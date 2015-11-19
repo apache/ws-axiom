@@ -41,13 +41,13 @@ public class ElementsByTagNameNS extends NodeListImpl {
         boolean localNameWildcard = localName.equals("*");
         if (nsWildcard && localNameWildcard) {
             // TODO: there seems to be no unit test checking whether the iterator should return DOM1 elements!
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
+            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMExceptionTranslator.INSTANCE, DOMSemantics.INSTANCE);
         } else if (nsWildcard) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_LOCAL_NAME, null, localName, DOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
+            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_LOCAL_NAME, null, localName, DOMExceptionTranslator.INSTANCE, DOMSemantics.INSTANCE);
         } else if (localNameWildcard) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_NAMESPACE_URI, namespaceURI, null, DOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
+            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_NAMESPACE_URI, namespaceURI, null, DOMExceptionTranslator.INSTANCE, DOMSemantics.INSTANCE);
         } else {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_QNAME, namespaceURI, localName, DOMExceptionTranslator.INSTANCE, Policies.DETACH_POLICY);
+            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_QNAME, namespaceURI, localName, DOMExceptionTranslator.INSTANCE, DOMSemantics.INSTANCE);
         }
     }
 }

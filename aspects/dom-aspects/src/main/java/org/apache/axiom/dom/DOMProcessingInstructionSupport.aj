@@ -30,7 +30,7 @@ public aspect DOMProcessingInstructionSupport {
     }
     
     public final void DOMProcessingInstruction.setData(String data) {
-        coreSetCharacterData(data, Policies.DETACH_POLICY);
+        coreSetCharacterData(data, DOMSemantics.INSTANCE);
     }
     
     public final String DOMProcessingInstruction.getNodeName() {

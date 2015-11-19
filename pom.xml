@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws</groupId>
         <artifactId>ws-parent</artifactId>
-        <version>1</version>
+        <version>2</version>
     </parent>
 
     <groupId>org.apache.ws.commons.axiom</groupId>
@@ -921,6 +921,11 @@
                 <executions>
                     <execution>
                         <id>source-jars</id>
+                        <!-- Execute in phase prepare-package to make sure that the source JAR is built before
+                             maven-shade-plugin is invoked. (Note that activation of the apache-release profile
+                             may cause an inversion of the order in which these goals are executed if they are
+                             bound to the same phase.) -->
+                        <phase>prepare-package</phase>
                         <goals>
                             <!-- Use "jar-no-fork" instead of "jar" to avoid forking the build
                                  (which is not a problem, but unnecessary) -->

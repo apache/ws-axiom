@@ -25,20 +25,20 @@ import java.util.NoSuchElementException;
 final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
     private final Class<T> type;
     private final Mapper<T,S> mapper;
-    private final DetachPolicy detachPolicy;
+    private final Semantics semantics;
     private CoreAttribute currentAttribute;
     private CoreAttribute nextAttribute;
     private boolean nextAttributeSet;
     
-    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy) {
+    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
         this.type = type;
         this.mapper = mapper;
-        this.detachPolicy = detachPolicy;
+        this.semantics = semantics;
         nextAttribute = firstAttribute;
         nextAttributeSet = true;
     }
     
-    static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper, DetachPolicy detachPolicy) {
+    static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
         CoreAttribute attribute = element.coreGetFirstAttribute();
         while (attribute != null && !type.isInstance(attribute)) {
             attribute = attribute.coreGetNextAttribute();
@@ -46,7 +46,7 @@ final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> 
         if (attribute == null) {
             return Collections.<S>emptyList().iterator();
         } else {
-            return new AttributeIterator<T,S>(attribute, type, mapper, detachPolicy);
+            return new AttributeIterator<T,S>(attribute, type, mapper, semantics);
         }
     }
     
@@ -80,7 +80,7 @@ final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> 
         } else {
             // Ensure that the next attribute is known before we remove the current one.
             hasNext();
-            currentAttribute.coreRemove(detachPolicy);
+            currentAttribute.coreRemove(semantics);
             currentAttribute = null;
         }
     }

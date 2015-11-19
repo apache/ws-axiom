@@ -99,8 +99,8 @@ public abstract class SOAPElementType extends Multiton {
         addRelation(FAULT, SOAPFaultChild.DETAIL);
     }
     
-    private final List<SOAPElementType> parentTypes = new ArrayList<SOAPElementType>();
-    private final List<SOAPElementType> childTypes = new ArrayList<SOAPElementType>();
+    private final List<SOAPElementType> parentTypes = new ArrayList<>();
+    private final List<SOAPElementType> childTypes = new ArrayList<>();
     
     SOAPElementType() {}
     

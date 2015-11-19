@@ -130,7 +130,7 @@ public class XMLSample extends MessageSample {
     private static XMLSample[] instances() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 XMLSample.class.getResourceAsStream("bulk/filelist")));
-        List<XMLSample> result = new ArrayList<XMLSample>(10);
+        List<XMLSample> result = new ArrayList<>(10);
         String name;
         while ((name = in.readLine()) != null) {
             result.add(new XMLSample("bulk/" + name));

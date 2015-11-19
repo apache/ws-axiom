@@ -38,7 +38,7 @@ public aspect AxiomTextSupport {
             return (TextContent)content;
         } else if (force) {
             TextContent textContent = new TextContent((String)content);
-            coreSetCharacterData(textContent, Policies.DETACH_POLICY);
+            coreSetCharacterData(textContent, AxiomSemantics.INSTANCE);
             return textContent;
         } else {
             return null;

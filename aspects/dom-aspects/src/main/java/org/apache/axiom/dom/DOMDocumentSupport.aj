@@ -146,7 +146,7 @@ public aspect DOMDocumentSupport {
     public final CDATASection DOMDocument.createCDATASection(String data) {
         DOMCDATASection cdataSection = coreGetNodeFactory().createNode(DOMCDATASection.class);
         cdataSection.coreSetOwnerDocument(this);
-        cdataSection.coreSetCharacterData(data, Policies.DETACH_POLICY);
+        cdataSection.coreSetCharacterData(data, DOMSemantics.INSTANCE);
         return cdataSection;
     }
     
@@ -216,7 +216,7 @@ public aspect DOMDocumentSupport {
         DOMProcessingInstruction pi = coreGetNodeFactory().createNode(DOMProcessingInstruction.class);
         pi.coreSetOwnerDocument(this);
         pi.coreSetTarget(target);
-        pi.coreSetCharacterData(data, Policies.DETACH_POLICY);
+        pi.coreSetCharacterData(data, DOMSemantics.INSTANCE);
         return pi;
     }
 
@@ -230,7 +230,7 @@ public aspect DOMDocumentSupport {
     public final Comment DOMDocument.createComment(String data) {
         DOMComment node = coreGetNodeFactory().createNode(DOMComment.class);
         node.coreSetOwnerDocument(this);
-        node.coreSetCharacterData(data, Policies.DETACH_POLICY);
+        node.coreSetCharacterData(data, DOMSemantics.INSTANCE);
         return node;
     }
 

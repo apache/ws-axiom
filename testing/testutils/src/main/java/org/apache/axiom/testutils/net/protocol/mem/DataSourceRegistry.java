@@ -29,7 +29,7 @@ import javax.activation.DataSource;
 
 public final class DataSourceRegistry {
     private static boolean handlerRegistered;
-    private static final Map<String,DataSource> dataSources = new HashMap<String,DataSource>();
+    private static final Map<String,DataSource> dataSources = new HashMap<>();
     
     private DataSourceRegistry() {}
 

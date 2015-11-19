@@ -24,7 +24,7 @@ import java.util.Iterator;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public final class NamespaceContextTestUtils {
     private NamespaceContextTestUtils() {}
@@ -36,7 +36,7 @@ public final class NamespaceContextTestUtils {
         Assert.assertEquals(XMLConstants.XML_NS_PREFIX, nc.getPrefix(XMLConstants.XML_NS_URI));
         Assert.assertEquals(XMLConstants.XMLNS_ATTRIBUTE, nc.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI));
         
-        Iterator it = nc.getPrefixes(XMLConstants.XML_NS_URI);
+        Iterator<?> it = nc.getPrefixes(XMLConstants.XML_NS_URI);
         Assert.assertTrue(it.hasNext());
         Assert.assertEquals(XMLConstants.XML_NS_PREFIX, it.next());
         Assert.assertFalse(it.hasNext());

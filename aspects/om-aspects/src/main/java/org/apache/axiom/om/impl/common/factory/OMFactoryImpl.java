@@ -43,7 +43,7 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.Policies;
+import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
@@ -136,7 +136,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }
-        node.coreSetCharacterData(content, Policies.DETACH_POLICY);
+        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         return node;
     }
 
@@ -186,7 +186,7 @@ public class OMFactoryImpl implements OMFactoryEx {
 
     public final OMText createOMText(OMContainer parent, OMText source) {
         // TODO: this doesn't necessarily produce a node with the expected OMFactory
-        return (AxiomText)((AxiomText)source).coreClone(Policies.CLONE_POLICY, null, (AxiomContainer)parent);
+        return (AxiomText)((AxiomText)source).coreClone(AxiomSemantics.CLONE_POLICY, null, (AxiomContainer)parent);
     }
 
     public final OMText createOMText(Object dataHandler, boolean optimize) {
@@ -210,7 +210,7 @@ public class OMFactoryImpl implements OMFactoryEx {
             OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
         AxiomProcessingInstruction node = createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
-        node.coreSetCharacterData(piData, Policies.DETACH_POLICY);
+        node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }
@@ -237,7 +237,7 @@ public class OMFactoryImpl implements OMFactoryEx {
 
     public final OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
         AxiomComment node = createNode(AxiomComment.class);
-        node.coreSetCharacterData(content, Policies.DETACH_POLICY);
+        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(node, fromBuilder);
         }
@@ -357,7 +357,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         }
         AxiomAttribute attr = createNode(AxiomAttribute.class);
         attr.internalSetLocalName(localName);
-        attr.coreSetCharacterData(value, Policies.DETACH_POLICY);
+        attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
         attr.internalSetNamespace(ns);
         attr.coreSetType(OMConstants.XMLATTRTYPE_CDATA);
         return attr;

@@ -16,11 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.fom;
 
-package org.apache.axiom.soap.impl.dom;
+import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.DetachPolicy;
+import org.apache.axiom.core.NSAwareAttributeMatcher;
+import org.apache.axiom.core.Semantics;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultCode;
+public final class FOMSemantics implements Semantics {
+    public static final FOMSemantics INSTANCE = new FOMSemantics();
+    
+    private FOMSemantics() {}
+    
+    public DetachPolicy getDetachPolicy() {
+        return DetachPolicy.NEW_DOCUMENT;
+    }
+    
+    public boolean isUseStrictNamespaceLookup() {
+        return true;
+    }
 
-public abstract class SOAPFaultCodeImpl extends SOAPElement implements AxiomSOAPFaultCode {
-
+    public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(INSTANCE, false, false);
 }

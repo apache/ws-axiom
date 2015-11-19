@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 public final class Adapters {
-    private final Map<Class<?>,Object> adapters = new HashMap<Class<?>,Object>();
+    private final Map<Class<?>,Object> adapters = new HashMap<>();
     private boolean initialized;
     
     public <T> void add(Class<T> type, T adapter) {

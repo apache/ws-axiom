@@ -30,6 +30,6 @@ public aspect DOMCDATASectionSupport {
     }
 
     public final void DOMCDATASection.setData(String data) {
-        coreSetCharacterData(data, Policies.DETACH_POLICY);
+        coreSetCharacterData(data, DOMSemantics.INSTANCE);
     }
 }
