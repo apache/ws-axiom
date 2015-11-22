@@ -31,7 +31,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.axiom.datatype.DOMHelper;
+import org.apache.axiom.datatype.helper.dom.DOMHelper;
 import org.apache.axiom.datatype.xsd.XSQNameType;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.xml.ComputedMessageContent;
