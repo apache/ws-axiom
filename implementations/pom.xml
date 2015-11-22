@@ -88,6 +88,7 @@
                     <artifactSet>
                         <includes>
                             <include>${project.groupId}:*-aspects</include>
+                            <include>${project.groupId}:xml-utils</include>
                             <include>org.aspectj:aspectjrt</include>
                         </includes>
                     </artifactSet>

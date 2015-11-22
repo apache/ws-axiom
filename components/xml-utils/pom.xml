@@ -22,45 +22,20 @@
 
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>aspects</artifactId>
+        <artifactId>components</artifactId>
         <version>1.2.17-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dom-aspects</artifactId>
+    <artifactId>xml-utils</artifactId>
     <packaging>bundle</packaging>
 
-    <name>DOM Aspects</name>
-    <url>http://ws.apache.org/axiom/</url>
-
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>core-aspects</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>shared-aspects</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>xml-utils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.truth</groupId>
-            <artifactId>truth</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

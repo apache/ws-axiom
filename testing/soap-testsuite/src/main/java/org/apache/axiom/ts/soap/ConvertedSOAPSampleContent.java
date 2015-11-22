@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import static org.apache.axiom.util.xml.XMLChar.isWhitespace;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -204,10 +206,6 @@ final class ConvertedSOAPSampleContent extends ComputedMessageContent {
             }
         }
         return null;
-    }
-    
-    private static boolean isWhitespace(char c) {
-        return " \r\n\t".indexOf(c) != -1;
     }
     
     private static String transform(String text, TextTransformer transformer) {
