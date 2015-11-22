@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>aspects</artifactId>
-        <version>1.2.16-SNAPSHOT</version>
+        <version>1.2.17-SNAPSHOT</version>
     </parent>
 
     <artifactId>dom-aspects</artifactId>
@@ -41,6 +41,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>shared-aspects</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xml-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

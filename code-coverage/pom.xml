@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.2.16-SNAPSHOT</version>
+        <version>1.2.17-SNAPSHOT</version>
     </parent>
 
     <artifactId>code-coverage</artifactId>
@@ -185,6 +185,25 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>fom-impl</artifactId>
+            <version>${project.version}</version>
+            <classifier>jacoco</classifier>
+            <type>exec</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xml-truth</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xml-truth</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xml-truth</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
             <type>exec</type>

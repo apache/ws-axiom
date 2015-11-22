@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.2.16-SNAPSHOT</version>
+        <version>1.2.17-SNAPSHOT</version>
     </parent>
 
     <artifactId>implementations</artifactId>
@@ -88,6 +88,7 @@
                     <artifactSet>
                         <includes>
                             <include>${project.groupId}:*-aspects</include>
+                            <include>${project.groupId}:xml-utils</include>
                             <include>${project.groupId}:datatypes</include>
                             <include>org.aspectj:aspectjrt</include>
                         </includes>

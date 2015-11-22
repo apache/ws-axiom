@@ -22,31 +22,14 @@
 
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>aspects</artifactId>
+        <artifactId>axiom</artifactId>
         <version>1.2.17-SNAPSHOT</version>
     </parent>
 
-    <artifactId>core-aspects</artifactId>
-    <packaging>bundle</packaging>
+    <artifactId>components</artifactId>
+    <packaging>pom</packaging>
 
-    <name>Core Aspects</name>
-    <url>http://ws.apache.org/axiom/</url>
-
-    <dependencies>
-        <dependency>
-            <!-- This dependency will eventually go away -->
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>datatypes</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>xml-utils</module>
+    </modules>
 </project>

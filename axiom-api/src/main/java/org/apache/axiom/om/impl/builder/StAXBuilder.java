@@ -34,7 +34,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -238,9 +237,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
                 // a default namespace from its parent
                 namespace = node.findNamespace(uri, prefix);
                 if (namespace == null) {
-                    if (prefix == null || "".equals(prefix)) {
-                        prefix = OMSerializerUtil.getNextNSPrefix();
-                    }
                     namespace = node.declareNamespace(uri, prefix);
                 }
             }

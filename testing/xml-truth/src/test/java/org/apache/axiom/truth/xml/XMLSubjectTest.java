@@ -39,4 +39,21 @@ public class XMLSubjectTest {
                 .ignoringRedundantNamespaceDeclarations()
                 .hasSameContentAs("<a xmlns:p='#1'><b/></a>");
     }
+    
+    @Test
+    public void testIgnoringNamespaceDeclarationsAndPrefixes() {
+        assertAbout(xml())
+                .that("<p:a xmlns:p='urn:ns'/>")
+                .ignoringNamespacePrefixes()
+                .ignoringNamespaceDeclarations()
+                .hasSameContentAs("<a xmlns='urn:ns'/>");
+    }
+    
+    @Test
+    public void testIgnoringComments() {
+        assertAbout(xml())
+                .that("<a><!-- comment --></a>")
+                .ignoringComments()
+                .hasSameContentAs("<a/>");
+    }
 }
