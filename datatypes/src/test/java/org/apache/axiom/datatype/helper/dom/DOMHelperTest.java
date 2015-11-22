@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.datatype;
+package org.apache.axiom.datatype.helper.dom;
 
 import static com.google.common.truth.Truth.assertThat;
 

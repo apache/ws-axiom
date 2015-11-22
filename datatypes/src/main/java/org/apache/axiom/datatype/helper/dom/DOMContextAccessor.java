@@ -16,21 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.datatype;
+package org.apache.axiom.datatype.helper.dom;
 
-import java.text.ParseException;
-
+import org.apache.axiom.datatype.ContextAccessor;
 import org.w3c.dom.Element;
 
-public final class DOMHelper {
-    private DOMHelper() {}
-    
-    public static <T> T getValue(Element element, Type<T> type) throws ParseException {
-        // TODO: using getTextContent here is actually incorrect because it extracts text recursively
-        return type.parse(element.getTextContent(), DOMContextAccessor.INSTANCE, element, null);
+final class DOMContextAccessor implements ContextAccessor<Element,Void> {
+    static final DOMContextAccessor INSTANCE = new DOMContextAccessor();
+
+    public String lookupNamespaceURI(Element element, Void options, String prefix) {
+        String namespaceURI = element.lookupNamespaceURI(prefix.length() == 0 ? null : prefix);
+        if (namespaceURI != null) {
+            return namespaceURI;
+        } else {
+            return prefix.length() == 0 ? "" : null;
+        }
     }
-    
-    public static <T> void setValue(Element element, Type<T> type, T value) {
-        element.setTextContent(type.format(value, DOMContextAccessor.INSTANCE, element, null));
+
+    public String lookupPrefix(Element element, Void options, String namespaceURI) {
+        return element.lookupPrefix(namespaceURI.length() == 0 ? null : namespaceURI);
     }
 }
