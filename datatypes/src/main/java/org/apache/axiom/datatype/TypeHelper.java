@@ -18,22 +18,13 @@
  */
 package org.apache.axiom.datatype;
 
+import static org.apache.axiom.util.xml.XMLChar.isWhitespace;
+
 /**
  * Contains utility methods for usage by {@link Type} implementations.
  */
 public final class TypeHelper {
     private TypeHelper() {}
-    
-    /**
-     * Determine if the given character is whitespace according to the XML specification.
-     * 
-     * @param c
-     *            the character to examine
-     * @return {@code true} if the character is whitespace, {@code false} otherwise
-     */
-    public static boolean isWhitespace(char c) {
-        return c == ' ' || c == '\r' || c == '\n' || c == '\t';
-    }
     
     /**
      * Determine the index of the first non whitespace character in the given literal. This method
@@ -52,7 +43,7 @@ public final class TypeHelper {
             throw new UnexpectedEndOfStringException(literal);
         }
         int start = 0;
-        while (TypeHelper.isWhitespace(literal.charAt(start))) {
+        while (isWhitespace(literal.charAt(start))) {
             if (++start == len) {
                 throw new UnexpectedEndOfStringException(literal);
             }
@@ -78,7 +69,7 @@ public final class TypeHelper {
             throw new UnexpectedEndOfStringException(literal);
         }
         int end = len;
-        while (TypeHelper.isWhitespace(literal.charAt(end-1))) {
+        while (isWhitespace(literal.charAt(end-1))) {
             if (--end == 0) {
                 throw new UnexpectedEndOfStringException(literal);
             }
