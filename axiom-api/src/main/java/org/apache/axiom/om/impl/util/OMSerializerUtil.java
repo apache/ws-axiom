@@ -564,6 +564,7 @@ public class OMSerializerUtil {
     /**
      * Get the next prefix name
      * @return next prefix name
+     * @deprecated
      */
     public static String getNextNSPrefix() {
         

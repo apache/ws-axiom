@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
+import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreNode;
@@ -57,7 +59,6 @@ import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public class OMFactoryImpl implements OMFactoryEx {
     private final OMMetaFactory metaFactory;
@@ -284,7 +285,7 @@ public class OMFactoryImpl implements OMFactoryEx {
             OMNamespace ns = element.findNamespace(namespaceURI, prefix.length() == 0 ? null : prefix);
             if (ns == null) {
                 if ("".equals(prefix)) {
-                    prefix = OMSerializerUtil.getNextNSPrefix();
+                    prefix = generatePrefix(namespaceURI);
                 }
                 ns = element.declareNamespace(namespaceURI, prefix);
             }
@@ -341,7 +342,7 @@ public class OMFactoryImpl implements OMFactoryEx {
             if (namespaceURI.length() == 0) {
                 ns = null;
             } else {
-                ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
+                ns = new OMNamespaceImpl(namespaceURI, generatePrefix(namespaceURI));
             }
         }
         if (ns != null) {
