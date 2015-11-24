@@ -1254,7 +1254,7 @@ svn commit</screen>
                 </listitem>
                 <listitem>
                     <para>
-                        the binary and source distributions can be downloaded from <link xlink:href="http://ws.apache.org/axiom/download.cgi"/>.
+                        the binary and source distributions can be downloaded from <link xlink:href="http://ws.apache.org/axiom/download.html"/>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -1342,17 +1342,6 @@ svn commit</screen>
                     <para>
                         Remove archived releases from <link xlink:href="https://dist.apache.org/repos/dist/release/ws/axiom/"/>.
                     </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Delete <link xlink:href="https://svn.apache.org/repos/asf/webservices/website/axiom-staging/"/>.
-                    </para>
-                    <note>
-                        <para>
-                            This step is optional. The staging area may be reused during the next release. It may also be used
-                            to publish a snapshot version of the site.
-                        </para>
-                    </note>
                 </listitem>
             </itemizedlist>
         </section>
