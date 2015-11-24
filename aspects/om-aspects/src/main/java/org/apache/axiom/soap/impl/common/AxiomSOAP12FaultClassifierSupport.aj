@@ -20,10 +20,30 @@ package org.apache.axiom.soap.impl.common;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
 
 public aspect AxiomSOAP12FaultClassifierSupport {
+    private static final Class<?>[] sequence = { SOAPFaultValue.class, SOAPFaultSubCode.class };
+    
+    public final SOAPFaultValue AxiomSOAP12FaultClassifier.getValue() {
+        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
+    }
+
+    public final void AxiomSOAP12FaultClassifier.setValue(SOAPFaultValue value) {
+        insertChild(sequence, 0, value);
+    }
+    
+    public final SOAPFaultSubCode AxiomSOAP12FaultClassifier.getSubCode() {
+        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
+    }
+    
+    public final void AxiomSOAP12FaultClassifier.setSubCode(SOAPFaultSubCode subCode) {
+        insertChild(sequence, 1, subCode);
+    }
+
     public final QName AxiomSOAP12FaultClassifier.getValueAsQName() {
         SOAPFaultValue value = getValue();
         return value == null ? null : value.getTextAsQName();

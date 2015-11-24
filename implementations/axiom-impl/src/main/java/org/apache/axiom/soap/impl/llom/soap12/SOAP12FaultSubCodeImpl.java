@@ -20,18 +20,11 @@
 package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultSubCode;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
 public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12FaultSubCode {
-    private SOAPFaultValue value;
-    private SOAPFaultSubCode subCode;
-    
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!((parent instanceof SOAP12FaultSubCodeImpl) ||
                 (parent instanceof SOAP12FaultCodeImpl))) {
@@ -40,37 +33,5 @@ public class SOAP12FaultSubCodeImpl extends SOAPElement implements AxiomSOAP12Fa
                             "or SOAP FaultCodeValue as the parent. But received some " +
                             "other implementation");
         }
-    }
-
-    public void setSubCode(SOAPFaultSubCode subCode)
-            throws SOAPProcessingException {
-        if (!(subCode instanceof SOAP12FaultSubCodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultSubCodeImpl, got " + subCode.getClass());
-        }
-        ElementHelper.setNewElement(this, this.subCode, subCode);
-    }
-
-    public SOAPFaultSubCode getSubCode() {
-        if (subCode == null) {
-            subCode = (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
-        }
-        return subCode;
-    }
-
-    public void setValue(SOAPFaultValue soapFaultSubCodeValue)
-            throws SOAPProcessingException {
-        if (!(soapFaultSubCodeValue instanceof SOAP12FaultValueImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultValueImpl, got " + soapFaultSubCodeValue.getClass());
-        }
-        ElementHelper.setNewElement(this, value, soapFaultSubCodeValue);
-    }
-
-    public SOAPFaultValue getValue() {
-        if (value == null) {
-            value = (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
-        }
-        return value;
     }
 }

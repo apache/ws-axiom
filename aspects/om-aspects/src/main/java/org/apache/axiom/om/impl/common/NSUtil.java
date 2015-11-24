@@ -18,9 +18,10 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
+
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 public final class NSUtil {
     private NSUtil() {}
@@ -58,7 +59,7 @@ public final class NSUtil {
                 }
             }
             if (prefix == null) {
-                prefix = OMSerializerUtil.getNextNSPrefix();
+                prefix = generatePrefix(namespaceURI);
                 ns = new OMNamespaceImpl(namespaceURI, prefix);
             }
             if (addNSDecl) {
