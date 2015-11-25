@@ -223,6 +223,7 @@
         <module>testing</module>
         <module>aspects</module>
         <module>implementations</module>
+        <module>components</module>
     </modules>
 
     <scm>

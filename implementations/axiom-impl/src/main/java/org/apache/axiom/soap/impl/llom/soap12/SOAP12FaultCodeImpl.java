@@ -22,31 +22,11 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP12FaultCode {
-    public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
-        if (!(subCode instanceof SOAP12FaultSubCodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultSubCodeImpl, got " + subCode.getClass());
-        }
-        ElementHelper.setNewElement(this, getSubCode(), subCode);
-    }
-
-    public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
-        if (!(value instanceof SOAP12FaultValueImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultValueImpl, got " + value.getClass());
-        }
-        ElementHelper.setNewElement(this, getValue(), value);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
@@ -57,13 +37,5 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
     // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
     public QName getTextAsQName() {
         return getValueAsQName();
-    }
-
-    public SOAPFaultValue getValue() {
-        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
-    }
-
-    public SOAPFaultSubCode getSubCode() {
-        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 }

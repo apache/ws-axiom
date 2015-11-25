@@ -22,34 +22,11 @@ package org.apache.axiom.soap.impl.dom.soap12;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFaultSubCode;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultCodeImpl;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP12FaultCode {
-    public void setSubCode(SOAPFaultSubCode subCode)
-            throws SOAPProcessingException {
-        if (!(subCode instanceof SOAP12FaultSubCodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault " +
-                            "Sub Code. But received some other implementation");
-        }
-        ElementHelper.setNewElement(this, getSubCode(), subCode);
-    }
-
-    public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
-        if (!(value instanceof SOAP12FaultValueImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Value. " +
-                            "But received some other implementation");
-        }
-        ElementHelper.setNewElement(this, getValue(), value);
-    }
-
     // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
     public QName getTextAsQName() {
         return getValueAsQName();
@@ -61,13 +38,5 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP1
                     "Expecting SOAP 1.2 implementation of SOAP Fault as " +
                             "the parent. But received some other implementation");
         }
-    }
-
-    public SOAPFaultValue getValue() {
-        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
-    }
-
-    public SOAPFaultSubCode getSubCode() {
-        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 }

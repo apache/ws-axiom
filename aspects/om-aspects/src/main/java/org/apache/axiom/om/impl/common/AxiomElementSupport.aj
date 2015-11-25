@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -53,7 +55,6 @@ import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -304,7 +305,7 @@ public aspect AxiomElementSupport {
             if (namespaceURI.length() > 0 || prefix != null) {
                 namespace = findNamespace(namespaceURI, prefix);
                 if (namespace == null || prefix == null && namespace.getPrefix().length() == 0) {
-                    namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : OMSerializerUtil.getNextNSPrefix());
+                    namespace = new OMNamespaceImpl(namespaceURI, prefix != null ? prefix : generatePrefix(namespaceURI));
                 }
             }
         }
@@ -366,11 +367,12 @@ public aspect AxiomElementSupport {
 
     public final OMNamespace AxiomElement.declareNamespace(OMNamespace namespace) {
         String prefix = namespace.getPrefix();
+        String namespaceURI = namespace.getNamespaceURI();
         if (prefix == null) {
-            prefix = OMSerializerUtil.getNextNSPrefix();
-            namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
+            prefix = generatePrefix(namespaceURI);
+            namespace = new OMNamespaceImpl(namespaceURI, prefix);
         }
-        if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
+        if (prefix.length() > 0 && namespaceURI.length() == 0) {
             throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
         }
         addNamespaceDeclaration(namespace);
@@ -380,7 +382,7 @@ public aspect AxiomElementSupport {
     public final OMNamespace AxiomElement.declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
             log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
-            prefix = OMSerializerUtil.getNextNSPrefix();
+            prefix = generatePrefix(uri);
         }
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);

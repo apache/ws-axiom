@@ -1164,7 +1164,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
  https://svn.apache.org/repos/asf/webservices/website/axiom-staging</screen>
                     <tip>
                         <para>
-                            This step can be skipped if the staging area already exists and is in a state where it can cleanly be merged.
+                            This step can be skipped if the staging area has already been created earlier (e.g. to test a snapshot version of the site).
                         </para>
                     </tip>
                 </step>
@@ -1230,9 +1230,10 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     <para>
                         Publish the site:
                     </para>
-<screen>svn co https://svn.apache.org/repos/asf/webservices/website/axiom axiom-site
-cd axiom-site/
-svn merge https://svn.apache.org/repos/asf/webservices/website/axiom-staging
+<screen>svn co --depth=immediates https://svn.apache.org/repos/asf/webservices/website ws-site
+cd ws-site
+svn rm axiom
+svn mv axiom-staging axiom
 svn commit</screen>
                 </step>
             </procedure>
@@ -1253,7 +1254,7 @@ svn commit</screen>
                 </listitem>
                 <listitem>
                     <para>
-                        the binary and source distributions can be downloaded from <link xlink:href="http://ws.apache.org/axiom/download.cgi"/>.
+                        the binary and source distributions can be downloaded from <link xlink:href="http://ws.apache.org/axiom/download.html"/>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -1341,17 +1342,6 @@ svn commit</screen>
                     <para>
                         Remove archived releases from <link xlink:href="https://dist.apache.org/repos/dist/release/ws/axiom/"/>.
                     </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Delete <link xlink:href="https://svn.apache.org/repos/asf/webservices/website/axiom-staging/"/>.
-                    </para>
-                    <note>
-                        <para>
-                            This step is optional. The staging area may be reused during the next release. It may also be used
-                            to publish a snapshot version of the site.
-                        </para>
-                    </note>
                 </listitem>
             </itemizedlist>
         </section>

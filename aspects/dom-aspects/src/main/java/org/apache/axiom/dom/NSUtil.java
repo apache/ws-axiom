@@ -18,28 +18,15 @@
  */
 package org.apache.axiom.dom;
 
+import static org.apache.axiom.util.xml.XMLChar.isNameChar;
+import static org.apache.axiom.util.xml.XMLChar.isNameStartChar;
+
 import javax.xml.XMLConstants;
 
 import org.w3c.dom.DOMException;
 
 public final class NSUtil {
     private NSUtil() {}
-    
-    // This is the NameStartChar production from http://www.w3.org/TR/2008/REC-xml-20081126/
-    private static boolean isNameStartChar(char c) {
-        return c == ':' || 'A' <= c && c <= 'Z' || c == '_' || 'a' <= c && c <= 'z' || 0xC0 <= c && c <= 0xD6
-                || 0xD8 <= c && c <= 0xF6 || 0xF8 <= c && c <= 0x2FF || 0x370 <= c && c <= 0x37D
-                || 0x37F <= c && c <= 0x1FFF || 0x200C <= c && c <= 0x200D
-                || 0x2070 <= c && c <= 0x218F || 0x2C00 <= c && c <= 0x2FEF
-                || 0x3001 <= c && c <= 0xD7FF || 0xF900 <= c && c <= 0xFDCF
-                || 0xFDF0 <= c && c <= 0xFFFD || 0x10000 <= c && c <= 0xEFFFF;
-    }
-    
-    // This is the NameChar production from http://www.w3.org/TR/2008/REC-xml-20081126/
-    private static boolean isNameChar(char c) {
-        return isNameStartChar(c) || c == '-' || c == '.' || '0' <= c && c <= '9' || c == 0xB7
-                || 0x0300 <= c && c <= 0x036F || 0x203F <= c && c <= 0x2040;
-    }
     
     public static void validateName(String name) throws DOMException {
         if (name.length() == 0) {
