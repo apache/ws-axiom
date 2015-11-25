@@ -49,8 +49,4 @@ By default, comparison is strict. E.g. the following assertion would fail:
 To control how the comparison is performed, use the relevant methods on the
 [`XMLSubject`](apidocs/org/apache/axiom/truth/xml/XMLSubject.html) object returned by `that()`:
 
-    assertAbout(xml())
-            .that("<p:a xmlns:p='urn:ns'/>")
-            .ignoringNamespacePrefixes()
-            .ignoringNamespaceDeclarations()
-            .hasSameContentAs("<a xmlns='urn:ns'/>");
+<!-- MACRO{snippet|id=sample|file=${project.basedir}/src/test/java/org/apache/axiom/truth/xml/XMLSubjectTest.java} -->
