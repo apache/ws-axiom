@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.text.ParseException;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -63,5 +64,27 @@ public class DOMHelperTest {
         assertThat(qname.getNamespaceURI()).isEmpty();
         assertThat(qname.getLocalPart()).isEqualTo("value");
         assertThat(qname.getPrefix()).isEmpty();
+    }
+    
+    @Test
+    public void testGetQNameFromElementXmlPrefix() throws Exception {
+        Document document = newDocument();
+        Element element = document.createElementNS(null, "test");
+        element.setTextContent("xml:value");
+        QName qname = DOMHelper.getValue(element, XSQNameType.INSTANCE);
+        assertThat(qname.getNamespaceURI()).isEqualTo(XMLConstants.XML_NS_URI);
+        assertThat(qname.getLocalPart()).isEqualTo("value");
+        assertThat(qname.getPrefix()).isEqualTo(XMLConstants.XML_NS_PREFIX);
+    }
+    
+    @Test
+    public void testGetQNameFromElementXmlnsPrefix() throws Exception {
+        Document document = newDocument();
+        Element element = document.createElementNS(null, "test");
+        element.setTextContent("xmlns:value");
+        QName qname = DOMHelper.getValue(element, XSQNameType.INSTANCE);
+        assertThat(qname.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        assertThat(qname.getLocalPart()).isEqualTo("value");
+        assertThat(qname.getPrefix()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
     }
 }

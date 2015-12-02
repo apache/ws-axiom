@@ -20,6 +20,7 @@ package org.apache.axiom.datatype.xsd;
 
 import java.text.ParseException;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.datatype.ContextAccessor;
@@ -50,9 +51,16 @@ final class XSQNameTypeImpl implements XSQNameType {
             prefix = literal.substring(start, colonIndex);
             localPart = literal.substring(colonIndex+1, end);
         }
-        String namespaceURI = contextAccessor.lookupNamespaceURI(contextObject, options, prefix);
-        if (namespaceURI == null) {
-            throw new ParseException("Unbound namespace prefix \"" + prefix + "\"", 0);
+        String namespaceURI;
+        if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
+            namespaceURI = XMLConstants.XML_NS_URI;
+        } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+            namespaceURI = XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+        } else {
+            namespaceURI = contextAccessor.lookupNamespaceURI(contextObject, options, prefix);
+            if (namespaceURI == null) {
+                throw new ParseException("Unbound namespace prefix \"" + prefix + "\"", 0);
+            }
         }
         return new QName(namespaceURI, localPart, prefix);
     }
