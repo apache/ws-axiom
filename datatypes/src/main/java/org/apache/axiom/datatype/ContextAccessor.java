@@ -19,6 +19,24 @@
 package org.apache.axiom.datatype;
 
 public interface ContextAccessor<T,O> {
+    /**
+     * Look up the namespace URI associated to the given prefix.
+     * 
+     * @param contextObject
+     *            The context object passed to
+     *            {@link Type#parse(String, ContextAccessor, Object, Object)} or
+     *            {@link Type#format(Object, ContextAccessor, Object, Object)}.
+     * @param options
+     *            The options passed to {@link Type#parse(String, ContextAccessor, Object, Object)}
+     *            or {@link Type#format(Object, ContextAccessor, Object, Object)}.
+     * @param prefix
+     *            The prefix to look for. If this parameter is the empty string, then the URI of the
+     *            default namespace will be returned.
+     * @return the namespace URI or <code>null</code> if the prefix is not bound; if the prefix is
+     *         the empty string and no default namespace declaration exists, then an empty string is
+     *         returned
+     */
     String lookupNamespaceURI(T contextObject, O options, String prefix);
+    
     String lookupPrefix(T contextObject, O options, String namespaceURI);
 }

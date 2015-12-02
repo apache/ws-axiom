@@ -20,6 +20,8 @@ package org.apache.axiom.datatype.helper.dom;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.text.ParseException;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -29,14 +31,37 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class DOMHelperTest {
+    private static Document newDocument() throws Exception {
+        return DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    }
+    
     @Test
     public void testGetQNameFromElement() throws Exception {
-        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Document document = newDocument();
         Element element = document.createElementNS("urn:test", "p:elem");
         element.setTextContent("p:value");
         QName qname = DOMHelper.getValue(element, XSQNameType.INSTANCE);
         assertThat(qname.getNamespaceURI()).isEqualTo("urn:test");
         assertThat(qname.getLocalPart()).isEqualTo("value");
         assertThat(qname.getPrefix()).isEqualTo("p");
+    }
+    
+    @Test(expected=ParseException.class)
+    public void testGetQNameFromElementUnboundPrefix() throws Exception {
+        Document document = newDocument();
+        Element element = document.createElementNS(null, "test");
+        element.setTextContent("ns:test");
+        DOMHelper.getValue(element, XSQNameType.INSTANCE);
+    }
+    
+    @Test
+    public void testGetQNameFromElementNoDefaultNamespace() throws Exception {
+        Document document = newDocument();
+        Element element = document.createElementNS("urn:test", "p:test");
+        element.setTextContent("value");
+        QName qname = DOMHelper.getValue(element, XSQNameType.INSTANCE);
+        assertThat(qname.getNamespaceURI()).isEmpty();
+        assertThat(qname.getLocalPart()).isEqualTo("value");
+        assertThat(qname.getPrefix()).isEmpty();
     }
 }
