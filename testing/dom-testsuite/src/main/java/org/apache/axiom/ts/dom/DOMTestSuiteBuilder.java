@@ -143,9 +143,11 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestGetTextContent(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBefore(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBeforeWithDocumentFragment(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIDefaultBindings(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIExplicit(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIImplicit(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIXercesJ1586(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixDefaultBindings(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixEmptyNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixExplicitMasked(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupPrefixImplicitMasked(dbf));
