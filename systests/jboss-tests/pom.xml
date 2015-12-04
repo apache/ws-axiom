@@ -71,6 +71,12 @@
         </testResources>
         <plugins>
             <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
@@ -79,7 +85,12 @@
                              resolution doesn't work correctly if some of the dependencies are
                              snapshots from the current reactor. -->
                         <id>copy-deps</id>
-                        <phase>generate-test-resources</phase>
+                        <!-- axiom-api and axiom-impl may be part of the reactor. To make sure
+                             that the package phase has been executed on these dependencies
+                             (which is a requirement to be able to copy them), we need to execute
+                             the copy-dependencies goal after the package phase. Note that this
+                             implies that we need to execute the tests as integration tests. -->
+                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -94,7 +105,7 @@
                              unable to ensure that all required artifacts are available from Maven
                              central and the JBoss Maven repository isn't stable. -->
                         <id>unpack-jboss</id>
-                        <phase>generate-test-resources</phase>
+                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -109,6 +120,7 @@
                                     <outputDirectory>target</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
+                            <excludes>*/standalone/configuration/standalone.xml</excludes>
                         </configuration>
                     </execution>
                 </executions>
@@ -125,7 +137,7 @@
                         <goals>
                             <goal>reserve-network-port</goal>
                         </goals>
-                        <phase>generate-test-resources</phase>
+                        <phase>initialize</phase>
                         <configuration>
                             <portNames>
                                 <portName>jboss.managementPort</portName>
@@ -140,7 +152,7 @@
                 <executions>
                     <execution>
                         <id>copy-jboss-configuration</id>
-                        <phase>process-test-resources</phase>
+                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -161,12 +173,29 @@
                 <executions>
                     <execution>
                         <id>prepare-agent-for-jboss</id>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
                             <propertyName>jacoco.jbossArgLine</propertyName>
                             <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:jboss</sessionId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test.java</include>
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>
