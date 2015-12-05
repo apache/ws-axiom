@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.ts.om.builder;
 
 import static org.junit.Assert.assertTrue;
 
@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 

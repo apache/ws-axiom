@@ -130,6 +130,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestMalformedDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestNextBeforeGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestReadAttachmentBeforeRootPartComplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestRegisterCustomBuilderForPayloadJAXBPlain(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestRegisterCustomBuilderForPayloadJAXBWithXOP(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
