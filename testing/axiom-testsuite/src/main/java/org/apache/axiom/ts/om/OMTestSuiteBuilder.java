@@ -173,6 +173,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 }
             }
         }
+        addTest(new org.apache.axiom.ts.om.document.TestGetSAXResultXMLBeans(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, false));
         addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, true));
