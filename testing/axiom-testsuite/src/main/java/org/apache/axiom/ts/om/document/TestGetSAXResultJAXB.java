@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.document;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
@@ -29,15 +29,19 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.builder.test.jaxb.Order;
-import org.apache.axiom.om.impl.builder.test.jaxb.OrderItem;
-import org.junit.Test;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.document.jaxb.Order;
+import org.apache.axiom.ts.om.document.jaxb.OrderItem;
 
-public class SAXResultJAXBTest {
-    @Test
-    public void test() throws Exception {
+public class TestGetSAXResultJAXB extends AxiomTestCase {
+    public TestGetSAXResultJAXB(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
         List<OrderItem> items = new ArrayList<OrderItem>(2);
         OrderItem item = new OrderItem();
         item.setPartId("P85-137-19");
@@ -55,9 +59,9 @@ public class SAXResultJAXBTest {
         StringWriter out = new StringWriter();
         marshaller.marshal(order, out);
         
-        OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
+        OMDocument document = metaFactory.getOMFactory().createOMDocument();
         marshaller.marshal(order, document.getSAXResult().getHandler());
         
-        assertAbout(xml()).that(document).hasSameContentAs(out.toString());
+        assertAbout(xml()).that(xml(OMDocument.class, document)).hasSameContentAs(out.toString());
     }
 }
