@@ -234,7 +234,6 @@ public aspect CoreElementSupport {
     }
     
     public final <T> void CoreElement.coreSetValue(Type<T> type, T value, Semantics semantics) {
-        // TODO: actually set value
-        type.format(value, ContextAccessorImpl.INSTANCE, this, semantics);
+        coreSetCharacterData(type.format(value, ContextAccessorImpl.INSTANCE, this, semantics), semantics);
     }
 }

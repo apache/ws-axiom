@@ -18,12 +18,18 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import java.text.ParseException;
+
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.datatype.xsd.XSQNameType;
+import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
 
 public aspect AxiomSOAP12FaultClassifierSupport {
     private static final Class<?>[] sequence = { SOAPFaultValue.class, SOAPFaultSubCode.class };
@@ -46,7 +52,11 @@ public aspect AxiomSOAP12FaultClassifierSupport {
 
     public final QName AxiomSOAP12FaultClassifier.getValueAsQName() {
         SOAPFaultValue value = getValue();
-        return value == null ? null : value.getTextAsQName();
+        try {
+            return value == null ? null : ((AxiomSOAP12FaultValue)value).coreGetValue(XSQNameType.INSTANCE, AxiomSemantics.INSTANCE);
+        } catch (ParseException ex) {
+            throw new SOAPProcessingException("Invalid fault code", ex);
+        }
     }
     
     public final void AxiomSOAP12FaultClassifier.setValue(QName value) {
@@ -54,6 +64,6 @@ public aspect AxiomSOAP12FaultClassifierSupport {
         if (valueElement == null) {
             valueElement = ((SOAP12Factory)getOMFactory()).internalCreateSOAPFaultValue(this, null);
         }
-        valueElement.setText(value);
+        ((AxiomSOAP12FaultValue)valueElement).coreSetValue(XSQNameType.INSTANCE, value, AxiomSemantics.INSTANCE);
     }
 }

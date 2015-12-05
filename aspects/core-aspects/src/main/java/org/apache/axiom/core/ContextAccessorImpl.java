@@ -34,7 +34,8 @@ final class ContextAccessorImpl implements ContextAccessor<CoreElement,Semantics
     }
 
     public void declareNamespace(CoreElement element, Semantics semantics, String prefix, String namespaceURI) {
-        // TODO
-        throw new UnsupportedOperationException();
+        CoreNamespaceDeclaration decl = element.coreCreateNode(CoreNamespaceDeclaration.class);
+        decl.coreSetDeclaredNamespace(prefix, namespaceURI);
+        element.coreAppendAttribute(decl);
     }
 }

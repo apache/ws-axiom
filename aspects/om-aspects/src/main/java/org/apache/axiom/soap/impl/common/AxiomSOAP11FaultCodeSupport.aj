@@ -18,11 +18,16 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import java.text.ParseException;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.datatype.xsd.XSQNameType;
+import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
 
 public aspect AxiomSOAP11FaultCodeSupport {
@@ -47,10 +52,14 @@ public aspect AxiomSOAP11FaultCodeSupport {
     }
 
     public final QName AxiomSOAP11FaultCode.getValueAsQName() {
-        return getTextAsQName();
+        try {
+            return coreGetValue(XSQNameType.INSTANCE, AxiomSemantics.INSTANCE);
+        } catch (ParseException ex) {
+            throw new SOAPProcessingException("Invalid fault code", ex);
+        }
     }
 
     public final void AxiomSOAP11FaultCode.setValue(QName value) {
-        setText(value);
+        coreSetValue(XSQNameType.INSTANCE, value, AxiomSemantics.INSTANCE);
     }
 }
