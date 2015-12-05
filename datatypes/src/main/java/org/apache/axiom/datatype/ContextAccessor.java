@@ -39,4 +39,6 @@ public interface ContextAccessor<T,O> {
     String lookupNamespaceURI(T contextObject, O options, String prefix);
     
     String lookupPrefix(T contextObject, O options, String namespaceURI);
+    
+    void declareNamespace(T contextObject, O options, String prefix, String namespaceURI);
 }

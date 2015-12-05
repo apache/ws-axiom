@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.datatype.ContextAccessor;
 import org.apache.axiom.datatype.TypeHelper;
 import org.apache.axiom.datatype.UnexpectedCharacterException;
+import org.apache.axiom.util.xml.NSUtils;
 
 final class XSQNameTypeImpl implements XSQNameType {
     public <S,O> QName parse(String literal, ContextAccessor<S,O> contextAccessor, S contextObject, O options)
@@ -69,12 +70,18 @@ final class XSQNameTypeImpl implements XSQNameType {
         String prefix = value.getPrefix();
         String namespaceURI = value.getNamespaceURI();
         if (!namespaceURI.equals(contextAccessor.lookupNamespaceURI(contextObject, options, prefix))) {
-            String existingPrefix = contextAccessor.lookupPrefix(contextObject, options, namespaceURI);
-            if (existingPrefix != null) {
-                prefix = existingPrefix;
+            if (namespaceURI.length() == 0) {
+                contextAccessor.declareNamespace(contextObject, options, "", "");
             } else {
-                // TODO
-                throw new RuntimeException();
+                if (prefix.length() == 0) {
+                    prefix = contextAccessor.lookupPrefix(contextObject, options, namespaceURI);
+                    if (prefix == null) {
+                        prefix = NSUtils.generatePrefix(namespaceURI);
+                        contextAccessor.declareNamespace(contextObject, options, prefix, namespaceURI);;
+                    }
+                } else {
+                    contextAccessor.declareNamespace(contextObject, options, prefix, namespaceURI);;
+                }
             }
         }
         if (prefix.length() == 0) {

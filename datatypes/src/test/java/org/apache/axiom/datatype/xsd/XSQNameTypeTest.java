@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.text.ParseException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -30,7 +32,7 @@ import org.junit.Test;
 
 public class XSQNameTypeTest {
     @Test
-    public void testBoundPrefix() throws ParseException {
+    public void testParseWithBoundPrefix() throws ParseException {
         QName qname = XSQNameType.INSTANCE.parse("p:test", MapContextAccessor.INSTANCE,
                 Collections.singletonMap("p", "urn:test"), null);
         assertThat(qname.getNamespaceURI()).isEqualTo("urn:test");
@@ -39,13 +41,13 @@ public class XSQNameTypeTest {
     }
     
     @Test(expected=ParseException.class)
-    public void testUnboundPrefix() throws ParseException {
+    public void testParseWithUnboundPrefix() throws ParseException {
         XSQNameType.INSTANCE.parse("ns:test", MapContextAccessor.INSTANCE,
                 Collections.<String,String>emptyMap(), null);
     }
     
     @Test
-    public void testXmlPrefix() throws ParseException {
+    public void testParseWithXmlPrefix() throws ParseException {
         QName qname = XSQNameType.INSTANCE.parse("xml:value", MapContextAccessor.INSTANCE,
                 Collections.<String,String>emptyMap(), null);
         assertThat(qname.getNamespaceURI()).isEqualTo(XMLConstants.XML_NS_URI);
@@ -54,11 +56,46 @@ public class XSQNameTypeTest {
     }
     
     @Test
-    public void testXmlnsPrefix() throws ParseException {
+    public void testParseWithXmlnsPrefix() throws ParseException {
         QName qname = XSQNameType.INSTANCE.parse("xmlns:value", MapContextAccessor.INSTANCE,
                 Collections.<String,String>emptyMap(), null);
         assertThat(qname.getNamespaceURI()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
         assertThat(qname.getLocalPart()).isEqualTo("value");
         assertThat(qname.getPrefix()).isEqualTo(XMLConstants.XMLNS_ATTRIBUTE);
+    }
+    
+    @Test
+    public void testFormatWithUnboundPrefix() {
+        Map<String,String> context = new HashMap<String,String>();
+        assertThat(XSQNameType.INSTANCE.format(new QName("urn:test", "test", "p"),
+                MapContextAccessor.INSTANCE, context, null)).isEqualTo("p:test");
+        assertThat(context).hasSize(1);
+        assertThat(context).containsEntry("p", "urn:test");
+    }
+    
+    @Test
+    public void testFormatWithExistingNamespace() {
+        assertThat(XSQNameType.INSTANCE.format(new QName("urn:test", "test"),
+                MapContextAccessor.INSTANCE, Collections.singletonMap("p", "urn:test"),
+                null)).isEqualTo("p:test");
+    }
+    
+    @Test
+    public void testFormatWithGeneratedPrefix() {
+        Map<String,String> context = new HashMap<String,String>();
+        String literal = XSQNameType.INSTANCE.format(new QName("urn:test", "test"),
+                MapContextAccessor.INSTANCE, context, null);
+        assertThat(context).hasSize(1);
+        Map.Entry<String,String> entry = context.entrySet().iterator().next();
+        assertThat(entry.getValue()).isEqualTo("urn:test");
+        assertThat(entry.getKey()).isNotEmpty();
+        assertThat(literal).isEqualTo(entry.getKey() + ":test");
+    }
+    
+    @Test
+    public void testFormatWithNoNamespace() {
+        assertThat(XSQNameType.INSTANCE.format(new QName("test"),
+                MapContextAccessor.INSTANCE, Collections.<String,String>emptyMap(),
+                null)).isEqualTo("test");
     }
 }

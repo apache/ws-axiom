@@ -36,4 +36,9 @@ final class DOMContextAccessor implements ContextAccessor<Element,Void> {
     public String lookupPrefix(Element element, Void options, String namespaceURI) {
         return element.lookupPrefix(namespaceURI.length() == 0 ? null : namespaceURI);
     }
+
+    public void declareNamespace(Element element, Void options, String prefix, String namespaceURI) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

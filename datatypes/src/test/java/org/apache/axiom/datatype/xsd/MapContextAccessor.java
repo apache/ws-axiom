@@ -36,7 +36,15 @@ public final class MapContextAccessor implements ContextAccessor<Map<String,Stri
     }
 
     public String lookupPrefix(Map<String,String> context, Void options, String namespaceURI) {
-        // TODO
-        throw new UnsupportedOperationException();
+        for (Map.Entry<String,String> entry : context.entrySet()) {
+            if (entry.getValue().equals(namespaceURI)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public void declareNamespace(Map<String,String> context, Void options, String prefix, String namespaceURI) {
+        context.put(prefix, namespaceURI);
     }
 }

@@ -32,4 +32,9 @@ final class ContextAccessorImpl implements ContextAccessor<CoreElement,Semantics
     public String lookupPrefix(CoreElement element, Semantics semantics, String namespaceURI) {
         return element.coreLookupPrefix(namespaceURI, semantics);
     }
+
+    public void declareNamespace(CoreElement element, Semantics semantics, String prefix, String namespaceURI) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }
