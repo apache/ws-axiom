@@ -29,12 +29,9 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order.Item;
-import org.apache.axiom.truth.xml.XMLTruth;
 import org.junit.Test;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
-
-import com.google.common.truth.Truth;
 
 public class SAXResultXMLBeansTest {
     @Test
