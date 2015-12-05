@@ -19,8 +19,9 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import static junit.framework.Assert.assertNotSame;
-import static junit.framework.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,8 +30,6 @@ import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
-
-import junit.framework.Assert;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.blob.Blobs;
@@ -77,9 +76,9 @@ public class JAXBCustomBuilderTest {
             assertSame(dh, myDocument.getContent());
         } else {
             assertNotSame(dh, myDocument.getContent());
-            IOTestUtils.compareStreams(dh.getInputStream(), myDocument.getContent().getInputStream());
+            IOTestUtils.compareStreams(dh.getInputStream(), "expected", myDocument.getContent().getInputStream(), "actual");
         }
-        Assert.assertEquals(usesAttachments, customBuilder.isAttachmentsAccessed());
+        assertEquals(usesAttachments, customBuilder.isAttachmentsAccessed());
     }
     
     @Test

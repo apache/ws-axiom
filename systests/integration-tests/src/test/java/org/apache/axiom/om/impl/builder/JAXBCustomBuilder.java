@@ -19,13 +19,13 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import static org.junit.Assert.assertTrue;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.Assert;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -53,7 +53,7 @@ public class JAXBCustomBuilder implements CustomBuilder {
             XMLStreamReader encodedReader = xopStream.getReader();
             if (expectBareReader) {
                 String className = encodedReader.getClass().getName();
-                Assert.assertTrue(!className.startsWith("org.apache.axiom.")
+                assertTrue(!className.startsWith("org.apache.axiom.")
                         || className.startsWith("org.apache.axiom.util.stax.dialect."));
             }
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
