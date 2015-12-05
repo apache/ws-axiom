@@ -33,6 +33,7 @@ import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.NoNamespaceStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.jaxp.SAXImplementation;
 import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.om.container.OMContainerExtractor;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
@@ -172,6 +173,13 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             if (xsltImplementation.supportsLexicalHandlerWithStreamSource()) {
                 for (XMLSample file : getInstances(XMLSample.class)) {
                     addTest(new org.apache.axiom.ts.om.document.TestGetSAXResult(metaFactory, xsltImplementation, file));
+                }
+            }
+        }
+        for (SAXImplementation saxImplementation : getInstances(SAXImplementation.class)) {
+            for (XMLSample file : getInstances(XMLSample.class)) {
+                if (!file.hasExternalSubset() || saxImplementation.reportsExternalSubsetEntity()) {
+                    addTest(new org.apache.axiom.ts.om.document.TestGetSAXResultSAXParser(metaFactory, saxImplementation, file));
                 }
             }
         }

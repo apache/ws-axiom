@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.document;
 
 import static com.google.common.truth.Truth.assertAbout;
-import static org.apache.axiom.testing.multiton.Multiton.getInstances;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.ByteArrayInputStream;
@@ -28,12 +27,9 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import junit.framework.TestSuite;
-
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.testutils.suite.MatrixTestCase;
-import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.jaxp.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.ContentHandler;
@@ -41,11 +37,12 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class SAXResultSAXParserTest extends MatrixTestCase {
+public class TestGetSAXResultSAXParser extends AxiomTestCase {
     private final SAXImplementation saxImplementation;
     private final XMLSample file;
     
-    public SAXResultSAXParserTest(SAXImplementation saxImplementation, XMLSample file) {
+    public TestGetSAXResultSAXParser(OMMetaFactory metaFactory, SAXImplementation saxImplementation, XMLSample file) {
+        super(metaFactory);
         this.saxImplementation = saxImplementation;
         this.file = file;
         addTestParameter("parser", saxImplementation.getName());
@@ -57,7 +54,7 @@ public class SAXResultSAXParserTest extends MatrixTestCase {
         SAXParserFactory factory = saxImplementation.newSAXParserFactory();
         factory.setNamespaceAware(true);
         XMLReader reader = factory.newSAXParser().getXMLReader();
-        OMDocument document = OMAbstractFactory.getOMFactory().createOMDocument();
+        OMDocument document = metaFactory.getOMFactory().createOMDocument();
         ContentHandler handler = document.getSAXResult().getHandler();
         reader.setContentHandler(handler);
         reader.setDTDHandler((DTDHandler)handler);
@@ -74,21 +71,5 @@ public class SAXResultSAXParserTest extends MatrixTestCase {
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences()
                 .hasSameContentAs(file.getUrl());
-    }
-    
-    public static TestSuite suite() throws Exception {
-        MatrixTestSuiteBuilder builder = new MatrixTestSuiteBuilder() {
-            @Override
-            protected void addTests() {
-                for (SAXImplementation saxImplementation : getInstances(SAXImplementation.class)) {
-                    for (XMLSample file : getInstances(XMLSample.class)) {
-                        if (!file.hasExternalSubset() || saxImplementation.reportsExternalSubsetEntity()) {
-                            addTest(new SAXResultSAXParserTest(saxImplementation, file));
-                        }
-                    }
-                }
-            }
-        };
-        return builder.build();
     }
 }
