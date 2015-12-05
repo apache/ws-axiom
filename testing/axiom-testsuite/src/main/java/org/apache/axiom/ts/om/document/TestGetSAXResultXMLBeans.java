@@ -26,10 +26,10 @@ import java.io.StringWriter;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument;
-import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order;
-import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order.Item;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument;
+import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order;
+import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order.Item;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
