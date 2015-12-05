@@ -34,8 +34,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.xml.sax.InputSource;
 
 public class StreamSourceToOMResultTest extends MatrixTestCase {
@@ -54,7 +54,7 @@ public class StreamSourceToOMResultTest extends MatrixTestCase {
     protected void runTest() throws Throwable {
         StreamSource source = new StreamSource(file.getUrl().toString());
         OMResult result = new OMResult(omMetaFactory.getOMFactory());
-        new TransformerFactoryImpl().newTransformer().transform(source, result);
+        XSLTImplementation.XALAN.newTransformerFactory().newTransformer().transform(source, result);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         result.getDocument().serialize(out);
         InputSource actual = new InputSource();

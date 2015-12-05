@@ -20,8 +20,8 @@ package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.apache.axiom.ts.jaxp.XSLTImplementation;
 
 public abstract class TransformerTestCase extends DOMTestCase {
     protected final XSLTImplementation xsltImplementation;
@@ -29,6 +29,6 @@ public abstract class TransformerTestCase extends DOMTestCase {
     public TransformerTestCase(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
         super(dbf);
         this.xsltImplementation = xsltImplementation;
-        xsltImplementation.addTestParameters(this);
+        addTestParameter("xslt", xsltImplementation.getName());
     }
 }

@@ -27,13 +27,13 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
-import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
 import org.apache.axiom.ts.dimension.BuilderFactory;
 import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.NoNamespaceStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.om.container.OMContainerExtractor;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
@@ -168,8 +168,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
-        for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
-            XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
+        for (XSLTImplementation xsltImplementation : getInstances(XSLTImplementation.class)) {
             if (xsltImplementation.supportsLexicalHandlerWithStreamSource()) {
                 for (XMLSample file : getInstances(XMLSample.class)) {
                     addTest(new org.apache.axiom.ts.om.document.TestGetSAXResult(metaFactory, xsltImplementation, file));
@@ -301,8 +300,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetSAXResultWithDTD(metaFactory));
-        for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
-            XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
+        for (XSLTImplementation xsltImplementation : getInstances(XSLTImplementation.class)) {
             addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation, true));
             addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransform(metaFactory, xsltImplementation, false));
             addTest(new org.apache.axiom.ts.om.element.TestGetSAXSourceIdentityTransformOnFragment(metaFactory, xsltImplementation, true));

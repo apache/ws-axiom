@@ -30,8 +30,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.jaxp.XSLTImplementation;
 
 public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
     private final XSLTImplementation xsltImplementation;
@@ -41,7 +41,7 @@ public class TestGetSAXSourceIdentityTransform extends AxiomTestCase {
         super(metaFactory);
         this.xsltImplementation = xsltImplementation;
         this.cache = cache;
-        xsltImplementation.addTestParameters(this);
+        addTestParameter("xslt", xsltImplementation.getName());
         addTestParameter("cache", cache);
     }
 
