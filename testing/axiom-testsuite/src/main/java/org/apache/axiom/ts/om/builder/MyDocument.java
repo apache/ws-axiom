@@ -16,19 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.document;
 
-import javax.xml.parsers.DocumentBuilderFactory;
+package org.apache.axiom.ts.om.builder;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
-import org.apache.axiom.ts.jaxp.XSLTImplementation;
+import javax.activation.DataHandler;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-public abstract class TransformerTestCase extends DOMTestCase {
-    protected final XSLTImplementation xsltImplementation;
+@XmlRootElement(namespace = "urn:test", name = "document")
+@XmlType(propOrder = { "name", "content" })
+public class MyDocument {
+    private String name;
+    private DataHandler content;
     
-    public TransformerTestCase(DocumentBuilderFactory dbf, XSLTImplementation xsltImplementation) {
-        super(dbf);
-        this.xsltImplementation = xsltImplementation;
-        addTestParameter("xslt", xsltImplementation.getName());
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public DataHandler getContent() {
+        return content;
+    }
+    
+    public void setContent(DataHandler content) {
+        this.content = content;
     }
 }

@@ -17,31 +17,24 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.ts.om.builder;
 
 import javax.activation.DataHandler;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(namespace = "urn:test", name = "document")
-@XmlType(propOrder = { "name", "content" })
-public class MyDocument {
-    private String name;
-    private DataHandler content;
-    
-    public String getName() {
-        return name;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.activation.TestDataSource;
+
+public class TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension extends RegisterCustomBuilderForPayloadJAXBTestCase {
+    public TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtension(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public DataHandler getContent() {
-        return content;
-    }
-    
-    public void setContent(DataHandler content) {
-        this.content = content;
+
+    @Override
+    protected void runTest() throws Throwable {
+        DataHandler dh = new DataHandler(new TestDataSource('X', Integer.MAX_VALUE));
+        OMElement document = createTestDocument(dh);
+        test(dh, OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), document.getXMLStreamReader()), true, true, false);
     }
 }

@@ -31,7 +31,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
-import org.apache.axiom.testutils.suite.XSLTImplementation;
+import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.objectweb.asm.ClassReader;
 import org.w3c.domts.DOMTestCase;
@@ -109,8 +109,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestLookupPrefixWithEmptyDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
-        for (int i=0; i<XSLTImplementation.INSTANCES.length; i++) {
-            XSLTImplementation xsltImplementation = XSLTImplementation.INSTANCES[i];
+        for (XSLTImplementation xsltImplementation : getInstances(XSLTImplementation.class)) {
             addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, xsltImplementation));
             addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, xsltImplementation));
         }

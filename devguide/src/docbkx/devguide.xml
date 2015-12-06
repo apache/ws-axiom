@@ -49,10 +49,41 @@
         <section>
             <title>Importing the Axiom source code into Eclipse</title>
             <para>
-                In order to import the Axiom source code into Eclipse with the Maven Eclipse plugin, use the following
-                command: 
+                Use the following steps to import the Axiom source code into Eclipse Mars.1 (4.5.1):
             </para>
-            <screen>mvn -DskipTests=true -DdownloadSources=true install eclipse:eclipse</screen>
+            <procedure>
+                <step>
+                    <para>
+                        Install AJDT using the following update site:
+                    </para>
+                    <para>
+                        <link xlink:href="http://download.eclipse.org/tools/ajdt/45/dev/update"/>
+                    </para>
+                    <para>
+                        Only the "AspectJ Development Tools" feature is required.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Install Workspace Mechanic using the following update site:
+                    </para>
+                    <para>
+                        <link xlink:href="http://workspacemechanic.eclipselabs.org.codespot.com/git.update/mechanic/"/>
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Import the Axiom sources as "Existing Maven Projects" into a new Eclipse workspace. M2Eclipse will
+                        propose to install additional Maven plugin connectors; make sure that you install them all.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Configure Workspace Mechanic using the files under <filename>etc/workspacemechanic</filename> and
+                        accept the proposed preference changes.
+                    </para>
+                </step>
+            </procedure>
         </section>
         <section>
             <title>Testing</title>

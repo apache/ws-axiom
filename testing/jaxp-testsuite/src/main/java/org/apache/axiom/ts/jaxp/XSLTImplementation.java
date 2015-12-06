@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.testutils.suite;
+package org.apache.axiom.ts.jaxp;
 
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
@@ -24,46 +24,44 @@ import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.FeatureKeys;
 
+import org.apache.axiom.testing.multiton.Multiton;
 import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Specifies an XSLT implementation for use in a {@link MatrixTestCase}.
  */
-public interface XSLTImplementation extends Dimension {
-    XSLTImplementation[] INSTANCES = new XSLTImplementation[] {
-        new XSLTImplementation() {
-            public void addTestParameters(MatrixTestCase testCase) {
-                testCase.addTestParameter("xslt", "xalan");
-            }
-            
-            public TransformerFactory newTransformerFactory() {
-                return new org.apache.xalan.processor.TransformerFactoryImpl();
-            }
-
-            public boolean supportsLexicalHandlerWithStreamSource() {
-                return true;
-            }
-        },
-        new XSLTImplementation() {
-            public void addTestParameters(MatrixTestCase testCase) {
-                testCase.addTestParameter("xslt", "saxon");
-            }
-            
-            public TransformerFactory newTransformerFactory() {
-                TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
-                // Suppress the "Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor"
-                // message.
-                factory.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
-                return factory;
-            }
-
-            public boolean supportsLexicalHandlerWithStreamSource() {
-                return false;
-            }
-        },
+public abstract class XSLTImplementation extends Multiton {
+    public static final XSLTImplementation XALAN = new XSLTImplementation("xalan", true) {
+        @Override
+        public TransformerFactory newTransformerFactory() {
+            return new org.apache.xalan.processor.TransformerFactoryImpl();
+        }
     };
     
-    TransformerFactory newTransformerFactory();
+    public static final XSLTImplementation SAXON = new XSLTImplementation("saxon", false) {
+        @Override
+        public TransformerFactory newTransformerFactory() {
+            TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
+            // Suppress the "Warning: Running an XSLT 1.0 stylesheet with an XSLT 2.0 processor"
+            // message.
+            factory.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
+            return factory;
+        }
+    };
+    
+    private final String name;
+    private final boolean supportsLexicalHandlerWithStreamSource;
+    
+    private XSLTImplementation(String name, boolean supportsLexicalHandlerWithStreamSource) {
+        this.name = name;
+        this.supportsLexicalHandlerWithStreamSource = supportsLexicalHandlerWithStreamSource;
+    }
+
+    public final String getName() {
+        return name;
+    }
+
+    public abstract TransformerFactory newTransformerFactory();
     
     /**
      * Determine if an identity transformation from a {@link StreamSource} to a {@link SAXResult}
@@ -72,5 +70,7 @@ public interface XSLTImplementation extends Dimension {
      * @return <code>true</code> if the XSLT implementation will invoke the methods on the
      *         {@link LexicalHandler} set on the {@link SAXResult}, <code>false</code> otherwise
      */
-    boolean supportsLexicalHandlerWithStreamSource();
+    public final boolean supportsLexicalHandlerWithStreamSource() {
+        return supportsLexicalHandlerWithStreamSource;
+    }
 }

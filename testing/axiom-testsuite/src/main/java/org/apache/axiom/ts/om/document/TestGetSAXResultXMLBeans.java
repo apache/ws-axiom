@@ -17,25 +17,29 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.document;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.StringWriter;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument;
-import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order;
-import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order.Item;
-import org.junit.Test;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument;
+import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order;
+import org.apache.axiom.ts.om.document.xmlbeans.OrderDocument.Order.Item;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-public class SAXResultXMLBeansTest {
-    @Test
-    public void test() throws Exception {
+public class TestGetSAXResultXMLBeans extends AxiomTestCase {
+    public TestGetSAXResultXMLBeans(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
         OrderDocument document = OrderDocument.Factory.newInstance();
         Order order = document.addNewOrder();
         order.setCustomerId("73107481");
@@ -48,10 +52,10 @@ public class SAXResultXMLBeansTest {
         
         StringWriter out = new StringWriter();
         document.save(out);
-        OMDocument omDocument = OMAbstractFactory.getOMFactory().createOMDocument();
+        OMDocument omDocument = metaFactory.getOMFactory().createOMDocument();
         ContentHandler handler = omDocument.getSAXResult().getHandler();
         document.save(handler, (LexicalHandler)handler);
         
-        assertAbout(xml()).that(omDocument).hasSameContentAs(out.toString());
+        assertAbout(xml()).that(xml(OMDocument.class, omDocument)).hasSameContentAs(out.toString());
     }
 }

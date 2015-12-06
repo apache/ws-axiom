@@ -27,8 +27,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.suite.XSLTImplementation;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetSAXResult extends ConformanceTestCase {
@@ -38,7 +38,7 @@ public class TestGetSAXResult extends ConformanceTestCase {
             XSLTImplementation xsltImplementation, XMLSample file) {
         super(metaFactory, file);
         this.xsltImplementation = xsltImplementation;
-        xsltImplementation.addTestParameters(this);
+        addTestParameter("xslt", xsltImplementation.getName());
     }
     
     protected void runTest() throws Throwable {

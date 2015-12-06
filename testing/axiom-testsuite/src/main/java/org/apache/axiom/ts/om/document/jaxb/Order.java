@@ -17,25 +17,30 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder.test.jaxb;
+package org.apache.axiom.ts.om.document.jaxb;
 
-public class OrderItem {
-    private String partId;
-    private int quantity;
-    
-    public String getPartId() {
-        return partId;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Order {
+    private String customerId;
+    private List<OrderItem> items;
+
+    public String getCustomerId() {
+        return customerId;
     }
-    
-    public void setPartId(String partId) {
-        this.partId = partId;
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
-    
-    public int getQuantity() {
-        return quantity;
+
+    public List<OrderItem> getItems() {
+        return items;
     }
-    
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 }
