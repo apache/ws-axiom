@@ -25,7 +25,7 @@ import org.apache.axiom.datatype.TypeHelper;
 import org.apache.axiom.datatype.UnexpectedCharacterException;
 import org.apache.axiom.datatype.UnexpectedEndOfStringException;
 
-public abstract class TemporalType<T> extends InvariantType<T> {
+public abstract class TemporalType<T extends Temporal> extends InvariantType<T> {
     abstract boolean hasDatePart();
     abstract boolean hasTimePart();
     abstract T createInstance(boolean bc, String aeon, int year, int month, int day, int hour,
