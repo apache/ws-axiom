@@ -18,8 +18,25 @@
  */
 package org.apache.axiom.datatype.xsd;
 
-import org.apache.axiom.datatype.InvariantType;
+public final class XSDateType extends TemporalType<XSDate> {
+    public static final XSDateType INSTANCE = new XSDateType();
+    
+    private XSDateType() {}
+    
+    @Override
+    boolean hasDatePart() {
+        return true;
+    }
 
-public interface XSDateType extends InvariantType<XSDate> {
+    @Override
+    boolean hasTimePart() {
+        return false;
+    }
 
+    @Override
+    XSDate createInstance(boolean bc, String aeon, int year, int month, int day, int hour,
+            int minute, int second, int nanoSecond, String nanoSecondFraction,
+            SimpleTimeZone timeZone) {
+        return new XSDate(bc, aeon, year, month, day, timeZone);
+    }
 }

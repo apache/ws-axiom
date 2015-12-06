@@ -18,5 +18,86 @@
  */
 package org.apache.axiom.datatype.xsd;
 
-public interface XSTime extends Temporal {
+public final class XSTime extends Temporal {
+    private final int hour;
+    private final int minute;
+    private final int second;
+    private final int nanoSecond;
+    private final String nanoSecondFraction;
+    private final SimpleTimeZone timeZone;
+    
+    XSTime(int hour, int minute, int second, int nanoSecond, String nanoSecondFraction,
+            SimpleTimeZone timeZone) {
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
+        this.nanoSecond = nanoSecond;
+        this.nanoSecondFraction = nanoSecondFraction;
+        this.timeZone = timeZone;
+    }
+
+    @Override
+    boolean hasDatePart() {
+        return false;
+    }
+
+    @Override
+    boolean hasTimePart() {
+        return true;
+    }
+
+    @Override
+    boolean isBC() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    String getAeon() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getYear() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getMonth() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getDay() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getHour() {
+        return hour;
+    }
+
+    @Override
+    int getMinute() {
+        return minute;
+    }
+
+    @Override
+    int getSecond() {
+        return second;
+    }
+
+    @Override
+    int getNanoSecond() {
+        return nanoSecond;
+    }
+
+    @Override
+    String getNanoSecondFraction() {
+        return nanoSecondFraction;
+    }
+
+    @Override
+    SimpleTimeZone getTimeZone() {
+        return timeZone;
+    }
 }

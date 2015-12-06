@@ -20,12 +20,12 @@ package org.apache.axiom.datatype.xsd;
 
 import java.text.ParseException;
 
-import org.apache.axiom.datatype.AbstractInvariantType;
+import org.apache.axiom.datatype.InvariantType;
 import org.apache.axiom.datatype.TypeHelper;
 import org.apache.axiom.datatype.UnexpectedCharacterException;
 import org.apache.axiom.datatype.UnexpectedEndOfStringException;
 
-abstract class TemporalType<T> extends AbstractInvariantType<T> {
+public abstract class TemporalType<T> extends InvariantType<T> {
     abstract boolean hasDatePart();
     abstract boolean hasTimePart();
     abstract T createInstance(boolean bc, String aeon, int year, int month, int day, int hour,

@@ -22,10 +22,24 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
- * A temporal value. This is the base interface for {@link XSDate}, {@link XSTime} and
+ * A temporal value. This is the base class for {@link XSDate}, {@link XSTime} and
  * {@link XSDateTime}.
  */
-public interface Temporal {
+public abstract class Temporal {
+    abstract boolean hasDatePart();
+    abstract boolean hasTimePart();
+    abstract boolean isBC();
+    abstract String getAeon();
+    abstract int getYear();
+    abstract int getMonth();
+    abstract int getDay();
+    abstract int getHour();
+    abstract int getMinute();
+    abstract int getSecond();
+    abstract int getNanoSecond();
+    abstract SimpleTimeZone getTimeZone();
+    abstract String getNanoSecondFraction();
+    
     /**
      * Convert this value to a calendar. For {@link XSDate} and {@link XSTime}, only the
      * corresponding fields are filled in and all other fields are left unspecified.
@@ -38,12 +52,38 @@ public interface Temporal {
      *             if this temporal object doesn't have a time zone and no default time zone was
      *             specified
      */
-    GregorianCalendar getCalendar(TimeZone defaultTimeZone);
+    public final GregorianCalendar getCalendar(TimeZone defaultTimeZone) {
+        // TODO: check aeon
+        TimeZone timeZone = getTimeZone();
+        if (timeZone == null) {
+            if (defaultTimeZone == null) {
+                throw new NoTimeZoneException();
+            }
+            timeZone = defaultTimeZone;
+        }
+        GregorianCalendar calendar = new GregorianCalendar(timeZone);
+        if (hasDatePart()) {
+            // TODO: BC
+            // TODO: throw exception if aeon is not null
+            calendar.set(GregorianCalendar.YEAR, getYear());
+            calendar.set(GregorianCalendar.MONTH, getMonth()-1);
+            calendar.set(GregorianCalendar.DAY_OF_MONTH, getDay());
+        }
+        if (hasTimePart()) {
+            calendar.set(GregorianCalendar.HOUR_OF_DAY, getHour());
+            calendar.set(GregorianCalendar.MINUTE, getMinute());
+            calendar.set(GregorianCalendar.SECOND, getSecond());
+            calendar.set(GregorianCalendar.MILLISECOND, getNanoSecond()/1000000);
+        }
+        return calendar;
+    }
     
     /**
      * Determine if this temporal value has a time zone.
      * 
      * @return <code>true</code> if the object has a time zone, <code>false</code> otherwise
      */
-    boolean hasTimeZone();
+    public final boolean hasTimeZone() {
+        return getTimeZone() != null;
+    }
 }

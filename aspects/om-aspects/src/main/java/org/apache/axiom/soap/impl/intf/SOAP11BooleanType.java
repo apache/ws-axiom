@@ -20,10 +20,10 @@ package org.apache.axiom.soap.impl.intf;
 
 import java.text.ParseException;
 
-import org.apache.axiom.datatype.AbstractInvariantType;
+import org.apache.axiom.datatype.InvariantType;
 import org.apache.axiom.datatype.TypeHelper;
 
-final class SOAP11BooleanType extends AbstractInvariantType<Boolean> {
+final class SOAP11BooleanType extends InvariantType<Boolean> {
     static final SOAP11BooleanType INSTANCE = new SOAP11BooleanType();
     
     private SOAP11BooleanType() {}

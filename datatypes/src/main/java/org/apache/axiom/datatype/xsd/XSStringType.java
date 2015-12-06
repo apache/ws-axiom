@@ -18,8 +18,20 @@
  */
 package org.apache.axiom.datatype.xsd;
 
+import java.text.ParseException;
+
 import org.apache.axiom.datatype.InvariantType;
 
-public interface XSStringType extends InvariantType<String> {
-    XSStringType INSTANCE = new XSStringTypeImpl();
+public final class XSStringType extends InvariantType<String> {
+    public static final XSStringType INSTANCE = new XSStringType();
+
+    private XSStringType() {}
+    
+    public String parse(String literal) throws ParseException {
+        return literal;
+    }
+
+    public String format(String value) {
+        return value;
+    }
 }

@@ -18,6 +18,89 @@
  */
 package org.apache.axiom.datatype.xsd;
 
-public interface XSDate extends Temporal {
-    XSDateTime getDayStart();
+public final class XSDate extends Temporal {
+    private final boolean bc;
+    private final String aeon;
+    private final int year;
+    private final int month;
+    private final int day;
+    private final SimpleTimeZone timeZone;
+    
+    XSDate(boolean bc, String aeon, int year, int month, int day, SimpleTimeZone timeZone) {
+        this.bc = bc;
+        this.aeon = aeon;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.timeZone = timeZone;
+    }
+
+    @Override
+    boolean hasDatePart() {
+        return true;
+    }
+
+    @Override
+    boolean hasTimePart() {
+        return false;
+    }
+
+    @Override
+    boolean isBC() {
+        return bc;
+    }
+
+    @Override
+    String getAeon() {
+        return aeon;
+    }
+
+    @Override
+    int getYear() {
+        return year;
+    }
+
+    @Override
+    int getMonth() {
+        return month;
+    }
+
+    @Override
+    int getDay() {
+        return day;
+    }
+
+    @Override
+    int getHour() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getMinute() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getSecond() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    int getNanoSecond() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    String getNanoSecondFraction() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    SimpleTimeZone getTimeZone() {
+        return timeZone;
+    }
+
+    public XSDateTime getDayStart() {
+        return new XSDateTime(bc, aeon, year, month, day, 0, 0, 0, 0, null, timeZone);
+    }
 }

@@ -20,7 +20,15 @@ package org.apache.axiom.datatype;
 
 import java.text.ParseException;
 
-public interface InvariantType<T> extends Type<T> {
-    T parse(String literal) throws ParseException;
-    String format(T value);
+public abstract class InvariantType<T> implements Type<T> {
+    public final <S,O> T parse(String literal, ContextAccessor<S,O> contextAccessor, S contextObject, O options) throws ParseException {
+        return parse(literal);
+    }
+
+    public final <S,O> String format(T value, ContextAccessor<S,O> contextAccessor, S contextObject, O options) {
+        return format(value);
+    }
+
+    public abstract T parse(String literal) throws ParseException;
+    public abstract String format(T value);
 }

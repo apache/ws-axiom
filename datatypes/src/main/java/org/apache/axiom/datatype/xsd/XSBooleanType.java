@@ -18,8 +18,49 @@
  */
 package org.apache.axiom.datatype.xsd;
 
-import org.apache.axiom.datatype.InvariantType;
+import java.text.ParseException;
 
-public interface XSBooleanType extends InvariantType<Boolean> {
-    XSBooleanType INSTANCE = new XSBooleanTypeImpl();
+import org.apache.axiom.datatype.InvariantType;
+import org.apache.axiom.datatype.TypeHelper;
+
+public final class XSBooleanType extends InvariantType<Boolean> {
+    public static final XSBooleanType INSTANCE = new XSBooleanType();
+
+    private XSBooleanType() {}
+    
+    private static boolean equals(String s1, int start, String s2) {
+        for (int i=0, len=s2.length(); i<len; i++) {
+            if (s1.charAt(start+i) != s2.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public Boolean parse(String literal) throws ParseException {
+        int start = TypeHelper.getStartIndex(literal);
+        int end = TypeHelper.getEndIndex(literal);
+        switch (end-start) {
+            case 1:
+                switch (literal.charAt(start)) {
+                    case '0': return Boolean.FALSE;
+                    case '1': return Boolean.TRUE;
+                }
+                break;
+            case 4:
+                if (equals(literal, start, "true")) {
+                    return Boolean.TRUE;
+                }
+                break;
+            case 5:
+                if (equals(literal, start, "false")) {
+                    return Boolean.FALSE;
+                }
+        }
+        throw new ParseException("Unexpected boolean literal", start);
+    }
+
+    public String format(Boolean value) {
+        return value.toString();
+    }
 }
