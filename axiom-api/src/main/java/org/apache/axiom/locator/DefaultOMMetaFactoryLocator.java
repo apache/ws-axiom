@@ -38,6 +38,13 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
     public DefaultOMMetaFactoryLocator() {
         ClassLoader classLoader = DefaultOMMetaFactoryLocator.class.getClassLoader();
         
+        // Fall back to the system class loader if Axiom is loaded form the bootstrap
+        // class loader (There is no good reason to do that, but we don't want people to
+        // blame Axiom if things break).
+        if (classLoader == null) {
+            classLoader = ClassLoader.getSystemClassLoader();
+        }
+        
         Loader loader = new DefaultLoader(classLoader);
         
         List<Implementation> implementations = new ArrayList<Implementation>();
