@@ -40,7 +40,7 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         
         Loader loader = new DefaultLoader(classLoader);
         
-        List/*<Implementation>*/ implementations = new ArrayList();
+        List<Implementation> implementations = new ArrayList<Implementation>();
         
         // If a meta factory is specified using the system property, we register it as an
         // implementation with feature "default" and maximum priority, so that it will always
@@ -68,7 +68,7 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
 
         // Now discover the available implementations by looking for the axiom.xml descriptor.
         log.debug("Starting class path based discovery");
-        Enumeration e;
+        Enumeration<URL> e;
         try {
             e = classLoader.getResources(ImplementationFactory.DESCRIPTOR_RESOURCE);
         } catch (IOException ex) {
@@ -77,7 +77,7 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         }
         if (e != null) {
             while (e.hasMoreElements()) {
-                implementations.addAll(ImplementationFactory.parseDescriptor(loader, (URL)e.nextElement()));
+                implementations.addAll(ImplementationFactory.parseDescriptor(loader, e.nextElement()));
             }
         }
         

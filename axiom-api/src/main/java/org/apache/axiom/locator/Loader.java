@@ -19,5 +19,5 @@
 package org.apache.axiom.locator;
 
 abstract class Loader {
-    abstract Class load(String className) throws ClassNotFoundException;
+    abstract Class<?> load(String className) throws ClassNotFoundException;
 }

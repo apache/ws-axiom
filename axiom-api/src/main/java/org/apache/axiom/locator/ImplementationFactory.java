@@ -58,7 +58,7 @@ final class ImplementationFactory {
     }
     
     private static Object load(Loader loader, String className) {
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = loader.load(className);
         } catch (ClassNotFoundException ex) {
@@ -73,11 +73,11 @@ final class ImplementationFactory {
         }
     }
     
-    static List/*<Implementation>*/ parseDescriptor(Loader loader, URL url) {
+    static List<Implementation> parseDescriptor(Loader loader, URL url) {
         if (log.isDebugEnabled()) {
             log.debug("Loading " + url);
         }
-        List implementations = new ArrayList();
+        List<Implementation> implementations = new ArrayList<Implementation>();
         try {
             // Since this code is used to discover Axiom implementations, we have to use DOM here.
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -134,7 +134,7 @@ final class ImplementationFactory {
         if (metaFactory == null) {
             return null;
         }
-        List/*<Feature>*/ features = new ArrayList();
+        List<Feature> features = new ArrayList<Feature>();
         Node child = implementation.getFirstChild();
         while (child != null) {
             if (child instanceof Element) {
@@ -151,7 +151,7 @@ final class ImplementationFactory {
             }
             child = child.getNextSibling();
         }
-        return new Implementation(name, metaFactory, (Feature[])features.toArray(new Feature[features.size()]));
+        return new Implementation(name, metaFactory, features.toArray(new Feature[features.size()]));
     }
 
     private static Feature parseFeature(Element feature) {

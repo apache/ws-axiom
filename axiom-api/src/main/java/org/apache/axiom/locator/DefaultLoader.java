@@ -25,7 +25,7 @@ final class DefaultLoader extends Loader {
         this.classLoader = classLoader;
     }
 
-    Class load(String className) throws ClassNotFoundException {
+    Class<?> load(String className) throws ClassNotFoundException {
         return classLoader.loadClass(className);
     }
 }

@@ -21,7 +21,6 @@ package org.apache.axiom.locator;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -34,7 +33,7 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
 
 final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator implements BundleTrackerCustomizer {
     private final BundleContext apiBundleContext;
-    private final List/*<Implementation>*/ implementations = new ArrayList();
+    private final List<Implementation> implementations = new ArrayList<Implementation>();
     
     OSGiOMMetaFactoryLocator(BundleContext apiBundleContext) {
         this.apiBundleContext = apiBundleContext;
@@ -48,15 +47,14 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
     public Object addingBundle(Bundle bundle, BundleEvent event) {
         URL descriptorUrl = bundle.getEntry(ImplementationFactory.DESCRIPTOR_RESOURCE);
         if (descriptorUrl != null) {
-            List/*<Implementation>*/ discoveredImplementations = ImplementationFactory.parseDescriptor(new OSGiLoader(bundle), descriptorUrl);
-            List/*<RegisteredImplementation>*/ registeredImplementations = new ArrayList(discoveredImplementations.size());
+            List<Implementation> discoveredImplementations = ImplementationFactory.parseDescriptor(new OSGiLoader(bundle), descriptorUrl);
+            List<RegisteredImplementation> registeredImplementations = new ArrayList<RegisteredImplementation>(discoveredImplementations.size());
             synchronized (this) {
                 implementations.addAll(discoveredImplementations);
                 loadImplementations(implementations);
             }
-            for (Iterator it = discoveredImplementations.iterator(); it.hasNext(); ) {
-                Implementation implementation = (Implementation)it.next();
-                Hashtable properties = new Hashtable();
+            for (Implementation implementation : discoveredImplementations) {
+                Hashtable<String,String> properties = new Hashtable<String,String>();
                 properties.put("implementationName", implementation.getName());
                 // TODO: we should add the features and priorities to the properties as well
                 ServiceRegistration registration = bundle.getBundleContext().registerService(OMMetaFactory.class.getName(), implementation.getMetaFactory(), properties);
@@ -75,8 +73,7 @@ final class OSGiOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator i
     }
 
     public void removedBundle(Bundle bundle, BundleEvent event, Object object) {
-        for (Iterator it = ((List)object).iterator(); it.hasNext(); ) {
-            RegisteredImplementation registeredImplementation = (RegisteredImplementation)it.next();
+        for (RegisteredImplementation registeredImplementation : ((List<RegisteredImplementation>)object)) {
             apiBundleContext.ungetService(registeredImplementation.getReference());
             registeredImplementation.getRegistration().unregister();
             synchronized (this) {
