@@ -28,7 +28,7 @@
     <!-- main project directory structure -->
     <fileSet>
       <directory>..</directory>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory/>
       <useDefaultExcludes>true</useDefaultExcludes>
       <excludes>
         <!-- build output -->
@@ -74,18 +74,18 @@
     <!-- license, readme, etc. calculated at build time -->
     <fileSet>
       <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory/>
     </fileSet>
   </fileSets>
   <files>
     <file>
       <source>../README.txt</source>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory/>
       <filtered>true</filtered>
     </file>
     <file>
       <source>${project.build.directory}/RELEASE-NOTE.txt</source>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory/>
     </file>
   </files>
 </assembly>

@@ -93,6 +93,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>apidocs</artifactId>
             <version>${project.version}</version>
+            <classifier>javadoc</classifier>
             <type>zip</type>
         </dependency>
     </dependencies>

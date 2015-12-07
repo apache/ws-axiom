@@ -18,6 +18,7 @@
   ~ under the License.
   -->
 <assembly>
+    <id>javadoc</id>
     <includeBaseDirectory>false</includeBaseDirectory> 
     <formats>
         <format>zip</format>
@@ -25,7 +26,6 @@
     <fileSets>
         <fileSet>
             <directory>${project.build.directory}/apidocs</directory>
-            <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

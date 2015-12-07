@@ -32,7 +32,6 @@
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
-            <outputDirectory>/</outputDirectory>
             <includes>
                 <include>LICENSE</include>
             </includes>
@@ -52,12 +51,10 @@
     <files>
         <file>
             <source>../README.txt</source>
-            <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
         <file>
             <source>${project.build.directory}/RELEASE-NOTE.txt</source>
-            <outputDirectory>/</outputDirectory>
         </file>
     </files>
     <dependencySets>
@@ -71,9 +68,6 @@
                 <exclude>org.apache.abdera:*</exclude>
                 <!-- This dependency should be considered as provided by the application code -->
                 <exclude>javax.xml.bind:jaxb-api</exclude>
-                <!-- This together with useTransitiveFiltering=true ensures that we don't include
-                     the dependencies of the apidocs ZIP. -->
-                <exclude>*:*:zip</exclude>
             </excludes>
             <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
@@ -88,7 +82,7 @@
         <dependencySet>
             <outputDirectory>apidocs</outputDirectory>
             <includes>
-                <include>*:apidocs:zip</include>
+                <include>*:apidocs:zip:javadoc</include>
             </includes>
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>true</unpack>
