@@ -37,10 +37,6 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>${project.build.directory}/apidocs</directory>
-            <outputDirectory>apidocs</outputDirectory>
-        </fileSet>
-        <fileSet>
             <directory>../legal</directory>
             <outputDirectory>lib</outputDirectory>
             <includes>
