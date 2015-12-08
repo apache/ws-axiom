@@ -45,6 +45,10 @@ public final class AxiomSemantics implements Semantics {
         return true;
     }
 
+    public boolean isParentNode(NodeType nodeType) {
+        return nodeType == NodeType.DOCUMENT || nodeType == NodeType.NS_AWARE_ELEMENT;
+    }
+
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(
             INSTANCE,
             false,  // Axiom doesn't support namespace unaware attributes

@@ -77,9 +77,8 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
                             } else {
                                 boolean visitChildren = true;
                                 while (true) {
-                                    // TODO: test for CoreContainer instead????
-                                    if (visitChildren && node instanceof CoreElement) {
-                                        CoreChildNode firstChild = ((CoreElement)node).coreGetFirstChild();
+                                    if (visitChildren && node instanceof CoreParentNode && semantics.isParentNode(node.coreGetNodeType())) {
+                                        CoreChildNode firstChild = ((CoreParentNode)node).coreGetFirstChild();
                                         if (firstChild != null) {
                                             depth++;
                                             node = firstChild;
