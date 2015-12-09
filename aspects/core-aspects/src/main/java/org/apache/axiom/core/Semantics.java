@@ -33,4 +33,15 @@ public interface Semantics {
      *         exists for these prefixes.
      */
     boolean isUseStrictNamespaceLookup();
+    
+    /**
+     * Check if the given node type is a parent node type. This determines the set of nodes that are
+     * selected by {@link Axis#DESCENDANTS} and {@link Axis#DESCENDANTS_OR_SELF}.
+     * 
+     * @param node
+     *            the node type to check
+     * @return {@code true} if the node type is a parent node; {@link false} if the node type is
+     *         considered a leaf node type
+     */
+    boolean isParentNode(NodeType nodeType);
 }
