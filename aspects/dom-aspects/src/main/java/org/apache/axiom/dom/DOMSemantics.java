@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.dom;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
@@ -31,6 +34,12 @@ import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 
 public final class DOMSemantics implements Semantics {
+    private static final Set<NodeType> parentNodeTypes = EnumSet.of(
+            NodeType.DOCUMENT,
+            NodeType.NS_AWARE_ELEMENT,
+            NodeType.NS_UNAWARE_ELEMENT,
+            NodeType.DOCUMENT_FRAGMENT);
+    
     public static final DOMSemantics INSTANCE = new DOMSemantics();
     
     private DOMSemantics() {}
@@ -41,6 +50,10 @@ public final class DOMSemantics implements Semantics {
     
     public boolean isUseStrictNamespaceLookup() {
         return false;
+    }
+
+    public boolean isParentNode(NodeType nodeType) {
+        return parentNodeTypes.contains(nodeType);
     }
 
     /**

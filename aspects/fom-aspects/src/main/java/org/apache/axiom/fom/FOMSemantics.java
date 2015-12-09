@@ -21,6 +21,7 @@ package org.apache.axiom.fom;
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
+import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 
 public final class FOMSemantics implements Semantics {
@@ -34,6 +35,11 @@ public final class FOMSemantics implements Semantics {
     
     public boolean isUseStrictNamespaceLookup() {
         return true;
+    }
+
+    public boolean isParentNode(NodeType nodeType) {
+        // We don't use Axis.DESCENDANTS(_OR_SELF) anywhere
+        throw new UnsupportedOperationException();
     }
 
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(INSTANCE, false, false);
