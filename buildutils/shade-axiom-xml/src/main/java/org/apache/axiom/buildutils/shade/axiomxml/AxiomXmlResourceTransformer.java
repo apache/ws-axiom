@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
+import org.apache.maven.plugins.shade.relocation.Relocator;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -44,7 +45,7 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
         return mergedAxiomXml != null;
     }
 
-    public void processResource(String resource, InputStream is, List relocators) throws IOException {
+    public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
         Document axiomXml = DOMUtils.parse(is);
         is.close();
         if (mergedAxiomXml == null) {
