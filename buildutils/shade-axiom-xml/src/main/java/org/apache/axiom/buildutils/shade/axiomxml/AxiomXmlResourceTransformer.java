@@ -27,7 +27,9 @@ import java.util.jar.JarOutputStream;
 import org.apache.maven.plugins.shade.relocation.Relocator;
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Merges <tt>META-INF/axiom.xml</tt> files.
@@ -48,6 +50,17 @@ public class AxiomXmlResourceTransformer implements ResourceTransformer {
     public void processResource(String resource, InputStream is, List<Relocator> relocators) throws IOException {
         Document axiomXml = DOMUtils.parse(is);
         is.close();
+        NodeList implementations = axiomXml.getElementsByTagNameNS("http://ws.apache.org/axiom/", "implementation");
+        for (int i=0; i<implementations.getLength(); i++) {
+            Element implementation = (Element)implementations.item(i);
+            String loader = implementation.getAttributeNS(null, "loader");
+            for (Relocator relocator : relocators) {
+                if (relocator.canRelocateClass(loader)) {
+                    implementation.setAttributeNS(null, "loader", relocator.relocateClass(loader));
+                    break;
+                }
+            }
+        }
         if (mergedAxiomXml == null) {
             mergedAxiomXml = axiomXml;
         } else {

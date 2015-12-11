@@ -37,7 +37,9 @@ public final class DOMUtils {
     
     public static Document parse(InputStream is) throws IOException {
         try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            return factory.newDocumentBuilder().parse(is);
         } catch (SAXException ex) {
             throw toIOException(ex);
         } catch (ParserConfigurationException ex) {
