@@ -18,16 +18,17 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 
 public class TestGetChildrenWithLocalName extends AxiomTestCase {
     public TestGetChildrenWithLocalName(OMMetaFactory metaFactory) {
@@ -35,13 +36,13 @@ public class TestGetChildrenWithLocalName extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMElement elt = AbstractTestCase.getTestResourceAsElement(metaFactory, TestConstants.SOAP_SOAPMESSAGE1);
-        Iterator it = elt.getChildrenWithLocalName(SOAP11Constants.BODY_LOCAL_NAME);
-        assertTrue(it.hasNext());
+        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();
+        Iterator it = elt.getChildrenWithLocalName("subelement");
+        assertThat(it.hasNext()).isTrue();
         OMElement child = (OMElement)it.next();
-        assertEquals(new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                SOAP11Constants.BODY_LOCAL_NAME), child.getQName());
-        assertFalse(it.hasNext());
+        assertThat(child.getQName()).isEqualTo(new QName("urn:ns2", "subelement"));
+        assertThat(it.hasNext()).isFalse();
         elt.close(false);
     }
 }

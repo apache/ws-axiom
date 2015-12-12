@@ -22,13 +22,12 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.xml.XMLSample;
 
 /** Test the element iterator */
 public class TestGetChildrenWithName extends AxiomTestCase {
@@ -37,9 +36,9 @@ public class TestGetChildrenWithName extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMElement elt = AbstractTestCase.getTestResourceAsElement(metaFactory, TestConstants.SOAP_SOAPMESSAGE1);
-        QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                                SOAP11Constants.BODY_LOCAL_NAME);
+        OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();
+        QName qname = new QName("urn:ns2", "subelement");
         Iterator iter = elt.getChildrenWithName(qname);
         int counter = 0;
         while (iter.hasNext()) {
