@@ -20,7 +20,7 @@ package org.apache.axiom.ts.soap.header;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
@@ -31,23 +31,16 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
-public class TestExamineHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
-    public TestExamineHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestGetHeaderBlocksWithNSURIWithParser extends SampleBasedSOAPTestCase {
+    public TestGetHeaderBlocksWithNSURIWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }
 
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        String roleNextURI = spec.getNextRoleURI();
-        Iterator it = envelope.getHeader().examineHeaderBlocks(roleNextURI);
-        assertThat(it.hasNext()).isTrue();
-        SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)it.next();
-        assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h2"));
-        assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
-        assertThat(it.hasNext()).isTrue();
-        headerBlock = (SOAPHeaderBlock)it.next();
-        assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h7"));
-        assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
-        assertThat(it.hasNext()).isFalse();
+        ArrayList headerBlocks = envelope.getHeader().getHeaderBlocksWithNSURI("urn:ns2");
+        assertThat(headerBlocks).hasSize(2);
+        assertThat(((SOAPHeaderBlock)headerBlocks.get(0)).getQName()).isEqualTo(new QName("urn:ns2", "h4"));
+        assertThat(((SOAPHeaderBlock)headerBlocks.get(1)).getQName()).isEqualTo(new QName("urn:ns2", "h6"));
     }
 }

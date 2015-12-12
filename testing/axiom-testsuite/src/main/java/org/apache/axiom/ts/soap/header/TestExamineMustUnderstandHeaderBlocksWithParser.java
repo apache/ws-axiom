@@ -33,7 +33,7 @@ import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 public class TestExamineMustUnderstandHeaderBlocksWithParser extends SampleBasedSOAPTestCase {
     public TestExamineMustUnderstandHeaderBlocksWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.ROLES);
+        super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }
 
     @Override

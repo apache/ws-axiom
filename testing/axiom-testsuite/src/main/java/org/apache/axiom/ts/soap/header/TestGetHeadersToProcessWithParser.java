@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMMetaFactory;
 
 public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
     public TestGetHeadersToProcessWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
-        super(metaFactory, spec, SOAPSampleSet.ROLES);
+        super(metaFactory, spec, SOAPSampleSet.HEADERS);
     }
 
     protected void runTest(SOAPEnvelope envelope) throws Throwable {

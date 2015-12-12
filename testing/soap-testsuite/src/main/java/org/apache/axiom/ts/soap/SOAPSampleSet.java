@@ -66,9 +66,9 @@ public final class SOAPSampleSet extends Multiton {
     public static final SOAPSampleSet FAULT_DETAIL_DEFAULT_NAMESPACE = new SOAPSampleSet("fault-detail-default-namespace");
     
     /**
-     * A SOAP request with header blocks configured with different roles.
+     * A SOAP request with header blocks with varying characteristics.
      */
-    public static final SOAPSampleSet ROLES = new SOAPSampleSet("roles");
+    public static final SOAPSampleSet HEADERS = new SOAPSampleSet("headers");
     
     private final SOAPSample soap11Message;
     private final SOAPSample soap12Message;
