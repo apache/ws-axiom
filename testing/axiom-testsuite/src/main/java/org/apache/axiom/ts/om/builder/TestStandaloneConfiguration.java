@@ -21,7 +21,6 @@ package org.apache.axiom.ts.om.builder;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -42,7 +41,7 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream is = AbstractTestCase.getTestResource("web_w_dtd2.xml");
+        InputStream is = TestStandaloneConfiguration.class.getResourceAsStream("web_w_dtd2.xml");
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 StAXParserConfiguration.STANDALONE, is);
         OMElement root = builder.getDocumentElement();
