@@ -27,15 +27,6 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
-    public void addSOAPText(SOAPFaultText soapFaultText)
-            throws SOAPProcessingException {
-        if (!(soapFaultText instanceof SOAP12FaultTextImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP12FaultTextImpl, got " + soapFaultText.getClass());
-        }
-        addChild(soapFaultText);
-    }
-
     public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_TEXT);
     }

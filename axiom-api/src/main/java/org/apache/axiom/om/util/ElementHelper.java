@@ -103,6 +103,9 @@ public class ElementHelper {
         return resolveQName(qname, true);
     }
 
+    /**
+     * @deprecated
+     */
     public static void setNewElement(OMElement parent,
                                      OMElement myElement,
                                      OMElement newElement) {

@@ -358,6 +358,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPText(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextMultiple(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextWithSOAPVersionMismatch(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPTextWithParser(metaFactory));

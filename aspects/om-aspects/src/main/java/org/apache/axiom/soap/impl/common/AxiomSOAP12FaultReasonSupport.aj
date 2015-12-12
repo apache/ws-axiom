@@ -19,10 +19,15 @@
 package org.apache.axiom.soap.impl.common;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 
 public aspect AxiomSOAP12FaultReasonSupport {
     public final Class<? extends CoreNode> AxiomSOAP12FaultReason.coreGetNodeClass() {
         return AxiomSOAP12FaultReason.class;
+    }
+
+    public final void AxiomSOAP12FaultReason.addSOAPText(SOAPFaultText soapFaultText) {
+        addChild(soapFaultText);
     }
 }
