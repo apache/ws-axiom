@@ -50,7 +50,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (with custom role)", 5, numHeaders);
+        assertEquals("Didn't get right number of headers (with custom role)", 6, numHeaders);
 
         rp = new MyRolePlayer(true);
 
@@ -63,7 +63,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (no custom role)", 4, numHeaders);
+        assertEquals("Didn't get right number of headers (no custom role)", 5, numHeaders);
 
         // Intermediary test
         rp = new MyRolePlayer(false);
@@ -77,6 +77,6 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (no custom role)", 1, numHeaders);
+        assertEquals("Didn't get right number of headers (no custom role)", 2, numHeaders);
     }
 }

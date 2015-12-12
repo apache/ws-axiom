@@ -21,6 +21,10 @@
         <test:h6 env:role="">
             Going all the way baby! (empty role)
         </test:h6>
+        <test:h7 env:role="http://www.w3.org/2003/05/soap-envelope/role/next"
+                env:mustUnderstand="true">
+            Another header for the next node.
+        </test:h7>
     </env:Header>
     <env:Body>
         <Echo>This is a test, this is only a test...</Echo>
