@@ -16,39 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.ts.omdom.document;
+package org.apache.axiom.ts.dom.element;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-public class TestImportNode extends ConformanceTestCase {
-    public TestImportNode(OMMetaFactory metaFactory, XMLSample file) {
-        super(metaFactory, file);
+public class TestImportNode extends DOMTestCase {
+    private final XMLSample file;
+    private final DOMImplementation from;
+
+    public TestImportNode(DocumentBuilderFactory dbf, XMLSample file, DOMImplementation from) {
+        super(dbf);
+        this.file = file;
+        addTestParameter("file", file.getName());
+        this.from = from;
+        addTestParameter("from", from.getName());
     }
 
+    @Override
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory dbf = DOMImplementation.XERCES.newDocumentBuilderFactory();
-        dbf.setNamespaceAware(true);
-        Document doc = dbf.newDocumentBuilder().parse(file.getUrl().toString());
-        Document doc2 = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
-        Node n = doc2.importNode(doc.getDocumentElement(), true);
+        DocumentBuilderFactory foreignFactory = from.newDocumentBuilderFactory();
+        foreignFactory.setNamespaceAware(true);
+        Element orgElement = foreignFactory.newDocumentBuilder().parse(file.getUrl().toString()).getDocumentElement();
+        Document doc = dbf.newDocumentBuilder().newDocument();
         assertAbout(xml())
-                .that(xml(OMElement.class, (OMElement)n))
+                .that(xml(Element.class, (Element)doc.importNode(orgElement, true)))
                 // Import discards DTD information
                 .treatingElementContentWhitespaceAsText()
-                .hasSameContentAs(xml(Element.class, doc.getDocumentElement()));
+                .hasSameContentAs(orgElement);
     }
 }

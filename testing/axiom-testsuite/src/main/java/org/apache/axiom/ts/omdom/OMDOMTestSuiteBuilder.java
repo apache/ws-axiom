@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.ts.omdom;
 
+import static org.apache.axiom.testing.multiton.Multiton.getInstances;
+
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.xml.XMLSample;
 
 /**
  * Builds a test suite for Axiom implementations that also implement DOM. Note that this test suite
@@ -41,7 +44,9 @@ public class OMDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.document.TestCreateDocumentFragmentInterfaces(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.document.TestGetOMFactory1(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.document.TestGetOMFactory2(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.document.TestImportNode(metaFactory));
+        for (XMLSample sample : getInstances(XMLSample.class)) {
+            addTest(new org.apache.axiom.ts.omdom.document.TestImportNode(metaFactory, sample));
+        }
         addTest(new org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden(metaFactory, true));
         addTest(new org.apache.axiom.ts.omdom.document.TestInsertBeforeForbidden(metaFactory, false));
         addTest(new org.apache.axiom.ts.omdom.element.TestAddAttributeReplace(metaFactory));

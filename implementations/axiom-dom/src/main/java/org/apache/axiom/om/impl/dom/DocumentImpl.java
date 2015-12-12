@@ -38,6 +38,7 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.ProcessingInstruction;
 
 public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocument {
     private Vector idAttrs;
@@ -141,9 +142,13 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
                 newNode = createCDATASection(importedNode.getNodeValue());
                 break;
             
+            case Node.PROCESSING_INSTRUCTION_NODE: {
+                ProcessingInstruction pi = (ProcessingInstruction)importedNode;
+                newNode = createProcessingInstruction(pi.getTarget(), pi.getData());
+                break;
+            }
             case Node.ENTITY_REFERENCE_NODE:
             case Node.ENTITY_NODE:
-            case Node.PROCESSING_INSTRUCTION_NODE:
             case Node.DOCUMENT_TYPE_NODE:
             case Node.NOTATION_NODE:
                 throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );

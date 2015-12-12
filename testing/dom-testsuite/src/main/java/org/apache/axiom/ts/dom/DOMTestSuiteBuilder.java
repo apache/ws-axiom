@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.objectweb.asm.ClassReader;
@@ -140,6 +141,11 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestGetNamespaceURIWithNoNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestGetPrefixWithDefaultNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestGetTextContent(dbf));
+        for (XMLSample file : getInstances(XMLSample.class)) {
+            for (DOMImplementation from : getInstances(DOMImplementation.class)) {
+                addTest(new org.apache.axiom.ts.dom.element.TestImportNode(dbf, file, from));
+            }
+        }
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBefore(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBeforeWithDocumentFragment(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURIDefaultBindings(dbf));
