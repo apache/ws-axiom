@@ -30,6 +30,11 @@ final class AxiomXML implements XML {
     }
 
     @Override
+    public boolean isReportingElementContentWhitespace() {
+        return true;
+    }
+
+    @Override
     public Traverser createTraverser(boolean expandEntityReferences) {
         return new AxiomTraverser(root, expandEntityReferences);
     }

@@ -20,17 +20,26 @@ package org.apache.axiom.truth.xml;
 
 import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.XML;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 final class DOMXML implements XML {
     private final Node root;
+    private final boolean dom3;
     
     DOMXML(Node root) {
         this.root = root;
+        Document document = root instanceof Document ? (Document)root : root.getOwnerDocument();
+        dom3 = document.getImplementation().hasFeature("XML", "3.0");
+    }
+
+    @Override
+    public boolean isReportingElementContentWhitespace() {
+        return dom3;
     }
 
     @Override
     public Traverser createTraverser(boolean expandEntityReferences) {
-        return new DOMTraverser(root, expandEntityReferences);
+        return new DOMTraverser(root, dom3, expandEntityReferences);
     }
 }

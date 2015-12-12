@@ -30,6 +30,11 @@ import com.ctc.wstx.stax.WstxInputFactory;
 
 abstract class StAXXML implements XML {
     @Override
+    public boolean isReportingElementContentWhitespace() {
+        return true;
+    }
+
+    @Override
     public final Traverser createTraverser(boolean expandEntityReferences) throws TraverserException {
         WstxInputFactory factory = new WstxInputFactory();
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.valueOf(expandEntityReferences));

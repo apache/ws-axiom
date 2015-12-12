@@ -354,15 +354,6 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
                 }
             };
         }
-        if (treatWhitespaceAsText) {
-            traverser = new Filter(traverser) {
-                @Override
-                public Event next() throws TraverserException {
-                    Event event = super.next();
-                    return event == Event.WHITESPACE ? Event.TEXT : event;
-                }
-            };
-        }
         if (ignoreRedundantNamespaceDeclarations && !ignoreNamespaceDeclarations) {
             traverser = new RedundantNamespaceDeclarationFilter(traverser);
         }
@@ -386,11 +377,22 @@ public final class XMLSubject extends Subject<XMLSubject,Object> {
     public void hasSameContentAs(Object other) {
         try {
             Traverser actual = createTraverser(xml);
-            Traverser expected = createTraverser(XMLTruth.xml(other));
+            XML expectedXML = XMLTruth.xml(other);
+            Traverser expected = createTraverser(expectedXML);
             while (true) {
                 Event actualEvent = actual.next();
                 Event expectedEvent = expected.next();
-                assertThat(actualEvent).isEqualTo(expectedEvent);
+                if (expectedEvent == Event.WHITESPACE || expectedEvent == Event.TEXT) {
+                    if (!xml.isReportingElementContentWhitespace()) {
+                        assertThat(actualEvent).isEqualTo(Event.TEXT);
+                    } else if (treatWhitespaceAsText || !expectedXML.isReportingElementContentWhitespace()) {
+                        assertThat(actualEvent).isAnyOf(Event.WHITESPACE, Event.TEXT);
+                    } else {
+                        assertThat(actualEvent).isEqualTo(expectedEvent);
+                    }
+                } else {
+                    assertThat(actualEvent).isEqualTo(expectedEvent);
+                }
                 if (expectedEvent == null) {
                     break;
                 }

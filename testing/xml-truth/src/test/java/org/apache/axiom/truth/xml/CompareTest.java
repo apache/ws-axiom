@@ -22,37 +22,37 @@ import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.testing.multiton.Multiton.getInstances;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import junit.framework.TestSuite;
 
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.xml.XMLSample;
-import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
-public class DOMCompareTest extends MatrixTestCase {
+public class CompareTest extends MatrixTestCase {
     private XMLSample sample;
+    private final XMLObjectFactory left;
+    private final XMLObjectFactory right;
     private boolean expandEntityReferences;
 
-    public DOMCompareTest(XMLSample sample, boolean expandEntityReferences) {
+    public CompareTest(XMLSample sample, XMLObjectFactory left, XMLObjectFactory right,
+            boolean expandEntityReferences) {
         this.sample = sample;
+        this.left = left;
+        this.right = right;
         this.expandEntityReferences = expandEntityReferences;
         addTestParameter("sample", sample.getName());
+        addTestParameter("left", left.getName());
+        addTestParameter("right", right.getName());
         addTestParameter("expandEntityReferences", expandEntityReferences);
     }
     
     @Override
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory factory = new DocumentBuilderFactoryImpl();
-        factory.setNamespaceAware(true);
-        // If necessary, let DOMTraverser expand entity references
-        factory.setExpandEntityReferences(false);
         assertAbout(xml())
-                .that(factory.newDocumentBuilder().parse(sample.getUrl().toString()))
+                .that(left.toXMLObject(sample))
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences(expandEntityReferences)
-                .hasSameContentAs(sample.getUrl());
+                .hasSameContentAs(right.toXMLObject(sample));
     }
 
     public static TestSuite suite() {
@@ -60,8 +60,12 @@ public class DOMCompareTest extends MatrixTestCase {
             @Override
             protected void addTests() {
                 for (XMLSample sample : getInstances(XMLSample.class)) {
-                    addTest(new DOMCompareTest(sample, true));
-                    addTest(new DOMCompareTest(sample, false));
+                    for (XMLObjectFactory left : getInstances(XMLObjectFactory.class)) {
+                        for (XMLObjectFactory right : getInstances(XMLObjectFactory.class)) {
+                            addTest(new CompareTest(sample, left, right, true));
+                            addTest(new CompareTest(sample, left, right, false));
+                        }
+                    }
                 }
             }
         }.build();

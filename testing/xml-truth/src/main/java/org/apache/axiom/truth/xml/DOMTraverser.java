@@ -37,12 +37,14 @@ import com.google.common.base.Strings;
 
 final class DOMTraverser implements Traverser {
     private final Node root;
+    private final boolean dom3;
     private final boolean expandEntityReferences;
     private Node node;
     private boolean descend;
     
-    DOMTraverser(Node root, boolean expandEntityReferences) {
+    DOMTraverser(Node root, boolean dom3, boolean expandEntityReferences) {
         this.root = root;
+        this.dom3 = dom3;
         this.expandEntityReferences = expandEntityReferences;
         if (root.getNodeType() == Node.DOCUMENT_NODE) {
             node = root;
@@ -93,7 +95,7 @@ final class DOMTraverser implements Traverser {
                     }
                 case Node.TEXT_NODE:
                     descend = false;
-                    return ((Text)node).isElementContentWhitespace() ? Event.WHITESPACE : Event.TEXT;
+                    return dom3 && ((Text)node).isElementContentWhitespace() ? Event.WHITESPACE : Event.TEXT;
                 case Node.ENTITY_REFERENCE_NODE:
                     if (expandEntityReferences) {
                         descend = !visited;
