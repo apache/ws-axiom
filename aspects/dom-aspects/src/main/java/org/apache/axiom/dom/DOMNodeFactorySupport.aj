@@ -27,7 +27,7 @@ public aspect DOMNodeFactorySupport {
     public boolean DOMNodeFactory.hasFeature(String feature, String version) {
         boolean anyVersion = version == null || version.length() == 0;
         return (feature.equalsIgnoreCase("Core") || feature.equalsIgnoreCase("XML"))
-                && (anyVersion || version.equals("1.0") || version.equals("2.0"));
+                && (anyVersion || version.equals("1.0") || version.equals("2.0") || version.equals("3.0"));
     }
 
     public Document DOMNodeFactory.createDocument(String namespaceURI, String qualifiedName,
