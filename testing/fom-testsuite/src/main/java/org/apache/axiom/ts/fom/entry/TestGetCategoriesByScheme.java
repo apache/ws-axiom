@@ -37,9 +37,15 @@ public class TestGetCategoriesByScheme extends AbderaTestCase {
     protected void runTest() throws Throwable {
         Document<Entry> document = abdera.getParser().parse(
                 TestGetCategoriesByScheme.class.getResourceAsStream("entry-with-categories.xml"));
-        List<Category> categories = document.getRoot().getCategories("http://www.example.org/");
+        Entry entry = document.getRoot();
+        
+        List<Category> categories = entry.getCategories("http://www.example.org/");
         assertThat(categories).hasSize(2);
         assertThat(categories.get(0).getTerm()).isEqualTo("term1");
         assertThat(categories.get(1).getTerm()).isEqualTo("term2");
+        
+        categories = entry.getCategories(null);
+        assertThat(categories).hasSize(1);
+        assertThat(categories.get(0).getTerm()).isEqualTo("other");
     }
 }

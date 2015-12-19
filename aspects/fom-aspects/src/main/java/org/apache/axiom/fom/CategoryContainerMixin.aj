@@ -29,7 +29,7 @@ public aspect CategoryContainerMixin {
     private static final ElementMatcher<AbderaCategory> CATEGORY_BY_SCHEME = new ElementMatcher<AbderaCategory>() {
         public boolean matches(AbderaCategory element, String namespaceURI, String name) {
             String scheme = element.getAttributeValue(Constants.SCHEME);
-            return scheme != null && scheme.equals(name);
+            return scheme == null && name == null || scheme != null && scheme.equals(name);
         }
     };
 
