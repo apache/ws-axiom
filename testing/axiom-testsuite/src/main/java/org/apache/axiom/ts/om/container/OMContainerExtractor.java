@@ -52,7 +52,7 @@ public abstract class OMContainerExtractor extends Multiton implements Dimension
     };
     
     public static final OMElementExtractor ELEMENT = new OMElementExtractor(false);
-    public static final OMElementExtractor ELEMENT_DETACHED = new OMElementExtractor(false);
+    public static final OMElementExtractor ELEMENT_DETACHED = new OMElementExtractor(true);
     
     OMContainerExtractor() {}
     
