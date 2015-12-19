@@ -21,7 +21,6 @@ package org.apache.axiom.ts.dimension;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -33,6 +32,7 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.Dimension;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,9 +74,7 @@ public abstract class ElementContext extends Multiton implements Dimension {
         }
 
         public InputSource getControl(InputSource xml) throws Exception {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            Document document = dbf.newDocumentBuilder().parse(xml);
+            Document document = DOMImplementation.XERCES.parse(xml);
             Element parent = document.createElementNS(null, "parent");
             parent.appendChild(document.getDocumentElement());
             StringWriter sw = new StringWriter();
@@ -104,9 +102,7 @@ public abstract class ElementContext extends Multiton implements Dimension {
         }
         
         public InputSource getControl(InputSource xml) throws Exception {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            Document document = dbf.newDocumentBuilder().parse(xml);
+            Document document = DOMImplementation.XERCES.parse(xml);
             Element parent = document.createElementNS(null, "parent");
             parent.appendChild(document.getDocumentElement());
             parent.appendChild(document.createElementNS(null, "sibling"));

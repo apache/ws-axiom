@@ -20,7 +20,6 @@ package org.apache.axiom.ts.om.builder;
 
 import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.om.OMElement;
@@ -28,6 +27,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -42,7 +42,7 @@ public class TestDetachWithDOM extends AxiomTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Document document = DOMImplementation.XERCES.newDocument();
         Element root = document.createElementNS("", "root");
         root.appendChild(document.createElementNS("", "a"));
         OMXMLParserWrapper builder;

@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -30,6 +29,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -48,9 +48,7 @@ final class OMElementExtractor extends OMContainerExtractor {
 
     public InputSource getControl(InputStream testFileContent) throws Exception {
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            Document doc = dbf.newDocumentBuilder().parse(testFileContent);
+            Document doc = DOMImplementation.XERCES.parse(testFileContent);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             // Use Xalan's factory directly to avoid issues if Saxon is selected as default
             XSLTImplementation.XALAN.newTransformerFactory().newTransformer().transform(

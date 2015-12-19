@@ -33,6 +33,7 @@ import org.apache.axiom.ts.dimension.ElementContext;
 import org.apache.axiom.ts.dimension.ExpansionStrategy;
 import org.apache.axiom.ts.dimension.NoNamespaceStrategy;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.jaxp.SAXImplementation;
 import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.om.container.OMContainerExtractor;
@@ -97,14 +98,23 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithSystemId(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
-            if (file.hasEntityReferences()) {
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, Boolean.TRUE));
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, Boolean.FALSE));
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, Boolean.TRUE));
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, Boolean.FALSE));
-            } else {
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, null));
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, null));
+            for (DOMImplementation implementation : getInstances(DOMImplementation.class)) {
+                if (file.hasEntityReferences()) {
+                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, Boolean.TRUE));
+                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, Boolean.FALSE));
+                } else {
+                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, null));
+                }
+            }
+            for (SAXImplementation implementation : getInstances(SAXImplementation.class)) {
+                if (!file.hasExternalSubset() || implementation.reportsExternalSubsetEntity()) {
+                    if (file.hasEntityReferences()) {
+                        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, Boolean.TRUE));
+                        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, Boolean.FALSE));
+                    } else {
+                        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, null));
+                    }
+                }
             }
         }
         addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMElement(metaFactory));

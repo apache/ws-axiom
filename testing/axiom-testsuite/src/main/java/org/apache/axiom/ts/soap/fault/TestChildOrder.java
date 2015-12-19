@@ -23,13 +23,12 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.soap.SOAPElementTypeAdapter;
 import org.apache.axiom.ts.soap.SOAPFaultChild;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -80,9 +79,7 @@ public class TestChildOrder extends SOAPTestCase {
         });
         outputOrder.addAll(Arrays.asList(inputOrder));
         // Check the result using the given serialization strategy
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        Document document = dbf.newDocumentBuilder().parse(serializationStrategy.serialize(fault).getInputSource());
+        Document document = DOMImplementation.XERCES.parse(serializationStrategy.serialize(fault).getInputSource());
         Element domFault = document.getDocumentElement();
         Node child = domFault.getFirstChild();
         for (SOAPFaultChild type : outputOrder) {

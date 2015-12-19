@@ -32,16 +32,20 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
+    private final DOMImplementation implementation;
     private final Boolean expandEntityReferences;
     
     public TestCreateOMBuilderFromDOM(OMMetaFactory metaFactory, XMLSample file,
-            Boolean expandEntityReferences) {
+            DOMImplementation implementation, Boolean expandEntityReferences) {
         super(metaFactory, file);
+        this.implementation = implementation;
+        addTestParameter("implementation", implementation.getName());
         this.expandEntityReferences = expandEntityReferences;
         if (expandEntityReferences != null) {
             addTestParameter("expandEntityReferences", expandEntityReferences.booleanValue());
@@ -49,7 +53,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = implementation.newDocumentBuilderFactory();
         factory.setNamespaceAware(true);
         // We never expand entity references during parsing, but we may do this later when
         // converting DOM to OM.
@@ -72,6 +76,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences(expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
+                .treatingElementContentWhitespaceAsText(!implementation.isDOM3())
                 .hasSameContentAs(file.getUrl());
     }
 }

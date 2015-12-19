@@ -20,12 +20,11 @@ package org.apache.axiom.ts.om.builder;
 
 import java.io.StringReader;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,9 +41,7 @@ public class TestCreateOMBuilderFromDOMElement extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        Document document = factory.newDocumentBuilder().parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
+        Document document = DOMImplementation.XERCES.parse(new InputSource(new StringReader("<a><b><c/></b><b2/></a>")));
         Element domB = (Element)document.getElementsByTagNameNS(null, "b").item(0);
         OMElement omB = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), domB, true).getDocumentElement();
         assertEquals("b", omB.getLocalName());

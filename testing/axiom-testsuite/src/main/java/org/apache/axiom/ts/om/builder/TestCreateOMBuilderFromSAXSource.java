@@ -32,15 +32,19 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.jaxp.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
+    private final SAXImplementation implementation;
     private final Boolean expandEntityReferences;
     
     public TestCreateOMBuilderFromSAXSource(OMMetaFactory metaFactory, XMLSample file,
-            Boolean expandEntityReferences) {
+            SAXImplementation implementation, Boolean expandEntityReferences) {
         super(metaFactory, file);
+        this.implementation = implementation;
+        addTestParameter("implementation", implementation.getName());
         this.expandEntityReferences = expandEntityReferences;
         if (expandEntityReferences != null) {
             addTestParameter("expandEntityReferences", expandEntityReferences.booleanValue());
@@ -48,7 +52,7 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParserFactory factory = implementation.newSAXParserFactory();
         factory.setNamespaceAware(true);
         factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
         SAXParser parser = factory.newSAXParser();

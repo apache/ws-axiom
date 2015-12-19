@@ -18,9 +18,16 @@
  */
 package org.apache.axiom.ts.jaxp;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.axiom.testing.multiton.Multiton;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public abstract class DOMImplementation extends Multiton {
     public static final DOMImplementation XERCES = new DOMImplementation("xerces", true, true) {
@@ -60,4 +67,26 @@ public abstract class DOMImplementation extends Multiton {
     }
     
     public abstract DocumentBuilderFactory newDocumentBuilderFactory();
+    
+    public final Document newDocument() {
+        try {
+            return newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        } catch (ParserConfigurationException ex) {
+            throw new Error("Unexpected exception", ex);
+        }
+    }
+    
+    public final Document parse(InputSource is) throws SAXException, IOException {
+        DocumentBuilderFactory factory = newDocumentBuilderFactory();
+        factory.setNamespaceAware(true);
+        try {
+            return factory.newDocumentBuilder().parse(is);
+        } catch (ParserConfigurationException ex) {
+            throw new Error("Unexpected exception", ex);
+        }
+    }
+    
+    public final Document parse(InputStream in) throws SAXException, IOException {
+        return parse(new InputSource(in));
+    }
 }
