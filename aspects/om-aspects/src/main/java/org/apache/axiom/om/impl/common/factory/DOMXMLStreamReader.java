@@ -43,6 +43,8 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
      */
     private final Node root;
     
+    private final boolean dom3;
+    
     private final boolean expandEntityReferences;
     
     /**
@@ -66,7 +68,14 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
 
     DOMXMLStreamReader(Node node, boolean expandEntityReferences) {
         root = node;
-        this.node = node.getNodeType() == Node.DOCUMENT_NODE ? node : null;
+        Document ownerDocument;
+        if (node.getNodeType() == Node.DOCUMENT_NODE) {
+            this.node = node;
+            ownerDocument = (Document)node;
+        } else {
+            ownerDocument = node.getOwnerDocument();
+        }
+        dom3 = ownerDocument.getImplementation().hasFeature("XML", "3.0");
         this.expandEntityReferences = expandEntityReferences;
         event = START_DOCUMENT;
     }
@@ -142,7 +151,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     attributesLoaded = false;
                     break;
                 case Node.TEXT_NODE:
-                    event = ((Text)node).isElementContentWhitespace() ? SPACE : CHARACTERS;
+                    event = dom3 && ((Text)node).isElementContentWhitespace() ? SPACE : CHARACTERS;
                     break;
                 case Node.CDATA_SECTION_NODE:
                     event = CDATA;
@@ -176,26 +185,26 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
 
     public String getEncoding() {
         if (event == START_DOCUMENT) {
-            return node != null ? ((Document)node).getInputEncoding() : null;
+            return dom3 && node != null ? ((Document)node).getInputEncoding() : null;
         } else {
             throw new IllegalStateException();
         }
     }
 
     public String getVersion() {
-        return node != null ? ((Document)node).getXmlVersion() : "1.0";
+        return dom3 && node != null ? ((Document)node).getXmlVersion() : "1.0";
     }
 
     public String getCharacterEncodingScheme() {
         if (event == START_DOCUMENT) {
-            return node != null ? ((Document)node).getXmlEncoding() : null;
+            return dom3 && node != null ? ((Document)node).getXmlEncoding() : null;
         } else {
             throw new IllegalStateException();
         }
     }
 
     public boolean isStandalone() {
-        return node != null ? ((Document)node).getXmlStandalone() : true;
+        return dom3 && node != null ? ((Document)node).getXmlStandalone() : true;
     }
 
     public boolean standaloneSet() {

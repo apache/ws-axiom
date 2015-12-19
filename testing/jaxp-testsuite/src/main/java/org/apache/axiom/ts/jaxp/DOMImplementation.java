@@ -23,14 +23,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.testing.multiton.Multiton;
 
 public abstract class DOMImplementation extends Multiton {
-    public static final DOMImplementation XERCES = new DOMImplementation("xerces") {
+    public static final DOMImplementation XERCES = new DOMImplementation("xerces", true, true) {
         @Override
         public DocumentBuilderFactory newDocumentBuilderFactory() {
             return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
         }
     };
     
-    public static final DOMImplementation CRIMSON = new DOMImplementation("crimson") {
+    public static final DOMImplementation CRIMSON = new DOMImplementation("crimson", false, false) {
         @Override
         public DocumentBuilderFactory newDocumentBuilderFactory() {
             return new org.apache.crimson.jaxp.DocumentBuilderFactoryImpl();
@@ -38,13 +38,25 @@ public abstract class DOMImplementation extends Multiton {
     };
     
     private final String name;
+    private final boolean dom3;
+    private final boolean internalSubset;
 
-    private DOMImplementation(String name) {
+    private DOMImplementation(String name, boolean dom3, boolean internalSubset) {
         this.name = name;
+        this.dom3 = dom3;
+        this.internalSubset = internalSubset;
     }
 
     public final String getName() {
         return name;
+    }
+    
+    public final boolean isDOM3() {
+        return dom3;
+    }
+
+    public final boolean supportsGetInternalSubset() {
+        return internalSubset;
     }
     
     public abstract DocumentBuilderFactory newDocumentBuilderFactory();

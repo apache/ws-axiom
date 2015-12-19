@@ -48,10 +48,12 @@ import javax.xml.stream.XMLStreamReader;
 public class XMLStreamReaderComparator {
     private XMLStreamReader expected;
     private XMLStreamReader actual;
+    private boolean compareInternalSubset = true;
     private boolean compareEntityReplacementValue = true;
     private boolean compareCharacterEncodingScheme = true;
     private boolean compareEncoding = true;
     private boolean sortAttributes = false;
+    private boolean treatSpaceAsCharacters = false;
     private final LinkedList<QName> path = new LinkedList<>();
     
     /**
@@ -206,6 +208,10 @@ public class XMLStreamReaderComparator {
         prefixes.add(prefix);
     }
     
+    public void setCompareInternalSubset(boolean compareInternalSubset) {
+        this.compareInternalSubset = compareInternalSubset;
+    }
+
     /**
      * Specify whether the replacement value for entity references (as reported by
      * {@link XMLStreamReader#getText()}) should be compared. The default value for this option is
@@ -231,10 +237,18 @@ public class XMLStreamReaderComparator {
         this.sortAttributes = sortAttributes;
     }
 
+    public void setTreatSpaceAsCharacters(boolean treatSpaceAsCharacters) {
+        this.treatSpaceAsCharacters = treatSpaceAsCharacters;
+    }
+
     public void compare() throws Exception {
         if (sortAttributes) {
             expected = new AttributeSortingXMLStreamReaderFilter(expected);
             actual = new AttributeSortingXMLStreamReaderFilter(actual);
+        }
+        if (treatSpaceAsCharacters) {
+            expected = new SpaceAsCharactersXMLStreamReaderFilter(expected);
+            actual = new SpaceAsCharactersXMLStreamReaderFilter(actual);
         }
         while (true) {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
@@ -297,7 +311,8 @@ public class XMLStreamReaderComparator {
             assertSameResult("getPIData");
             assertSameResult("getPITarget");
             prefixes.add((String)assertSameResult("getPrefix"));
-            if (eventType != XMLStreamReader.ENTITY_REFERENCE || compareEntityReplacementValue) {
+            if ((eventType != XMLStreamReader.DTD || compareInternalSubset)
+                    && (eventType != XMLStreamReader.ENTITY_REFERENCE || compareEntityReplacementValue)) {
                 assertSameResult("getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : Normalizer.IDENTITY);
             }
             Integer textLength = (Integer)assertSameResult("getTextLength");
