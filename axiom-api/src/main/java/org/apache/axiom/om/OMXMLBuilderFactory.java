@@ -291,7 +291,10 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder that reads a plain XML document from the provided
-     * {@link Source}.
+     * {@link Source}. When used with a {@link DOMSource} or {@link SAXSource}, entities are
+     * expanded, i.e. the method has the same behavior as {@link #createOMBuilder(Node, boolean)}
+     * and {@link #createOMBuilder(SAXSource, boolean)} with {@code expandEntityReferences} set to
+     * {@code true}.
      * 
      * @param source
      *            the source of the XML document
@@ -353,7 +356,11 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder that reads an XML document from the provided {@link Source}
-     * using a specified object model factory.
+     * using a specified object model factory. When used with a {@link DOMSource} or
+     * {@link SAXSource}, entities are expanded, i.e. the method has the same behavior as
+     * {@link #createOMBuilder(OMFactory, Node, boolean)} and
+     * {@link #createOMBuilder(OMFactory, SAXSource, boolean)} with {@code expandEntityReferences}
+     * set to {@code true}.
      * 
      * @param omFactory
      *            the object model factory to use
@@ -361,7 +368,6 @@ public class OMXMLBuilderFactory {
      *            the source of the XML document
      * @return the builder
      */
-    // TODO: update Javadoc to explain relationship with the methods that take a DOMSource or SAXSource
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
         return omFactory.getMetaFactory().createOMBuilder(omFactory, source);
     }
