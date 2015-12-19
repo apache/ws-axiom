@@ -573,6 +573,34 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an object model builder for SOAP that reads a message from the provided {@link Source}.
+     * The method will select the appropriate {@link SOAPFactory} based on the namespace URI of
+     * the SOAP envelope.
+     * 
+     * @param source
+     *            the source of the SOAP message
+     * @return the builder
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(Source source) {
+        return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), source);
+    }
+    
+    /**
+     * Create an object model builder for SOAP that reads a message from the provided {@link Source}
+     * using a particular Axiom implementation. The method will select the appropriate
+     * {@link SOAPFactory} based on the namespace URI of the SOAP envelope.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param source
+     *            the source of the SOAP message
+     * @return the builder
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, Source source) {
+        return metaFactory.createSOAPModelBuilder(source);
+    }
+    
+    /**
      * Create an MTOM aware model builder from the provided {@link Attachments} object. The method
      * will determine the SOAP version based on the content type information from the
      * {@link Attachments} object. It will configure the underlying parser as specified by

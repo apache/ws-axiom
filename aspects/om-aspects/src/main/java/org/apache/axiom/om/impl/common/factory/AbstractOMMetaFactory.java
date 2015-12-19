@@ -232,6 +232,24 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
         return builder;
     }
 
+    public SOAPModelBuilder createSOAPModelBuilder(Source source) {
+        if (source instanceof SAXSource) {
+            // TODO: supporting this will require some refactoring of the builders
+            throw new UnsupportedOperationException();
+        } else if (source instanceof DOMSource) {
+            return new StAXSOAPModelBuilder(this, new DOMXMLStreamReader(((DOMSource)source).getNode(), true), (Detachable)null, (Closeable)null);
+        } else if (source instanceof StreamSource) {
+            return createSOAPModelBuilder(StAXParserConfiguration.SOAP,
+                    toInputSource((StreamSource)source));
+        } else {
+            try {
+                return new StAXSOAPModelBuilder(this, StAXUtils.getXMLInputFactory().createXMLStreamReader(source), (Detachable)null, (Closeable)null);
+            } catch (XMLStreamException ex) {
+                throw new OMException(ex);
+            }
+        }
+    }
+
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);

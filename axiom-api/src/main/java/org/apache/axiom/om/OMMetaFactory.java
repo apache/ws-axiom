@@ -212,6 +212,17 @@ public interface OMMetaFactory {
     SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is);
     
     /**
+     * Create an object model builder for SOAP that reads a message from the provided {@link Source}.
+     * The implementation will select the appropriate {@link SOAPFactory} based on the namespace URI
+     * of the SOAP envelope.
+     * 
+     * @param source
+     *            the source of the SOAP message
+     * @return the builder
+     */
+    SOAPModelBuilder createSOAPModelBuilder(Source source);
+    
+    /**
      * Create an MTOM aware object model builder.
      * 
      * @param configuration
