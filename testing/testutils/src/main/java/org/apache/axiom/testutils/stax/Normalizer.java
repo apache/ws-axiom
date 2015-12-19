@@ -25,22 +25,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.xml.sax.InputSource;
 
-public interface Normalizer {
-    Normalizer IDENTITY = new Normalizer() {
-        public Object normalize(Object value) {
-            return value;
-        }
-    };
-
-    Normalizer LOWER_CASE = new Normalizer() {
-        public Object normalize(Object value) {
-            return value == null ? null : ((String)value).toLowerCase(Locale.ENGLISH);
+public interface Normalizer<T> {
+    Normalizer<String> LOWER_CASE = new Normalizer<String>() {
+        public String normalize(String value) {
+            return value == null ? null : value.toLowerCase(Locale.ENGLISH);
         }
     };
     
-    Normalizer DTD = new Normalizer() {
-        public Object normalize(Object value) throws Exception {
-            String content = (String)value;
+    Normalizer<String> DTD = new Normalizer<String>() {
+        public String normalize(String content) throws Exception {
             if (content == null || content.trim().length() == 0) {
                 return null;
             } else {
@@ -50,11 +43,11 @@ public interface Normalizer {
         }
     };
     
-    Normalizer EMPTY_STRING_TO_NULL = new Normalizer() {
-        public Object normalize(Object value) {
+    Normalizer<String> EMPTY_STRING_TO_NULL = new Normalizer<String>() {
+        public String normalize(String value) {
             return "".equals(value) ? null : value;
         }
     };
 
-    Object normalize(Object value) throws Exception;
+    T normalize(T value) throws Exception;
 }

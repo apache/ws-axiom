@@ -85,23 +85,23 @@ public class XMLStreamReaderComparator {
         return buffer.toString();
     }
     
-    private Object[] invoke(String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
+    private <T> InvocationResults<T> invoke(Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
         Method method = XMLStreamReader.class.getMethod(methodName, paramTypes);
         
-        Object expectedResult;
+        T expectedResult;
         Throwable expectedException;
         try {
-            expectedResult = method.invoke(expected, args);
+            expectedResult = returnType.cast(method.invoke(expected, args));
             expectedException = null;
         } catch (InvocationTargetException ex) {
             expectedResult = null;
             expectedException = ex.getCause();
         }
 
-        Object actualResult;
+        T actualResult;
         Throwable actualException;
         try {
-            actualResult = method.invoke(actual, args);
+            actualResult = returnType.cast(method.invoke(actual, args));
             actualException = null;
         } catch (InvocationTargetException ex) {
             actualResult = null;
@@ -114,7 +114,7 @@ public class XMLStreamReaderComparator {
                 fail("Method " + methodName + " threw unexpected exception " +
                         actualException.getClass().getName() + " (" + getLocation() + ")");
             } else {
-                return new Object[] { expectedResult, actualResult };
+                return new InvocationResults<>(expectedResult, actualResult);
             }
         } else {
             if (actualException == null) {
@@ -129,36 +129,36 @@ public class XMLStreamReaderComparator {
         return null;
     }
     
-    private Object[] invoke(String methodName) throws Exception {
-        return invoke(methodName, new Class[0], new Object[0]);
+    private <T> InvocationResults<T> invoke(Class<T> returnType, String methodName) throws Exception {
+        return invoke(returnType, methodName, new Class[0], new Object[0]);
     }
 
-    private Object assertSameResult(String methodName, Class<?>[] paramTypes, Object[] args,
-            Normalizer normalizer) throws Exception {
+    private <T> T assertSameResult(Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args,
+            Normalizer<T> normalizer) throws Exception {
         
-        Object[] results = invoke(methodName, paramTypes, args);
+        InvocationResults<T> results = invoke(returnType, methodName, paramTypes, args);
         if (results != null) {
-            Object expected = normalizer.normalize(results[0]);
-            Object actual = normalizer.normalize(results[1]);
+            T expected = normalizer == null ? results.getExpected() : normalizer.normalize(results.getExpected());
+            T actual = normalizer == null ? results.getActual() : normalizer.normalize(results.getActual());
             assertEquals("Return value of " + methodName + " for arguments " +
                         Arrays.asList(args) + " (" + getLocation() + ")",
                         expected, actual);
-            return results[0];
+            return results.getExpected();
         } else {
             return null;
         }
     }
     
-    private Object assertSameResult(String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
-        return assertSameResult(methodName, paramTypes, args, Normalizer.IDENTITY);
+    private <T> T assertSameResult(Class<T> returnType, String methodName, Class<?>[] paramTypes, Object[] args) throws Exception {
+        return assertSameResult(returnType, methodName, paramTypes, args, null);
     }
     
-    private Object assertSameResult(String methodName, Normalizer normalizer) throws Exception {
-        return assertSameResult(methodName, new Class[0], new Object[0], normalizer);
+    private <T> T assertSameResult(Class<T> returnType, String methodName, Normalizer<T> normalizer) throws Exception {
+        return assertSameResult(returnType, methodName, new Class[0], new Object[0], normalizer);
     }
 
-    private Object assertSameResult(String methodName) throws Exception {
-        return assertSameResult(methodName, Normalizer.IDENTITY);
+    private <T> T assertSameResult(Class<T> returnType, String methodName) throws Exception {
+        return assertSameResult(returnType, methodName, null);
     }
     
     private Set<String> toPrefixSet(Iterator<?> it) {
@@ -251,41 +251,41 @@ public class XMLStreamReaderComparator {
             actual = new SpaceAsCharactersXMLStreamReaderFilter(actual);
         }
         while (true) {
-            int eventType = ((Integer)assertSameResult("getEventType")).intValue();
+            int eventType = assertSameResult(Integer.class, "getEventType");
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 path.addLast(expected.getName());
             }
             if (compareCharacterEncodingScheme) {
-                assertSameResult("getCharacterEncodingScheme");
+                assertSameResult(String.class, "getCharacterEncodingScheme");
             }
             if (compareEncoding) {
-                assertSameResult("getEncoding", Normalizer.LOWER_CASE);
+                assertSameResult(String.class, "getEncoding", Normalizer.LOWER_CASE);
             }
-            Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
+            Integer attributeCount = assertSameResult(Integer.class, "getAttributeCount");
             // Test the behavior of the getAttributeXxx methods for all types of events,
             // to check that an appropriate exception is thrown for events other than
             // START_ELEMENT
             for (int i=0; i < (attributeCount == null ? 1 : attributeCount.intValue()); i++) {
                 Class<?>[] paramTypes = { Integer.TYPE };
                 Object[] args = { new Integer(i) };
-                assertSameResult("getAttributeLocalName", paramTypes, args);
-                assertSameResult("getAttributeName", paramTypes, args);
-                namespaceURIs.add((String)assertSameResult("getAttributeNamespace", paramTypes, args));
-                prefixes.add((String)assertSameResult("getAttributePrefix", paramTypes, args, Normalizer.EMPTY_STRING_TO_NULL));
-                assertSameResult("getAttributeType", paramTypes, args);
-                assertSameResult("getAttributeValue", paramTypes, args);
-                assertSameResult("isAttributeSpecified", paramTypes, args);
+                assertSameResult(String.class, "getAttributeLocalName", paramTypes, args);
+                assertSameResult(QName.class, "getAttributeName", paramTypes, args);
+                namespaceURIs.add(assertSameResult(String.class, "getAttributeNamespace", paramTypes, args));
+                prefixes.add(assertSameResult(String.class, "getAttributePrefix", paramTypes, args, Normalizer.EMPTY_STRING_TO_NULL));
+                assertSameResult(String.class, "getAttributeType", paramTypes, args);
+                assertSameResult(String.class, "getAttributeValue", paramTypes, args);
+                assertSameResult(Boolean.class, "isAttributeSpecified", paramTypes, args);
             }
             if (attributeCount != null) {
                 for (int i=0; i < attributeCount.intValue(); i++) {
                     QName qname = expected.getAttributeName(i);
-                    assertSameResult("getAttributeValue", new Class[] { String.class, String.class },
+                    assertSameResult(String.class, "getAttributeValue", new Class[] { String.class, String.class },
                             new Object[] { qname.getNamespaceURI(), qname.getLocalPart() });
                 }
             }
-            assertSameResult("getLocalName");
-            assertSameResult("getName");
-            Integer namespaceCount = (Integer)assertSameResult("getNamespaceCount");
+            assertSameResult(String.class, "getLocalName");
+            assertSameResult(QName.class, "getName");
+            Integer namespaceCount = assertSameResult(Integer.class, "getNamespaceCount");
             if (namespaceCount != null) {
                 Map<String,String> expectedNamespaces = new HashMap<>();
                 Map<String,String> actualNamespaces = new HashMap<>();
@@ -307,31 +307,27 @@ public class XMLStreamReaderComparator {
                 }
                 assertEquals(expectedNamespaces, actualNamespaces);
             }
-            namespaceURIs.add((String)assertSameResult("getNamespaceURI"));
-            assertSameResult("getPIData");
-            assertSameResult("getPITarget");
-            prefixes.add((String)assertSameResult("getPrefix"));
+            namespaceURIs.add(assertSameResult(String.class, "getNamespaceURI"));
+            assertSameResult(String.class, "getPIData");
+            assertSameResult(String.class, "getPITarget");
+            prefixes.add(assertSameResult(String.class, "getPrefix"));
             if ((eventType != XMLStreamReader.DTD || compareInternalSubset)
                     && (eventType != XMLStreamReader.ENTITY_REFERENCE || compareEntityReplacementValue)) {
-                assertSameResult("getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : Normalizer.IDENTITY);
+                assertSameResult(String.class, "getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : null);
             }
-            Integer textLength = (Integer)assertSameResult("getTextLength");
-            Object[] textStart = invoke("getTextStart");
-            Object[] textCharacters = invoke("getTextCharacters");
+            Integer textLength = assertSameResult(Integer.class, "getTextLength");
+            InvocationResults<Integer> textStart = invoke(Integer.class, "getTextStart");
+            InvocationResults<char[]> textCharacters = invoke(char[].class, "getTextCharacters");
             if (textLength != null) {
-                assertEquals(new String((char[])textCharacters[0],
-                                        ((Integer)textStart[0]).intValue(),
-                                        textLength.intValue()),
-                             new String((char[])textCharacters[1],
-                                        ((Integer)textStart[1]).intValue(),
-                                        textLength.intValue()));
+                assertEquals(new String(textCharacters.getExpected(), textStart.getExpected(), textLength),
+                             new String(textCharacters.getActual(), textStart.getActual(), textLength));
             }
-            assertSameResult("hasName");
-            assertSameResult("hasText");
-            assertSameResult("isCharacters");
-            assertSameResult("isEndElement");
-            assertSameResult("isStartElement");
-            assertSameResult("isWhiteSpace");
+            assertSameResult(Boolean.class, "hasName");
+            assertSameResult(Boolean.class, "hasText");
+            assertSameResult(Boolean.class, "isCharacters");
+            assertSameResult(Boolean.class, "isEndElement");
+            assertSameResult(Boolean.class, "isStartElement");
+            assertSameResult(Boolean.class, "isWhiteSpace");
             
             // Only check getNamespaceURI(String) for START_ELEMENT and END_ELEMENT. The Javadoc
             // of XMLStreamReader suggests that this method is valid for all states, but Woodstox
@@ -342,7 +338,7 @@ public class XMLStreamReaderComparator {
                     // The StAX specs are not clear about the expected result of getNamespaceURI
                     // when called with prefix "xml" (which doesn't require an explicit declaration)
                     if (prefix != null && !prefix.equals("xml")) {
-                        assertSameResult("getNamespaceURI",
+                        assertSameResult(String.class, "getNamespaceURI",
                                 new Class[] { String.class }, new Object[] { prefix });
                     }
                 }
@@ -354,7 +350,7 @@ public class XMLStreamReaderComparator {
                 path.removeLast();
             }
             
-            assertSameResult("hasNext");
+            assertSameResult(Boolean.class, "hasNext");
             
             int expectedNextEvent;
             try {
