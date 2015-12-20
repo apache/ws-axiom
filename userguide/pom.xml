@@ -71,6 +71,7 @@
                         </goals>
                         <phase>site</phase>
                         <configuration>
+                            <htmlCustomization>${basedir}/../src/docbkx/xsl/html.xsl</htmlCustomization>
                             <chunkedOutput>true</chunkedOutput>
                             <!-- Only split chapters, not sections -->
                             <chunkSectionDepth>0</chunkSectionDepth>
