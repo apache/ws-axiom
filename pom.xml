@@ -788,7 +788,7 @@
                 <plugin>
                     <groupId>com.github.veithen.alta</groupId>
                     <artifactId>alta-maven-plugin</artifactId>
-                    <version>0.4-SNAPSHOT</version>
+                    <version>0.3.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
