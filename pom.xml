@@ -1086,6 +1086,8 @@
                 <configuration>
                     <ignorePathsToDelete>
                         <ignorePathToDelete>.htaccess</ignorePathToDelete>
+                        <!-- Allow people to enable Google Webmaster Tools -->
+                        <ignorePathToDelete>google*.html</ignorePathToDelete>
                     </ignorePathsToDelete>
                 </configuration>
             </plugin>
