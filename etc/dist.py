@@ -34,7 +34,7 @@ if exists(dist_root):
     rmtree(dist_root)
 call(["svn", "checkout", "https://dist.apache.org/repos/dist/dev/ws/axiom/", dist_root])
 mkdir(dist_dir)
-for classifier in [ "bin", "source-release" ]:
+for classifier in [ "bin", "src" ]:
     for suffix in [ "zip", "zip.asc", "zip.md5", "zip.sha1"]:
         file = "axiom-" + release + "-" + classifier + "." + suffix
         copyfile(join(axiom_dir, "distribution", "target", file), join(dist_dir, file))

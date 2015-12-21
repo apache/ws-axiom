@@ -19,7 +19,7 @@
 -->
 
 <assembly>
-    <id>source-release</id>
+    <id>src</id>
     <baseDirectory>axiom-${project.version}</baseDirectory>
     <formats>
         <format>zip</format>
