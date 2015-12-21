@@ -25,18 +25,6 @@
     <includeSiteDirectory>false</includeSiteDirectory>
     <fileSets>
         <fileSet>
-            <directory>..</directory>
-            <includes>
-                <include>NOTICE</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
-            <includes>
-                <include>LICENSE</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>../legal</directory>
             <outputDirectory>lib</outputDirectory>
             <includes>
@@ -45,6 +33,12 @@
         </fileSet>
     </fileSets>
     <files>
+        <file>
+            <source>${project.build.directory}/maven-shared-archive-resources/META-INF/LICENSE</source>
+        </file>
+        <file>
+            <source>../NOTICE</source>
+        </file>
         <file>
             <source>../README.txt</source>
             <filtered>true</filtered>
