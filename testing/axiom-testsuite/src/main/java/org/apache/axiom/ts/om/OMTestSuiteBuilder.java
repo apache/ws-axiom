@@ -99,21 +99,15 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
             for (DOMImplementation implementation : getInstances(DOMImplementation.class)) {
-                if (file.hasEntityReferences()) {
-                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, Boolean.TRUE));
-                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, Boolean.FALSE));
-                } else {
-                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, null));
-                }
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, Boolean.TRUE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, Boolean.FALSE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, implementation, null));
             }
             for (SAXImplementation implementation : getInstances(SAXImplementation.class)) {
                 if (!file.hasExternalSubset() || implementation.reportsExternalSubsetEntity()) {
-                    if (file.hasEntityReferences()) {
-                        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, Boolean.TRUE));
-                        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, Boolean.FALSE));
-                    } else {
-                        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, null));
-                    }
+                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, Boolean.TRUE));
+                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, Boolean.FALSE));
+                    addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, implementation, null));
                 }
             }
         }

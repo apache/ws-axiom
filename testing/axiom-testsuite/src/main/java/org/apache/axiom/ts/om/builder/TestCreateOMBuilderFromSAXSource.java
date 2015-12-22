@@ -24,6 +24,8 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
@@ -32,6 +34,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.jaxp.SAXImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
@@ -69,10 +72,14 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         InputSource actual = new InputSource();
         actual.setByteStream(new ByteArrayInputStream(baos.toByteArray()));
         actual.setSystemId(file.getUrl().toString());
+        DocumentBuilderFactory dbf = DOMImplementation.XERCES.newDocumentBuilderFactory();
+        dbf.setNamespaceAware(true);
+        dbf.setExpandEntityReferences(expandEntityReferences == null || expandEntityReferences);
+        DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
         assertAbout(xml())
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
                 .expandingEntityReferences(expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
-                .hasSameContentAs(file.getUrl());
+                .hasSameContentAs(documentBuilder.parse(file.getUrl().toString()));
     }
 }

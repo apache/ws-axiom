@@ -52,14 +52,18 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         }
     }
 
-    protected void runTest() throws Throwable {
+    private Document loadDocument(boolean expandEntityReferences) throws Exception {
         DocumentBuilderFactory factory = implementation.newDocumentBuilderFactory();
         factory.setNamespaceAware(true);
+        factory.setExpandEntityReferences(expandEntityReferences);
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        return documentBuilder.parse(file.getUrl().toString());
+    }
+    
+    protected void runTest() throws Throwable {
         // We never expand entity references during parsing, but we may do this later when
         // converting DOM to OM.
-        factory.setExpandEntityReferences(false);
-        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file.getUrl().toString());
+        Document document = loadDocument(false);
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
             builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(document));
@@ -75,8 +79,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
         assertAbout(xml())
                 .that(actual)
                 .ignoringWhitespaceInPrologAndEpilog()
-                .expandingEntityReferences(expandEntityReferences == null ? false : expandEntityReferences.booleanValue())
                 .treatingElementContentWhitespaceAsText(!implementation.isDOM3())
-                .hasSameContentAs(file.getUrl());
+                .hasSameContentAs(loadDocument(expandEntityReferences == null || expandEntityReferences));
     }
 }
