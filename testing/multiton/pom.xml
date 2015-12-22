@@ -33,8 +33,4 @@
         Implementation of the multiton pattern used in the test suites.
     </description>
     <url>http://ws.apache.org/axiom/</url>
-
-    <properties>
-        <skipSite>true</skipSite>
-    </properties>
 </project>

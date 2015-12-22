@@ -619,8 +619,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Stage the site as described <link xlink:href="http://ws.apache.org/dev.html#Republishing_the_site_for_a_subproject">here</link>.
-                        Note that the commands must be executed in the <filename>target/checkout</filename> directory.
+                        Change to the <filename>target/checkout</filename> directory and prepare the site using the following commands:
+                    </para>
+<screen>mvn site-deploy
+mvn scm-publish:publish-scm -Dscmpublish.skipCheckin=true</screen>
+                    <para>
+                        The staging area will be checked out to <filename>target/scmpublish-checkout</filename> (relative to
+                        <filename>target/checkout</filename>). Do a sanity check on the changes and then commit them.
                     </para>
                 </step>
                 <step>

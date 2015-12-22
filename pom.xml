@@ -264,7 +264,6 @@
         <springws.version>2.2.4.RELEASE</springws.version>
         
         <skipDeploy>false</skipDeploy>
-        <skipSite>false</skipSite>
     </properties>
 
     <repositories>
@@ -701,6 +700,9 @@
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.10.3</version>
+                    <configuration>
+                        <detectOfflineLinks>false</detectOfflineLinks>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-invoker-plugin</artifactId>
@@ -854,7 +856,7 @@
                                     // Since we don't generate Maven sites for submodules the project URLs computed by Maven
                                     // (parent project URL + artifact ID) are wrong. Make sure that the URL is explicitly set
                                     // to the right location, at least for modules that deploy artifacts.
-                                    if (project.properties['skipDeploy'] == 'false' && project.properties['skipSite'] == 'true' && project.url != 'http://ws.apache.org/axiom/') {
+                                    if (project.properties['skipDeploy'] == 'false' && !new File(project.basedir, 'src/site/site.xml').exists() && project.url != 'http://ws.apache.org/axiom/') {
                                         throw new Error('Invalid project URL')
                                     }
                                     
@@ -901,6 +903,21 @@
                                     import java.text.MessageFormat
                                     project.properties['release_date'] = MessageFormat.format("{0,date,MMMMM dd, yyyy}", new Date())
                                     project.properties['release_version'] = project.version.replaceAll("-SNAPSHOT", "")
+                                    project.properties['skipSiteSite'] = String.valueOf(!new File(project.basedir, 'src/site/site.xml').exists())
+                                </script>
+                            </scripts>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>check-site</id>
+                        <phase>post-site</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <scripts>
+                                <script>
+                                    project.properties['skipSiteStage'] = String.valueOf(!new File(project.reporting.outputDirectory).exists())
                                 </script>
                             </scripts>
                         </configuration>
@@ -1047,9 +1064,28 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <!-- DOXIA-492 -->
                 <version>3.4.1-SNAPSHOT</version>
-                <configuration>
-                    <skip>${skipSite}</skip>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-site</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipSiteSite}</skip>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>site-stage</id>
+                        <phase>site-deploy</phase>
+                        <goals>
+                            <goal>stage</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skipSiteStage}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.doxia</groupId>

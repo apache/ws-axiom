@@ -38,7 +38,6 @@
              individual artifacts. To avoid a dependency hell, we must not allow this.
              All Maven projects should depend on individual artifacts, not the uber-JAR. -->
         <skipDeploy>true</skipDeploy>
-        <skipSite>true</skipSite>
     </properties>
 
     <dependencies>

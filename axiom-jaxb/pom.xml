@@ -33,10 +33,6 @@
     <description>Provides an OMDataSource implementation for JAXB 2.x.</description>
     <url>http://ws.apache.org/axiom/</url>
 
-    <properties>
-        <skipSite>true</skipSite>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

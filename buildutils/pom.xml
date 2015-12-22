@@ -39,10 +39,6 @@
         <module>javadoc-postprocessor-plugin</module>
     </modules>
 
-    <properties>
-        <skipSite>true</skipSite>
-    </properties>
-
     <build>
         <plugins>
             <!-- The build requires Java 1.6; therefore we can use that version for the build utils as well -->

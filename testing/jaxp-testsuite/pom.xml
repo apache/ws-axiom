@@ -28,6 +28,8 @@
 
     <artifactId>jaxp-testsuite</artifactId>
 
+    <url>http://ws.apache.org/axiom/</url>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
