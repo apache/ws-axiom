@@ -42,13 +42,11 @@ public class XMLSubjectTest {
     
     @Test
     public void testIgnoringNamespaceDeclarationsAndPrefixes() {
-        // START SNIPPET: sample
         assertAbout(xml())
                 .that("<p:a xmlns:p='urn:ns'/>")
                 .ignoringNamespacePrefixes()
                 .ignoringNamespaceDeclarations()
                 .hasSameContentAs("<a xmlns='urn:ns'/>");
-        // END SNIPPET: sample
     }
     
     @Test
