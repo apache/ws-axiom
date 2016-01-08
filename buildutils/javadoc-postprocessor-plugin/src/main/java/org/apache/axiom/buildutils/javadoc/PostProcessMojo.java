@@ -85,7 +85,9 @@ public class PostProcessMojo extends AbstractMojo {
         StringWriter sw = new StringWriter();
         XMLWriter xmlWriter = new PrettyPrintXMLWriter(sw, null, null);
         for (Xpp3Dom element : ((Xpp3Dom)decorationModel.getBody().getHead()).getChildren()) {
-            Xpp3DomWriter.write(xmlWriter, element);
+            // Turn off escaping in scripts. Note that this mimics the behavior in the default-site.vm
+            // template in doxia-site-renderer.
+            Xpp3DomWriter.write(xmlWriter, element, !element.getName().equals("script"));
         }
         String headElements = sw.toString();
         DirectoryScanner ds = new DirectoryScanner();
