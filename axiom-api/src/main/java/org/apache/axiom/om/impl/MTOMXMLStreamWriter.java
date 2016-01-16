@@ -216,12 +216,11 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void close() throws XMLStreamException {
-        // TODO: we should probably call flush if the attachments have not been written yet
         log.debug("close");
         // Only call flush because data may have been written to the underlying output stream
         // without ever calling writeStartElement. In this case, close would trigger an
         // exception.
-        xmlWriter.flush();
+        flush();
     }
 
     /**

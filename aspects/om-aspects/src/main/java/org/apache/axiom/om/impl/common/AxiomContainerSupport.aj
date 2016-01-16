@@ -291,8 +291,6 @@ public aspect AxiomContainerSupport {
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
         } finally {
             writer.close();
         }
@@ -308,8 +306,6 @@ public aspect AxiomContainerSupport {
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
         } finally {
             writer.close();
         }
@@ -324,8 +320,6 @@ public aspect AxiomContainerSupport {
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
         } finally {
             writer.close();
         }
@@ -342,8 +336,6 @@ public aspect AxiomContainerSupport {
             } catch (OutputException ex) {
                 throw (XMLStreamException)ex.getCause();
             }
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
         } finally {
             writer.close();
         }
