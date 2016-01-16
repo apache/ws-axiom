@@ -31,7 +31,8 @@ public final class OMDataSourceUtil {
     }
 
     public static boolean isPushDataSource(OMDataSource dataSource) {
-        return dataSource instanceof AbstractPushOMDataSource;
+        return dataSource instanceof AbstractPushOMDataSource
+                || dataSource.getClass().getName().equals("org.apache.axis2.jaxws.message.databinding.impl.JAXBBlockImpl");
     }
 
     public static boolean isDestructiveWrite(OMDataSource dataSource) {
