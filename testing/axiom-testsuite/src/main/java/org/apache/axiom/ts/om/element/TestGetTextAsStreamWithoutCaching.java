@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.om.element;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.SequenceInputStream;
@@ -43,7 +44,7 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(654321, 64, 128, 20000000);
-        Vector/*<InputStream>*/ v = new Vector/*<InputStream>*/();
+        Vector<InputStream> v = new Vector<InputStream>();
         v.add(new ByteArrayInputStream("<a>".getBytes("ascii")));
         v.add(ds.getInputStream());
         v.add(new ByteArrayInputStream("</a>".getBytes("ascii")));
@@ -51,6 +52,6 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
                 StAXParserConfiguration.NON_COALESCING,
                 new SequenceInputStream(v.elements()), "ascii").getDocumentElement();
         Reader in = element.getTextAsStream(false);
-        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), "ascii"), in);
+        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), "ascii"), "expected", in, "actual");
     }
 }
