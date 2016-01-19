@@ -172,6 +172,9 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     public int next() throws OMException {
+        if (!cache) {
+            throw new IllegalStateException("Can't process next node because caching is disabled");
+        }
         // We need a loop here because we may decide to skip an event
         while (true) {
             if (done) {

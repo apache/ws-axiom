@@ -18,11 +18,14 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.SequenceInputStream;
+import java.nio.charset.Charset;
 import java.util.Vector;
 
 import javax.activation.DataSource;
@@ -42,16 +45,22 @@ public class TestGetTextAsStreamWithoutCaching extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
+        Charset charset = Charset.forName("ascii");
         OMFactory factory = metaFactory.getOMFactory();
         DataSource ds = new RandomDataSource(654321, 64, 128, 20000000);
         Vector<InputStream> v = new Vector<InputStream>();
-        v.add(new ByteArrayInputStream("<a>".getBytes("ascii")));
+        v.add(new ByteArrayInputStream("<root><a>".getBytes(charset)));
         v.add(ds.getInputStream());
-        v.add(new ByteArrayInputStream("</a>".getBytes("ascii")));
-        OMElement element = OMXMLBuilderFactory.createOMBuilder(factory,
+        v.add(new ByteArrayInputStream("</a><b/></root>".getBytes(charset)));
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(factory,
                 StAXParserConfiguration.NON_COALESCING,
                 new SequenceInputStream(v.elements()), "ascii").getDocumentElement();
-        Reader in = element.getTextAsStream(false);
-        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), "ascii"), "expected", in, "actual");
+        OMElement child = (OMElement)root.getFirstOMChild();
+        Reader in = child.getTextAsStream(false);
+        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), charset), "expected", in, "actual");
+        in.close();
+        // No try to access subsequent nodes
+        child = (OMElement)child.getNextOMSibling();
+        assertThat(child.getLocalName()).isEqualTo("b");
     }
 }

@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
+import java.io.FilterReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -56,6 +57,7 @@ import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
+import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -161,11 +163,25 @@ public aspect AxiomElementSupport {
         }
         // In all other cases, extract the data from the XMLStreamReader
         try {
-            XMLStreamReader reader = getXMLStreamReader(cache);
+            final XMLStreamReader reader = getXMLStreamReader(cache);
             if (reader.getEventType() == XMLStreamReader.START_DOCUMENT) {
                 reader.next();
             }
-            return XMLStreamReaderUtils.getElementTextAsStream(reader, true);
+            Reader stream = XMLStreamReaderUtils.getElementTextAsStream(reader, true);
+            if (!cache) {
+                // If caching is disabled, we need to close the XMLStreamReader to reenable it
+                stream = new FilterReader(stream) {
+                    @Override
+                    public void close() throws IOException {
+                        try {
+                            reader.close();
+                        } catch (XMLStreamException ex) {
+                            throw new XMLStreamIOException(ex);
+                        }
+                    }
+                };
+            }
+            return stream;
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }

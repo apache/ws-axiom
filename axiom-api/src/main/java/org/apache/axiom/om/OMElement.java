@@ -453,6 +453,9 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * in Axiom and it may be necessary to configure the parser with
      * {@link StAXParserConfiguration#NON_COALESCING}.
      * </ol>
+     * <p>
+     * When this method is used with {@code cache} set to {@code false} the caller must close the
+     * returned stream before attempting to access other nodes in the tree.
      * 
      * @param cache
      *            whether to enable caching when accessing the element
