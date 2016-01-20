@@ -80,7 +80,7 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
      */
     protected abstract String doGetPrefix(String namespaceURI);
 
-    public final Iterator getPrefixes(String namespaceURI) {
+    public final Iterator<String> getPrefixes(String namespaceURI) {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI can't be null");
         } else if (namespaceURI.equals(XMLConstants.XML_NS_URI)) {
@@ -103,5 +103,5 @@ public abstract class AbstractNamespaceContext implements NamespaceContext {
      * @return iterator for all prefixes bound to the namespace URI in the
      *         current scope
      */
-    protected abstract Iterator doGetPrefixes(String namespaceURI);
+    protected abstract Iterator<String> doGetPrefixes(String namespaceURI);
 }

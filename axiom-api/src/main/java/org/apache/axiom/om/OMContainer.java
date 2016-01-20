@@ -70,7 +70,7 @@ public interface OMContainer extends OMSerializable {
      * @return Returns an iterator of {@link OMElement} items that match the given QName
      */
     // TODO: specify whether a null elementQName is allowed; LLOM and DOOM seem to have different behavior
-    Iterator getChildrenWithName(QName elementQName);
+    Iterator<OMElement> getChildrenWithName(QName elementQName);
     
     /**
      * Returns an iterator for child nodes matching the local name.
@@ -78,7 +78,7 @@ public interface OMContainer extends OMSerializable {
      * @param localName 
      * @return Returns an iterator of {@link OMElement} items that match the given localName
      */
-    Iterator getChildrenWithLocalName(String localName);
+    Iterator<OMElement> getChildrenWithLocalName(String localName);
     
     /**
      * Returns an iterator for child nodes matching the namespace uri.
@@ -86,7 +86,7 @@ public interface OMContainer extends OMSerializable {
      * @param uri 
      * @return Returns an iterator of {@link OMElement} items that match the given uri
      */
-    Iterator getChildrenWithNamespaceURI(String uri);
+    Iterator<OMElement> getChildrenWithNamespaceURI(String uri);
     
 
     /**
@@ -110,7 +110,7 @@ public interface OMContainer extends OMSerializable {
      * @see #getFirstChildWithName
      * @see #getChildrenWithName
      */
-    Iterator getChildren();
+    Iterator<OMNode> getChildren();
     
     /**
      * Get an iterator over all descendants of the container. The items are returned in document
@@ -122,7 +122,7 @@ public interface OMContainer extends OMSerializable {
      *            child of the container
      * @return an iterator over the descendants of this container
      */
-    Iterator getDescendants(boolean includeSelf);
+    Iterator<OMSerializable> getDescendants(boolean includeSelf);
 
     /**
      * Gets the first child.

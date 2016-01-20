@@ -190,19 +190,19 @@ public aspect AxiomContainerSupport {
         coreRemoveChildren(AxiomSemantics.INSTANCE);
     }
     
-    public Iterator AxiomContainer.getChildren() {
+    public Iterator<OMNode> AxiomContainer.getChildren() {
         return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomExceptionTranslator.INSTANCE, AxiomSemantics.INSTANCE);
     }
 
-    public Iterator AxiomContainer.getChildrenWithLocalName(String localName) {
+    public Iterator<OMElement> AxiomContainer.getChildrenWithLocalName(String localName) {
         return new OMChildrenLocalNameIterator(getFirstOMChild(), localName);
     }
 
-    public Iterator AxiomContainer.getChildrenWithNamespaceURI(String uri) {
+    public Iterator<OMElement> AxiomContainer.getChildrenWithNamespaceURI(String uri) {
         return new OMChildrenNamespaceIterator(getFirstOMChild(), uri);
     }
 
-    public Iterator AxiomContainer.getChildrenWithName(QName elementQName) {
+    public Iterator<OMElement> AxiomContainer.getChildrenWithName(QName elementQName) {
         OMNode firstChild = getFirstOMChild();
         Iterator it =  new OMChildrenQNameIterator(firstChild, elementQName);
         
@@ -228,7 +228,7 @@ public aspect AxiomContainerSupport {
         return it;
     }
     
-    public Iterator AxiomContainer.getDescendants(boolean includeSelf) {
+    public Iterator<OMSerializable> AxiomContainer.getDescendants(boolean includeSelf) {
         return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomExceptionTranslator.INSTANCE, AxiomSemantics.INSTANCE);
     }
 

@@ -31,7 +31,7 @@ import javax.xml.XMLConstants;
  * Namespace context implementation that stores namespace bindings in a {@link Map}.
  */
 public class MapBasedNamespaceContext extends AbstractNamespaceContext {
-    private final Map namespaces;
+    private final Map<String,String> namespaces;
 
     /**
      * Constructor.
@@ -39,7 +39,7 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
      * @param map
      *            a map containing the (prefix, namespace URI) entries
      */
-    public MapBasedNamespaceContext(Map map) {
+    public MapBasedNamespaceContext(Map<String,String> map) {
         namespaces = map;
     }
 
@@ -49,12 +49,10 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
     }
 
     protected String doGetPrefix(String nsURI) {
-        Iterator iter = namespaces.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            String uri = (String) entry.getValue();
+        for (Map.Entry<String,String> entry : namespaces.entrySet()) {
+            String uri = entry.getValue();
             if (uri.equals(nsURI)) {
-                return (String) entry.getKey();
+                return entry.getKey();
             }
         }
         if (nsURI.length() == 0) {
@@ -63,15 +61,13 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
         return null;
     }
 
-    protected Iterator doGetPrefixes(String nsURI) {
-        Set prefixes = null;
-        Iterator iter = namespaces.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
+    protected Iterator<String> doGetPrefixes(String nsURI) {
+        Set<String> prefixes = null;
+        for (Map.Entry<String,String> entry : namespaces.entrySet()) {
             String uri = (String) entry.getValue();
             if (uri.equals(nsURI)) {
                 if (prefixes == null) {
-                    prefixes = new HashSet();
+                    prefixes = new HashSet<String>();
                 }
                 prefixes.add(entry.getKey());
             }
@@ -81,7 +77,7 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
         } else if (nsURI.length() == 0) {
             return Collections.singleton("").iterator();
         } else {
-            return Collections.EMPTY_LIST.iterator();
+            return Collections.<String>emptyList().iterator();
         }
     }
 }

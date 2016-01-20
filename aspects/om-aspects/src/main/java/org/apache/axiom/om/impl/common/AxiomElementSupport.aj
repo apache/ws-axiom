@@ -38,7 +38,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
-import org.apache.axiom.core.IdentityMapper;
+import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -106,19 +106,19 @@ public aspect AxiomElementSupport {
         return null;
     }
 
-    public final Iterator AxiomElement.getChildElements() {
+    public final Iterator<OMElement> AxiomElement.getChildElements() {
         return new OMChildElementIterator(getFirstElement());
     }
 
-    public final Iterator AxiomElement.getNamespacesInScope() {
+    public final Iterator<OMNamespace> AxiomElement.getNamespacesInScope() {
         return new NamespaceIterator(this);
     }
 
     public NamespaceContext AxiomElement.getNamespaceContext(boolean detached) {
         if (detached) {
-            Map namespaces = new HashMap();
-            for (Iterator it = getNamespacesInScope(); it.hasNext(); ) {
-                OMNamespace ns = (OMNamespace)it.next();
+            Map<String,String> namespaces = new HashMap<String,String>();
+            for (Iterator<OMNamespace> it = getNamespacesInScope(); it.hasNext(); ) {
+                OMNamespace ns = it.next();
                 namespaces.put(ns.getPrefix(), ns.getNamespaceURI());
             }
             return new MapBasedNamespaceContext(namespaces);
@@ -328,11 +328,14 @@ public aspect AxiomElementSupport {
         return addAttribute(getOMFactory().createOMAttribute(localName, namespace, value));
     }
 
-    private static final IdentityMapper<AxiomAttribute> attributeIdentityMapper = new IdentityMapper<AxiomAttribute>();
+    private static final Mapper<AxiomAttribute,OMAttribute> attributeMapper = new Mapper<AxiomAttribute,OMAttribute>() {
+        public OMAttribute map(AxiomAttribute object) {
+            return object;
+        }
+    };
     
-    @SuppressWarnings("rawtypes")
-    public final Iterator AxiomElement.getAllAttributes() {
-        return coreGetAttributesByType(AxiomAttribute.class, attributeIdentityMapper, AxiomSemantics.INSTANCE);
+    public final Iterator<OMAttribute> AxiomElement.getAllAttributes() {
+        return coreGetAttributesByType(AxiomAttribute.class, attributeMapper, AxiomSemantics.INSTANCE);
     }
     
     public final OMAttribute AxiomElement.getAttribute(QName qname) {
@@ -376,8 +379,7 @@ public aspect AxiomElementSupport {
         coreSetAttribute(AxiomSemantics.NAMESPACE_DECLARATION_MATCHER, decl, AxiomSemantics.INSTANCE);
     }
     
-    @SuppressWarnings("rawtypes")
-    public final Iterator AxiomElement.getAllDeclaredNamespaces() {
+    public final Iterator<OMNamespace> AxiomElement.getAllDeclaredNamespaces() {
         return coreGetAttributesByType(AxiomNamespaceDeclaration.class, NamespaceDeclarationMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 

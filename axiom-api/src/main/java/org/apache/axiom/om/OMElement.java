@@ -90,7 +90,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * @see #getChildren()
      * @see #getChildrenWithName(javax.xml.namespace.QName)
      */
-    Iterator getChildElements();
+    Iterator<OMElement> getChildElements();
     
     /**
      * Add a namespace declaration for the given namespace URI to this element, optionally
@@ -241,7 +241,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      *         {@link #declareDefaultNamespace(String)} or any other method that modifies the
      *         namespace declarations of this element.
      */
-    Iterator getAllDeclaredNamespaces();
+    Iterator<OMNamespace> getAllDeclaredNamespaces();
 
     /**
      * Get an iterator that returns all namespaces in scope for this element. This method may be
@@ -260,7 +260,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * 
      * @return an iterator over all namespaces in scope for this element
      */
-    Iterator getNamespacesInScope();
+    Iterator<OMNamespace> getNamespacesInScope();
     
     /**
      * Get the namespace context of this element, as determined by the namespace declarations
@@ -301,7 +301,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * @see #addAttribute(OMAttribute)
      * @see #addAttribute(String, String, OMNamespace)
      */
-    Iterator getAllAttributes();
+    Iterator<OMAttribute> getAllAttributes();
 
     /**
      * Returns a named attribute if present.

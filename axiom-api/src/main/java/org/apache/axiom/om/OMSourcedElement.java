@@ -81,5 +81,5 @@ public interface OMSourcedElement extends OMElement {
      * @return the backing Java object or <code>null</code> if the conditions specified above are
      *         not satisfied
      */
-    Object getObject(Class dataSourceClass);
+    Object getObject(Class<? extends OMDataSourceExt> dataSourceClass);
 } 

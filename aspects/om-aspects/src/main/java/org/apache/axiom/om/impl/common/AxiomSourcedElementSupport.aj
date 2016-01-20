@@ -490,7 +490,7 @@ public aspect AxiomSourcedElementSupport {
         }
     }
     
-    public Object AxiomSourcedElement.getObject(Class dataSourceClass) {
+    public Object AxiomSourcedElement.getObject(Class<? extends OMDataSourceExt> dataSourceClass) {
         if (dataSource == null || isExpanded || !dataSourceClass.isInstance(dataSource)) {
             return null;
         } else {
