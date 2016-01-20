@@ -124,9 +124,9 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
             Attachments attachments = new Attachments(pipe2In, contentType);
             SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
             OMElement bodyElement = envelope.getBody().getFirstElement();
-            Iterator it = bodyElement.getChildElements();
-            OMElement data1 = (OMElement)it.next();
-            OMElement data2 = (OMElement)it.next();
+            Iterator<OMElement> it = bodyElement.getChildElements();
+            OMElement data1 = it.next();
+            OMElement data2 = it.next();
             
             IOTestUtils.compareStreams(ds1.getInputStream(),
                     ((DataHandlerExt)((OMText)data1.getFirstOMChild()).getDataHandler()).readOnce());

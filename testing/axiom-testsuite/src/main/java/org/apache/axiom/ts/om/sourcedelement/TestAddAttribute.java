@@ -57,7 +57,7 @@ public class TestAddAttribute extends AxiomTestCase {
         OMAttribute attr2 = element.getAttribute(new QName("attr"));
         ASSERT.that(attr2).isSameAs(attr);
         ASSERT.that(attr2.getAttributeValue()).isEqualTo("newvalue");
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         ASSERT.that(it.hasNext()).isTrue();
         ASSERT.that(it.next()).isSameAs(attr);
         ASSERT.that(it.hasNext()).isFalse();

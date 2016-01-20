@@ -44,7 +44,7 @@ public class TestAddAttributeAlreadyOwnedByElement extends AxiomTestCase {
         OMAttribute result = element.addAttribute(att);
         assertSame(result, att);
         assertSame(element, att.getOwner());
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         assertTrue(it.hasNext());
         assertSame(att, it.next());
         assertFalse(it.hasNext());

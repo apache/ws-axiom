@@ -48,7 +48,7 @@ public class TestAddAttributeWithExistingNamespaceDeclarationOnSameElement exten
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         element.declareNamespace(ns);
         strategy.addAttribute(element, "test", ns, "test");
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());

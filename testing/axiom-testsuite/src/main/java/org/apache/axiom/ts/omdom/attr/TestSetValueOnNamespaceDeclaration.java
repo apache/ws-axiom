@@ -49,9 +49,9 @@ public class TestSetValueOnNamespaceDeclaration extends AxiomTestCase {
         Attr attr = doc.createAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:attr");
         element.setAttributeNodeNS(attr);
         attr.setValue("urn:test");
-        Iterator it = ((OMElement)element).getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = ((OMElement)element).getAllDeclaredNamespaces();
         ASSERT.that(it.hasNext()).isTrue();
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = it.next();
         ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:test");
         ASSERT.that(it.hasNext()).isFalse();
     }

@@ -45,7 +45,7 @@ public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestC
         assertEquals("urn:test", ns.getNamespaceURI());
         // Axiom auto-generates a prefix here
         assertTrue(ns.getPrefix().length() != 0);
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());

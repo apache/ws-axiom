@@ -37,12 +37,12 @@ public class TestGetAllAttributes1 extends AxiomTestCase {
         OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
         element.addAttribute("attr1", "value1", null);
         element.addAttribute("attr2", "value2", null);
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         assertTrue(it.hasNext());
-        OMAttribute attr = (OMAttribute)it.next();
+        OMAttribute attr = it.next();
         assertEquals("attr1", attr.getLocalName());
         assertTrue(it.hasNext());
-        attr = (OMAttribute)it.next();
+        attr = it.next();
         assertEquals("attr2", attr.getLocalName());
         assertFalse(it.hasNext());
     }

@@ -59,8 +59,8 @@ public class TestCloneOMElementNamespaceRepairing extends AxiomTestCase {
         expectedNSDecls.add(ns1);
         expectedNSDecls.add(ns2);
         Set<OMNamespace> actualNSDecls = new HashSet<>();
-        for (Iterator it = clone.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            actualNSDecls.add((OMNamespace)it.next());
+        for (Iterator<OMNamespace> it = clone.getAllDeclaredNamespaces(); it.hasNext(); ) {
+            actualNSDecls.add(it.next());
         }
         assertEquals(expectedNSDecls, actualNSDecls);
     }

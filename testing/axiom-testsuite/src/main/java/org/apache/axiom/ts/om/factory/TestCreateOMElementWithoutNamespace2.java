@@ -46,9 +46,9 @@ public class TestCreateOMElementWithoutNamespace2 extends CreateOMElementTestCas
         OMElement child = variant.createOMElement(factory, parent, "test", "", "");
         assertEquals("test", child.getLocalName());
         assertNull(child.getNamespace());
-        Iterator it = child.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = child.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace decl = (OMNamespace)it.next();
+        OMNamespace decl = it.next();
         assertEquals("", decl.getPrefix());
         assertEquals("", decl.getNamespaceURI());
         assertFalse(it.hasNext());

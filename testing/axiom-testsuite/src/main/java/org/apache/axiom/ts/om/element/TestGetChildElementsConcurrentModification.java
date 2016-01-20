@@ -43,9 +43,9 @@ public class TestGetChildElementsConcurrentModification extends AxiomTestCase {
         factory.createOMElement("child1", null, parent);
         factory.createOMElement("child2", null, parent);
         factory.createOMElement("child3", null, parent);
-        Iterator it = parent.getChildElements();
+        Iterator<OMElement> it = parent.getChildElements();
         it.next();
-        OMElement child2 = (OMElement)it.next();
+        OMElement child2 = it.next();
         child2.detach();
         try {
             it.next();

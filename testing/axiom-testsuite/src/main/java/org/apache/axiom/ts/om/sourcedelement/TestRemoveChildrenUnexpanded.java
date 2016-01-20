@@ -44,9 +44,9 @@ public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
                 "<element attr='value'><a/></element>".getBytes("utf-8"), "utf-8"));
         element.removeChildren();
         // Check that the attribute has been added
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         assertTrue(it.hasNext());
-        OMAttribute attr = (OMAttribute)it.next();
+        OMAttribute attr = it.next();
         assertEquals("attr", attr.getLocalName());
         assertEquals("value", attr.getAttributeValue());
         assertFalse(it.hasNext());

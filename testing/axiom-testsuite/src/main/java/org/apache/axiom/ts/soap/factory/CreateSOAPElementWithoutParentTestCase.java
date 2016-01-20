@@ -57,10 +57,10 @@ public abstract class CreateSOAPElementWithoutParentTestCase extends SOAPTestCas
             assertEquals(expectedName, actualName);
             assertEquals(expectedPrefix, actualName.getPrefix());
             assertNull(element.getParent());
-            Iterator it = element.getAllDeclaredNamespaces();
+            Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
             if (expectedPrefix.length() != 0) {
                 assertTrue(it.hasNext());
-                OMNamespace ns = (OMNamespace)it.next();
+                OMNamespace ns = it.next();
                 assertEquals(expectedName.getNamespaceURI(), ns.getNamespaceURI());
                 assertEquals(expectedPrefix, ns.getPrefix());
             }

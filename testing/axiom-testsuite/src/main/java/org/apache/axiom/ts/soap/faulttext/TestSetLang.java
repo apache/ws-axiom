@@ -36,8 +36,7 @@ public class TestSetLang extends SOAPTestCase {
         assertEquals(
                 "SOAP Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
                 "en", faultText.getLang());
-        OMAttribute langAttribute = (OMAttribute) faultText.getAllAttributes()
-                .next();
+        OMAttribute langAttribute = faultText.getAllAttributes().next();
         assertEquals(
                 "SOAP Fault Text Test : - After calling setLang method, Lang attribute local name mismaatch",
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME, langAttribute.getLocalName());

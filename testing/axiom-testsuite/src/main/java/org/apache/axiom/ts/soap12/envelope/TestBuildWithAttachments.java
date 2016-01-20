@@ -45,9 +45,9 @@ public class TestBuildWithAttachments extends AxiomTestCase {
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
         envelope.buildWithAttachments();
         in.close();
-        Iterator it = envelope.getBody().getFirstElement().getChildElements();
-        OMElement image1 = (OMElement)it.next();
-        OMElement image2 = (OMElement)it.next();
+        Iterator<OMElement> it = envelope.getBody().getFirstElement().getChildElements();
+        OMElement image1 = it.next();
+        OMElement image2 = it.next();
         
         IOTestUtils.compareStreams(((DataHandler)((OMText)image1.getFirstOMChild()).getDataHandler()).getInputStream(),
                 sample.getPart(1));

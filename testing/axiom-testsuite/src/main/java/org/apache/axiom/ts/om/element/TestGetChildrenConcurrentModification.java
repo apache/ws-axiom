@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -43,7 +44,7 @@ public class TestGetChildrenConcurrentModification extends AxiomTestCase {
         factory.createOMElement("child1", null, parent);
         factory.createOMElement("child2", null, parent);
         factory.createOMElement("child3", null, parent);
-        Iterator it = parent.getChildren();
+        Iterator<OMNode> it = parent.getChildren();
         it.next();
         OMElement child2 = (OMElement)it.next();
         child2.detach();

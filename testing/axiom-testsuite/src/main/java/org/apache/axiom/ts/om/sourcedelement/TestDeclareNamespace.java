@@ -54,7 +54,7 @@ public class TestDeclareNamespace extends AxiomTestCase {
         ASSERT.that(ns).isNotNull();
         ASSERT.that(ns.getPrefix()).isEqualTo("p");
         ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:ns2");
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         ASSERT.that(it.hasNext()).isTrue();
         ASSERT.that(it.next()).isSameAs(ns);
         ASSERT.that(it.hasNext()).isFalse();

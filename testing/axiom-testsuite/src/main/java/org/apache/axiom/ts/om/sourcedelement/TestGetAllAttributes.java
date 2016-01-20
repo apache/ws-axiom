@@ -44,9 +44,9 @@ public class TestGetAllAttributes extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(
                 new PullOMDataSource("<root attr='value'/>"), "root", null);
-        Iterator attributes = element.getAllAttributes();
+        Iterator<OMAttribute> attributes = element.getAllAttributes();
         ASSERT.that(attributes.hasNext()).isTrue();
-        OMAttribute attr = (OMAttribute)attributes.next();
+        OMAttribute attr = attributes.next();
         ASSERT.that(attr.getLocalName()).isEqualTo("attr");
         ASSERT.that(attributes.hasNext()).isFalse();
     }

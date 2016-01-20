@@ -49,7 +49,7 @@ public class TestAddAttributeWithExistingNamespaceDeclarationInScope extends Axi
         root.declareNamespace(ns);
         OMElement child = factory.createOMElement(new QName("test"), root);
         strategy.addAttribute(child, "test", ns, "test");
-        Iterator it = child.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = child.getAllDeclaredNamespaces();
         assertFalse(it.hasNext());
     }
 }

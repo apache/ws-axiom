@@ -33,9 +33,9 @@ public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = it.next();
         assertEquals("p", ns.getPrefix());
         assertEquals("urn:test", ns.getNamespaceURI());
         assertFalse(it.hasNext());

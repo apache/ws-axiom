@@ -43,7 +43,7 @@ public class TestCreateSOAPEnvelopeWithCustomPrefix extends SOAPTestCase {
         assertEquals(prefix, env.getNamespace().getPrefix());
         assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespace().getNamespaceURI());
         assertEquals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, env.getLocalName());
-        Iterator it = env.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = env.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());

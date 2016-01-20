@@ -48,7 +48,7 @@ public class TestAddAttributeWithoutExistingNamespaceDeclaration extends AxiomTe
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         strategy.addAttribute(element, "test", ns, "test");
         assertEquals(ns, element.findNamespace(ns.getNamespaceURI(), ns.getPrefix()));
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());

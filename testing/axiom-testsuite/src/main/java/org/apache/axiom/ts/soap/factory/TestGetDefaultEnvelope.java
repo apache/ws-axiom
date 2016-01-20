@@ -47,12 +47,12 @@ public class TestGetDefaultEnvelope extends SOAPTestCase {
         assertNull(env.getParent());
         
         // Check the children
-        Iterator it = env.getChildren();
+        Iterator<OMNode> it = env.getChildren();
         assertTrue(it.hasNext());
-        OMNode child = (OMNode)it.next();
+        OMNode child = it.next();
         assertTrue(child instanceof SOAPHeader);
         assertNull(((SOAPHeader)child).getFirstOMChild());
-        child = (OMNode)it.next();
+        child = it.next();
         assertTrue(child instanceof SOAPBody);
         assertNull(((SOAPBody)child).getFirstOMChild());
         assertFalse(it.hasNext());

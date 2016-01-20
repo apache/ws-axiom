@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -44,7 +45,7 @@ public class TestSetOMDocumentElementNew extends AxiomTestCase {
         document.setOMDocumentElement(documentElement);
         assertSame(documentElement, document.getOMDocumentElement());
         assertSame(document, documentElement.getParent());
-        Iterator it = document.getChildren();
+        Iterator<OMNode> it = document.getChildren();
         assertTrue(it.hasNext());
         assertSame(comment, it.next());
         assertTrue(it.hasNext());

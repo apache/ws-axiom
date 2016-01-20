@@ -42,9 +42,9 @@ public class TestSetBooleanAttribute extends BooleanAttributeTestCase {
         BooleanAttributeAccessor accessor = attribute.getAdapter(BooleanAttributeAccessor.class);
         accessor.setValue(soapHeaderBlock, value);
         assertEquals(value, accessor.getValue(soapHeaderBlock));
-        Iterator it = soapHeaderBlock.getAllAttributes();
+        Iterator<OMAttribute> it = soapHeaderBlock.getAllAttributes();
         assertTrue(it.hasNext());
-        OMAttribute att = (OMAttribute)it.next();
+        OMAttribute att = it.next();
         OMNamespace ns = att.getNamespace();
         assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
         assertEquals(attribute.getName(spec), att.getLocalName());

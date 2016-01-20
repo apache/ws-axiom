@@ -52,9 +52,9 @@ public class WriteAttributeAutoPrefixScenario implements PushOMDataSourceScenari
     }
 
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         Assert.assertTrue(it.hasNext());
-        OMAttribute attr = (OMAttribute)it.next();
+        OMAttribute attr = it.next();
         Assert.assertEquals("p", attr.getPrefix());
         Assert.assertEquals("urn:test", attr.getNamespaceURI());
         Assert.assertEquals("attr", attr.getLocalName());

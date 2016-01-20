@@ -41,7 +41,7 @@ public class TestRemoveAttribute extends AxiomTestCase {
         OMAttribute attr2 = element.addAttribute("attr2", "value2", null);
         element.removeAttribute(attr1);
         assertNull(attr1.getOwner());
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         assertTrue(it.hasNext());
         assertSame(attr2, it.next());
         assertFalse(it.hasNext());

@@ -62,9 +62,9 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
 
     public void validate(OMElement element, boolean dataHandlersPreserved) throws Throwable {
         OMNamespace decl = null;
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         while (it.hasNext()) {
-            OMNamespace ns = (OMNamespace)it.next();
+            OMNamespace ns = it.next();
             if (!ns.getPrefix().equals("_p_")) {
                 if (decl != null) {
                     Assert.fail("Found unexpected namespace declaration");

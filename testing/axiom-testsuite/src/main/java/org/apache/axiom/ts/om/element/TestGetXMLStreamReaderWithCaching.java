@@ -54,7 +54,7 @@ public class TestGetXMLStreamReaderWithCaching extends AxiomTestCase {
 
         //try to find the children of the document element. This should *NOT* produce an
         //error even when the underlying stream is fully consumed , the object tree is already complete
-        Iterator childElements = documentElement.getChildElements();
+        Iterator<OMElement> childElements = documentElement.getChildElements();
         int count = 0;
         while (childElements.hasNext()) {
             childElements.next();

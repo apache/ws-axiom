@@ -45,9 +45,9 @@ public class TestSetValueFromQName extends SOAPTestCase {
         SOAPFaultValue value = code.getValue();
         assertNotNull(value);
         assertEquals("p:MyFaultCode", value.getText());
-        Iterator it = value.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = value.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = it.next();
         assertEquals("p", ns.getPrefix());
         assertEquals("urn:test", ns.getNamespaceURI());
     }

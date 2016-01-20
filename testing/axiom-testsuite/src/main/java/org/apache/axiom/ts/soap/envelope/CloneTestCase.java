@@ -75,11 +75,11 @@ public abstract class CloneTestCase extends SOAPTestCase {
                            target instanceof OMSourcedElement);
                 assertEquals(((OMSourcedElement)source).isExpanded(), ((OMSourcedElement)target).isExpanded());
                 if (((OMSourcedElement)source).isExpanded()) {
-                    Iterator i = ((OMElement) source).getChildren();
-                    Iterator j = ((OMElement) target).getChildren();
+                    Iterator<OMNode> i = ((OMElement) source).getChildren();
+                    Iterator<OMNode> j = ((OMElement) target).getChildren();
                     while(i.hasNext() && j.hasNext()) {
-                        OMNode sourceChild = (OMNode) i.next();
-                        OMNode targetChild = (OMNode) j.next();
+                        OMNode sourceChild = i.next();
+                        OMNode targetChild = j.next();
                         identityCheck(sourceChild, targetChild, depth + "  ");
                     }
                     assertEquals("Source and Target have different number of children",
@@ -87,11 +87,11 @@ public abstract class CloneTestCase extends SOAPTestCase {
                 }
             } else {
                 assertEquals(source.getClass(), target.getClass());
-                Iterator i = ((OMElement) source).getChildren();
-                Iterator j = ((OMElement) target).getChildren();
+                Iterator<OMNode> i = ((OMElement) source).getChildren();
+                Iterator<OMNode> j = ((OMElement) target).getChildren();
                 while(i.hasNext() && j.hasNext()) {
-                    OMNode sourceChild = (OMNode) i.next();
-                    OMNode targetChild = (OMNode) j.next();
+                    OMNode sourceChild = i.next();
+                    OMNode targetChild = j.next();
                     identityCheck(sourceChild, targetChild, depth + "  ");
                 }
                 assertEquals("Source and Target have different number of children",

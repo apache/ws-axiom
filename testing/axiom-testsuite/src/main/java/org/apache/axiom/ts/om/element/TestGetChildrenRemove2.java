@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -35,7 +36,7 @@ public class TestGetChildrenRemove2 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root><child1/><child2/></root>")).getDocumentElement();
-        Iterator iter = elt.getChildren();
+        Iterator<OMNode> iter = elt.getChildren();
         if (iter.hasNext()) {
             iter.next();
         }

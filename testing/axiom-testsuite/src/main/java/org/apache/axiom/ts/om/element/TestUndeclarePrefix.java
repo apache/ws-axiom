@@ -35,9 +35,9 @@ public class TestUndeclarePrefix extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
         element.undeclarePrefix("p");
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = it.next();
         assertEquals("", ns.getNamespaceURI());
         assertEquals("p", ns.getPrefix());
         assertFalse(it.hasNext());

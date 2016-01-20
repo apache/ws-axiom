@@ -65,7 +65,7 @@ public class TestAddAttributeWithMaskedNamespaceDeclaration extends AxiomTestCas
         element2.declareNamespace(ns2);
         OMElement element3 = factory.createOMElement(new QName("c"), element2);
         strategy.addAttribute(element3, "attr", ns1, "test");
-        Iterator it = element3.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element3.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns1, it.next());
         assertFalse(it.hasNext());

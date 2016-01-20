@@ -37,8 +37,7 @@ public class TestGetLangWithParser extends SampleBasedSOAPTestCase {
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - getLang method returns incorrect string",
                 faultText.getLang().equals("en"));
-        OMAttribute langAttribute = (OMAttribute) faultText.getAllAttributes()
-                .next();
+        OMAttribute langAttribute = faultText.getAllAttributes().next();
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - Lang attribute local name mismaatch",
                 langAttribute.getLocalName().equals(

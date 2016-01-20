@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap12.factory;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -48,7 +49,7 @@ public class TestCreateSOAPFaultSubCode extends SOAPTestCase {
         assertEquals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, subCode.getNamespaceURI());
         assertEquals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, subCode.getLocalName());
         assertSame(code, subCode.getParent());
-        Iterator it = code.getChildren();
+        Iterator<OMNode> it = code.getChildren();
         assertTrue(it.hasNext());
         assertTrue(it.next() instanceof SOAPFaultValue);
         assertTrue(it.hasNext());

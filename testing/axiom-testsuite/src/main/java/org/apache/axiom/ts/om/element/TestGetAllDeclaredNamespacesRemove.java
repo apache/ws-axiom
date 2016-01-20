@@ -50,8 +50,8 @@ public class TestGetAllDeclaredNamespacesRemove extends AxiomTestCase {
                 element.declareNamespace("urn:" + prefix, prefix);
             }
             Set<String> seenPrefixes = new HashSet<String>();
-            for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                OMNamespace ns = (OMNamespace)it.next();
+            for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                OMNamespace ns = it.next();
                 String prefix = ns.getPrefix();
                 if (prefix.equals(prefixToRemove)) {
                     it.remove();

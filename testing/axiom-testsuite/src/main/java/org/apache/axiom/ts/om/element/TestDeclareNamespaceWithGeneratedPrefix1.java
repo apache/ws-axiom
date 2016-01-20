@@ -44,9 +44,9 @@ public class TestDeclareNamespaceWithGeneratedPrefix1 extends AxiomTestCase {
         assertEquals("urn:ns", ns.getNamespaceURI());
         assertNotNull(ns.getPrefix());
         assertTrue(ns.getPrefix().length() > 0);
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace ns2 = (OMNamespace)it.next();
+        OMNamespace ns2 = it.next();
         assertEquals(ns, ns2);
         assertFalse(it.hasNext());
     }

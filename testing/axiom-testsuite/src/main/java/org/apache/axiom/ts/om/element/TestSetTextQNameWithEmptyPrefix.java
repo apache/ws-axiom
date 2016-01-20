@@ -42,9 +42,9 @@ public class TestSetTextQNameWithEmptyPrefix extends AxiomTestCase {
         OMElement element = factory.createOMElement("test", null);
         QName qname = new QName("urn:test", "test");
         element.setText(qname);
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = it.next();
         assertEquals("urn:test", ns.getNamespaceURI());
         String prefix = ns.getPrefix();
         assertTrue(prefix.length() > 0);

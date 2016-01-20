@@ -44,7 +44,7 @@ public class TestCreateOMElementWithNamespaceInScope1 extends CreateOMElementTes
         assertEquals("child", child.getLocalName());
         OMNamespace ns = factory.createOMNamespace("urn:test", "p");
         assertEquals(ns, child.getNamespace());
-        Iterator it = child.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = child.getAllDeclaredNamespaces();
         assertFalse(it.hasNext());
     }
 }

@@ -52,7 +52,7 @@ public class TestAddAttributeGeneratedPrefix extends AxiomTestCase {
         OMAttribute attr = element.addAttribute("attr", "value", factory.createOMNamespace("urn:test", null));
         OMNamespace ns = attr.getNamespace();
         assertTrue(ns.getPrefix().length() > 0);
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());

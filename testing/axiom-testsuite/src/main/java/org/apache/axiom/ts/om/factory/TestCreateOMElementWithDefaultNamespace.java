@@ -37,7 +37,7 @@ public class TestCreateOMElementWithDefaultNamespace extends CreateOMElementTest
         assertEquals("test", element.getLocalName());
         OMNamespace ns = factory.createOMNamespace("urn:ns", "");
         assertEquals(ns, element.getNamespace());
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());

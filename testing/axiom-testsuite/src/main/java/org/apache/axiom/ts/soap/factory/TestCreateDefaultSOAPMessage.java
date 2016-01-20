@@ -49,9 +49,9 @@ public class TestCreateDefaultSOAPMessage extends SOAPTestCase {
         assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespaceURI());
         
         // Check the children
-        Iterator it = env.getChildren();
+        Iterator<OMNode> it = env.getChildren();
         assertTrue(it.hasNext());
-        OMNode child = (OMNode)it.next();
+        OMNode child = it.next();
         assertTrue(child instanceof SOAPBody);
         assertNull(((SOAPBody)child).getFirstOMChild());
         assertFalse(it.hasNext());

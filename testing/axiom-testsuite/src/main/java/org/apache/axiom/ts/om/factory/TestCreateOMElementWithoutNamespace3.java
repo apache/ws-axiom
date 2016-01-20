@@ -23,6 +23,7 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
@@ -45,7 +46,7 @@ public class TestCreateOMElementWithoutNamespace3 extends CreateOMElementTestCas
         OMElement child = variant.createOMElement(factory, parent, "test", "", "");
         assertEquals("test", child.getLocalName());
         assertNull(child.getNamespace());
-        Iterator it = child.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = child.getAllDeclaredNamespaces();
         assertFalse(it.hasNext());
     }
 }

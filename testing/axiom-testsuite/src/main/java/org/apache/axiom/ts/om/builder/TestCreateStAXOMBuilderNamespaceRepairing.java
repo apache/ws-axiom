@@ -45,9 +45,9 @@ public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
         OMElement element = metaFactory.createStAXOMBuilder(metaFactory.getOMFactory(),
                 new NamespaceDeclarationFilter(reader)).getDocumentElement();
         
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = it.next();
         assertEquals("p", ns.getPrefix());
         assertEquals("urn:ns1", ns.getNamespaceURI());
         assertFalse(it.hasNext());
@@ -55,7 +55,7 @@ public class TestCreateStAXOMBuilderNamespaceRepairing extends AxiomTestCase {
         OMElement child = element.getFirstElement();
         it = child.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
-        ns = (OMNamespace)it.next();
+        ns = it.next();
         assertEquals("q", ns.getPrefix());
         assertEquals("urn:ns2", ns.getNamespaceURI());
         assertFalse(it.hasNext());

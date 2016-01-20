@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -168,7 +169,7 @@ public class TestBuilder extends AxiomTestCase {
                    fault.getNamespace().getNamespaceURI().equals(
                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        Iterator iteratorInFault = fault.getChildren();
+        Iterator<OMNode> iteratorInFault = fault.getChildren();
 
         iteratorInFault.next();
         SOAPFaultCode code = (SOAPFaultCode) iteratorInFault.next();
@@ -179,7 +180,7 @@ public class TestBuilder extends AxiomTestCase {
                    code.getNamespace().getNamespaceURI().equals(
                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        Iterator iteratorInCode = code.getChildren();
+        Iterator<OMNode> iteratorInCode = code.getChildren();
 
         iteratorInCode.next();
         SOAPFaultValue value1 = (SOAPFaultValue) iteratorInCode.next();
@@ -210,7 +211,7 @@ public class TestBuilder extends AxiomTestCase {
                    subCode1.getNamespace().getNamespaceURI().equals(
                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        Iterator iteratorInSubCode1 = subCode1.getChildren();
+        Iterator<OMNode> iteratorInSubCode1 = subCode1.getChildren();
 
         iteratorInSubCode1.next();
         SOAPFaultValue value2 = (SOAPFaultValue) iteratorInSubCode1.next();
@@ -232,7 +233,7 @@ public class TestBuilder extends AxiomTestCase {
                    subCode2.getNamespace().getNamespaceURI().equals(
                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        Iterator iteratorInSubCode2 = subCode2.getChildren();
+        Iterator<OMNode> iteratorInSubCode2 = subCode2.getChildren();
 
         iteratorInSubCode2.next();
         SOAPFaultValue value3 = (SOAPFaultValue) iteratorInSubCode2.next();
@@ -254,7 +255,7 @@ public class TestBuilder extends AxiomTestCase {
                    reason.getNamespace().getNamespaceURI().equals(
                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        Iterator iteratorInReason = reason.getChildren();
+        Iterator<OMNode> iteratorInReason = reason.getChildren();
 
         iteratorInReason.next();
         SOAPFaultText text = (SOAPFaultText) iteratorInReason.next();
@@ -302,7 +303,7 @@ public class TestBuilder extends AxiomTestCase {
         assertTrue("SOAP 1.2 :- Text in detail mismatch",
                    detail.getText().trim().equals("Details of error"));
 
-        Iterator iteratorInDetail = detail.getChildren();
+        Iterator<OMNode> iteratorInDetail = detail.getChildren();
 
         iteratorInDetail.next();
         OMElement element1 = (OMElement) iteratorInDetail.next();
@@ -314,8 +315,8 @@ public class TestBuilder extends AxiomTestCase {
         assertTrue("SOAP 1.2 :- Text value in MaxTime element mismatch",
                    element1.getText().trim().equals("P5M"));
 
-        Iterator attributeIterator = element1.getAllAttributes();
-        OMAttribute attributeInMaxTime = (OMAttribute) attributeIterator.next();
+        Iterator<OMAttribute> attributeIterator = element1.getAllAttributes();
+        OMAttribute attributeInMaxTime = attributeIterator.next();
         assertTrue("SOAP 1.2 :- Attribute local name mismatch",
                    attributeInMaxTime.getLocalName().equals("detail"));
         assertTrue("SOAP 1.2 :- Attribute namespace mismatch",
@@ -332,7 +333,7 @@ public class TestBuilder extends AxiomTestCase {
                    element2.getNamespace().getNamespaceURI().equals(
                            "http:www.sample.org"));
 
-        Iterator iteratorInAveTimeElement = element2.getChildren();
+        Iterator<OMNode> iteratorInAveTimeElement = element2.getChildren();
 
         iteratorInAveTimeElement.next();
         OMElement element21 = (OMElement) iteratorInAveTimeElement.next();

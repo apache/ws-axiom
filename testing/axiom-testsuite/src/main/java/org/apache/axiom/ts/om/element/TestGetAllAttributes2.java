@@ -37,9 +37,9 @@ public class TestGetAllAttributes2 extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<e xmlns:p='urn:test' p:attr='test'/>");
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         assertTrue(it.hasNext());
-        OMAttribute attr = (OMAttribute)it.next();
+        OMAttribute attr = it.next();
         assertEquals("urn:test", attr.getNamespace().getNamespaceURI());
         assertEquals("attr", attr.getLocalName());
         assertFalse(it.hasNext());

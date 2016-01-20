@@ -148,10 +148,10 @@ public abstract class SetNamespaceTestCase extends AxiomTestCase {
         assertEquals(expectedPrefix, qname.getPrefix());
         assertEquals(namespaceURI == null ? "" : namespaceURI, qname.getNamespaceURI());
         if (element != null) {
-            Iterator it = element.getAllDeclaredNamespaces();
+            Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
             if (expectNSDecl) {
                 assertTrue(it.hasNext());
-                OMNamespace decl = (OMNamespace)it.next();
+                OMNamespace decl = it.next();
                 assertEquals(expectedPrefix, decl.getPrefix());
                 assertEquals(namespaceURI == null ? "" : namespaceURI, decl.getNamespaceURI());
             }

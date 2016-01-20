@@ -46,15 +46,15 @@ public class TestSetOMDocumentElementReplace extends AxiomTestCase {
         OMElement documentElement = factory.createOMElement("new", null);
         document.setOMDocumentElement(documentElement);
         assertSame(documentElement, document.getOMDocumentElement());
-        Iterator it = document.getChildren();
+        Iterator<OMNode> it = document.getChildren();
         assertTrue(it.hasNext());
-        OMNode child = (OMNode)it.next();
+        OMNode child = it.next();
         assertTrue(child instanceof OMComment);
         assertEquals("comment1", ((OMComment)child).getValue());
         assertTrue(it.hasNext());
         assertSame(documentElement, it.next());
         assertTrue(it.hasNext());
-        child = (OMNode)it.next();
+        child = it.next();
         assertTrue(child instanceof OMComment);
         assertEquals("comment2", ((OMComment)child).getValue());
         assertFalse(it.hasNext());

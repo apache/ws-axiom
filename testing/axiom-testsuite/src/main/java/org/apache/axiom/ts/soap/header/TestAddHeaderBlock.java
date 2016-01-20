@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -39,7 +40,7 @@ public class TestAddHeaderBlock extends SOAPTestCase {
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
         SOAPHeaderBlock headerBlock1 = soapHeader.addHeaderBlock("echoOk1", namespace);
         SOAPHeaderBlock headerBlock2 = soapHeader.addHeaderBlock("echoOk2", namespace);
-        Iterator iterator = soapHeader.getChildren();
+        Iterator<OMNode> iterator = soapHeader.getChildren();
         assertSame(headerBlock1, iterator.next());
         assertSame(soapHeader, headerBlock1.getParent());
         assertNotNull(

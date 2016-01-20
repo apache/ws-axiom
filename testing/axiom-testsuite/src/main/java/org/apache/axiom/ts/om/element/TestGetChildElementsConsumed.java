@@ -57,7 +57,7 @@ public class TestGetChildElementsConsumed extends AxiomTestCase {
         //try to find the children of the document element. This should produce an
         //error since the underlying stream is fully consumed without building the object tree
         try {
-            Iterator childElements = documentElement.getChildElements();
+            Iterator<OMElement> childElements = documentElement.getChildElements();
             while (childElements.hasNext()) {
                 childElements.next();
             }

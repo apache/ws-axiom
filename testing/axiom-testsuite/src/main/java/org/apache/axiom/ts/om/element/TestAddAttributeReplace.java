@@ -53,7 +53,7 @@ public class TestAddAttributeReplace extends AxiomTestCase {
         OMElement element = factory.createOMElement(new QName("test"));
         OMAttribute att1 = strategy.addAttribute(element, "test", ns1, "value1");
         OMAttribute att2 = strategy.addAttribute(element, "test", ns2, "value2");
-        Iterator it = element.getAllAttributes();
+        Iterator<OMAttribute> it = element.getAllAttributes();
         ASSERT.that(it.hasNext()).isTrue();
         ASSERT.that(it.next()).isSameAs(att2);
         ASSERT.that(it.hasNext()).isFalse();

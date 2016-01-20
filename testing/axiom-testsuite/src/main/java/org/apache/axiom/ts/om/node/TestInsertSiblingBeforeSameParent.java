@@ -46,7 +46,7 @@ public class TestInsertSiblingBeforeSameParent extends AxiomTestCase {
         parent.addChild(text3);
         text2.insertSiblingBefore(text3);
         assertSame(parent, text3.getParent());
-        Iterator it = parent.getChildren();
+        Iterator<OMNode> it = parent.getChildren();
         assertSame(text1, it.next());
         assertSame(text3, it.next());
         assertSame(text2, it.next());

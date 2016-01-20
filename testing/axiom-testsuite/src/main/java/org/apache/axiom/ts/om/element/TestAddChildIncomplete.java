@@ -45,7 +45,7 @@ public class TestAddChildIncomplete extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<root><a/><b/></root>")).getDocumentElement();
         parent.addChild(factory.createOMElement("c", null));
-        Iterator it = parent.getChildren();
+        Iterator<OMNode> it = parent.getChildren();
         assertEquals("a", ((OMElement)it.next()).getLocalName());
         assertEquals("b", ((OMElement)it.next()).getLocalName());
         assertEquals("c", ((OMElement)it.next()).getLocalName());

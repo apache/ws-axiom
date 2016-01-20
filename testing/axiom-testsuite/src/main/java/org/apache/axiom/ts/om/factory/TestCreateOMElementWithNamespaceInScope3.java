@@ -42,7 +42,7 @@ public class TestCreateOMElementWithNamespaceInScope3 extends CreateOMElementTes
         OMElement child = variant.createOMElement(factory, parent, "child", "urn:test", "");
         OMNamespace ns = factory.createOMNamespace("urn:test", "");
         assertEquals(ns, child.getNamespace());
-        Iterator it = child.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = child.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
     }
 }

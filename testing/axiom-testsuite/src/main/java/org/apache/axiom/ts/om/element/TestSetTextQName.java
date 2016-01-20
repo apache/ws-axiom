@@ -43,8 +43,8 @@ public class TestSetTextQName extends AxiomTestCase {
         QName qname = new QName("urn:ns1", "test", "ns");
         element.setText(qname);
         boolean foundNamespace = false;
-        for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
+        for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = it.next();
             if ("urn:ns1".equals(ns.getNamespaceURI()) && "ns".equals(ns.getPrefix())) {
                 foundNamespace = true;
             }

@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -47,10 +48,10 @@ public class TestStandaloneConfiguration extends AxiomTestCase {
         OMElement root = builder.getDocumentElement();
         assertTrue(root.getLocalName().equals("web-app"));
         OMDocument document = builder.getDocument();
-        Iterator i = document.getChildren();
+        Iterator<OMNode> i = document.getChildren();
         OMDocType docType = null;
         while (docType == null && i.hasNext()) {
-           Object obj = i.next();
+           OMNode obj = i.next();
            if (obj instanceof OMDocType) {
                docType = (OMDocType) obj;
            }
