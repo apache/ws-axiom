@@ -98,7 +98,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
 
     // Fields for Custom Builder implementation
     protected CustomBuilder customBuilderForPayload = null;
-    protected Map customBuilders = null;
+    protected Map<QName,CustomBuilder> customBuilders = null;
     protected int maxDepthForCustomBuilders = -1;
     
     /**
@@ -124,7 +124,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
      * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
      * only used if debug logging was enabled when builder was created.
      */
-    private final Map/*<OMContainer,Throwable>*/ discardTracker = log.isDebugEnabled() ? new LinkedHashMap() : null;
+    private final Map<OMContainer,Throwable> discardTracker = log.isDebugEnabled() ? new LinkedHashMap<OMContainer,Throwable>() : null;
     
     /**
      * For internal use only.
@@ -567,9 +567,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
     public CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
         CustomBuilder old = null;
         if (customBuilders == null) {
-            customBuilders = new HashMap();
+            customBuilders = new HashMap<QName,CustomBuilder>();
         } else {
-            old = (CustomBuilder) customBuilders.get(qName);
+            old = customBuilders.get(qName);
         }
         maxDepthForCustomBuilders = 
                 (maxDepthForCustomBuilders > maxDepth) ?
@@ -596,7 +596,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
             return null;
         }
         QName qName = new QName(namespace, localPart);
-        return (CustomBuilder) customBuilders.get(qName);
+        return customBuilders.get(qName);
     }
 
     /** @return Returns short. */
