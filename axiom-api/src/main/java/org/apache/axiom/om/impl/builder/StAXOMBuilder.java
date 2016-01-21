@@ -82,13 +82,6 @@ import java.io.InputStream;
 public class StAXOMBuilder extends StAXBuilder {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
-    private boolean doTrace = log.isDebugEnabled();
-    
-    /**
-     * @deprecated
-     */
-    private static int nsCount = 0;
-
     // namespaceURI interning
     // default is false because most XMLStreamReader implementations don't do interning
     // due to performance impacts.  Thus a customer should not assume that a namespace
@@ -187,30 +180,6 @@ public class StAXOMBuilder extends StAXBuilder {
             }
            
             // Note: if autoClose is enabled, then the parser may be null at this point
-            if (doTrace && parser != null) {
-                // The current token should be the same as the 
-                // one just obtained.  This bit of code is used to 
-                // detect invalid parser state.
-                int currentParserToken = parser.getEventType();
-                if (currentParserToken != token) {
-
-
-                    log.debug("WARNING: The current state of the parser is not equal to the " +
-                              "state just received from the parser. The current state in the paser is " +
-                              XMLEventUtils.getEventTypeString(currentParserToken) + " the state just received is " +
-                              XMLEventUtils.getEventTypeString(token));
-
-                    /*
-                      throw new OMException("The current token " + token + 
-                                     " does not match the current event " +
-                                     "reported by the parser token.  The parser did not update its state correctly.  " +
-                                     "The parser is " + parser);
-                     */
-                }
-            
-                // Now log the current state of the parser
-                logParserState();
-            }
            
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT: {
@@ -340,73 +309,10 @@ public class StAXOMBuilder extends StAXBuilder {
                           " did not construct an OMNode for {" + namespace + "}" + localPart +
                           ". The OMNode will be constructed using the installed stax om builder");
             }
-            log.debug("The current state of the parser is: ");
-            logParserState();
         }
         return node;
     }
     
-    /**
-     * Dump the current event of the parser.
-     */
-    protected void logParserState() {
-        if (doTrace) {
-            int currentEvent = parser.getEventType();
-            
-            switch (currentEvent) {
-            case XMLStreamConstants.START_ELEMENT:
-                log.trace("START_ELEMENT: ");
-                log.trace("  QName: " + parser.getName());
-                break;
-            case XMLStreamConstants.START_DOCUMENT:
-                log.trace("START_DOCUMENT: ");
-                break;
-            case XMLStreamConstants.CHARACTERS:
-                log.trace("CHARACTERS: ");
-                // This can bust up a datahandler
-                //log.trace(   "[" + parser.getText() + "]");
-                break;
-            case XMLStreamConstants.CDATA:
-                log.trace("CDATA: ");
-                // This can but
-                //log.trace(   "[" + parser.getText() + "]");
-                break;
-            case XMLStreamConstants.END_ELEMENT:
-                log.trace("END_ELEMENT: ");
-                log.trace("  QName: " + parser.getName());
-                break;
-            case XMLStreamConstants.END_DOCUMENT:
-                log.trace("END_DOCUMENT: ");
-                break;
-            case XMLStreamConstants.SPACE:
-                log.trace("SPACE: ");
-                //log.trace(   "[" + parser.getText() + "]");
-                break;
-            case XMLStreamConstants.COMMENT:
-                log.trace("COMMENT: ");
-                //log.trace(   "[" + parser.getText() + "]");
-                break;
-            case XMLStreamConstants.DTD:
-                log.trace("DTD: ");
-                log.trace(   "[" + parser.getText() + "]");
-                break;
-            case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                log.trace("PROCESSING_INSTRUCTION: ");
-                log.trace("   [" + parser.getPITarget() + "][" +
-                            parser.getPIData() + "]");
-                break;
-            case XMLStreamConstants.ENTITY_REFERENCE:
-                log.trace("ENTITY_REFERENCE: ");
-                log.trace("    " + parser.getLocalName() + "[" +
-                            parser.getText() + "]");
-                break;
-            default :
-                log.trace("UNKNOWN_STATE: " + currentEvent);
-            
-            }
-        }
-    }
-
     /**
      * Populate element with data from parser START_ELEMENT event. This is used when the source of
      * data for an element needs to be parsed on demand. The supplied element must already be set to
@@ -604,21 +510,6 @@ public class StAXOMBuilder extends StAXBuilder {
 
         // See NOTE_A above
         BuilderUtil.setNamespace(node, namespaceURI, prefix, isNamespaceURIInterning());
-    }
-
-    /**
-     * @param doDebug
-     * @deprecated
-     */
-    public void setDoDebug(boolean doDebug) {
-        this.doTrace = doDebug;
-    }
-
-    /**
-     * @deprecated A builder doesn't need to generate prefixes.
-     */
-    protected String createPrefix() {
-        return "ns" + nsCount++;
     }
 
     /**
