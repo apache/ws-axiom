@@ -38,19 +38,18 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -210,10 +209,9 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
             OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
-        XOPAwareStAXOMBuilder builder = new XOPAwareStAXOMBuilder(
+        StAXOMBuilder builder = new StAXOMBuilder(
                 omFactory,
-                sourceInfo.getReader(),
-                mimePartProvider,
+                new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider),
                 mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null,
                 sourceInfo.getCloseable());
         builder.setAutoClose(true);
@@ -253,10 +251,10 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
-        MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(
+                new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider),
                 soapFactory,
-                sourceInfo.getReader(),
-                mimePartProvider,
+                soapFactory.getSoapVersionURI(),
                 mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null,
                 sourceInfo.getCloseable());
         builder.setAutoClose(true);
