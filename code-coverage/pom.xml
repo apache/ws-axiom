@@ -222,13 +222,14 @@
             <type>exec</type>
         </dependency>
         
-        <dependency>
+        <!-- TODO: tests currently disabled -->
+        <!-- dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>spring-ws-tests</artifactId>
             <version>${project.version}</version>
             <classifier>jacoco</classifier>
             <type>exec</type>
-        </dependency>
+        </dependency -->
         
         <dependency>
             <groupId>${project.groupId}</groupId>
