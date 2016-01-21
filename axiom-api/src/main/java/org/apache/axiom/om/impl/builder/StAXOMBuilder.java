@@ -718,11 +718,7 @@ public class StAXOMBuilder extends StAXBuilder {
      *         This state can only be reached by a call to {@link #lookahead()}, and the
      *         current token is always a {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}.
      *         The information related to that element can be obtained by calls to
-     *         {@link #getName()}, {@link #getNamespace()}, {@link #getPrefix()},
-     *         {@link #getAttributeCount()}, {@link #getAttributeName(int)},
-     *         {@link #getAttributeNamespace(int)}, {@link #getAttributePrefix(int)},
-     *         {@link #getNamespaceCount()}, {@link #getNamespacePrefix(int)} and
-     *         {@link #getNamespaceUri(int)}.
+     *         {@link #getName()}, {@link #getNamespace()} and {@link #getPrefix()}.
      *         <p>
      *         A return value of <code>false</code> indicates that the node corresponding to the
      *         current token hold by the parser has already been created.

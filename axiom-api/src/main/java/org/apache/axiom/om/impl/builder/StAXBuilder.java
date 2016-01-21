@@ -393,50 +393,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
     }
 
     /**
-     * Method getNamespaceCount.
-     *
-     * @return Returns int.
-     * @throws OMException
-     */
-    public int getNamespaceCount() throws OMException {
-        try {
-            return parser.getNamespaceCount();
-        } catch (Exception e) {
-            throw new OMException(e);
-        }
-    }
-
-    /**
-     * Method getNamespacePrefix.
-     *
-     * @param index
-     * @return Returns String.
-     * @throws OMException
-     */
-    public String getNamespacePrefix(int index) throws OMException {
-        try {
-            return parser.getNamespacePrefix(index);
-        } catch (Exception e) {
-            throw new OMException(e);
-        }
-    }
-
-    /**
-     * Method getNamespaceUri.
-     *
-     * @param index
-     * @return Returns String.
-     * @throws OMException
-     */
-    public String getNamespaceUri(int index) throws OMException {
-        try {
-            return parser.getNamespaceURI(index);
-        } catch (Exception e) {
-            throw new OMException(e);
-        }
-    }
-
-    /**
      * Method setCache.
      *
      * @param b
@@ -474,49 +430,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
      */
     public String getPrefix() throws OMException {
         return parser.getPrefix();
-    }
-
-    /**
-     * Method getAttributeCount.
-     *
-     * @return Returns int.
-     * @throws OMException
-     */
-    public int getAttributeCount() throws OMException {
-        return parser.getAttributeCount();
-    }
-
-    /**
-     * Method getAttributeNamespace.
-     *
-     * @param arg
-     * @return Returns String.
-     * @throws OMException
-     */
-    public String getAttributeNamespace(int arg) throws OMException {
-        return parser.getAttributeNamespace(arg);
-    }
-
-    /**
-     * Method getAttributeName.
-     *
-     * @param arg
-     * @return Returns String.
-     * @throws OMException
-     */
-    public String getAttributeName(int arg) throws OMException {
-        return parser.getAttributeNamespace(arg);
-    }
-
-    /**
-     * Method getAttributePrefix.
-     *
-     * @param arg
-     * @return Returns String.
-     * @throws OMException
-     */
-    public String getAttributePrefix(int arg) throws OMException {
-        return parser.getAttributeNamespace(arg);
     }
 
     /**
