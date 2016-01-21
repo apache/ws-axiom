@@ -147,6 +147,9 @@ public interface OMXMLParserWrapper {
      * get the registered external content handler
      *
      * @return Returns Object.
+     * 
+     * @deprecated This method is no longer used; implementations will always throw
+     *             {@link UnsupportedOperationException}.
      */
     Object getRegisteredContentHandler();
 
