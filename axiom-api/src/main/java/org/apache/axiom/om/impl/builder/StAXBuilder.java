@@ -152,15 +152,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
     }
 
     /**
-     * Method setOMBuilderFactory.
-     *
-     * @param ombuilderFactory
-     */
-    public void setOMBuilderFactory(OMFactory ombuilderFactory) {
-        this.omfactory = (OMFactoryEx)ombuilderFactory;
-    }
-
-    /**
      * Method processNamespaceData.
      *
      * @param node
