@@ -40,6 +40,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
@@ -370,7 +371,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         switch (type) {
             case OMNode.ELEMENT_NODE: {
                 OMElement childElement = (OMElement) child;
-                OMElement newElement = (new StAXOMBuilder(this, childElement
+                OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this, childElement
                         .getXMLStreamReader())).getDocumentElement();
                 newElement.buildWithAttachments();
                 return newElement;

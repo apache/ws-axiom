@@ -22,16 +22,17 @@ package org.apache.axiom.c14n;
 import org.apache.axiom.c14n.omwrapper.factory.WrapperFactory;
 import org.apache.axiom.c14n.omwrapper.interfaces.Document;
 import org.apache.axiom.c14n.omwrapper.interfaces.Element;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
 import java.net.URL;
 import java.io.RandomAccessFile;
 
 public class DataParser {
     private String fileName = null;
-    private StAXOMBuilder builder = null;
+    private OMXMLParserWrapper builder = null;
     private byte [] bytes;
 
     public WrapperFactory fac = null;
@@ -45,7 +46,7 @@ public class DataParser {
     }
 
     public void init() throws Exception {
-        builder = new StAXOMBuilder(this.getClass().getResourceAsStream(fileName));
+        builder = OMXMLBuilderFactory.createOMBuilder(this.getClass().getResourceAsStream(fileName));
         fac = new WrapperFactory();
         omDoc = builder.getDocument();
         omDocEle = omDoc.getOMDocumentElement();

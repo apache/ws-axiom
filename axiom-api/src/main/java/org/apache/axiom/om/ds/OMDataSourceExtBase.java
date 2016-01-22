@@ -36,8 +36,9 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -148,7 +149,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
      */
     private static void reader2writer(XMLStreamReader reader, 
                                      XMLStreamWriter writer) throws XMLStreamException {
-        StAXOMBuilder builder = new StAXOMBuilder(reader);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();
             Iterator it = omDocument.getChildren();

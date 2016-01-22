@@ -76,30 +76,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     private SOAPBuilderHelper builderHelper;
 
     /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
-        this(OMAbstractFactory.getMetaFactory(), parser, soapVersion);
-    }
-
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
-            String soapVersion) {
-        super(metaFactory.getOMFactory(), parser);
-        this.metaFactory = metaFactory;
-        identifySOAPVersion(soapVersion);
-    }
-    
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXSOAPModelBuilder(XMLStreamReader parser) {
-        this(OMAbstractFactory.getMetaFactory(), parser);
-    }
-    
-    /**
      * For internal use only.
      */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
@@ -108,13 +84,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         this.metaFactory = metaFactory;
     }
     
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
-        this(metaFactory, parser, null, null);
-    }
-
     /**
      * For internal use only.
      */
@@ -125,13 +94,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         identifySOAPVersion(soapVersion);
     }
     
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
-        this(parser, factory, soapVersion, null, null);
-    }
-
     /** @param soapVersionURIFromTransport  */
     protected void identifySOAPVersion(String soapVersionURIFromTransport) {
 

@@ -147,43 +147,12 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
         this(omFactory, parser, parser.getEncoding(), detachable, closeable);
     }
     
-    /**
-     * @deprecated
-     */
-    protected StAXBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        this(omFactory, parser, null, null);
-    }
-    
-    /**
-     * @deprecated
-     */
-    protected StAXBuilder(OMFactory omFactory, 
-                          XMLStreamReader parser, 
-                          String encoding) {
-        this(omFactory, parser, encoding, null, null);
-    }
-
     private void initParser(XMLStreamReader parser) {
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
         this.parser = parser;
-    }
-
-    /**
-     * @deprecated
-     */
-    protected StAXBuilder(XMLStreamReader parser) {
-        this(OMAbstractFactory.getOMFactory(), parser);
-    }
-
-    /**
-     * @deprecated
-     */
-    protected StAXBuilder() {
-        detachable = null;
-        closeable = null;
     }
 
     /**

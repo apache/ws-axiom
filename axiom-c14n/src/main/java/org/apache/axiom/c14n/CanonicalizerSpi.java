@@ -23,9 +23,9 @@ package org.apache.axiom.c14n;
 import org.apache.axiom.c14n.exceptions.CanonicalizationException;
 import org.apache.axiom.c14n.omwrapper.factory.WrapperFactory;
 import org.apache.axiom.c14n.omwrapper.interfaces.Node;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 
@@ -54,12 +54,7 @@ public abstract class CanonicalizerSpi {
 
     public byte[] engineCanonicalize(byte[] inputBytes) throws CanonicalizationException {
         ByteArrayInputStream bais = new ByteArrayInputStream(inputBytes);
-        StAXOMBuilder builder = null;
-        try {
-            builder = new StAXOMBuilder(bais);
-        } catch (XMLStreamException e) {
-            throw new CanonicalizationException(e);
-        }
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(bais);
         byte [] result = this.engineCanonicalizeSubTree(
                 new WrapperFactory().getNode(builder.getDocument()));
         return result;

@@ -21,17 +21,14 @@ package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,9 +40,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.Location;
 
 import java.io.Closeable;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 /**
  * Internal implementation class.
@@ -99,13 +93,6 @@ public class StAXOMBuilder extends StAXBuilder {
     }
     
     /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
-        super(ombuilderFactory, parser);
-    }
-
-    /**
      * For internal use only.
      */
     public StAXOMBuilder(OMFactory factory, 
@@ -119,41 +106,6 @@ public class StAXOMBuilder extends StAXBuilder {
         populateOMElement(element);
     }
     
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXOMBuilder(OMFactory factory, XMLStreamReader parser, OMElement element) {
-        this(factory, parser, element, null);
-    }
-
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXOMBuilder(String filePath) throws XMLStreamException, FileNotFoundException {
-        this(StAXUtils.createXMLStreamReader(new FileInputStream(filePath)));
-    }
-
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXOMBuilder(XMLStreamReader parser) {
-        this(OMAbstractFactory.getOMFactory(), parser);
-    }
-
-    /**
-     * @deprecated Please use the {@link OMXMLBuilderFactory} API.
-     */
-    public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
-        this(StAXUtils.createXMLStreamReader(inStream));
-    }
-
-    /**
-     * @deprecated
-     */
-    public StAXOMBuilder() {
-        super();
-    }
-
     protected OMDocument createDocument() {
         return omfactory.createOMDocument(this);
     }
