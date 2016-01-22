@@ -125,18 +125,6 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         return documentElement;
     }
 
-    public short getBuilderType() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void registerExternalContentHandler(Object obj) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Object getRegisteredContentHandler() {
-        throw new UnsupportedOperationException();
-    }
-
     public String getCharacterEncoding() {
         throw new UnsupportedOperationException();
     }

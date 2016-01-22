@@ -24,18 +24,6 @@ import javax.xml.XMLConstants;
 /** Interface OMConstants */
 public interface OMConstants {
     /**
-     * @deprecated This constant is used as return value of
-     *             {@link OMXMLParserWrapper#getBuilderType()} which is deprecated.
-     */
-    short PUSH_TYPE_BUILDER = 0;
-
-    /**
-     * @deprecated This constant is used as return value of
-     *             {@link OMXMLParserWrapper#getBuilderType()} which is deprecated.
-     */
-    short PULL_TYPE_BUILDER = 1;
-
-    /**
      * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
      */
     String ARRAY_ITEM_NSURI =

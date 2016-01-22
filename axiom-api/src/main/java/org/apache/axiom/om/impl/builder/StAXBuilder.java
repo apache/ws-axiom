@@ -20,9 +20,7 @@
 package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -34,7 +32,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,7 +42,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.Closeable;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -153,19 +149,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
         }
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
         this.parser = parser;
-    }
-
-    /**
-     * @deprecated Not used anywhere
-     */
-    public void init(InputStream inputStream, String charSetEncoding, String url,
-                     String contentType) throws OMException {
-        try {
-            this.parser = StAXUtils.createXMLStreamReader(inputStream);
-        } catch (XMLStreamException e1) {
-            throw new OMException(e1);
-        }
-        omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
     }
 
     /**
@@ -568,29 +551,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
         return customBuilders.get(qName);
     }
 
-    /** @return Returns short. */
-    public short getBuilderType() {
-        return OMConstants.PULL_TYPE_BUILDER;
-    }
-
-    /**
-     * Method registerExternalContentHandler.
-     *
-     * @param obj
-     */
-    public void registerExternalContentHandler(Object obj) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Method getRegisteredContentHandler.
-     *
-     * @return Returns Object.
-     */
-    public Object getRegisteredContentHandler() {
-        throw new UnsupportedOperationException();
-    }
-
     protected abstract OMDocument createDocument();
     
     protected void createDocumentIfNecessary() {
@@ -683,12 +643,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
         return _isClosed;
     }
     
-    /**
-     * @deprecated As of Axiom 1.2.15, the builder always releases the parser.
-     */
-    public void releaseParserOnClose(boolean value) {
-    }
-
     public void detach() throws OMException {
         if (detachable != null) {
             detachable.detach();
