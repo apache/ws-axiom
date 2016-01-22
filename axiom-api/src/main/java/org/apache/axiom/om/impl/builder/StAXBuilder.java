@@ -131,7 +131,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
         this.detachable = detachable;
         this.closeable = closeable;
         charEncoding = encoding;
-        initParser(parser);
+        if (parser instanceof BuilderAwareReader) {
+            ((BuilderAwareReader) parser).setBuilder(this);
+        }
+        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
+        this.parser = parser;
     }
     
     /**
@@ -143,14 +147,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
         this(omFactory, parser, parser.getEncoding(), detachable, closeable);
     }
     
-    private void initParser(XMLStreamReader parser) {
-        if (parser instanceof BuilderAwareReader) {
-            ((BuilderAwareReader) parser).setBuilder(this);
-        }
-        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
-        this.parser = parser;
-    }
-
     /**
      * Method processNamespaceData.
      *
