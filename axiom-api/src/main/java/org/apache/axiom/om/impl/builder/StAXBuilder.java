@@ -154,9 +154,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
      */
     protected abstract void processNamespaceData(OMElement node);
 
-    // since the behaviors are different when it comes to namespaces
-    // this must be implemented differently
-
     /**
      * Method processAttributes.
      *
