@@ -325,16 +325,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, CustomBuilderSu
     }
 
     /**
-     * Method getText.
-     *
-     * @return Returns String.
-     * @throws OMException
-     */
-    public String getText() throws OMException {
-        return parser.getText();
-    }
-
-    /**
      * Method getNamespace.
      *
      * @return Returns String.
