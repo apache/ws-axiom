@@ -44,7 +44,6 @@ import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
@@ -164,7 +163,7 @@ public aspect AxiomContainerSupport {
         } else {
             if (getState() == AxiomContainer.DISCARDED) {
                 if (builder != null) {
-                    ((StAXBuilder)builder).debugDiscarded(this);
+                    ((StAXOMBuilder)builder).debugDiscarded(this);
                 }
                 throw new NodeUnavailableException();
             }
@@ -343,7 +342,7 @@ public aspect AxiomContainerSupport {
 
     final void AxiomContainer.serializeChildren(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
         if (getState() == AxiomContainer.DISCARDED) {
-            StAXBuilder builder = (StAXBuilder)getBuilder();
+            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
             if (builder != null) {
                 builder.debugDiscarded(this);
             }

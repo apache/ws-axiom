@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 public aspect CoreParentNodeSupport {
@@ -106,7 +105,7 @@ public aspect CoreParentNodeSupport {
         if (firstChild == null) {
             switch (getState()) {
                 case CoreParentNode.DISCARDED:
-                    ((StAXBuilder)getBuilder()).debugDiscarded(this);
+                    ((StAXOMBuilder)getBuilder()).debugDiscarded(this);
                     throw new NodeUnavailableException();
                 case CoreParentNode.INCOMPLETE:
                     do {

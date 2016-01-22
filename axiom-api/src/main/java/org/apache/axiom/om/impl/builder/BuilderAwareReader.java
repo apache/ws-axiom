@@ -21,6 +21,6 @@ package org.apache.axiom.om.impl.builder;
 
 public interface BuilderAwareReader {
 
-    public void setBuilder(StAXBuilder builder);
+    public void setBuilder(StAXOMBuilder builder);
 
 }

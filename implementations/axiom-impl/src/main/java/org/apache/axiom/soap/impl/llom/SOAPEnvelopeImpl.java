@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -163,12 +163,12 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
             // non-caching code block serializing the top-level SOAPEnvelope element
             // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
             OMXMLParserWrapper builder = getBuilder();
-            if ((builder != null) && (builder instanceof StAXBuilder)) {
+            if ((builder != null) && (builder instanceof StAXOMBuilder)) {
                 try {
                     if (log.isDebugEnabled()) {
                         log.debug("closing builder: " + builder);
                     }
-                    StAXBuilder staxBuilder = (StAXBuilder) builder;
+                    StAXOMBuilder staxBuilder = (StAXOMBuilder) builder;
                     staxBuilder.close();
                 } catch (Exception e) {
                     if (log.isDebugEnabled()) {
@@ -181,8 +181,8 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
                     if (builder == null) {
                         log.debug("builder is null");
                     }
-                    if ((builder != null) && !(builder instanceof StAXBuilder)) {
-                        log.debug("builder is not instance of " + StAXBuilder.class.getName());
+                    if ((builder != null) && !(builder instanceof StAXOMBuilder)) {
+                        log.debug("builder is not instance of " + StAXOMBuilder.class.getName());
                     }
                 }
             }

@@ -61,7 +61,6 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
@@ -683,15 +682,15 @@ final class Navigator extends PullSerializerState
         }
         OMXMLParserWrapper builder = container.getBuilder();
         // Delegate to the builder's parser.
-        if (builder != null && builder instanceof StAXBuilder) {
-            StAXBuilder staxBuilder = (StAXBuilder) builder;
+        if (builder != null && builder instanceof StAXOMBuilder) {
+            StAXOMBuilder staxBuilder = (StAXOMBuilder) builder;
             if (!staxBuilder.isClosed()) {
                 // If the parser was closed by something other
                 // than the builder, an IllegalStateException is
                 // thrown.  For now, return null as this is unexpected
                 // by the caller.
                 try {
-                    return ((StAXBuilder) builder).getReaderProperty(s);
+                    return ((StAXOMBuilder) builder).getReaderProperty(s);
                 } catch (IllegalStateException ise) {
                     return null;
                 }

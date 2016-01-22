@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.MTOMSample;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -80,7 +80,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
     
     public void testAccessToParser() throws Exception {
         OMElement root = createTestMTOMMessage();
-        StAXBuilder builder = (StAXBuilder) root.getBuilder();
+        OMXMLParserWrapper builder = root.getBuilder();
         // Disable caching so that the reader can be accessed.
         builder.setCache(false);
         XMLStreamReader reader = (XMLStreamReader) builder.getParser();

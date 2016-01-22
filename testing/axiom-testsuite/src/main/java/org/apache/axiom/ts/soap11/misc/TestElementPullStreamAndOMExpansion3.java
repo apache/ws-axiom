@@ -26,8 +26,9 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
@@ -50,14 +51,14 @@ public class TestElementPullStreamAndOMExpansion3 extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         // Create a builder from a message containing an interesting payload
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 AbstractTestCase.getTestResource("soap/noprettyprint.xml"), null);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
         ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
         
         // Register the custom builder on the builder so that they body payload is stored as bytes
-        builder.registerCustomBuilderForPayload(customBuilder);
+        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(customBuilder);
         
         
         // Create an output stream
