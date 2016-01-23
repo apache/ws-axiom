@@ -41,7 +41,7 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     private final ParserOptions parserOptions;
 
     public FOMBuilder(FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
-        super(factory, new FOMStAXFilter(parser, parserOptions), (Detachable)null, (Closeable)null);
+        super(factory, new FOMStAXFilter(parser, parserOptions), false, (Detachable)null, (Closeable)null);
         this.parserOptions = parserOptions;
         this.fomfactory = factory;
     }

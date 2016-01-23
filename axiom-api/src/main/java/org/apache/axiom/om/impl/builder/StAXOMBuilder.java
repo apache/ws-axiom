@@ -122,7 +122,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * Specifies whether the builder/parser should be automatically closed when the
      * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
      */
-    private boolean autoClose;
+    private final boolean autoClose;
     
     private boolean _isClosed = false;              // Indicate if parser is closed
 
@@ -165,22 +165,23 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     private int lookAheadToken = -1;
     
     private StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, String encoding,
-            Detachable detachable, Closeable closeable) {
+            boolean autoClose, Detachable detachable, Closeable closeable) {
         omfactory = (OMFactoryEx)omFactory;
+        this.parser = parser;
+        this.autoClose = autoClose;
         this.detachable = detachable;
         this.closeable = closeable;
         charEncoding = encoding;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
-        this.parser = parser;
     }
     
     /**
      * For internal use only.
      */
-    public StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, Detachable detachable,
-            Closeable closeable) {
+    public StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
+            Detachable detachable, Closeable closeable) {
         // The getEncoding information is only available at the START_DOCUMENT event.
-        this(omFactory, parser, parser.getEncoding(), detachable, closeable);
+        this(omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable);
     }
     
     /**
@@ -191,7 +192,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
                          OMElement element, 
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
-        this(factory, parser, characterEncoding, null, null);  
+        this(factory, parser, characterEncoding, true, null, null);  
         elementLevel = 1;
         target = (OMContainerEx)element;
         populateOMElement(element);
@@ -619,15 +620,6 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
             return "UTF-8";
         }
         return this.charEncoding;
-    }
-    
-    /**
-     * For internal use only.
-     * 
-     * @param autoClose
-     */
-    public final void setAutoClose(boolean autoClose) {
-        this.autoClose = autoClose;
     }
     
     /**
