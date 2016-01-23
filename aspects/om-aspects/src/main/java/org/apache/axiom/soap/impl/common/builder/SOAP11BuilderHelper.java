@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.builder;
+package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.w3c.dom.Element;
 
 import javax.xml.stream.XMLStreamReader;

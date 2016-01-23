@@ -31,7 +31,7 @@ public interface OMMetaFactoryEx extends OMMetaFactory {
     /**
      * Create a {@link SOAPMessage} not linked to a particular {@link SOAPFactory}. The returned
      * {@link SOAPMessage} instance is expected to resolve the {@link SOAPFactory} lazily using a
-     * call to {@link StAXSOAPModelBuilder#getSOAPFactory()}.
+     * call to the builder.
      * 
      * @param builder
      *            the builder

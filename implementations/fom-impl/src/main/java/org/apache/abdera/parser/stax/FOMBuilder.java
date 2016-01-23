@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 
 @SuppressWarnings("unchecked")
 public class FOMBuilder extends StAXOMBuilder implements Constants {

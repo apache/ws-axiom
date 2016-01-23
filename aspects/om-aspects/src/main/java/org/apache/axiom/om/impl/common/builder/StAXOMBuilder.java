@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
@@ -34,6 +34,11 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
+import org.apache.axiom.om.impl.builder.Builder;
+import org.apache.axiom.om.impl.builder.CustomBuilder;
+import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;

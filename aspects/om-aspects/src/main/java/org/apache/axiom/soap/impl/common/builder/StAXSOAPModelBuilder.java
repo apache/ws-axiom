@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.builder;
+package org.apache.axiom.soap.impl.common.builder;
 
 import java.io.Closeable;
 
@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -45,6 +45,9 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
+import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
+import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

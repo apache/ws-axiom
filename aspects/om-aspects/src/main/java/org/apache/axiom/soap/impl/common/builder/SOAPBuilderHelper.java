@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.builder;
+package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPProcessingException;

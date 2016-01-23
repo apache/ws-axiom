@@ -27,9 +27,9 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
-import org.apache.axiom.om.impl.builder.BuilderUtil;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMContentHandler;
+import org.apache.axiom.om.impl.common.builder.BuilderUtil;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
