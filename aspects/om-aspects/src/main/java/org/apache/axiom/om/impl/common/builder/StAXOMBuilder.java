@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
@@ -31,7 +32,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.builder.Builder;
@@ -231,9 +231,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             OMAttribute attr = node.addAttribute(parser.getAttributeLocalName(i),
                               parser.getAttributeValue(i), namespace);
             attr.setAttributeType(parser.getAttributeType(i));
-            if (attr instanceof OMAttributeEx) {
-                ((OMAttributeEx)attr).setSpecified(parser.isAttributeSpecified(i));
-            }
+            ((CoreAttribute)attr).coreSetSpecified(parser.isAttributeSpecified(i));
         }
     }
 

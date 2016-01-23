@@ -54,8 +54,4 @@ public aspect AxiomAttributeSupport {
     public final void AxiomAttribute.setAttributeType(String type) {
         coreSetType(type);
     }
-
-    public final void AxiomAttribute.setSpecified(boolean specified) {
-        coreSetSpecified(specified);
-    }
 }

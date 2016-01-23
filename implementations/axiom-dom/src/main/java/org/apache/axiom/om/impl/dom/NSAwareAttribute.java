@@ -20,10 +20,9 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMNSAwareAttribute;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 
-public final class NSAwareAttribute extends AttrImpl implements OMAttributeEx, AxiomAttribute, DOMNSAwareAttribute {
+public final class NSAwareAttribute extends AttrImpl implements AxiomAttribute, DOMNSAwareAttribute {
     public String toString() {
         OMNamespace namespace = getNamespace();
         String localName = getLocalName();
