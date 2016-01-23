@@ -32,8 +32,8 @@ import javax.xml.stream.XMLStreamReader;
  * When the QName or payload is encountered, the CustomBuilder will build the OMElement
  * or OMSourcedElement for the StAXBuilder.  
  *
- * @see org.apache.axiom.om.impl.builder.StAXBuilder#registerCustomBuilder(javax.xml.namespace.QName, int, CustomBuilder)
- * @see org.apache.axiom.om.impl.builder.StAXBuilder#registerCustomBuilderForPayload(CustomBuilder)
+ * @see CustomBuilderSupport#registerCustomBuilder(javax.xml.namespace.QName, int, CustomBuilder)
+ * @see CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)
  */
 public interface CustomBuilder {
     /**
