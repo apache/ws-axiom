@@ -170,9 +170,6 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         this.detachable = detachable;
         this.closeable = closeable;
         charEncoding = encoding;
-        if (parser instanceof BuilderAwareReader) {
-            ((BuilderAwareReader) parser).setBuilder(this);
-        }
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
         this.parser = parser;
     }
