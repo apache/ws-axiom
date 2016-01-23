@@ -19,22 +19,24 @@
 
 package org.apache.axiom.soap.impl.common.builder;
 
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.builder.SOAP12FactoryEx;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultDetail;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultRole;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultSubCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultText;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
 
 import javax.xml.stream.XMLStreamReader;
 import java.util.Vector;
 
 public class SOAP12BuilderHelper extends SOAPBuilderHelper {
-    private final SOAP12FactoryEx factory;
     private boolean codePresent = false;
     private boolean reasonPresent = false;
     private boolean nodePresent = false;
@@ -50,17 +52,12 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private boolean processingDetailElements = false;
     private Vector detailElementNames;
 
-    public SOAP12BuilderHelper(StAXSOAPModelBuilder builder, SOAP12FactoryEx factory) {
-        super(builder);
-        this.factory = factory;
-    }
-
-    public OMElement handleEvent(XMLStreamReader parser,
+    public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
                                  OMElement parent,
                                  int elementLevel) throws SOAPProcessingException {
 
         this.parser = parser;
-        OMElement element = null;
+        Class<? extends AxiomElement> elementType = null;
 
         if (elementLevel == 4) {
             if (parser.getLocalName().equals(
@@ -69,9 +66,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     throw new OMBuilderException(
                             "Multiple Code element encountered");
                 } else {
-                    element =
-                            factory.createSOAPFaultCode((SOAPFault) parent,
-                                                        builder);
+                    elementType = AxiomSOAP12FaultCode.class;
                     codePresent = true;
                     codeprocessing = true;
                 }
@@ -83,9 +78,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             throw new OMBuilderException(
                                     "Multiple Reason Element encountered");
                         } else {
-                            element =
-                                    factory.createSOAPFaultReason(
-                                            (SOAPFault) parent, builder);
+                            elementType = AxiomSOAP12FaultReason.class;
                             reasonPresent = true;
                             reasonProcessing = true;
                         }
@@ -112,9 +105,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             throw new OMBuilderException(
                                     "Multiple Node element encountered");
                         } else {
-                            element =
-                                    factory.createSOAPFaultNode(
-                                            (SOAPFault) parent, builder);
+                            elementType = AxiomSOAP12FaultNode.class;
                             nodePresent = true;
                         }
                     } else {
@@ -134,9 +125,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             throw new OMBuilderException(
                                     "Multiple Role element encountered");
                         } else {
-                            element =
-                                    factory.createSOAPFaultRole(
-                                            (SOAPFault) parent, builder);
+                            elementType = AxiomSOAP12FaultRole.class;
                             rolePresent = true;
                         }
                     } else {
@@ -156,9 +145,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             throw new OMBuilderException(
                                     "Multiple detail element encountered");
                         } else {
-                            element =
-                                    factory.createSOAPFaultDetail(
-                                            (SOAPFault) parent, builder);
+                            elementType = AxiomSOAP12FaultDetail.class;
                             detailPresent = true;
                         }
                     } else {
@@ -182,9 +169,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 if (parser.getLocalName().equals(
                         SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
                     if (!valuePresent) {
-                        element =
-                                factory.createSOAPFaultValue(
-                                        (SOAPFaultCode) parent, builder);
+                        elementType = AxiomSOAP12FaultValue.class;
                         valuePresent = true;
                         codeprocessing = false;
                     } else {
@@ -196,9 +181,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
                     if (!subcodePresent) {
                         if (valuePresent) {
-                            element =
-                                    factory.createSOAPFaultSubCode(
-                                            (SOAPFaultCode) parent, builder);
+                            elementType = AxiomSOAP12FaultSubCode.class;
                             subcodePresent = true;
                             subCodeProcessing = true;
                         } else {
@@ -220,9 +203,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME)) {
                 if (parser.getLocalName().equals(
                         SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME)) {
-                    element =
-                            factory.createSOAPFaultText(
-                                    (SOAPFaultReason) parent, builder);
+                    elementType = AxiomSOAP12FaultText.class;
                     reasonProcessing = false;
                 } else {
                     throw new OMBuilderException(
@@ -231,9 +212,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 }
             } else if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
-                element =
-                        this.factory.createOMElement(
-                                parser.getLocalName(), parent, builder);
+                elementType = AxiomElement.class;
                 processingDetailElements = true;
                 detailElementNames = new Vector();
                 detailElementNames.add(parser.getLocalName());
@@ -254,9 +233,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         throw new OMBuilderException(
                                 "multiple subCode value encountered");
                     } else {
-                        element =
-                                factory.createSOAPFaultValue(
-                                        (SOAPFaultSubCode) parent, builder);
+                        elementType = AxiomSOAP12FaultValue.class;
                         subcodeValuePresent = true;
                         subSubcodePresent = false;
                         subCodeProcessing = false;
@@ -265,10 +242,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
                     if (subcodeValuePresent) {
                         if (!subSubcodePresent) {
-                            element =
-                                    factory.createSOAPFaultSubCode(
-                                            (SOAPFaultSubCode) parent,
-                                            builder);
+                            elementType = AxiomSOAP12FaultSubCode.class;
                             subcodeValuePresent = false;
                             subSubcodePresent = true;
                             subCodeProcessing = true;
@@ -297,11 +271,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 }
                 if (localNameExist) {
                     detailElementNames.setSize(detailElementLevel);
-                    element =
-                            this.factory.createOMElement(
-                                    parser.getLocalName(),
-                                    parent,
-                                    builder);
+                    elementType = AxiomElement.class;
                     detailElementNames.add(parser.getLocalName());
                 }
 
@@ -312,6 +282,6 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                 elementLevel);
             }
         }
-        return element;
+        return elementType;
     }
 }

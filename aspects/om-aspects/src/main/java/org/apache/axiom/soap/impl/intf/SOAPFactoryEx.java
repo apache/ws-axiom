@@ -16,19 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.intf;
 
-package org.apache.axiom.soap.impl.common.builder;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPMessage;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.soap.SOAPProcessingException;
+/**
+ * Interface that is used internally by Axiom and that should not be considered being part of the
+ * public API.
+ */
+public interface SOAPFactoryEx extends SOAPFactory, OMFactoryEx {
 
-import javax.xml.stream.XMLStreamReader;
+    SOAPHelper getSOAPHelper();
 
-public abstract class SOAPBuilderHelper {
-    protected XMLStreamReader parser;
+    SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
 
-    public abstract Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
-                                          OMElement element,
-                                          int elementLevel) throws SOAPProcessingException;
 }

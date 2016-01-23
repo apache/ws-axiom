@@ -36,9 +36,9 @@ import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -817,29 +817,28 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @return Returns OMNode.
      * @throws OMException
      */
-    // This method is not meant to be overridden. Override constructNode to create model specific OMElement instances.
     protected final OMNode createOMElement() throws OMException {
-        OMElement node = constructNode(target, parser.getLocalName());
+        AxiomElement node = ((OMFactoryEx)omfactory).createAxiomElement(determineElementType(target, parser.getLocalName()), parser.getLocalName(), target, this);
+        postProcessElement(node);
         populateOMElement(node);
         return node;
     }
 
     /**
-     * Instantiate the appropriate {@link OMElement} implementation for the current element. This
-     * method may be overridden by subclasses to support model specific {@link OMElement} types. The
-     * implementation of this method is expected to initialize the {@link OMElement} with the
-     * specified local name and to add it to the specified parent. However, the implementation
-     * should not set the namespace of the element or process the attributes of the element. This is
-     * taken care of by the caller of this method.
+     * Determine the element type to use for the current element. This method may be overridden by
+     * subclasses to support model specific {@link OMElement} types.
      * 
      * @param parent
      *            the parent for the element
      * @param elementName
      *            the local name for the element
-     * @return the newly created {@link OMElement}; must not be <code>null</code>
+     * @return the type of element to create; must not be <code>null</code>
      */
-    protected OMElement constructNode(OMContainer parent, String elementName) {
-        return omfactory.createOMElement(parser.getLocalName(), target, this);
+    protected Class<? extends AxiomElement> determineElementType(OMContainer parent, String elementName) {
+        return AxiomElement.class;
+    }
+    
+    protected void postProcessElement(OMElement element) {
     }
     
     /**

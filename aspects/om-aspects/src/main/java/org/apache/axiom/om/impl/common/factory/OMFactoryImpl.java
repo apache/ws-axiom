@@ -42,7 +42,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -57,6 +56,7 @@ import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.AxiomText;
+import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.om.impl.intf.TextContent;
 
 public class OMFactoryImpl implements OMFactoryEx {
@@ -248,7 +248,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         return createOMElement(localName, ns, null);
     }
 
-    public final <T extends AxiomElement> T createAxiomElement(Class<T> type,
+    protected final <T extends AxiomElement> T createAxiomElement(Class<T> type,
             OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
             boolean generateNSDecl) {
         T element = createNode(type);
@@ -264,9 +264,9 @@ public class OMFactoryImpl implements OMFactoryEx {
         return createAxiomElement(AxiomElement.class, parent, localName, ns, null, true);
     }
 
-    public final OMElement createOMElement(String localName, OMContainer parent,
-            OMXMLParserWrapper builder) {
-        return createAxiomElement(AxiomElement.class, parent, localName, null, builder, false);
+    public final <T extends AxiomElement> T createAxiomElement(Class<T> type, String localName,
+            OMContainer parent, OMXMLParserWrapper builder) {
+        return createAxiomElement(type, parent, localName, null, builder, false);
     }
     
     public final OMElement createOMElement(QName qname, OMContainer parent) {

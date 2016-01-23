@@ -20,57 +20,45 @@
 package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.exception.OMBuilderException;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultDetail;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultRole;
 import org.w3c.dom.Element;
 
 import javax.xml.stream.XMLStreamReader;
 
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {
-    private final SOAPFactoryEx factory;
     private boolean faultcodePresent = false;
     private boolean faultstringPresent = false;
 
-    public SOAP11BuilderHelper(StAXSOAPModelBuilder builder, SOAPFactoryEx factory) {
-        super(builder);
-        this.factory = factory;
-    }
-
-    public OMElement handleEvent(XMLStreamReader parser,
+    public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
                                  OMElement parent,
                                  int elementLevel) throws SOAPProcessingException {
         this.parser = parser;
 
-        OMElement element = null;
+        Class<? extends AxiomElement> elementType = null;
         String localName = parser.getLocalName();
 
         if (elementLevel == 4) {
 
             if (SOAP_FAULT_CODE_LOCAL_NAME.equals(localName)) {
 
-                element = factory.createSOAPFaultCode(
-                        (SOAPFault) parent, builder);
+                elementType = AxiomSOAP11FaultCode.class;
                 faultcodePresent = true;
             } else if (SOAP_FAULT_STRING_LOCAL_NAME.equals(localName)) {
 
-                element = factory.createSOAPFaultReason(
-                        (SOAPFault) parent, builder);
+                elementType = AxiomSOAP11FaultReason.class;
                 faultstringPresent = true;
             } else if (SOAP_FAULT_ACTOR_LOCAL_NAME.equals(localName)) {
-                element =
-                        factory.createSOAPFaultRole((SOAPFault) parent,
-                                                    builder);
+                elementType = AxiomSOAP11FaultRole.class;
             } else if (SOAP_FAULT_DETAIL_LOCAL_NAME.equals(localName)) {
-                element =
-                        factory.createSOAPFaultDetail((SOAPFault) parent,
-                                                      builder);
+                elementType = AxiomSOAP11FaultDetail.class;
             } else {
-                element =
-                        factory.createOMElement(
-                                localName, parent, builder);
+                elementType = AxiomElement.class;
             }
 
         } else if (elementLevel == 5) {
@@ -94,18 +82,13 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 throw new SOAPProcessingException(
                         "faultactor element should not have children");
             } else {
-                element =
-                        this.factory.createOMElement(
-                                localName, parent, builder);
+                elementType = AxiomElement.class;
             }
 
         } else if (elementLevel > 5) {
-            element =
-                    this.factory.createOMElement(localName,
-                                                 parent,
-                                                 builder);
+            elementType = AxiomElement.class;
         }
 
-        return element;
+        return elementType;
     }
 }

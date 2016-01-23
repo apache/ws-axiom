@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
@@ -38,13 +39,8 @@ public interface OMFactoryEx extends OMFactory {
 
     OMDocument createOMDocument(OMXMLParserWrapper builder);
 
-    /**
-     * @param localName
-     * @param parent
-     * @param builder
-     */
-    OMElement createOMElement(String localName, OMContainer parent,
-                                     OMXMLParserWrapper builder);
+    <T extends AxiomElement> T createAxiomElement(Class<T> type, String localName,
+            OMContainer parent, OMXMLParserWrapper builder);
 
     OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder);
     

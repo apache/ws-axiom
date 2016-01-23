@@ -510,24 +510,15 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constant
         return createElement(elementType, qname, parent);
     }
 
-    protected OMElement createElementFromBuilder(QName qname, OMContainer parent, FOMBuilder builder) {
+    protected Class<? extends FOMElement> determineElementType(QName qname, OMContainer parent) {
         Class<? extends FOMElement> elementType = elementTypeMap.get(qname);
-        if (elementType == null) {
-            if (parent instanceof ExtensibleElement || parent instanceof Document) {
-                elementType = FOMExtensibleElement.class;
-            } else {
-                elementType = FOMElement.class;
-            }
+        if (elementType != null) {
+            return elementType;
+        } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
+            return FOMExtensibleElement.class;
+        } else {
+            return FOMElement.class;
         }
-        OMElement element = createAxiomElement(elementType, parent, qname.getLocalPart(), null, builder, false);
-        if (element instanceof FOMContent) {
-            Content.Type type = builder.getContentType();
-            ((FOMContent)element).setContentType(type == null ? Content.Type.TEXT : type);
-        } else if (element instanceof FOMText) {
-            Text.Type type = builder.getTextType();
-            ((FOMText)element).setTextType(type == null ? Text.Type.TEXT : type);
-        }
-        return element;
     }
 
     public Factory registerExtension(ExtensionFactory factory) {

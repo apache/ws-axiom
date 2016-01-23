@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
 @SuppressWarnings("unchecked")
 public class FOMBuilder extends StAXOMBuilder implements Constants {
@@ -91,8 +92,20 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     }
 
     @Override
-    protected OMElement constructNode(OMContainer parent, String name) {
-        return fomfactory.createElementFromBuilder(parser.getName(), parent, this);
+    protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
+            String elementName) {
+        return fomfactory.determineElementType(parser.getName(), parent);
+    }
+
+    @Override
+    protected void postProcessElement(OMElement element) {
+        if (element instanceof FOMContent) {
+            Content.Type type = getContentType();
+            ((FOMContent)element).setContentType(type == null ? Content.Type.TEXT : type);
+        } else if (element instanceof FOMText) {
+            Text.Type type = getTextType();
+            ((FOMText)element).setTextType(type == null ? Text.Type.TEXT : type);
+        }
     }
 
     public <T extends Element> Document<T> getFomDocument() {

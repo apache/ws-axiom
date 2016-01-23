@@ -40,10 +40,10 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPVersion;
-import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
+import org.apache.axiom.soap.impl.intf.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFactoryEx {
@@ -51,8 +51,6 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         super(metaFactory, nodeFactory);
     }
     
-    protected abstract SOAPHelper getSOAPHelper();
-
     public final String getSoapVersionURI() {
         return getSOAPHelper().getEnvelopeURI();
     }
@@ -65,7 +63,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return getSOAPHelper().getNamespace();
     }
     
-    public final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname, OMXMLParserWrapper builder) {
+    protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname, OMXMLParserWrapper builder) {
         T element = createNode(type);
         if (builder != null) {
             element.coreSetBuilder(builder);
@@ -111,21 +109,13 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return createAxiomElement(getSOAPHelper().getEnvelopeClass(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, null, true);
     }
 
-    public final SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
-        return createAxiomElement(getSOAPHelper().getEnvelopeClass(), message, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, null, builder, false);
-    }
-
-    public final SOAPHeader createSOAPHeader(SOAPEnvelope parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName(), builder);
-    }
-
     public final SOAPHeader createSOAPHeader(SOAPEnvelope parent) {
-        return createSOAPHeader(parent, null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName(), null);
     }
 
     public final SOAPHeader createSOAPHeader() {
-        return createSOAPHeader(null, null);
+        return createSOAPHeader(null);
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
@@ -134,10 +124,6 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) {
         return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), null, localName, ns, null, true);
-    }
-
-    public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, SOAPHeader parent, OMXMLParserWrapper builder) {
-        return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), parent, localName, null, builder, false);
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
@@ -152,88 +138,64 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return element;
     }
 
-    public final SOAPBody createSOAPBody(SOAPEnvelope parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName(), builder);
-    }
-
     public final SOAPBody createSOAPBody(SOAPEnvelope parent) {
-        return createSOAPBody(parent, null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName(), null);
     }
 
     public final SOAPBody createSOAPBody() {
-        return createSOAPBody(null, null);
-    }
-
-    public final SOAPFault createSOAPFault(SOAPBody parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultClass(), parent, helper.getFaultQName(), builder);
+        return createSOAPBody(null);
     }
 
     public final SOAPFault createSOAPFault(SOAPBody parent) {
-        return createSOAPFault(parent, (OMXMLParserWrapper)null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getFaultClass(), parent, helper.getFaultQName(), null);
     }
 
     public final SOAPFault createSOAPFault() {
-        return createSOAPFault(null, (OMXMLParserWrapper)null);
+        return createSOAPFault(null);
     }
 
     public final SOAPFault createSOAPFault(SOAPBody parent, Exception e) {
-        SOAPFault fault = createSOAPFault(parent, (OMXMLParserWrapper)null);
+        SOAPFault fault = createSOAPFault(parent);
         fault.setException(e);
         return fault;
     }
 
-    public final SOAPFaultCode createSOAPFaultCode(SOAPFault parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultCodeClass(), parent, helper.getFaultCodeQName(), builder);
-    }
-
     public final SOAPFaultCode createSOAPFaultCode(SOAPFault parent) {
-        return createSOAPFaultCode(parent, null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getFaultCodeClass(), parent, helper.getFaultCodeQName(), null);
     }
 
     public final SOAPFaultCode createSOAPFaultCode() {
-        return createSOAPFaultCode(null, null);
-    }
-
-    public final SOAPFaultReason createSOAPFaultReason(SOAPFault parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultReasonClass(), parent, helper.getFaultReasonQName(), builder);
+        return createSOAPFaultCode(null);
     }
 
     public final SOAPFaultReason createSOAPFaultReason(SOAPFault parent) {
-        return createSOAPFaultReason(parent, null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getFaultReasonClass(), parent, helper.getFaultReasonQName(), null);
     }
 
     public final SOAPFaultReason createSOAPFaultReason() {
-        return createSOAPFaultReason(null, null);
-    }
-
-    public final SOAPFaultRole createSOAPFaultRole(SOAPFault parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultRoleClass(), parent, helper.getFaultRoleQName(), builder);
+        return createSOAPFaultReason(null);
     }
 
     public final SOAPFaultRole createSOAPFaultRole(SOAPFault parent) {
-        return createSOAPFaultRole(parent, null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getFaultRoleClass(), parent, helper.getFaultRoleQName(), null);
     }
 
     public final SOAPFaultRole createSOAPFaultRole() {
-        return createSOAPFaultRole(null, null);
-    }
-
-    public final SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent, OMXMLParserWrapper builder) {
-        SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultDetailClass(), parent, helper.getFaultDetailQName(), builder);
+        return createSOAPFaultRole(null);
     }
 
     public final SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) {
-        return createSOAPFaultDetail(parent, null);
+        SOAPHelper helper = getSOAPHelper();
+        return createSOAPElement(helper.getFaultDetailClass(), parent, helper.getFaultDetailQName(), null);
     }
 
     public final SOAPFaultDetail createSOAPFaultDetail() {
-        return createSOAPFaultDetail(null, null);
+        return createSOAPFaultDetail(null);
     }
 
     public final SOAPMessage createDefaultSOAPMessage() {
