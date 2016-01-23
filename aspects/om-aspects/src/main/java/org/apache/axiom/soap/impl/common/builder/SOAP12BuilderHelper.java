@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.common.builder;
 
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFault;
@@ -224,7 +223,6 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     element =
                             factory.createSOAPFaultText(
                                     (SOAPFaultReason) parent, builder);
-                    ((OMNodeEx) element).setComplete(false);
                     reasonProcessing = false;
                 } else {
                     throw new OMBuilderException(

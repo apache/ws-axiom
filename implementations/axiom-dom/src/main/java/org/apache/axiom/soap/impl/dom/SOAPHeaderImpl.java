@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -60,7 +59,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
-        ((OMNodeEx) soapHeaderBlock).setComplete(true);
         return soapHeaderBlock;
     }
 
