@@ -33,12 +33,12 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -942,7 +942,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     public final OMElement getDocumentElement(boolean discardDocument) {
         OMElement element = getDocument().getOMDocumentElement();
         if (discardDocument) {
-            ((OMElementEx)element).detachAndDiscardParent();
+            ((AxiomElement)element).detachAndDiscardParent();
             document = null;
         }
         return element;
@@ -981,7 +981,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                 prefix = "";
             }
             
-            ((OMElementEx)node).addNamespaceDeclaration(namespaceURI, prefix);
+            ((AxiomElement)node).addNamespaceDeclaration(namespaceURI, prefix);
         }
 
         // set the own namespace

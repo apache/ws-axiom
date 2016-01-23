@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMElementEx;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 
 /**
  * For internal use only.
@@ -46,7 +46,7 @@ public class BuilderUtil {
             }
             // This is actually the place where we perform namespace repairing as specified
             // in the contract of OMXMLBuilderFactory#createStAXOMBuilder:
-            namespace = ((OMElementEx)element).addNamespaceDeclaration(namespaceURI, prefix);
+            namespace = ((AxiomElement)element).addNamespaceDeclaration(namespaceURI, prefix);
         }
         if (namespace != null && namespaceURI.length() > 0) {
             element.setNamespace(namespace, false);

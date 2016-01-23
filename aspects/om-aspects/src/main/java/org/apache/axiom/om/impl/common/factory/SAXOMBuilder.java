@@ -26,10 +26,10 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -142,14 +142,14 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
         OMElement element = factory.createOMElement(localName, parent, this);
         for (int i = 0; i < namespaceCount; i++) {
-            ((OMElementEx)element).addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
+            ((AxiomElement)element).addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
         }
         BuilderUtil.setNamespace(element, namespaceURI, prefix, false);
         return element;
     }
 
     protected void completed(OMElement element) {
-        ((OMElementEx)element).setComplete(true);
+        ((AxiomElement)element).setComplete(true);
     }
 
     protected void createOMText(OMContainer parent, String text, int type) {

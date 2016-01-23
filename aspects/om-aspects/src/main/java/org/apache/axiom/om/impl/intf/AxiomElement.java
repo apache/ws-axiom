@@ -20,9 +20,27 @@ package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.DeferringParentNode;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.OMElementEx;
 
-public interface AxiomElement extends OMElementEx, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement, DeferringParentNode {
+public interface AxiomElement extends OMElement, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement, DeferringParentNode {
+    /**
+     * Adds a namespace declaration without doing any additional checks. This method is used
+     * internally by the builder (which can safely assume that the data received from the parser is
+     * well formed with respect to namespaces).
+     * <p>
+     * In contrast to {@link OMElement#declareNamespace(String, String)} this method can be used to
+     * declare the default namespace.
+     * 
+     * @param uri
+     *            the namespace to declare; must not be <code>null</code>
+     * @param prefix
+     *            the prefix to associate with the given namespace; must not be <code>null</code>
+     * @return the created namespace information item
+     */
+    OMNamespace addNamespaceDeclaration(String uri, String prefix);
+    
+    void detachAndDiscardParent();
+    
     void addNamespaceDeclaration(OMNamespace ns);
 }
