@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMAttributeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
@@ -84,7 +83,7 @@ import java.util.Map;
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
-public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
+public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
     /** Field parser */
@@ -299,7 +298,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         element.discard();
     }
     
-    public final void discard(OMContainer container) throws OMException {
+    public final void discard(OMContainer container) {
         int targetElementLevel = elementLevel;
         OMContainerEx current = target;
         while (current != container) {
@@ -597,13 +596,6 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         }
     }
 
-    /**
-     * Get the value of a feature/property from the underlying XMLStreamReader implementation
-     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/AXIOM-348
-     *
-     * @param name
-     * @return TODO
-     */
     public final Object getReaderProperty(String name) throws IllegalArgumentException {
         if (!isClosed()) {
             return parser.getProperty(name);
@@ -622,9 +614,6 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         return this.charEncoding;
     }
     
-    /**
-     * @return if parser is closed
-     */
     public final boolean isClosed() {
         return _isClosed;
     }

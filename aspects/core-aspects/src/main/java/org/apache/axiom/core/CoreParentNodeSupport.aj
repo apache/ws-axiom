@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.Builder;
 
 public aspect CoreParentNodeSupport {
     private Object CoreParentNode.content;
@@ -89,7 +89,7 @@ public aspect CoreParentNodeSupport {
         OMXMLParserWrapper builder = getBuilder();
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
-        } else if (((StAXOMBuilder)builder).isClosed()) {
+        } else if (((Builder)builder).isClosed()) {
             throw new OMException("The builder has already been closed");
         } else if (!builder.isCompleted()) {
             builder.next();
@@ -105,7 +105,7 @@ public aspect CoreParentNodeSupport {
         if (firstChild == null) {
             switch (getState()) {
                 case CoreParentNode.DISCARDED:
-                    ((StAXOMBuilder)getBuilder()).debugDiscarded(this);
+                    ((Builder)getBuilder()).debugDiscarded(this);
                     throw new NodeUnavailableException();
                 case CoreParentNode.INCOMPLETE:
                     do {
@@ -198,7 +198,7 @@ public aspect CoreParentNodeSupport {
                 if (lastChild instanceof CoreParentNode) {
                     ((CoreParentNode)lastChild).build();
                 }
-                ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
+                ((Builder)getBuilder()).discard((OMContainer)this);
                 updateState = true;
             } else {
                 updateState = false;

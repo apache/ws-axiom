@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.ts.AxiomTestCase;
 
 import javax.xml.stream.XMLStreamReader;
@@ -60,14 +60,14 @@ public class TestClose extends AxiomTestCase {
         reader.close();  // This should be a noop since the parser is closed.
         
         // Closing the parser should also close the parser on the builder (since they are the same)
-        assertTrue(((StAXOMBuilder)b).isClosed());
+        assertTrue(((Builder)b).isClosed());
         b.close(); // This should be a noop since the parser is closed
         
         // Calling getProperty after a close should return null, not an exception
         assertTrue(reader.getProperty("dummyProperty") == null);
         
         // Calling builder.getReaderProperty should return null, not an exception
-        assertTrue(((StAXOMBuilder)b).getReaderProperty("dummyProperty") == null);
+        assertTrue(((Builder)b).getReaderProperty("dummyProperty") == null);
     }
 
 

@@ -49,7 +49,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -228,7 +228,7 @@ public aspect AxiomElementSupport {
 
     public final void AxiomElement.discard() {
         if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
-            ((StAXOMBuilder)getBuilder()).discard((OMContainer)this);
+            ((Builder)getBuilder()).discard((OMContainer)this);
         }
         detach();
     }

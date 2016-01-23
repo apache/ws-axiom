@@ -20,7 +20,7 @@ package org.apache.axiom.core;
 
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.Builder;
 
 public aspect CoreChildNodeSupport {
     private CoreParentNode CoreChildNode.owner;
@@ -108,7 +108,7 @@ public aspect CoreChildNodeSupport {
             if (parent != null && parent.getBuilder() != null) {
                 switch (parent.getState()) {
                     case CoreParentNode.DISCARDED:
-                        ((StAXOMBuilder)parent.getBuilder()).debugDiscarded(parent);
+                        ((Builder)parent.getBuilder()).debugDiscarded(parent);
                         throw new NodeUnavailableException();
                     case CoreParentNode.INCOMPLETE:
                         do {

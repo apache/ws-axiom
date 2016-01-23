@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
@@ -58,9 +58,8 @@ public aspect AxiomSerializableSupport {
         setComplete(true);
         
         // If this is a StAXBuilder, close it.
-        if (builder instanceof StAXOMBuilder &&
-            !((StAXOMBuilder) builder).isClosed()) {
-            ((StAXOMBuilder) builder).close();
+        if (builder instanceof Builder) {
+            ((Builder) builder).close();
         }
     }
 }

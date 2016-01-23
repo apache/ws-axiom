@@ -23,13 +23,13 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.Builder;
 
 final class PullThroughWrapper extends AbstractWrapper {
-    private final StAXOMBuilder builder;
+    private final Builder builder;
     private final OMContainer container;
 
-    PullThroughWrapper(PullSerializer serializer, StAXOMBuilder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
+    PullThroughWrapper(PullSerializer serializer, Builder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
         super(serializer, reader, startDepth);
         this.builder = builder;
         this.container = container;
