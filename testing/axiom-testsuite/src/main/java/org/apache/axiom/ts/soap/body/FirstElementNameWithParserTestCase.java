@@ -32,10 +32,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
+import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -62,7 +62,7 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
         if (supportsOptimization) {
             // To detect if the child element is instantiated or not, we register a custom
             // builder that throws an exception.
-            ((StAXSOAPModelBuilder)builder).registerCustomBuilderForPayload(new CustomBuilder() {
+            ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new CustomBuilder() {
                 public OMElement create(String namespace, String localPart,
                         OMContainer parent, XMLStreamReader reader, OMFactory factory)
                         throws OMException {

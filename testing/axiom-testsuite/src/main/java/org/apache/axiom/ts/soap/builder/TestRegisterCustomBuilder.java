@@ -24,9 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
+import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.apache.axiom.ts.soap.SOAPSampleAdapter;
@@ -39,8 +40,8 @@ public class TestRegisterCustomBuilder extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        builder.registerCustomBuilder(new QName("http://www.w3.org/2005/08/addressing", "To"), 3,
+        SOAPModelBuilder builder = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
+        ((CustomBuilderSupport)builder).registerCustomBuilder(new QName("http://www.w3.org/2005/08/addressing", "To"), 3,
                 new ByteArrayCustomBuilder("utf-8"));
         SOAPHeader header = builder.getSOAPEnvelope().getHeader();
         ArrayList al = header.getHeaderBlocksWithNSURI("http://www.w3.org/2005/08/addressing");

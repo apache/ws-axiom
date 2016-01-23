@@ -23,16 +23,17 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
+import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SampleBasedSOAPTestCase;
 
 /**
  * Tests that a custom builder registered with
- * {@link StAXSOAPModelBuilder#registerCustomBuilderForPayload(CustomBuilder)} is still taken into
+ * {@link CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)} is still taken into
  * account after using {@link SOAPBody#hasFault()}. This assumes that the Axiom implementation
  * supports the optimization described by <a
  * href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>.
@@ -43,7 +44,7 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends Samp
     }
 
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
-        StAXSOAPModelBuilder builder = (StAXSOAPModelBuilder)envelope.getBuilder();
+        SOAPModelBuilder builder = (SOAPModelBuilder)envelope.getBuilder();
         
         // Do a fault check.  This is normally done in the engine (Axiom) and should
         // not cause inteference with the custom builder processing
@@ -51,7 +52,7 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends Samp
 
         // Do the registration here...this simulates when it could occure in the engine
         // (After the fault check and during phase processing...probably dispatch phase)
-        builder.registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
+        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
         
         OMElement bodyElement = envelope.getBody().getFirstElement();
         assertTrue(bodyElement instanceof OMSourcedElement);
