@@ -37,6 +37,7 @@
         <module>shade-axiom-xml</module>
         <module>shade-osgi</module>
         <module>javadoc-postprocessor-plugin</module>
+        <module>no-package-cycles-enforcer-rule</module>
     </modules>
 
     <build>

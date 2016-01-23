@@ -259,6 +259,7 @@
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
         <shade.plugin.version>2.3</shade.plugin.version>
+        <enforcer.plugin.version>1.4.1</enforcer.plugin.version>
         <jacoco.version>0.7.5.201505241946</jacoco.version>
         <spring.version>4.2.1.RELEASE</spring.version>
         <springws.version>2.2.4.RELEASE</springws.version>
@@ -714,14 +715,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.4.1</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>de.andrena.tools.nopackagecycles</groupId>
-                            <artifactId>no-package-cycles-enforcer-rule</artifactId>
-                            <version>1.0.4</version>
-                        </dependency>
-                    </dependencies>
+                    <version>${enforcer.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
