@@ -213,7 +213,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                                                       getSenderFaultCode());
                 }
             } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
-                element = omfactory.createOMElement(parser.getLocalName(), parent, this);
+                element = soapFactory.createOMElement(parser.getLocalName(), parent, this);
             } else {
                 throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
                         + elementNS + "}" + elementName);

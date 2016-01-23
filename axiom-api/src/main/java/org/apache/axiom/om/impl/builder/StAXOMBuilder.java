@@ -91,7 +91,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     protected XMLStreamReader parser;
 
     /** Field omfactory */
-    protected OMFactoryEx omfactory;
+    private OMFactoryEx omfactory;
     
     private final Detachable detachable;
     private final Closeable closeable;
@@ -102,29 +102,29 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     // returns the state of completion
 
     /** Field done */
-    protected boolean done = false;
+    private boolean done = false;
 
     // keeps the state of the cache
 
     /** Field cache */
-    protected boolean cache = true;
+    private boolean cache = true;
 
     // keeps the state of the parser access. if the parser is
     // accessed atleast once,this flag will be set
 
     /** Field parserAccessed */
-    protected boolean parserAccessed = false;
-    protected OMDocument document;
+    private boolean parserAccessed = false;
+    private OMDocument document;
 
-    protected String charEncoding = null;
+    private String charEncoding = null;
     
     /**
      * Specifies whether the builder/parser should be automatically closed when the
      * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
      */
-    boolean autoClose;
+    private boolean autoClose;
     
-    protected boolean _isClosed = false;              // Indicate if parser is closed
+    private boolean _isClosed = false;              // Indicate if parser is closed
 
     // Fields for Custom Builder implementation
     protected CustomBuilder customBuilderForPayload = null;
@@ -135,7 +135,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * Reference to the {@link DataHandlerReader} extension of the parser, or <code>null</code> if
      * the parser doesn't support this extension.
      */
-    protected DataHandlerReader dataHandlerReader;
+    private DataHandlerReader dataHandlerReader;
     
     /**
      * Tracks the depth of the node identified by {@link #target}. By definition, the level of the
@@ -148,7 +148,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * Stores exceptions thrown by the parser. Used to avoid accessing the parser
      * again after is has thrown a parse exception.
      */
-    protected Exception parserException;
+    private Exception parserException;
     
     /**
      * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
@@ -205,7 +205,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      *
      * @param node
      */
-    protected void processAttributes(OMElement node) {
+    private void processAttributes(OMElement node) {
         int attribCount = parser.getAttributeCount();
         for (int i = 0; i < attribCount; i++) {
             String uri = parser.getAttributeNamespace(i);
@@ -242,7 +242,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @param textType
      * @return omNode
      */
-    protected OMNode createOMText(int textType) {
+    private OMNode createOMText(int textType) {
         if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
             Object dataHandlerObject;
             if (dataHandlerReader.isDeferred()) {
@@ -286,7 +286,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * 
      * @param container
      */
-    public void debugDiscarded(Object container) {
+    public final void debugDiscarded(Object container) {
         if (log.isDebugEnabled() && discardTracker != null) {
             Throwable t = (Throwable)discardTracker.get(container);
             if (t != null) {
@@ -296,12 +296,12 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     }
     
     // For compatibility only
-    public void discard(OMElement element) throws OMException {
+    public final void discard(OMElement element) throws OMException {
         discard((OMContainer)element);
         element.discard();
     }
     
-    public void discard(OMContainer container) throws OMException {
+    public final void discard(OMContainer container) throws OMException {
         int targetElementLevel = elementLevel;
         OMContainerEx current = target;
         while (current != container) {
@@ -360,7 +360,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @return Returns String.
      * @throws OMException
      */
-    public String getNamespace() throws OMException {
+    public final String getNamespace() throws OMException {
         return parser.getNamespaceURI();
     }
 
@@ -369,7 +369,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      *
      * @param b
      */
-    public void setCache(boolean b) {
+    public final void setCache(boolean b) {
         if (parserAccessed && b) {
             throw new UnsupportedOperationException(
                     "parser accessed. cannot set cache");
@@ -380,7 +380,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     /**
      * @return true if caching
      */
-    public boolean isCache() {
+    public final boolean isCache() {
         return cache;
     }
 
@@ -390,7 +390,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @return Returns String.
      * @throws OMException
      */
-    public String getName() throws OMException {
+    public final String getName() throws OMException {
         return parser.getLocalName();
     }
 
@@ -400,7 +400,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @return Returns String.
      * @throws OMException
      */
-    public String getPrefix() throws OMException {
+    public final String getPrefix() throws OMException {
         return parser.getPrefix();
     }
 
@@ -423,7 +423,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @throws IllegalStateException
      *             if the parser has already been accessed
      */
-    public Object getParser() {
+    public final Object getParser() {
         if (parserAccessed) {
             throw new IllegalStateException(
                     "Parser already accessed!");
@@ -451,7 +451,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     /**
      * For internal use only.
      */
-    public XMLStreamReader disableCaching() {
+    public final XMLStreamReader disableCaching() {
         cache = false;
         // Always advance to the event right after the current node; this also takes
         // care of lookahead
@@ -467,7 +467,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      */
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
-    public void reenableCaching(OMContainer container) {
+    public final void reenableCaching(OMContainer container) {
         OMContainerEx current = target;
         while (true) {
             discarded(current);
@@ -511,11 +511,11 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      *
      * @return Returns boolean.
      */
-    public boolean isCompleted() {
+    public final boolean isCompleted() {
         return done;
     }
 
-    public CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
+    public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
         CustomBuilder old = null;
         if (customBuilders == null) {
             customBuilders = new HashMap<QName,CustomBuilder>();
@@ -530,7 +530,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
     }
     
     
-    public CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
+    public final CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
         CustomBuilder old = null;
         this.customBuilderForPayload = customBuilder;
         return old;
@@ -542,7 +542,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @param localPart
      * @return CustomBuilder or null
      */ 
-    protected CustomBuilder getCustomBuilder(String namespace, String localPart) {
+    protected final CustomBuilder getCustomBuilder(String namespace, String localPart) {
         if (customBuilders == null) {
             return null;
         }
@@ -550,7 +550,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         return customBuilders.get(qName);
     }
 
-    protected void createDocumentIfNecessary() {
+    private void createDocumentIfNecessary() {
         if (document == null && parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
             document = createDocument();
             if (charEncoding != null) {
@@ -563,7 +563,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         }
     }
     
-    public OMDocument getDocument() {
+    public final OMDocument getDocument() {
         createDocumentIfNecessary();
         if (document == null) {
             throw new UnsupportedOperationException("There is no document linked to this builder");
@@ -571,11 +571,11 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         return document;
     }
 
-    public String getCharsetEncoding() {
+    public final String getCharsetEncoding() {
         return document.getCharsetEncoding();
     }
 
-    public void close() {
+    public final void close() {
         try {
             if (!isClosed()) {
                 parser.close();
@@ -606,7 +606,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @param name
      * @return TODO
      */
-    public Object getReaderProperty(String name) throws IllegalArgumentException {
+    public final Object getReaderProperty(String name) throws IllegalArgumentException {
         if (!isClosed()) {
             return parser.getProperty(name);
         } 
@@ -617,7 +617,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * Returns the encoding style of the XML data
      * @return the character encoding, defaults to "UTF-8"
      */
-    public String getCharacterEncoding() {
+    public final String getCharacterEncoding() {
         if(this.charEncoding == null){
             return "UTF-8";
         }
@@ -629,18 +629,18 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * 
      * @param autoClose
      */
-    public void setAutoClose(boolean autoClose) {
+    public final void setAutoClose(boolean autoClose) {
         this.autoClose = autoClose;
     }
     
     /**
      * @return if parser is closed
      */
-    public boolean isClosed() {
+    public final boolean isClosed() {
         return _isClosed;
     }
     
-    public void detach() throws OMException {
+    public final void detach() throws OMException {
         if (detachable != null) {
             detachable.detach();
         } else {
@@ -773,7 +773,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         return newElement;
     }
     
-    protected OMNode createWithCustomBuilder(CustomBuilder customBuilder, OMFactory factory) {
+    protected final OMNode createWithCustomBuilder(CustomBuilder customBuilder, OMFactory factory) {
         
         String namespace = parser.getNamespaceURI();
         if (namespace == null) {
@@ -867,7 +867,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @return Returns OMNode.
      * @throws OMException
      */
-    protected OMNode createComment() throws OMException {
+    private OMNode createComment() throws OMException {
         return omfactory.createOMComment(target, parser.getText(), true);
     }
 
@@ -954,11 +954,11 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
         }
     }
 
-    public OMElement getDocumentElement() {
+    public final OMElement getDocumentElement() {
         return getDocumentElement(false);
     }
 
-    public OMElement getDocumentElement(boolean discardDocument) {
+    public final OMElement getDocumentElement(boolean discardDocument) {
         OMElement element = getDocument().getOMDocumentElement();
         if (discardDocument) {
             ((OMElementEx)element).detachAndDiscardParent();
@@ -972,7 +972,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      *
      * @param node
      */
-    protected void processNamespaceData(OMElement node) {
+    private void processNamespaceData(OMElement node) {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
             String prefix = parser.getNamespacePrefix(i);
@@ -1015,14 +1015,14 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * Set namespace uri interning
      * @param b
      */
-    public void setNamespaceURIInterning(boolean b) {
+    public final void setNamespaceURIInterning(boolean b) {
         this.namespaceURIInterning = b;
     }
     
     /**
      * @return if namespace uri interning 
      */
-    public boolean isNamespaceURIInterning() {
+    public final boolean isNamespaceURIInterning() {
         return this.namespaceURIInterning;
     }
     
@@ -1032,7 +1032,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * @return next token
      * @throws DeferredParsingException
      */
-    int parserNext() {
+    private int parserNext() {
         if (lookAheadToken >= 0) {
             if (log.isDebugEnabled()) {
                 log.debug("Consuming look-ahead token " + XMLEventUtils.getEventTypeString(lookAheadToken));
@@ -1077,7 +1077,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      * This method looks ahead to the next start element.
      * @return true if successful
      */
-    public boolean lookahead()  {
+    public final boolean lookahead()  {
         while (true) {
             if (lookAheadToken < 0) {
                 lookAheadToken = parserNext();
@@ -1113,7 +1113,7 @@ public class StAXOMBuilder implements OMXMLParserWrapper, CustomBuilderSupport {
      *         A return value of <code>false</code> indicates that the node corresponding to the
      *         current token hold by the parser has already been created.
      */
-    public boolean isLookahead() {
+    public final boolean isLookahead() {
         return lookAheadToken >= 0;
     }
 }
