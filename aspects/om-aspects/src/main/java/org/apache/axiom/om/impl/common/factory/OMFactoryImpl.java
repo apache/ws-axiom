@@ -42,7 +42,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
@@ -110,7 +109,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         node.coreSetSystemId(systemId);
         node.coreSetInternalSubset(internalSubset);
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, fromBuilder);
         }
         return node;
     }
@@ -136,7 +135,7 @@ public class OMFactoryImpl implements OMFactoryEx {
                 throw new IllegalArgumentException("Invalid node type");
         }
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, fromBuilder);
         }
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         return node;
@@ -214,7 +213,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         node.coreSetTarget(piTarget);
         node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, fromBuilder);
         }
         return node;
     }
@@ -228,7 +227,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         node.coreSetName(name);
         node.coreSetReplacementText(replacementText);
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, fromBuilder);
         }
         return node;
     }
@@ -241,7 +240,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         AxiomComment node = createNode(AxiomComment.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, fromBuilder);
         }
         return node;
     }

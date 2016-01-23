@@ -18,11 +18,15 @@
  */
 package org.apache.axiom.om.impl.intf;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMContainerEx;
 
-public interface AxiomContainer extends OMContainerEx, AxiomCoreParentNode {
+public interface AxiomContainer extends OMContainer, AxiomCoreParentNode {
+    void discarded();
+    
+    void addChild(OMNode omNode, boolean fromBuilder);
+    
     /**
      * Check if the node can be added as a child of this container.
      * 

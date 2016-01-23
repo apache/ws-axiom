@@ -25,10 +25,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
+import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -56,7 +56,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     }
 
     protected void doEndDocument() {
-        ((OMContainerEx)document).setComplete(true);
+        ((AxiomContainer)document).setComplete(true);
     }
 
     public OMDocument getDocument() {

@@ -32,8 +32,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
@@ -131,7 +131,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         } else {
             // Since we use the createOMElement variant that takes a OMXMLParserWrapper parameter,
             // we need to update the completion status.
-            ((OMContainerEx)parent).setComplete(true);
+            ((AxiomContainer)parent).setComplete(true);
             parent = (OMElement)parent.getParent();
         }
     }

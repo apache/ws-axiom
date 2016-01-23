@@ -19,8 +19,8 @@
 package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.OMNode;
 
-public interface AxiomChildNode extends OMNodeEx, CoreChildNode, AxiomSerializable {
+public interface AxiomChildNode extends OMNode, CoreChildNode, AxiomSerializable {
 
 }

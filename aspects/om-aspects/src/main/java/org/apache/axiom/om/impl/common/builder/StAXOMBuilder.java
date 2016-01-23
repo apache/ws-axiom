@@ -32,12 +32,12 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -101,7 +101,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private final Closeable closeable;
 
     /** Field lastNode */
-    protected OMContainerEx target;
+    protected AxiomContainer target;
 
     // returns the state of completion
 
@@ -198,7 +198,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
         this(factory, parser, characterEncoding, true, null, null);  
         elementLevel = 1;
-        target = (OMContainerEx)element;
+        target = (AxiomContainer)element;
         populateOMElement(element);
     }
     
@@ -274,7 +274,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         }
     }
 
-    private void discarded(OMContainerEx container) {
+    private void discarded(AxiomContainer container) {
         container.discarded();
         if (discardTracker != null) {
             discardTracker.put(container, new Throwable());
@@ -303,10 +303,10 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     
     public final void discard(OMContainer container) {
         int targetElementLevel = elementLevel;
-        OMContainerEx current = target;
+        AxiomContainer current = target;
         while (current != container) {
             targetElementLevel--;
-            current = (OMContainerEx)((OMElement)current).getParent();
+            current = (AxiomContainer)((OMElement)current).getParent();
         }
         if (targetElementLevel == 0 || targetElementLevel == 1 && document == null) {
             close();
@@ -316,7 +316,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                 if (current == container) {
                     break;
                 }
-                current = (OMContainerEx)((OMElement)current).getParent();
+                current = (AxiomContainer)((OMElement)current).getParent();
             }
             return;
         }
@@ -332,7 +332,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                     } else {
                         discarded(target);
                         boolean found = container == target;
-                        target = (OMContainerEx)((OMElement)target).getParent();
+                        target = (AxiomContainer)((OMElement)target).getParent();
                         elementLevel--;
                         if (found) {
                             break loop;
@@ -431,10 +431,10 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         if (!cache) {
             parserAccessed = true;
             // Mark all containers in the hierarchy as discarded because they can no longer be built
-            OMContainerEx current = target;
+            AxiomContainer current = target;
             while (elementLevel > 0) {
                 discarded(current);
-                current = (OMContainerEx)((OMElement)current).getParent();
+                current = (AxiomContainer)((OMElement)current).getParent();
                 elementLevel--;
             }
             if (current != null && current == document) {
@@ -468,7 +468,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
     public final void reenableCaching(OMContainer container) {
-        OMContainerEx current = target;
+        AxiomContainer current = target;
         while (true) {
             discarded(current);
             if (elementLevel == 0) {
@@ -481,7 +481,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             if (current == container) {
                 break;
             }
-            current = (OMContainerEx)((OMElement)current).getParent();
+            current = (AxiomContainer)((OMElement)current).getParent();
         }
         // Note that at this point current == container
         if (container == document) {
@@ -495,7 +495,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             target = null;
             done = true;
         } else {
-            target = (OMContainerEx)((OMElement)container).getParent();
+            target = (AxiomContainer)((OMElement)container).getParent();
         }
         if (log.isDebugEnabled()) {
             log.debug("Caching re-enabled; new element level: " + elementLevel + "; done=" + done);
@@ -559,7 +559,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             document.setXMLVersion(parser.getVersion());
             document.setXMLEncoding(parser.getCharacterEncodingScheme());
             document.setStandalone(parser.isStandalone() ? "yes" : "no");
-            target = (OMContainerEx)document;
+            target = (AxiomContainer)document;
         }
     }
     
@@ -668,7 +668,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                     // If the node was created by a custom builder, then it will be complete;
                     // in this case, the target doesn't change
                     if (!node.isComplete()) {
-                        target = (OMContainerEx)node;
+                        target = (AxiomContainer)node;
                     }
                     break;
                 }
@@ -684,7 +684,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     done = true;
-                    ((OMContainerEx) this.document).setComplete(true);
+                    ((AxiomContainer) this.document).setComplete(true);
                     target = null;
                     break;
                 case XMLStreamConstants.SPACE:
@@ -929,9 +929,9 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             // This is relevant for OMSourcedElements and for the case where the document has been discarded
             // using getDocumentElement(true). In these cases, this will actually set target to null. In all
             // other cases, this will have the same effect as the instruction in the else clause.
-            target = (OMContainerEx)document;
+            target = (AxiomContainer)document;
         } else {
-            target = (OMContainerEx)((OMElement)target).getParent();
+            target = (AxiomContainer)((OMElement)target).getParent();
         }
     }
 
