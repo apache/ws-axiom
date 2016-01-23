@@ -26,18 +26,17 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.SAXOMBuilder;
 
 /**
  * @deprecated In order to create a {@link SAXResult} that builds an Axiom tree, create an
  *             {@link OMDocument} instance and call {@link OMContainer#getSAXResult()} on it.
  */
 public class OMResult extends SAXResult {
-    private final SAXOMBuilder builder;
+    private final OMDocument document;
     
     public OMResult(OMFactory omFactory) {
-        builder = new SAXOMBuilder(omFactory);
-        setHandler(builder);
+        document = omFactory.createOMDocument();
+        setHandler(document.getSAXResult().getHandler());
     }
     
     public OMResult() {
@@ -45,10 +44,10 @@ public class OMResult extends SAXResult {
     }
 
     public OMDocument getDocument() {
-        return builder.getDocument();
+        return document;
     }
 
     public OMElement getRootElement() {
-        return builder.getRootElement();
+        return document.getOMDocumentElement();
     }
 }
