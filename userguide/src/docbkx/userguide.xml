@@ -837,6 +837,7 @@ try {
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-impl</artifactId>
     <version>]]>&version;<![CDATA[</version>
+    <scope>runtime</scope>
 </dependency>]]></programlisting>
                 <para>
                     All Axiom releases are deployed to the Maven central repository and there is no need
