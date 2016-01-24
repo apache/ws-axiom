@@ -56,8 +56,6 @@
             <excludes>
                 <exclude>*:axiom-all</exclude>
                 <exclude>org.apache.abdera:*</exclude>
-                <!-- This dependency should be considered as provided by the application code -->
-                <exclude>javax.xml.bind:jaxb-api</exclude>
             </excludes>
             <useProjectArtifact>false</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>

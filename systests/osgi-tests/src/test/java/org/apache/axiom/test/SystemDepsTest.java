@@ -36,11 +36,7 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 /**
- * Tests that Axiom works properly if the Activation and StAX APIs are resolved from the framework
- * bundle (i.e. from the JRE). This also tests that Axiom works with the StAX implementation from
- * the JRE.
- * <p>
- * Note that this test relies on the fact that the Maven build requires at least Java 1.6.
+ * Tests that Axiom works properly with the StAX implementation from the JRE.
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)

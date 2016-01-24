@@ -47,15 +47,9 @@ public class JAXBTest {
     @Configuration
     public static Option[] configuration() {
         return options(
-                url("link:classpath:org.apache.geronimo.specs.geronimo-activation_1.1_spec.link"),
-                url("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"),
-                url("link:classpath:stax2-api.link"),
-                url("link:classpath:woodstox-core-asl.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-api.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-impl.link"),
-                url("link:classpath:org.apache.servicemix.specs.jaxb-api-2.1.link"),
-                url("link:classpath:org.apache.servicemix.bundles.jaxb-impl.link"),
                 url("link:classpath:org.apache.ws.commons.axiom.axiom-jaxb.link"),
                 junitBundles());
     }

@@ -821,13 +821,11 @@ try {
         <title>Integrating Axiom into your project</title>
         <section xml:id="using-maven2">
             <title>Using Axiom in a Maven 2 project</title>
-            <section>
-                <title>Adding Axiom as a dependency</title>
-                <para>
-                    If your project uses Maven 2, it is fairly easy to add Axiom to your project.
-                    Simply add the following entries to the <tag class="element">dependencies</tag>
-                    section of <filename>pom.xml</filename>:
-                </para>
+            <para>
+                If your project uses Maven 2, it is fairly easy to add Axiom to your project.
+                Simply add the following entries to the <tag class="element">dependencies</tag>
+                section of <filename>pom.xml</filename>:
+            </para>
 <programlisting><![CDATA[<dependency>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-api</artifactId>
@@ -839,12 +837,12 @@ try {
     <version>]]>&version;<![CDATA[</version>
     <scope>runtime</scope>
 </dependency>]]></programlisting>
-                <para>
-                    All Axiom releases are deployed to the Maven central repository and there is no need
-                    to add an entry to the <tag class="element">repositories</tag> section.
-                    However, if you want to work with the development (snapshot) version of Axiom, it
-                    is necessary to add the Apache Snapshot Repository:
-                </para>
+            <para>
+                All Axiom releases are deployed to the Maven central repository and there is no need
+                to add an entry to the <tag class="element">repositories</tag> section.
+                However, if you want to work with the development (snapshot) version of Axiom, it
+                is necessary to add the Apache Snapshot Repository:
+            </para>
 <programlisting><![CDATA[<repository>
     <id>apache.snapshots</id>
     <name>Apache Snapshot Repository</name>
@@ -853,50 +851,13 @@ try {
         <enabled>false</enabled>
     </releases>
 </repository>]]></programlisting>
-                <tip>
-                    <para>
-                        If you are working on another Apache project, you don't need to add the snapshot repository
-                        in the POM file since it is already declared in the <literal>org.apache:apache</literal>
-                        parent POM.
-                    </para>
-                </tip>
-            </section>
-            <section>
-                <title>Managing the JAF dependency</title>
+            <tip>
                 <para>
-                    Axiom requires the Java Activation Framework (JAF) to work. There are two
-                    commonly used incarnations of this library: one is Sun's reference implementation, the other
-                    is part of the <link xlink:href="http://geronimo.apache.org/">Geronimo</link> project. Axiom declares
-                    a dependency on the Geronimo version.
-                    If your project uses another library that depends on JAF, but that refers
-                    to Sun's implementation, your project will end up with dependencies on two different
-                    artifacts implementing the same API.
+                    If you are working on another Apache project, you don't need to add the snapshot repository
+                    in the POM file since it is already declared in the <literal>org.apache:apache</literal>
+                    parent POM.
                 </para>
-                <para>
-                    If you prefer Sun's implementations, then you should change the declaration of the
-                    Axiom dependencies in your POM file as follow:
-                </para> 
-<programlisting><![CDATA[
-<dependency>
-    <groupId>org.apache.ws.commons.axiom</groupId>
-    <artifactId>axiom-]]><replaceable>xxx</replaceable><![CDATA[</artifactId>
-    <version>]]>&version;<![CDATA[</version>
-    <exclusions>
-        <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-]]></programlisting>
-                <para>
-                    If you prefer Geronimo's implementation, then you need to identify the libraries
-                    depending on Sun's artifact (<literal>javax.activation:activation</literal>)
-                    and add the relevant exclusions. You can use
-                    <userinput>mvn dependency:tree</userinput> to easily identify where a transitive dependency
-                    comes from.
-                </para>
-            </section>
+            </tip>
         </section>
         <section>
             <title>Applying application wide configuration</title>

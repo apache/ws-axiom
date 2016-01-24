@@ -48,7 +48,6 @@ public class SJSXPTest {
     @Configuration
     public static Option[] configuration() {
         return options(
-                url("link:classpath:org.apache.geronimo.specs.geronimo-activation_1.1_spec.link"),
                 url("link:classpath:org.apache.servicemix.specs.stax-api-1.0.link"),
                 url("link:classpath:org.apache.servicemix.bundles.jaxp-ri.link"),
                 url("link:classpath:org.apache.james.apache-mime4j-core.link"),
