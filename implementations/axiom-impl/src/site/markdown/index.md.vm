@@ -23,3 +23,37 @@ About
 LLOM (Linked List Object Model) is the default implementation of the Axiom API.
 `OMAbstractFactory` and `OMXMLBuilderFactory` will use this implementation unless
 a different `OMMetaFactory` is selected explicitly.
+
+To use the LLOM implementation in your Maven project, add the following dependencies:
+
+    <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-api</artifactId>
+        <version>${release_version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-impl</artifactId>
+        <version>${release_version}</version>
+        <scope>runtime</scope>
+    </dependency>
+
+To use it in an OSGi environment, deploy the following minimum set of bundles:
+
+| Maven group ID                | Maven artifact ID    | Bundle symbolic name                     |
+| ----------------------------- | -------------------- | -----------------------------------------|
+| `org.apache.james`            | `apache-mime4j-core` | `org.apache.james.apache-mime4j-core`    |
+| `org.apache.ws.commons.axiom` | `axiom-api`          | `org.apache.ws.commons.axiom.axiom-api`  |
+| `org.apache.ws.commons.axiom` | `axiom-impl`         | `org.apache.ws.commons.axiom.axiom-impl` |
+
+This will use the StAX implementation in the JRE. If you want to use Woodstox instead, also
+deploy the following bundles:
+
+| Maven group ID                | Maven artifact ID                          | Bundle symbolic name                       |
+| ----------------------------- | ------------------------------------------ | -------------------------------------------|
+| `org.apache.servicemix.specs` | `org.apache.servicemix.specs.stax-api-1.0` | `org.apache.servicemix.specs.stax-api-1.0` |
+| `org.codehaus.woodstox`       | `stax2-api`                                | `stax2-api`                                |
+| `org.codehaus.woodstox`       | `woodstox-core-asl`                        | `woodstox-core-asl`                        |
+
+Note that the `geronimo-stax-api_1.0_spec` bundle doesn't work with Woodstox. See
+[here](http://veithen.github.io/2014/10/12/stax-osgi.html) for more information.
