@@ -23,17 +23,12 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.ts.springws.MessageFactoryConfigurator;
 import org.apache.axiom.ts.springws.SpringWSTestSuiteBuilder;
-import org.apache.axiom.ts.springws.scenario.jaxb2.JAXB2Test;
 
 public class SpringWSTest extends TestCase {
     public static TestSuite suite() {
         SpringWSTestSuiteBuilder builder = new SpringWSTestSuiteBuilder(
                 new AxiomMessageFactoryConfigurator(),
                 MessageFactoryConfigurator.SAAJ);
-        
-        // TODO: AXIOM-463
-        builder.exclude(JAXB2Test.class);
-        
         return builder.build();
     }
 }
