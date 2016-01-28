@@ -123,4 +123,10 @@ final class ContentTypeTokenizer {
             throw new ParseException("Unexpected end of string; expected '" + c + "'", index);
         }
     }
+    
+    void requireEndOfString() throws ParseException {
+        if (index != s.length()) {
+            throw new ParseException("Unexpected character '" + s.charAt(index) + "'; expected end of string", index);
+        }
+    }
 }
