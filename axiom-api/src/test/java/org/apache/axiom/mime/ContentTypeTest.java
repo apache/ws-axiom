@@ -31,7 +31,7 @@ public class ContentTypeTest extends TestCase {
     }
     
     public void testGetParameterIgnoresCase() {
-        ContentType ct = new ContentType(MediaType.TEXT_XML, new String[] { "charset", "utf-8" });
+        ContentType ct = new ContentType(MediaType.TEXT_XML, "charset", "utf-8");
         assertEquals("utf-8", ct.getParameter("CHARSET"));
     }
     
@@ -133,19 +133,19 @@ public class ContentTypeTest extends TestCase {
     }
 
     public void testToString() {
-        ContentType ct = new ContentType(MediaType.TEXT_XML, new String[] { "charset", "utf-8" });
+        ContentType ct = new ContentType(MediaType.TEXT_XML, "charset", "utf-8");
         assertEquals("text/xml; charset=\"utf-8\"", ct.toString());
     }
     
     public void testToStringWithQuote() {
         ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
-                new String[] { "comment", "this is not a \"quote\""});
+                "comment", "this is not a \"quote\"");
         assertEquals("application/x-some-format; comment=\"this is not a \\\"quote\\\"\"", ct.toString());
     }
 
     public void testToStringWithBackslash() {
         ContentType ct = new ContentType(new MediaType("application", "x-some-format"),
-                new String[] { "filename", "c:\\temp\\test.dat"});
+                "filename", "c:\\temp\\test.dat");
         assertEquals("application/x-some-format; filename=\"c:\\\\temp\\\\test.dat\"", ct.toString());
     }
 }

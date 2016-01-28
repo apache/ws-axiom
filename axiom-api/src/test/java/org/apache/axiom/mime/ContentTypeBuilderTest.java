@@ -30,7 +30,7 @@ public class ContentTypeBuilderTest extends TestCase {
     }
     
     public void testFromExistingContentType() {
-        ContentType contentType = new ContentType(MediaType.TEXT_XML, new String[] { "charset", "utf-8" });
+        ContentType contentType = new ContentType(MediaType.TEXT_XML, "charset", "utf-8");
         ContentTypeBuilder builder = new ContentTypeBuilder(contentType);
         assertEquals(MediaType.TEXT_XML, builder.getMediaType());
         assertEquals("utf-8", builder.getParameter("charset"));

@@ -71,12 +71,12 @@ public final class ContentType {
      * @param mediaType
      *            the media type
      * @param parameters
-     *            an array specifying the parameters as name/value pairs (with even entries
+     *            the parameters as name/value pairs (with even entries
      *            representing the parameter names, and odd entries the corresponding values)
      */
-    public ContentType(MediaType mediaType, String[] parameters) {
+    public ContentType(MediaType mediaType, String... parameters) {
         this.mediaType = mediaType;
-        this.parameters = (String[])parameters.clone();
+        this.parameters = parameters.clone();
     }
 
     /**
