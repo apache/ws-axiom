@@ -28,7 +28,7 @@ import java.util.Locale;
  */
 public final class ContentTypeBuilder {
     private MediaType mediaType;
-    private final LinkedHashMap/*<String,String>*/ parameters = new LinkedHashMap();
+    private final LinkedHashMap<String,String> parameters = new LinkedHashMap<String,String>();
     
     /**
      * Constructor that initializes the builder with a media type and no parameters.
@@ -92,7 +92,7 @@ public final class ContentTypeBuilder {
      *         found
      */
     public String getParameter(String name) {
-        return (String)parameters.get(name.toLowerCase(Locale.ENGLISH));
+        return parameters.get(name.toLowerCase(Locale.ENGLISH));
     }
 
     /**

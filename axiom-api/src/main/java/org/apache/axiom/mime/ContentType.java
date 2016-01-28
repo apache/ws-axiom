@@ -20,7 +20,6 @@ package org.apache.axiom.mime;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -93,7 +92,7 @@ public final class ContentType {
         tokenizer.require('/');
         String subType = tokenizer.requireToken();
         mediaType = new MediaType(primaryType, subType);
-        List parameters = new ArrayList();
+        List<String> parameters = new ArrayList<String>();
         while (tokenizer.expect(';')) {
             String name = tokenizer.expectToken();
             if (name == null) {
@@ -105,17 +104,16 @@ public final class ContentType {
             tokenizer.require('=');
             parameters.add(tokenizer.requireTokenOrQuotedString());
         }
-        this.parameters = (String[])parameters.toArray(new String[parameters.size()]);
+        this.parameters = parameters.toArray(new String[parameters.size()]);
     }
     
-    ContentType(MediaType mediaType, Map parameters) {
+    ContentType(MediaType mediaType, Map<String,String> parameters) {
         this.mediaType = mediaType;
         this.parameters = new String[parameters.size()*2];
         int i = 0;
-        for (Iterator it = parameters.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry)it.next();
-            this.parameters[i++] = (String)entry.getKey();
-            this.parameters[i++] = (String)entry.getValue();
+        for (Map.Entry<String,String> entry : parameters.entrySet()) {
+            this.parameters[i++] = entry.getKey();
+            this.parameters[i++] = entry.getValue();
         }
     }
     
@@ -175,7 +173,7 @@ public final class ContentType {
         return buffer.toString();
     }
 
-    void getParameters(Map map) {
+    void getParameters(Map<String,String> map) {
         for (int i=0; i<parameters.length; i+=2) {
             map.put(parameters[i].toLowerCase(Locale.ENGLISH), parameters[i+1]);
         }
