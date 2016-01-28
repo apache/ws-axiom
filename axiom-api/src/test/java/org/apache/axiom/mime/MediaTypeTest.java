@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.mime;
 
+import java.text.ParseException;
+
 import junit.framework.TestCase;
 
 public class MediaTypeTest extends TestCase {
@@ -65,5 +67,29 @@ public class MediaTypeTest extends TestCase {
     public void testToString() {
         MediaType mt = new MediaType("application", "octet-stream");
         assertEquals("application/octet-stream", mt.toString());
+    }
+
+    public void testParse() throws Exception {
+        MediaType mt = new MediaType("application/octet-stream");
+        assertEquals("application", mt.getPrimaryType());
+        assertEquals("octet-stream", mt.getSubType());
+    }
+
+    public void testParseInvalid1() {
+        try {
+            new MediaType("text/");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
+    }
+
+    public void testParseInvalid2() {
+        try {
+            new MediaType("text/xml;");
+            fail("Expected ParseException");
+        } catch (ParseException ex) {
+            // Expected
+        }
     }
 }

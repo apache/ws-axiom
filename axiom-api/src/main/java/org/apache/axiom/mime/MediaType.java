@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.mime;
 
+import java.text.ParseException;
+
 /**
  * Represents a media type as defined by <a href="http://tools.ietf.org/html/rfc2045">RFC 2045</a>
  * and <a href="http://tools.ietf.org/html/rfc2046">RFC 2046</a>. It specifies a primary type (e.g.
@@ -68,6 +70,22 @@ public final class MediaType {
     public MediaType(String primaryType, String subType) {
         this.primaryType = primaryType;
         this.subType = subType;
+    }
+
+    /**
+     * Constructor that parses a media type.
+     * 
+     * @param type
+     *            the media type to parse
+     * @throws ParseException
+     *             if the value is invalid and could not be parsed
+     */
+    public MediaType(String type) throws ParseException {
+        ContentTypeTokenizer tokenizer = new ContentTypeTokenizer(type);
+        primaryType = tokenizer.requireToken();
+        tokenizer.require('/');
+        subType = tokenizer.requireToken();
+        tokenizer.requireEndOfString();
     }
 
     /**
