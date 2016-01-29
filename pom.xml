@@ -265,6 +265,7 @@
         <exam.version>4.7.0</exam.version>
         
         <skipDeploy>false</skipDeploy>
+        <hermeticTests>true</hermeticTests>
     </properties>
 
     <repositories>
@@ -582,11 +583,15 @@
                              the data instead of loading it into memory). Obviously, the execution time of
                              these tests also are proportional to the heap size. To accelerate the execution
                              of the tests, we should use a heap size as small as possible. -->
-                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine}</argLine>
+                        <argLine>-Xms16m -Xmx48m ${jacoco.surefireArgLine} ${securityManagerArgs}</argLine>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
                                 <value>${project.build.directory}/tmp</value>
+                            </property>
+                            <property>
+                                <name>user.home</name>
+                                <value>${project.build.directory}</value>
                             </property>
                             <property>
                                 <name>java.awt.headless</name>
@@ -617,11 +622,15 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>2.19</version>
                     <configuration>
-                        <argLine>${jacoco.failsafeArgLine}</argLine>
+                        <argLine>${jacoco.failsafeArgLine} ${securityManagerArgs}</argLine>
                         <systemProperties>
                             <property>
                                 <name>java.io.tmpdir</name>
                                 <value>${project.build.directory}/tmp</value>
+                            </property>
+                            <property>
+                                <name>user.home</name>
+                                <value>${project.build.directory}</value>
                             </property>
                             <property>
                                 <name>java.awt.headless</name>
@@ -900,6 +909,49 @@
                                     }
                                     
                                     project.properties['javadoc.nolint.param'] = System.properties['java.specification.version'] == '1.7' ? '' : '-Xdoclint:none';
+                                ]]></script>
+                            </scripts>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-policy-file</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <scripts>
+                                <script><![CDATA[
+                                    if (project.packaging != 'pom' && project.properties['hermeticTests'] == 'true') {
+                                        new File(project.build.directory, "test.policy").withWriter { out ->
+                                            out.println "grant {"
+                                            out.println """  permission java.io.FilePermission "${java.home}${file.separator}-", "read";"""
+                                            out.println """  permission java.io.FilePermission "${settings.localRepository}${file.separator}-", "read";"""
+                                            session.sortedProjects.each({
+                                                out.println """  permission java.io.FilePermission "${it.build.directory}${file.separator}*", "read";"""
+                                            })
+                                            out.println """  permission java.io.FilePermission "${basedir}${file.separator}-", "read";"""
+                                            out.println """  permission java.io.FilePermission "${project.build.directory}", "read,write";"""
+                                            out.println """  permission java.io.FilePermission "${project.build.directory}${file.separator}-", "read,write,delete";"""
+                                            out.println """  permission java.lang.RuntimePermission "*";"""
+                                            out.println """  permission java.lang.reflect.ReflectPermission "*";"""
+                                            out.println """  permission java.net.NetPermission "*";"""
+                                            out.println """  permission java.net.SocketPermission "localhost", "connect,listen,accept,resolve";"""
+                                            out.println """  permission java.security.SecurityPermission "*";"""
+                                            out.println """  permission java.util.PropertyPermission "*", "read,write";"""
+                                            out.println """  permission javax.management.MBeanPermission "*", "*";"""
+                                            out.println """  permission javax.management.MBeanServerPermission "*";"""
+                                            out.println """  permission javax.management.MBeanTrustPermission "*";"""
+                                            out.println """  permission javax.xml.bind.JAXBPermission "*";"""
+                                            out.println """  permission javax.xml.ws.WebServicePermission "publishEndpoint";"""
+                                            out.println """  permission org.osgi.framework.AdminPermission "*", "*";"""
+                                            out.println """  permission org.osgi.framework.ServicePermission "*", "register,get";"""
+                                            out.println "};"
+                                        }
+                                        project.properties['securityManagerArgs'] = '-Djava.security.manager -Djava.security.policy=${project.build.directory}/test.policy'
+                                    } else {
+                                        project.properties['securityManagerArgs'] = ''
+                                    }
                                 ]]></script>
                             </scripts>
                         </configuration>
