@@ -30,6 +30,8 @@ public abstract class MessageSample extends Multiton {
         this.content = content;
     }
 
+    public abstract String getContentType();
+
     /**
      * Get the content of this message.
      * 
