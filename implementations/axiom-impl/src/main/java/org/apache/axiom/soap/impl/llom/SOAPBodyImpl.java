@@ -19,28 +19,23 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements AxiomSOAPBody, OMConstants {
-    private boolean enableLookAhead = true;
-    private boolean lookAheadAttempted = false;
-    private boolean lookAheadSuccessful = false;
-    private String lookAheadLocalName = null;
-    private OMNamespace lookAheadNS = null;
-
     /**
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
      * object.
@@ -51,10 +46,9 @@ public abstract class SOAPBodyImpl extends SOAPElement
     public boolean hasFault() {
         // Set hasSOAPFault if it matches the name matches a SOAP Fault
         if (hasLookahead()) {
-            return SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(lookAheadLocalName)
-                    && lookAheadNS != null
-                    && (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(lookAheadNS.getNamespaceURI()) ||
-                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(lookAheadNS.getNamespaceURI()));
+            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+            return SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(builder.getLocalName())
+                    && getSOAPHelper().getEnvelopeURI().equals(builder.getNamespaceURI());
         } else {
             return getFirstElement() instanceof SOAPFault;
         }
@@ -97,36 +91,35 @@ public abstract class SOAPBodyImpl extends SOAPElement
     }
 
     private boolean hasLookahead() {
-        if (!enableLookAhead) {
-           return false; 
-        }
-        if (lookAheadAttempted) {
-            return lookAheadSuccessful;
-        }
-        lookAheadAttempted = true;
-        StAXSOAPModelBuilder soapBuilder = (StAXSOAPModelBuilder)getBuilder();
-        if (soapBuilder != null &&
-            soapBuilder.isCache() &&
-            !soapBuilder.isCompleted() &&
-            !soapBuilder.isClosed()) {
-            lookAheadSuccessful = soapBuilder.lookahead();
-            if (lookAheadSuccessful) {
-                this.lookAheadLocalName = soapBuilder.getName();
-                String ns = soapBuilder.getNamespace();
-                if (ns == null) {
-                    lookAheadNS = null;
-                } else {
-                    String prefix = soapBuilder.getPrefix();
-                    lookAheadNS = getOMFactory().createOMNamespace(ns, prefix == null ? "" : prefix);
+        StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+        if (builder != null && !builder.isCompleted() && builder.getTarget() == this) {
+            CoreChildNode child = coreGetFirstChildIfAvailable();
+            while (child != null) {
+                if (child instanceof OMElement) {
+                    return false;
                 }
+                child = child.coreGetNextSiblingIfAvailable();
             }
+            do {
+                if (builder.lookahead() == XMLStreamReader.START_ELEMENT) {
+                    return true;
+                }
+                builder.next();
+            } while (builder.getTarget() == this);
         }
-        return lookAheadSuccessful;
+        return false;
     }
     
     public OMNamespace getFirstElementNS() {
         if (hasLookahead()) {
-            return this.lookAheadNS;
+            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+            String ns = builder.getNamespaceURI();
+            if (ns == null) {
+                return null;
+            } else {
+                String prefix = builder.getPrefix();
+                return getOMFactory().createOMNamespace(ns, prefix == null ? "" : prefix);
+            }
         } else {
             OMElement element = this.getFirstElement();
             if (element == null) {
@@ -139,7 +132,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
     
     public String getFirstElementLocalName() {
         if (hasLookahead()) {
-            return this.lookAheadLocalName;
+            return ((StAXOMBuilder)getBuilder()).getLocalName();
         } else {
             OMElement element = this.getFirstElement();
             if (element == null) {
@@ -148,10 +141,5 @@ public abstract class SOAPBodyImpl extends SOAPElement
                 return element.getLocalName();
             } 
         }
-    }
-
-    public void addChild(OMNode child, boolean fromBuilder) {
-        this.enableLookAhead = false;
-        super.addChild(child, fromBuilder);
     }
 }

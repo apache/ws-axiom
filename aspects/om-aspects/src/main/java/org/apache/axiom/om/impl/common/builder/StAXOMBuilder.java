@@ -354,13 +354,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         }
     }
 
-    /**
-     * Method getNamespace.
-     *
-     * @return Returns String.
-     * @throws OMException
-     */
-    public final String getNamespace() throws OMException {
+    public final String getNamespaceURI() {
         return parser.getNamespaceURI();
     }
 
@@ -384,23 +378,11 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         return cache;
     }
 
-    /**
-     * Method getName.
-     *
-     * @return Returns String.
-     * @throws OMException
-     */
-    public final String getName() throws OMException {
+    public final String getLocalName() {
         return parser.getLocalName();
     }
 
-    /**
-     * Method getPrefix.
-     *
-     * @return Returns String.
-     * @throws OMException
-     */
-    public final String getPrefix() throws OMException {
+    public final String getPrefix() {
         return parser.getPrefix();
     }
 
@@ -1054,46 +1036,22 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     }
     
     /**
-     * This method looks ahead to the next start element.
-     * @return true if successful
-     */
-    public final boolean lookahead()  {
-        while (true) {
-            if (lookAheadToken < 0) {
-                lookAheadToken = parserNext();
-            }
-            if (lookAheadToken == XMLStreamConstants.START_ELEMENT) {
-                log.debug("Performing look-ahead; START_ELEMENT found");
-                return true;
-            } else if (lookAheadToken == XMLStreamConstants.END_ELEMENT ||
-                    lookAheadToken == XMLStreamConstants.START_DOCUMENT ||
-                    lookAheadToken == XMLStreamConstants.END_DOCUMENT) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Performing look-ahead; " + XMLEventUtils.getEventTypeString(lookAheadToken) + " found");
-                }
-                next();
-                return false;  // leaving scope...start element not found
-            } else {
-                next();  // continue looking past whitespace etc.
-            }
-        }
-    }
-    
-    /**
-     * Check if the node for the current token has already been created or if the parser is ahead
-     * of the builder.
+     * Look ahead to the next event. This method advanced the parser to the next event, but defers
+     * creation of the corresponding node to the next call of {@link #next()}.
      * 
-     * @return A return value of <code>true</code> indicates that the parser is one token ahead
-     *         of the builder, i.e. that the node for the current token has not been created yet.
-     *         This state can only be reached by a call to {@link #lookahead()}, and the
-     *         current token is always a {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}.
-     *         The information related to that element can be obtained by calls to
-     *         {@link #getName()}, {@link #getNamespace()} and {@link #getPrefix()}.
-     *         <p>
-     *         A return value of <code>false</code> indicates that the node corresponding to the
-     *         current token hold by the parser has already been created.
+     * @return The type of the next event. If the return value is
+     *         {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}, then the information related
+     *         to that element can be obtained by calls to {@link #getLocalName()},
+     *         {@link #getNamespaceURI()} and {@link #getPrefix()}.
      */
-    public final boolean isLookahead() {
-        return lookAheadToken >= 0;
+    public final int lookahead() {
+        if (lookAheadToken < 0) {
+            lookAheadToken = parserNext();
+        }
+        return lookAheadToken;
+    }
+
+    public final AxiomContainer getTarget() {
+        return target;
     }
 }
