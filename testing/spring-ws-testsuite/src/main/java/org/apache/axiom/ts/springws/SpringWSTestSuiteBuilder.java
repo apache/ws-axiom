@@ -32,6 +32,7 @@ import org.apache.axiom.ts.springws.scenario.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessage;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStream;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamMTOM;
+import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamVersionMismatch;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final MessageFactoryConfigurator messageFactoryConfigurator;
@@ -59,6 +60,7 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private void addSimpleTests(MessageFactoryConfigurator mfc, SOAPSpec spec) {
         addTest(new TestCreateWebServiceMessage(mfc, spec));
         addTest(new TestCreateWebServiceMessageFromInputStream(mfc, spec));
+        addTest(new TestCreateWebServiceMessageFromInputStreamVersionMismatch(mfc, spec));
     }
     
     private void addScenarioTests(ScenarioConfig config, SOAPSpec spec) {
