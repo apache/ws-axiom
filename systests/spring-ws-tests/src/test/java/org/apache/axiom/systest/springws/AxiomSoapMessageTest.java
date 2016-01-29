@@ -48,9 +48,9 @@ public class AxiomSoapMessageTest extends TestCase {
         dbf.setNamespaceAware(true);
         Document document = dbf.newDocumentBuilder().parse(AxiomSoapMessageTest.class.getResource("soap-message.xml").toString());
         message.setDocument(document);
-        Iterator it = message.getEnvelope().getHeader().examineAllHeaderElements();
+        Iterator<SoapHeaderElement> it = message.getEnvelope().getHeader().examineAllHeaderElements();
         assertTrue(it.hasNext());
-        SoapHeaderElement headerElement = (SoapHeaderElement)it.next();
+        SoapHeaderElement headerElement = it.next();
         assertEquals(new QName("urn:test", "myHeader"), headerElement.getName());
     }
 }
