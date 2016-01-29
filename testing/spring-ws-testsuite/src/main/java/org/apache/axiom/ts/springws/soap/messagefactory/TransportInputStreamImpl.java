@@ -23,13 +23,13 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.apache.axiom.ts.soap.SOAPSample;
+import org.apache.axiom.ts.xml.MessageSample;
 import org.springframework.ws.transport.TransportInputStream;
 
 final class TransportInputStreamImpl extends TransportInputStream {
-    private final SOAPSample sample;
+    private final MessageSample sample;
 
-    TransportInputStreamImpl(SOAPSample sample) {
+    TransportInputStreamImpl(MessageSample sample) {
         this.sample = sample;
     }
 
@@ -46,9 +46,7 @@ final class TransportInputStreamImpl extends TransportInputStream {
     @Override
     public Iterator<String> getHeaders(String name) throws IOException {
         if (name.equalsIgnoreCase("Content-Type")) {
-            return Collections.singleton(
-                    sample.getSOAPSpec().getContentType() + "; charset=\"" + sample.getEncoding()
-                            + "\"").iterator();
+            return Collections.singleton(sample.getContentType()).iterator();
         } else {
             return Collections.<String>emptySet().iterator();
         }

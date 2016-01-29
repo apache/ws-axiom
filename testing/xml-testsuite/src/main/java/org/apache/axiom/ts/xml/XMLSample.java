@@ -138,4 +138,13 @@ public class XMLSample extends MessageSample {
         in.close();
         return result.toArray(new XMLSample[result.size()]);
     }
+
+    @Override
+    public final String getContentType() {
+        return getMediaType() + "; charset=\"" + getEncoding() + "\"";
+    }
+    
+    protected String getMediaType() {
+        return "application/xml";
+    }
 }

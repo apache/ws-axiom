@@ -31,6 +31,7 @@ import org.apache.axiom.ts.springws.scenario.validation.ValidationTest;
 import org.apache.axiom.ts.springws.scenario.wsadom.WSAddressingDOMTest;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessage;
 import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStream;
+import org.apache.axiom.ts.springws.soap.messagefactory.TestCreateWebServiceMessageFromInputStreamMTOM;
 
 public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private final MessageFactoryConfigurator messageFactoryConfigurator;
@@ -46,6 +47,7 @@ public class SpringWSTestSuiteBuilder extends MatrixTestSuiteBuilder {
     protected void addTests() {
         addSimpleTests(messageFactoryConfigurator, SOAPSpec.SOAP11);
         addSimpleTests(messageFactoryConfigurator, SOAPSpec.SOAP12);
+        addTest(new TestCreateWebServiceMessageFromInputStreamMTOM(messageFactoryConfigurator));
         addScenarioTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), SOAPSpec.SOAP11);
         addScenarioTests(new ScenarioConfig(altMessageFactoryConfigurator, messageFactoryConfigurator), SOAPSpec.SOAP12);
         if (altMessageFactoryConfigurator != messageFactoryConfigurator) {

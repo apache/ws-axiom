@@ -42,12 +42,16 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
     
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         this(OMXMLBuilderFactory.createStAXSOAPModelBuilder(factory.getMetaFactory(), parser));
-        // TODO: check SOAP version
+        validateSOAPVersion(factory, soapVersion);
     }
     
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         this(OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), parser));
-        // TODO: check SOAP version
+        validateSOAPVersion(null, soapVersion);
+    }
+    
+    protected final void validateSOAPVersion(SOAPFactory factory, String soapVersion) {
+        // TODO
     }
     
     public SOAPEnvelope getSOAPEnvelope() {
@@ -59,6 +63,10 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
     }
 
     public SOAPMessage getSOAPMessage() {
+        return target.getSOAPMessage();
+    }
+
+    public SOAPMessage getSoapMessage() {
         return target.getSOAPMessage();
     }
 

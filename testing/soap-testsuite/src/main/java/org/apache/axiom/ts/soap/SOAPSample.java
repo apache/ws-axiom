@@ -114,4 +114,9 @@ public class SOAPSample extends XMLSample {
         }
         return new InputSource(new ByteArrayInputStream(baos.toByteArray()));
     }
+
+    @Override
+    protected String getMediaType() {
+        return spec.getContentType();
+    }
 }
