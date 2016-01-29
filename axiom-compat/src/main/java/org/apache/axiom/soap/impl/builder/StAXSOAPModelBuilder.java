@@ -29,6 +29,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.soap.SOAPProcessingException;
 
 /**
  * @deprecated Please use the {@link OMXMLBuilderFactory} API to create builders.
@@ -51,7 +52,11 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
     }
     
     protected final void validateSOAPVersion(SOAPFactory factory, String soapVersion) {
-        // TODO
+        SOAPFactory actualFactory = (SOAPFactory)getSOAPMessage().getOMFactory();
+        if (factory != null && actualFactory != factory ||
+                soapVersion != null && !actualFactory.getSOAPVersion().getEnvelopeURI().equals(soapVersion)) {
+            throw new SOAPProcessingException("SOAP version mismatch");
+        }
     }
     
     public SOAPEnvelope getSOAPEnvelope() {
