@@ -295,8 +295,8 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Class<T> type, Semantics semantics) {
-        return new AbstractNodeIterator<T>(this, axis, type, semantics) {
+    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Mapper<? super CoreNode,T> mapper, Semantics semantics) {
+        return new AbstractNodeIterator<CoreNode,T>(this, axis, CoreNode.class, mapper, semantics) {
             @Override
             protected boolean matches(CoreNode node) throws CoreModelException {
                 return true;
@@ -304,8 +304,8 @@ public aspect CoreParentNodeSupport {
         };
     }
     
-    public final <T extends CoreElement> NodeIterator<T> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Semantics semantics) {
-        return new ElementsIterator<T>(this, axis, type, matcher, namespaceURI, name, semantics);
+    public final <T extends CoreElement,S> NodeIterator<S> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<? super T,S> mapper, Semantics semantics) {
+        return new ElementsIterator<T,S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
     }
 
     public final <T> void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {

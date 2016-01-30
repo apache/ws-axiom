@@ -18,22 +18,20 @@
  */
 package org.apache.axiom.core;
 
-final class ElementsIterator<T extends CoreElement> extends AbstractNodeIterator<T> {
-    private final Class<T> type;
+final class ElementsIterator<T extends CoreElement,S> extends AbstractNodeIterator<T,S> {
     private final ElementMatcher<? super T> matcher;
     private final String namespaceURI;
     private final String name;
 
-    public ElementsIterator(CoreParentNode startNode, Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Semantics semantics) {
-        super(startNode, axis, type, semantics);
-        this.type = type;
+    public ElementsIterator(CoreParentNode startNode, Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<? super T,S> mapper, Semantics semantics) {
+        super(startNode, axis, type, mapper, semantics);
         this.matcher = matcher;
         this.namespaceURI = namespaceURI;
         this.name = name;
     }
 
     @Override
-    protected final boolean matches(CoreNode node) throws CoreModelException {
-        return type.isInstance(node) && matcher.matches(type.cast(node), namespaceURI, name);
+    protected final boolean matches(T node) throws CoreModelException {
+        return matcher.matches(node, namespaceURI, name);
     }
 }

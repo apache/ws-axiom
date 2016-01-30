@@ -21,10 +21,13 @@ package org.apache.axiom.dom;
 import java.util.Iterator;
 
 import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.Mapper;
 import org.w3c.dom.Node;
 
-public class ElementsByTagNameNS extends NodeListImpl {
+public class ElementsByTagNameNS extends NodeListImpl implements Mapper<CoreElement,Node> {
     private final DOMParentNode node;
     private final String namespaceURI;
     private final String localName;
@@ -41,13 +44,17 @@ public class ElementsByTagNameNS extends NodeListImpl {
         boolean localNameWildcard = localName.equals("*");
         if (nsWildcard && localNameWildcard) {
             // TODO: there seems to be no unit test checking whether the iterator should return DOM1 elements!
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, CoreElement.class, ElementMatcher.ANY, null, null, this, DOMSemantics.INSTANCE);
         } else if (nsWildcard) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_LOCAL_NAME, null, localName, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, CoreNSAwareElement.class, ElementMatcher.BY_LOCAL_NAME, null, localName, this, DOMSemantics.INSTANCE);
         } else if (localNameWildcard) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_NAMESPACE_URI, namespaceURI, null, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, CoreNSAwareElement.class, ElementMatcher.BY_NAMESPACE_URI, namespaceURI, null, this, DOMSemantics.INSTANCE);
         } else {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMNSAwareElement.class, ElementMatcher.BY_QNAME, namespaceURI, localName, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, CoreNSAwareElement.class, ElementMatcher.BY_QNAME, namespaceURI, localName, this, DOMSemantics.INSTANCE);
         }
+    }
+
+    public Node map(CoreElement element) {
+        return (Node)element;
     }
 }

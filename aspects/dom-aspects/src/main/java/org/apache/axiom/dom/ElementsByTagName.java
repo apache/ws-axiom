@@ -21,10 +21,12 @@ package org.apache.axiom.dom;
 import java.util.Iterator;
 
 import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.Mapper;
 import org.w3c.dom.Node;
 
-public class ElementsByTagName extends NodeListImpl {
+public class ElementsByTagName extends NodeListImpl implements Mapper<CoreElement,Node> {
     private final DOMParentNode node;
     private final String tagname;
     
@@ -36,9 +38,13 @@ public class ElementsByTagName extends NodeListImpl {
     @Override
     protected Iterator<? extends Node> createIterator() {
         if (tagname.equals("*")) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, CoreElement.class, ElementMatcher.ANY, null, null, this, DOMSemantics.INSTANCE);
         } else {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.BY_NAME, null, tagname, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, CoreElement.class, ElementMatcher.BY_NAME, null, tagname, this, DOMSemantics.INSTANCE);
         }
+    }
+
+    public Node map(CoreElement element) {
+        return (Node)element;
     }
 }

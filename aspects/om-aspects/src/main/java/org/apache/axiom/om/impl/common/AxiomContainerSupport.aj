@@ -30,6 +30,10 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.Mapper;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.NodeUnavailableException;
@@ -189,16 +193,32 @@ public aspect AxiomContainerSupport {
         coreRemoveChildren(AxiomSemantics.INSTANCE);
     }
     
+    private static final Mapper<CoreNode,OMNode> childrenMapper = new Mapper<CoreNode,OMNode>() {
+        public OMNode map(CoreNode node) {
+            return (OMNode)node;
+        }
+    };
+    
     public Iterator<OMNode> AxiomContainer.getChildren() {
-        return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomSemantics.INSTANCE);
+        return coreGetNodes(Axis.CHILDREN, childrenMapper, AxiomSemantics.INSTANCE);
     }
 
+    private static final Mapper<CoreNSAwareElement,OMElement> childElementMapper = new Mapper<CoreNSAwareElement,OMElement>() {
+        public OMElement map(CoreNSAwareElement element) {
+            return (OMElement)element;
+        }
+    };
+    
     public Iterator<OMElement> AxiomContainer.getChildrenWithLocalName(String localName) {
-        return new OMChildrenLocalNameIterator(getFirstOMChild(), localName);
+        return coreGetElements(Axis.CHILDREN, CoreNSAwareElement.class,
+                ElementMatcher.BY_LOCAL_NAME, null, localName,
+                childElementMapper, AxiomSemantics.INSTANCE);
     }
 
     public Iterator<OMElement> AxiomContainer.getChildrenWithNamespaceURI(String uri) {
-        return new OMChildrenNamespaceIterator(getFirstOMChild(), uri);
+        return coreGetElements(Axis.CHILDREN, CoreNSAwareElement.class,
+                ElementMatcher.BY_NAMESPACE_URI, uri, null,
+                childElementMapper, AxiomSemantics.INSTANCE);
     }
 
     public Iterator<OMElement> AxiomContainer.getChildrenWithName(QName elementQName) {
@@ -227,8 +247,14 @@ public aspect AxiomContainerSupport {
         return it;
     }
     
+    private static final Mapper<CoreNode,OMSerializable> descendantsMapper = new Mapper<CoreNode,OMSerializable>() {
+        public OMSerializable map(CoreNode node) {
+            return (OMSerializable)node;
+        }
+    };
+    
     public Iterator<OMSerializable> AxiomContainer.getDescendants(boolean includeSelf) {
-        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomSemantics.INSTANCE);
+        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, descendantsMapper, AxiomSemantics.INSTANCE);
     }
 
     public OMElement AxiomContainer.getFirstChildWithName(QName elementQName) throws OMException {

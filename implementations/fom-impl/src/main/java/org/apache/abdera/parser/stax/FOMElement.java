@@ -59,6 +59,8 @@ import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.IdentityMapper;
+import org.apache.axiom.core.Mapper;
 import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.fom.FOMSemantics;
@@ -222,9 +224,11 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         return (T)this;
     }
 
+    private static final IdentityMapper<AbderaElement> abderaElementMapper = new IdentityMapper<AbderaElement>();
+    
     public final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
         return coreGetElements(Axis.CHILDREN, AbderaElement.class, ElementMatcher.BY_QNAME,
-                qname.getNamespaceURI(), qname.getLocalPart(), FOMSemantics.INSTANCE);
+                qname.getNamespaceURI(), qname.getLocalPart(), abderaElementMapper, FOMSemantics.INSTANCE);
     }
 
     public <E extends Element> List<E> _getChildrenAsSet(QName qname) {

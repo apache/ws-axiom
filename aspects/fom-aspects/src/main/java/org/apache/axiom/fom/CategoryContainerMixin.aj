@@ -24,6 +24,7 @@ import org.apache.abdera.model.Category;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.Mapper;
 
 public aspect CategoryContainerMixin {
     private static final ElementMatcher<AbderaCategory> CATEGORY_BY_SCHEME = new ElementMatcher<AbderaCategory>() {
@@ -51,10 +52,16 @@ public aspect CategoryContainerMixin {
         return _getChildrenAsSet(Constants.CATEGORY);
     }
 
+    private static final Mapper<AbderaCategory,Category> categoryMapper = new Mapper<AbderaCategory,Category>() {
+        public Category map(AbderaCategory category) {
+            return category;
+        }
+    };
+    
     public final List<Category> CategoryContainer.getCategories(String scheme) {
         // TODO: we should probably set detachPolicy to null
         return new FOMList<Category>(coreGetElements(
                 Axis.CHILDREN, AbderaCategory.class, CATEGORY_BY_SCHEME, null, scheme,
-                FOMSemantics.INSTANCE));
+                categoryMapper, FOMSemantics.INSTANCE));
     }
 }

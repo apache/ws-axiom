@@ -21,30 +21,32 @@ package org.apache.axiom.core;
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 
-public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
+public abstract class AbstractNodeIterator<T extends CoreNode,S> implements NodeIterator<S> {
     private final CoreParentNode startNode;
     private final Axis axis;
     private final Class<T> type;
+    private final Mapper<? super T,S> mapper;
     private final Semantics semantics;
-    private CoreNode currentNode;
+    private T currentNode;
     
     /**
      * The parent of the current node. This is used to detect concurrent modifications.
      */
     private CoreParentNode currentParent;
     
-    private CoreNode nextNode;
+    private T nextNode;
     private boolean hasNext;
     private int depth;
     
-    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, Semantics semantics) {
+    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, Mapper<? super T,S> mapper, Semantics semantics) {
         this.startNode = startNode;
         this.axis = axis;
         this.type = type;
+        this.mapper = mapper;
         this.semantics = semantics;
     }
 
-    protected abstract boolean matches(CoreNode node) throws CoreModelException;
+    protected abstract boolean matches(T node) throws CoreModelException;
 
     public final boolean hasNext() {
         if (!hasNext) {
@@ -53,7 +55,7 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
                 throw new ConcurrentModificationException("The current node has been removed using a method other than Iterator#remove()");
             }
             try {
-                do {
+                while (true) {
                     // Get to the next node
                     switch (axis) {
                         case CHILDREN:
@@ -98,22 +100,32 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
                                 }
                             }
                     }
-                } while (node != null && !matches(node));
+                    if (node == null) {
+                        nextNode = null;
+                        break;
+                    }
+                    if (type.isInstance(node)) {
+                        T candidate = type.cast(node);
+                        if (matches(candidate)) {
+                            nextNode = candidate;
+                            break;
+                        }
+                    }
+                }
             } catch (CoreModelException ex) {
                 throw semantics.toUncheckedException(ex);
             }
-            nextNode = node;
             hasNext = true;
         }
         return nextNode != null;
     }
 
-    public final T next() {
+    public final S next() {
         if (hasNext()) {
             currentNode = nextNode;
             currentParent = currentNode instanceof CoreChildNode ? ((CoreChildNode)currentNode).coreGetParent() : null;
             hasNext = false;
-            return type.cast(currentNode);
+            return mapper.map(currentNode);
         } else {
             throw new NoSuchElementException();
         }
