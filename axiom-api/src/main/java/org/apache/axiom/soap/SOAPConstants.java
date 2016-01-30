@@ -57,9 +57,4 @@ public interface SOAPConstants {
     // Followings are different in SOAP 1.1 and 1.2 specifications
     static final String FAULT_CODE_SENDER = "";
     static final String FAULT_CODE_RECEIVER = "";
-
-    // Special Property available on some parsers to get the 
-    // Qname of the first child element in the soap body.
-    static final String SOAPBODY_FIRST_CHILD_ELEMENT_QNAME =
-            "org.apache.axiom.SOAPBodyFirstChildElementQName";
 }

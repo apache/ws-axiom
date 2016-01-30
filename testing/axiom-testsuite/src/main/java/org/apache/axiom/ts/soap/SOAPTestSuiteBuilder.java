@@ -161,7 +161,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFaultWithParser(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestHasFaultWithParserOptimized(metaFactory, spec));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAndConsumeWithOMSEInBody(metaFactory, spec));
         }
