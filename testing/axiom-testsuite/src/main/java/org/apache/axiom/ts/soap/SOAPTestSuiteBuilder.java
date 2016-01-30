@@ -115,6 +115,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSWithParser(metaFactory, spec,
                     qname, supportsBodyElementNameOptimization));
         }
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser2(metaFactory, spec, false));
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser2(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParserNoLookahead(metaFactory, spec));
         for (int i=0; i<noFaultQNames.length; i++) {
             QName qname = noFaultQNames[i];
