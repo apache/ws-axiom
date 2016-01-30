@@ -25,7 +25,6 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
     private final CoreParentNode startNode;
     private final Axis axis;
     private final Class<T> type;
-    private final ExceptionTranslator exceptionTranslator;
     private final Semantics semantics;
     private CoreNode currentNode;
     
@@ -38,11 +37,10 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
     private boolean hasNext;
     private int depth;
     
-    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, ExceptionTranslator exceptionTranslator, Semantics semantics) {
+    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, Semantics semantics) {
         this.startNode = startNode;
         this.axis = axis;
         this.type = type;
-        this.exceptionTranslator = exceptionTranslator;
         this.semantics = semantics;
     }
 
@@ -102,7 +100,7 @@ public abstract class AbstractNodeIterator<T> implements NodeIterator<T> {
                     }
                 } while (node != null && !matches(node));
             } catch (CoreModelException ex) {
-                throw exceptionTranslator.toUncheckedException(ex);
+                throw semantics.toUncheckedException(ex);
             }
             nextNode = node;
             hasNext = true;

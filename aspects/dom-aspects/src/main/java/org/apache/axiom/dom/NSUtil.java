@@ -30,12 +30,12 @@ public final class NSUtil {
     
     public static void validateName(String name) throws DOMException {
         if (name.length() == 0) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         for (int i=0; i<name.length(); i++) {
             char c = name.charAt(i);
             if (i == 0 && !isNameStartChar(c) || i > 0 && !isNameChar(c)) {
-                throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+                throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
         }
     }
@@ -44,17 +44,17 @@ public final class NSUtil {
         for (int i=0; i<prefix.length(); i++) {
             char c = prefix.charAt(i);
             if (c == ':') {
-                throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+                throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
             }
             if (i == 0 && !isNameStartChar(c) || i > 0 && !isNameChar(c)) {
-                throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+                throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
         }
     }
     
     public static int validateQualifiedName(String qualifiedName) throws DOMException {
         if (qualifiedName.length() == 0) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         int colonPosition = -1;
         boolean checkNameStart = true;
@@ -65,20 +65,20 @@ public final class NSUtil {
                     colonPosition = i;
                     checkNameStart = true;
                 } else {
-                    throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+                    throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
                 }
             } else if (checkNameStart) {
                 if (!isNameStartChar(c)) {
-                    throw DOMExceptionTranslator.newDOMException(isNameChar(c) ? DOMException.NAMESPACE_ERR : DOMException.INVALID_CHARACTER_ERR);
+                    throw DOMExceptionUtil.newDOMException(isNameChar(c) ? DOMException.NAMESPACE_ERR : DOMException.INVALID_CHARACTER_ERR);
                 }
                 checkNameStart = false;
             } else if (!isNameChar(c)) {
-                throw DOMExceptionTranslator.newDOMException(DOMException.INVALID_CHARACTER_ERR);
+                throw DOMExceptionUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
             }
         }
         if (checkNameStart) {
             // If we get here, then the qualified name ends with a colon 
-            throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
         return colonPosition;
     }
@@ -89,20 +89,20 @@ public final class NSUtil {
     
     public static void validateNamespace(String namespaceURI, String prefix) {
         if (prefix.length() != 0 && namespaceURI.length() == 0) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
         if (XMLConstants.XML_NS_PREFIX.equals(prefix) && !XMLConstants.XML_NS_URI.equals(namespaceURI)) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
     }
     
     public static void validateAttributeName(String namespaceURI, String localName, String prefix) {
         validateNamespace(namespaceURI, prefix);
         if (prefix.length() == 0 && localName.equals(XMLConstants.XMLNS_ATTRIBUTE) && !namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
         if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
     }
     
@@ -112,7 +112,7 @@ public final class NSUtil {
         } else if (prefix.length() == 0 && localName.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
             return "";
         } else {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
         }
     }
 }

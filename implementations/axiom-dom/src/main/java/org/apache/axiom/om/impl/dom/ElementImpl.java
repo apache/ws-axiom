@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMElement;

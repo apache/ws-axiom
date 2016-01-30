@@ -22,15 +22,11 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.ExceptionTranslator;
 import org.w3c.dom.DOMException;
 
-public final class DOMExceptionTranslator implements ExceptionTranslator {
-    public static final DOMExceptionTranslator INSTANCE = new DOMExceptionTranslator();
-    
+public final class DOMExceptionUtil {
     private static final ResourceBundle resourceBundle =
-            PropertyResourceBundle.getBundle(DOMExceptionTranslator.class.getName());
+            PropertyResourceBundle.getBundle(DOMExceptionUtil.class.getName());
 
     private static final String[] codeStrings = {
         // Note: order is determined by the constants defined in DOMException
@@ -53,7 +49,7 @@ public final class DOMExceptionTranslator implements ExceptionTranslator {
         "TYPE_MISMATCH_ERR",
     };
     
-    private DOMExceptionTranslator() {}
+    private DOMExceptionUtil() {}
     
     public static DOMException newDOMException(short code) {
         String key = codeStrings[code-1];
@@ -68,13 +64,5 @@ public final class DOMExceptionTranslator implements ExceptionTranslator {
         } else {
             return new DOMException(code, key + ": " + message);
         }
-    }
-
-    public static RuntimeException translate(CoreModelException ex) {
-        throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
-    }
-
-    public RuntimeException toUncheckedException(CoreModelException ex) {
-        return translate(ex);
     }
 }

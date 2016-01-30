@@ -25,6 +25,7 @@ import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DetachPolicy;
@@ -147,4 +148,8 @@ public final class DOMSemantics implements Semantics {
         public void postProcess(Void options, CoreNode clone) {
         }
     };
+
+    public RuntimeException toUncheckedException(CoreModelException ex) {
+        throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
+    }
 }

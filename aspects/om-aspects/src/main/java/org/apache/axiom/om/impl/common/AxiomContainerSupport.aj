@@ -190,7 +190,7 @@ public aspect AxiomContainerSupport {
     }
     
     public Iterator<OMNode> AxiomContainer.getChildren() {
-        return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomExceptionTranslator.INSTANCE, AxiomSemantics.INSTANCE);
+        return coreGetNodes(Axis.CHILDREN, OMNode.class, AxiomSemantics.INSTANCE);
     }
 
     public Iterator<OMElement> AxiomContainer.getChildrenWithLocalName(String localName) {
@@ -228,7 +228,7 @@ public aspect AxiomContainerSupport {
     }
     
     public Iterator<OMSerializable> AxiomContainer.getDescendants(boolean includeSelf) {
-        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomExceptionTranslator.INSTANCE, AxiomSemantics.INSTANCE);
+        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, OMSerializable.class, AxiomSemantics.INSTANCE);
     }
 
     public OMElement AxiomContainer.getFirstChildWithName(QName elementQName) throws OMException {

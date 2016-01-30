@@ -26,7 +26,7 @@ import org.w3c.dom.DOMException;
 public class DOMExceptionTranslatorTest {
     @Test
     public void testMessage() {
-        DOMException ex = DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
+        DOMException ex = DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         assertThat(ex.getMessage()).isEqualTo(
                 "NOT_FOUND_ERR: An attempt is made to reference a node in a context where it does not exist.");
     }

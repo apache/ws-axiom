@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
@@ -94,4 +95,8 @@ public final class AxiomSemantics implements Semantics {
             }
         }
     };
+
+    public RuntimeException toUncheckedException(CoreModelException ex) {
+        return AxiomExceptionTranslator.translate(ex);
+    }
 }
