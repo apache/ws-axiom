@@ -123,11 +123,18 @@
                         <phase>process-classes</phase>
                         <configuration>
                             <rules>
-                                <noPackageCycles implementation="de.andrena.tools.nopackagecycles.NoPackageCyclesRule" />
+                                <noPackageCycles implementation="org.apache.axiom.buildutils.enforcer.NoPackageCyclesEnforcerRule" />
                             </rules>
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>no-package-cycles-enforcer-rule</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
