@@ -55,6 +55,6 @@ public aspect CategoryContainerMixin {
         // TODO: we should probably set detachPolicy to null
         return new FOMList<Category>(coreGetElements(
                 Axis.CHILDREN, AbderaCategory.class, CATEGORY_BY_SCHEME, null, scheme,
-                FOMExceptionTranslator.INSTANCE, FOMSemantics.INSTANCE));
+                FOMSemantics.INSTANCE));
     }
 }

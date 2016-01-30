@@ -60,7 +60,6 @@ import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.fom.AbderaElement;
-import org.apache.axiom.fom.FOMExceptionTranslator;
 import org.apache.axiom.fom.FOMList;
 import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.IRIUtil;
@@ -225,8 +224,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
 
     public final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
         return coreGetElements(Axis.CHILDREN, AbderaElement.class, ElementMatcher.BY_QNAME,
-                qname.getNamespaceURI(), qname.getLocalPart(), FOMExceptionTranslator.INSTANCE,
-                FOMSemantics.INSTANCE);
+                qname.getNamespaceURI(), qname.getLocalPart(), FOMSemantics.INSTANCE);
     }
 
     public <E extends Element> List<E> _getChildrenAsSet(QName qname) {
