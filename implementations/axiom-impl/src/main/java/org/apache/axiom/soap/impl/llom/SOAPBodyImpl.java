@@ -19,16 +19,10 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
@@ -36,24 +30,6 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements AxiomSOAPBody, OMConstants {
-    /**
-     * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
-     * object.
-     *
-     * @return <code>true</code> if a <code>SOAPFault</code> object exists in this
-     *         <code>SOAPBody</code> object; <code>false</code> otherwise
-     */
-    public boolean hasFault() {
-        // Set hasSOAPFault if it matches the name matches a SOAP Fault
-        if (hasLookahead()) {
-            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
-            return SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(builder.getLocalName())
-                    && getSOAPHelper().getEnvelopeURI().equals(builder.getNamespaceURI());
-        } else {
-            return getFirstElement() instanceof SOAPFault;
-        }
-    }
-
     /**
      * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code> object.
      *
@@ -88,58 +64,5 @@ public abstract class SOAPBodyImpl extends SOAPElement
     public OMNode detach() throws OMException {
         throw new SOAPProcessingException(
                 "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
-    }
-
-    private boolean hasLookahead() {
-        StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
-        if (builder != null && !builder.isCompleted() && builder.getTarget() == this) {
-            CoreChildNode child = coreGetFirstChildIfAvailable();
-            while (child != null) {
-                if (child instanceof OMElement) {
-                    return false;
-                }
-                child = child.coreGetNextSiblingIfAvailable();
-            }
-            do {
-                if (builder.lookahead() == XMLStreamReader.START_ELEMENT) {
-                    return true;
-                }
-                builder.next();
-            } while (builder.getTarget() == this);
-        }
-        return false;
-    }
-    
-    public OMNamespace getFirstElementNS() {
-        if (hasLookahead()) {
-            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
-            String ns = builder.getNamespaceURI();
-            if (ns == null) {
-                return null;
-            } else {
-                String prefix = builder.getPrefix();
-                return getOMFactory().createOMNamespace(ns, prefix == null ? "" : prefix);
-            }
-        } else {
-            OMElement element = this.getFirstElement();
-            if (element == null) {
-                return null;
-            } else {
-                return element.getNamespace();
-            } 
-        }
-    }
-    
-    public String getFirstElementLocalName() {
-        if (hasLookahead()) {
-            return ((StAXOMBuilder)getBuilder()).getLocalName();
-        } else {
-            OMElement element = this.getFirstElement();
-            if (element == null) {
-                return null;
-            } else {
-                return element.getLocalName();
-            } 
-        }
     }
 }

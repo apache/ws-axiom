@@ -31,8 +31,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
  */
 public class TestGetFirstElementNSWithParser extends FirstElementNameWithParserTestCase {
     public TestGetFirstElementNSWithParser(OMMetaFactory metaFactory,
-            SOAPSpec spec, QName qname, boolean supportsOptimization) {
-        super(metaFactory, spec, qname, supportsOptimization);
+            SOAPSpec spec, QName qname) {
+        super(metaFactory, spec, qname, true);
     }
 
     protected void runTest(SOAPBody body) throws Throwable {

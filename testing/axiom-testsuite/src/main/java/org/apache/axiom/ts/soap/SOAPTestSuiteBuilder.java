@@ -81,7 +81,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
     
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
-    private final boolean supportsBodyElementNameOptimization;
     
     /**
      * Constructor.
@@ -89,14 +88,10 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
      * @param metaFactory
      * @param supportsOMSourcedElement
      *            indicates whether the implementation supports {@link OMSourcedElement}
-     * @param supportsBodyElementNameOptimization
-     *            indicates whether the implementation supports the optimization described by <a
-     *            href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>
      */
-    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement, boolean supportsBodyElementNameOptimization) {
+    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement) {
         this.metaFactory = metaFactory;
         this.supportsOMSourcedElement = supportsOMSourcedElement;
-        this.supportsBodyElementNameOptimization = supportsBodyElementNameOptimization;
     }
     
     private void addTests(SOAPSpec spec) {
@@ -110,10 +105,8 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
         for (int i=0; i<generalQNames.length; i++) {
             QName qname = generalQNames[i];
-            addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser(metaFactory, spec,
-                    qname, supportsBodyElementNameOptimization));
-            addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSWithParser(metaFactory, spec,
-                    qname, supportsBodyElementNameOptimization));
+            addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser(metaFactory, spec, qname));
+            addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSWithParser(metaFactory, spec, qname));
         }
         addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser2(metaFactory, spec, false));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser2(metaFactory, spec, true));
@@ -123,8 +116,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.body.TestGetFaultNoFault(metaFactory, spec, qname));
             addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParserNoFault(metaFactory, spec, qname));
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultNoFault(metaFactory, spec, qname));
-            addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParserNoFault(metaFactory, spec,
-                    qname, supportsBodyElementNameOptimization));
+            addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParserNoFault(metaFactory, spec, qname));
         }
         addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameEmptyBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSEmptyBody(metaFactory, spec));
@@ -141,9 +133,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.builder.TestDTD(metaFactory, spec));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilder(metaFactory, spec));
-            if (supportsBodyElementNameOptimization) {
-                addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
-            }
+            addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
         }
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddElementAfterBody(metaFactory, spec, false));
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddElementAfterBody(metaFactory, spec, true));

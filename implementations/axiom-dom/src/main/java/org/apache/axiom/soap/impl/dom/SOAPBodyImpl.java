@@ -22,23 +22,12 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
         OMConstants {
-    /**
-     * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code> object.
-     *
-     * @return <code>true</code> if a <code>SOAPFault</code> object exists in this
-     *         <code>SOAPBody</code> object; <code>false</code> otherwise
-     */
-    public boolean hasFault() {
-        return getFirstElement() instanceof SOAPFault;
-    }
-
     /**
      * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code> object.
      *
@@ -70,30 +59,5 @@ public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody,
                     "Expecting an implementation of SOAP Envelope as the " +
                             "parent. But received some other implementation");
         }
-    }
-
-    /*public OMNode detach() throws OMException {
-         throw new SOAPProcessingException(
-                 "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
-     }*/
-    
-    public OMNamespace getFirstElementNS() {
-        OMElement element = this.getFirstElement();
-        if (element == null) {
-            return null;
-        } else {
-            return element.getNamespace();
-        } 
-
-    }
-
-    public String getFirstElementLocalName() {
-        OMElement element = this.getFirstElement();
-        if (element == null) {
-            return null;
-        } else {
-            return element.getLocalName();
-        } 
-
     }
 }
