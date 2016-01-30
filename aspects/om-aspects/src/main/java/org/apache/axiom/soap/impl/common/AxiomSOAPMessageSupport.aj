@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.common.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
@@ -55,5 +56,13 @@ public aspect AxiomSOAPMessageSupport {
     public final void AxiomSOAPMessage.internalSerialize(Serializer serializer, OMOutputFormat format,
             boolean cache, boolean includeXMLDeclaration) throws OutputException {
         ((AxiomElement)getOMDocumentElement()).internalSerialize(serializer, format, cache);
+    }
+
+    public final SOAPEnvelope AxiomSOAPMessage.getSOAPEnvelope() {
+        return (SOAPEnvelope)getOMDocumentElement();
+    }
+
+    public final void AxiomSOAPMessage.setSOAPEnvelope(SOAPEnvelope envelope) {
+        setOMDocumentElement(envelope);
     }
 }

@@ -23,37 +23,12 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements AxiomSOAPBody, OMConstants {
-    /**
-     * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code> object.
-     *
-     * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code> object
-     */
-    public SOAPFault getFault() {
-        OMElement element = getFirstElement();
-        return element instanceof SOAPFault ? (SOAPFault)element : null;
-    }
-
-    /**
-     * @param soapFault
-     * @throws org.apache.axiom.om.OMException
-     *
-     * @throws OMException
-     */
-    public void addFault(SOAPFault soapFault) throws OMException {
-        if (hasFault()) {
-            throw new OMException(
-                    "SOAP Body already has a SOAP Fault and there can not be more than one SOAP fault");
-        }
-        addChild(soapFault);
-    }
-
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAPEnvelopeImpl)) {
             throw new SOAPProcessingException(

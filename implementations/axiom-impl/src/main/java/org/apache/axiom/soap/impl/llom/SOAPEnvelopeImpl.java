@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -31,10 +30,8 @@ import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,25 +40,6 @@ import org.apache.commons.logging.LogFactory;
 public abstract class SOAPEnvelopeImpl extends SOAPElement
         implements AxiomSOAPEnvelope, OMConstants {
     private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
-
-    public SOAPVersion getVersion() {
-        return ((SOAPFactory)getOMFactory()).getSOAPVersion();
-    }
-
-    public SOAPHeader getHeader() {
-        // The soap header is the first element in the envelope.
-        OMElement e = getFirstElement();
-        if (e instanceof SOAPHeader) {
-            return (SOAPHeader)e;
-        } 
-        
-        return null;
-    }
-
-    public SOAPHeader getOrCreateHeader() {
-        SOAPHeader header = getHeader();
-        return header != null ? header : ((SOAPFactory)getOMFactory()).createSOAPHeader(this);
-    }
 
     /**
      * Add a SOAPHeader or SOAPBody object
@@ -182,20 +160,5 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
                 }
             }
         }
-    }
-
-    public boolean hasFault() {      
-        SOAPBody body = this.getBody();
-        return (body == null) ? false : body.hasFault();
-    }
-
-    public String getSOAPBodyFirstElementLocalName() {
-        SOAPBody body = this.getBody();
-        return (body == null) ? null : body.getFirstElementLocalName();
-    }
-
-    public OMNamespace getSOAPBodyFirstElementNS() {
-        SOAPBody body = this.getBody();
-        return (body == null) ? null : body.getFirstElementNS();
     }
 }

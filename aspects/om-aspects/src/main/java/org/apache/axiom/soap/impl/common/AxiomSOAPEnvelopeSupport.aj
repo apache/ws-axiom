@@ -18,7 +18,13 @@
  */
 package org.apache.axiom.soap.impl.common;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 
 public aspect AxiomSOAPEnvelopeSupport {
@@ -29,4 +35,34 @@ public aspect AxiomSOAPEnvelopeSupport {
      */
     // TODO: this should be integrated into the checkChild API
     public abstract void AxiomSOAPEnvelope.internalCheckChild(OMNode child);
+
+    public final SOAPVersion AxiomSOAPEnvelope.getVersion() {
+        return getSOAPHelper().getVersion();
+    }
+
+    public final SOAPHeader AxiomSOAPEnvelope.getHeader() {
+        // The soap header is the first element in the envelope.
+        OMElement e = getFirstElement();
+        return e instanceof SOAPHeader ? (SOAPHeader)e : null;
+    }
+
+    public final SOAPHeader AxiomSOAPEnvelope.getOrCreateHeader() {
+        SOAPHeader header = getHeader();
+        return header != null ? header : ((SOAPFactory)getOMFactory()).createSOAPHeader(this);
+    }
+
+    public final boolean AxiomSOAPEnvelope.hasFault() {
+        SOAPBody body = getBody();
+        return (body == null) ? false : body.hasFault();
+    }
+
+    public final String AxiomSOAPEnvelope.getSOAPBodyFirstElementLocalName() {
+        SOAPBody body = getBody();
+        return (body == null) ? null : body.getFirstElementLocalName();
+    }
+
+    public final OMNamespace AxiomSOAPEnvelope.getSOAPBodyFirstElementNS() {
+        SOAPBody body = getBody();
+        return (body == null) ? null : body.getFirstElementNS();
+    }
 }
