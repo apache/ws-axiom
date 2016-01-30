@@ -19,6 +19,7 @@
 package org.apache.axiom.fom;
 
 import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NSAwareAttributeMatcher;
 import org.apache.axiom.core.NodeType;
@@ -43,4 +44,8 @@ public final class FOMSemantics implements Semantics {
     }
 
     public static final AttributeMatcher ATTRIBUTE_MATCHER = new NSAwareAttributeMatcher(INSTANCE, false, false);
+
+    public RuntimeException toUncheckedException(CoreModelException ex) {
+        return new RuntimeException(ex);
+    }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.core;
 
+import java.util.Iterator;
+
 /**
  * Defines the semantics of a particular API.
  */
@@ -44,4 +46,15 @@ public interface Semantics {
      *         considered a leaf node type
      */
     boolean isParentNode(NodeType nodeType);
+
+    /**
+     * Translate the given exception to an unchecked exception. This is used by {@link NodeIterator}
+     * to translate exceptions that are triggered in {@link Iterator#hasNext()},
+     * {@link Iterator#next()} and {@link Iterator#remove()}.
+     * 
+     * @param ex
+     *            the original (checked) exception
+     * @return the corresponding unchecked exception
+     */
+    RuntimeException toUncheckedException(CoreModelException ex);
 }

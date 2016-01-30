@@ -36,9 +36,9 @@ public class ElementsByTagName extends NodeListImpl {
     @Override
     protected Iterator<? extends Node> createIterator() {
         if (tagname.equals("*")) {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMExceptionTranslator.INSTANCE, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.ANY, null, null, DOMSemantics.INSTANCE);
         } else {
-            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.BY_NAME, null, tagname, DOMExceptionTranslator.INSTANCE, DOMSemantics.INSTANCE);
+            return node.coreGetElements(Axis.DESCENDANTS, DOMElement.class, ElementMatcher.BY_NAME, null, tagname, DOMSemantics.INSTANCE);
         }
     }
 }

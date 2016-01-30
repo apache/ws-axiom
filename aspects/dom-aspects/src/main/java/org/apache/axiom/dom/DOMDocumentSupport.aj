@@ -251,11 +251,11 @@ public aspect DOMDocumentSupport {
     // TODO: need unit test to check that this method works as expected on an OMSourcedElement
     public final Node DOMDocument.renameNode(Node node, String namespaceURI, String qualifiedName) {
         if (!(node instanceof DOMNode && ((DOMNode)node).coreHasSameOwnerDocument(this))) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
         // TODO: what about an attempt to rename a namespace unaware node?
         if (!(node instanceof DOMNSAwareNamedNode)) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_SUPPORTED_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
         }
         int i = NSUtil.validateQualifiedName(qualifiedName);
         String prefix;

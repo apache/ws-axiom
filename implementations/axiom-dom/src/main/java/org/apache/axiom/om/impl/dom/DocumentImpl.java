@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionTranslator.newDOMException;
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -29,7 +29,7 @@ import java.util.Vector;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMDocument;
-import org.apache.axiom.dom.DOMExceptionTranslator;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.w3c.dom.Attr;

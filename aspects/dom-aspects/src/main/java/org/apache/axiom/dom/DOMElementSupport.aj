@@ -136,7 +136,7 @@ public aspect DOMElementSupport {
     
     public final Attr DOMElement.setAttributeNodeNS(Attr _newAttr) throws DOMException {
         if (!(_newAttr instanceof DOMAttribute)) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
         DOMAttribute newAttr = (DOMAttribute)_newAttr;
         CoreElement owner = newAttr.coreGetOwnerElement();
@@ -145,10 +145,10 @@ public aspect DOMElementSupport {
             // and replaces itself.
             return newAttr;
         } else if (owner != null) {
-            throw DOMExceptionTranslator.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
         } else {
             if (!coreHasSameOwnerDocument(newAttr)) {
-                throw DOMExceptionTranslator.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+                throw DOMExceptionUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
             }
             AttributeMatcher matcher;
             if (newAttr instanceof CoreNSAwareAttribute) {
@@ -167,13 +167,13 @@ public aspect DOMElementSupport {
         if (oldAttr instanceof DOMAttribute) {
             DOMAttribute attr = (DOMAttribute)oldAttr;
             if (attr.coreGetOwnerElement() != this) {
-                throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
+                throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
             } else {
                 attr.coreRemove(DOMSemantics.INSTANCE);
             }
             return attr;
         } else {
-            throw DOMExceptionTranslator.newDOMException(DOMException.NOT_FOUND_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 

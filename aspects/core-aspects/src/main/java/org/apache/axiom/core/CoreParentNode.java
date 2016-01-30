@@ -35,5 +35,5 @@ public interface CoreParentNode extends CoreNode {
     void coreSetState(int state);
     void build();
 
-    <T extends CoreElement> NodeIterator<T> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, ExceptionTranslator exceptionTranslator, Semantics semantics);
+    <T extends CoreElement> NodeIterator<T> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Semantics semantics);
 }

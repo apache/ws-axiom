@@ -34,7 +34,7 @@ public aspect DOMNamespaceDeclarationSupport {
     public final void DOMNamespaceDeclaration.setPrefix(String prefix) throws DOMException {
         // Other DOM implementations allow changing the prefix, but this means that a namespace
         // declaration is transformed into a normal attribute. We don't support this.
-        throw DOMExceptionTranslator.newDOMException(DOMException.NAMESPACE_ERR);
+        throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 
     public final String DOMNamespaceDeclaration.getLocalName() {

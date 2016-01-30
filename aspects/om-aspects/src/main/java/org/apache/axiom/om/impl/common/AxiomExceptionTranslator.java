@@ -19,19 +19,12 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.ExceptionTranslator;
 import org.apache.axiom.om.OMException;
 
-public class AxiomExceptionTranslator implements ExceptionTranslator {
-    public static final AxiomExceptionTranslator INSTANCE = new AxiomExceptionTranslator();
-    
+public class AxiomExceptionTranslator {
     private AxiomExceptionTranslator() {}
     
     public static OMException translate(CoreModelException ex) {
         return new OMException(ex);
-    }
-
-    public RuntimeException toUncheckedException(CoreModelException ex) {
-        return translate(ex);
     }
 }
