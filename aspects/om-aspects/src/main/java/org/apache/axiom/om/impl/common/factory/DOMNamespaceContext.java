@@ -40,7 +40,7 @@ class DOMNamespaceContext extends AbstractNamespaceContext {
     }
 
     protected String doGetPrefix(String namespaceURI) {
-        Set seenPrefixes = new HashSet();
+        Set<String> seenPrefixes = new HashSet<String>();
         Node current = reader.currentNode();
         do {
             NamedNodeMap attributes = current.getAttributes();
@@ -66,8 +66,8 @@ class DOMNamespaceContext extends AbstractNamespaceContext {
     protected Iterator doGetPrefixes(String namespaceURI) {
         // seenPrefixes tracks all prefixes we have encountered; this is important to
         // handle prefixes that are overridden by descendant elements
-        Set seenPrefixes = new HashSet();
-        Set matchingPrefixes = new HashSet();
+        Set<String> seenPrefixes = new HashSet<String>();
+        Set<String> matchingPrefixes = new HashSet<String>();
         Node current = reader.currentNode();
         do {
             NamedNodeMap attributes = current.getAttributes();
