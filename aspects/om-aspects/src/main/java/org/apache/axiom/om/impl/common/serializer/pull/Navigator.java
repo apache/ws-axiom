@@ -847,9 +847,9 @@ final class Navigator extends PullSerializerState
      * ####################################################################
      */
 
-    private Map getAllNamespaces(OMSerializable contextNode) {
+    private Map<String,String> getAllNamespaces(OMSerializable contextNode) {
         if (contextNode == null) {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         OMContainer context;
         if (contextNode instanceof OMContainer) {
@@ -857,7 +857,7 @@ final class Navigator extends PullSerializerState
         } else {
             context = ((OMNode)contextNode).getParent();
         }
-        Map nsMap = new LinkedHashMap();
+        Map<String,String> nsMap = new LinkedHashMap<String,String>();
         while (context != null && !(context instanceof OMDocument)) {
             OMElement element = (OMElement) context;
             for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
@@ -877,7 +877,7 @@ final class Navigator extends PullSerializerState
         return nsMap;
     }
 
-    private void addNamespaceToMap(OMNamespace ns, Map map) {
+    private void addNamespaceToMap(OMNamespace ns, Map<String,String> map) {
         if (map.get(ns.getPrefix()) == null) {
             map.put(ns.getPrefix(), ns.getNamespaceURI());
         }
