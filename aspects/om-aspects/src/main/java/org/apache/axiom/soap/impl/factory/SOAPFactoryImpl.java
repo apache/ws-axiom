@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.common;
+package org.apache.axiom.soap.impl.factory;
 
 import javax.xml.namespace.QName;
 
