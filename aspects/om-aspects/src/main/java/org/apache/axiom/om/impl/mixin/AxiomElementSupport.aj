@@ -35,9 +35,12 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
+import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
@@ -55,7 +58,6 @@ import org.apache.axiom.om.impl.common.LiveNamespaceContext;
 import org.apache.axiom.om.impl.common.NSUtil;
 import org.apache.axiom.om.impl.common.NamespaceDeclarationMapper;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
-import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
@@ -113,8 +115,15 @@ public aspect AxiomElementSupport {
         return null;
     }
 
+    private static final Mapper<CoreElement,OMElement> childElementMapper = new Mapper<CoreElement,OMElement>() {
+        public OMElement map(CoreElement element) {
+            return (OMElement)element;
+        }
+    };
+    
     public final Iterator<OMElement> AxiomElement.getChildElements() {
-        return new OMChildElementIterator(getFirstElement());
+        return coreGetElements(Axis.CHILDREN, CoreElement.class, ElementMatcher.ANY, null, null,
+                childElementMapper, AxiomSemantics.INSTANCE);
     }
 
     public final Iterator<OMNamespace> AxiomElement.getNamespacesInScope() {
