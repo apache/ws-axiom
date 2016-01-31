@@ -381,9 +381,6 @@ public class OMFactoryImpl implements OMFactoryEx {
                     boolean isOptimize = importedText.isOptimized();
                     newText = createOMText(importedText
                             .getDataHandler(), isOptimize);
-                } else if (importedText.isCharacters()) {
-                    newText = createOMText(null, importedText
-                            .getTextCharacters(), importedText.getType());
                 } else {
                     newText = createOMText(null, importedText
                             .getText()/*, importedText.getOMNodeType()*/);

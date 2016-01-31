@@ -287,12 +287,8 @@ final class Navigator extends PullSerializerState
             case CDATA:
             case SPACE:
                 OMText text = (OMText)node;
-                if (text.isCharacters()) {
-                    writer.write(text.getTextCharacters());
-                } else {
-                    // TODO: we should cover the binary case in an optimized way
-                    writer.write(text.getText());
-                }
+                // TODO: we should cover the binary case in an optimized way
+                writer.write(text.getText());
                 break;
             case COMMENT:
                 writer.write(((OMComment)node).getValue());
