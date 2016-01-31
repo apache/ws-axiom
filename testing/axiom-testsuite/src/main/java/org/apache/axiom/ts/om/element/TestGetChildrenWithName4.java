@@ -58,10 +58,10 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
         
         // Test for QName with no namespace.
-        // The original Axiom implementation interpretted this as a wildcard.
-        // In order to not break existing code, this should return 2
+        // Axiom 1.2.x implemented a legacy behavior where an empty namespace URI was interpreted
+        // as a wildcard (see AXIOM-11). In Axiom 1.3.x, the matching is always strict.
         qName = new QName("", "sample");
-        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(2);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
         
         // Now add an unqualified sample element to the documentElement
         factory.createOMElement("sample", null, documentElement);

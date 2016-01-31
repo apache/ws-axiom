@@ -50,7 +50,6 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
-import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
@@ -226,30 +225,9 @@ public aspect AxiomContainerSupport {
                 childElementMapper, AxiomSemantics.INSTANCE);
     }
 
+    // TODO: DOOM actually supported elementQName == null; need to test and document this
     public Iterator<OMElement> AxiomContainer.getChildrenWithName(QName elementQName) {
-        OMNode firstChild = getFirstOMChild();
-        Iterator it =  new OMChildrenQNameIterator(firstChild, elementQName);
-        
-        // The getChidrenWithName method used to tolerate an empty namespace
-        // and interpret that as getting any element that matched the local
-        // name.  There are custmers of axiom that have hard-coded dependencies
-        // on this semantic.
-        // The following code falls back to this legacy behavior only if
-        // (a) elementQName has no namespace, (b) the new iterator finds no elements
-        // and (c) there are children.
-        // TODO: DOOM actually supported elementQName == null; need to test and document this
-        if (elementQName != null && elementQName.getNamespaceURI().length() == 0 &&
-            firstChild != null &&
-            !it.hasNext()) {
-            if (log.isTraceEnabled()) {
-                log.trace("There are no child elements that match the unqualifed name: " +
-                          elementQName);
-                log.trace("Now looking for child elements that have the same local name.");
-            }
-            it = new OMChildrenLegacyQNameIterator(getFirstOMChild(), elementQName);
-        }
-        
-        return it;
+        return new OMChildrenQNameIterator(getFirstOMChild(), elementQName);
     }
     
     private static final Mapper<CoreNode,OMSerializable> descendantsMapper = new Mapper<CoreNode,OMSerializable>() {
