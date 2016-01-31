@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
@@ -49,17 +51,17 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         
         // Test for fully qualified names
         QName qName = new QName(NS_A, "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
         qName = new QName(NS_B, "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
         qName = new QName(NS_C, "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 0);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
         
         // Test for QName with no namespace.
         // The original Axiom implementation interpretted this as a wildcard.
         // In order to not break existing code, this should return 2
         qName = new QName("", "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 2);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(2);
         
         // Now add an unqualified sample element to the documentElement
         factory.createOMElement("sample", null, documentElement);
@@ -67,16 +69,16 @@ public class TestGetChildrenWithName4 extends AxiomTestCase {
         
         // Repeat the tests
         qName = new QName(NS_A, "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
         qName = new QName(NS_B, "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
         qName = new QName(NS_C, "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 0);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(0);
        
         // Since there actually is an unqualified element child, the most accurate
         // interpretation of getChildrenWithName should be to return this one 
         // child
         qName = new QName("", "sample");
-        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        assertThat(getChildrenCount(documentElement.getChildrenWithName(qName))).isEqualTo(1);
     }
 }
