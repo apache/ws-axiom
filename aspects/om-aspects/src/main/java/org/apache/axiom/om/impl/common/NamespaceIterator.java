@@ -30,10 +30,10 @@ import org.apache.axiom.om.OMNamespace;
 /**
  * Iterator implementation used by {@link OMElement#getNamespacesInScope()}.
  */
-public final class NamespaceIterator implements Iterator {
-    private final Set/*<String>*/ seenPrefixes = new HashSet();
+public final class NamespaceIterator implements Iterator<OMNamespace> {
+    private final Set<String> seenPrefixes = new HashSet<String>();
     private OMElement element;
-    private Iterator declaredNamespaces;
+    private Iterator<OMNamespace> declaredNamespaces;
     private boolean hasNextCalled;
     private OMNamespace next;
 
@@ -47,7 +47,7 @@ public final class NamespaceIterator implements Iterator {
                 if (declaredNamespaces == null) {
                     declaredNamespaces = element.getAllDeclaredNamespaces();
                 } else if (declaredNamespaces.hasNext()) {
-                    OMNamespace namespace = (OMNamespace)declaredNamespaces.next();
+                    OMNamespace namespace = declaredNamespaces.next();
                     // We only return a namespace declaration if it has not been overridden (i.e. if
                     // we have not seen another declaration with the same prefix yet) and if the namespace
                     // URI is not empty. The second part of the condition covers the case of namespace
@@ -74,7 +74,7 @@ public final class NamespaceIterator implements Iterator {
         return next != null;
     }
 
-    public Object next() {
+    public OMNamespace next() {
         if (hasNext()) {
             OMNamespace result = next;
             hasNextCalled = false;

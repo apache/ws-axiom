@@ -165,8 +165,8 @@ public aspect AxiomContainerSupport {
         // builder is null. Meaning this is a programatical created element but it has children which are not completed
         // Build them all.
         if (builder == null && getState() == INCOMPLETE) {
-            for (Iterator childrenIterator = this.getChildren(); childrenIterator.hasNext();) {
-                OMNode omNode = (OMNode) childrenIterator.next();
+            for (Iterator<OMNode> childrenIterator = getChildren(); childrenIterator.hasNext();) {
+                OMNode omNode = childrenIterator.next();
                 omNode.build();
             }
         } else {
@@ -443,9 +443,8 @@ public aspect AxiomContainerSupport {
 
     public final void AxiomContainer.notifyChildComplete() {
         if (getState() == INCOMPLETE && getBuilder() == null) {
-            Iterator iterator = getChildren();
-            while (iterator.hasNext()) {
-                OMNode node = (OMNode) iterator.next();
+            for (Iterator<OMNode> iterator = getChildren(); iterator.hasNext(); ) {
+                OMNode node = iterator.next();
                 if (!node.isComplete()) {
                     return;
                 }

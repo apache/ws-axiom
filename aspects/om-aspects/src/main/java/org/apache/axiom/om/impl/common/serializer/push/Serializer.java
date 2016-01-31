@@ -90,11 +90,11 @@ public abstract class Serializer {
             // Maintain a set of the prefixes we have already seen. This is required to take into
             // account that a namespace mapping declared on an element can hide another one declared
             // for the same prefix on an ancestor of the element.
-            Set/*<String>*/ seenPrefixes = new HashSet();
+            Set<String> seenPrefixes = new HashSet<String>();
             OMElement current = element;
             while (true) {
-                for (Iterator it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                    ns = (OMNamespace)it.next();
+                for (Iterator<OMNamespace> it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                    ns = it.next();
                     if (seenPrefixes.add(ns.getPrefix())) {
                         mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
                     }
@@ -106,13 +106,13 @@ public abstract class Serializer {
                 current = (OMElement)parent;
             }
         } else {
-            for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                ns = (OMNamespace)it.next();
+            for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                ns = it.next();
                 mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
             }
         }
-        for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = (OMAttribute)it.next();
+        for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
+            OMAttribute attr = it.next();
             ns = attr.getNamespace();
             if (ns == null) {
                 processAttribute("", "", attr.getLocalName(), attr.getAttributeType(), attr.getAttributeValue());

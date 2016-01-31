@@ -45,10 +45,10 @@ public final class LiveNamespaceContext extends AbstractNamespaceContext {
         return ns == null ? null : ns.getPrefix();
     }
 
-    protected Iterator doGetPrefixes(String namespaceURI) {
-        List prefixes = new ArrayList();
-        for (Iterator it = element.getNamespacesInScope(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
+    protected Iterator<String> doGetPrefixes(String namespaceURI) {
+        List<String> prefixes = new ArrayList<String>();
+        for (Iterator<OMNamespace> it = element.getNamespacesInScope(); it.hasNext(); ) {
+            OMNamespace ns = it.next();
             if (ns.getNamespaceURI().equals(namespaceURI)) {
                 prefixes.add(ns.getPrefix());
             }

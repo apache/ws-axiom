@@ -49,8 +49,8 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         // Seed the namespace context with the namespace context from the parent
         OMContainer parent = root.getParent();
         if (parent instanceof OMElement) {
-            for (Iterator it = ((OMElement)parent).getNamespacesInScope(); it.hasNext(); ) {
-                OMNamespace ns = (OMNamespace)it.next();
+            for (Iterator<OMNamespace> it = ((OMElement)parent).getNamespacesInScope(); it.hasNext(); ) {
+                OMNamespace ns = it.next();
                 setPrefix(ns.getPrefix(), ns.getNamespaceURI());
             }
         }

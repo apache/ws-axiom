@@ -25,7 +25,7 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
 /** An Iterator which walks the header list as needed, potentially filtering as we traverse. */
-public class HeaderIterator implements Iterator {
+public class HeaderIterator implements Iterator<SOAPHeaderBlock> {
     SOAPHeaderBlock current;
     boolean advance = false;
     Checker checker;
@@ -76,7 +76,7 @@ public class HeaderIterator implements Iterator {
         return false;
     }
 
-    public Object next() {
+    public SOAPHeaderBlock next() {
         SOAPHeaderBlock ret = current;
         if (ret != null) {
             advance = true;

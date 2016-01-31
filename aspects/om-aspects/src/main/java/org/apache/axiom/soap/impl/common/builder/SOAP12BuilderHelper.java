@@ -50,7 +50,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private boolean subCodeProcessing = false;
     private boolean reasonProcessing = false;
     private boolean processingDetailElements = false;
-    private Vector detailElementNames;
+    private Vector<String> detailElementNames;
 
     public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
                                  OMElement parent,
@@ -214,7 +214,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 elementType = AxiomElement.class;
                 processingDetailElements = true;
-                detailElementNames = new Vector();
+                detailElementNames = new Vector<String>();
                 detailElementNames.add(parser.getLocalName());
 
             } else {

@@ -855,14 +855,14 @@ final class Navigator extends PullSerializerState
         Map<String,String> nsMap = new LinkedHashMap<String,String>();
         while (context != null && !(context instanceof OMDocument)) {
             OMElement element = (OMElement) context;
-            for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                addNamespaceToMap((OMNamespace) it.next(), nsMap);
+            for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                addNamespaceToMap(it.next(), nsMap);
             }
             if (element.getNamespace() != null) {
                 addNamespaceToMap(element.getNamespace(), nsMap);
             }
-            for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
-                OMAttribute attr = (OMAttribute) it.next();
+            for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
+                OMAttribute attr = it.next();
                 if (attr.getNamespace() != null) {
                     addNamespaceToMap(attr.getNamespace(), nsMap);
                 }

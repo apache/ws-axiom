@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
@@ -458,8 +459,7 @@ public aspect AxiomSourcedElementSupport {
             // Remove the entire subtree and replace with 
             // new datasource.  There maybe a more performant way to do this.
             OMDataSource oldDS = this.dataSource;
-            Iterator it = getChildren();
-            while(it.hasNext()) {
+            for (Iterator<OMNode> it = getChildren(); it.hasNext(); ) {
                 it.next();
                 it.remove();
             }

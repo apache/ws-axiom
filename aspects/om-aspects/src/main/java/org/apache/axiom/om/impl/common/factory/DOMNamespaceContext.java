@@ -63,7 +63,7 @@ class DOMNamespaceContext extends AbstractNamespaceContext {
         return null;
     }
 
-    protected Iterator doGetPrefixes(String namespaceURI) {
+    protected Iterator<String> doGetPrefixes(String namespaceURI) {
         // seenPrefixes tracks all prefixes we have encountered; this is important to
         // handle prefixes that are overridden by descendant elements
         Set<String> seenPrefixes = new HashSet<String>();

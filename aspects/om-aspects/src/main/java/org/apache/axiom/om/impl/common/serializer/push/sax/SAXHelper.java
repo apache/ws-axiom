@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 final class SAXHelper {
-    private Stack elementNameStack = new Stack();
+    private Stack<String> elementNameStack = new Stack<String>();
     private String elementURI;
     private String elementLocalName;
     private String elementQName;
@@ -66,9 +66,9 @@ final class SAXHelper {
     }
     
     void writeEndElement(ContentHandler contentHandler, ScopedNamespaceContext nsContext) throws SAXException {
-        String elementQName = (String)elementNameStack.pop();
-        String elementLocalName = (String)elementNameStack.pop();
-        String elementURI = (String)elementNameStack.pop();
+        String elementQName = elementNameStack.pop();
+        String elementLocalName = elementNameStack.pop();
+        String elementURI = elementNameStack.pop();
         contentHandler.endElement(elementURI, elementLocalName, elementQName);
         if (nsContext != null) {
             for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {

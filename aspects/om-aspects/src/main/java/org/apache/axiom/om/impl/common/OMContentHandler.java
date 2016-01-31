@@ -65,7 +65,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     /**
      * Stores the replacement values for entities.
      */
-    private Map entities;
+    private Map<String,String> entities;
     
     /**
      * Flag indicating that the parser is processing the external subset.
@@ -162,7 +162,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
 
     public final void internalEntityDecl(String name, String value) throws SAXException {
         if (entities == null) {
-            entities = new HashMap();
+            entities = new HashMap<String,String>();
         }
         entities.put(name, value);
         if (!inExternalSubset) {
@@ -354,7 +354,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
         } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            createOMEntityReference(target, name, entities == null ? null : (String)entities.get(name));
+            createOMEntityReference(target, name, entities == null ? null : entities.get(name));
             inEntityReference = true;
             entityReferenceDepth = 1;
         }

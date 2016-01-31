@@ -156,7 +156,7 @@ final class EndDocumentState extends PullSerializerState {
     }
 
     NamespaceContext getNamespaceContext() {
-        return new MapBasedNamespaceContext(Collections.EMPTY_MAP);
+        return new MapBasedNamespaceContext(Collections.<String,String>emptyMap());
     }
 
     String getNamespaceURI(String prefix) {
