@@ -25,10 +25,10 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-final class AttributesNamedNodeMap implements NamedNodeMap {
+public final class AttributesNamedNodeMap implements NamedNodeMap {
     private final DOMElement element;
     
-    AttributesNamedNodeMap(DOMElement element) {
+    public AttributesNamedNodeMap(DOMElement element) {
         this.element = element;
     }
 

@@ -24,8 +24,8 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFilter;
 import org.apache.axiom.core.NodeType;
 
-final class DocumentWhitespaceFilter implements NodeFilter {
-    final static DocumentWhitespaceFilter INSTANCE = new DocumentWhitespaceFilter();
+public final class DocumentWhitespaceFilter implements NodeFilter {
+    public final static DocumentWhitespaceFilter INSTANCE = new DocumentWhitespaceFilter();
     
     private DocumentWhitespaceFilter() {}
 

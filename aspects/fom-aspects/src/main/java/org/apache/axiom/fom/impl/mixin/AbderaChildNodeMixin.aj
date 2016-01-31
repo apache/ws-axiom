@@ -16,21 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.fom.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.abdera.model.Base;
+import org.apache.abdera.model.Element;
+import org.apache.axiom.fom.AbderaChildNode;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
-    }
-
-    public Node item(int index) {
-        return null;
+public aspect AbderaChildNodeMixin {
+    @SuppressWarnings("unchecked")
+    public final <T extends Base> T AbderaChildNode.getParentElement() {
+        T parent = (T)coreGetParent();
+        return (T)((parent instanceof Element) ? getWrapped((Element)parent) : parent);
     }
 }

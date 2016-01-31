@@ -16,21 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.om.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.intf.AxiomDocType;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect AxiomDocTypeSupport {
+    public final int AxiomDocType.getType() {
+        return DTD_NODE;
     }
 
-    public Node item(int index) {
-        return null;
+    public final String AxiomDocType.getRootName() {
+        return coreGetRootName();
+    }
+
+    public final void AxiomDocType.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+        serializer.writeDTD(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
+    }
+    
+    public final void AxiomDocType.buildWithAttachments() {
     }
 }

@@ -16,21 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.om.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.intf.AxiomCoreLeafNode;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect AxiomCoreLeafNodeSupport {
+    public final OMXMLParserWrapper AxiomCoreLeafNode.getBuilder() {
+        return null;
     }
 
-    public Node item(int index) {
-        return null;
+    public final boolean AxiomCoreLeafNode.isComplete() {
+        return true;
+    }
+
+    public void AxiomCoreLeafNode.build() {
+        // Do nothing; a leaf node is always complete
     }
 }

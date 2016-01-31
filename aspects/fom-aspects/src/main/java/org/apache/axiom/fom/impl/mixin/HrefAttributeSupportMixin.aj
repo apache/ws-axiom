@@ -16,21 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.fom.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import static org.apache.abdera.util.Constants.HREF;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
+import org.apache.abdera.i18n.iri.IRI;
+import org.apache.axiom.fom.HrefAttributeSupport;
+import org.apache.axiom.fom.IRIUtil;
 
-    public int getLength() {
-        return 0;
+public aspect HrefAttributeSupportMixin {
+    public final IRI HrefAttributeSupport.getHref() {
+        return IRIUtil.getUriValue(getAttributeValue(HREF));
     }
 
-    public Node item(int index) {
-        return null;
+    public final IRI HrefAttributeSupport.getResolvedHref() {
+        return IRIUtil.resolve(getResolvedBaseUri(), getHref());
+    }
+
+    public final void HrefAttributeSupport.internalSetHref(String href) {
+        setAttributeValue(HREF, IRIUtil.normalize(href));
     }
 }

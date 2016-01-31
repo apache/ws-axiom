@@ -16,21 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl.mixin;
 
+import org.apache.axiom.dom.DOMComment;
+import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect DOMCommentSupport {
+    public final String DOMComment.getNodeName() {
+        return "#comment";
     }
 
-    public Node item(int index) {
-        return null;
+    public final short DOMComment.getNodeType() {
+        return Node.COMMENT_NODE;
+    }
+
+    public final String DOMComment.getData() {
+        return coreGetCharacterData().toString();
+    }
+
+    public final void DOMComment.setData(String data) {
+        coreSetCharacterData(data, DOMSemantics.INSTANCE);
     }
 }

@@ -16,21 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl.mixin;
 
+import org.apache.axiom.dom.DOMRootNode;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect DOMRootNodeSupport {
+    public final Node DOMRootNode.getNextSibling() {
+        return null;
     }
 
-    public Node item(int index) {
+    public final Node DOMRootNode.getPreviousSibling() {
+        return null;
+    }
+    
+    public final Node DOMRootNode.getParentNode() {
         return null;
     }
 }

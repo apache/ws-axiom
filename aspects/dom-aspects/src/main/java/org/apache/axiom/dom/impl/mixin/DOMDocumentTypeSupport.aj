@@ -16,21 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.axiom.dom.DOMDocumentType;
+import org.w3c.dom.NamedNodeMap;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect DOMDocumentTypeSupport {
+    public final short DOMDocumentType.getNodeType() {
+        return DOCUMENT_TYPE_NODE;
     }
 
-    public Node item(int index) {
+    public final String DOMDocumentType.getNodeName() {
+        return getName();
+    }
+
+    public final String DOMDocumentType.getNodeValue() {
         return null;
+    }
+
+    public final void DOMDocumentType.setNodeValue(String nodeValue) {
+    }
+
+    public final String DOMDocumentType.getName() {
+        return coreGetRootName();
+    }
+
+    public final NamedNodeMap DOMDocumentType.getEntities() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final NamedNodeMap DOMDocumentType.getNotations() {
+        throw new UnsupportedOperationException();
     }
 }

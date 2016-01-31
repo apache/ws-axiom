@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 /**
  * Iterator implementation used by {@link OMElement#getNamespacesInScope()}.
  */
-final class NamespaceIterator implements Iterator {
+public final class NamespaceIterator implements Iterator {
     private final Set/*<String>*/ seenPrefixes = new HashSet();
     private OMElement element;
     private Iterator declaredNamespaces;

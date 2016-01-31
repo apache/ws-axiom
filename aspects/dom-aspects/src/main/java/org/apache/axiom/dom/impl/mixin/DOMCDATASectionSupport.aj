@@ -16,21 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl.mixin;
 
+import org.apache.axiom.dom.DOMCDATASection;
+import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect DOMCDATASectionSupport {
+    public final short DOMCDATASection.getNodeType() {
+        return Node.CDATA_SECTION_NODE;
     }
 
-    public Node item(int index) {
-        return null;
+    public final String DOMCDATASection.getNodeName() {
+        return "#cdata-section";
+    }
+
+    public final void DOMCDATASection.setData(String data) {
+        coreSetCharacterData(data, DOMSemantics.INSTANCE);
     }
 }

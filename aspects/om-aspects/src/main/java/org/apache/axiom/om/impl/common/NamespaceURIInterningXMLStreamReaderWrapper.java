@@ -30,7 +30,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
  * {@link XMLStreamReader} wrapper that interns namespace URIs. It is used to implement the
  * {@link OMXMLStreamReaderConfiguration#isNamespaceURIInterning()} option.
  */
-class NamespaceURIInterningXMLStreamReaderWrapper extends XMLStreamReaderWrapper implements OMXMLStreamReader {
+public final class NamespaceURIInterningXMLStreamReaderWrapper extends XMLStreamReaderWrapper implements OMXMLStreamReader {
     private NamespaceURIInterningNamespaceContextWrapper namespaceContextWrapper;
     
     public NamespaceURIInterningXMLStreamReaderWrapper(OMXMLStreamReader parent) {

@@ -16,21 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.om.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
-    }
-
-    public Node item(int index) {
-        return null;
+public aspect AxiomCDATASectionSupport {
+    public final int AxiomCDATASection.getType() {
+        return OMNode.CDATA_SECTION_NODE;
     }
 }

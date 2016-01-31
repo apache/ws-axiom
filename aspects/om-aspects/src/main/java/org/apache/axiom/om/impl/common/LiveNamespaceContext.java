@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.util.namespace.AbstractNamespaceContext;
 
-class LiveNamespaceContext extends AbstractNamespaceContext {
+public final class LiveNamespaceContext extends AbstractNamespaceContext {
     private final OMElement element;
 
     public LiveNamespaceContext(OMElement element) {

@@ -16,21 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.dom.impl.mixin;
 
+import org.apache.axiom.dom.DocumentWhitespaceFilter;
+import org.apache.axiom.dom.DOMChildNode;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect DOMChildNodeSupport {
+    public final Node DOMChildNode.getParentNode() {
+        return (Node)coreGetParent();
     }
-
-    public Node item(int index) {
-        return null;
+    
+    public final Node DOMChildNode.getNextSibling() {
+        return (Node)coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
+    }
+    
+    public final Node DOMChildNode.getPreviousSibling() {
+        return (Node)coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
     }
 }

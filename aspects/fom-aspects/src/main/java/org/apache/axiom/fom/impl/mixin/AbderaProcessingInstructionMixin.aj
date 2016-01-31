@@ -16,21 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.fom.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.abdera.model.ProcessingInstruction;
+import org.apache.axiom.fom.AbderaProcessingInstruction;
+import org.apache.axiom.fom.FOMSemantics;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect AbderaProcessingInstructionMixin {
+    public final String AbderaProcessingInstruction.getText() {
+        return coreGetCharacterData().toString();
     }
 
-    public Node item(int index) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public final <T extends ProcessingInstruction> T AbderaProcessingInstruction.setText(String text) {
+        coreSetCharacterData(text, FOMSemantics.INSTANCE);
+        return (T)this;
     }
 }

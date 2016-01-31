@@ -21,12 +21,12 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-final class DeferredNamespace implements OMNamespace {
+public final class DeferredNamespace implements OMNamespace {
     private final AxiomSourcedElement element;
     
     final String uri;
     
-    DeferredNamespace(AxiomSourcedElement element, String ns) {
+    public DeferredNamespace(AxiomSourcedElement element, String ns) {
         this.element = element;
         this.uri = ns;
     }

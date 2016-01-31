@@ -16,21 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom;
+package org.apache.axiom.soap.impl.mixin;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.soap.SOAPFaultText;
+import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 
-public final class EmptyNodeList implements NodeList {
-    public static final EmptyNodeList INSTANCE = new EmptyNodeList();
-    
-    private EmptyNodeList() {}
-
-    public int getLength() {
-        return 0;
+public aspect AxiomSOAP12FaultReasonSupport {
+    public final Class<? extends CoreNode> AxiomSOAP12FaultReason.coreGetNodeClass() {
+        return AxiomSOAP12FaultReason.class;
     }
 
-    public Node item(int index) {
-        return null;
+    public final void AxiomSOAP12FaultReason.addSOAPText(SOAPFaultText soapFaultText) {
+        addChild(soapFaultText);
     }
 }
