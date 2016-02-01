@@ -75,18 +75,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     private SOAPBuilderHelper builderHelper;
 
-    /**
-     * For internal use only.
-     */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable) {
         super(metaFactory.getOMFactory(), parser, autoClose, detachable, closeable);
         this.metaFactory = metaFactory;
     }
     
-    /**
-     * For internal use only.
-     */
     public StAXSOAPModelBuilder(XMLStreamReader parser, boolean autoClose, SOAPFactory factory, String soapVersion,
             Detachable detachable, Closeable closeable) {
         super(factory, parser, autoClose, detachable, closeable);

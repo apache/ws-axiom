@@ -179,18 +179,12 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
-    /**
-     * For internal use only.
-     */
     public StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable) {
         // The getEncoding information is only available at the START_DOCUMENT event.
         this(omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable);
     }
     
-    /**
-     * For internal use only.
-     */
     public StAXOMBuilder(OMFactory factory, 
                          XMLStreamReader parser, 
                          OMElement element, 
@@ -281,11 +275,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         }
     }
     
-    /**
-     * For internal use only.
-     * 
-     * @param container
-     */
     public final void debugDiscarded(Object container) {
         if (log.isDebugEnabled() && discardTracker != null) {
             Throwable t = discardTracker.get(container);
@@ -430,9 +419,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         }
     }
 
-    /**
-     * For internal use only.
-     */
     public final XMLStreamReader disableCaching() {
         cache = false;
         // Always advance to the event right after the current node; this also takes
@@ -444,9 +430,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         return parser;
     }
     
-    /**
-     * For internal use only.
-     */
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
     public final void reenableCaching(OMContainer container) {

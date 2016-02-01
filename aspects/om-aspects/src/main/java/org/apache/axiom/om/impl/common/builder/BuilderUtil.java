@@ -22,9 +22,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 
-/**
- * For internal use only.
- */
 public class BuilderUtil {
     private BuilderUtil() {}
     

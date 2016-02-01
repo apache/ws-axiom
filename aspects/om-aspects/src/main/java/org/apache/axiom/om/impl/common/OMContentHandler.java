@@ -34,9 +34,6 @@ import org.xml.sax.ext.LexicalHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * For internal use only.
- */
 public abstract class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final boolean expandEntityReferences;
     
