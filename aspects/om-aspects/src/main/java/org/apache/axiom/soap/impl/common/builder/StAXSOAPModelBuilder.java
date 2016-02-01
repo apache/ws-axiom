@@ -272,13 +272,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
     }
 
-    /**
-     * @deprecated Use {@link SOAPModelBuilder#getSOAPMessage()} instead.
-     */
-    public SOAPMessage getSoapMessage() {
-        return getSOAPMessage();
-    }
-    
     public SOAPMessage getSOAPMessage() {
         return (SOAPMessage)getDocument();
     }
