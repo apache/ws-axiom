@@ -138,6 +138,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInEpilog(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInProlog(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCreateSOAPModelBuilderFromDOMSource(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.builder.TestCreateSOAPModelBuilderMTOMContentTypeMismatch(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestDTD(metaFactory, spec));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilder(metaFactory, spec));
