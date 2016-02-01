@@ -288,7 +288,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      */
     public final void debugDiscarded(Object container) {
         if (log.isDebugEnabled() && discardTracker != null) {
-            Throwable t = (Throwable)discardTracker.get(container);
+            Throwable t = discardTracker.get(container);
             if (t != null) {
                 log.debug("About to throw NodeUnavailableException. Location of the code that caused the node to be discarded/consumed:", t);
             }
@@ -800,7 +800,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @throws OMException
      */
     protected final OMNode createOMElement() throws OMException {
-        AxiomElement node = ((OMFactoryEx)omfactory).createAxiomElement(determineElementType(target, parser.getLocalName()), parser.getLocalName(), target, this);
+        AxiomElement node = omfactory.createAxiomElement(determineElementType(target, parser.getLocalName()), parser.getLocalName(), target, this);
         postProcessElement(node);
         populateOMElement(node);
         return node;
