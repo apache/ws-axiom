@@ -93,7 +93,7 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
 
     @Override
     protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
-            String elementName) {
+            int elementLevel, String namespaceURI, String localName) {
         return fomfactory.determineElementType(parser.getName(), parent);
     }
 

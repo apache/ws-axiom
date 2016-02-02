@@ -33,7 +33,6 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultSubCode;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
 
-import javax.xml.stream.XMLStreamReader;
 import java.util.Vector;
 
 public class SOAP12BuilderHelper extends SOAPBuilderHelper {
@@ -52,14 +51,12 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private boolean processingDetailElements = false;
     private Vector<String> detailElementNames;
 
-    public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
-                                 OMElement parent,
-                                 int elementLevel) throws SOAPProcessingException {
+    public Class<? extends AxiomElement> handleEvent(OMElement parent, int elementLevel,
+            String namespaceURI, String localName) throws SOAPProcessingException {
         Class<? extends AxiomElement> elementType = null;
 
         if (elementLevel == 4) {
-            if (parser.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
+            if (localName.equals(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
                 if (codePresent) {
                     throw new OMBuilderException(
                             "Multiple Code element encountered");
@@ -68,8 +65,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     codePresent = true;
                     codeprocessing = true;
                 }
-            } else if (parser.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME)) {
+            } else if (localName.equals(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME)) {
                 if (!codeprocessing && !subCodeProcessing) {
                     if (codePresent) {
                         if (reasonPresent) {
@@ -82,8 +78,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         }
                     } else {
                         throw new OMBuilderException(
-                                "Wrong element order encountred at " +
-                                        parser.getLocalName());
+                                "Wrong element order encountred at " + localName);
                     }
                 } else {
                     if (codeprocessing) {
@@ -95,8 +90,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     }
                 }
 
-            } else if (parser.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME)) {
+            } else if (localName.equals(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME)) {
                 if (!reasonProcessing) {
                     if (reasonPresent && !rolePresent && !detailPresent) {
                         if (nodePresent) {
@@ -108,15 +102,13 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         }
                     } else {
                         throw new OMBuilderException(
-                                "wrong element order encountered at " +
-                                        parser.getLocalName());
+                                "wrong element order encountered at " + localName);
                     }
                 } else {
                     throw new OMBuilderException(
                             "Reason element Should have a text");
                 }
-            } else if (parser.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME)) {
+            } else if (localName.equals(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME)) {
                 if (!reasonProcessing) {
                     if (reasonPresent && !detailPresent) {
                         if (rolePresent) {
@@ -128,15 +120,13 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         }
                     } else {
                         throw new OMBuilderException(
-                                "Wrong element order encountered at " +
-                                        parser.getLocalName());
+                                "Wrong element order encountered at " + localName);
                     }
                 } else {
                     throw new OMBuilderException(
                             "Reason element should have a text");
                 }
-            } else if (parser.getLocalName().equals(
-                    SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
+            } else if (localName.equals(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 if (!reasonProcessing) {
                     if (reasonPresent) {
                         if (detailPresent) {
@@ -148,8 +138,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         }
                     } else {
                         throw new OMBuilderException(
-                                "wrong element order encountered at " +
-                                        parser.getLocalName());
+                                "wrong element order encountered at " + localName);
                     }
                 } else {
                     throw new OMBuilderException(
@@ -157,15 +146,13 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 }
             } else {
                 throw new OMBuilderException(
-                        parser.getLocalName() +
-                                " unsupported element in SOAPFault element");
+                        localName + " unsupported element in SOAPFault element");
             }
 
         } else if (elementLevel == 5) {
             if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME)) {
-                if (parser.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
+                if (localName.equals(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
                     if (!valuePresent) {
                         elementType = AxiomSOAP12FaultValue.class;
                         valuePresent = true;
@@ -175,8 +162,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                 "Multiple value Encountered in code element");
                     }
 
-                } else if (parser.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
+                } else if (localName.equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
                     if (!subcodePresent) {
                         if (valuePresent) {
                             elementType = AxiomSOAP12FaultSubCode.class;
@@ -193,27 +179,24 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     }
                 } else {
                     throw new OMBuilderException(
-                            parser.getLocalName() +
-                                    " is not supported inside the code element");
+                            localName + " is not supported inside the code element");
                 }
 
             } else if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME)) {
-                if (parser.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME)) {
+                if (localName.equals(SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME)) {
                     elementType = AxiomSOAP12FaultText.class;
                     reasonProcessing = false;
                 } else {
                     throw new OMBuilderException(
-                            parser.getLocalName() +
-                                    " is not supported inside the reason");
+                            localName + " is not supported inside the reason");
                 }
             } else if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 elementType = AxiomElement.class;
                 processingDetailElements = true;
                 detailElementNames = new Vector<String>();
-                detailElementNames.add(parser.getLocalName());
+                detailElementNames.add(localName);
 
             } else {
                 throw new OMBuilderException(
@@ -225,8 +208,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
         } else if (elementLevel > 5) {
             if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
-                if (parser.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
+                if (localName.equals(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME)) {
                     if (subcodeValuePresent) {
                         throw new OMBuilderException(
                                 "multiple subCode value encountered");
@@ -236,8 +218,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                         subSubcodePresent = false;
                         subCodeProcessing = false;
                     }
-                } else if (parser.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
+                } else if (localName.equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME)) {
                     if (subcodeValuePresent) {
                         if (!subSubcodePresent) {
                             elementType = AxiomSOAP12FaultSubCode.class;
@@ -254,8 +235,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     }
                 } else {
                     throw new OMBuilderException(
-                            parser.getLocalName() +
-                                    " is not supported inside the subCode element");
+                            localName + " is not supported inside the subCode element");
                 }
             } else if (processingDetailElements) {
                 int detailElementLevel = 0;
@@ -270,7 +250,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 if (localNameExist) {
                     detailElementNames.setSize(detailElementLevel);
                     elementType = AxiomElement.class;
-                    detailElementNames.add(parser.getLocalName());
+                    detailElementNames.add(localName);
                 }
 
             } else {

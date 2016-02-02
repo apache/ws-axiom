@@ -29,17 +29,13 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultRole;
 import org.w3c.dom.Element;
 
-import javax.xml.stream.XMLStreamReader;
-
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {
     private boolean faultcodePresent = false;
     private boolean faultstringPresent = false;
 
-    public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
-                                 OMElement parent,
-                                 int elementLevel) throws SOAPProcessingException {
+    public Class<? extends AxiomElement> handleEvent(OMElement parent, int elementLevel,
+            String namespaceURI, String localName) throws SOAPProcessingException {
         Class<? extends AxiomElement> elementType = null;
-        String localName = parser.getLocalName();
 
         if (elementLevel == 4) {
 

@@ -83,20 +83,20 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
 
     @Override
-    protected Class<? extends AxiomElement> determineElementType(OMContainer parent, String elementName) {
+    protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
+            int elementLevel, String namespaceURI, String localName) {
         Class<? extends AxiomElement> elementType;
         if (elementLevel == 1) {
 
             // Now I've found a SOAP Envelope, now create SOAPEnvelope here.
 
-            if (!elementName.equals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
+            if (!localName.equals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
                 throw new SOAPProcessingException("First Element must contain the local name, "
-                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME + " , but found " + elementName,
+                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME + " , but found " + localName,
                         SOAPConstants.FAULT_CODE_SENDER);
             }
 
             // determine SOAP version and from that determine a proper factory here.
-            String namespaceURI = this.parser.getNamespaceURI();
             if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                 soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
                 log.debug("Starting to process SOAP 1.2 message");
@@ -111,11 +111,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
             elementType = soapFactory.getSOAPHelper().getEnvelopeClass();
         } else if (elementLevel == 2) {
-            String elementNS = parser.getNamespaceURI();
-
-            if (soapFactory.getSoapVersionURI().equals(elementNS)) {
+            if (soapFactory.getSoapVersionURI().equals(namespaceURI)) {
                 // this is either a header or a body
-                if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
+                if (localName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
                     if (headerPresent) {
                         throw new SOAPProcessingException("Multiple headers encountered!",
                                                           getSenderFaultCode());
@@ -126,7 +124,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                     }
                     headerPresent = true;
                     elementType = soapFactory.getSOAPHelper().getHeaderClass();
-                } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
+                } else if (localName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
                     if (bodyPresent) {
                         throw new SOAPProcessingException("Multiple body elements encountered",
                                                           getSenderFaultCode());
@@ -134,14 +132,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                     bodyPresent = true;
                     elementType = soapFactory.getSOAPHelper().getBodyClass();
                 } else {
-                    throw new SOAPProcessingException(elementName + " is not supported here.",
+                    throw new SOAPProcessingException(localName + " is not supported here.",
                                                       getSenderFaultCode());
                 }
             } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
                 elementType = AxiomElement.class;
             } else {
                 throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
-                        + elementNS + "}" + elementName);
+                        + namespaceURI + "}" + localName);
             }
         } else if ((elementLevel == 3)
                 &&
@@ -156,8 +154,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             }
         } else if ((elementLevel == 3) &&
                 ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
-                elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
-                soapFactory.getSoapVersionURI().equals(parser.getNamespaceURI())) {
+                localName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
+                soapFactory.getSoapVersionURI().equals(namespaceURI)) {
             // this is a SOAP fault
             elementType = soapFactory.getSOAPHelper().getFaultClass();
             processingFault = true;
@@ -168,7 +166,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             }
 
         } else if (elementLevel > 3 && processingFault) {
-            elementType = builderHelper.handleEvent(parser, (OMElement)parent, elementLevel);
+            elementType = builderHelper.handleEvent((OMElement)parent, elementLevel, namespaceURI, localName);
         } else {
             // this is neither of above. Just create an element
             elementType = AxiomElement.class;

@@ -147,7 +147,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * root element is defined as 1. Note that if caching is disabled, then this depth may be
      * different from the actual depth reached by the underlying parser.
      */
-    protected int elementLevel = 0;
+    private int elementLevel = 0;
     
     /**
      * Stores exceptions thrown by the parser. Used to avoid accessing the parser
@@ -793,7 +793,9 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @throws OMException
      */
     private OMNode createOMElement() throws OMException {
-        AxiomElement node = omfactory.createAxiomElement(determineElementType(target, parser.getLocalName()), parser.getLocalName(), target, this);
+        AxiomElement node = omfactory.createAxiomElement(
+                determineElementType(target, elementLevel, parser.getNamespaceURI(), parser.getLocalName()),
+                parser.getLocalName(), target, this);
         postProcessElement(node);
         populateOMElement(node);
         return node;
@@ -809,7 +811,8 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      *            the local name for the element
      * @return the type of element to create; must not be <code>null</code>
      */
-    protected Class<? extends AxiomElement> determineElementType(OMContainer parent, String elementName) {
+    protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
+            int elementLevel, String namespaceURI, String localName) {
         return AxiomElement.class;
     }
     

@@ -23,10 +23,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import javax.xml.stream.XMLStreamReader;
-
 public abstract class SOAPBuilderHelper {
-    public abstract Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
-                                          OMElement element,
-                                          int elementLevel) throws SOAPProcessingException;
+    public abstract Class<? extends AxiomElement> handleEvent(OMElement element, int elementLevel,
+            String namespaceURI, String localName) throws SOAPProcessingException;
 }
