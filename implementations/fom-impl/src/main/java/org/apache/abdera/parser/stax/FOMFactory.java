@@ -61,7 +61,6 @@ import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 
