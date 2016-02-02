@@ -225,6 +225,9 @@ public aspect CoreChildNodeSupport {
     }
 
     public final void CoreChildNode.coreReplaceWith(CoreChildNode newNode, Semantics semantics) {
+        if (newNode == this) {
+            return;
+        }
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             newNode.internalDetach(null, parent);
