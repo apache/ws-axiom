@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.intf.AxiomElement;
@@ -35,7 +34,6 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -76,7 +74,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable) {
-        super(metaFactory.getOMFactory(), parser, autoClose, detachable, closeable);
+        super(metaFactory.getOMFactory(), parser, autoClose, detachable, closeable, SOAPPayloadSelector.INSTANCE);
         this.metaFactory = metaFactory;
     }
     
@@ -84,34 +82,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         return (SOAPEnvelope)getDocumentElement();
     }
 
-    protected OMNode createNextOMElement() {
-        OMNode newElement = null;
-        
-        
-        if (elementLevel == 3 && 
-            customBuilderForPayload != null) {
-            
-            if (target instanceof SOAPBody) {
-                newElement = createWithCustomBuilder(customBuilderForPayload,  soapFactory);
-            }
-        } 
-        if (newElement == null && customBuilders != null && 
-                elementLevel <= maxDepthForCustomBuilders) {
-            String namespace = parser.getNamespaceURI();
-            String localPart = parser.getLocalName();
-            CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
-            if (customBuilder != null) {
-                newElement = createWithCustomBuilder(customBuilder, soapFactory);
-            }
-        }
-        if (newElement == null) {
-            newElement = createOMElement();
-        } else {
-            elementLevel--; // Decrease level since custom builder read the end element event
-        }
-        return newElement;
-    }
-    
     @Override
     protected Class<? extends AxiomElement> determineElementType(OMContainer parent, String elementName) {
         Class<? extends AxiomElement> elementType;

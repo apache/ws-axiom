@@ -101,7 +101,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private final Closeable closeable;
 
     /** Field lastNode */
-    protected AxiomContainer target;
+    private AxiomContainer target;
 
     // returns the state of completion
 
@@ -131,9 +131,10 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private boolean _isClosed = false;              // Indicate if parser is closed
 
     // Fields for Custom Builder implementation
-    protected CustomBuilder customBuilderForPayload = null;
-    protected Map<QName,CustomBuilder> customBuilders = null;
-    protected int maxDepthForCustomBuilders = -1;
+    private final PayloadSelector payloadSelector;
+    private CustomBuilder customBuilderForPayload;
+    private Map<QName,CustomBuilder> customBuilders;
+    private int maxDepthForCustomBuilders = -1;
     
     /**
      * Reference to the {@link DataHandlerReader} extension of the parser, or <code>null</code> if
@@ -169,20 +170,27 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private int lookAheadToken = -1;
     
     private StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, String encoding,
-            boolean autoClose, Detachable detachable, Closeable closeable) {
+            boolean autoClose, Detachable detachable, Closeable closeable, PayloadSelector payloadSelector) {
         omfactory = (OMFactoryEx)omFactory;
         this.parser = parser;
         this.autoClose = autoClose;
         this.detachable = detachable;
         this.closeable = closeable;
+        this.payloadSelector = payloadSelector;
         charEncoding = encoding;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
+    protected StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
+            Detachable detachable, Closeable closeable, PayloadSelector payloadSelector) {
+        // The getEncoding information is only available at the START_DOCUMENT event.
+        this(omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable, payloadSelector);
+        
+    }
+    
     public StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable) {
-        // The getEncoding information is only available at the START_DOCUMENT event.
-        this(omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable);
+        this(omFactory, parser, autoClose, detachable, closeable, PayloadSelector.DEFAULT);
     }
     
     public StAXOMBuilder(OMFactory factory, 
@@ -190,7 +198,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                          OMElement element, 
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
-        this(factory, parser, characterEncoding, true, null, null);  
+        this(factory, parser, characterEncoding, true, null, null, PayloadSelector.DEFAULT);  
         elementLevel = 1;
         target = (AxiomContainer)element;
         populateOMElement(element);
@@ -699,16 +707,17 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * the default Builder mechanism.
      * @return TODO
      */
-    protected OMNode createNextOMElement() {
+    private OMNode createNextOMElement() {
         OMNode newElement = null;
-        if (elementLevel == 1 && this.customBuilderForPayload != null) {
-            newElement = createWithCustomBuilder(customBuilderForPayload,  omfactory);
-        } else if (customBuilders != null && elementLevel <= this.maxDepthForCustomBuilders) {
+        if (customBuilderForPayload != null && payloadSelector.isPayload(elementLevel, target)) {
+            newElement = createWithCustomBuilder(customBuilderForPayload);
+        }
+        if (newElement == null && customBuilders != null && elementLevel <= this.maxDepthForCustomBuilders) {
             String namespace = parser.getNamespaceURI();
             String localPart = parser.getLocalName();
             CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
             if (customBuilder != null) {
-                newElement = createWithCustomBuilder(customBuilder, omfactory);
+                newElement = createWithCustomBuilder(customBuilder);
             }
         }
         if (newElement == null) {
@@ -719,7 +728,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         return newElement;
     }
     
-    protected final OMNode createWithCustomBuilder(CustomBuilder customBuilder, OMFactory factory) {
+    private OMNode createWithCustomBuilder(CustomBuilder customBuilder) {
         
         String namespace = parser.getNamespaceURI();
         if (namespace == null) {
@@ -740,7 +749,8 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         // custom builder API. This should be fixed in Axiom 1.3.
         target.setComplete(true);
         
-        OMNode node = customBuilder.create(namespace, localPart, target, parser, factory);
+        // Use target.getOMFactory() because the factory may actually be a SOAPFactory
+        OMNode node = customBuilder.create(namespace, localPart, target, parser, target.getOMFactory());
         
         // TODO: dirty hack part 2
         target.setComplete(false);
@@ -782,7 +792,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @return Returns OMNode.
      * @throws OMException
      */
-    protected final OMNode createOMElement() throws OMException {
+    private OMNode createOMElement() throws OMException {
         AxiomElement node = omfactory.createAxiomElement(determineElementType(target, parser.getLocalName()), parser.getLocalName(), target, this);
         postProcessElement(node);
         populateOMElement(node);
