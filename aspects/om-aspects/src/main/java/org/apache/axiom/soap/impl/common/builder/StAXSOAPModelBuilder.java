@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.Detachable;
@@ -81,36 +80,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         this.metaFactory = metaFactory;
     }
     
-    public StAXSOAPModelBuilder(XMLStreamReader parser, boolean autoClose, SOAPFactory factory, String soapVersion,
-            Detachable detachable, Closeable closeable) {
-        super(factory, parser, autoClose, detachable, closeable);
-        soapFactory = (SOAPFactoryEx)factory;
-        identifySOAPVersion(soapVersion);
-    }
-    
-    /** @param soapVersionURIFromTransport  */
-    protected void identifySOAPVersion(String soapVersionURIFromTransport) {
-
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope();
-        if (soapEnvelope == null) {
-            throw new SOAPProcessingException("SOAP Message does not contain an Envelope",
-                                              SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
-        }
-
-        OMNamespace envelopeNamespace = soapEnvelope.getNamespace();
-
-        if (soapVersionURIFromTransport != null) {
-            String namespaceName = envelopeNamespace.getNamespaceURI();
-            if (!(soapVersionURIFromTransport.equals(namespaceName))) {
-                throw new SOAPProcessingException(
-                        "Transport level information does not match with SOAP" +
-                                " Message namespace URI", envelopeNamespace.getPrefix() + ":" +
-                        SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
-            }
-        }
-
-    }
-
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
         return (SOAPEnvelope)getDocumentElement();
     }
@@ -158,21 +127,16 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
             // determine SOAP version and from that determine a proper factory here.
             String namespaceURI = this.parser.getNamespaceURI();
-            if (soapFactory == null) {
-                if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                    soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
-                    log.debug("Starting to process SOAP 1.2 message");
-                } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                    soapFactory = (SOAPFactoryEx)metaFactory.getSOAP11Factory();
-                    log.debug("Starting to process SOAP 1.1 message");
-                } else {
-                    throw new SOAPProcessingException(
-                            "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
-                                    " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
-                }
-            } else if (!soapFactory.getSoapVersionURI().equals(namespaceURI)) {
-                throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
-                        "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
+                log.debug("Starting to process SOAP 1.2 message");
+            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                soapFactory = (SOAPFactoryEx)metaFactory.getSOAP11Factory();
+                log.debug("Starting to process SOAP 1.1 message");
+            } else {
+                throw new SOAPProcessingException(
+                        "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
+                                " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
             }
 
             elementType = soapFactory.getSOAPHelper().getEnvelopeClass();

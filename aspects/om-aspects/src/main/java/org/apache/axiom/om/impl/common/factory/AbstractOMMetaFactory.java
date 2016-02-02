@@ -39,9 +39,11 @@ import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
 import org.apache.axiom.soap.impl.common.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
@@ -245,13 +247,17 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
-        return new StAXSOAPModelBuilder(
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(
+                soapFactory.getMetaFactory(),
                 new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider),
                 true,
-                soapFactory,
-                soapFactory.getSoapVersionURI(),
                 mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null,
                 sourceInfo.getCloseable());
+        if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
+            throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
+                    "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
+        }
+        return builder;
     }
     
     public abstract AxiomSOAPMessage createSOAPMessage();
