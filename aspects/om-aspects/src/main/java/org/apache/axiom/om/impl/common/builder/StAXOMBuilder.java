@@ -41,6 +41,7 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.axiom.util.xml.QNameMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -133,7 +134,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     // Fields for Custom Builder implementation
     private final PayloadSelector payloadSelector;
     private CustomBuilder customBuilderForPayload;
-    private Map<QName,CustomBuilder> customBuilders;
+    private QNameMap<CustomBuilder> customBuilders;
     private int maxDepthForCustomBuilders = -1;
     
     /**
@@ -491,7 +492,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
         CustomBuilder old = null;
         if (customBuilders == null) {
-            customBuilders = new HashMap<QName,CustomBuilder>();
+            customBuilders = new QNameMap<CustomBuilder>();
         } else {
             old = customBuilders.get(qName);
         }
@@ -519,8 +520,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         if (customBuilders == null) {
             return null;
         }
-        QName qName = new QName(namespace, localPart);
-        return customBuilders.get(qName);
+        return customBuilders.get(namespace, localPart);
     }
 
     private void createDocumentIfNecessary() {

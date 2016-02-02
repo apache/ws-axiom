@@ -18,9 +18,7 @@
 package org.apache.abdera.parser.stax;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.activation.MimeType;
 import javax.xml.namespace.QName;
@@ -63,13 +61,14 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
+import org.apache.axiom.util.xml.QNameMap;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
 public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constants, ExtensionFactory {
-    private static final Map<QName,Class<? extends FOMElement>> elementTypeMap;
+    private static final QNameMap<Class<? extends FOMElement>> elementTypeMap;
     
     static {
-        elementTypeMap = new HashMap<QName,Class<? extends FOMElement>>();
+        elementTypeMap = new QNameMap<Class<? extends FOMElement>>();
         elementTypeMap.put(FEED, FOMFeed.class);
         elementTypeMap.put(SERVICE, FOMService.class);
         elementTypeMap.put(PRE_RFC_SERVICE, FOMService.class);
@@ -509,8 +508,8 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constant
         return createElement(elementType, qname, parent);
     }
 
-    protected Class<? extends FOMElement> determineElementType(QName qname, OMContainer parent) {
-        Class<? extends FOMElement> elementType = elementTypeMap.get(qname);
+    protected Class<? extends FOMElement> determineElementType(OMContainer parent, String namespaceURI, String localName) {
+        Class<? extends FOMElement> elementType = elementTypeMap.get(namespaceURI, localName);
         if (elementType != null) {
             return elementType;
         } else if (parent instanceof ExtensibleElement || parent instanceof Document) {
