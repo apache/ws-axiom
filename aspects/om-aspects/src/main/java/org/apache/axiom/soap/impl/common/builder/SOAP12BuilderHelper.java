@@ -55,8 +55,6 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
                                  OMElement parent,
                                  int elementLevel) throws SOAPProcessingException {
-
-        this.parser = parser;
         Class<? extends AxiomElement> elementType = null;
 
         if (elementLevel == 4) {

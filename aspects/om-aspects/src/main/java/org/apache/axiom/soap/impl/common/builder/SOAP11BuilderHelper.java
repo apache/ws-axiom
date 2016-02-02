@@ -38,8 +38,6 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
     public Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
                                  OMElement parent,
                                  int elementLevel) throws SOAPProcessingException {
-        this.parser = parser;
-
         Class<? extends AxiomElement> elementType = null;
         String localName = parser.getLocalName();
 

@@ -26,8 +26,6 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import javax.xml.stream.XMLStreamReader;
 
 public abstract class SOAPBuilderHelper {
-    protected XMLStreamReader parser;
-
     public abstract Class<? extends AxiomElement> handleEvent(XMLStreamReader parser,
                                           OMElement element,
                                           int elementLevel) throws SOAPProcessingException;
