@@ -18,10 +18,8 @@
  */
 package org.apache.axiom.soap.impl.intf;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPMessage;
 
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
@@ -30,7 +28,5 @@ import org.apache.axiom.soap.SOAPMessage;
 public interface SOAPFactoryEx extends SOAPFactory, OMFactoryEx {
 
     SOAPHelper getSOAPHelper();
-
-    SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
 
 }

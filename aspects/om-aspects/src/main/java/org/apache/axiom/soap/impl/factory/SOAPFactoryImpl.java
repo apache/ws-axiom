@@ -91,16 +91,6 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return message;
     }
 
-    public final SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
-        AxiomSOAPMessage message = createNode(AxiomSOAPMessage.class);
-        message.initSOAPFactory(this);
-        // Null check for Spring-WS compatibility
-        if (builder != null) {
-            message.coreSetBuilder(builder);
-        }
-        return message;
-    }
-    
     public final SOAPEnvelope createSOAPEnvelope() {
         return createSOAPEnvelope(getNamespace());
     }

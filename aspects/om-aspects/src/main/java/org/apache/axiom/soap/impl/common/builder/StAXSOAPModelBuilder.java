@@ -183,11 +183,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
 
     protected OMDocument createDocument() {
-        if (soapFactory != null) {
-            return soapFactory.createSOAPMessage(this);
-        } else {
-            return ((OMMetaFactoryEx)metaFactory).createSOAPMessage(this);
-        }
+        return ((OMMetaFactoryEx)metaFactory).createSOAPMessage(this);
     }
 
     /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */
