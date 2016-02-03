@@ -33,9 +33,7 @@ import org.apache.axiom.om.impl.common.builder.NodePostProcessor;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -45,7 +43,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
-import org.apache.axiom.soap.impl.intf.SOAPFactoryEx;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -61,7 +59,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      */
     private OMMetaFactory metaFactory;
 
-    private SOAPFactoryEx soapFactory;
+    private SOAPHelper soapHelper;
 
     /** Field headerPresent */
     private boolean headerPresent = false;
@@ -117,10 +115,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
             // determine SOAP version and from that determine a proper factory here.
             if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
+                soapHelper = SOAPHelper.SOAP12;
                 log.debug("Starting to process SOAP 1.2 message");
             } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                soapFactory = (SOAPFactoryEx)metaFactory.getSOAP11Factory();
+                soapHelper = SOAPHelper.SOAP11;
                 log.debug("Starting to process SOAP 1.1 message");
             } else {
                 throw new SOAPProcessingException(
@@ -128,9 +126,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                                 " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
             }
 
-            elementType = soapFactory.getSOAPHelper().getEnvelopeClass();
+            elementType = soapHelper.getEnvelopeClass();
         } else if (elementLevel == 2) {
-            if (soapFactory.getSoapVersionURI().equals(namespaceURI)) {
+            if (soapHelper.getEnvelopeURI().equals(namespaceURI)) {
                 // this is either a header or a body
                 if (localName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
                     if (headerPresent) {
@@ -142,19 +140,19 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                                                           getSenderFaultCode());
                     }
                     headerPresent = true;
-                    elementType = soapFactory.getSOAPHelper().getHeaderClass();
+                    elementType = soapHelper.getHeaderClass();
                 } else if (localName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
                     if (bodyPresent) {
                         throw new SOAPProcessingException("Multiple body elements encountered",
                                                           getSenderFaultCode());
                     }
                     bodyPresent = true;
-                    elementType = soapFactory.getSOAPHelper().getBodyClass();
+                    elementType = soapHelper.getBodyClass();
                 } else {
                     throw new SOAPProcessingException(localName + " is not supported here.",
                                                       getSenderFaultCode());
                 }
-            } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
+            } else if (soapHelper == SOAPHelper.SOAP11 && bodyPresent) {
                 elementType = AxiomElement.class;
             } else {
                 throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
@@ -166,7 +164,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
             // this is a headerblock
             try {
-                elementType = soapFactory.getSOAPHelper().getHeaderBlockClass();
+                elementType = soapHelper.getHeaderBlockClass();
             } catch (SOAPProcessingException e) {
                 throw new SOAPProcessingException("Can not create SOAPHeader block",
                                                   getReceiverFaultCode(), e);
@@ -174,13 +172,13 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         } else if ((elementLevel == 3) &&
                 ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
                 localName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
-                soapFactory.getSoapVersionURI().equals(namespaceURI)) {
+                soapHelper.getEnvelopeURI().equals(namespaceURI)) {
             // this is a SOAP fault
-            elementType = soapFactory.getSOAPHelper().getFaultClass();
+            elementType = soapHelper.getFaultClass();
             processingFault = true;
-            if (soapFactory.getSOAPVersion() == SOAP12Version.getSingleton()) {
+            if (soapHelper == SOAPHelper.SOAP12) {
                 builderHelper = new SOAP12BuilderHelper();
-            } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton()) {
+            } else if (soapHelper == SOAPHelper.SOAP11) {
                 builderHelper = new SOAP11BuilderHelper();
             }
 

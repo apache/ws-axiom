@@ -31,6 +31,7 @@ import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -43,14 +44,15 @@ import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
-import org.apache.axiom.soap.impl.intf.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
-public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFactoryEx {
+public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFactory {
     public SOAPFactoryImpl(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
         super(metaFactory, nodeFactory);
     }
     
+    public abstract SOAPHelper getSOAPHelper();
+
     public final String getSoapVersionURI() {
         return getSOAPHelper().getEnvelopeURI();
     }
