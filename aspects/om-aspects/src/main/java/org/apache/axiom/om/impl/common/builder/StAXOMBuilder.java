@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
@@ -53,6 +54,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -168,6 +170,8 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private boolean namespaceURIInterning = false;
     
     private int lookAheadToken = -1;
+    
+    private ArrayList<NodePostProcessor> nodePostProcessors;
     
     private StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, String encoding,
             boolean autoClose, Detachable detachable, Closeable closeable, PayloadSelector payloadSelector) {
@@ -532,6 +536,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             document.setXMLEncoding(parser.getCharacterEncodingScheme());
             document.setStandalone(parser.isStandalone() ? "yes" : "no");
             target = (AxiomContainer)document;
+            postProcessNode(document);
         }
     }
     
@@ -632,11 +637,12 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             }
            
             // Note: if autoClose is enabled, then the parser may be null at this point
-           
+            
+            OMNode node;
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT: {
                     elementLevel++;
-                    OMNode node = createNextOMElement();
+                    node = createNextOMElement();
                     // If the node was created by a custom builder, then it will be complete;
                     // in this case, the target doesn't change
                     if (!node.isComplete()) {
@@ -645,38 +651,41 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS:
-                    createOMText(XMLStreamConstants.CHARACTERS);
+                    node = createOMText(XMLStreamConstants.CHARACTERS);
                     break;
                 case XMLStreamConstants.CDATA:
-                    createOMText(XMLStreamConstants.CDATA);
+                    node = createOMText(XMLStreamConstants.CDATA);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     elementLevel--;
                     endElement();
+                    node = null;
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     done = true;
                     ((AxiomContainer) this.document).setComplete(true);
                     target = null;
+                    node = null;
                     break;
                 case XMLStreamConstants.SPACE:
-                    createOMText(XMLStreamConstants.SPACE);
+                    node = createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
-                    createComment();
+                    node = createComment();
                     break;
                 case XMLStreamConstants.DTD:
-                    createDTD();
+                    node = createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    createPI();
+                    node = createPI();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
-                    createEntityReference();
+                    node = createEntityReference();
                     break;
                 default :
                     throw new OMException();
             }
+            postProcessNode(node);
             
             if (target == null && !done) {
                 // We get here if the document has been discarded (by getDocumentElement(true)
@@ -1044,5 +1053,20 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
 
     public final AxiomContainer getTarget() {
         return target;
+    }
+    
+    public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
+        if (nodePostProcessors == null) {
+            nodePostProcessors = new ArrayList<NodePostProcessor>();
+        }
+        nodePostProcessors.add(nodePostProcessor);
+    }
+    
+    private void postProcessNode(OMSerializable node) {
+        if (nodePostProcessors != null) {
+            for (int i=0, size=nodePostProcessors.size(); i<size; i++) {
+                nodePostProcessors.get(i).postProcessNode(node);
+            }
+        }
     }
 }

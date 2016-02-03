@@ -27,7 +27,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.NodePostProcessor;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -41,6 +43,8 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.intf.SOAPFactoryEx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,6 +80,21 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             boolean autoClose, Detachable detachable, Closeable closeable) {
         super(metaFactory.getOMFactory(), parser, autoClose, detachable, closeable, SOAPPayloadSelector.INSTANCE);
         this.metaFactory = metaFactory;
+        // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
+        // SOAPEnvelope. Register a post-processor that does the necessary updates on the
+        // SOAPMessage.
+        addNodePostProcessor(new NodePostProcessor() {
+            private AxiomSOAPMessage message;
+            
+            @Override
+            public void postProcessNode(OMSerializable node) {
+                if (node instanceof AxiomSOAPMessage) {
+                    message = (AxiomSOAPMessage)node;
+                } else if (message != null && node instanceof AxiomSOAPEnvelope) {
+                    message.initSOAPFactory((SOAPFactory)((AxiomSOAPEnvelope)node).getOMFactory());
+                }
+            }
+        });
     }
     
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
@@ -202,12 +221,5 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     public SOAPMessage getSOAPMessage() {
         return (SOAPMessage)getDocument();
-    }
-
-    public SOAPFactory getSOAPFactory() {
-        if (soapFactory == null) {
-            getSOAPEnvelope();
-        }
-        return soapFactory;
     }
 }

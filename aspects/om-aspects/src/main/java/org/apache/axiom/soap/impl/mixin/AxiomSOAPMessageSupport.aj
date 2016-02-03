@@ -27,7 +27,6 @@ import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.common.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
 public aspect AxiomSOAPMessageSupport {
@@ -47,7 +46,8 @@ public aspect AxiomSOAPMessageSupport {
     
     public final OMFactory AxiomSOAPMessage.getOMFactory() {
         if (factory == null) {
-            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
+            // Force expansion up to the SOAP envelope; this will initialize the factory
+            getSOAPEnvelope();
         }
         return factory;
     }
