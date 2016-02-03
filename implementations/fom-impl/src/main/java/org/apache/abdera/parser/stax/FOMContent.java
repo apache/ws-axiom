@@ -44,14 +44,26 @@ import org.apache.axiom.util.base64.Base64Utils;
 
 @SuppressWarnings("unchecked")
 public class FOMContent extends FOMExtensibleElement implements AbderaContent {
-    protected Type type = Type.TEXT;
+    private Type cachedType;
 
     public final Type getContentType() {
-        return type;
+        if (cachedType == null) {
+            cachedType = Content.Type.TEXT;
+            String type = getAttributeValue(TYPE);
+            String src = getAttributeValue(SRC);
+            if (type != null) {
+                cachedType = Content.Type.typeFromString(type);
+                if (cachedType == null)
+                    throw new FOMUnsupportedContentTypeException(type);
+            } else if (type == null && src != null) {
+                cachedType = Content.Type.MEDIA;
+            }
+        }
+        return cachedType;
     }
 
     public Content setContentType(Type type) {
-        this.type = type;
+        this.cachedType = type;
         if (Type.TEXT.equals(type))
             setAttributeValue(TYPE, "text");
         else if (Type.HTML.equals(type))
@@ -85,7 +97,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
                 }
             }
 
-            if (value instanceof Div && !type.equals(Content.Type.XML))
+            if (value instanceof Div && !getContentType().equals(Content.Type.XML))
                 setContentType(Content.Type.XHTML);
             else {
                 if (mtype == null) {
@@ -136,7 +148,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public DataHandler getDataHandler() {
-        if (!Type.MEDIA.equals(type))
+        if (!Type.MEDIA.equals(getContentType()))
             throw new UnsupportedOperationException(Localizer.get("DATA.HANDLER.NOT.SUPPORTED"));
         MimeType type = getMimeType();
         java.net.URL src = null;
@@ -156,7 +168,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setDataHandler(DataHandler dataHandler) {
-        if (!Type.MEDIA.equals(type))
+        if (!Type.MEDIA.equals(getContentType()))
             throw new IllegalArgumentException();
         if (dataHandler.getContentType() != null) {
             try {
@@ -171,6 +183,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 
     public String getValue() {
         String val = null;
+        Type type = getContentType();
         if (Type.TEXT.equals(type)) {
             val = getText();
         } else if (Type.HTML.equals(type)) {
@@ -214,6 +227,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         if (value != null)
             removeAttribute(SRC);
         if (value != null) {
+            Type type = getContentType();
             if (Type.TEXT.equals(type)) {
                 _removeAllChildren();
                 setText(type, value);
@@ -262,7 +276,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public String getWrappedValue() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getContentType())) {
             return _getFirstChildWithName(Constants.DIV).toString();
         } else {
             return getText();
@@ -270,7 +284,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setWrappedValue(String wrappedValue) {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getContentType())) {
             IRI baseUri = null;
             Element element = null;
             try {
@@ -288,7 +302,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 
     @Override
     public IRI getBaseUri() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getContentType())) {
             Element el = getValueElement();
             if (el != null) {
                 if (el.getAttributeValue(BASE) != null) {
@@ -304,7 +318,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 
     @Override
     public IRI getResolvedBaseUri() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getContentType())) {
             Element el = getValueElement();
             if (el != null) {
                 if (el.getAttributeValue(BASE) != null) {
@@ -317,7 +331,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 
     @Override
     public String getLanguage() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getContentType())) {
             Element el = getValueElement();
             if (el.getAttributeValue(LANG) != null)
                 return el.getAttributeValue(LANG);
@@ -328,7 +342,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     @Override
     public Object clone() {
         FOMContent content = (FOMContent)super.clone();
-        content.type = this.type;
+        content.cachedType = this.cachedType;
         return content;
     }
 

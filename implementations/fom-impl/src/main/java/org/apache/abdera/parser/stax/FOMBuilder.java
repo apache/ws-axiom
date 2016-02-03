@@ -21,15 +21,12 @@ import java.io.Closeable;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.abdera.model.Content;
 import org.apache.abdera.model.Document;
 import org.apache.abdera.model.Element;
-import org.apache.abdera.model.Text;
 import org.apache.abdera.parser.ParseException;
 import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
@@ -51,31 +48,6 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
         return parserOptions;
     }
 
-    protected Text.Type getTextType() {
-        Text.Type ttype = Text.Type.TEXT;
-        String type = parser.getAttributeValue(null, LN_TYPE);
-        if (type != null) {
-            ttype = Text.Type.typeFromString(type);
-            if (ttype == null)
-                throw new FOMUnsupportedTextTypeException(type);
-        }
-        return ttype;
-    }
-
-    protected Content.Type getContentType() {
-        Content.Type ctype = Content.Type.TEXT;
-        String type = parser.getAttributeValue(null, LN_TYPE);
-        String src = parser.getAttributeValue(null, LN_SRC);
-        if (type != null) {
-            ctype = Content.Type.typeFromString(type);
-            if (ctype == null)
-                throw new FOMUnsupportedContentTypeException(type);
-        } else if (type == null && src != null) {
-            ctype = Content.Type.MEDIA;
-        }
-        return ctype;
-    }
-
     /**
      * Method next.
      * 
@@ -95,17 +67,6 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
             int elementLevel, String namespaceURI, String localName) {
         return fomfactory.determineElementType(parent, namespaceURI, localName);
-    }
-
-    @Override
-    protected void postProcessElement(OMElement element) {
-        if (element instanceof FOMContent) {
-            Content.Type type = getContentType();
-            ((FOMContent)element).setContentType(type == null ? Content.Type.TEXT : type);
-        } else if (element instanceof FOMText) {
-            Text.Type type = getTextType();
-            ((FOMText)element).setTextType(type == null ? Text.Type.TEXT : type);
-        }
     }
 
     public <T extends Element> Document<T> getFomDocument() {

@@ -34,14 +34,23 @@ import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings("unchecked")
 public class FOMText extends FOMElement implements AbderaText {
-    protected Type type = Type.TEXT;
+    private Type cachedType;
 
     public final Type getTextType() {
-        return type;
+        if (cachedType == null) {
+            cachedType = Text.Type.TEXT;
+            String type = getAttributeValue(TYPE);
+            if (type != null) {
+                cachedType = Text.Type.typeFromString(type);
+                if (cachedType == null)
+                    throw new FOMUnsupportedTextTypeException(type);
+            }
+        }
+        return cachedType;
     }
 
     public Text setTextType(Type type) {
-        this.type = type;
+        this.cachedType = type;
         if (Type.TEXT.equals(type))
             setAttributeValue(TYPE, "text");
         else if (Type.HTML.equals(type))
@@ -71,6 +80,7 @@ public class FOMText extends FOMElement implements AbderaText {
 
     public String getValue() {
         String val = null;
+        Type type = getTextType();
         if (Type.TEXT.equals(type)) {
             val = getText();
         } else if (Type.HTML.equals(type)) {
@@ -105,6 +115,7 @@ public class FOMText extends FOMElement implements AbderaText {
 
     public Text setValue(String value) {
         if (value != null) {
+            Type type = getTextType();
             if (Type.TEXT.equals(type)) {
                 setText(type, value);
             } else if (Type.HTML.equals(type)) {
@@ -127,7 +138,7 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public String getWrappedValue() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getTextType())) {
             return _getFirstChildWithName(Constants.DIV).toString();
         } else {
             return getValue();
@@ -135,7 +146,7 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Text setWrappedValue(String wrappedValue) {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getTextType())) {
             IRI baseUri = null;
             Element element = null;
             try {
@@ -154,7 +165,7 @@ public class FOMText extends FOMElement implements AbderaText {
 
     @Override
     public IRI getBaseUri() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getTextType())) {
             Element el = getValueElement();
             if (el != null) {
                 if (el.getAttributeValue(BASE) != null) {
@@ -170,7 +181,7 @@ public class FOMText extends FOMElement implements AbderaText {
 
     @Override
     public IRI getResolvedBaseUri() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getTextType())) {
             Element el = getValueElement();
             if (el != null) {
                 if (el.getAttributeValue(BASE) != null) {
@@ -183,7 +194,7 @@ public class FOMText extends FOMElement implements AbderaText {
 
     @Override
     public String getLanguage() {
-        if (Type.XHTML.equals(type)) {
+        if (Type.XHTML.equals(getTextType())) {
             Element el = getValueElement();
             if (el != null && el.getAttributeValue(LANG) != null)
                 return el.getAttributeValue(LANG);
@@ -194,7 +205,7 @@ public class FOMText extends FOMElement implements AbderaText {
     @Override
     public Object clone() {
         FOMText text = (FOMText)super.clone();
-        text.type = type;
+        text.cachedType = cachedType;
         return text;
     }
 

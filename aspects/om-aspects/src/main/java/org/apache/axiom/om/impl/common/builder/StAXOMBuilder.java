@@ -93,7 +93,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
     /** Field parser */
-    protected XMLStreamReader parser;
+    private XMLStreamReader parser;
 
     /** Field omfactory */
     private OMFactoryEx omfactory;
@@ -796,7 +796,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         AxiomElement node = omfactory.createAxiomElement(
                 determineElementType(target, elementLevel, parser.getNamespaceURI(), parser.getLocalName()),
                 parser.getLocalName(), target, this);
-        postProcessElement(node);
         populateOMElement(node);
         return node;
     }
@@ -814,9 +813,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
             int elementLevel, String namespaceURI, String localName) {
         return AxiomElement.class;
-    }
-    
-    protected void postProcessElement(OMElement element) {
     }
     
     /**
