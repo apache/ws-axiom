@@ -515,19 +515,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         return old;
     }
     
-    /**
-     * Return CustomBuilder associated with the namespace/localPart
-     * @param namespace
-     * @param localPart
-     * @return CustomBuilder or null
-     */ 
-    protected final CustomBuilder getCustomBuilder(String namespace, String localPart) {
-        if (customBuilders == null) {
-            return null;
-        }
-        return customBuilders.get(namespace, localPart);
-    }
-
     private void createDocumentIfNecessary() {
         if (document == null && parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
             document = createDocument();
@@ -723,9 +710,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             newElement = createWithCustomBuilder(customBuilderForPayload);
         }
         if (newElement == null && customBuilders != null && elementLevel <= this.maxDepthForCustomBuilders) {
-            String namespace = parser.getNamespaceURI();
-            String localPart = parser.getLocalName();
-            CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
+            CustomBuilder customBuilder = customBuilders.get(parser.getNamespaceURI(), parser.getLocalName());
             if (customBuilder != null) {
                 newElement = createWithCustomBuilder(customBuilder);
             }
