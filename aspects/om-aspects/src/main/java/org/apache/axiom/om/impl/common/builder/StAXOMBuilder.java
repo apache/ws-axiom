@@ -53,7 +53,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 import java.io.Closeable;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
