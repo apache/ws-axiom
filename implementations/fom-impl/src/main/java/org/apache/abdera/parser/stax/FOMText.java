@@ -30,7 +30,6 @@ import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.fom.IRIUtil;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
 @SuppressWarnings("unchecked")
