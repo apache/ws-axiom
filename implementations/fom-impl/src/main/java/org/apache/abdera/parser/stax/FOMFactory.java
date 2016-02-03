@@ -60,11 +60,12 @@ import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 import org.apache.axiom.util.xml.QNameMap;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
-public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constants, ExtensionFactory {
+public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constants, ExtensionFactory, Model {
     private static final QNameMap<Class<? extends FOMElement>> elementTypeMap;
     
     static {
@@ -508,7 +509,8 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constant
         return createElement(elementType, qname, parent);
     }
 
-    protected Class<? extends FOMElement> determineElementType(OMContainer parent, String namespaceURI, String localName) {
+    @Override
+    public Class<? extends FOMElement> determineElementType(OMContainer parent, int elementLevel, String namespaceURI, String localName) {
         Class<? extends FOMElement> elementType = elementTypeMap.get(namespaceURI, localName);
         if (elementType != null) {
             return elementType;

@@ -26,11 +26,10 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.parser.ParseException;
 import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.util.Constants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.PayloadSelector;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.intf.AxiomElement;
 
 @SuppressWarnings("unchecked")
 public class FOMBuilder extends StAXOMBuilder implements Constants {
@@ -39,7 +38,8 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     private final ParserOptions parserOptions;
 
     public FOMBuilder(FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
-        super(factory, new FOMStAXFilter(parser, parserOptions), false, (Detachable)null, (Closeable)null);
+        super(factory, new FOMStAXFilter(parser, parserOptions), false, (Detachable)null, (Closeable)null,
+                factory, PayloadSelector.DEFAULT);
         this.parserOptions = parserOptions;
         this.fomfactory = factory;
     }
@@ -61,12 +61,6 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
             // TODO: transforming the OMException here is not ideal!
             throw new ParseException(e);
         }
-    }
-
-    @Override
-    protected Class<? extends AxiomElement> determineElementType(OMContainer parent,
-            int elementLevel, String namespaceURI, String localName) {
-        return fomfactory.determineElementType(parent, namespaceURI, localName);
     }
 
     public <T extends Element> Document<T> getFomDocument() {
