@@ -815,7 +815,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @return Returns OMNode.
      * @throws OMException
      */
-    protected OMNode createDTD() throws OMException {
+    private OMNode createDTD() throws OMException {
         DTDReader dtdReader;
         try {
             dtdReader = (DTDReader)parser.getProperty(DTDReader.PROPERTY);
@@ -872,11 +872,11 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @return Returns OMNode.
      * @throws OMException
      */
-    protected OMNode createPI() throws OMException {
+    private OMNode createPI() throws OMException {
         return omfactory.createOMProcessingInstruction(target, parser.getPITarget(), parser.getPIData(), true);
     }
 
-    protected OMNode createEntityReference() {
+    private OMNode createEntityReference() {
         return omfactory.createOMEntityReference(target, parser.getLocalName(), parser.getText(), true);
     }
     
@@ -1004,6 +1004,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                         close();
                     }
                 }
+                model.validateEventType(event);
                 return event;
             } catch (XMLStreamException ex) {
                 throw new DeferredParsingException(ex);

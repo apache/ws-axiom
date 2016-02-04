@@ -23,6 +23,8 @@ import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 
 public interface Model {
+    void validateEventType(int eventType);
+    
     Class<? extends AxiomDocument> getDocumentType();
     
     /**

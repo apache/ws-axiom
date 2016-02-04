@@ -24,7 +24,6 @@ import java.io.Closeable;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.NodePostProcessor;
@@ -33,7 +32,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
@@ -66,20 +64,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
         return (SOAPEnvelope)getDocumentElement();
-    }
-
-    /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */
-    protected OMNode createDTD() throws OMException {
-        throw new SOAPProcessingException("SOAP message MUST NOT contain a Document Type Declaration(DTD)");
-    }
-
-    /** Method createPI. Overriding the default behaviour as a SOAP Message should not have a PI. */
-    protected OMNode createPI() throws OMException {
-        throw new SOAPProcessingException("SOAP message MUST NOT contain Processing Instructions(PI)");
-    }
-
-    protected OMNode createEntityReference() {
-        throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
     }
 
     public SOAPMessage getSOAPMessage() {

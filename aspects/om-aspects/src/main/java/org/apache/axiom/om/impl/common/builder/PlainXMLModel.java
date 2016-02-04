@@ -28,6 +28,10 @@ public final class PlainXMLModel implements Model {
     private PlainXMLModel() {}
 
     @Override
+    public void validateEventType(int eventType) {
+    }
+
+    @Override
     public Class<? extends AxiomDocument> getDocumentType() {
         return AxiomDocument.class;
     }
