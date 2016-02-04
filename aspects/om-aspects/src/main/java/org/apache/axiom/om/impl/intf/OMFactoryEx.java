@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.intf;
 
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMEntityReference;
@@ -40,8 +39,6 @@ public interface OMFactoryEx extends OMFactory {
     OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder);
     
     OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder);
-    
-    OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder);
     
     OMDocType createOMDocType(OMContainer parent, String rootName, String publicId, String systemId,
             String internalSubset, boolean fromBuilder);

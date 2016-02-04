@@ -226,14 +226,10 @@ public class OMFactoryImpl implements OMFactoryEx {
     }
 
     public final OMComment createOMComment(OMContainer parent, String content) {
-        return createOMComment(parent, content, false);
-    }
-
-    public final OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
         AxiomComment node = createNode(AxiomComment.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, false);
         }
         return node;
     }

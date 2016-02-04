@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.common.factory;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -28,10 +27,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMContentHandler;
+import org.apache.axiom.om.impl.common.builder.BuilderHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
 import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.xml.sax.SAXException;
@@ -42,40 +41,34 @@ import java.io.IOException;
 import javax.xml.transform.sax.SAXSource;
 
 public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper {
-    private final NodeFactory nodeFactory;
-    private final Model model;
+    private final BuilderHandler handler;
     private final SAXSource source;
     
-    private AxiomDocument document;
-    
     private final OMFactoryEx factory;
-    
-    private OMContainer target;
 
     public SAXOMBuilder(NodeFactory nodeFactory, OMFactory factory, Model model, SAXSource source, boolean expandEntityReferences) {
         super(expandEntityReferences);
-        this.nodeFactory = nodeFactory;
+        handler = new BuilderHandler(nodeFactory, model);
         this.factory = (OMFactoryEx)factory;
-        this.model = model;
         this.source = source;
     }
     
     protected void doStartDocument() {
-        document = nodeFactory.createNode(model.getDocumentType());
-        document.coreSetBuilder(this);
-        target = document;
+        handler.document = handler.nodeFactory.createNode(handler.model.getDocumentType());
+        handler.document.coreSetBuilder(this);
+        handler.target = handler.document;
     }
 
     protected void doEndDocument() {
-        if (target != document) {
+        if (handler.target != handler.document) {
             throw new IllegalStateException();
         }
-        target = null;
-        ((AxiomContainer)document).setComplete(true);
+        handler.target = null;
+        ((AxiomContainer)handler.document).setComplete(true);
     }
 
     public OMDocument getDocument() {
-        if (document == null && source != null) {
+        if (handler.document == null && source != null) {
             XMLReader reader = source.getXMLReader();
             reader.setContentHandler(this);
             reader.setDTDHandler(this);
@@ -97,8 +90,8 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
                 throw new OMException(ex);
             }
         }
-        if (document != null && document.isComplete()) {
-            return document;
+        if (handler.document != null && handler.document.isComplete()) {
+            return handler.document;
         } else {
             throw new OMException("Tree not complete");
         }
@@ -125,7 +118,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     }
 
     public boolean isCompleted() {
-        return document != null && document.isComplete();
+        return handler.document != null && handler.document.isComplete();
     }
 
     public OMElement getDocumentElement() {
@@ -150,39 +143,39 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
 
     protected void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset) {
-        factory.createOMDocType(target, rootName, publicId, systemId, internalSubset, true);
+        factory.createOMDocType(handler.target, rootName, publicId, systemId, internalSubset, true);
     }
 
     protected OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
-        AxiomElement element = factory.createAxiomElement(AxiomElement.class, localName, target, this);
+        AxiomElement element = factory.createAxiomElement(AxiomElement.class, localName, handler.target, this);
         for (int i = 0; i < namespaceCount; i++) {
             element.addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
         }
         BuilderUtil.setNamespace(element, namespaceURI, prefix, false);
-        target = element;
+        handler.target = element;
         return element;
     }
 
     protected void completed() {
-        ((AxiomElement)target).setComplete(true);
-        target = ((OMNode)target).getParent();
+        ((AxiomElement)handler.target).setComplete(true);
+        handler.target = (AxiomContainer)((OMNode)handler.target).getParent();
     }
 
     protected void createOMText(String text, int type) {
-        factory.createOMText(target, text, type, true);
+        factory.createOMText(handler.target, text, type, true);
     }
 
     protected void createOMProcessingInstruction(String piTarget, String piData) {
-        factory.createOMProcessingInstruction(target, piTarget, piData, true);
+        factory.createOMProcessingInstruction(handler.target, piTarget, piData, true);
     }
 
     protected void createOMComment(String content) {
-        factory.createOMComment(target, content, true);
+        handler.createComment(content);
     }
 
     protected void createOMEntityReference(String name, String replacementText) {
-        factory.createOMEntityReference(target, name, replacementText, true);
+        factory.createOMEntityReference(handler.target, name, replacementText, true);
     }
     
     public void detach() {
