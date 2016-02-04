@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
@@ -38,6 +39,7 @@ import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -96,7 +98,9 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     /** Field parser */
     private XMLStreamReader parser;
 
-    /** Field omfactory */
+    private final NodeFactory nodeFactory;
+
+    // TODO: this will eventually disappear in favor of NodeFactory
     private final OMFactoryEx omfactory;
     
     private final Detachable detachable;
@@ -121,7 +125,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
 
     /** Field parserAccessed */
     private boolean parserAccessed = false;
-    private OMDocument document;
+    private AxiomDocument document;
 
     private String charEncoding = null;
     
@@ -174,8 +178,9 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     
     private ArrayList<NodePostProcessor> nodePostProcessors;
     
-    private StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, String encoding,
+    private StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, String encoding,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
+        this.nodeFactory = nodeFactory;
         omfactory = (OMFactoryEx)omFactory;
         this.parser = parser;
         this.autoClose = autoClose;
@@ -187,24 +192,24 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
-    protected StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
+    protected StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
         // The getEncoding information is only available at the START_DOCUMENT event.
-        this(omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable, model, payloadSelector);
+        this(nodeFactory, omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable, model, payloadSelector);
         
     }
     
-    public StAXOMBuilder(OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
+    public StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable) {
-        this(omFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);
+        this(nodeFactory, omFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);
     }
     
-    public StAXOMBuilder(OMFactory factory, 
+    public StAXOMBuilder(NodeFactory nodeFactory, OMFactory factory, 
                          XMLStreamReader parser, 
                          OMElement element, 
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
-        this(factory, parser, characterEncoding, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);  
+        this(nodeFactory, factory, parser, characterEncoding, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);  
         elementLevel = 1;
         target = (AxiomContainer)element;
         populateOMElement(element);
@@ -517,14 +522,15 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     
     private void createDocumentIfNecessary() {
         if (document == null && parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
-            document = createDocument();
+            document = nodeFactory.createNode(model.getDocumentType());
             if (charEncoding != null) {
                 document.setCharsetEncoding(charEncoding);
             }
             document.setXMLVersion(parser.getVersion());
             document.setXMLEncoding(parser.getCharacterEncodingScheme());
             document.setStandalone(parser.isStandalone() ? "yes" : "no");
-            target = (AxiomContainer)document;
+            document.coreSetBuilder(this);
+            target = document;
             postProcessNode(document);
         }
     }
@@ -597,10 +603,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         }
     }
     
-    protected OMDocument createDocument() {
-        return omfactory.createOMDocument(this);
-    }
-
     /**
      * Forwards the parser one step further, if parser is not completed yet. If this is called after
      * parser is done, then throw an OMException. If the cache is set to false, then returns the
@@ -674,7 +676,9 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                 default :
                     throw new OMException();
             }
-            postProcessNode(node);
+            if (node != null) {
+                postProcessNode(node);
+            }
             
             if (target == null && !done) {
                 // We get here if the document has been discarded (by getDocumentElement(true)

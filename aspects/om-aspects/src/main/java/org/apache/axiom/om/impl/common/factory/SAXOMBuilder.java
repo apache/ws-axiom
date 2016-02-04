@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.common.factory;
 
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -27,7 +28,9 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
+import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.xml.sax.SAXException;
@@ -38,20 +41,25 @@ import java.io.IOException;
 import javax.xml.transform.sax.SAXSource;
 
 public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper {
+    private final NodeFactory nodeFactory;
+    private final Model model;
     private final SAXSource source;
     
-    private OMDocument document;
+    private AxiomDocument document;
     
     private final OMFactoryEx factory;
 
-    public SAXOMBuilder(OMFactory factory, SAXSource source, boolean expandEntityReferences) {
+    public SAXOMBuilder(NodeFactory nodeFactory, OMFactory factory, Model model, SAXSource source, boolean expandEntityReferences) {
         super(expandEntityReferences);
+        this.nodeFactory = nodeFactory;
         this.factory = (OMFactoryEx)factory;
+        this.model = model;
         this.source = source;
     }
     
     protected OMContainer doStartDocument() {
-        document = factory.createOMDocument(this);
+        document = nodeFactory.createNode(model.getDocumentType());
+        document.coreSetBuilder(this);
         return document;
     }
 

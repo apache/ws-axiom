@@ -32,6 +32,9 @@ public aspect AbderaNodeMixin {
     }
     
     public final void AbderaNode.setFactory(AbderaFactory factory) {
+        if (this.factory == factory) {
+            return;
+        }
         if (this.factory != null) {
             throw new IllegalStateException();
         }

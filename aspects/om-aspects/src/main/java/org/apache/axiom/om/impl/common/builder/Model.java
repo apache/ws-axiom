@@ -19,9 +19,12 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 
 public interface Model {
+    Class<? extends AxiomDocument> getDocumentType();
+    
     /**
      * Determine the element type to use for the current element.
      * 

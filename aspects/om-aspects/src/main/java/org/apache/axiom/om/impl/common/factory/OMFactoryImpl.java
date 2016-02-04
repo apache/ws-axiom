@@ -89,12 +89,6 @@ public class OMFactoryImpl implements OMFactoryEx {
         return createNode(AxiomDocument.class);
     }
 
-    public final OMDocument createOMDocument(OMXMLParserWrapper builder) {
-        AxiomDocument document = createNode(AxiomDocument.class);
-        document.coreSetBuilder(builder);
-        return document;
-    }
-
     public final OMDocType createOMDocType(OMContainer parent, String rootName,
             String publicId, String systemId, String internalSubset) {
         return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);

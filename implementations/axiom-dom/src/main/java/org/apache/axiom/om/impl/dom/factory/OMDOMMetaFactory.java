@@ -41,7 +41,9 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
     private final SOAPFactory soap11Factory = new SOAP11Factory(this, DOOMNodeFactory.INSTANCE);
     private final SOAPFactory soap12Factory = new SOAP12Factory(this, DOOMNodeFactory.INSTANCE);
 
-    private OMDOMMetaFactory() {}
+    private OMDOMMetaFactory() {
+        super(DOOMNodeFactory.INSTANCE);
+    }
     
     public OMFactory getOMFactory() {
         return omFactory;

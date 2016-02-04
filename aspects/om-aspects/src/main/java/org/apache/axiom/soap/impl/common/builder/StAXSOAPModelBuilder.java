@@ -21,7 +21,7 @@ package org.apache.axiom.soap.impl.common.builder;
 
 import java.io.Closeable;
 
-import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -34,7 +34,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
@@ -44,17 +43,10 @@ import javax.xml.stream.XMLStreamReader;
  * Internal implementation class.
  */
 public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
-    /**
-     * The meta factory used to get the SOAPFactory implementation when SOAP version detection
-     * is enabled. This is only used if <code>soapFactory</code> is <code>null</code>.
-     */
-    private OMMetaFactory metaFactory;
-
-    public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
+    public StAXSOAPModelBuilder(NodeFactory nodeFactory, OMMetaFactory metaFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable) {
-        super(metaFactory.getOMFactory(), parser, autoClose, detachable, closeable, new SOAPModel(),
+        super(nodeFactory, metaFactory.getOMFactory(), parser, autoClose, detachable, closeable, new SOAPModel(),
                 SOAPPayloadSelector.INSTANCE);
-        this.metaFactory = metaFactory;
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.
@@ -74,10 +66,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
         return (SOAPEnvelope)getDocumentElement();
-    }
-
-    protected OMDocument createDocument() {
-        return ((OMMetaFactoryEx)metaFactory).createSOAPMessage(this);
     }
 
     /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */

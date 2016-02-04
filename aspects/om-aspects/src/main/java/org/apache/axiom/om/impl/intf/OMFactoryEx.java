@@ -21,11 +21,8 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
@@ -36,8 +33,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
  * public API.
  */
 public interface OMFactoryEx extends OMFactory {
-
-    OMDocument createOMDocument(OMXMLParserWrapper builder);
 
     <T extends AxiomElement> T createAxiomElement(Class<T> type, String localName,
             OMContainer parent, OMXMLParserWrapper builder);

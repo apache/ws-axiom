@@ -22,11 +22,13 @@ package org.apache.axiom.soap.impl.common.builder;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.builder.Model;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,6 +48,11 @@ public final class SOAPModel implements Model {
     private boolean processingFault = false;
 
     private SOAPBuilderHelper builderHelper;
+
+    @Override
+    public Class<? extends AxiomDocument> getDocumentType() {
+        return AxiomSOAPMessage.class;
+    }
 
     @Override
     public Class<? extends AxiomElement> determineElementType(OMContainer parent,

@@ -62,6 +62,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.util.xml.QNameMap;
 
 @SuppressWarnings( {"unchecked", "deprecation"})
@@ -507,6 +508,11 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constant
             }
         }
         return createElement(elementType, qname, parent);
+    }
+
+    @Override
+    public Class<? extends AxiomDocument> getDocumentType() {
+        return FOMDocument.class;
     }
 
     @Override

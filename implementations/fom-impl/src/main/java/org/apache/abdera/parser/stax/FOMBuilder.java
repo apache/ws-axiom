@@ -26,8 +26,12 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.parser.ParseException;
 import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.util.Constants;
+import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.NodePostProcessor;
 import org.apache.axiom.om.impl.common.builder.PayloadSelector;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 
@@ -37,11 +41,17 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
     private final FOMFactory fomfactory;
     private final ParserOptions parserOptions;
 
-    public FOMBuilder(FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
-        super(factory, new FOMStAXFilter(parser, parserOptions), false, (Detachable)null, (Closeable)null,
+    public FOMBuilder(final FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
+        super(FOMNodeFactory.INSTANCE, factory, new FOMStAXFilter(parser, parserOptions), false, (Detachable)null, (Closeable)null,
                 factory, PayloadSelector.DEFAULT);
         this.parserOptions = parserOptions;
         this.fomfactory = factory;
+        addNodePostProcessor(new NodePostProcessor() {
+            @Override
+            public void postProcessNode(OMSerializable node) {
+                ((AbderaNode)node).setFactory(factory);
+            }
+        });
     }
 
     public ParserOptions getParserOptions() {

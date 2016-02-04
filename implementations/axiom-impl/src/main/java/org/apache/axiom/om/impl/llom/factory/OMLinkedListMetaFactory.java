@@ -37,7 +37,9 @@ public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
     private final SOAPFactory soap11Factory = new SOAP11Factory(this, LLOMNodeFactory.INSTANCE);
     private final SOAPFactory soap12Factory = new SOAP12Factory(this, LLOMNodeFactory.INSTANCE);
     
-    private OMLinkedListMetaFactory() {}
+    private OMLinkedListMetaFactory() {
+        super(LLOMNodeFactory.INSTANCE);
+    }
     
     public OMFactory getOMFactory() {
         return omFactory;

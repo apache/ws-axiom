@@ -17,6 +17,7 @@
  */
 package org.apache.abdera.parser.stax;
 
+import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
@@ -27,7 +28,9 @@ public final class FOMMetaFactory extends AbstractOMMetaFactory {
     
     private final OMFactory omFactory = new FOMFactory();
     
-    private FOMMetaFactory() {}
+    private FOMMetaFactory() {
+        super(FOMNodeFactory.INSTANCE);
+    }
     
     public OMFactory getOMFactory() {
         return omFactory;

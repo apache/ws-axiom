@@ -250,7 +250,7 @@ public aspect AxiomSourcedElementSupport {
                 // Set the builder for this element. Note that the StAXOMBuilder constructor will also
                 // update the namespace of the element, so we don't need to do that here.
                 isExpanded = true;
-                coreSetBuilder(new StAXOMBuilder(getOMFactory(), readerFromDS, this, characterEncoding));
+                coreSetBuilder(new StAXOMBuilder(coreGetNodeFactory(), getOMFactory(), readerFromDS, this, characterEncoding));
                 setComplete(false);
             }
         }
