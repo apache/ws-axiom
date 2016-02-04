@@ -22,10 +22,12 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
 
 public class SAXResultContentHandler extends OMContentHandler {
     private final OMContainer root;
     private final OMFactory factory;
+    private OMContainer target;
 
     public SAXResultContentHandler(OMContainer root) {
         super(true);
@@ -33,24 +35,24 @@ public class SAXResultContentHandler extends OMContentHandler {
         factory = root.getOMFactory();
     }
     
-    protected OMContainer doStartDocument() {
-        return root;
+    protected void doStartDocument() {
+        target = root;
     }
 
     protected void doEndDocument() {
     }
 
-    protected void createOMDocType(OMContainer parent, String rootName, String publicId,
+    protected void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset) {
-        if (parent instanceof OMDocument) {
-            factory.createOMDocType(parent, rootName, publicId, systemId, internalSubset);
+        if (target instanceof OMDocument) {
+            factory.createOMDocType(target, rootName, publicId, systemId, internalSubset);
         }
     }
 
-    protected OMElement createOMElement(OMContainer parent, String localName, String namespaceURI,
+    protected OMElement createOMElement(String localName, String namespaceURI,
             String prefix, String[] namespaces, int namespaceCount) {
         // TODO: inefficient: we should not create a new OMNamespace instance every time
-        OMElement element = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), parent);
+        OMElement element = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
         for (int i=0; i<namespaceCount; i++) {
             String nsPrefix = namespaces[2*i];
             String nsURI = namespaces[2*i+1];
@@ -60,27 +62,29 @@ public class SAXResultContentHandler extends OMContentHandler {
                 element.declareNamespace(nsURI, nsPrefix);
             }
         }
+        target = element;
         return element;
     }
 
-    protected void completed(OMElement element) {
+    protected void completed() {
+        target = ((OMNode)target).getParent();
     }
 
-    protected void createOMText(OMContainer parent, String text, int type) {
-        factory.createOMText(parent, text, type);
+    protected void createOMText(String text, int type) {
+        factory.createOMText(target, text, type);
     }
 
-    protected void createOMProcessingInstruction(OMContainer parent, String piTarget, String piData) {
-        factory.createOMProcessingInstruction(parent, piTarget, piData);
+    protected void createOMProcessingInstruction(String piTarget, String piData) {
+        factory.createOMProcessingInstruction(target, piTarget, piData);
     }
 
-    protected void createOMComment(OMContainer parent, String content) {
-        factory.createOMComment(parent, content);
+    protected void createOMComment(String content) {
+        factory.createOMComment(target, content);
     }
 
-    protected void createOMEntityReference(OMContainer parent, String name, String replacementText) {
+    protected void createOMEntityReference(String name, String replacementText) {
         if (replacementText == null) {
-            factory.createOMEntityReference(parent, name);
+            factory.createOMEntityReference(target, name);
         } else {
             // Since we set expandEntityReferences=true, we should never get here
             throw new UnsupportedOperationException();

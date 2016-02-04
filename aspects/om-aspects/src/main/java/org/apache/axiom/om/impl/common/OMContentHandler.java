@@ -19,7 +19,6 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -36,8 +35,6 @@ import java.util.Map;
 
 public abstract class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final boolean expandEntityReferences;
-    
-    private OMContainer root;
     
     /**
      * Stores the root name if there is a DTD.
@@ -68,8 +65,6 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
      * Flag indicating that the parser is processing the external subset.
      */
     private boolean inExternalSubset;
-    
-    private OMContainer target;
 
     /**
      * Stores namespace declarations reported to {@link #startPrefixMapping(String, String)}. These
@@ -97,15 +92,11 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     }
 
     public final void startDocument() throws SAXException {
-        target = root = doStartDocument();
+        doStartDocument();
     }
 
     public final void endDocument() throws SAXException {
-        if (target != root) {
-            throw new IllegalStateException();
-        }
         doEndDocument();
-        target = null;
     }
 
     public final void startDTD(String name, String publicId, String systemId) throws SAXException {
@@ -205,7 +196,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     }
 
     public final void endDTD() throws SAXException {
-        createOMDocType(target, dtdName, dtdPublicId, dtdSystemId,
+        createOMDocType(dtdName, dtdPublicId, dtdSystemId,
                 internalSubset.length() == 0 ? null : internalSubset.toString());
         internalSubset = null;
     }
@@ -247,7 +238,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
                 localName = qName.substring(qName.indexOf(':') + 1);
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
-            OMElement element = createOMElement(target, localName, namespaceURI, prefix, namespaces, namespaceCount);
+            OMElement element = createOMElement(localName, namespaceURI, prefix, namespaces, namespaceCount);
             namespaceCount = 0;
     
             int j = atts.getLength();
@@ -276,8 +267,6 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
                     attr.setAttributeType(atts.getType(i));
                 }
             }
-            
-            target = element;
         }
     }
 
@@ -290,8 +279,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     public final void endElement(String uri, String localName, String qName)
             throws SAXException {
         if (!inEntityReference) {
-            completed((OMElement)target);
-            target = ((OMNode)target).getParent();
+            completed();
         }
     }
 
@@ -310,7 +298,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     private void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
         if (!inEntityReference) {
-            createOMText(target, new String(ch, start, length), nodeType);
+            createOMText(new String(ch, start, length), nodeType);
         }
     }
 
@@ -331,18 +319,18 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     public final void processingInstruction(String piTarget, String data)
             throws SAXException {
         if (!inEntityReference) {
-            createOMProcessingInstruction(target, piTarget, data);
+            createOMProcessingInstruction(piTarget, data);
         }
     }
 
     public final void comment(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
-            createOMComment(target, new String(ch, start, length));
+            createOMComment(new String(ch, start, length));
         }
     }
 
     public final void skippedEntity(String name) throws SAXException {
-        createOMEntityReference(target, name, null);
+        createOMEntityReference(name, null);
     }
 
     public final void startEntity(String name) throws SAXException {
@@ -351,7 +339,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
         } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            createOMEntityReference(target, name, entities == null ? null : entities.get(name));
+            createOMEntityReference(name, entities == null ? null : entities.get(name));
             inEntityReference = true;
             entityReferenceDepth = 1;
         }
@@ -368,24 +356,24 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
         }
     }
 
-    protected abstract OMContainer doStartDocument();
+    protected abstract void doStartDocument();
     
     protected abstract void doEndDocument();
     
-    protected abstract void createOMDocType(OMContainer parent, String rootName, String publicId,
+    protected abstract void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset);
 
-    protected abstract OMElement createOMElement(OMContainer parent, String localName,
+    protected abstract OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount);
     
-    protected abstract void completed(OMElement element);
+    protected abstract void completed();
     
-    protected abstract void createOMText(OMContainer parent, String text, int type);
+    protected abstract void createOMText(String text, int type);
     
-    protected abstract void createOMProcessingInstruction(OMContainer parent, String piTarget,
+    protected abstract void createOMProcessingInstruction(String piTarget,
             String piData);
     
-    protected abstract void createOMComment(OMContainer parent, String content);
+    protected abstract void createOMComment(String content);
     
-    protected abstract void createOMEntityReference(OMContainer parent, String name, String replacementText);
+    protected abstract void createOMEntityReference(String name, String replacementText);
 }

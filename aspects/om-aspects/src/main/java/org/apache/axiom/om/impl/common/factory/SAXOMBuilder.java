@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
@@ -48,6 +49,8 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     private AxiomDocument document;
     
     private final OMFactoryEx factory;
+    
+    private OMContainer target;
 
     public SAXOMBuilder(NodeFactory nodeFactory, OMFactory factory, Model model, SAXSource source, boolean expandEntityReferences) {
         super(expandEntityReferences);
@@ -57,13 +60,17 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         this.source = source;
     }
     
-    protected OMContainer doStartDocument() {
+    protected void doStartDocument() {
         document = nodeFactory.createNode(model.getDocumentType());
         document.coreSetBuilder(this);
-        return document;
+        target = document;
     }
 
     protected void doEndDocument() {
+        if (target != document) {
+            throw new IllegalStateException();
+        }
+        target = null;
         ((AxiomContainer)document).setComplete(true);
     }
 
@@ -141,41 +148,41 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         // This is a no-op
     }
 
-    protected void createOMDocType(OMContainer parent, String rootName, String publicId,
+    protected void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset) {
-        factory.createOMDocType(parent, rootName, publicId, systemId, internalSubset, true);
+        factory.createOMDocType(target, rootName, publicId, systemId, internalSubset, true);
     }
 
-    protected OMElement createOMElement(OMContainer parent, String localName,
+    protected OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
-        AxiomElement element = factory.createAxiomElement(AxiomElement.class, localName, parent, this);
+        AxiomElement element = factory.createAxiomElement(AxiomElement.class, localName, target, this);
         for (int i = 0; i < namespaceCount; i++) {
             element.addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
         }
         BuilderUtil.setNamespace(element, namespaceURI, prefix, false);
+        target = element;
         return element;
     }
 
-    protected void completed(OMElement element) {
-        ((AxiomElement)element).setComplete(true);
+    protected void completed() {
+        ((AxiomElement)target).setComplete(true);
+        target = ((OMNode)target).getParent();
     }
 
-    protected void createOMText(OMContainer parent, String text, int type) {
-        factory.createOMText(parent, text, type, true);
+    protected void createOMText(String text, int type) {
+        factory.createOMText(target, text, type, true);
     }
 
-    protected void createOMProcessingInstruction(OMContainer parent,
-            String piTarget, String piData) {
-        factory.createOMProcessingInstruction(parent, piTarget, piData, true);
+    protected void createOMProcessingInstruction(String piTarget, String piData) {
+        factory.createOMProcessingInstruction(target, piTarget, piData, true);
     }
 
-    protected void createOMComment(OMContainer parent, String content) {
-        factory.createOMComment(parent, content, true);
+    protected void createOMComment(String content) {
+        factory.createOMComment(target, content, true);
     }
 
-    protected void createOMEntityReference(OMContainer parent, String name,
-            String replacementText) {
-        factory.createOMEntityReference(parent, name, replacementText, true);
+    protected void createOMEntityReference(String name, String replacementText) {
+        factory.createOMEntityReference(target, name, replacementText, true);
     }
     
     public void detach() {
