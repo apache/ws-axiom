@@ -32,7 +32,7 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.PushOMBuilder;
+import org.apache.axiom.om.impl.common.builder.PushOMBuilder;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;

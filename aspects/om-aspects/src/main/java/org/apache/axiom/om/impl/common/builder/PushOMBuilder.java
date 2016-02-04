@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om.impl.common.builder;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -41,10 +41,11 @@ import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
     private final AxiomSourcedElement root;
     private final OMFactoryEx factory;
-    private OMElement parent;
-    
+    private final BuilderHandler handler;
+
     public PushOMBuilder(AxiomSourcedElement root) throws XMLStreamException {
         this.root = root;
+        handler = new BuilderHandler(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE);
         factory = (OMFactoryEx)root.getOMFactory();
         // Seed the namespace context with the namespace context from the parent
         OMContainer parent = root.getParent();
@@ -94,9 +95,9 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         if (!isDecl && namespaceURI.length() == 0) {
             return null;
         } else {
-            if (parent != null) {
+            if (handler.target != null) {
                 // If possible, locate an existing OMNamespace object
-                OMNamespace ns = parent.findNamespaceURI(prefix);
+                OMNamespace ns = ((OMElement)handler.target).findNamespaceURI(prefix);
                 if (ns != null && ns.getNamespaceURI().equals(namespaceURI)) {
                     return ns;
                 }
@@ -108,16 +109,16 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) {
         // Get the OMNamespace object before we change the parent
         OMNamespace ns = getOMNamespace(prefix, namespaceURI, false);
-        if (parent == null) {
+        if (handler.target == null) {
             root.validateName(prefix, localName, namespaceURI);
-            parent = root;
+            handler.target = root;
         } else {
             // We use the createOMElement variant that takes a OMXMLParserWrapper parameter and
             // don't pass the namespace. This avoids creation of a namespace declaration.
-            parent = factory.createAxiomElement(AxiomElement.class, localName, parent, null);
+            handler.target = factory.createAxiomElement(AxiomElement.class, localName, handler.target, null);
         }
         if (ns != null) {
-            parent.setNamespace(ns, false);
+            ((OMElement)handler.target).setNamespace(ns, false);
         }
     }
 
@@ -126,13 +127,13 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEndElement() {
-        if (parent == root) {
-            parent = null;
+        if (handler.target == root) {
+            handler.target = null;
         } else {
             // Since we use the createOMElement variant that takes a OMXMLParserWrapper parameter,
             // we need to update the completion status.
-            ((AxiomContainer)parent).setComplete(true);
-            parent = (OMElement)parent.getParent();
+            handler.target.setComplete(true);
+            handler.target = (AxiomContainer)((OMElement)handler.target).getParent();
         }
     }
 
@@ -150,7 +151,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         // Use the internal appendAttribute method instead of addAttribute in order to avoid
         // automatic of a namespace declaration (the OMDataSource is required to produce well formed
         // XML with respect to namespaces, so it will take care of the namespace declarations).
-        ((AxiomElement)parent).internalAppendAttribute(attr);
+        ((AxiomElement)handler.target).internalAppendAttribute(attr);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
@@ -158,7 +159,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteNamespace(String prefix, String namespaceURI) {
-        ((AxiomElement)parent).addNamespaceDeclaration(getOMNamespace(prefix, namespaceURI, true));
+        ((AxiomElement)handler.target).addNamespaceDeclaration(getOMNamespace(prefix, namespaceURI, true));
     }
 
     protected void doWriteDefaultNamespace(String namespaceURI) {
@@ -170,23 +171,23 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteCharacters(String text) {
-        factory.createOMText(parent, text, OMNode.TEXT_NODE, true);
+        factory.createOMText(handler.target, text, OMNode.TEXT_NODE, true);
     }
 
     protected void doWriteCData(String data) {
-        factory.createOMText(parent, data, OMNode.CDATA_SECTION_NODE, true);
+        factory.createOMText(handler.target, data, OMNode.CDATA_SECTION_NODE, true);
     }
 
     protected void doWriteComment(String data) {
-        factory.createOMComment(parent, data, true);
+        handler.createComment(data);
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
-        factory.createOMEntityReference(parent, name, null, true);
+        factory.createOMEntityReference(handler.target, name, null, true);
     }
 
-    protected void doWriteProcessingInstruction(String target, String data) {
-        factory.createOMProcessingInstruction(parent, target, data, true);
+    protected void doWriteProcessingInstruction(String piTarget, String data) {
+        factory.createOMProcessingInstruction(handler.target, piTarget, data, true);
     }
 
     protected void doWriteProcessingInstruction(String target) {
@@ -207,11 +208,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         if (contentID != null) {
             child.setContentID(contentID);
         }
-        parent.addChild(child);
+        handler.target.addChild(child);
     }
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException {
-        parent.addChild(factory.createOMText(contentID, dataHandlerProvider, optimize));
+        handler.target.addChild(factory.createOMText(contentID, dataHandlerProvider, optimize));
     }
 }
