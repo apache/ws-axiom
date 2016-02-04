@@ -97,7 +97,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private XMLStreamReader parser;
 
     /** Field omfactory */
-    private OMFactoryEx omfactory;
+    private final OMFactoryEx omfactory;
     
     private final Detachable detachable;
     private final Closeable closeable;
