@@ -598,14 +598,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT: {
-                    handler.elementLevel++;
-                    OMNode node = createNextOMElement();
-                    // If the node was created by a custom builder, then it will be complete;
-                    // in this case, the target doesn't change
-                    if (!node.isComplete()) {
-                        handler.target = (AxiomContainer)node;
-                    }
-                    handler.postProcessNode(node);
+                    handler.postProcessNode(createNextOMElement());
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS:
@@ -667,25 +660,28 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      * @return TODO
      */
     private OMNode createNextOMElement() {
-        OMNode newElement = null;
-        if (customBuilderForPayload != null && payloadSelector.isPayload(handler.elementLevel, handler.target)) {
+        OMElement newElement = null;
+        if (customBuilderForPayload != null && payloadSelector.isPayload(handler.elementLevel+1, handler.target)) {
             newElement = createWithCustomBuilder(customBuilderForPayload);
         }
-        if (newElement == null && customBuilders != null && handler.elementLevel <= this.maxDepthForCustomBuilders) {
+        if (newElement == null && customBuilders != null && handler.elementLevel < this.maxDepthForCustomBuilders) {
             CustomBuilder customBuilder = customBuilders.get(parser.getNamespaceURI(), parser.getLocalName());
             if (customBuilder != null) {
                 newElement = createWithCustomBuilder(customBuilder);
             }
         }
         if (newElement == null) {
-            newElement = createOMElement();
-        } else {
-            handler.elementLevel--; // Decrease level since custom builder read the end element event
+            handler.elementLevel++;
+            newElement = omfactory.createAxiomElement(
+                    handler.model.determineElementType(handler.target, handler.elementLevel, parser.getNamespaceURI(), parser.getLocalName()),
+                    parser.getLocalName(), handler.target, this);
+            populateOMElement(newElement);
+            handler.target = (AxiomContainer)newElement;
         }
         return newElement;
     }
     
-    private OMNode createWithCustomBuilder(CustomBuilder customBuilder) {
+    private OMElement createWithCustomBuilder(CustomBuilder customBuilder) {
         
         String namespace = parser.getNamespaceURI();
         if (namespace == null) {
@@ -707,7 +703,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         handler.target.setComplete(true);
         
         // Use target.getOMFactory() because the factory may actually be a SOAPFactory
-        OMNode node = customBuilder.create(namespace, localPart, handler.target, parser, handler.target.getOMFactory());
+        OMElement node = customBuilder.create(namespace, localPart, handler.target, parser, handler.target.getOMFactory());
         
         // TODO: dirty hack part 2
         handler.target.setComplete(false);
@@ -741,20 +737,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         if(location != null) {
             node.setLineNumber(location.getLineNumber());
         }
-    }
-
-    /**
-     * Method createOMElement.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    private OMNode createOMElement() throws OMException {
-        AxiomElement node = omfactory.createAxiomElement(
-                handler.model.determineElementType(handler.target, handler.elementLevel, parser.getNamespaceURI(), parser.getLocalName()),
-                parser.getLocalName(), handler.target, this);
-        populateOMElement(node);
-        return node;
     }
 
     private void createDTD() throws OMException {
