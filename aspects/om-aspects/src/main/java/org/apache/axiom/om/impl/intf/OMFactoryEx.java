@@ -19,12 +19,8 @@
 package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
@@ -36,18 +32,6 @@ public interface OMFactoryEx extends OMFactory {
     <T extends AxiomElement> T createAxiomElement(Class<T> type, String localName,
             OMContainer parent, OMXMLParserWrapper builder);
 
-    OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder);
-    
-    OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder);
-    
-    OMDocType createOMDocType(OMContainer parent, String rootName, String publicId, String systemId,
-            String internalSubset, boolean fromBuilder);
-    
-    OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
-            String piTarget, String piData, boolean fromBuilder);
-    
-    OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder);
-    
     /**
      * This method is intended only to be used by Axiom intenrals when merging nodes from different
      * Axiom implementations.

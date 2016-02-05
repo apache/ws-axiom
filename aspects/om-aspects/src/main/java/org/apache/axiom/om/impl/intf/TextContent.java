@@ -60,18 +60,11 @@ public final class TextContent implements CharacterData {
         this.optimize = optimize;
     }
     
-    public TextContent(Object dataHandlerObject, boolean optimize) {
+    public TextContent(String contentID, Object dataHandlerObject, boolean optimize) {
         this.value = null;
         mimeType = null;
+        this.contentID = contentID;
         this.dataHandlerObject = dataHandlerObject;
-        binary = true;
-        this.optimize = optimize;
-    }
-    
-    public TextContent(String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize) {
-        this.value = null;
-        mimeType = null;
-        dataHandlerObject = dataHandlerProvider;
         binary = true;
         this.optimize = optimize;
     }

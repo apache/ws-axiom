@@ -38,6 +38,7 @@ import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.transform.sax.SAXSource;
 
 public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper {
@@ -143,7 +144,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
 
     protected void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset) {
-        factory.createOMDocType(handler.target, rootName, publicId, systemId, internalSubset, true);
+        handler.createDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
     protected OMElement createOMElement(String localName,
@@ -163,11 +164,23 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     }
 
     protected void createOMText(String text, int type) {
-        factory.createOMText(handler.target, text, type, true);
+        switch (type) {
+            case XMLStreamConstants.CHARACTERS:
+                handler.processCharacterData(text, false);
+                break;
+            case XMLStreamConstants.SPACE:
+                handler.processCharacterData(text, true);
+                break;
+            case XMLStreamConstants.CDATA:
+                handler.createCDATASection(text);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     protected void createOMProcessingInstruction(String piTarget, String piData) {
-        factory.createOMProcessingInstruction(handler.target, piTarget, piData, true);
+        handler.createProcessingInstruction(piTarget, piData);
     }
 
     protected void createOMComment(String content) {
@@ -175,7 +188,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     }
 
     protected void createOMEntityReference(String name, String replacementText) {
-        factory.createOMEntityReference(handler.target, name, replacementText, true);
+        handler.createEntityReference(name, replacementText);
     }
     
     public void detach() {

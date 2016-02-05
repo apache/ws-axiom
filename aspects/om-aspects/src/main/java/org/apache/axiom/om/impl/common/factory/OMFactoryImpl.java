@@ -91,23 +91,18 @@ public class OMFactoryImpl implements OMFactoryEx {
 
     public final OMDocType createOMDocType(OMContainer parent, String rootName,
             String publicId, String systemId, String internalSubset) {
-        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
-    }
-
-    public final OMDocType createOMDocType(OMContainer parent, String rootName,
-            String publicId, String systemId, String internalSubset, boolean fromBuilder) {
         AxiomDocType node = createNode(AxiomDocType.class);
         node.coreSetRootName(rootName);
         node.coreSetPublicId(publicId);
         node.coreSetSystemId(systemId);
         node.coreSetInternalSubset(internalSubset);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, false);
         }
         return node;
     }
 
-    private AxiomText createAxiomText(OMContainer parent, Object content, int type, boolean fromBuilder) {
+    private AxiomText createAxiomText(OMContainer parent, Object content, int type) {
         AxiomText node;
         switch (type) {
             case OMNode.TEXT_NODE: {
@@ -128,34 +123,30 @@ public class OMFactoryImpl implements OMFactoryEx {
                 throw new IllegalArgumentException("Invalid node type");
         }
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, false);
         }
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         return node;
     }
 
-    public final OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
-        return createAxiomText(parent, text, type, fromBuilder);
-    }
-    
     public final OMText createOMText(String s, int type) {
-        return createAxiomText(null, s, type, false);
+        return createAxiomText(null, s, type);
     }
 
     public final OMText createOMText(String s) {
-        return createAxiomText(null, s, OMNode.TEXT_NODE, false);
+        return createAxiomText(null, s, OMNode.TEXT_NODE);
     }
 
     public final OMText createOMText(OMContainer parent, String text, int type) {
-        return createAxiomText(parent, text, type, false);
+        return createAxiomText(parent, text, type);
     }
     
     public final OMText createOMText(OMContainer parent, String text) {
-        return createAxiomText(parent, text, OMNode.TEXT_NODE, false);
+        return createAxiomText(parent, text, OMNode.TEXT_NODE);
     }
     
     public final OMText createOMText(OMContainer parent, char[] charArray, int type) {
-        return createAxiomText(parent, new String(charArray), type, false);
+        return createAxiomText(parent, new String(charArray), type);
     }
 
     public final OMText createOMText(OMContainer parent, QName text, int type) {
@@ -163,15 +154,15 @@ public class OMFactoryImpl implements OMFactoryEx {
             throw new IllegalArgumentException("QName text arg cannot be null!");
         }
         OMNamespace ns = ((AxiomElement)parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        return createAxiomText(parent, ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), type, false);
+        return createAxiomText(parent, ns == null ? text.getLocalPart() : ns.getPrefix() + ":" + text.getLocalPart(), type);
     }
     
     public final OMText createOMText(OMContainer parent, QName text) {
-        return createAxiomText(parent, text, OMNode.TEXT_NODE, false);
+        return createAxiomText(parent, text, OMNode.TEXT_NODE);
     }
 
     public final OMText createOMText(OMContainer parent, String s, String mimeType, boolean optimize) {
-        return createAxiomText(parent, new TextContent(s, mimeType, optimize), OMNode.TEXT_NODE, false);
+        return createAxiomText(parent, new TextContent(s, mimeType, optimize), OMNode.TEXT_NODE);
     }
 
     public final OMText createOMText(String s, String mimeType, boolean optimize) {
@@ -184,43 +175,29 @@ public class OMFactoryImpl implements OMFactoryEx {
     }
 
     public final OMText createOMText(Object dataHandler, boolean optimize) {
-        return createOMText(null, dataHandler, optimize, false);
-    }
-
-    public final OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder) {
-        return createAxiomText(parent, new TextContent(dataHandler, optimize), OMNode.TEXT_NODE, fromBuilder);
+        return createAxiomText(null, new TextContent(null, dataHandler, optimize), OMNode.TEXT_NODE);
     }
 
     public final OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize) {
-        return createAxiomText(null, new TextContent(contentID, dataHandlerProvider, optimize), OMNode.TEXT_NODE, false);
+        return createAxiomText(null, new TextContent(contentID, dataHandlerProvider, optimize), OMNode.TEXT_NODE);
     }
     
     public final OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
-        return createOMProcessingInstruction(parent, piTarget, piData, false);
-    }
-
-    public final OMProcessingInstruction createOMProcessingInstruction(
-            OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
         AxiomProcessingInstruction node = createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
         node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, false);
         }
         return node;
     }
 
     public final OMEntityReference createOMEntityReference(OMContainer parent, String name) {
-        return createOMEntityReference(parent, name, null, false);
-    }
-
-    public final OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
         AxiomEntityReference node = createNode(AxiomEntityReference.class);
         node.coreSetName(name);
-        node.coreSetReplacementText(replacementText);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, fromBuilder);
+            ((AxiomContainer)parent).addChild(node, false);
         }
         return node;
     }

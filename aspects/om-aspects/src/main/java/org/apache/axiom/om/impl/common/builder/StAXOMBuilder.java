@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
@@ -40,6 +39,7 @@ import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.xml.QNameMap;
@@ -211,31 +211,23 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         }
     }
 
-    /**
-     * This method will check whether the text can be optimizable using IS_BINARY flag. If that is
-     * set then we try to get the data handler.
-     *
-     * @param textType
-     * @return omNode
-     */
-    private OMNode createOMText(int textType) {
-        if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
-            Object dataHandlerObject;
+    private void createOMText(int textType) {
+        if (textType == XMLStreamConstants.CHARACTERS && dataHandlerReader != null && dataHandlerReader.isBinary()) {
+            TextContent data;
             if (dataHandlerReader.isDeferred()) {
-                dataHandlerObject = dataHandlerReader.getDataHandlerProvider();
+                data = new TextContent(dataHandlerReader.getContentID(),
+                        dataHandlerReader.getDataHandlerProvider(),
+                        dataHandlerReader.isOptimized());
             } else {
                 try {
-                    dataHandlerObject = dataHandlerReader.getDataHandler();
+                    data = new TextContent(dataHandlerReader.getContentID(),
+                            dataHandlerReader.getDataHandler(),
+                            dataHandlerReader.isOptimized());
                 } catch (XMLStreamException ex) {
                     throw new OMException(ex);
                 }
             }
-            OMText text = omfactory.createOMText(handler.target, dataHandlerObject, dataHandlerReader.isOptimized(), true);
-            String contentID = dataHandlerReader.getContentID();
-            if (contentID != null) {
-                text.setContentID(contentID);
-            }
-            return text;
+            handler.processCharacterData(data, false);
         } else {
             // Some parsers (like Woodstox) parse text nodes lazily and may throw a
             // RuntimeException in getText()
@@ -246,7 +238,19 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                 parserException = ex;
                 throw ex;
             }
-            return omfactory.createOMText(handler.target, text, textType, true);
+            switch (textType) {
+                case XMLStreamConstants.CHARACTERS:
+                    handler.processCharacterData(text, false);
+                    break;
+                case XMLStreamConstants.SPACE:
+                    handler.processCharacterData(text, true);
+                    break;
+                case XMLStreamConstants.CDATA:
+                    handler.createCDATASection(text);
+                    break;
+                default:
+                    throw new IllegalStateException();
+            }
         }
     }
 
@@ -592,56 +596,46 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
            
             // Note: if autoClose is enabled, then the parser may be null at this point
             
-            OMNode node;
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT: {
                     handler.elementLevel++;
-                    node = createNextOMElement();
+                    OMNode node = createNextOMElement();
                     // If the node was created by a custom builder, then it will be complete;
                     // in this case, the target doesn't change
                     if (!node.isComplete()) {
                         handler.target = (AxiomContainer)node;
                     }
+                    handler.postProcessNode(node);
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS:
-                    node = createOMText(XMLStreamConstants.CHARACTERS);
-                    break;
                 case XMLStreamConstants.CDATA:
-                    node = createOMText(XMLStreamConstants.CDATA);
+                case XMLStreamConstants.SPACE:
+                    createOMText(token);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     handler.elementLevel--;
                     endElement();
-                    node = null;
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     handler.done = true;
                     ((AxiomContainer) this.handler.document).setComplete(true);
                     handler.target = null;
-                    node = null;
-                    break;
-                case XMLStreamConstants.SPACE:
-                    node = createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
                     handler.createComment(parser.getText());
-                    node = null;
                     break;
                 case XMLStreamConstants.DTD:
-                    node = createDTD();
+                    createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    node = createPI();
+                    handler.createProcessingInstruction(parser.getPITarget(), parser.getPIData());
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
-                    node = createEntityReference();
+                    handler.createEntityReference(parser.getLocalName(), parser.getText());
                     break;
                 default :
                     throw new OMException();
-            }
-            if (node != null) {
-                handler.postProcessNode(node);
             }
             
             if (handler.target == null && !handler.done) {
@@ -763,13 +757,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         return node;
     }
 
-    /**
-     * Method createDTD.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    private OMNode createDTD() throws OMException {
+    private void createDTD() throws OMException {
         DTDReader dtdReader;
         try {
             dtdReader = (DTDReader)parser.getProperty(DTDReader.PROPERTY);
@@ -784,8 +772,8 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         if (internalSubset != null && internalSubset.length() == 0) {
             internalSubset = null;
         }
-        return omfactory.createOMDocType(handler.target, dtdReader.getRootName(), dtdReader.getPublicId(),
-                dtdReader.getSystemId(), internalSubset, true);
+        handler.createDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(),
+                dtdReader.getSystemId(), internalSubset);
     }
     
     /**
@@ -820,20 +808,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         return text;
     }
 
-    /**
-     * Method createPI.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    private OMNode createPI() throws OMException {
-        return omfactory.createOMProcessingInstruction(handler.target, parser.getPITarget(), parser.getPIData(), true);
-    }
-
-    private OMNode createEntityReference() {
-        return omfactory.createOMEntityReference(handler.target, parser.getLocalName(), parser.getText(), true);
-    }
-    
     private void endElement() {
         handler.target.setComplete(true);
         if (handler.elementLevel == 0) {

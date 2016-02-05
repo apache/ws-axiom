@@ -26,10 +26,15 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
+import org.apache.axiom.om.impl.intf.AxiomCDATASection;
+import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
+import org.apache.axiom.om.impl.intf.AxiomEntityReference;
+import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,9 +90,46 @@ public final class BuilderHandler {
         postProcessNode(node);
     }
     
+    public void createDocumentTypeDeclaration(String rootName, String publicId, String systemId,
+            String internalSubset) {
+        AxiomDocType node = nodeFactory.createNode(AxiomDocType.class);
+        node.coreSetRootName(rootName);
+        node.coreSetPublicId(publicId);
+        node.coreSetSystemId(systemId);
+        node.coreSetInternalSubset(internalSubset);
+        addChild(node);
+    }
+    
+    public void processCharacterData(Object data, boolean ignorable) {
+        AxiomCharacterDataNode node = nodeFactory.createNode(AxiomCharacterDataNode.class);
+        node.coreSetCharacterData(data);
+        node.coreSetIgnorable(ignorable);
+        addChild(node);
+    }
+    
+    public void createProcessingInstruction(String piTarget, String piData) {
+        AxiomProcessingInstruction node = nodeFactory.createNode(AxiomProcessingInstruction.class);
+        node.coreSetTarget(piTarget);
+        node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
+        addChild(node);
+    }
+
     public void createComment(String content) {
         AxiomComment node = nodeFactory.createNode(AxiomComment.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+        addChild(node);
+    }
+    
+    public void createCDATASection(String content) {
+        AxiomCDATASection node = nodeFactory.createNode(AxiomCDATASection.class);
+        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+        addChild(node);
+    }
+    
+    public void createEntityReference(String name, String replacementText) {
+        AxiomEntityReference node = nodeFactory.createNode(AxiomEntityReference.class);
+        node.coreSetName(name);
+        node.coreSetReplacementText(replacementText);
         addChild(node);
     }
 }

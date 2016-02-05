@@ -30,12 +30,11 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
@@ -171,11 +170,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteCharacters(String text) {
-        factory.createOMText(handler.target, text, OMNode.TEXT_NODE, true);
+        handler.processCharacterData(text, false);
     }
 
     protected void doWriteCData(String data) {
-        factory.createOMText(handler.target, data, OMNode.CDATA_SECTION_NODE, true);
+        handler.createCDATASection(data);
     }
 
     protected void doWriteComment(String data) {
@@ -183,11 +182,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
-        factory.createOMEntityReference(handler.target, name, null, true);
+        handler.createEntityReference(name, null);
     }
 
     protected void doWriteProcessingInstruction(String piTarget, String data) {
-        factory.createOMProcessingInstruction(handler.target, piTarget, data, true);
+        handler.createProcessingInstruction(piTarget, data);
     }
 
     protected void doWriteProcessingInstruction(String target) {
@@ -204,15 +203,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
 
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
-        OMText child = factory.createOMText(dataHandler, optimize);
-        if (contentID != null) {
-            child.setContentID(contentID);
-        }
-        handler.target.addChild(child);
+        handler.processCharacterData(new TextContent(contentID, dataHandler, optimize), false);
     }
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException {
-        handler.target.addChild(factory.createOMText(contentID, dataHandlerProvider, optimize));
+        handler.processCharacterData(new TextContent(contentID, dataHandlerProvider, optimize), false);
     }
 }
