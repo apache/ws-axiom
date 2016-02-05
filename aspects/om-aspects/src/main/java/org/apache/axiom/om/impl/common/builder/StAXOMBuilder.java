@@ -132,12 +132,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
      */
     private Exception parserException;
     
-    // namespaceURI interning
-    // default is false because most XMLStreamReader implementations don't do interning
-    // due to performance impacts.  Thus a customer should not assume that a namespace
-    // on an OMElement is interned.
-    private boolean namespaceURIInterning = false;
-    
     private int lookAheadToken = -1;
     
     private final BuilderHandler handler;
@@ -824,56 +818,14 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
             String prefix = parser.getNamespacePrefix(i);
-
-            //if the namespace is not defined already when we write the start tag declare it
-            // check whether this is the default namespace and make sure we have not declared that earlier
             String namespaceURI = parser.getNamespaceURI(i);
-            
-            if (namespaceURI == null) {
-                // No need to care about interning here; String literals are always interned
-                namespaceURI = "";
-            } else {
-                // NOTE_A:
-                // By default most parsers don't intern the namespace.
-                // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-                // Woodstox has a proprietary property on the XMLInputFactory.
-                // IBM has a proprietary property on the XMLStreamReader.
-                // For now only force the interning if requested.
-                if (isNamespaceURIInterning()) {
-                    namespaceURI = namespaceURI.intern();
-                }
-            }
-            
-            if (prefix == null) {
-                prefix = "";
-            }
-            
-            ((AxiomElement)node).addNamespaceDeclaration(namespaceURI, prefix);
+            ((AxiomElement)node).addNamespaceDeclaration(
+                    namespaceURI == null ? "" : namespaceURI,
+                    prefix == null ? "" : prefix);
         }
-
-        // set the own namespace
-        String namespaceURI = parser.getNamespaceURI();
-        String prefix = parser.getPrefix();
-
-        // See NOTE_A above
-        BuilderUtil.setNamespace(node, namespaceURI, prefix, isNamespaceURIInterning());
+        BuilderUtil.setNamespace(node, parser.getNamespaceURI(), parser.getPrefix());
     }
 
-    /**
-     * Set namespace uri interning
-     * @param b
-     */
-    public final void setNamespaceURIInterning(boolean b) {
-        this.namespaceURIInterning = b;
-    }
-    
-    /**
-     * @return if namespace uri interning 
-     */
-    public final boolean isNamespaceURIInterning() {
-        return this.namespaceURIInterning;
-    }
-    
     /**
      * Pushes the virtual parser ahead one token.
      * If a look ahead token was calculated it is returned.

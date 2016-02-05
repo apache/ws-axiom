@@ -153,7 +153,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         for (int i = 0; i < namespaceCount; i++) {
             element.addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
         }
-        BuilderUtil.setNamespace(element, namespaceURI, prefix, false);
+        BuilderUtil.setNamespace(element, namespaceURI, prefix);
         handler.target = element;
         return element;
     }

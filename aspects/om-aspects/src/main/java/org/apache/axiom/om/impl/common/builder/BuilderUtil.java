@@ -25,7 +25,7 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 public class BuilderUtil {
     private BuilderUtil() {}
     
-    public static void setNamespace(OMElement element, String namespaceURI, String prefix, boolean namespaceURIInterning) {
+    public static void setNamespace(OMElement element, String namespaceURI, String prefix) {
         if (prefix == null) {
             prefix = "";
         }
@@ -38,9 +38,6 @@ public class BuilderUtil {
         OMNamespace namespace = element.findNamespaceURI(prefix);
         if (namespace == null && namespaceURI.length() > 0
                 || namespace != null && !namespace.getNamespaceURI().equals(namespaceURI)) {
-            if (namespaceURIInterning) {
-                namespaceURI = namespaceURI.intern();
-            }
             // This is actually the place where we perform namespace repairing as specified
             // in the contract of OMXMLBuilderFactory#createStAXOMBuilder:
             namespace = ((AxiomElement)element).addNamespaceDeclaration(namespaceURI, prefix);
