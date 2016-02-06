@@ -37,6 +37,7 @@ import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.TextContent;
@@ -129,12 +130,15 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
      */
     private Exception parserException;
     
-    private int lookAheadToken = -1;
+    private int lookAheadToken = XMLStreamReader.START_DOCUMENT;
 
     protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector,
             AxiomSourcedElement root) {
         super(nodeFactory, model, root);
+        if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
+            throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
+        }
         this.parser = parser;
         this.autoClose = autoClose;
         this.detachable = detachable;
@@ -464,18 +468,12 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         return old;
     }
     
-    private void createDocumentIfNecessary() {
-        if (handler.document == null && parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
-            handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
-        }
-    }
-    
     public final OMDocument getDocument() {
-        createDocumentIfNecessary();
-        if (handler.document == null) {
-            throw new UnsupportedOperationException("There is no document linked to this builder");
+        AxiomDocument document;
+        while ((document = handler.getDocument()) == null) {
+            next();
         }
-        return handler.document;
+        return document;
     }
 
     public final String getCharsetEncoding() {
@@ -556,7 +554,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             if (handler.done) {
                 throw new OMException();
             }
-            createDocumentIfNecessary();
             int token = parserNext();
             if (!handler.cache) {
                 return token;
@@ -565,6 +562,9 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             // Note: if autoClose is enabled, then the parser may be null at this point
             
             switch (token) {
+                case XMLStreamConstants.START_DOCUMENT:
+                    handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
+                    break;
                 case XMLStreamConstants.START_ELEMENT: {
                     createNextOMElement();
                     break;
@@ -598,7 +598,8 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                     throw new OMException();
             }
             
-            if (handler.target == null && !handler.done) {
+            // TODO: this will fail if there is whitespace before the document element
+            if (token != XMLStreamConstants.START_DOCUMENT && handler.target == null && !handler.done) {
                 // We get here if the document has been discarded (by getDocumentElement(true)
                 // or because the builder is linked to an OMSourcedElement) and
                 // we just processed the END_ELEMENT event for the root element. In this case, we consume

@@ -40,8 +40,9 @@ public class TestNextBeforeGetDocumentElement extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<root>text</root>"));
-        assertEquals(XMLStreamReader.START_ELEMENT, builder.next());
-        assertEquals(XMLStreamReader.CHARACTERS, builder.next());
+        while (builder.next() != XMLStreamReader.CHARACTERS) {
+            // Just loop
+        }
         OMElement element = builder.getDocumentElement();
         assertEquals("root", element.getLocalName());
     }

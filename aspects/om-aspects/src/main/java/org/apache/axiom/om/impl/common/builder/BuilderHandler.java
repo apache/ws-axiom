@@ -95,6 +95,14 @@ public final class BuilderHandler {
         }
     }
 
+    public AxiomDocument getDocument() {
+        if (root != null) {
+            throw new UnsupportedOperationException("There is no document linked to this builder");
+        } else {
+            return document;
+        }
+    }
+    
     private void addChild(AxiomChildNode node) {
         target.addChild(node, true);
         postProcessNode(node);
