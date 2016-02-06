@@ -26,14 +26,14 @@
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jboss-tests</artifactId>
+    <artifactId>wildfly-tests</artifactId>
     <packaging>jar</packaging>
 
-    <name>JBoss Tests</name>
+    <name>Wildfly Tests</name>
 
     <properties>
-        <jboss.version>8.2.1.Final</jboss.version>
-        <jboss.home>${project.build.directory}/wildfly-${jboss.version}</jboss.home>
+        <wildfly.version>8.2.1.Final</wildfly.version>
+        <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
         <hermeticTests>false</hermeticTests>
     </properties>
 
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
-            <version>${jboss.version}</version>
+            <version>${wildfly.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -82,7 +82,7 @@
                 <executions>
                     <execution>
                         <!-- Copy the dependencies that will be included in the WAR deployed
-                             to JBoss. This is necessary because Arquillian's Maven dependency
+                             to Wildfly. This is necessary because Arquillian's Maven dependency
                              resolution doesn't work correctly if some of the dependencies are
                              snapshots from the current reactor. -->
                         <id>copy-deps</id>
@@ -102,10 +102,10 @@
                     </execution>
                     <execution>
                         <!-- We would prefer using wildfly-server-provisioning-maven-plugin to
-                             provision the server, but unfortunately the JBoss community is still
+                             provision the server, but unfortunately the Wildfly community is still
                              unable to ensure that all required artifacts are available from Maven
                              central and the JBoss Maven repository isn't stable. -->
-                        <id>unpack-jboss</id>
+                        <id>unpack-wildfly</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -115,7 +115,7 @@
                                 <artifactItem>
                                     <groupId>org.wildfly</groupId>
                                     <artifactId>wildfly-dist</artifactId>
-                                    <version>${jboss.version}</version>
+                                    <version>${wildfly.version}</version>
                                     <type>zip</type>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>target</outputDirectory>
@@ -141,8 +141,8 @@
                         <phase>initialize</phase>
                         <configuration>
                             <portNames>
-                                <portName>jboss.managementPort</portName>
-                                <portName>jboss.httpPort</portName>
+                                <portName>wildfly.managementPort</portName>
+                                <portName>wildfly.httpPort</portName>
                             </portNames>
                         </configuration>
                     </execution>
@@ -152,13 +152,13 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-jboss-configuration</id>
+                        <id>copy-wildfly-configuration</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${jboss.home}/standalone/configuration</outputDirectory>
+                            <outputDirectory>${wildfly.home}/standalone/configuration</outputDirectory>
                             <resources>          
                                 <resource>
                                     <directory>src/test/conf</directory>
@@ -173,14 +173,14 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>prepare-agent-for-jboss</id>
+                        <id>prepare-agent-for-wildfly</id>
                         <phase>initialize</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <propertyName>jacoco.jbossArgLine</propertyName>
-                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:jboss</sessionId>
+                            <propertyName>jacoco.wildflyArgLine</propertyName>
+                            <sessionId>mvn:${project.groupId}:${project.artifactId}:${project.version}:wildfly</sessionId>
                         </configuration>
                     </execution>
                 </executions>

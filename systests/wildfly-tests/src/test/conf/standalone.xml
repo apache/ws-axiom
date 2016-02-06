@@ -360,10 +360,10 @@
         </interface>
     </interfaces>
     <socket-binding-group name="standard-sockets" default-interface="localhost">
-        <socket-binding name="management-http" port="${jboss.management.port}"/>
+        <socket-binding name="management-http" port="${wildfly.management.port}"/>
         <socket-binding name="management-https" port="0"/>
         <socket-binding name="ajp" port="0"/>
-        <socket-binding name="http" port="${jboss.http.port}"/>
+        <socket-binding name="http" port="${wildfly.http.port}"/>
         <socket-binding name="https" port="0"/>
         <socket-binding name="txn-recovery-environment" port="0"/>
         <socket-binding name="txn-status-manager" port="0"/>
