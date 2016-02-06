@@ -26,7 +26,6 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -37,7 +36,6 @@ import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.TextContent;
@@ -468,14 +466,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         return old;
     }
     
-    public final OMDocument getDocument() {
-        AxiomDocument document;
-        while ((document = handler.getDocument()) == null) {
-            next();
-        }
-        return document;
-    }
-
     public final String getCharsetEncoding() {
         return handler.document.getCharsetEncoding();
     }

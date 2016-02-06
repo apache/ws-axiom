@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.common.factory;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.Handler;
@@ -60,35 +59,29 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
         ((AxiomContainer)handler.document).setComplete(true);
     }
 
-    public OMDocument getDocument() {
-        if (handler.document == null && source != null) {
-            XMLReader reader = source.getXMLReader();
-            OMContentHandler contentHandler = new OMContentHandler(this, expandEntityReferences);
-            reader.setContentHandler(contentHandler);
-            reader.setDTDHandler(contentHandler);
-            try {
-                reader.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
-            } catch (SAXException ex) {
-                // Ignore
-            }
-            try {
-                reader.setProperty("http://xml.org/sax/properties/declaration-handler", contentHandler);
-            } catch (SAXException ex) {
-                // Ignore
-            }
-            try {
-                reader.parse(source.getInputSource());
-            } catch (IOException ex) {
-                throw new OMException(ex);
-            } catch (SAXException ex) {
-                throw new OMException(ex);
-            }
+    public int next() {
+        XMLReader reader = source.getXMLReader();
+        OMContentHandler contentHandler = new OMContentHandler(this, expandEntityReferences);
+        reader.setContentHandler(contentHandler);
+        reader.setDTDHandler(contentHandler);
+        try {
+            reader.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
+        } catch (SAXException ex) {
+            // Ignore
         }
-        if (handler.document != null && handler.document.isComplete()) {
-            return handler.document;
-        } else {
-            throw new OMException("Tree not complete");
+        try {
+            reader.setProperty("http://xml.org/sax/properties/declaration-handler", contentHandler);
+        } catch (SAXException ex) {
+            // Ignore
         }
+        try {
+            reader.parse(source.getInputSource());
+        } catch (IOException ex) {
+            throw new OMException(ex);
+        } catch (SAXException ex) {
+            throw new OMException(ex);
+        }
+        return -1;
     }
 
     public void createOMDocType(String rootName, String publicId,
@@ -138,9 +131,5 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
 
     public void createOMEntityReference(String name, String replacementText) {
         handler.createEntityReference(name, replacementText);
-    }
-
-    public int next() throws OMException {
-        throw new UnsupportedOperationException();
     }
 }

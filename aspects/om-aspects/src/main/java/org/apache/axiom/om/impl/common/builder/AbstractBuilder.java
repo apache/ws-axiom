@@ -19,7 +19,9 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public abstract class AbstractBuilder implements OMXMLParserWrapper {
@@ -31,5 +33,13 @@ public abstract class AbstractBuilder implements OMXMLParserWrapper {
 
     public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
         handler.addNodePostProcessor(nodePostProcessor);
+    }
+
+    public final OMDocument getDocument() {
+        AxiomDocument document;
+        while ((document = handler.getDocument()) == null) {
+            next();
+        }
+        return document;
     }
 }

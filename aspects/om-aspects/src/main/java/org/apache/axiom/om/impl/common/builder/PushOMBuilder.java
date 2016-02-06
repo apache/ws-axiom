@@ -22,7 +22,6 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public final class PushOMBuilder extends AbstractPushBuilder {
@@ -42,10 +41,5 @@ public final class PushOMBuilder extends AbstractPushBuilder {
             throw new DeferredParsingException(ex);
         }
         return -1;
-    }
-
-    @Override
-    public OMDocument getDocument() {
-        throw new UnsupportedOperationException();
     }
 }
