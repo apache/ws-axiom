@@ -86,7 +86,7 @@ import java.io.Closeable;
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
-public class StAXOMBuilder implements Builder, CustomBuilderSupport {
+public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBuilderSupport {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
     /** Field parser */
@@ -129,12 +129,10 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     private Exception parserException;
     
     private int lookAheadToken = -1;
-    
-    private final BuilderHandler handler;
 
     private StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, String encoding,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
-        handler = new BuilderHandler(nodeFactory, model, this);
+        super(nodeFactory, model);
         this.parser = parser;
         this.autoClose = autoClose;
         this.detachable = detachable;
@@ -860,9 +858,5 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
 
     public final AxiomContainer getTarget() {
         return handler.target;
-    }
-
-    public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
-        handler.addNodePostProcessor(nodePostProcessor);
     }
 }

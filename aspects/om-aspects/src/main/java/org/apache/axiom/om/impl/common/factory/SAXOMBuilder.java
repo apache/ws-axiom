@@ -23,10 +23,9 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMContentHandler;
-import org.apache.axiom.om.impl.common.builder.BuilderHandler;
+import org.apache.axiom.om.impl.common.builder.AbstractPushBuilder;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
 import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
@@ -39,14 +38,13 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.transform.sax.SAXSource;
 
-public final class SAXOMBuilder implements OMXMLParserWrapper, Handler {
+public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
     private final boolean expandEntityReferences;
-    private final BuilderHandler handler;
     private final SAXSource source;
     
     public SAXOMBuilder(NodeFactory nodeFactory, Model model, SAXSource source, boolean expandEntityReferences) {
+        super(nodeFactory, model);
         this.expandEntityReferences = expandEntityReferences;
-        handler = new BuilderHandler(nodeFactory, model, this);
         this.source = source;
     }
     
@@ -91,50 +89,6 @@ public final class SAXOMBuilder implements OMXMLParserWrapper, Handler {
         } else {
             throw new OMException("Tree not complete");
         }
-    }
-    
-    public int next() throws OMException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void discard(OMElement el) throws OMException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setCache(boolean b) throws OMException {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isCache() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Object getParser() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isCompleted() {
-        return handler.document != null && handler.document.isComplete();
-    }
-
-    public OMElement getDocumentElement() {
-        return getDocument().getOMDocumentElement();
-    }
-
-    public OMElement getDocumentElement(boolean discardDocument) {
-        OMElement documentElement = getDocument().getOMDocumentElement();
-        if (discardDocument) {
-            documentElement.detach();
-        }
-        return documentElement;
-    }
-
-    public String getCharacterEncoding() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void close() {
-        // This is a no-op
     }
 
     public void createOMDocType(String rootName, String publicId,
@@ -182,10 +136,5 @@ public final class SAXOMBuilder implements OMXMLParserWrapper, Handler {
 
     public void createOMEntityReference(String name, String replacementText) {
         handler.createEntityReference(name, replacementText);
-    }
-    
-    public void detach() {
-        // Force processing of the SAX source
-        getDocument();
     }
 }

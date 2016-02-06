@@ -18,28 +18,17 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
-import javax.xml.stream.XMLStreamException;
+import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+public abstract class AbstractBuilder implements OMXMLParserWrapper {
+    protected final BuilderHandler handler;
 
-public final class PushOMBuilder extends AbstractPushBuilder {
-    private final AxiomSourcedElement root;
-    private final OMDataSource dataSource;
-
-    public PushOMBuilder(AxiomSourcedElement root, OMDataSource dataSource) throws XMLStreamException {
-        super(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE);
-        this.root = root;
-        this.dataSource = dataSource;
-    }
-    
-    public void expand() throws XMLStreamException {
-        dataSource.serialize(new BuilderHandlerXMLStreamWriter(handler, root));
+    public AbstractBuilder(NodeFactory nodeFactory, Model model) {
+        handler = new BuilderHandler(nodeFactory, model, this);
     }
 
-    @Override
-    public OMDocument getDocument() {
-        throw new UnsupportedOperationException();
+    public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
+        handler.addNodePostProcessor(nodePostProcessor);
     }
 }
