@@ -43,7 +43,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     public StAXSOAPModelBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable) {
         super(nodeFactory, parser, autoClose, detachable, closeable, new SOAPModel(),
-                SOAPPayloadSelector.INSTANCE);
+                SOAPPayloadSelector.INSTANCE, null);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.

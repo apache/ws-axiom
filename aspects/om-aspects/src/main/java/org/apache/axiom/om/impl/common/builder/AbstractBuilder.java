@@ -20,12 +20,13 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public abstract class AbstractBuilder implements OMXMLParserWrapper {
     protected final BuilderHandler handler;
 
-    public AbstractBuilder(NodeFactory nodeFactory, Model model) {
-        handler = new BuilderHandler(nodeFactory, model, this);
+    public AbstractBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root) {
+        handler = new BuilderHandler(nodeFactory, model, root, this);
     }
 
     public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {

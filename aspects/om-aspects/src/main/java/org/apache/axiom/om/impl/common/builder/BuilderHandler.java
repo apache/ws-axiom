@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.xml.stream.XMLStreamConstants;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMSerializable;
@@ -39,6 +40,7 @@ import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,6 +49,7 @@ public final class BuilderHandler {
     
     private final NodeFactory nodeFactory;
     private final Model model;
+    private final AxiomSourcedElement root;
     private final OMXMLParserWrapper builder;
     public AxiomContainer target;
     // returns the state of completion
@@ -70,9 +73,10 @@ public final class BuilderHandler {
     
     private ArrayList<NodePostProcessor> nodePostProcessors;
 
-    public BuilderHandler(NodeFactory nodeFactory, Model model, OMXMLParserWrapper builder) {
+    public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, OMXMLParserWrapper builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
+        this.root = root;
         this.builder = builder;
     }
 
@@ -97,14 +101,16 @@ public final class BuilderHandler {
     }
     
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
-        document = nodeFactory.createNode(model.getDocumentType());
-        document.coreSetInputEncoding(inputEncoding);
-        document.coreSetXmlVersion(xmlVersion);
-        document.coreSetXmlEncoding(xmlEncoding);
-        document.coreSetStandalone(standalone);
-        document.coreSetBuilder(builder);
-        postProcessNode(document);
-        target = document;
+        if (root == null) {
+            document = nodeFactory.createNode(model.getDocumentType());
+            document.coreSetInputEncoding(inputEncoding);
+            document.coreSetXmlVersion(xmlVersion);
+            document.coreSetXmlEncoding(xmlEncoding);
+            document.coreSetStandalone(standalone);
+            document.coreSetBuilder(builder);
+            postProcessNode(document);
+            target = document;
+        }
     }
     
     public void createDocumentTypeDeclaration(String rootName, String publicId, String systemId,
@@ -120,11 +126,18 @@ public final class BuilderHandler {
     
     public AxiomElement startElement(String namespaceURI, String localName, String prefix) {
         elementLevel++;
-        AxiomElement element = nodeFactory.createNode(model.determineElementType(
-                target, elementLevel, namespaceURI, localName));
-        element.coreSetBuilder(builder);
-        element.initName(localName, /*ns*/ null, false);
-        addChild(element);
+        AxiomElement element;
+        if (elementLevel == 1 && root != null) {
+            root.validateName(prefix, localName, namespaceURI);
+            element = root;
+        } else {
+            element = nodeFactory.createNode(model.determineElementType(
+                    target, elementLevel, namespaceURI, localName));
+            element.coreSetBuilder(builder);
+            element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
+            element.initName(localName, /*ns*/ null, false);
+            addChild(element);
+        }
         target = element;
         return element;
     }
@@ -142,6 +155,10 @@ public final class BuilderHandler {
         }
     }
 
+    public void attributesCompleted() {
+        target.coreSetState(CoreParentNode.INCOMPLETE);
+    }
+    
     public void processCharacterData(Object data, boolean ignorable) {
         AxiomCharacterDataNode node = nodeFactory.createNode(AxiomCharacterDataNode.class);
         node.coreSetCharacterData(data);

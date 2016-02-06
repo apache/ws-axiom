@@ -25,9 +25,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
  */
 public interface CoreParentNode extends CoreNode {
     int COMPLETE = 0;
-    int INCOMPLETE = 1;
-    int DISCARDED = 2;
-    int COMPACT = 3;
+    int ATTRIBUTES_PENDING = 1;
+    int INCOMPLETE = 2;
+    int DISCARDED = 3;
+    int COMPACT = 4;
     
     OMXMLParserWrapper getBuilder();
     void coreSetBuilder(OMXMLParserWrapper builder);

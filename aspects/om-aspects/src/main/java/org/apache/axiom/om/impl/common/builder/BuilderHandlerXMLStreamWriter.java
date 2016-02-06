@@ -37,13 +37,12 @@ import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter implements DataHandlerWriter {
-    private final AxiomSourcedElement root;
     private final OMFactoryEx factory;
     private final BuilderHandler handler;
+    private boolean inStartElement;
 
     public BuilderHandlerXMLStreamWriter(BuilderHandler handler, AxiomSourcedElement root) throws XMLStreamException {
         this.handler = handler;
-        this.root = root;
         factory = (OMFactoryEx)root.getOMFactory();
         // Seed the namespace context with the namespace context from the parent
         OMContainer parent = root.getParent();
@@ -107,16 +106,11 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) {
         // Get the OMNamespace object before we change the parent
         OMNamespace ns = getOMNamespace(prefix, namespaceURI, false);
-        if (handler.target == null) {
-            root.validateName(prefix, localName, namespaceURI);
-            handler.target = root;
-            handler.elementLevel = 1;
-        } else {
-            handler.startElement(namespaceURI, localName, prefix);
-        }
+        handler.startElement(namespaceURI, localName, prefix);
         if (ns != null) {
             ((OMElement)handler.target).setNamespace(ns, false);
         }
+        inStartElement = true;
     }
 
     protected void doWriteStartElement(String localName) throws XMLStreamException {
@@ -127,8 +121,16 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
         handler.endElement();
     }
 
+    private void finishStartElement() {
+        if (inStartElement) {
+            handler.attributesCompleted();
+            inStartElement = false;
+        }
+    }
+    
     protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI) {
         doWriteStartElement(prefix, localName, namespaceURI);
+        finishStartElement();
         doWriteEndElement();
     }
 
@@ -161,22 +163,27 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
     }
 
     protected void doWriteCharacters(String text) {
+        finishStartElement();
         handler.processCharacterData(text, false);
     }
 
     protected void doWriteCData(String data) {
+        finishStartElement();
         handler.createCDATASection(data);
     }
 
     protected void doWriteComment(String data) {
+        finishStartElement();
         handler.createComment(data);
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
+        finishStartElement();
         handler.createEntityReference(name, null);
     }
 
     protected void doWriteProcessingInstruction(String piTarget, String data) {
+        finishStartElement();
         handler.createProcessingInstruction(piTarget, data);
     }
 
@@ -194,11 +201,13 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
 
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
             throws IOException, XMLStreamException {
+        finishStartElement();
         handler.processCharacterData(new TextContent(contentID, dataHandler, optimize), false);
     }
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws IOException, XMLStreamException {
+        finishStartElement();
         handler.processCharacterData(new TextContent(contentID, dataHandlerProvider, optimize), false);
     }
 }

@@ -38,6 +38,7 @@ import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -130,39 +131,28 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     
     private int lookAheadToken = -1;
 
-    private StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, String encoding,
-            boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
-        super(nodeFactory, model);
+    protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
+            boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector,
+            AxiomSourcedElement root) {
+        super(nodeFactory, model, root);
         this.parser = parser;
         this.autoClose = autoClose;
         this.detachable = detachable;
         this.closeable = closeable;
         this.payloadSelector = payloadSelector;
-        charEncoding = encoding;
+        charEncoding = parser.getEncoding();
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
-    }
-    
-    protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
-            Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
-        // The getEncoding information is only available at the START_DOCUMENT event.
-        this(nodeFactory, parser, parser.getEncoding(), autoClose, detachable, closeable, model, payloadSelector);
-        
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable) {
-        this(nodeFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);
+        this(nodeFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, null);
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory,
                          XMLStreamReader parser, 
-                         OMElement element, 
-                         String characterEncoding) {
-        // Use this constructor because the parser is passed the START_DOCUMENT state.
-        this(nodeFactory, parser, characterEncoding, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);  
-        handler.elementLevel = 1;
-        handler.target = (AxiomContainer)element;
-        populateOMElement(element);
+                         AxiomSourcedElement element) {
+        this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, element);
     }
     
     /**
@@ -706,6 +696,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         processNamespaceData(node);
         // fill in the attributes
         processAttributes(node);
+        handler.attributesCompleted();
         Location location = parser.getLocation();
         if(location != null) {
             node.setLineNumber(location.getLineNumber());

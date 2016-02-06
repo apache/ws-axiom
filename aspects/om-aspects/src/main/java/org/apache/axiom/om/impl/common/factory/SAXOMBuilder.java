@@ -43,7 +43,7 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
     private final SAXSource source;
     
     public SAXOMBuilder(NodeFactory nodeFactory, Model model, SAXSource source, boolean expandEntityReferences) {
-        super(nodeFactory, model);
+        super(nodeFactory, model, null);
         this.expandEntityReferences = expandEntityReferences;
         this.source = source;
     }
@@ -103,6 +103,8 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
             element.addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
         }
         BuilderUtil.setNamespace(element, namespaceURI, prefix);
+        // TODO: not entirely correct, but should work
+        handler.attributesCompleted();
         return element;
     }
 
@@ -136,5 +138,9 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
 
     public void createOMEntityReference(String name, String replacementText) {
         handler.createEntityReference(name, replacementText);
+    }
+
+    public int next() throws OMException {
+        throw new UnsupportedOperationException();
     }
 }

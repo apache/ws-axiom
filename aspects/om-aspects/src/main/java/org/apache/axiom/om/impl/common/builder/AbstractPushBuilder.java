@@ -21,16 +21,13 @@ package org.apache.axiom.om.impl.common.builder;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public abstract class AbstractPushBuilder extends AbstractBuilder {
-    public AbstractPushBuilder(NodeFactory nodeFactory, Model model) {
-        super(nodeFactory, model);
+    public AbstractPushBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root) {
+        super(nodeFactory, model, root);
     }
     
-    public final int next() throws OMException {
-        throw new UnsupportedOperationException();
-    }
-
     public final void discard(OMElement el) throws OMException {
         throw new UnsupportedOperationException();
     }

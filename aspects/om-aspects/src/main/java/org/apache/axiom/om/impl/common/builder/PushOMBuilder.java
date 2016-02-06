@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common.builder;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
@@ -28,14 +29,19 @@ public final class PushOMBuilder extends AbstractPushBuilder {
     private final AxiomSourcedElement root;
     private final OMDataSource dataSource;
 
-    public PushOMBuilder(AxiomSourcedElement root, OMDataSource dataSource) throws XMLStreamException {
-        super(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE);
+    public PushOMBuilder(AxiomSourcedElement root, OMDataSource dataSource) {
+        super(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE, root);
         this.root = root;
         this.dataSource = dataSource;
     }
     
-    public void expand() throws XMLStreamException {
-        dataSource.serialize(new BuilderHandlerXMLStreamWriter(handler, root));
+    public int next() {
+        try {
+            dataSource.serialize(new BuilderHandlerXMLStreamWriter(handler, root));
+        } catch (XMLStreamException ex) {
+            throw new DeferredParsingException(ex);
+        }
+        return -1;
     }
 
     @Override

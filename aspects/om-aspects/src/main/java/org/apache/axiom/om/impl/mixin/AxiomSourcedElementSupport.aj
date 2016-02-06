@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
@@ -42,7 +43,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -214,14 +214,9 @@ public aspect AxiomSourcedElementSupport {
                 }
             }
 
+            OMXMLParserWrapper builder;
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
-                // Set this before we start expanding; otherwise this would result in an infinite recursion
-                isExpanded = true;
-                try {
-                    new PushOMBuilder(this, dataSource).expand();
-                } catch (XMLStreamException ex) {
-                    throw new OMException("Failed to expand data source", ex);
-                }
+                builder = new PushOMBuilder(this, dataSource);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
@@ -230,29 +225,14 @@ public aspect AxiomSourcedElementSupport {
                 } catch (XMLStreamException ex) {
                     throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                
-                // Advance past the START_DOCUMENT to the start tag.
-                // Remember the character encoding.
-                String characterEncoding = readerFromDS.getCharacterEncodingScheme();
-                if (characterEncoding != null) {
-                    characterEncoding = readerFromDS.getEncoding();
-                }
-                try {
-                    if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
-                        while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
-                    }
-                } catch (XMLStreamException ex) {
-                    throw new OMException("Error parsing data source document for element " + getLocalName(), ex);
-                }
-    
-                validateName(readerFromDS.getPrefix(), readerFromDS.getLocalName(), readerFromDS.getNamespaceURI());
-    
-                // Set the builder for this element. Note that the StAXOMBuilder constructor will also
-                // update the namespace of the element, so we don't need to do that here.
-                isExpanded = true;
-                coreSetBuilder(new StAXOMBuilder(coreGetNodeFactory(), readerFromDS, this, characterEncoding));
-                setComplete(false);
+                builder = new StAXOMBuilder(coreGetNodeFactory(), readerFromDS, this);
             }
+            isExpanded = true;
+            coreSetBuilder(builder);
+            coreSetState(ATTRIBUTES_PENDING);
+            do {
+                builder.next();
+            } while (getState() == ATTRIBUTES_PENDING);
         }
     }
     
