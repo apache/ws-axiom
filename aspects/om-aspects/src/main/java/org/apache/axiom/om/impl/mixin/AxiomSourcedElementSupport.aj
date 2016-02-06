@@ -218,7 +218,7 @@ public aspect AxiomSourcedElementSupport {
                 // Set this before we start expanding; otherwise this would result in an infinite recursion
                 isExpanded = true;
                 try {
-                    dataSource.serialize(new PushOMBuilder(this));
+                    new PushOMBuilder(this, dataSource).expand();
                 } catch (XMLStreamException ex) {
                     throw new OMException("Failed to expand data source", ex);
                 }
