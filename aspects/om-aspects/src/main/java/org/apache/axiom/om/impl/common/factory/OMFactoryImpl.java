@@ -216,26 +216,20 @@ public class OMFactoryImpl implements OMFactoryEx {
     }
 
     protected final <T extends AxiomElement> T createAxiomElement(Class<T> type,
-            OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
-            boolean generateNSDecl) {
+            OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder) {
         T element = createNode(type);
         element.coreSetBuilder(builder);
         if (parent != null) {
             ((AxiomContainer)parent).addChild(element, builder != null);
         }
-        element.initName(localName, ns, generateNSDecl);
+        element.initName(localName, ns, true);
         return element;
     }
 
     public final OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return createAxiomElement(AxiomElement.class, parent, localName, ns, null, true);
+        return createAxiomElement(AxiomElement.class, parent, localName, ns, null);
     }
 
-    public final <T extends AxiomElement> T createAxiomElement(Class<T> type, String localName,
-            OMContainer parent, OMXMLParserWrapper builder) {
-        return createAxiomElement(type, parent, localName, null, builder, false);
-    }
-    
     public final OMElement createOMElement(QName qname, OMContainer parent) {
         AxiomElement element = createNode(AxiomElement.class);
         if (parent != null) {

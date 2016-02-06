@@ -23,7 +23,6 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMContentHandler;
@@ -32,7 +31,6 @@ import org.apache.axiom.om.impl.common.builder.BuilderUtil;
 import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -45,12 +43,9 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     private final BuilderHandler handler;
     private final SAXSource source;
     
-    private final OMFactoryEx factory;
-
-    public SAXOMBuilder(NodeFactory nodeFactory, OMFactory factory, Model model, SAXSource source, boolean expandEntityReferences) {
+    public SAXOMBuilder(NodeFactory nodeFactory, Model model, SAXSource source, boolean expandEntityReferences) {
         super(expandEntityReferences);
-        handler = new BuilderHandler(nodeFactory, model);
-        this.factory = (OMFactoryEx)factory;
+        handler = new BuilderHandler(nodeFactory, model, this);
         this.source = source;
     }
     
@@ -149,12 +144,11 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
 
     protected OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
-        AxiomElement element = factory.createAxiomElement(AxiomElement.class, localName, handler.target, this);
+        AxiomElement element = handler.startElement(null, localName, null);
         for (int i = 0; i < namespaceCount; i++) {
             element.addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
         }
         BuilderUtil.setNamespace(element, namespaceURI, prefix);
-        handler.target = element;
         return element;
     }
 

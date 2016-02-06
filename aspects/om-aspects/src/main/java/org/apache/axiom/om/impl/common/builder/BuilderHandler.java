@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
@@ -33,6 +34,7 @@ import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.commons.logging.Log;
@@ -43,6 +45,7 @@ public final class BuilderHandler {
     
     public final NodeFactory nodeFactory;
     public final Model model;
+    private final OMXMLParserWrapper builder;
     public AxiomContainer target;
     // returns the state of completion
     public boolean done;
@@ -65,9 +68,10 @@ public final class BuilderHandler {
     
     private ArrayList<NodePostProcessor> nodePostProcessors;
 
-    public BuilderHandler(NodeFactory nodeFactory, Model model) {
+    public BuilderHandler(NodeFactory nodeFactory, Model model, OMXMLParserWrapper builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
+        this.builder = builder;
     }
 
     public void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
@@ -98,6 +102,17 @@ public final class BuilderHandler {
         node.coreSetSystemId(systemId);
         node.coreSetInternalSubset(internalSubset);
         addChild(node);
+    }
+    
+    public AxiomElement startElement(String namespaceURI, String localName, String prefix) {
+        elementLevel++;
+        AxiomElement element = nodeFactory.createNode(model.determineElementType(
+                target, elementLevel, namespaceURI, localName));
+        element.coreSetBuilder(builder);
+        element.initName(localName, /*ns*/ null, false);
+        addChild(element);
+        target = element;
+        return element;
     }
     
     public void processCharacterData(Object data, boolean ignorable) {

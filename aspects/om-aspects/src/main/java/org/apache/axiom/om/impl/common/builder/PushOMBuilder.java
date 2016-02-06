@@ -44,7 +44,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
 
     public PushOMBuilder(AxiomSourcedElement root) throws XMLStreamException {
         this.root = root;
-        handler = new BuilderHandler(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE);
+        handler = new BuilderHandler(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE, null);
         factory = (OMFactoryEx)root.getOMFactory();
         // Seed the namespace context with the namespace context from the parent
         OMContainer parent = root.getParent();
@@ -112,9 +112,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
             root.validateName(prefix, localName, namespaceURI);
             handler.target = root;
         } else {
-            // We use the createOMElement variant that takes a OMXMLParserWrapper parameter and
-            // don't pass the namespace. This avoids creation of a namespace declaration.
-            handler.target = factory.createAxiomElement(AxiomElement.class, localName, handler.target, null);
+            handler.startElement(namespaceURI, localName, prefix);
         }
         if (ns != null) {
             ((OMElement)handler.target).setNamespace(ns, false);

@@ -18,20 +18,14 @@
  */
 package org.apache.axiom.om.impl.intf;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
  * public API.
  */
 public interface OMFactoryEx extends OMFactory {
-
-    <T extends AxiomElement> T createAxiomElement(Class<T> type, String localName,
-            OMContainer parent, OMXMLParserWrapper builder);
-
     /**
      * This method is intended only to be used by Axiom intenrals when merging nodes from different
      * Axiom implementations.

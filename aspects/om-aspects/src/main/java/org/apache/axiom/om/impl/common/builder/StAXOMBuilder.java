@@ -138,7 +138,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
 
     private StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, String encoding,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
-        handler = new BuilderHandler(nodeFactory, model);
+        handler = new BuilderHandler(nodeFactory, model, this);
         omfactory = (OMFactoryEx)omFactory;
         this.parser = parser;
         this.autoClose = autoClose;
@@ -592,7 +592,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT: {
-                    handler.postProcessNode(createNextOMElement());
+                    createNextOMElement();
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS:
@@ -665,12 +665,8 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             }
         }
         if (newElement == null) {
-            handler.elementLevel++;
-            newElement = omfactory.createAxiomElement(
-                    handler.model.determineElementType(handler.target, handler.elementLevel, parser.getNamespaceURI(), parser.getLocalName()),
-                    parser.getLocalName(), handler.target, this);
+            newElement = handler.startElement(parser.getNamespaceURI(), parser.getLocalName(), parser.getPrefix());
             populateOMElement(newElement);
-            handler.target = (AxiomContainer)newElement;
         }
         return newElement;
     }
