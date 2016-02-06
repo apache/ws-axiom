@@ -38,7 +38,6 @@ import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -93,9 +92,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     /** Field parser */
     private XMLStreamReader parser;
 
-    // TODO: this will eventually disappear in favor of NodeFactory
-    private final OMFactoryEx omfactory;
-    
     private final Detachable detachable;
     private final Closeable closeable;
     
@@ -136,10 +132,9 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     
     private final BuilderHandler handler;
 
-    private StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, String encoding,
+    private StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, String encoding,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
         handler = new BuilderHandler(nodeFactory, model, this);
-        omfactory = (OMFactoryEx)omFactory;
         this.parser = parser;
         this.autoClose = autoClose;
         this.detachable = detachable;
@@ -149,24 +144,24 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
-    protected StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
+    protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector) {
         // The getEncoding information is only available at the START_DOCUMENT event.
-        this(nodeFactory, omFactory, parser, parser.getEncoding(), autoClose, detachable, closeable, model, payloadSelector);
+        this(nodeFactory, parser, parser.getEncoding(), autoClose, detachable, closeable, model, payloadSelector);
         
     }
     
-    public StAXOMBuilder(NodeFactory nodeFactory, OMFactory omFactory, XMLStreamReader parser, boolean autoClose,
+    public StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable) {
-        this(nodeFactory, omFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);
+        this(nodeFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);
     }
     
-    public StAXOMBuilder(NodeFactory nodeFactory, OMFactory factory, 
+    public StAXOMBuilder(NodeFactory nodeFactory,
                          XMLStreamReader parser, 
                          OMElement element, 
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
-        this(nodeFactory, factory, parser, characterEncoding, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);  
+        this(nodeFactory, parser, characterEncoding, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT);  
         handler.elementLevel = 1;
         handler.target = (AxiomContainer)element;
         populateOMElement(element);
@@ -786,7 +781,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             // This is relevant for OMSourcedElements and for the case where the document has been discarded
             // using getDocumentElement(true). In these cases, this will actually set target to null. In all
             // other cases, this will have the same effect as the instruction in the else clause.
-            handler.target = (AxiomContainer)handler.document;
+            handler.target = handler.document;
         } else {
             handler.target = (AxiomContainer)((OMElement)handler.target).getParent();
         }

@@ -23,7 +23,6 @@ import java.io.Closeable;
 
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.NodePostProcessor;
@@ -41,9 +40,9 @@ import javax.xml.stream.XMLStreamReader;
  * Internal implementation class.
  */
 public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
-    public StAXSOAPModelBuilder(NodeFactory nodeFactory, OMMetaFactory metaFactory, XMLStreamReader parser,
+    public StAXSOAPModelBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable) {
-        super(nodeFactory, metaFactory.getOMFactory(), parser, autoClose, detachable, closeable, new SOAPModel(),
+        super(nodeFactory, parser, autoClose, detachable, closeable, new SOAPModel(),
                 SOAPPayloadSelector.INSTANCE);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
