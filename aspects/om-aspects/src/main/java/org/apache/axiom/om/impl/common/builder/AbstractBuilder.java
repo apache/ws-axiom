@@ -35,6 +35,10 @@ public abstract class AbstractBuilder implements OMXMLParserWrapper {
         handler.addNodePostProcessor(nodePostProcessor);
     }
 
+    public final boolean isCompleted() {
+        return handler.isCompleted();
+    }
+
     public final OMDocument getDocument() {
         AxiomDocument document;
         while ((document = handler.getDocument()) == null) {

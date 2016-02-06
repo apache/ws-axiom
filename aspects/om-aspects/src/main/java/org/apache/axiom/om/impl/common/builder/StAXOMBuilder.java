@@ -436,15 +436,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         handler.cache = true;
     }
 
-    /**
-     * Method isCompleted.
-     *
-     * @return Returns boolean.
-     */
-    public final boolean isCompleted() {
-        return handler.done;
-    }
-
     public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
         CustomBuilder old = null;
         if (customBuilders == null) {
@@ -568,9 +559,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                     handler.endElement();
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
-                    handler.done = true;
-                    ((AxiomContainer) this.handler.document).setComplete(true);
-                    handler.target = null;
+                    handler.endDocument();
                     break;
                 case XMLStreamConstants.COMMENT:
                     handler.createComment(parser.getText());

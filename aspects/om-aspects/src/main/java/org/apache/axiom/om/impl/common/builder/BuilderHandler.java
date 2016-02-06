@@ -95,6 +95,10 @@ public final class BuilderHandler {
         }
     }
 
+    public boolean isCompleted() {
+        return done;
+    }
+    
     public AxiomDocument getDocument() {
         if (root != null) {
             throw new UnsupportedOperationException("There is no document linked to this builder");
@@ -202,5 +206,16 @@ public final class BuilderHandler {
         node.coreSetName(name);
         node.coreSetReplacementText(replacementText);
         addChild(node);
+    }
+    
+    public void endDocument() {
+        if (elementLevel != 0) {
+            throw new IllegalStateException();
+        }
+        if (document != null) {
+            document.setComplete(true);
+        }
+        target = null;
+        done = true;
     }
 }

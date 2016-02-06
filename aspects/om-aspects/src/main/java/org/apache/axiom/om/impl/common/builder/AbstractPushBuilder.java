@@ -44,10 +44,6 @@ public abstract class AbstractPushBuilder extends AbstractBuilder {
         throw new UnsupportedOperationException();
     }
 
-    public final boolean isCompleted() {
-        return handler.document != null && handler.document.isComplete();
-    }
-
     public final OMElement getDocumentElement() {
         return getDocument().getOMDocumentElement();
     }

@@ -27,7 +27,6 @@ import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.AbstractPushBuilder;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
 import org.apache.axiom.om.impl.common.builder.Model;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -52,11 +51,7 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
     }
 
     public void doEndDocument() {
-        if (handler.target != handler.document) {
-            throw new IllegalStateException();
-        }
-        handler.target = null;
-        ((AxiomContainer)handler.document).setComplete(true);
+        handler.endDocument();
     }
 
     public int next() {
