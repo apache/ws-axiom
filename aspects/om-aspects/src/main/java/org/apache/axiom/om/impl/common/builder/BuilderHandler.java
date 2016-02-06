@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.xml.stream.XMLStreamConstants;
+
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMSerializable;
@@ -44,7 +46,7 @@ public final class BuilderHandler {
     private static final Log log = LogFactory.getLog(BuilderHandler.class);
     
     private final NodeFactory nodeFactory;
-    public final Model model;
+    private final Model model;
     private final OMXMLParserWrapper builder;
     public AxiomContainer target;
     // returns the state of completion
@@ -107,6 +109,7 @@ public final class BuilderHandler {
     
     public void createDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) {
+        model.validateEventType(XMLStreamConstants.DTD);
         AxiomDocType node = nodeFactory.createNode(AxiomDocType.class);
         node.coreSetRootName(rootName);
         node.coreSetPublicId(publicId);
@@ -134,6 +137,7 @@ public final class BuilderHandler {
     }
     
     public void createProcessingInstruction(String piTarget, String piData) {
+        model.validateEventType(XMLStreamConstants.PROCESSING_INSTRUCTION);
         AxiomProcessingInstruction node = nodeFactory.createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
         node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
@@ -141,18 +145,21 @@ public final class BuilderHandler {
     }
 
     public void createComment(String content) {
+        model.validateEventType(XMLStreamConstants.COMMENT);
         AxiomComment node = nodeFactory.createNode(AxiomComment.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         addChild(node);
     }
     
     public void createCDATASection(String content) {
+        model.validateEventType(XMLStreamConstants.CDATA);
         AxiomCDATASection node = nodeFactory.createNode(AxiomCDATASection.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         addChild(node);
     }
     
     public void createEntityReference(String name, String replacementText) {
+        model.validateEventType(XMLStreamConstants.ENTITY_REFERENCE);
         AxiomEntityReference node = nodeFactory.createNode(AxiomEntityReference.class);
         node.coreSetName(name);
         node.coreSetReplacementText(replacementText);

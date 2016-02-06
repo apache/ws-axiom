@@ -848,7 +848,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                         close();
                     }
                 }
-                handler.model.validateEventType(event);
                 return event;
             } catch (XMLStreamException ex) {
                 throw new DeferredParsingException(ex);
