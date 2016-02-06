@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderUtil;
@@ -38,21 +39,22 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.transform.sax.SAXSource;
 
-public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper {
+public final class SAXOMBuilder implements OMXMLParserWrapper, Handler {
+    private final boolean expandEntityReferences;
     private final BuilderHandler handler;
     private final SAXSource source;
     
     public SAXOMBuilder(NodeFactory nodeFactory, Model model, SAXSource source, boolean expandEntityReferences) {
-        super(expandEntityReferences);
+        this.expandEntityReferences = expandEntityReferences;
         handler = new BuilderHandler(nodeFactory, model, this);
         this.source = source;
     }
     
-    protected void doStartDocument() {
+    public void doStartDocument() {
         handler.startDocument(null, "1.0", null, true);
     }
 
-    protected void doEndDocument() {
+    public void doEndDocument() {
         if (handler.target != handler.document) {
             throw new IllegalStateException();
         }
@@ -63,15 +65,16 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     public OMDocument getDocument() {
         if (handler.document == null && source != null) {
             XMLReader reader = source.getXMLReader();
-            reader.setContentHandler(this);
-            reader.setDTDHandler(this);
+            OMContentHandler contentHandler = new OMContentHandler(this, expandEntityReferences);
+            reader.setContentHandler(contentHandler);
+            reader.setDTDHandler(contentHandler);
             try {
-                reader.setProperty("http://xml.org/sax/properties/lexical-handler", this);
+                reader.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
             } catch (SAXException ex) {
                 // Ignore
             }
             try {
-                reader.setProperty("http://xml.org/sax/properties/declaration-handler", this);
+                reader.setProperty("http://xml.org/sax/properties/declaration-handler", contentHandler);
             } catch (SAXException ex) {
                 // Ignore
             }
@@ -134,12 +137,12 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         // This is a no-op
     }
 
-    protected void createOMDocType(String rootName, String publicId,
+    public void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset) {
         handler.createDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
-    protected OMElement createOMElement(String localName,
+    public OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
         AxiomElement element = handler.startElement(null, localName, null);
         for (int i = 0; i < namespaceCount; i++) {
@@ -149,11 +152,11 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         return element;
     }
 
-    protected void completed() {
+    public void completed() {
         handler.endElement();
     }
 
-    protected void createOMText(String text, int type) {
+    public void createOMText(String text, int type) {
         switch (type) {
             case XMLStreamConstants.CHARACTERS:
                 handler.processCharacterData(text, false);
@@ -169,15 +172,15 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
         }
     }
 
-    protected void createOMProcessingInstruction(String piTarget, String piData) {
+    public void createOMProcessingInstruction(String piTarget, String piData) {
         handler.createProcessingInstruction(piTarget, piData);
     }
 
-    protected void createOMComment(String content) {
+    public void createOMComment(String content) {
         handler.createComment(content);
     }
 
-    protected void createOMEntityReference(String name, String replacementText) {
+    public void createOMEntityReference(String name, String replacementText) {
         handler.createEntityReference(name, replacementText);
     }
     

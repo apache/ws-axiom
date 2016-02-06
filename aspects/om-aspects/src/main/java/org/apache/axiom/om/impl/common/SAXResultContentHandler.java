@@ -24,32 +24,31 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
-public class SAXResultContentHandler extends OMContentHandler {
+public final  class SAXResultContentHandler implements Handler {
     private final OMContainer root;
     private final OMFactory factory;
     private OMContainer target;
 
     public SAXResultContentHandler(OMContainer root) {
-        super(true);
         this.root = root;
         factory = root.getOMFactory();
     }
     
-    protected void doStartDocument() {
+    public void doStartDocument() {
         target = root;
     }
 
-    protected void doEndDocument() {
+    public void doEndDocument() {
     }
 
-    protected void createOMDocType(String rootName, String publicId,
+    public void createOMDocType(String rootName, String publicId,
             String systemId, String internalSubset) {
         if (target instanceof OMDocument) {
             factory.createOMDocType(target, rootName, publicId, systemId, internalSubset);
         }
     }
 
-    protected OMElement createOMElement(String localName, String namespaceURI,
+    public OMElement createOMElement(String localName, String namespaceURI,
             String prefix, String[] namespaces, int namespaceCount) {
         // TODO: inefficient: we should not create a new OMNamespace instance every time
         OMElement element = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
@@ -66,23 +65,23 @@ public class SAXResultContentHandler extends OMContentHandler {
         return element;
     }
 
-    protected void completed() {
+    public void completed() {
         target = ((OMNode)target).getParent();
     }
 
-    protected void createOMText(String text, int type) {
+    public void createOMText(String text, int type) {
         factory.createOMText(target, text, type);
     }
 
-    protected void createOMProcessingInstruction(String piTarget, String piData) {
+    public void createOMProcessingInstruction(String piTarget, String piData) {
         factory.createOMProcessingInstruction(target, piTarget, piData);
     }
 
-    protected void createOMComment(String content) {
+    public void createOMComment(String content) {
         factory.createOMComment(target, content);
     }
 
-    protected void createOMEntityReference(String name, String replacementText) {
+    public void createOMEntityReference(String name, String replacementText) {
         if (replacementText == null) {
             factory.createOMEntityReference(target, name);
         } else {

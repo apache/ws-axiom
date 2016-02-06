@@ -51,6 +51,7 @@ import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
+import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
@@ -258,7 +259,7 @@ public aspect AxiomContainerSupport {
     }
 
     public final SAXResult AxiomContainer.getSAXResult() {
-        SAXResultContentHandler handler = new SAXResultContentHandler(this);
+        OMContentHandler handler = new OMContentHandler(new SAXResultContentHandler(this), true);
         SAXResult result = new SAXResult();
         result.setHandler(handler);
         result.setLexicalHandler(handler);

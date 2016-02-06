@@ -33,7 +33,8 @@ import org.xml.sax.ext.LexicalHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
+public final class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
+    private final Handler handler;
     private final boolean expandEntityReferences;
     
     /**
@@ -84,7 +85,8 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     private boolean inEntityReference;
     private int entityReferenceDepth;
 
-    public OMContentHandler(boolean expandEntityReferences) {
+    public OMContentHandler(Handler handler, boolean expandEntityReferences) {
+        this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
     }
     
@@ -92,11 +94,11 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     }
 
     public final void startDocument() throws SAXException {
-        doStartDocument();
+        handler.doStartDocument();
     }
 
     public final void endDocument() throws SAXException {
-        doEndDocument();
+        handler.doEndDocument();
     }
 
     public final void startDTD(String name, String publicId, String systemId) throws SAXException {
@@ -196,7 +198,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     }
 
     public final void endDTD() throws SAXException {
-        createOMDocType(dtdName, dtdPublicId, dtdSystemId,
+        handler.createOMDocType(dtdName, dtdPublicId, dtdSystemId,
                 internalSubset.length() == 0 ? null : internalSubset.toString());
         internalSubset = null;
     }
@@ -238,7 +240,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
                 localName = qName.substring(qName.indexOf(':') + 1);
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
-            OMElement element = createOMElement(localName, namespaceURI, prefix, namespaces, namespaceCount);
+            OMElement element = handler.createOMElement(localName, namespaceURI, prefix, namespaces, namespaceCount);
             namespaceCount = 0;
     
             int j = atts.getLength();
@@ -279,7 +281,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     public final void endElement(String uri, String localName, String qName)
             throws SAXException {
         if (!inEntityReference) {
-            completed();
+            handler.completed();
         }
     }
 
@@ -298,7 +300,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     private void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
         if (!inEntityReference) {
-            createOMText(new String(ch, start, length), nodeType);
+            handler.createOMText(new String(ch, start, length), nodeType);
         }
     }
 
@@ -319,18 +321,18 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
     public final void processingInstruction(String piTarget, String data)
             throws SAXException {
         if (!inEntityReference) {
-            createOMProcessingInstruction(piTarget, data);
+            handler.createOMProcessingInstruction(piTarget, data);
         }
     }
 
     public final void comment(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
-            createOMComment(new String(ch, start, length));
+            handler.createOMComment(new String(ch, start, length));
         }
     }
 
     public final void skippedEntity(String name) throws SAXException {
-        createOMEntityReference(name, null);
+        handler.createOMEntityReference(name, null);
     }
 
     public final void startEntity(String name) throws SAXException {
@@ -339,7 +341,7 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
         } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            createOMEntityReference(name, entities == null ? null : entities.get(name));
+            handler.createOMEntityReference(name, entities == null ? null : entities.get(name));
             inEntityReference = true;
             entityReferenceDepth = 1;
         }
@@ -355,25 +357,4 @@ public abstract class OMContentHandler implements ContentHandler, LexicalHandler
             inExternalSubset = false;
         }
     }
-
-    protected abstract void doStartDocument();
-    
-    protected abstract void doEndDocument();
-    
-    protected abstract void createOMDocType(String rootName, String publicId,
-            String systemId, String internalSubset);
-
-    protected abstract OMElement createOMElement(String localName,
-            String namespaceURI, String prefix, String[] namespaces, int namespaceCount);
-    
-    protected abstract void completed();
-    
-    protected abstract void createOMText(String text, int type);
-    
-    protected abstract void createOMProcessingInstruction(String piTarget,
-            String piData);
-    
-    protected abstract void createOMComment(String content);
-    
-    protected abstract void createOMEntityReference(String name, String replacementText);
 }
