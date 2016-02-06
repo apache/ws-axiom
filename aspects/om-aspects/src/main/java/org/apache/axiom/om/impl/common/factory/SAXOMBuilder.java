@@ -50,9 +50,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     }
     
     protected void doStartDocument() {
-        handler.document = handler.nodeFactory.createNode(handler.model.getDocumentType());
-        handler.document.coreSetBuilder(this);
-        handler.target = handler.document;
+        handler.startDocument(null, "1.0", null, true);
     }
 
     protected void doEndDocument() {

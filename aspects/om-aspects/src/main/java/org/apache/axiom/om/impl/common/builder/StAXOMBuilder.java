@@ -478,16 +478,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
     
     private void createDocumentIfNecessary() {
         if (handler.document == null && parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
-            handler.document = handler.nodeFactory.createNode(handler.model.getDocumentType());
-            if (charEncoding != null) {
-                handler.document.setCharsetEncoding(charEncoding);
-            }
-            handler.document.setXMLVersion(parser.getVersion());
-            handler.document.setXMLEncoding(parser.getCharacterEncodingScheme());
-            handler.document.setStandalone(parser.isStandalone() ? "yes" : "no");
-            handler.document.coreSetBuilder(this);
-            handler.target = handler.document;
-            handler.postProcessNode(handler.document);
+            handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
         }
     }
     

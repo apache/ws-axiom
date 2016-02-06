@@ -43,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
 public final class BuilderHandler {
     private static final Log log = LogFactory.getLog(BuilderHandler.class);
     
-    public final NodeFactory nodeFactory;
+    private final NodeFactory nodeFactory;
     public final Model model;
     private final OMXMLParserWrapper builder;
     public AxiomContainer target;
@@ -92,6 +92,17 @@ public final class BuilderHandler {
     private void addChild(AxiomChildNode node) {
         target.addChild(node, true);
         postProcessNode(node);
+    }
+    
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
+        document = nodeFactory.createNode(model.getDocumentType());
+        document.coreSetInputEncoding(inputEncoding);
+        document.coreSetXmlVersion(xmlVersion);
+        document.coreSetXmlEncoding(xmlEncoding);
+        document.coreSetStandalone(standalone);
+        document.coreSetBuilder(builder);
+        postProcessNode(document);
+        target = document;
     }
     
     public void createDocumentTypeDeclaration(String rootName, String publicId, String systemId,
