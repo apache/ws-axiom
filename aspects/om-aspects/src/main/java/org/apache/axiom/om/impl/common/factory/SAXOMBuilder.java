@@ -23,7 +23,6 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.BuilderHandler;
@@ -151,8 +150,7 @@ public class SAXOMBuilder extends OMContentHandler implements OMXMLParserWrapper
     }
 
     protected void completed() {
-        ((AxiomElement)handler.target).setComplete(true);
-        handler.target = (AxiomContainer)((OMNode)handler.target).getParent();
+        handler.endElement();
     }
 
     protected void createOMText(String text, int type) {

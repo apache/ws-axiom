@@ -129,6 +129,19 @@ public final class BuilderHandler {
         return element;
     }
     
+    public void endElement() {
+        elementLevel--;
+        target.setComplete(true);
+        if (elementLevel == 0) {
+            // This is relevant for OMSourcedElements and for the case where the document has been discarded
+            // using getDocumentElement(true). In these cases, this will actually set target to null. In all
+            // other cases, this will have the same effect as the instruction in the else clause.
+            target = document;
+        } else {
+            target = (AxiomContainer)((AxiomElement)target).getParent();
+        }
+    }
+
     public void processCharacterData(Object data, boolean ignorable) {
         AxiomCharacterDataNode node = nodeFactory.createNode(AxiomCharacterDataNode.class);
         node.coreSetCharacterData(data);

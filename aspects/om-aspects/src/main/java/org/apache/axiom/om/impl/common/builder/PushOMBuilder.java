@@ -30,7 +30,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
@@ -111,6 +110,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         if (handler.target == null) {
             root.validateName(prefix, localName, namespaceURI);
             handler.target = root;
+            handler.elementLevel = 1;
         } else {
             handler.startElement(namespaceURI, localName, prefix);
         }
@@ -124,14 +124,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEndElement() {
-        if (handler.target == root) {
-            handler.target = null;
-        } else {
-            // Since we use the createOMElement variant that takes a OMXMLParserWrapper parameter,
-            // we need to update the completion status.
-            handler.target.setComplete(true);
-            handler.target = (AxiomContainer)((OMElement)handler.target).getParent();
-        }
+        handler.endElement();
     }
 
     protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI) {

@@ -587,8 +587,7 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
                     createOMText(token);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    handler.elementLevel--;
-                    endElement();
+                    handler.endElement();
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     handler.done = true;
@@ -764,18 +763,6 @@ public class StAXOMBuilder implements Builder, CustomBuilderSupport {
             }
         }
         return text;
-    }
-
-    private void endElement() {
-        handler.target.setComplete(true);
-        if (handler.elementLevel == 0) {
-            // This is relevant for OMSourcedElements and for the case where the document has been discarded
-            // using getDocumentElement(true). In these cases, this will actually set target to null. In all
-            // other cases, this will have the same effect as the instruction in the else clause.
-            handler.target = handler.document;
-        } else {
-            handler.target = (AxiomContainer)((OMElement)handler.target).getParent();
-        }
     }
 
     public final OMElement getDocumentElement() {
