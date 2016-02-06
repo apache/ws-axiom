@@ -34,14 +34,14 @@ public final  class SAXResultContentHandler implements Handler {
         factory = root.getOMFactory();
     }
     
-    public void doStartDocument() {
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
         target = root;
     }
 
-    public void doEndDocument() {
+    public void endDocument() {
     }
 
-    public void createOMDocType(String rootName, String publicId,
+    public void createDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset) {
         if (target instanceof OMDocument) {
             factory.createOMDocType(target, rootName, publicId, systemId, internalSubset);
@@ -65,7 +65,7 @@ public final  class SAXResultContentHandler implements Handler {
         return element;
     }
 
-    public void completed() {
+    public void endElement() {
         target = ((OMNode)target).getParent();
     }
 
@@ -73,15 +73,15 @@ public final  class SAXResultContentHandler implements Handler {
         factory.createOMText(target, text, type);
     }
 
-    public void createOMProcessingInstruction(String piTarget, String piData) {
+    public void createProcessingInstruction(String piTarget, String piData) {
         factory.createOMProcessingInstruction(target, piTarget, piData);
     }
 
-    public void createOMComment(String content) {
+    public void createComment(String content) {
         factory.createOMComment(target, content);
     }
 
-    public void createOMEntityReference(String name, String replacementText) {
+    public void createEntityReference(String name, String replacementText) {
         if (replacementText == null) {
             factory.createOMEntityReference(target, name);
         } else {

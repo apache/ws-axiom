@@ -22,24 +22,23 @@ import org.apache.axiom.om.OMElement;
 
 // TODO: transitional interface that should eventually converge with BuilderHandler
 public interface Handler {
-    void doStartDocument();
+    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone);
     
-    void doEndDocument();
+    void endDocument();
     
-    void createOMDocType(String rootName, String publicId,
+    void createDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset);
 
     OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount);
     
-    void completed();
+    void endElement();
     
     void createOMText(String text, int type);
     
-    void createOMProcessingInstruction(String piTarget,
-            String piData);
+    void createProcessingInstruction(String piTarget, String piData);
     
-    void createOMComment(String content);
+    void createComment(String content);
     
-    void createOMEntityReference(String name, String replacementText);
+    void createEntityReference(String name, String replacementText);
 }

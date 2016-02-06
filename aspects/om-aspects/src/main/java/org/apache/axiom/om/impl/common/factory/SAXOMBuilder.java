@@ -46,11 +46,11 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
         this.source = source;
     }
     
-    public void doStartDocument() {
-        handler.startDocument(null, "1.0", null, true);
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
+        handler.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
 
-    public void doEndDocument() {
+    public void endDocument() {
         handler.endDocument();
     }
 
@@ -79,7 +79,7 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
         return -1;
     }
 
-    public void createOMDocType(String rootName, String publicId,
+    public void createDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset) {
         handler.createDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
@@ -96,7 +96,7 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
         return element;
     }
 
-    public void completed() {
+    public void endElement() {
         handler.endElement();
     }
 
@@ -116,15 +116,15 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
         }
     }
 
-    public void createOMProcessingInstruction(String piTarget, String piData) {
+    public void createProcessingInstruction(String piTarget, String piData) {
         handler.createProcessingInstruction(piTarget, piData);
     }
 
-    public void createOMComment(String content) {
+    public void createComment(String content) {
         handler.createComment(content);
     }
 
-    public void createOMEntityReference(String name, String replacementText) {
+    public void createEntityReference(String name, String replacementText) {
         handler.createEntityReference(name, replacementText);
     }
 }

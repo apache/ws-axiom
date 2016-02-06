@@ -94,11 +94,11 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     }
 
     public final void startDocument() throws SAXException {
-        handler.doStartDocument();
+        handler.startDocument(null, "1.0", null, true);
     }
 
     public final void endDocument() throws SAXException {
-        handler.doEndDocument();
+        handler.endDocument();
     }
 
     public final void startDTD(String name, String publicId, String systemId) throws SAXException {
@@ -198,7 +198,7 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     }
 
     public final void endDTD() throws SAXException {
-        handler.createOMDocType(dtdName, dtdPublicId, dtdSystemId,
+        handler.createDocumentTypeDeclaration(dtdName, dtdPublicId, dtdSystemId,
                 internalSubset.length() == 0 ? null : internalSubset.toString());
         internalSubset = null;
     }
@@ -281,7 +281,7 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     public final void endElement(String uri, String localName, String qName)
             throws SAXException {
         if (!inEntityReference) {
-            handler.completed();
+            handler.endElement();
         }
     }
 
@@ -321,18 +321,18 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     public final void processingInstruction(String piTarget, String data)
             throws SAXException {
         if (!inEntityReference) {
-            handler.createOMProcessingInstruction(piTarget, data);
+            handler.createProcessingInstruction(piTarget, data);
         }
     }
 
     public final void comment(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
-            handler.createOMComment(new String(ch, start, length));
+            handler.createComment(new String(ch, start, length));
         }
     }
 
     public final void skippedEntity(String name) throws SAXException {
-        handler.createOMEntityReference(name, null);
+        handler.createEntityReference(name, null);
     }
 
     public final void startEntity(String name) throws SAXException {
@@ -341,7 +341,7 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
         } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            handler.createOMEntityReference(name, entities == null ? null : entities.get(name));
+            handler.createEntityReference(name, entities == null ? null : entities.get(name));
             inEntityReference = true;
             entityReferenceDepth = 1;
         }
