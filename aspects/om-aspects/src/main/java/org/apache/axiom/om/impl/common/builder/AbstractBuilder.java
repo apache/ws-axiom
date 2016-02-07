@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public abstract class AbstractBuilder implements OMXMLParserWrapper {
@@ -30,9 +31,8 @@ public abstract class AbstractBuilder implements OMXMLParserWrapper {
     protected final XmlHandler handler;
 
     public AbstractBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, boolean repairNamespaces) {
-        builderHandler = new BuilderHandler(nodeFactory, model, root, this, repairNamespaces);
-        // TODO: eventually the namespace repairing filter XmlHandler will be added here
-        handler = builderHandler;
+        builderHandler = new BuilderHandler(nodeFactory, model, root, this);
+        handler = repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler) : builderHandler;
     }
 
     public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
