@@ -18,11 +18,18 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import java.util.Iterator;
+
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.DeferredParsingException;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 
 public final class PushOMBuilder extends AbstractPushBuilder {
     private final AxiomSourcedElement root;
@@ -38,7 +45,16 @@ public final class PushOMBuilder extends AbstractPushBuilder {
     
     public int next() {
         try {
-            dataSource.serialize(new BuilderHandlerXMLStreamWriter(handler, root));
+            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler);
+            // Seed the namespace context with the namespace context from the parent
+            OMContainer parent = root.getParent();
+            if (parent instanceof OMElement) {
+                for (Iterator<OMNamespace> it = ((OMElement)parent).getNamespacesInScope(); it.hasNext(); ) {
+                    OMNamespace ns = it.next();
+                    writer.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
+                }
+            }
+            dataSource.serialize(new PushOMDataSourceStreamWriter(writer));
         } catch (XMLStreamException ex) {
             throw new DeferredParsingException(ex);
         }
