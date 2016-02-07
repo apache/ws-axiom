@@ -46,12 +46,8 @@ import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 public abstract class SerializerImpl implements Serializer {
-    private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
-    private static final String XSI_LOCAL_NAME = "type";
-    
     private final OMSerializable root;
-    private final OMElement contextElement;
-    private final boolean namespaceRepairing;
+    private final NamespaceHelper helper;
     private final boolean preserveNamespaceContext;
     
     /**
@@ -69,6 +65,7 @@ public abstract class SerializerImpl implements Serializer {
      */
     public SerializerImpl(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
         this.root = root;
+        OMElement contextElement;
         if (root instanceof OMNode) {
             OMContainer parent = ((OMNode)root).getParent();
             if (parent instanceof OMElement) {
@@ -79,16 +76,16 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             contextElement = null;
         }
-        this.namespaceRepairing = namespaceRepairing;
+        helper = new NamespaceHelper(this, contextElement, namespaceRepairing);
         this.preserveNamespaceContext = preserveNamespaceContext;
     }
 
     public final void serializeStartpart(OMElement element) throws StreamException {
         OMNamespace ns = element.getNamespace();
         if (ns == null) {
-            internalStartElement("", element.getLocalName(), "");
+            helper.internalStartElement("", element.getLocalName(), "");
         } else {
-            internalStartElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
+            helper.internalStartElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
         }
         if (preserveNamespaceContext && element == root) {
             // Maintain a set of the prefixes we have already seen. This is required to take into
@@ -100,7 +97,7 @@ public abstract class SerializerImpl implements Serializer {
                 for (Iterator<OMNamespace> it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
                     ns = it.next();
                     if (seenPrefixes.add(ns.getPrefix())) {
-                        mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+                        helper.mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
                     }
                 }
                 OMContainer parent = current.getParent();
@@ -112,16 +109,16 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
                 ns = it.next();
-                mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+                helper.mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
             }
         }
         for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = it.next();
             ns = attr.getNamespace();
             if (ns == null) {
-                internalProcessAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
+                helper.internalProcessAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             } else {
-                internalProcessAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
+                helper.internalProcessAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             }
         }
         attributesCompleted();
@@ -144,12 +141,12 @@ public abstract class SerializerImpl implements Serializer {
                     processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
                     break;
                 case XMLStreamReader.START_ELEMENT:
-                    internalStartElement(normalize(reader.getNamespaceURI()), reader.getLocalName(), normalize(reader.getPrefix()));
+                    helper.internalStartElement(normalize(reader.getNamespaceURI()), reader.getLocalName(), normalize(reader.getPrefix()));
                     for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
-                        mapNamespace(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), true, false);
+                        helper.mapNamespace(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), true, false);
                     }
                     for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
-                        internalProcessAttribute(
+                        helper.internalProcessAttribute(
                                 normalize(reader.getAttributeNamespace(i)),
                                 reader.getAttributeLocalName(i),
                                 normalize(reader.getAttributePrefix(i)),
@@ -197,64 +194,6 @@ public abstract class SerializerImpl implements Serializer {
     
     private static String normalize(String s) {
         return s == null ? "" : s;
-    }
-    
-    private void internalStartElement(String namespaceURI, String localName, String prefix) throws StreamException {
-        startElement(namespaceURI, localName, prefix);
-        mapNamespace(prefix, namespaceURI, false, false);
-    }
-    
-    private void internalProcessAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
-        mapNamespace(prefix, namespaceURI, false, true);
-        if (namespaceRepairing && contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
-            String trimmedValue = value.trim();
-            if (trimmedValue.indexOf(":") > 0) {
-                String refPrefix = trimmedValue.substring(0, trimmedValue.indexOf(":"));
-                OMNamespace ns = contextElement.findNamespaceURI(refPrefix);
-                if (ns != null) {
-                    mapNamespace(refPrefix, ns.getNamespaceURI(), false, true);
-                }
-            }
-        }
-        processAttribute(namespaceURI, localName, prefix, value, type, specified);
-    }
-    
-    /**
-     * Method used internally to report usage of a given namespace binding. This method will
-     * generate a namespace declaration if required by the configured namespace repairing policy.
-     * 
-     * @param prefix
-     *            the namespace prefix; must not be <code>null</code>
-     * @param namespaceURI
-     *            the namespace URI; must not be <code>null</code>
-     * @param fromDecl
-     *            <code>true</code> if the namespace binding was defined by an explicit namespace
-     *            declaration, <code>false</code> if the namespace binding was used implicitly in
-     *            the name of an element or attribute
-     * @param attr
-     */
-    private void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws StreamException {
-        if (namespaceRepairing) {
-            // If the prefix and namespace are already associated, no generation is needed
-            if (isAssociated(prefix, namespaceURI)) {
-                return;
-            }
-            
-            // Attributes without a prefix always are associated with the unqualified namespace
-            // according to the schema specification.  No generation is needed.
-            if (prefix.length() == 0 && namespaceURI.length() == 0 && attr) {
-                return;
-            }
-            
-            // Add the namespace if the prefix is not associated.
-            processNamespaceDeclaration(prefix, namespaceURI);
-        } else {
-            // If namespace repairing is disabled, only output namespace declarations that appear
-            // explicitly in the input
-            if (fromDecl) {
-                processNamespaceDeclaration(prefix, namespaceURI);
-            }
-        }
     }
     
     /**
