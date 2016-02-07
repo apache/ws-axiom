@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.common;
 
-// TODO: transitional interface that should eventually converge with BuilderHandler
 public interface Handler {
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone);
     
@@ -37,11 +36,13 @@ public interface Handler {
     
     void attributesCompleted();
     
-    void createOMText(String text, int type);
+    void processCharacterData(Object data, boolean ignorable);
     
     void createProcessingInstruction(String piTarget, String piData);
     
     void createComment(String content);
+    
+    void createCDATASection(String content);
     
     void createEntityReference(String name, String replacementText);
 }

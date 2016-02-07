@@ -90,8 +90,14 @@ public final  class SAXResultContentHandler implements Handler {
     public void attributesCompleted() {
     }
 
-    public void createOMText(String text, int type) {
-        factory.createOMText(target, text, type);
+    @Override
+    public void processCharacterData(Object data, boolean ignorable) {
+        factory.createOMText(target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
+    }
+
+    @Override
+    public void createCDATASection(String content) {
+        factory.createOMText(target, content, OMNode.CDATA_SECTION_NODE);
     }
 
     public void createProcessingInstruction(String piTarget, String piData) {

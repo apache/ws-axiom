@@ -587,7 +587,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             }
         }
         if (newElement == null) {
-            newElement = handler.startElement(namespaceURI, localName, prefix);
+            handler.startElement(namespaceURI, localName, prefix);
             for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
                 handler.createNamespaceDeclaration(
                         normalize(parser.getNamespacePrefix(i)),

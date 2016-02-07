@@ -31,6 +31,8 @@ import org.xml.sax.ext.LexicalHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.stream.XMLStreamConstants;
+
 public final class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final Handler handler;
     private final boolean expandEntityReferences;
@@ -291,7 +293,20 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     private void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
         if (!inEntityReference) {
-            handler.createOMText(new String(ch, start, length), nodeType);
+            String text = new String(ch, start, length);
+            switch (nodeType) {
+                case XMLStreamConstants.CHARACTERS:
+                    handler.processCharacterData(text, false);
+                    break;
+                case XMLStreamConstants.SPACE:
+                    handler.processCharacterData(text, true);
+                    break;
+                case XMLStreamConstants.CDATA:
+                    handler.createCDATASection(text);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
         }
     }
 

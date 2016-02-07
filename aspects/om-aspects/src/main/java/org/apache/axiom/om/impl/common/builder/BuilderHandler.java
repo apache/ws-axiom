@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
+import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
@@ -50,7 +51,7 @@ import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public final class BuilderHandler {
+public final class BuilderHandler implements Handler {
     private static final Log log = LogFactory.getLog(BuilderHandler.class);
     
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
@@ -160,7 +161,7 @@ public final class BuilderHandler {
         }
     }
     
-    public AxiomElement startElement(String namespaceURI, String localName, String prefix) {
+    public void startElement(String namespaceURI, String localName, String prefix) {
         elementLevel++;
         AxiomElement element;
         OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
@@ -181,7 +182,6 @@ public final class BuilderHandler {
             nsContext.startScope();
             ensureNamespaceDeclared(ns);
         }
-        return element;
     }
     
     public void endElement() {

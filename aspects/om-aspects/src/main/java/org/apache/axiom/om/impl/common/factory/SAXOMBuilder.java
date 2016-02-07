@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.common.factory;
 
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.AbstractPushBuilder;
 import org.apache.axiom.om.impl.common.builder.Model;
@@ -30,10 +29,9 @@ import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.transform.sax.SAXSource;
 
-public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
+public final class SAXOMBuilder extends AbstractPushBuilder {
     private final boolean expandEntityReferences;
     private final SAXSource source;
     
@@ -53,7 +51,7 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
 
     public int next() {
         XMLReader reader = source.getXMLReader();
-        OMContentHandler contentHandler = new OMContentHandler(this, expandEntityReferences);
+        OMContentHandler contentHandler = new OMContentHandler(handler, expandEntityReferences);
         reader.setContentHandler(contentHandler);
         reader.setDTDHandler(contentHandler);
         try {
@@ -74,58 +72,5 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
             throw new OMException(ex);
         }
         return -1;
-    }
-
-    public void createDocumentTypeDeclaration(String rootName, String publicId,
-            String systemId, String internalSubset) {
-        handler.createDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
-    }
-
-    public void startElement(String namespaceURI, String localName, String prefix) {
-        handler.startElement(namespaceURI, localName, prefix);
-    }
-
-    public void endElement() {
-        handler.endElement();
-    }
-
-    public void createOMText(String text, int type) {
-        switch (type) {
-            case XMLStreamConstants.CHARACTERS:
-                handler.processCharacterData(text, false);
-                break;
-            case XMLStreamConstants.SPACE:
-                handler.processCharacterData(text, true);
-                break;
-            case XMLStreamConstants.CDATA:
-                handler.createCDATASection(text);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    public void createProcessingInstruction(String piTarget, String piData) {
-        handler.createProcessingInstruction(piTarget, piData);
-    }
-
-    public void createComment(String content) {
-        handler.createComment(content);
-    }
-
-    public void createEntityReference(String name, String replacementText) {
-        handler.createEntityReference(name, replacementText);
-    }
-
-    public void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
-        handler.createAttribute(namespaceURI, localName, prefix, value, type, specified);
-    }
-
-    public void createNamespaceDeclaration(String prefix, String namespaceURI) {
-        handler.createNamespaceDeclaration(prefix, namespaceURI);
-    }
-
-    public void attributesCompleted() {
-        handler.attributesCompleted();
     }
 }
