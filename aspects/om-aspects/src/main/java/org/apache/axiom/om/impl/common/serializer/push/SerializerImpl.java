@@ -77,7 +77,7 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             contextElement = null;
         }
-        handler = new NamespaceHelper(this, contextElement, namespaceRepairing);
+        handler = namespaceRepairing ? new NamespaceHelper(this, contextElement) : this;
         this.preserveNamespaceContext = preserveNamespaceContext;
     }
 

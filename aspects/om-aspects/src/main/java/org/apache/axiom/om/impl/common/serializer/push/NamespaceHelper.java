@@ -29,29 +29,27 @@ final class NamespaceHelper extends XmlHandlerWrapper {
     
     private final SerializerImpl serializer;
     private final OMElement contextElement;
-    private final boolean namespaceRepairing;
 
-    NamespaceHelper(SerializerImpl serializer, OMElement contextElement, boolean namespaceRepairing) {
+    NamespaceHelper(SerializerImpl serializer, OMElement contextElement) {
         super(serializer);
         this.serializer = serializer;
         this.contextElement = contextElement;
-        this.namespaceRepairing = namespaceRepairing;
     }
 
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
-        mapNamespace(prefix, namespaceURI, false, false);
+        mapNamespace(prefix, namespaceURI, false);
     }
     
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
-        mapNamespace(prefix, namespaceURI, false, true);
-        if (namespaceRepairing && contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
+        mapNamespace(prefix, namespaceURI, true);
+        if (contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
             String trimmedValue = value.trim();
             if (trimmedValue.indexOf(":") > 0) {
                 String refPrefix = trimmedValue.substring(0, trimmedValue.indexOf(":"));
                 OMNamespace ns = contextElement.findNamespaceURI(refPrefix);
                 if (ns != null) {
-                    mapNamespace(refPrefix, ns.getNamespaceURI(), false, true);
+                    mapNamespace(refPrefix, ns.getNamespaceURI(), true);
                 }
             }
         }
@@ -59,7 +57,7 @@ final class NamespaceHelper extends XmlHandlerWrapper {
     }
     
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        mapNamespace(prefix, namespaceURI, true, false);
+        mapNamespace(prefix, namespaceURI, false);
     }
     
     /**
@@ -70,33 +68,21 @@ final class NamespaceHelper extends XmlHandlerWrapper {
      *            the namespace prefix; must not be <code>null</code>
      * @param namespaceURI
      *            the namespace URI; must not be <code>null</code>
-     * @param fromDecl
-     *            <code>true</code> if the namespace binding was defined by an explicit namespace
-     *            declaration, <code>false</code> if the namespace binding was used implicitly in
-     *            the name of an element or attribute
      * @param attr
      */
-    private void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws StreamException {
-        if (namespaceRepairing) {
-            // If the prefix and namespace are already associated, no generation is needed
-            if (serializer.isAssociated(prefix, namespaceURI)) {
-                return;
-            }
-            
-            // Attributes without a prefix always are associated with the unqualified namespace
-            // according to the schema specification.  No generation is needed.
-            if (prefix.length() == 0 && namespaceURI.length() == 0 && attr) {
-                return;
-            }
-            
-            // Add the namespace if the prefix is not associated.
-            super.processNamespaceDeclaration(prefix, namespaceURI);
-        } else {
-            // If namespace repairing is disabled, only output namespace declarations that appear
-            // explicitly in the input
-            if (fromDecl) {
-                super.processNamespaceDeclaration(prefix, namespaceURI);
-            }
+    private void mapNamespace(String prefix, String namespaceURI, boolean attr) throws StreamException {
+        // If the prefix and namespace are already associated, no generation is needed
+        if (serializer.isAssociated(prefix, namespaceURI)) {
+            return;
         }
+        
+        // Attributes without a prefix always are associated with the unqualified namespace
+        // according to the schema specification.  No generation is needed.
+        if (prefix.length() == 0 && namespaceURI.length() == 0 && attr) {
+            return;
+        }
+        
+        // Add the namespace if the prefix is not associated.
+        super.processNamespaceDeclaration(prefix, namespaceURI);
     }
 }
