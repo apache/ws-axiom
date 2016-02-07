@@ -43,11 +43,12 @@ import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 public abstract class SerializerImpl implements Serializer {
     private final OMSerializable root;
-    private final NamespaceHelper helper;
+    private final XmlHandler handler;
     private final boolean preserveNamespaceContext;
     
     /**
@@ -76,16 +77,16 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             contextElement = null;
         }
-        helper = new NamespaceHelper(this, contextElement, namespaceRepairing);
+        handler = new NamespaceHelper(this, contextElement, namespaceRepairing);
         this.preserveNamespaceContext = preserveNamespaceContext;
     }
 
     public final void serializeStartpart(OMElement element) throws StreamException {
         OMNamespace ns = element.getNamespace();
         if (ns == null) {
-            helper.internalStartElement("", element.getLocalName(), "");
+            handler.startElement("", element.getLocalName(), "");
         } else {
-            helper.internalStartElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
+            handler.startElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
         }
         if (preserveNamespaceContext && element == root) {
             // Maintain a set of the prefixes we have already seen. This is required to take into
@@ -97,7 +98,7 @@ public abstract class SerializerImpl implements Serializer {
                 for (Iterator<OMNamespace> it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
                     ns = it.next();
                     if (seenPrefixes.add(ns.getPrefix())) {
-                        helper.mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+                        handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
                     }
                 }
                 OMContainer parent = current.getParent();
@@ -109,16 +110,16 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
                 ns = it.next();
-                helper.mapNamespace(ns.getPrefix(), ns.getNamespaceURI(), true, false);
+                handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
             }
         }
         for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = it.next();
             ns = attr.getNamespace();
             if (ns == null) {
-                helper.internalProcessAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
+                handler.processAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             } else {
-                helper.internalProcessAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
+                handler.processAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             }
         }
         attributesCompleted();
@@ -141,12 +142,12 @@ public abstract class SerializerImpl implements Serializer {
                     processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
                     break;
                 case XMLStreamReader.START_ELEMENT:
-                    helper.internalStartElement(normalize(reader.getNamespaceURI()), reader.getLocalName(), normalize(reader.getPrefix()));
+                    handler.startElement(normalize(reader.getNamespaceURI()), reader.getLocalName(), normalize(reader.getPrefix()));
                     for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
-                        helper.mapNamespace(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), true, false);
+                        handler.processNamespaceDeclaration(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)));
                     }
                     for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
-                        helper.internalProcessAttribute(
+                        handler.processAttribute(
                                 normalize(reader.getAttributeNamespace(i)),
                                 reader.getAttributeLocalName(i),
                                 normalize(reader.getAttributePrefix(i)),

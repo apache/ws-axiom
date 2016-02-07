@@ -21,8 +21,9 @@ package org.apache.axiom.om.impl.common.serializer.push;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
 
-final class NamespaceHelper {
+final class NamespaceHelper extends XmlHandlerWrapper {
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
     private static final String XSI_LOCAL_NAME = "type";
     
@@ -31,17 +32,18 @@ final class NamespaceHelper {
     private final boolean namespaceRepairing;
 
     NamespaceHelper(SerializerImpl serializer, OMElement contextElement, boolean namespaceRepairing) {
+        super(serializer);
         this.serializer = serializer;
         this.contextElement = contextElement;
         this.namespaceRepairing = namespaceRepairing;
     }
 
-    void internalStartElement(String namespaceURI, String localName, String prefix) throws StreamException {
-        serializer.startElement(namespaceURI, localName, prefix);
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        super.startElement(namespaceURI, localName, prefix);
         mapNamespace(prefix, namespaceURI, false, false);
     }
     
-    void internalProcessAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         mapNamespace(prefix, namespaceURI, false, true);
         if (namespaceRepairing && contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
             String trimmedValue = value.trim();
@@ -53,7 +55,11 @@ final class NamespaceHelper {
                 }
             }
         }
-        serializer.processAttribute(namespaceURI, localName, prefix, value, type, specified);
+        super.processAttribute(namespaceURI, localName, prefix, value, type, specified);
+    }
+    
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+        mapNamespace(prefix, namespaceURI, true, false);
     }
     
     /**
@@ -70,7 +76,7 @@ final class NamespaceHelper {
      *            the name of an element or attribute
      * @param attr
      */
-    void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws StreamException {
+    private void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws StreamException {
         if (namespaceRepairing) {
             // If the prefix and namespace are already associated, no generation is needed
             if (serializer.isAssociated(prefix, namespaceURI)) {
@@ -84,12 +90,12 @@ final class NamespaceHelper {
             }
             
             // Add the namespace if the prefix is not associated.
-            serializer.processNamespaceDeclaration(prefix, namespaceURI);
+            super.processNamespaceDeclaration(prefix, namespaceURI);
         } else {
             // If namespace repairing is disabled, only output namespace declarations that appear
             // explicitly in the input
             if (fromDecl) {
-                serializer.processNamespaceDeclaration(prefix, namespaceURI);
+                super.processNamespaceDeclaration(prefix, namespaceURI);
             }
         }
     }
