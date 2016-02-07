@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
@@ -159,24 +158,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         return s == null ? "" : s;
     }
     
-    /**
-     * Method processAttributes.
-     *
-     * @param node
-     */
-    private void processAttributes(OMElement node) {
-        int attribCount = parser.getAttributeCount();
-        for (int i = 0; i < attribCount; i++) {
-            handler.createAttribute(
-                    normalize(parser.getAttributeNamespace(i)),
-                    parser.getAttributeLocalName(i),
-                    normalize(parser.getAttributePrefix(i)),
-                    parser.getAttributeValue(i),
-                    parser.getAttributeType(i),
-                    parser.isAttributeSpecified(i));
-        }
-    }
-
     private void createOMText(int textType) {
         if (textType == XMLStreamConstants.CHARACTERS && dataHandlerReader != null && dataHandlerReader.isBinary()) {
             TextContent data;
@@ -591,9 +572,8 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     /**
      * Creates a new OMElement using either a CustomBuilder or 
      * the default Builder mechanism.
-     * @return TODO
      */
-    private OMNode createNextOMElement() {
+    private void createNextOMElement() {
         String namespaceURI = normalize(parser.getNamespaceURI());
         String localName = parser.getLocalName();
         String prefix = normalize(parser.getPrefix());
@@ -609,9 +589,26 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         }
         if (newElement == null) {
             newElement = handler.startElement(namespaceURI, localName, prefix);
-            populateOMElement(newElement);
+            for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
+                handler.createNamespaceDeclaration(
+                        normalize(parser.getNamespacePrefix(i)),
+                        normalize(parser.getNamespaceURI(i)));
+            }
+            for (int i = 0, count = parser.getAttributeCount(); i < count; i++) {
+                handler.createAttribute(
+                        normalize(parser.getAttributeNamespace(i)),
+                        parser.getAttributeLocalName(i),
+                        normalize(parser.getAttributePrefix(i)),
+                        parser.getAttributeValue(i),
+                        parser.getAttributeType(i),
+                        parser.isAttributeSpecified(i));
+            }
+            handler.attributesCompleted();
+            Location location = parser.getLocation();
+            if (location != null) {
+                newElement.setLineNumber(location.getLineNumber());
+            }
         }
-        return newElement;
     }
     
     private OMElement createWithCustomBuilder(CustomBuilder customBuilder) {
@@ -654,25 +651,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         return node;
     }
     
-    /**
-     * Populate element with data from parser START_ELEMENT event. This is used when the source of
-     * data for an element needs to be parsed on demand. The supplied element must already be set to
-     * the proper name and namespace.
-     *
-     * @param node element to be populated
-     */
-    private void populateOMElement(OMElement node) {
-        // create the namespaces
-        processNamespaceData(node);
-        // fill in the attributes
-        processAttributes(node);
-        handler.attributesCompleted();
-        Location location = parser.getLocation();
-        if(location != null) {
-            node.setLineNumber(location.getLineNumber());
-        }
-    }
-
     private void createDTD() throws OMException {
         DTDReader dtdReader;
         try {
@@ -735,20 +713,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             handler.document = null;
         }
         return element;
-    }
-
-    /**
-     * Method processNamespaceData.
-     *
-     * @param node
-     */
-    private void processNamespaceData(OMElement node) {
-        int namespaceCount = parser.getNamespaceCount();
-        for (int i = 0; i < namespaceCount; i++) {
-            handler.createNamespaceDeclaration(
-                    normalize(parser.getNamespacePrefix(i)),
-                    normalize(parser.getNamespaceURI(i)));
-        }
     }
 
     /**

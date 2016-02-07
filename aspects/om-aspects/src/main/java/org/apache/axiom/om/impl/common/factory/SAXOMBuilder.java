@@ -20,13 +20,11 @@
 package org.apache.axiom.om.impl.common.factory;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.AbstractPushBuilder;
 import org.apache.axiom.om.impl.common.builder.Model;
-import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -83,15 +81,8 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
         handler.createDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
-    public OMElement createOMElement(String localName,
-            String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
-        AxiomElement element = handler.startElement(namespaceURI, localName, prefix);
-        for (int i = 0; i < namespaceCount; i++) {
-            handler.createNamespaceDeclaration(namespaces[2*i], namespaces[2*i+1]);
-        }
-        // TODO: not entirely correct, but should work
-        handler.attributesCompleted();
-        return element;
+    public void startElement(String namespaceURI, String localName, String prefix) {
+        handler.startElement(namespaceURI, localName, prefix);
     }
 
     public void endElement() {
@@ -128,5 +119,13 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
 
     public void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
         handler.createAttribute(namespaceURI, localName, prefix, value, type, specified);
+    }
+
+    public void createNamespaceDeclaration(String prefix, String namespaceURI) {
+        handler.createNamespaceDeclaration(prefix, namespaceURI);
+    }
+
+    public void attributesCompleted() {
+        handler.attributesCompleted();
     }
 }

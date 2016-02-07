@@ -51,21 +51,9 @@ public final  class SAXResultContentHandler implements Handler {
         }
     }
 
-    public OMElement createOMElement(String localName, String namespaceURI,
-            String prefix, String[] namespaces, int namespaceCount) {
+    public void startElement(String namespaceURI, String localName, String prefix) {
         // TODO: inefficient: we should not create a new OMNamespace instance every time
-        OMElement element = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
-        for (int i=0; i<namespaceCount; i++) {
-            String nsPrefix = namespaces[2*i];
-            String nsURI = namespaces[2*i+1];
-            if (nsPrefix.length() == 0) {
-                element.declareDefaultNamespace(nsURI);
-            } else {
-                element.declareNamespace(nsURI, nsPrefix);
-            }
-        }
-        target = element;
-        return element;
+        target = factory.createOMElement(localName, factory.createOMNamespace(namespaceURI, prefix), target);
     }
 
     public void endElement() {
@@ -87,6 +75,19 @@ public final  class SAXResultContentHandler implements Handler {
         }
         OMAttribute attr = element.addAttribute(localName, value, ns);
         attr.setAttributeType(type);
+    }
+
+    @Override
+    public void createNamespaceDeclaration(String prefix, String namespaceURI) {
+        if (prefix.isEmpty()) {
+            ((OMElement)target).declareDefaultNamespace(namespaceURI);
+        } else {
+            ((OMElement)target).declareNamespace(namespaceURI, prefix);
+        }
+    }
+
+    @Override
+    public void attributesCompleted() {
     }
 
     public void createOMText(String text, int type) {

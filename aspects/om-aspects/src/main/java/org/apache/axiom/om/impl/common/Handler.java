@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMElement;
-
 // TODO: transitional interface that should eventually converge with BuilderHandler
 public interface Handler {
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone);
@@ -29,12 +27,15 @@ public interface Handler {
     void createDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset);
 
-    OMElement createOMElement(String localName,
-            String namespaceURI, String prefix, String[] namespaces, int namespaceCount);
+    void startElement(String namespaceURI, String localName, String prefix);
     
     void endElement();
     
     void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified);
+    
+    void createNamespaceDeclaration(String prefix, String namespaceURI);
+    
+    void attributesCompleted();
     
     void createOMText(String text, int type);
     

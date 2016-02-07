@@ -238,7 +238,10 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
                 localName = qName.substring(qName.indexOf(':') + 1);
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
-            handler.createOMElement(localName, namespaceURI, prefix, namespaces, namespaceCount);
+            handler.startElement(namespaceURI, localName, prefix);
+            for (int i = 0; i < namespaceCount; i++) {
+                handler.createNamespaceDeclaration(namespaces[2*i], namespaces[2*i+1]);
+            }
             namespaceCount = 0;
     
             int j = atts.getLength();
@@ -256,6 +259,7 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
                     handler.createAttribute(atts.getURI(i), atts.getLocalName(i), attrPrefix, atts.getValue(i), atts.getType(i), true);
                 }
             }
+            handler.attributesCompleted();
         }
     }
 
