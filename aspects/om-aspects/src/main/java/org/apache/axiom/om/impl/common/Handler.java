@@ -34,6 +34,8 @@ public interface Handler {
     
     void endElement();
     
+    void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified);
+    
     void createOMText(String text, int type);
     
     void createProcessingInstruction(String piTarget, String piData);

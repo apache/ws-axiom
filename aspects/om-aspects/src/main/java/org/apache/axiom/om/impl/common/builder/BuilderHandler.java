@@ -27,9 +27,13 @@ import javax.xml.stream.XMLStreamConstants;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
@@ -39,18 +43,24 @@ import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
+import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public final class BuilderHandler {
     private static final Log log = LogFactory.getLog(BuilderHandler.class);
     
+    private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
+    
     private final NodeFactory nodeFactory;
     private final Model model;
     private final AxiomSourcedElement root;
     private final OMXMLParserWrapper builder;
+    private final ScopedNamespaceContext nsContext;
+    private final OMNamespaceCache nsCache = new OMNamespaceCache();
     public AxiomContainer target;
     // returns the state of completion
     public boolean done;
@@ -73,11 +83,13 @@ public final class BuilderHandler {
     
     private ArrayList<NodePostProcessor> nodePostProcessors;
 
-    public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, OMXMLParserWrapper builder) {
+    public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, OMXMLParserWrapper builder,
+            boolean repairNamespaces) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.root = root;
         this.builder = builder;
+        nsContext = repairNamespaces ? new ScopedNamespaceContext() : null;
     }
 
     public void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
@@ -136,25 +148,46 @@ public final class BuilderHandler {
         addChild(node);
     }
     
+    private void ensureNamespaceDeclared(OMNamespace ns) {
+        if (ns == null) {
+            ns = DEFAULT_NS;
+        }
+        if (!ns.getNamespaceURI().equals(nsContext.getNamespaceURI(ns.getPrefix()))) {
+            AxiomNamespaceDeclaration decl = nodeFactory.createNode(AxiomNamespaceDeclaration.class);
+            decl.setDeclaredNamespace(ns);
+            ((AxiomElement)target).coreAppendAttribute(decl);
+            nsContext.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
+        }
+    }
+    
     public AxiomElement startElement(String namespaceURI, String localName, String prefix) {
         elementLevel++;
         AxiomElement element;
+        OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
         if (elementLevel == 1 && root != null) {
             root.validateName(prefix, localName, namespaceURI);
+            root.initName(localName, ns, false);
             element = root;
         } else {
             element = nodeFactory.createNode(model.determineElementType(
                     target, elementLevel, namespaceURI, localName));
             element.coreSetBuilder(builder);
             element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
-            element.initName(localName, /*ns*/ null, false);
+            element.initName(localName, ns, false);
             addChild(element);
         }
         target = element;
+        if (nsContext != null) {
+            nsContext.startScope();
+            ensureNamespaceDeclared(ns);
+        }
         return element;
     }
     
     public void endElement() {
+        if (nsContext != null) {
+            nsContext.endScope();
+        }
         elementLevel--;
         target.setComplete(true);
         if (elementLevel == 0) {
@@ -167,6 +200,45 @@ public final class BuilderHandler {
         }
     }
 
+    public void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
+        OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
+        AxiomAttribute attr = nodeFactory.createNode(AxiomAttribute.class);
+        attr.internalSetLocalName(localName);
+        attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        attr.internalSetNamespace(ns);
+        attr.coreSetType(type);
+        attr.coreSetSpecified(specified);
+        ((AxiomElement)target).coreAppendAttribute(attr);
+        if (nsContext != null && ns != null) {
+            ensureNamespaceDeclared(ns);
+        }
+    }
+    
+    public void createNamespaceDeclaration(String prefix, String namespaceURI) {
+        if (nsContext != null) {
+            for (int i=nsContext.getFirstBindingInCurrentScope(); i<nsContext.getBindingsCount(); i++) {
+                if (nsContext.getPrefix(i).equals(prefix)) {
+                    if (nsContext.getNamespaceURI(i).equals(namespaceURI)) {
+                        return;
+                    } else {
+                        // TODO: this causes a failure in the FOM tests
+//                        throw new OMException("The same prefix cannot be bound to two different namespaces");
+                    }
+                }
+            }
+        }
+        OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
+        if (ns == null) {
+            ns = DEFAULT_NS;
+        }
+        AxiomNamespaceDeclaration decl = nodeFactory.createNode(AxiomNamespaceDeclaration.class);
+        decl.setDeclaredNamespace(ns);
+        ((AxiomElement)target).coreAppendAttribute(decl);
+        if (nsContext != null) {
+            nsContext.setPrefix(prefix, namespaceURI);
+        }
+    }
+    
     public void attributesCompleted() {
         target.coreSetState(CoreParentNode.INCOMPLETE);
     }

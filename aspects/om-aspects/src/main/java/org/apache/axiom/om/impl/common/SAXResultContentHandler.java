@@ -18,10 +18,13 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 
 public final  class SAXResultContentHandler implements Handler {
@@ -67,6 +70,23 @@ public final  class SAXResultContentHandler implements Handler {
 
     public void endElement() {
         target = ((OMNode)target).getParent();
+    }
+
+    @Override
+    public void createAttribute(String namespaceURI, String localName, String prefix, String value,
+            String type, boolean specified) {
+        OMElement element = (OMElement)target;
+        OMNamespace ns;
+        if (namespaceURI.length() > 0) {
+            ns = element.findNamespace(namespaceURI, prefix);
+            if (ns == null) {
+                throw new OMException("Unbound namespace " + namespaceURI);
+            }
+        } else {
+            ns = null;
+        }
+        OMAttribute attr = element.addAttribute(localName, value, ns);
+        attr.setAttributeType(type);
     }
 
     public void createOMText(String text, int type) {

@@ -24,8 +24,9 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public abstract class AbstractPushBuilder extends AbstractBuilder {
-    public AbstractPushBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root) {
-        super(nodeFactory, model, root);
+    public AbstractPushBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root,
+            boolean repairNamespaces) {
+        super(nodeFactory, model, root, repairNamespaces);
     }
     
     public final void discard(OMElement el) throws OMException {

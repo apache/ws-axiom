@@ -19,17 +19,14 @@
 
 package org.apache.axiom.om.impl.common.builder;
 
-import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
@@ -133,7 +130,8 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector,
             AxiomSourcedElement root) {
-        super(nodeFactory, model, root);
+        // TODO: disable namespace repairing for XMLStreamReader created from a parser
+        super(nodeFactory, model, root, true);
         if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
@@ -157,6 +155,10 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, element);
     }
     
+    private static String normalize(String s) {
+        return s == null ? "" : s;
+    }
+    
     /**
      * Method processAttributes.
      *
@@ -165,28 +167,13 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     private void processAttributes(OMElement node) {
         int attribCount = parser.getAttributeCount();
         for (int i = 0; i < attribCount; i++) {
-            String uri = parser.getAttributeNamespace(i);
-            String prefix = parser.getAttributePrefix(i);
-
-
-            OMNamespace namespace = null;
-            if (uri != null && uri.length() > 0) {
-
-                // prefix being null means this elements has a default namespace or it has inherited
-                // a default namespace from its parent
-                namespace = node.findNamespace(uri, prefix);
-                if (namespace == null) {
-                    namespace = node.declareNamespace(uri, prefix);
-                }
-            }
-
-            // todo if the attributes are supposed to namespace qualified all the time
-            // todo then this should throw an exception here
-
-            OMAttribute attr = node.addAttribute(parser.getAttributeLocalName(i),
-                              parser.getAttributeValue(i), namespace);
-            attr.setAttributeType(parser.getAttributeType(i));
-            ((CoreAttribute)attr).coreSetSpecified(parser.isAttributeSpecified(i));
+            handler.createAttribute(
+                    normalize(parser.getAttributeNamespace(i)),
+                    parser.getAttributeLocalName(i),
+                    normalize(parser.getAttributePrefix(i)),
+                    parser.getAttributeValue(i),
+                    parser.getAttributeType(i),
+                    parser.isAttributeSpecified(i));
         }
     }
 
@@ -607,18 +594,21 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
      * @return TODO
      */
     private OMNode createNextOMElement() {
+        String namespaceURI = normalize(parser.getNamespaceURI());
+        String localName = parser.getLocalName();
+        String prefix = normalize(parser.getPrefix());
         OMElement newElement = null;
         if (customBuilderForPayload != null && payloadSelector.isPayload(handler.elementLevel+1, handler.target)) {
             newElement = createWithCustomBuilder(customBuilderForPayload);
         }
         if (newElement == null && customBuilders != null && handler.elementLevel < this.maxDepthForCustomBuilders) {
-            CustomBuilder customBuilder = customBuilders.get(parser.getNamespaceURI(), parser.getLocalName());
+            CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
             if (customBuilder != null) {
                 newElement = createWithCustomBuilder(customBuilder);
             }
         }
         if (newElement == null) {
-            newElement = handler.startElement(parser.getNamespaceURI(), parser.getLocalName(), parser.getPrefix());
+            newElement = handler.startElement(namespaceURI, localName, prefix);
             populateOMElement(newElement);
         }
         return newElement;
@@ -755,13 +745,10 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     private void processNamespaceData(OMElement node) {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
-            String prefix = parser.getNamespacePrefix(i);
-            String namespaceURI = parser.getNamespaceURI(i);
-            ((AxiomElement)node).addNamespaceDeclaration(
-                    namespaceURI == null ? "" : namespaceURI,
-                    prefix == null ? "" : prefix);
+            handler.createNamespaceDeclaration(
+                    normalize(parser.getNamespacePrefix(i)),
+                    normalize(parser.getNamespaceURI(i)));
         }
-        BuilderUtil.setNamespace(node, parser.getNamespaceURI(), parser.getPrefix());
     }
 
     /**

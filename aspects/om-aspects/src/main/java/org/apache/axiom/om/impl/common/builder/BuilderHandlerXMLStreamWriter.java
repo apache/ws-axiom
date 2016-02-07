@@ -26,24 +26,20 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
-import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter implements DataHandlerWriter {
-    private final OMFactoryEx factory;
     private final BuilderHandler handler;
     private boolean inStartElement;
 
     public BuilderHandlerXMLStreamWriter(BuilderHandler handler, AxiomSourcedElement root) throws XMLStreamException {
         this.handler = handler;
-        factory = (OMFactoryEx)root.getOMFactory();
         // Seed the namespace context with the namespace context from the parent
         OMContainer parent = root.getParent();
         if (parent instanceof OMElement) {
@@ -52,6 +48,10 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
                 setPrefix(ns.getPrefix(), ns.getNamespaceURI());
             }
         }
+    }
+    
+    private static String normalize(String s) {
+        return s == null ? "" : s;
     }
     
     public Object getProperty(String name) throws IllegalArgumentException {
@@ -82,34 +82,8 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
         throw new XMLStreamException("A DTD must not appear in element content");
     }
 
-    private OMNamespace getOMNamespace(String prefix, String namespaceURI, boolean isDecl) {
-        if (prefix == null) {
-            prefix = "";
-        }
-        if (namespaceURI == null) {
-            namespaceURI = "";
-        }
-        if (!isDecl && namespaceURI.length() == 0) {
-            return null;
-        } else {
-            if (handler.target != null) {
-                // If possible, locate an existing OMNamespace object
-                OMNamespace ns = ((OMElement)handler.target).findNamespaceURI(prefix);
-                if (ns != null && ns.getNamespaceURI().equals(namespaceURI)) {
-                    return ns;
-                }
-            }
-            return factory.createOMNamespace(namespaceURI, prefix);
-        }
-    }
-    
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) {
-        // Get the OMNamespace object before we change the parent
-        OMNamespace ns = getOMNamespace(prefix, namespaceURI, false);
-        handler.startElement(namespaceURI, localName, prefix);
-        if (ns != null) {
-            ((OMElement)handler.target).setNamespace(ns, false);
-        }
+        handler.startElement(normalize(namespaceURI), localName, normalize(prefix));
         inStartElement = true;
     }
 
@@ -139,11 +113,7 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
     }
 
     protected void doWriteAttribute(String prefix, String namespaceURI, String localName, String value) {
-        OMAttribute attr = factory.createOMAttribute(localName, getOMNamespace(prefix, namespaceURI, false), value);
-        // Use the internal appendAttribute method instead of addAttribute in order to avoid
-        // automatic of a namespace declaration (the OMDataSource is required to produce well formed
-        // XML with respect to namespaces, so it will take care of the namespace declarations).
-        ((AxiomElement)handler.target).internalAppendAttribute(attr);
+        handler.createAttribute(normalize(namespaceURI), localName, normalize(prefix), value, OMConstants.XMLATTRTYPE_CDATA, true);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
@@ -151,7 +121,7 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
     }
 
     protected void doWriteNamespace(String prefix, String namespaceURI) {
-        ((AxiomElement)handler.target).addNamespaceDeclaration(getOMNamespace(prefix, namespaceURI, true));
+        handler.createNamespaceDeclaration(normalize(prefix), normalize(namespaceURI));
     }
 
     protected void doWriteDefaultNamespace(String namespaceURI) {

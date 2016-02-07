@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.builder.AbstractPushBuilder;
-import org.apache.axiom.om.impl.common.builder.BuilderUtil;
 import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.xml.sax.SAXException;
@@ -41,7 +40,7 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
     private final SAXSource source;
     
     public SAXOMBuilder(NodeFactory nodeFactory, Model model, SAXSource source, boolean expandEntityReferences) {
-        super(nodeFactory, model, null);
+        super(nodeFactory, model, null, true);
         this.expandEntityReferences = expandEntityReferences;
         this.source = source;
     }
@@ -86,11 +85,10 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
 
     public OMElement createOMElement(String localName,
             String namespaceURI, String prefix, String[] namespaces, int namespaceCount) {
-        AxiomElement element = handler.startElement(null, localName, null);
+        AxiomElement element = handler.startElement(namespaceURI, localName, prefix);
         for (int i = 0; i < namespaceCount; i++) {
-            element.addNamespaceDeclaration(namespaces[2*i+1], namespaces[2*i]);
+            handler.createNamespaceDeclaration(namespaces[2*i], namespaces[2*i+1]);
         }
-        BuilderUtil.setNamespace(element, namespaceURI, prefix);
         // TODO: not entirely correct, but should work
         handler.attributesCompleted();
         return element;
@@ -126,5 +124,9 @@ public final class SAXOMBuilder extends AbstractPushBuilder implements Handler {
 
     public void createEntityReference(String name, String replacementText) {
         handler.createEntityReference(name, replacementText);
+    }
+
+    public void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
+        handler.createAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
 }

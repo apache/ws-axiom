@@ -29,7 +29,9 @@ public final class PushOMBuilder extends AbstractPushBuilder {
     private final OMDataSource dataSource;
 
     public PushOMBuilder(AxiomSourcedElement root, OMDataSource dataSource) {
-        super(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE, root);
+        // Disable namespace repairing because the OMDataSource is required to produce well formed
+        // XML with respect to namespaces.
+        super(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE, root, false);
         this.root = root;
         this.dataSource = dataSource;
     }

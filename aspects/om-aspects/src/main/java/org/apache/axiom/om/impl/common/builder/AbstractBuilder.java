@@ -27,8 +27,8 @@ import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 public abstract class AbstractBuilder implements OMXMLParserWrapper {
     protected final BuilderHandler handler;
 
-    public AbstractBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root) {
-        handler = new BuilderHandler(nodeFactory, model, root, this);
+    public AbstractBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, boolean repairNamespaces) {
+        handler = new BuilderHandler(nodeFactory, model, root, this, repairNamespaces);
     }
 
     public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {

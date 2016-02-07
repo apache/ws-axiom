@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -240,7 +238,7 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
                 localName = qName.substring(qName.indexOf(':') + 1);
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
-            OMElement element = handler.createOMElement(localName, namespaceURI, prefix, namespaces, namespaceCount);
+            handler.createOMElement(localName, namespaceURI, prefix, namespaces, namespaceCount);
             namespaceCount = 0;
     
             int j = atts.getLength();
@@ -253,20 +251,9 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
                 //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
                 //       If this test causes problems with other parsers, don't hesitate to remove it.
                 if (!attrQName.startsWith("xmlns")) {
-                    String attrNamespaceURI = atts.getURI(i);
                     idx = attrQName.indexOf(':');
                     String attrPrefix = idx == -1 ? "" : attrQName.substring(0, idx);
-                    OMNamespace ns;
-                    if (attrNamespaceURI.length() > 0) {
-                        ns = element.findNamespace(attrNamespaceURI, attrPrefix);
-                        if (ns == null) {
-                            throw new SAXException("Unbound namespace " + attrNamespaceURI);
-                        }
-                    } else {
-                        ns = null;
-                    }
-                    OMAttribute attr = element.addAttribute(atts.getLocalName(i), atts.getValue(i), ns);
-                    attr.setAttributeType(atts.getType(i));
+                    handler.createAttribute(atts.getURI(i), atts.getLocalName(i), attrPrefix, atts.getValue(i), atts.getType(i), true);
                 }
             }
         }
