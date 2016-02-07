@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.xml.QNameMap;
@@ -157,7 +158,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         return s == null ? "" : s;
     }
     
-    private void createOMText(int textType) {
+    private void createOMText(int textType) throws StreamException {
         if (textType == XMLStreamConstants.CHARACTERS && dataHandlerReader != null && dataHandlerReader.isBinary()) {
             TextContent data;
             if (dataHandlerReader.isDeferred()) {
@@ -202,14 +203,14 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
 
     private void discarded(AxiomContainer container) {
         container.discarded();
-        if (handler.discardTracker != null) {
-            handler.discardTracker.put(container, new Throwable());
+        if (builderHandler.discardTracker != null) {
+            builderHandler.discardTracker.put(container, new Throwable());
         }
     }
     
     public final void debugDiscarded(Object container) {
-        if (log.isDebugEnabled() && handler.discardTracker != null) {
-            Throwable t = handler.discardTracker.get(container);
+        if (log.isDebugEnabled() && builderHandler.discardTracker != null) {
+            Throwable t = builderHandler.discardTracker.get(container);
             if (t != null) {
                 log.debug("About to throw NodeUnavailableException. Location of the code that caused the node to be discarded/consumed:", t);
             }
@@ -223,15 +224,15 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
     
     public final void discard(OMContainer container) {
-        int targetElementLevel = handler.elementLevel;
-        AxiomContainer current = handler.target;
+        int targetElementLevel = builderHandler.elementLevel;
+        AxiomContainer current = builderHandler.target;
         while (current != container) {
             targetElementLevel--;
             current = (AxiomContainer)((OMElement)current).getParent();
         }
-        if (targetElementLevel == 0 || targetElementLevel == 1 && handler.document == null) {
+        if (targetElementLevel == 0 || targetElementLevel == 1 && builderHandler.document == null) {
             close();
-            current = handler.target;
+            current = builderHandler.target;
             while (true) {
                 discarded(current);
                 if (current == container) {
@@ -251,25 +252,25 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                     if (skipDepth > 0) {
                         skipDepth--;
                     } else {
-                        discarded(handler.target);
-                        boolean found = container == handler.target;
-                        handler.target = (AxiomContainer)((OMElement)handler.target).getParent();
-                        handler.elementLevel--;
+                        discarded(builderHandler.target);
+                        boolean found = container == builderHandler.target;
+                        builderHandler.target = (AxiomContainer)((OMElement)builderHandler.target).getParent();
+                        builderHandler.elementLevel--;
                         if (found) {
                             break loop;
                         }
                     }
                     break;
                 case XMLStreamReader.END_DOCUMENT:
-                    if (skipDepth != 0 || handler.elementLevel != 0) {
+                    if (skipDepth != 0 || builderHandler.elementLevel != 0) {
                         throw new OMException("Unexpected END_DOCUMENT");
                     }
-                    if (handler.target != handler.document) {
+                    if (builderHandler.target != builderHandler.document) {
                         throw new OMException("Called discard for an element that is not being built by this builder");
                     }
-                    discarded(handler.target);
-                    handler.target = null;
-                    handler.done = true;
+                    discarded(builderHandler.target);
+                    builderHandler.target = null;
+                    builderHandler.done = true;
                     break loop;
             }
         }
@@ -289,14 +290,14 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             throw new UnsupportedOperationException(
                     "parser accessed. cannot set cache");
         }
-        handler.cache = b;
+        builderHandler.cache = b;
     }
     
     /**
      * @return true if caching
      */
     public final boolean isCache() {
-        return handler.cache;
+        return builderHandler.cache;
     }
 
     public final String getLocalName() {
@@ -331,19 +332,19 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             throw new IllegalStateException(
                     "Parser already accessed!");
         }
-        if (!handler.cache) {
+        if (!builderHandler.cache) {
             parserAccessed = true;
             // Mark all containers in the hierarchy as discarded because they can no longer be built
-            AxiomContainer current = handler.target;
-            while (handler.elementLevel > 0) {
+            AxiomContainer current = builderHandler.target;
+            while (builderHandler.elementLevel > 0) {
                 discarded(current);
                 current = (AxiomContainer)((OMElement)current).getParent();
-                handler.elementLevel--;
+                builderHandler.elementLevel--;
             }
-            if (current != null && current == handler.document) {
+            if (current != null && current == builderHandler.document) {
                 discarded(current);
             }
-            handler.target = null;
+            builderHandler.target = null;
             return parser;
         } else {
             throw new IllegalStateException(
@@ -352,12 +353,12 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
 
     public final XMLStreamReader disableCaching() {
-        handler.cache = false;
+        builderHandler.cache = false;
         // Always advance to the event right after the current node; this also takes
         // care of lookahead
         parserNext();
         if (log.isDebugEnabled()) {
-            log.debug("Caching disabled; current element level is " + handler.elementLevel);
+            log.debug("Caching disabled; current element level is " + builderHandler.elementLevel);
         }
         return parser;
     }
@@ -365,42 +366,42 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
     public final void reenableCaching(OMContainer container) {
-        AxiomContainer current = handler.target;
+        AxiomContainer current = builderHandler.target;
         while (true) {
             discarded(current);
-            if (handler.elementLevel == 0) {
-                if (current != container || current != handler.document) {
+            if (builderHandler.elementLevel == 0) {
+                if (current != container || current != builderHandler.document) {
                     throw new IllegalStateException();
                 }
                 break;
             }
-            handler.elementLevel--;
+            builderHandler.elementLevel--;
             if (current == container) {
                 break;
             }
             current = (AxiomContainer)((OMElement)current).getParent();
         }
         // Note that at this point current == container
-        if (container == handler.document) {
-            handler.target = null;
-            handler.done = true;
-        } else if (handler.elementLevel == 0 && handler.document == null) {
+        if (container == builderHandler.document) {
+            builderHandler.target = null;
+            builderHandler.done = true;
+        } else if (builderHandler.elementLevel == 0 && builderHandler.document == null) {
             // Consume the remaining event; for the rationale, see StAXOMBuilder#next()
             while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
                 // Just loop
             }
-            handler.target = null;
-            handler.done = true;
+            builderHandler.target = null;
+            builderHandler.done = true;
         } else {
-            handler.target = (AxiomContainer)((OMElement)container).getParent();
+            builderHandler.target = (AxiomContainer)((OMElement)container).getParent();
         }
         if (log.isDebugEnabled()) {
-            log.debug("Caching re-enabled; new element level: " + handler.elementLevel + "; done=" + handler.done);
+            log.debug("Caching re-enabled; new element level: " + builderHandler.elementLevel + "; done=" + builderHandler.done);
         }
-        if (handler.done && autoClose) {
+        if (builderHandler.done && autoClose) {
             close();
         }
-        handler.cache = true;
+        builderHandler.cache = true;
     }
 
     public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
@@ -425,7 +426,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
     
     public final String getCharsetEncoding() {
-        return handler.document.getCharsetEncoding();
+        return builderHandler.document.getCharsetEncoding();
     }
 
     public final void close() {
@@ -445,7 +446,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             }
         } finally {
             _isClosed = true;
-            handler.done = true;
+            builderHandler.done = true;
             // Release the parser so that it can be GC'd or reused. This is important because the
             // object model keeps a reference to the builder even after the builder is complete.
             parser = null;
@@ -478,7 +479,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         if (detachable != null) {
             detachable.detach();
         } else {
-            while (!handler.done) {
+            while (!builderHandler.done) {
                 next();
             }
         }
@@ -494,58 +495,62 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
      * @throws OMException
      */
     public int next() throws OMException {
-        if (!handler.cache) {
+        if (!builderHandler.cache) {
             throw new IllegalStateException("Can't process next node because caching is disabled");
         }
         // We need a loop here because we may decide to skip an event
         while (true) {
-            if (handler.done) {
+            if (builderHandler.done) {
                 throw new OMException();
             }
             int token = parserNext();
-            if (!handler.cache) {
+            if (!builderHandler.cache) {
                 return token;
             }
            
             // Note: if autoClose is enabled, then the parser may be null at this point
             
-            switch (token) {
-                case XMLStreamConstants.START_DOCUMENT:
-                    handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
-                    break;
-                case XMLStreamConstants.START_ELEMENT: {
-                    createNextOMElement();
-                    break;
+            try {
+                switch (token) {
+                    case XMLStreamConstants.START_DOCUMENT:
+                        handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
+                        break;
+                    case XMLStreamConstants.START_ELEMENT: {
+                        createNextOMElement();
+                        break;
+                    }
+                    case XMLStreamConstants.CHARACTERS:
+                    case XMLStreamConstants.CDATA:
+                    case XMLStreamConstants.SPACE:
+                        createOMText(token);
+                        break;
+                    case XMLStreamConstants.END_ELEMENT:
+                        handler.endElement();
+                        break;
+                    case XMLStreamConstants.END_DOCUMENT:
+                        handler.endDocument();
+                        break;
+                    case XMLStreamConstants.COMMENT:
+                        handler.processComment(parser.getText());
+                        break;
+                    case XMLStreamConstants.DTD:
+                        createDTD();
+                        break;
+                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                        handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
+                        break;
+                    case XMLStreamConstants.ENTITY_REFERENCE:
+                        handler.processEntityReference(parser.getLocalName(), parser.getText());
+                        break;
+                    default :
+                        throw new OMException();
                 }
-                case XMLStreamConstants.CHARACTERS:
-                case XMLStreamConstants.CDATA:
-                case XMLStreamConstants.SPACE:
-                    createOMText(token);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    handler.endElement();
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    handler.endDocument();
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    handler.processComment(parser.getText());
-                    break;
-                case XMLStreamConstants.DTD:
-                    createDTD();
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    handler.processEntityReference(parser.getLocalName(), parser.getText());
-                    break;
-                default :
-                    throw new OMException();
+            } catch (StreamException ex) {
+                throw new OMException(ex);
             }
             
             // TODO: this will fail if there is whitespace before the document element
-            if (token != XMLStreamConstants.START_DOCUMENT && handler.target == null && !handler.done) {
+            if (token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
                 // We get here if the document has been discarded (by getDocumentElement(true)
                 // or because the builder is linked to an OMSourcedElement) and
                 // we just processed the END_ELEMENT event for the root element. In this case, we consume
@@ -561,7 +566,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                 while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
                     // Just loop
                 }
-                handler.done = true;
+                builderHandler.done = true;
             }
             
             return token;
@@ -571,16 +576,17 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     /**
      * Creates a new OMElement using either a CustomBuilder or 
      * the default Builder mechanism.
+     * @throws StreamException 
      */
-    private void createNextOMElement() {
+    private void createNextOMElement() throws StreamException {
         String namespaceURI = normalize(parser.getNamespaceURI());
         String localName = parser.getLocalName();
         String prefix = normalize(parser.getPrefix());
         OMElement newElement = null;
-        if (customBuilderForPayload != null && payloadSelector.isPayload(handler.elementLevel+1, handler.target)) {
+        if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)) {
             newElement = createWithCustomBuilder(customBuilderForPayload);
         }
-        if (newElement == null && customBuilders != null && handler.elementLevel < this.maxDepthForCustomBuilders) {
+        if (newElement == null && customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
             CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
             if (customBuilder != null) {
                 newElement = createWithCustomBuilder(customBuilder);
@@ -625,13 +631,13 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         // build the parent node. We temporarily set complete to true to avoid this.
         // There is really an incompatibility between the contract of addNode and the
         // custom builder API. This should be fixed in Axiom 1.3.
-        handler.target.setComplete(true);
+        builderHandler.target.setComplete(true);
         
         // Use target.getOMFactory() because the factory may actually be a SOAPFactory
-        OMElement node = customBuilder.create(namespace, localPart, handler.target, parser, handler.target.getOMFactory());
+        OMElement node = customBuilder.create(namespace, localPart, builderHandler.target, parser, builderHandler.target.getOMFactory());
         
         // TODO: dirty hack part 2
-        handler.target.setComplete(false);
+        builderHandler.target.setComplete(false);
         
         if (log.isDebugEnabled()) {
             if (node != null) {
@@ -646,7 +652,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         return node;
     }
     
-    private void createDTD() throws OMException {
+    private void createDTD() throws StreamException {
         DTDReader dtdReader;
         try {
             dtdReader = (DTDReader)parser.getProperty(DTDReader.PROPERTY);
@@ -705,7 +711,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         OMElement element = getDocument().getOMDocumentElement();
         if (discardDocument) {
             ((AxiomElement)element).detachAndDiscardParent();
-            handler.document = null;
+            builderHandler.document = null;
         }
         return element;
     }
@@ -743,7 +749,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                     throw ex;
                 }
                 if (event == XMLStreamConstants.END_DOCUMENT) {
-                    if (handler.cache && handler.elementLevel != 0) {
+                    if (builderHandler.cache && builderHandler.elementLevel != 0) {
                         throw new OMException("Unexpected END_DOCUMENT event");
                     }
                     if (autoClose) {
@@ -774,6 +780,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
 
     public final AxiomContainer getTarget() {
-        return handler.target;
+        return builderHandler.target;
     }
 }

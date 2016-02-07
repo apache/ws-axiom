@@ -23,25 +23,29 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public abstract class AbstractBuilder implements OMXMLParserWrapper {
-    protected final BuilderHandler handler;
+    protected final BuilderHandler builderHandler;
+    protected final XmlHandler handler;
 
     public AbstractBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, boolean repairNamespaces) {
-        handler = new BuilderHandler(nodeFactory, model, root, this, repairNamespaces);
+        builderHandler = new BuilderHandler(nodeFactory, model, root, this, repairNamespaces);
+        // TODO: eventually the namespace repairing filter XmlHandler will be added here
+        handler = builderHandler;
     }
 
     public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
-        handler.addNodePostProcessor(nodePostProcessor);
+        builderHandler.addNodePostProcessor(nodePostProcessor);
     }
 
     public final boolean isCompleted() {
-        return handler.isCompleted();
+        return builderHandler.isCompleted();
     }
 
     public final OMDocument getDocument() {
         AxiomDocument document;
-        while ((document = handler.getDocument()) == null) {
+        while ((document = builderHandler.getDocument()) == null) {
             next();
         }
         return document;
