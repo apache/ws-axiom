@@ -41,14 +41,6 @@ public final class SAXOMBuilder extends AbstractPushBuilder {
         this.source = source;
     }
     
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
-        handler.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
-    }
-
-    public void endDocument() {
-        handler.endDocument();
-    }
-
     public int next() {
         XMLReader reader = source.getXMLReader();
         OMContentHandler contentHandler = new OMContentHandler(handler, expandEntityReferences);
