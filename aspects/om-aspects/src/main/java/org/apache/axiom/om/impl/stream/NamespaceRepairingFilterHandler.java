@@ -18,30 +18,63 @@
  */
 package org.apache.axiom.om.impl.stream;
 
-import org.apache.axiom.util.namespace.ScopedNamespaceContext;
+import javax.xml.XMLConstants;
 
 public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
-    private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
+    private String[] namespaceStack = new String[32];
+    private int bindings;
+    private int[] scopeStack = new int[8];
+    private int scopes;
 
     public NamespaceRepairingFilterHandler(XmlHandler parent) {
         super(parent);
     }
 
+    private boolean isBound(String prefix, String namespaceURI) {
+        if (prefix.equals(XMLConstants.XML_NS_PREFIX) && namespaceURI.equals(XMLConstants.XML_NS_URI)) {
+            return true;
+        } else {
+            for (int i=(bindings-1)*2; i>=0; i-=2) {
+                if (prefix.equals(namespaceStack[i])) {
+                    return namespaceURI.equals(namespaceStack[i+1]);
+                }
+            }
+            return prefix.length() == 0 && namespaceURI.length() == 0;
+        }
+    }
+    
+    private void setPrefix(String prefix, String namespaceURI) {
+        if (bindings*2 == namespaceStack.length) {
+            int len = namespaceStack.length;
+            String[] newNamespaceStack = new String[len*2];
+            System.arraycopy(namespaceStack, 0, newNamespaceStack, 0, len);
+            namespaceStack = newNamespaceStack;
+        }
+        namespaceStack[bindings*2] = prefix;
+        namespaceStack[bindings*2+1] = namespaceURI;
+        bindings++;
+    }
+    
     private void ensureNamespaceDeclared(String prefix, String namespaceURI) throws StreamException {
-        if (!namespaceURI.equals(nsContext.getNamespaceURI(prefix))) {
+        if (!isBound(prefix, namespaceURI)) {
             super.processNamespaceDeclaration(prefix, namespaceURI);
-            nsContext.setPrefix(prefix, namespaceURI);
+            setPrefix(prefix, namespaceURI);
         }
     }
     
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         super.startElement(namespaceURI, localName, prefix);
-        nsContext.startScope();
+        if (scopes == scopeStack.length) {
+            int[] newScopeStack = new int[scopeStack.length*2];
+            System.arraycopy(scopeStack, 0, newScopeStack, 0, scopeStack.length);
+            scopeStack = newScopeStack;
+        }
+        scopeStack[scopes++] = bindings;
         ensureNamespaceDeclared(prefix, namespaceURI);
     }
     
     public void endElement() throws StreamException {
-        nsContext.endScope();
+        bindings = scopeStack[--scopes];
         super.endElement();
     }
 
@@ -53,9 +86,9 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
     }
     
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        for (int i=nsContext.getFirstBindingInCurrentScope(); i<nsContext.getBindingsCount(); i++) {
-            if (nsContext.getPrefix(i).equals(prefix)) {
-                if (nsContext.getNamespaceURI(i).equals(namespaceURI)) {
+        for (int i = scopeStack[scopes-1]; i < bindings; i++) {
+            if (namespaceStack[i*2].equals(prefix)) {
+                if (namespaceStack[i*2+1].equals(namespaceURI)) {
                     return;
                 } else {
                     // TODO: this causes a failure in the FOM tests
@@ -64,6 +97,6 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
             }
         }
         super.processNamespaceDeclaration(prefix, namespaceURI);
-        nsContext.setPrefix(prefix, namespaceURI);
+        setPrefix(prefix, namespaceURI);
     }
 }
