@@ -498,79 +498,73 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         if (!builderHandler.cache) {
             throw new IllegalStateException("Can't process next node because caching is disabled");
         }
-        // We need a loop here because we may decide to skip an event
-        while (true) {
-            if (builderHandler.done) {
-                throw new OMException();
-            }
-            int token = parserNext();
-            if (!builderHandler.cache) {
-                return token;
-            }
-           
-            // Note: if autoClose is enabled, then the parser may be null at this point
-            
-            try {
-                switch (token) {
-                    case XMLStreamConstants.START_DOCUMENT:
-                        handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
-                        break;
-                    case XMLStreamConstants.START_ELEMENT: {
-                        createNextOMElement();
-                        break;
-                    }
-                    case XMLStreamConstants.CHARACTERS:
-                    case XMLStreamConstants.CDATA:
-                    case XMLStreamConstants.SPACE:
-                        createOMText(token);
-                        break;
-                    case XMLStreamConstants.END_ELEMENT:
-                        handler.endElement();
-                        break;
-                    case XMLStreamConstants.END_DOCUMENT:
-                        handler.endDocument();
-                        break;
-                    case XMLStreamConstants.COMMENT:
-                        handler.processComment(parser.getText());
-                        break;
-                    case XMLStreamConstants.DTD:
-                        createDTD();
-                        break;
-                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                        handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
-                        break;
-                    case XMLStreamConstants.ENTITY_REFERENCE:
-                        handler.processEntityReference(parser.getLocalName(), parser.getText());
-                        break;
-                    default :
-                        throw new OMException();
-                }
-            } catch (StreamException ex) {
-                throw new OMException(ex);
-            }
-            
-            // TODO: this will fail if there is whitespace before the document element
-            if (token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
-                // We get here if the document has been discarded (by getDocumentElement(true)
-                // or because the builder is linked to an OMSourcedElement) and
-                // we just processed the END_ELEMENT event for the root element. In this case, we consume
-                // the remaining events until we reach the end of the document. This serves several purposes:
-                //  * It allows us to detect documents that have an epilog that is not well formed.
-                //  * Many parsers will perform some cleanup when the end of the document is reached.
-                //    For example, Woodstox will recycle the symbol table if the parser gets past the
-                //    last END_ELEMENT. This improves performance because Woodstox by default interns
-                //    all symbols; if the symbol table can be recycled, then this reduces the number of
-                //    calls to String#intern().
-                //  * If autoClose is set, the parser will be closed so that even more resources
-                //    can be released.
-                while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                    // Just loop
-                }
-                builderHandler.done = true;
-            }
-            
-            return token;
+        if (builderHandler.done) {
+            throw new OMException();
         }
+        int token = parserNext();
+        
+        // Note: if autoClose is enabled, then the parser may be null at this point
+        
+        try {
+            switch (token) {
+                case XMLStreamConstants.START_DOCUMENT:
+                    handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
+                    break;
+                case XMLStreamConstants.START_ELEMENT: {
+                    createNextOMElement();
+                    break;
+                }
+                case XMLStreamConstants.CHARACTERS:
+                case XMLStreamConstants.CDATA:
+                case XMLStreamConstants.SPACE:
+                    createOMText(token);
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    handler.endElement();
+                    break;
+                case XMLStreamConstants.END_DOCUMENT:
+                    handler.endDocument();
+                    break;
+                case XMLStreamConstants.COMMENT:
+                    handler.processComment(parser.getText());
+                    break;
+                case XMLStreamConstants.DTD:
+                    createDTD();
+                    break;
+                case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                    handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
+                    break;
+                case XMLStreamConstants.ENTITY_REFERENCE:
+                    handler.processEntityReference(parser.getLocalName(), parser.getText());
+                    break;
+                default :
+                    throw new OMException();
+            }
+        } catch (StreamException ex) {
+            throw new OMException(ex);
+        }
+        
+        // TODO: this will fail if there is whitespace before the document element
+        if (token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
+            // We get here if the document has been discarded (by getDocumentElement(true)
+            // or because the builder is linked to an OMSourcedElement) and
+            // we just processed the END_ELEMENT event for the root element. In this case, we consume
+            // the remaining events until we reach the end of the document. This serves several purposes:
+            //  * It allows us to detect documents that have an epilog that is not well formed.
+            //  * Many parsers will perform some cleanup when the end of the document is reached.
+            //    For example, Woodstox will recycle the symbol table if the parser gets past the
+            //    last END_ELEMENT. This improves performance because Woodstox by default interns
+            //    all symbols; if the symbol table can be recycled, then this reduces the number of
+            //    calls to String#intern().
+            //  * If autoClose is set, the parser will be closed so that even more resources
+            //    can be released.
+            while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                // Just loop
+            }
+            builderHandler.done = true;
+        }
+        
+        return token;
     }
     
     /**
