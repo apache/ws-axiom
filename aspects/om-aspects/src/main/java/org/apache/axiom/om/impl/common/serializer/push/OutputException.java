@@ -19,12 +19,14 @@
 package org.apache.axiom.om.impl.common.serializer.push;
 
 /**
- * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data. This class
- * is abstract so that the type of the wrapped exception can be effectively restricted by defining
- * an appropriate subclass.
+ * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data.
  */
-public abstract class OutputException extends Exception {
+public class OutputException extends Exception {
     private static final long serialVersionUID = 7173617216602466028L;
+
+    public OutputException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     public OutputException(Throwable cause) {
         super(cause);

@@ -24,6 +24,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.Builder;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
@@ -45,7 +46,7 @@ public aspect AxiomSerializableSupport {
         try {
             internalSerialize(new StAXSerializer(this, writer), writer.getOutputFormat(), cache);
         } catch (OutputException ex) {
-            throw (XMLStreamException)ex.getCause();
+            throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
         writer.flush();
     }

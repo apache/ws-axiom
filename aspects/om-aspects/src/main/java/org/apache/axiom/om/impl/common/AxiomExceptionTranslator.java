@@ -18,13 +18,25 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 
 public class AxiomExceptionTranslator {
     private AxiomExceptionTranslator() {}
     
     public static OMException translate(CoreModelException ex) {
         return new OMException(ex);
+    }
+    
+    public static XMLStreamException toXMLStreamException(OutputException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof XMLStreamException) {
+            return (XMLStreamException)cause;
+        } else {
+            return new XMLStreamException(ex);
+        }
     }
 }

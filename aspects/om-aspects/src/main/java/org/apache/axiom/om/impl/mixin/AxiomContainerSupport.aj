@@ -48,6 +48,7 @@ import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.Builder;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -298,7 +299,7 @@ public aspect AxiomContainerSupport {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, true);
             } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
             writer.close();
@@ -313,7 +314,7 @@ public aspect AxiomContainerSupport {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, true);
             } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
             writer.close();
@@ -327,7 +328,7 @@ public aspect AxiomContainerSupport {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, false);
             } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
             writer.close();
@@ -343,7 +344,7 @@ public aspect AxiomContainerSupport {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, false);
             } catch (OutputException ex) {
-                throw (XMLStreamException)ex.getCause();
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
             writer.close();

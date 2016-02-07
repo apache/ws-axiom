@@ -60,7 +60,7 @@ public class SAXSerializer extends Serializer {
             contentHandler.startDocument();
             startDocumentWritten = true;
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
     
@@ -78,7 +78,7 @@ public class SAXSerializer extends Serializer {
                 lexicalHandler.startDTD(rootName, publicId, systemId);
                 lexicalHandler.endDTD();
             } catch (SAXException ex) {
-                throw new SAXOutputException(ex);
+                throw new OutputException(ex);
             }
         }
     }
@@ -98,7 +98,7 @@ public class SAXSerializer extends Serializer {
         try {
             contentHandler.startPrefixMapping(prefix, namespaceURI);
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
         // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
@@ -111,7 +111,7 @@ public class SAXSerializer extends Serializer {
         try {
             helper.finishStartElement(contentHandler);
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
 
@@ -122,7 +122,7 @@ public class SAXSerializer extends Serializer {
                 contentHandler.endDocument();
             }
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
 
@@ -146,7 +146,7 @@ public class SAXSerializer extends Serializer {
                     contentHandler.ignorableWhitespace(ch, 0, ch.length);
             }
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
 
@@ -156,7 +156,7 @@ public class SAXSerializer extends Serializer {
             try {
                 lexicalHandler.comment(ch, 0, ch.length);
             } catch (SAXException ex) {
-                throw new SAXOutputException(ex);
+                throw new OutputException(ex);
             }
         }
     }
@@ -165,7 +165,7 @@ public class SAXSerializer extends Serializer {
         try {
             contentHandler.processingInstruction(target, data);
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
 
@@ -173,7 +173,7 @@ public class SAXSerializer extends Serializer {
         try {
             contentHandler.skippedEntity(name);
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
 
@@ -190,7 +190,7 @@ public class SAXSerializer extends Serializer {
             } else {
                 saxException = new SAXException(ex);
             }
-            throw new SAXOutputException(saxException);
+            throw new OutputException(saxException);
         }
     }
 
@@ -211,11 +211,11 @@ public class SAXSerializer extends Serializer {
                 contentHandler.endDocument();
             }
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         } catch (SAXExceptionWrapper ex) {
-            throw new SAXOutputException((SAXException)ex.getCause());
+            throw new OutputException(ex.getCause());
         } catch (XMLStreamException ex) {
-            throw new SAXOutputException(new SAXException(ex));
+            throw new OutputException(ex);
         }
     }
 
@@ -223,7 +223,7 @@ public class SAXSerializer extends Serializer {
         try {
             contentHandler.endDocument();
         } catch (SAXException ex) {
-            throw new SAXOutputException(ex);
+            throw new OutputException(ex);
         }
     }
 }
