@@ -55,7 +55,7 @@ public class WriteNamespaceScenario implements PushOMDataSourceScenario {
 
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("_p_", "root", "urn:__test__");
-        writer.writeNamespace("_p_", "urn:test");
+        writer.writeNamespace("_p_", "urn:__test__");
         writer.writeNamespace(prefix, namespaceURI);
         writer.writeEndElement();
     }
