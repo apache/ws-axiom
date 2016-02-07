@@ -35,10 +35,10 @@ import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.builder.PushOMBuilder;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -401,7 +401,7 @@ public aspect AxiomSourcedElementSupport {
     }
 
     public void AxiomSourcedElement.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
-            throws OutputException {
+            throws StreamException {
         if (isExpanded()) {
             defaultInternalSerialize(serializer, format, cache);
         } else if (cache) {

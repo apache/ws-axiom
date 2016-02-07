@@ -21,8 +21,8 @@ package org.apache.axiom.om.impl.common.serializer.push.sax;
 import java.io.IOException;
 
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -48,7 +48,7 @@ public class XMLReaderImpl extends AbstractXMLReader {
         try {
             root.internalSerialize(new SAXSerializer(root, contentHandler, lexicalHandler),
                     new OMOutputFormat(), cache);
-        } catch (OutputException ex) {
+        } catch (StreamException ex) {
             throw (SAXException)ex.getCause();
         }
     }

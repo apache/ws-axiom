@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.Handler;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
@@ -47,11 +46,12 @@ import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public final class BuilderHandler implements Handler {
+public final class BuilderHandler implements XmlHandler {
     private static final Log log = LogFactory.getLog(BuilderHandler.class);
     
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
@@ -138,7 +138,7 @@ public final class BuilderHandler implements Handler {
         }
     }
     
-    public void createDocumentTypeDeclaration(String rootName, String publicId, String systemId,
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) {
         model.validateEventType(XMLStreamConstants.DTD);
         AxiomDocType node = nodeFactory.createNode(AxiomDocType.class);
@@ -200,7 +200,7 @@ public final class BuilderHandler implements Handler {
         }
     }
 
-    public void createAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
         OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
         AxiomAttribute attr = nodeFactory.createNode(AxiomAttribute.class);
         attr.internalSetLocalName(localName);
@@ -214,7 +214,7 @@ public final class BuilderHandler implements Handler {
         }
     }
     
-    public void createNamespaceDeclaration(String prefix, String namespaceURI) {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) {
         if (nsContext != null) {
             for (int i=nsContext.getFirstBindingInCurrentScope(); i<nsContext.getBindingsCount(); i++) {
                 if (nsContext.getPrefix(i).equals(prefix)) {
@@ -250,7 +250,7 @@ public final class BuilderHandler implements Handler {
         addChild(node);
     }
     
-    public void createProcessingInstruction(String piTarget, String piData) {
+    public void processProcessingInstruction(String piTarget, String piData) {
         model.validateEventType(XMLStreamConstants.PROCESSING_INSTRUCTION);
         AxiomProcessingInstruction node = nodeFactory.createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
@@ -258,21 +258,21 @@ public final class BuilderHandler implements Handler {
         addChild(node);
     }
 
-    public void createComment(String content) {
+    public void processComment(String content) {
         model.validateEventType(XMLStreamConstants.COMMENT);
         AxiomComment node = nodeFactory.createNode(AxiomComment.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         addChild(node);
     }
     
-    public void createCDATASection(String content) {
+    public void processCDATASection(String content) {
         model.validateEventType(XMLStreamConstants.CDATA);
         AxiomCDATASection node = nodeFactory.createNode(AxiomCDATASection.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         addChild(node);
     }
     
-    public void createEntityReference(String name, String replacementText) {
+    public void processEntityReference(String name, String replacementText) {
         model.validateEventType(XMLStreamConstants.ENTITY_REFERENCE);
         AxiomEntityReference node = nodeFactory.createNode(AxiomEntityReference.class);
         node.coreSetName(name);

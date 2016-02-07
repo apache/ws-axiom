@@ -28,8 +28,8 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
@@ -51,39 +51,39 @@ public class SAXSerializer extends Serializer {
         this.lexicalHandler = lexicalHandler;
     }
 
-    protected boolean isAssociated(String prefix, String namespace) throws OutputException {
+    protected boolean isAssociated(String prefix, String namespace) throws StreamException {
         return nsContext.getNamespaceURI(prefix).equals(namespace);
     }
 
-    private void writeStartDocument() throws OutputException {
+    private void writeStartDocument() throws StreamException {
         try {
             contentHandler.startDocument();
             startDocumentWritten = true;
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
     
-    public void writeStartDocument(String version) throws OutputException {
+    public void writeStartDocument(String version) throws StreamException {
         writeStartDocument();
     }
 
-    public void writeStartDocument(String encoding, String version) throws OutputException {
+    public void writeStartDocument(String encoding, String version) throws StreamException {
         writeStartDocument();
     }
 
-    public void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException {
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         if (lexicalHandler != null) {
             try {
                 lexicalHandler.startDTD(rootName, publicId, systemId);
                 lexicalHandler.endDTD();
             } catch (SAXException ex) {
-                throw new OutputException(ex);
+                throw new StreamException(ex);
             }
         }
     }
 
-    protected void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         if (!startDocumentWritten) {
             writeStartDocument();
             autoStartDocument = true;
@@ -93,40 +93,40 @@ public class SAXSerializer extends Serializer {
         depth++;
     }
 
-    protected void addNamespace(String prefix, String namespaceURI) throws OutputException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         nsContext.setPrefix(prefix, namespaceURI);
         try {
             contentHandler.startPrefixMapping(prefix, namespaceURI);
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
         // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
 
-    protected void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         helper.addAttribute(prefix, namespaceURI, localName, type, value);
     }
 
-    protected void finishStartElement() throws OutputException {
+    public void attributesCompleted() throws StreamException {
         try {
             helper.finishStartElement(contentHandler);
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeEndElement() throws OutputException {
+    public void endElement() throws StreamException {
         try {
             helper.writeEndElement(contentHandler, nsContext);
             if (--depth == 0 && autoStartDocument) {
                 contentHandler.endDocument();
             }
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeText(int type, String data) throws OutputException {
+    public void writeText(int type, String data) throws StreamException {
         char[] ch = data.toCharArray();
         try {
             switch (type) {
@@ -146,38 +146,38 @@ public class SAXSerializer extends Serializer {
                     contentHandler.ignorableWhitespace(ch, 0, ch.length);
             }
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeComment(String data) throws OutputException {
+    public void processComment(String data) throws StreamException {
         if (lexicalHandler != null) {
             char[] ch = data.toCharArray();
             try {
                 lexicalHandler.comment(ch, 0, ch.length);
             } catch (SAXException ex) {
-                throw new OutputException(ex);
+                throw new StreamException(ex);
             }
         }
     }
 
-    public void writeProcessingInstruction(String target, String data) throws OutputException {
+    public void processProcessingInstruction(String target, String data) throws StreamException {
         try {
             contentHandler.processingInstruction(target, data);
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeEntityRef(String name) throws OutputException {
+    public void processEntityReference(String name, String replacementText) throws StreamException {
         try {
             contentHandler.skippedEntity(name);
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException {
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException {
         Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
         try {
             dataHandler.writeTo(out);
@@ -190,17 +190,17 @@ public class SAXSerializer extends Serializer {
             } else {
                 saxException = new SAXException(ex);
             }
-            throw new OutputException(saxException);
+            throw new StreamException(saxException);
         }
     }
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
-            boolean optimize) throws OutputException {
+            boolean optimize) throws StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
 
-    protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
+    protected void serializePushOMDataSource(OMDataSource dataSource) throws StreamException {
         try {
             XMLStreamWriter writer = new ContentHandlerXMLStreamWriter(helper, contentHandler, lexicalHandler, nsContext);
             if (startDocumentWritten) {
@@ -211,19 +211,19 @@ public class SAXSerializer extends Serializer {
                 contentHandler.endDocument();
             }
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         } catch (SAXExceptionWrapper ex) {
-            throw new OutputException(ex.getCause());
+            throw new StreamException(ex.getCause());
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeEndDocument() throws OutputException {
+    public void endDocument() throws StreamException {
         try {
             contentHandler.endDocument();
         } catch (SAXException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 }

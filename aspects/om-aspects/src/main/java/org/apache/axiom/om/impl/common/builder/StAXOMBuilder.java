@@ -192,7 +192,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                     handler.processCharacterData(text, true);
                     break;
                 case XMLStreamConstants.CDATA:
-                    handler.createCDATASection(text);
+                    handler.processCDATASection(text);
                     break;
                 default:
                     throw new IllegalStateException();
@@ -529,16 +529,16 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                     handler.endDocument();
                     break;
                 case XMLStreamConstants.COMMENT:
-                    handler.createComment(parser.getText());
+                    handler.processComment(parser.getText());
                     break;
                 case XMLStreamConstants.DTD:
                     createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    handler.createProcessingInstruction(parser.getPITarget(), parser.getPIData());
+                    handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
-                    handler.createEntityReference(parser.getLocalName(), parser.getText());
+                    handler.processEntityReference(parser.getLocalName(), parser.getText());
                     break;
                 default :
                     throw new OMException();
@@ -589,12 +589,12 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         if (newElement == null) {
             handler.startElement(namespaceURI, localName, prefix);
             for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
-                handler.createNamespaceDeclaration(
+                handler.processNamespaceDeclaration(
                         normalize(parser.getNamespacePrefix(i)),
                         normalize(parser.getNamespaceURI(i)));
             }
             for (int i = 0, count = parser.getAttributeCount(); i < count; i++) {
-                handler.createAttribute(
+                handler.processAttribute(
                         normalize(parser.getAttributeNamespace(i)),
                         parser.getAttributeLocalName(i),
                         normalize(parser.getAttributePrefix(i)),
@@ -661,7 +661,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         if (internalSubset != null && internalSubset.length() == 0) {
             internalSubset = null;
         }
-        handler.createDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(),
+        handler.processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(),
                 dtdReader.getSystemId(), internalSubset);
     }
     

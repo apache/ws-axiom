@@ -22,9 +22,9 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
@@ -54,7 +54,7 @@ public aspect AxiomSOAPMessageSupport {
     
     // TODO: this violates OO design principles and should disappear in a future Axiom version
     public final void AxiomSOAPMessage.internalSerialize(Serializer serializer, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws OutputException {
+            boolean cache, boolean includeXMLDeclaration) throws StreamException {
         ((AxiomElement)getOMDocumentElement()).internalSerialize(serializer, format, cache);
     }
 

@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.mixin;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomComment;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomCommentSupport {
     public final int AxiomComment.getType() {
@@ -38,8 +38,8 @@ public aspect AxiomCommentSupport {
         coreSetCharacterData(text, AxiomSemantics.INSTANCE);
     }
     
-    public final void AxiomComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeComment(coreGetCharacterData().toString());
+    public final void AxiomComment.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
+        serializer.processComment(coreGetCharacterData().toString());
     }
     
     public final void AxiomComment.buildWithAttachments() {

@@ -20,6 +20,8 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -34,7 +36,7 @@ import java.util.Map;
 import javax.xml.stream.XMLStreamConstants;
 
 public final class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
-    private final Handler handler;
+    private final XmlHandler handler;
     private final boolean expandEntityReferences;
     
     /**
@@ -85,20 +87,37 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     private boolean inEntityReference;
     private int entityReferenceDepth;
 
-    public OMContentHandler(Handler handler, boolean expandEntityReferences) {
+    public OMContentHandler(XmlHandler handler, boolean expandEntityReferences) {
         this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
+    }
+    
+    private static SAXException toSAXException(StreamException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof SAXException) {
+            return (SAXException)cause;
+        } else {
+            return new SAXException(ex);
+        }
     }
     
     public final void setDocumentLocator(Locator locator) {
     }
 
     public final void startDocument() throws SAXException {
-        handler.startDocument(null, "1.0", null, true);
+        try {
+            handler.startDocument(null, "1.0", null, true);
+        } catch (StreamException ex) {
+            throw toSAXException(ex);
+        }
     }
 
     public final void endDocument() throws SAXException {
-        handler.endDocument();
+        try {
+            handler.endDocument();
+        } catch (StreamException ex) {
+            throw toSAXException(ex);
+        }
     }
 
     public final void startDTD(String name, String publicId, String systemId) throws SAXException {
@@ -198,8 +217,12 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     }
 
     public final void endDTD() throws SAXException {
-        handler.createDocumentTypeDeclaration(dtdName, dtdPublicId, dtdSystemId,
-                internalSubset.length() == 0 ? null : internalSubset.toString());
+        try {
+            handler.processDocumentTypeDeclaration(dtdName, dtdPublicId, dtdSystemId,
+                    internalSubset.length() == 0 ? null : internalSubset.toString());
+        } catch (StreamException ex) {
+            throw toSAXException(ex);
+        }
         internalSubset = null;
     }
 
@@ -235,14 +258,17 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
      */
     public final void startElement(String namespaceURI, String localName,
                              String qName, Attributes atts) throws SAXException {
-        if (!inEntityReference) {
+        if (inEntityReference) {
+            return;
+        }
+        try {
             if (localName == null || localName.trim().equals(""))
                 localName = qName.substring(qName.indexOf(':') + 1);
             int idx = qName.indexOf(':');
             String prefix = idx == -1 ? "" : qName.substring(0, idx);
             handler.startElement(namespaceURI, localName, prefix);
             for (int i = 0; i < namespaceCount; i++) {
-                handler.createNamespaceDeclaration(namespaces[2*i], namespaces[2*i+1]);
+                handler.processNamespaceDeclaration(namespaces[2*i], namespaces[2*i+1]);
             }
             namespaceCount = 0;
     
@@ -258,10 +284,12 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
                 if (!attrQName.startsWith("xmlns")) {
                     idx = attrQName.indexOf(':');
                     String attrPrefix = idx == -1 ? "" : attrQName.substring(0, idx);
-                    handler.createAttribute(atts.getURI(i), atts.getLocalName(i), attrPrefix, atts.getValue(i), atts.getType(i), true);
+                    handler.processAttribute(atts.getURI(i), atts.getLocalName(i), attrPrefix, atts.getValue(i), atts.getType(i), true);
                 }
             }
             handler.attributesCompleted();
+        } catch (StreamException ex) {
+            throw toSAXException(ex);
         }
     }
 
@@ -274,7 +302,11 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     public final void endElement(String uri, String localName, String qName)
             throws SAXException {
         if (!inEntityReference) {
-            handler.endElement();
+            try {
+                handler.endElement();
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
 
@@ -292,7 +324,10 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
 
     private void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
-        if (!inEntityReference) {
+        if (inEntityReference) {
+            return;
+        }
+        try {
             String text = new String(ch, start, length);
             switch (nodeType) {
                 case XMLStreamConstants.CHARACTERS:
@@ -302,11 +337,13 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
                     handler.processCharacterData(text, true);
                     break;
                 case XMLStreamConstants.CDATA:
-                    handler.createCDATASection(text);
+                    handler.processCDATASection(text);
                     break;
                 default:
                     throw new IllegalArgumentException();
             }
+        } catch (StreamException ex) {
+            throw toSAXException(ex);
         }
     }
 
@@ -327,18 +364,30 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
     public final void processingInstruction(String piTarget, String data)
             throws SAXException {
         if (!inEntityReference) {
-            handler.createProcessingInstruction(piTarget, data);
+            try {
+                handler.processProcessingInstruction(piTarget, data);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
 
     public final void comment(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
-            handler.createComment(new String(ch, start, length));
+            try {
+                handler.processComment(new String(ch, start, length));
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
 
     public final void skippedEntity(String name) throws SAXException {
-        handler.createEntityReference(name, null);
+        try {
+            handler.processEntityReference(name, null);
+        } catch (StreamException ex) {
+            throw toSAXException(ex);
+        }
     }
 
     public final void startEntity(String name) throws SAXException {
@@ -347,7 +396,11 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
         } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            handler.createEntityReference(name, entities == null ? null : entities.get(name));
+            try {
+                handler.processEntityReference(name, entities == null ? null : entities.get(name));
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
             inEntityReference = true;
             entityReferenceDepth = 1;
         }

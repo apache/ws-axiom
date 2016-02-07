@@ -59,12 +59,12 @@ import org.apache.axiom.om.impl.common.NSUtil;
 import org.apache.axiom.om.impl.common.NamespaceDeclarationMapper;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -525,15 +525,15 @@ public aspect AxiomElementSupport {
     }
 
     public void AxiomElement.internalSerialize(Serializer serializer, OMOutputFormat format,
-            boolean cache) throws OutputException {
+            boolean cache) throws StreamException {
         defaultInternalSerialize(serializer, format, cache);
     }
     
     public final void AxiomElement.defaultInternalSerialize(Serializer serializer, OMOutputFormat format,
-            boolean cache) throws OutputException {
+            boolean cache) throws StreamException {
         serializer.serializeStartpart(this);
         serializeChildren(serializer, format, cache);
-        serializer.writeEndElement();
+        serializer.endElement();
     }
 
     public final String AxiomElement.toStringWithConsume() throws XMLStreamException {

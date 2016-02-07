@@ -28,10 +28,10 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomTextSupport {
     private TextContent AxiomText.getTextContent(boolean force) {
@@ -116,7 +116,7 @@ public aspect AxiomTextSupport {
         return getTextContent(true).getContentID();
     }
 
-    public final void AxiomText.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+    public final void AxiomText.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
         Object content = coreGetCharacterData();
         if (content instanceof TextContent) {
             TextContent textContent = (TextContent)content;

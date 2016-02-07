@@ -113,7 +113,7 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
     }
 
     protected void doWriteAttribute(String prefix, String namespaceURI, String localName, String value) {
-        handler.createAttribute(normalize(namespaceURI), localName, normalize(prefix), value, OMConstants.XMLATTRTYPE_CDATA, true);
+        handler.processAttribute(normalize(namespaceURI), localName, normalize(prefix), value, OMConstants.XMLATTRTYPE_CDATA, true);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
@@ -121,7 +121,7 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
     }
 
     protected void doWriteNamespace(String prefix, String namespaceURI) {
-        handler.createNamespaceDeclaration(normalize(prefix), normalize(namespaceURI));
+        handler.processNamespaceDeclaration(normalize(prefix), normalize(namespaceURI));
     }
 
     protected void doWriteDefaultNamespace(String namespaceURI) {
@@ -139,22 +139,22 @@ public class BuilderHandlerXMLStreamWriter extends AbstractXMLStreamWriter imple
 
     protected void doWriteCData(String data) {
         finishStartElement();
-        handler.createCDATASection(data);
+        handler.processCDATASection(data);
     }
 
     protected void doWriteComment(String data) {
         finishStartElement();
-        handler.createComment(data);
+        handler.processComment(data);
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
         finishStartElement();
-        handler.createEntityReference(name, null);
+        handler.processEntityReference(name, null);
     }
 
     protected void doWriteProcessingInstruction(String piTarget, String data) {
         finishStartElement();
-        handler.createProcessingInstruction(piTarget, data);
+        handler.processProcessingInstruction(piTarget, data);
     }
 
     protected void doWriteProcessingInstruction(String target) {

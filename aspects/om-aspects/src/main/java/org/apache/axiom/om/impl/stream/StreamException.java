@@ -16,19 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push;
+package org.apache.axiom.om.impl.stream;
 
 /**
  * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data.
  */
-public class OutputException extends Exception {
+public class StreamException extends Exception {
     private static final long serialVersionUID = 7173617216602466028L;
 
-    public OutputException(String message, Throwable cause) {
+    public StreamException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public OutputException(Throwable cause) {
+    public StreamException(Throwable cause) {
         super(cause);
     }
 }

@@ -26,8 +26,9 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
-public final  class SAXResultContentHandler implements Handler {
+public final  class SAXResultContentHandler implements XmlHandler {
     private final OMContainer root;
     private final OMFactory factory;
     private OMContainer target;
@@ -44,7 +45,7 @@ public final  class SAXResultContentHandler implements Handler {
     public void endDocument() {
     }
 
-    public void createDocumentTypeDeclaration(String rootName, String publicId,
+    public void processDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset) {
         if (target instanceof OMDocument) {
             factory.createOMDocType(target, rootName, publicId, systemId, internalSubset);
@@ -61,7 +62,7 @@ public final  class SAXResultContentHandler implements Handler {
     }
 
     @Override
-    public void createAttribute(String namespaceURI, String localName, String prefix, String value,
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value,
             String type, boolean specified) {
         OMElement element = (OMElement)target;
         OMNamespace ns;
@@ -78,7 +79,7 @@ public final  class SAXResultContentHandler implements Handler {
     }
 
     @Override
-    public void createNamespaceDeclaration(String prefix, String namespaceURI) {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) {
         if (prefix.isEmpty()) {
             ((OMElement)target).declareDefaultNamespace(namespaceURI);
         } else {
@@ -96,19 +97,19 @@ public final  class SAXResultContentHandler implements Handler {
     }
 
     @Override
-    public void createCDATASection(String content) {
+    public void processCDATASection(String content) {
         factory.createOMText(target, content, OMNode.CDATA_SECTION_NODE);
     }
 
-    public void createProcessingInstruction(String piTarget, String piData) {
+    public void processProcessingInstruction(String piTarget, String piData) {
         factory.createOMProcessingInstruction(target, piTarget, piData);
     }
 
-    public void createComment(String content) {
+    public void processComment(String content) {
         factory.createOMComment(target, content);
     }
 
-    public void createEntityReference(String name, String replacementText) {
+    public void processEntityReference(String name, String replacementText) {
         if (replacementText == null) {
             factory.createOMEntityReference(target, name);
         } else {

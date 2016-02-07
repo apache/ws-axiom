@@ -22,7 +22,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public class AxiomExceptionTranslator {
     private AxiomExceptionTranslator() {}
@@ -31,7 +31,7 @@ public class AxiomExceptionTranslator {
         return new OMException(ex);
     }
     
-    public static XMLStreamException toXMLStreamException(OutputException ex) {
+    public static XMLStreamException toXMLStreamException(StreamException ex) {
         Throwable cause = ex.getCause();
         if (cause instanceof XMLStreamException) {
             return (XMLStreamException)cause;

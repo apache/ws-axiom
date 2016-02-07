@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
@@ -39,6 +40,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 public abstract class Serializer {
@@ -79,12 +81,12 @@ public abstract class Serializer {
         this.preserveNamespaceContext = preserveNamespaceContext;
     }
 
-    public final void serializeStartpart(OMElement element) throws OutputException {
+    public final void serializeStartpart(OMElement element) throws StreamException {
         OMNamespace ns = element.getNamespace();
         if (ns == null) {
-            internalBeginStartElement("", "", element.getLocalName());
+            internalStartElement("", element.getLocalName(), "");
         } else {
-            internalBeginStartElement(ns.getPrefix(), ns.getNamespaceURI(), element.getLocalName());
+            internalStartElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
         }
         if (preserveNamespaceContext && element == root) {
             // Maintain a set of the prefixes we have already seen. This is required to take into
@@ -115,15 +117,15 @@ public abstract class Serializer {
             OMAttribute attr = it.next();
             ns = attr.getNamespace();
             if (ns == null) {
-                processAttribute("", "", attr.getLocalName(), attr.getAttributeType(), attr.getAttributeValue());
+                internalProcessAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             } else {
-                processAttribute(ns.getPrefix(), ns.getNamespaceURI(), attr.getLocalName(), attr.getAttributeType(), attr.getAttributeValue());
+                internalProcessAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             }
         }
-        finishStartElement();
+        attributesCompleted();
     }
     
-    public final void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws OutputException {
+    public final void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws StreamException {
         try {
             int eventType = reader.getEventType();
             switch (eventType) {
@@ -137,25 +139,26 @@ public abstract class Serializer {
                     if (dtdReader == null) {
                         throw new XMLStreamException("Cannot serialize the DTD because the XMLStreamReader doesn't support the DTDReader extension");
                     }
-                    writeDTD(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
+                    processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
                     break;
                 case XMLStreamReader.START_ELEMENT:
-                    internalBeginStartElement(normalize(reader.getPrefix()), normalize(reader.getNamespaceURI()), reader.getLocalName());
+                    internalStartElement(normalize(reader.getNamespaceURI()), reader.getLocalName(), normalize(reader.getPrefix()));
                     for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
                         mapNamespace(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)), true, false);
                     }
                     for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
-                        processAttribute(
-                                normalize(reader.getAttributePrefix(i)),
+                        internalProcessAttribute(
                                 normalize(reader.getAttributeNamespace(i)),
                                 reader.getAttributeLocalName(i),
+                                normalize(reader.getAttributePrefix(i)),
+                                reader.getAttributeValue(i),
                                 reader.getAttributeType(i),
-                                reader.getAttributeValue(i));
+                                reader.isAttributeSpecified(i));
                     }
-                    finishStartElement();
+                    attributesCompleted();
                     break;
                 case XMLStreamReader.END_ELEMENT:
-                    writeEndElement();
+                    endElement();
                     break;
                 case XMLStreamReader.CHARACTERS:
                     if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
@@ -174,13 +177,13 @@ public abstract class Serializer {
                     writeText(eventType, reader.getText());
                     break;
                 case XMLStreamReader.PROCESSING_INSTRUCTION:
-                    writeProcessingInstruction(reader.getPITarget(), reader.getPIData());
+                    processProcessingInstruction(reader.getPITarget(), reader.getPIData());
                     break;
                 case XMLStreamReader.COMMENT:
-                    writeComment(reader.getText());
+                    processComment(reader.getText());
                     break;
                 case XMLStreamReader.ENTITY_REFERENCE:
-                    writeEntityRef(reader.getLocalName());
+                    processEntityReference(reader.getLocalName(), reader.getText());
                     break;
                 default:
                     throw new IllegalStateException();
@@ -194,12 +197,12 @@ public abstract class Serializer {
         return s == null ? "" : s;
     }
     
-    private void internalBeginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
-        beginStartElement(prefix, namespaceURI, localName);
+    private void internalStartElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        startElement(namespaceURI, localName, prefix);
         mapNamespace(prefix, namespaceURI, false, false);
     }
     
-    private void processAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
+    private void internalProcessAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         mapNamespace(prefix, namespaceURI, false, true);
         if (namespaceRepairing && contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
             String trimmedValue = value.trim();
@@ -211,7 +214,7 @@ public abstract class Serializer {
                 }
             }
         }
-        addAttribute(prefix, namespaceURI, localName, type, value);
+        processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
     
     /**
@@ -228,7 +231,7 @@ public abstract class Serializer {
      *            the name of an element or attribute
      * @param attr
      */
-    private void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws OutputException {
+    private void mapNamespace(String prefix, String namespaceURI, boolean fromDecl, boolean attr) throws StreamException {
         if (namespaceRepairing) {
             // If the prefix and namespace are already associated, no generation is needed
             if (isAssociated(prefix, namespaceURI)) {
@@ -242,12 +245,12 @@ public abstract class Serializer {
             }
             
             // Add the namespace if the prefix is not associated.
-            addNamespace(prefix, namespaceURI);
+            processNamespaceDeclaration(prefix, namespaceURI);
         } else {
             // If namespace repairing is disabled, only output namespace declarations that appear
             // explicitly in the input
             if (fromDecl) {
-                addNamespace(prefix, namespaceURI);
+                processNamespaceDeclaration(prefix, namespaceURI);
             }
         }
     }
@@ -257,12 +260,12 @@ public abstract class Serializer {
      * 
      * @param dataSource
      *            the data source to serialize
-     * @throws OutputException
+     * @throws StreamException
      *             if an error occurs while writing the data
      * @throws DeferredParsingException
      *             if an error occurs while reading from the data source
      */
-    public final void serialize(OMDataSource dataSource) throws OutputException {
+    public final void serialize(OMDataSource dataSource) throws StreamException {
         // Note: if we can't determine the type (push/pull) of the OMDataSource, we
         // default to push
         if (OMDataSourceUtil.isPullDataSource(dataSource)) {
@@ -294,29 +297,29 @@ public abstract class Serializer {
         }
     }
     
-    protected abstract boolean isAssociated(String prefix, String namespace) throws OutputException;
+    protected abstract boolean isAssociated(String prefix, String namespace) throws StreamException;
     
-    public abstract void writeStartDocument(String version) throws OutputException;
+    public abstract void writeStartDocument(String version) throws StreamException;
     
-    public abstract void writeStartDocument(String encoding, String version) throws OutputException;
+    public abstract void writeStartDocument(String encoding, String version) throws StreamException;
     
-    public abstract void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException;
+    public abstract void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException;
     
     /**
      * Prepare to write an element start tag. A call to this method will be followed by zero or more
-     * calls to {@link #addNamespace(String, String)} and
-     * {@link #addAttribute(String, String, String, String, String)} and a single call to
-     * {@link #finishStartElement()}.
+     * calls to {@link #processNamespaceDeclaration(String, String)} and
+     * {@link #processAttribute(String, String, String, String, String)} and a single call to
+     * {@link #attributesCompleted()}.
      * 
-     * @param prefix
-     *            the prefix of the element; never <code>null</code>
      * @param namespaceURI
      *            the namespace URI of the element; never <code>null</code>
      * @param localName
      *            the local name of the element; never <code>null</code>
-     * @throws OutputException
+     * @param prefix
+     *            the prefix of the element; never <code>null</code>
+     * @throws StreamException
      */
-    protected abstract void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException;
+    public abstract void startElement(String namespaceURI, String localName, String prefix) throws StreamException;
     
     /**
      * Add the given namespace to the element. The implementation of this method must take the
@@ -334,57 +337,57 @@ public abstract class Serializer {
      *            the namespace prefix; never <code>null</code>
      * @param namespaceURI
      *            the namespace URI; never <code>null</code>
-     * @throws OutputException
+     * @throws StreamException
      */
-    protected abstract void addNamespace(String prefix, String namespaceURI) throws OutputException;
+    public abstract void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException;
     
     /**
      * Add the given attribute to the element.
      * 
-     * @param prefix
-     *            the namespace prefix of the attribute; never <code>null</code>
      * @param namespaceURI
      *            the namespace URI or the attribute; never <code>null</code>
      * @param localName
      *            the local name of the attribute; never <code>null</code>
-     * @param type
-     *            the attribute type (e.g. <tt>CDATA</tt>); never <code>null</code>
+     * @param prefix
+     *            the namespace prefix of the attribute; never <code>null</code>
      * @param value
      *            the value of the attribute; never <code>null</code>
-     * @throws OutputException
+     * @param type
+     *            the attribute type (e.g. <tt>CDATA</tt>); never <code>null</code>
+     * @throws StreamException
      */
-    protected abstract void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException;
+    public abstract void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException;
     
-    protected abstract void finishStartElement() throws OutputException;
+    public abstract void attributesCompleted() throws StreamException;
     
-    public abstract void writeEndElement() throws OutputException;
+    public abstract void endElement() throws StreamException;
     
-    public abstract void writeText(int type, String data) throws OutputException;
+    public abstract void writeText(int type, String data) throws StreamException;
     
-    public abstract void writeComment(String data) throws OutputException;
+    public abstract void processComment(String data) throws StreamException;
 
-    public abstract void writeProcessingInstruction(String target, String data) throws OutputException;
+    public abstract void processProcessingInstruction(String target, String data) throws StreamException;
     
-    public abstract void writeEntityRef(String name) throws OutputException;
+    public abstract void processEntityReference(String name, String replacementText) throws StreamException;
     
-    public abstract void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException;
+    public abstract void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException;
 
-    public abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws OutputException;
+    public abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws StreamException;
 
     /**
      * Serialize the given data source using {@link OMDataSource#serialize(XMLStreamWriter)}. The
      * implementation must construct an appropriate {@link XMLStreamWriter} instance to pass to that
      * method and wrap any {@link XMLStreamException} that may be thrown in an
-     * {@link OutputException} or {@link DeferredParsingException}.
+     * {@link StreamException} or {@link DeferredParsingException}.
      * 
      * @param dataSource
      *            the data source to serialize
-     * @throws OutputException
+     * @throws StreamException
      *             if an error occurs while writing the data
      * @throws DeferredParsingException
      *             if an error occurs while reading from the data source
      */
-    protected abstract void serializePushOMDataSource(OMDataSource dataSource) throws OutputException;
+    protected abstract void serializePushOMDataSource(OMDataSource dataSource) throws StreamException;
     
-    public abstract void writeEndDocument() throws OutputException;
+    public abstract void endDocument() throws StreamException;
 }

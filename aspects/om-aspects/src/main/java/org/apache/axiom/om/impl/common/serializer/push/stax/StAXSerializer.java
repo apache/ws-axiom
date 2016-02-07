@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,50 +48,50 @@ public class StAXSerializer extends Serializer {
         this.writer = writer;
     }
 
-    protected void serializePushOMDataSource(OMDataSource dataSource) throws OutputException {
+    protected void serializePushOMDataSource(OMDataSource dataSource) throws StreamException {
         try {
             dataSource.serialize(writer);
         } catch (XMLStreamException ex) {
             // We cannot really differentiate between exceptions thrown by the XMLStreamWriter
             // and exceptions thrown by the data source itself. We wrap all XMLStreamExceptions
             // as OutputExceptions.
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeStartDocument(String version) throws OutputException {
+    public void writeStartDocument(String version) throws StreamException {
         try {
             writer.writeStartDocument(version);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeStartDocument(String encoding, String version) throws OutputException {
+    public void writeStartDocument(String encoding, String version) throws StreamException {
         try {
             writer.writeStartDocument(encoding, version);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeDTD(String rootName, String publicId, String systemId, String internalSubset) throws OutputException {
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         try {
             XMLStreamWriterUtils.writeDTD(writer, rootName, publicId, systemId, internalSubset);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    protected void beginStartElement(String prefix, String namespaceURI, String localName) throws OutputException {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         try {
             writer.writeStartElement(prefix, localName, namespaceURI);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    protected void addNamespace(String prefix, String namespaceURI) throws OutputException {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         try {
             if (prefix.length() != 0) {
                 writer.writeNamespace(prefix, namespaceURI);
@@ -99,19 +99,19 @@ public class StAXSerializer extends Serializer {
                 writer.writeDefaultNamespace(namespaceURI);
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    protected void addAttribute(String prefix, String namespaceURI, String localName, String type, String value) throws OutputException {
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         try {
             writer.writeAttribute(prefix, namespaceURI, localName, value);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    protected void finishStartElement() throws OutputException {
+    public void attributesCompleted() throws StreamException {
         // Nothing to do here
     }
 
@@ -120,7 +120,7 @@ public class StAXSerializer extends Serializer {
      * @param namespace
      * @return true if the prefix is associated with the namespace in the current context
      */
-    protected boolean isAssociated(String prefix, String namespace) throws OutputException {
+    protected boolean isAssociated(String prefix, String namespace) throws StreamException {
         try {
             // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that
             // we never write a declaration for the xml namespace. See AXIOM-37 for a discussion
@@ -192,19 +192,19 @@ public class StAXSerializer extends Serializer {
                 return true;
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeEndElement() throws OutputException {
+    public void endElement() throws StreamException {
         try {
             writer.writeEndElement();
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeText(int type, String data) throws OutputException {
+    public void writeText(int type, String data) throws StreamException {
         try {
             if (type == OMNode.CDATA_SECTION_NODE) {
                 writer.writeCData(data);
@@ -212,31 +212,31 @@ public class StAXSerializer extends Serializer {
                 writer.writeCharacters(data);
             }
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeComment(String data) throws OutputException {
+    public void processComment(String data) throws StreamException {
         try {
             writer.writeComment(data);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeProcessingInstruction(String target, String data) throws OutputException {
+    public void processProcessingInstruction(String target, String data) throws StreamException {
         try {
             writer.writeProcessingInstruction(target, data);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeEntityRef(String name) throws OutputException {
+    public void processEntityReference(String name, String replacementText) throws StreamException {
         try {
             writer.writeEntityRef(name);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
@@ -248,27 +248,27 @@ public class StAXSerializer extends Serializer {
         return dataHandlerWriter;
     }
 
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws OutputException {
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException {
         try {
             getDataHandlerWriter().writeDataHandler(dataHandler, contentID, optimize);
         } catch (IOException ex) {
-            throw new OutputException("Error while reading data handler", ex);
+            throw new StreamException("Error while reading data handler", ex);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws OutputException {
+    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws StreamException {
         try {
             getDataHandlerWriter().writeDataHandler(dataHandlerProvider, contentID, optimize);
         } catch (IOException ex) {
-            throw new OutputException("Error while reading data handler", ex);
+            throw new StreamException("Error while reading data handler", ex);
         } catch (XMLStreamException ex) {
-            throw new OutputException(ex);
+            throw new StreamException(ex);
         }
     }
 
-    public void writeEndDocument() throws OutputException {
+    public void endDocument() throws StreamException {
         // TODO: the original StAX serialization code newer called writeEndDocument; this is probably a mistake
     }
 }

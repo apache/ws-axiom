@@ -23,10 +23,10 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomDocumentSupport {
     public final OMElement AxiomDocument.getOMDocumentElement() {
@@ -45,13 +45,13 @@ public aspect AxiomDocumentSupport {
         }
     }
 
-    public final void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+    public final void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
         internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
     }
 
     // Overridden in AxiomSOAPMessageSupport
     public void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws OutputException {
+            boolean cache, boolean includeXMLDeclaration) throws StreamException {
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
             //encoding matches, if not use char encoding of OMOutput
@@ -70,7 +70,7 @@ public aspect AxiomDocumentSupport {
             }
         }
         serializeChildren(serializer, format, cache);
-        serializer.writeEndDocument();
+        serializer.endDocument();
     }
 
     public final String AxiomDocument.getCharsetEncoding() {

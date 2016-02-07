@@ -25,9 +25,9 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomSerializableSupport {
     public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
@@ -45,7 +45,7 @@ public aspect AxiomSerializableSupport {
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
             internalSerialize(new StAXSerializer(this, writer), writer.getOutputFormat(), cache);
-        } catch (OutputException ex) {
+        } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
         writer.flush();

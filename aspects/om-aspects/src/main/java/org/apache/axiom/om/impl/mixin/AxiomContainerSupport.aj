@@ -56,13 +56,13 @@ import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -298,7 +298,7 @@ public aspect AxiomContainerSupport {
         try {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, true);
-            } catch (OutputException ex) {
+            } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
@@ -313,7 +313,7 @@ public aspect AxiomContainerSupport {
         try {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, true);
-            } catch (OutputException ex) {
+            } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
@@ -327,7 +327,7 @@ public aspect AxiomContainerSupport {
         try {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, false);
-            } catch (OutputException ex) {
+            } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
@@ -343,7 +343,7 @@ public aspect AxiomContainerSupport {
         try {
             try {
                 internalSerialize(new StAXSerializer(this, writer), format, false);
-            } catch (OutputException ex) {
+            } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
@@ -351,7 +351,7 @@ public aspect AxiomContainerSupport {
         }
     }
 
-    final void AxiomContainer.serializeChildren(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
+    final void AxiomContainer.serializeChildren(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
             Builder builder = (Builder)getBuilder();
             if (builder != null) {

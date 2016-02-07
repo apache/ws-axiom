@@ -20,17 +20,17 @@ package org.apache.axiom.om.impl.mixin;
 
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomEntityReferenceSupport {
     public final int AxiomEntityReference.getType() {
         return OMNode.ENTITY_REFERENCE_NODE;
     }
 
-    public final void AxiomEntityReference.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws OutputException {
-        serializer.writeEntityRef(coreGetName());
+    public final void AxiomEntityReference.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
+        serializer.processEntityReference(coreGetName(), coreGetReplacementText());
     }
 
     public final String AxiomEntityReference.getName() {

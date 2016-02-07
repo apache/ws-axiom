@@ -24,8 +24,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -129,7 +129,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
     }
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
-            throws OutputException {
+            throws StreamException {
 
         if (!format.isIgnoreXMLDeclaration()) {
             String charSetEncoding = format.getCharSetEncoding();
@@ -141,6 +141,6 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
                             : xmlVersion);
         }
         super.internalSerialize(serializer, format, cache);
-        serializer.writeEndDocument();
+        serializer.endDocument();
     }
 }

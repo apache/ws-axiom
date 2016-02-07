@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Builder;
-import org.apache.axiom.om.impl.common.serializer.push.OutputException;
 import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPHeader;
@@ -120,7 +120,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
     }
 
     public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
-            throws OutputException {
+            throws StreamException {
         if (!format.isIgnoreXMLDeclaration()) {
             String charSetEncoding = format.getCharSetEncoding();
             String xmlVersion = format.getXmlVersion();
@@ -130,7 +130,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
         }
         super.internalSerialize(serializer, format, cache);
-        serializer.writeEndDocument();
+        serializer.endDocument();
         if (!cache) {
             // let's try to close the builder/parser here since we are now done with the
             // non-caching code block serializing the top-level SOAPEnvelope element
