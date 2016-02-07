@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.intf;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
@@ -29,5 +28,4 @@ import org.apache.axiom.om.impl.stream.XmlHandler;
 public interface Serializer extends XmlHandler {
     void serializeStartpart(OMElement element) throws StreamException;
     void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws StreamException;
-    void serialize(OMDataSource dataSource) throws StreamException;
 }

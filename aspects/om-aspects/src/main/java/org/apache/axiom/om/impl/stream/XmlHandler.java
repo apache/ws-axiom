@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.stream;
 
+import org.apache.axiom.om.OMDataSource;
+
 public interface XmlHandler {
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) throws StreamException;
     
@@ -45,4 +47,6 @@ public interface XmlHandler {
     void processCDATASection(String content) throws StreamException;
     
     void processEntityReference(String name, String replacementText) throws StreamException;
+    
+    void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource) throws StreamException;
 }

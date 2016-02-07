@@ -207,7 +207,7 @@ public abstract class SerializerImpl implements Serializer {
      * @throws DeferredParsingException
      *             if an error occurs while reading from the data source
      */
-    public final void serialize(OMDataSource dataSource) throws StreamException {
+    public final void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource) throws StreamException {
         // Note: if we can't determine the type (push/pull) of the OMDataSource, we
         // default to push
         if (OMDataSourceUtil.isPullDataSource(dataSource)) {

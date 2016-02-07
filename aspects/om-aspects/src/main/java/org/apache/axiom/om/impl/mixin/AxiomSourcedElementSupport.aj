@@ -409,10 +409,11 @@ public aspect AxiomSourcedElementSupport {
                 forceExpand();
                 defaultInternalSerialize(serializer, format, true);
             } else {
-                serializer.serialize(dataSource);
+                // TODO: the serializer ignores namespaceURI and localName
+                serializer.processOMDataSource(null, null, dataSource);
             }
         } else {
-            serializer.serialize(dataSource); 
+            serializer.processOMDataSource(null, null, dataSource); 
         }
     }
 

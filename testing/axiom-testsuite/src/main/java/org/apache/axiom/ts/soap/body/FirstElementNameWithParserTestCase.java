@@ -25,10 +25,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.AssertionFailedError;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
@@ -63,9 +61,7 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
             // To detect if the child element is instantiated or not, we register a custom
             // builder that throws an exception.
             ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new CustomBuilder() {
-                public OMElement create(String namespace, String localPart,
-                        OMContainer parent, XMLStreamReader reader, OMFactory factory)
-                        throws OMException {
+                public OMDataSource create(XMLStreamReader reader) throws OMException {
                     throw new AssertionFailedError("Custom builder called.");
                 }
             });

@@ -19,17 +19,12 @@
 
 package org.apache.axiom.om.ds.custombuilder;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -56,14 +51,7 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
         this.encoding = (encoding == null) ? "utf-8" :encoding;
     }
 
-    /* 
-     * Create an OMSourcedElement back by a ByteArrayDataSource
-     */
-    public OMElement create(String namespace, 
-                            String localPart, 
-                            OMContainer parent, 
-                            XMLStreamReader reader,
-                            OMFactory factory) throws OMException {
+    public OMDataSource create(XMLStreamReader reader) throws OMException {
         try {
             // Get the prefix of the start tag
             String prefix = reader.getPrefix();
@@ -80,22 +68,7 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
             
             // Capture the written byte array as a ByteArrayDataSource
             byte[] bytes = baos.toByteArray();
-            String text = new String(bytes, "utf-8");
-            ByteArrayDataSource ds = new ByteArrayDataSource(bytes, encoding);
-            
-            // Create an OMSourcedElement backed by the ByteArrayDataSource
-            OMNamespace ns = factory.createOMNamespace(namespace, prefix);
-            
-            OMElement om = null;
-            if (parent instanceof SOAPHeader && factory instanceof SOAPFactory) {
-                om = ((SOAPFactory)factory).createSOAPHeaderBlock(localPart, ns, ds);
-            } else {
-                om = factory.createOMElement(ds, localPart, ns);
-            }
-            
-            // Add the new OMSourcedElement ot the parent
-            parent.addChild(om);
-            return om;
+            return new ByteArrayDataSource(bytes, encoding);
         } catch (XMLStreamException e) {
             throw new OMException(e);
         } catch (OMException e) {

@@ -24,6 +24,7 @@ import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -576,37 +577,35 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         String namespaceURI = normalize(parser.getNamespaceURI());
         String localName = parser.getLocalName();
         String prefix = normalize(parser.getPrefix());
-        OMElement newElement = null;
-        if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)) {
-            newElement = createWithCustomBuilder(customBuilderForPayload);
+        if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)
+                && createWithCustomBuilder(customBuilderForPayload)) {
+            return;
         }
-        if (newElement == null && customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
+        if (customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
             CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
-            if (customBuilder != null) {
-                newElement = createWithCustomBuilder(customBuilder);
+            if (customBuilder != null && createWithCustomBuilder(customBuilder)) {
+                return;
             }
         }
-        if (newElement == null) {
-            handler.startElement(namespaceURI, localName, prefix);
-            for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
-                handler.processNamespaceDeclaration(
-                        normalize(parser.getNamespacePrefix(i)),
-                        normalize(parser.getNamespaceURI(i)));
-            }
-            for (int i = 0, count = parser.getAttributeCount(); i < count; i++) {
-                handler.processAttribute(
-                        normalize(parser.getAttributeNamespace(i)),
-                        parser.getAttributeLocalName(i),
-                        normalize(parser.getAttributePrefix(i)),
-                        parser.getAttributeValue(i),
-                        parser.getAttributeType(i),
-                        parser.isAttributeSpecified(i));
-            }
-            handler.attributesCompleted();
+        handler.startElement(namespaceURI, localName, prefix);
+        for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
+            handler.processNamespaceDeclaration(
+                    normalize(parser.getNamespacePrefix(i)),
+                    normalize(parser.getNamespaceURI(i)));
         }
+        for (int i = 0, count = parser.getAttributeCount(); i < count; i++) {
+            handler.processAttribute(
+                    normalize(parser.getAttributeNamespace(i)),
+                    parser.getAttributeLocalName(i),
+                    normalize(parser.getAttributePrefix(i)),
+                    parser.getAttributeValue(i),
+                    parser.getAttributeType(i),
+                    parser.isAttributeSpecified(i));
+        }
+        handler.attributesCompleted();
     }
     
-    private OMElement createWithCustomBuilder(CustomBuilder customBuilder) {
+    private boolean createWithCustomBuilder(CustomBuilder customBuilder) throws StreamException {
         
         String namespace = parser.getNamespaceURI();
         if (namespace == null) {
@@ -619,31 +618,22 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                       ", to the OMNode for {" + namespace + "}" + localPart);
         }
         
-        // TODO: dirty hack part 1
-        // The custom builder will use addNode to insert the new node into the tree. However,
-        // addNode is expected to always add the new child at the end and will attempt to
-        // build the parent node. We temporarily set complete to true to avoid this.
-        // There is really an incompatibility between the contract of addNode and the
-        // custom builder API. This should be fixed in Axiom 1.3.
-        builderHandler.target.setComplete(true);
-        
-        // Use target.getOMFactory() because the factory may actually be a SOAPFactory
-        OMElement node = customBuilder.create(namespace, localPart, builderHandler.target, parser, builderHandler.target.getOMFactory());
-        
-        // TODO: dirty hack part 2
-        builderHandler.target.setComplete(false);
-        
-        if (log.isDebugEnabled()) {
-            if (node != null) {
+        OMDataSource ds = customBuilder.create(parser);
+        if (ds == null) {
+            if (log.isDebugEnabled()) {
                 log.debug("The CustomBuilder, " + customBuilder.toString() + 
-                          "successfully constructed the OMNode for {" + namespace + "}" + localPart);
-            } else {
-                log.debug("The CustomBuilder, " + customBuilder.toString() + 
-                          " did not construct an OMNode for {" + namespace + "}" + localPart +
-                          ". The OMNode will be constructed using the installed stax om builder");
+                        " did not construct an OMDataSource for {" + namespace + "}" + localPart +
+                        ". The OMElement will be constructed using the installed stax om builder");
             }
+            return false;
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("The CustomBuilder, " + customBuilder.toString() + 
+                          "successfully constructed the OMDataSource for {" + namespace + "}" + localPart);
+            }
+            handler.processOMDataSource(namespace, localPart, ds);
+            return true;
         }
-        return node;
     }
     
     private void createDTD() throws StreamException {

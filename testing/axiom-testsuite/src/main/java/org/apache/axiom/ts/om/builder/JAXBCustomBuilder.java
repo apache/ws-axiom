@@ -24,13 +24,13 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
@@ -46,10 +46,11 @@ public class JAXBCustomBuilder implements CustomBuilder {
         this.expectBareReader = expectBareReader;
     }
 
-    public OMElement create(String namespaceURI, String localPart,
-            OMContainer parent, XMLStreamReader reader, OMFactory factory)
+    public OMDataSource create(XMLStreamReader reader)
             throws OMException {
         try {
+            final String namespaceURI = reader.getNamespaceURI();
+            final String localName = reader.getLocalName();
             XOPEncodedStream xopStream = XOPUtils.getXOPEncodedStream(reader);
             XMLStreamReader encodedReader = xopStream.getReader();
             if (expectBareReader) {
@@ -61,10 +62,20 @@ public class JAXBCustomBuilder implements CustomBuilder {
             AttachmentUnmarshallerImpl attachmentUnmarshaller = new AttachmentUnmarshallerImpl(xopStream.getMimePartProvider());
             unmarshaller.setAttachmentUnmarshaller(attachmentUnmarshaller);
             // For the purpose of the test we just store the JAXB object and return
-            // a dummy element. Normally, one would create an OMSourcedElement here.
+            // a dummy OMDataSource.
             jaxbObject = unmarshaller.unmarshal(encodedReader);
             attachmentsAccessed = attachmentUnmarshaller.isAccessed();
-            return factory.createOMElement(new QName(namespaceURI, localPart), parent);
+            return new AbstractPushOMDataSource() {
+                @Override
+                public boolean isDestructiveWrite() {
+                    return false;
+                }
+
+                @Override
+                public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+                    xmlWriter.writeEmptyElement("ns1", localName, namespaceURI);
+                }
+            };
         } catch (JAXBException ex) {
             throw new OMException(ex);
         }

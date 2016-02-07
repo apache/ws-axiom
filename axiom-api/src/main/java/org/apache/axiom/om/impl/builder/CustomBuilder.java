@@ -19,30 +19,25 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+
 import javax.xml.stream.XMLStreamReader;
 
-
-
 /**
- * A Custom Builder is registered on the StAXBuilder for a particular QName or payload.
- * When the QName or payload is encountered, the CustomBuilder will build the OMElement
- * or OMSourcedElement for the StAXBuilder.  
+ * A Custom Builder is registered on the {@link OMXMLParserWrapper} for a particular QName or payload.
+ * When the QName or payload is encountered, the CustomBuilder will build an {@link OMDataSource}
+ * for the builder.
  *
  * @see CustomBuilderSupport#registerCustomBuilder(javax.xml.namespace.QName, int, CustomBuilder)
  * @see CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)
  */
 public interface CustomBuilder {
     /**
-     * Create an OMElement for this whole subtree.
-     * A null is returned if the default StAXBuilder behavior should be used.
-     * @param namespace
-     *            the namespace URI, or the empty string if the element has no namespace
-     * @param localPart
-     * @param parent
+     * Create an {@link OMDataSource} for this whole subtree.
+     * A null is returned if the default builder behavior should be used.
+     * 
      * @param reader
      *            The stream reader to read the StAX events from. The data read
      *            from this reader always represents plain XML, even if the
@@ -86,12 +81,7 @@ public interface CustomBuilder {
      *            XOP encoded stream and wants to get access to the original reader, it should invoke
      *            {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
      *            after {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}.
-     * @return null or OMElement
+     * @return null or OMDataSource
      */
-    public OMElement create(String namespace, 
-                            String localPart, 
-                            OMContainer parent, 
-                            XMLStreamReader reader,
-                            OMFactory factory)
-        throws OMException;
+    public OMDataSource create(XMLStreamReader reader) throws OMException;
 }

@@ -23,13 +23,18 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.ByteArrayInputStream;
 
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.ByteArrayDataSource.ByteArray;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.SOAPSample;
@@ -48,10 +53,21 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
+        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8") {
+            @Override
+            public OMDataSource create(XMLStreamReader reader) throws OMException {
+                if (reader.getName().equals(message.getSOAPSpec().getFaultQName())) {
+                    return null;
+                } else {
+                    return super.create(reader);
+                }
+            }
+        });
         OMElement payload = builder.getSOAPEnvelope().getBody().getFirstElement();
         if (message.getPayload() == null) {
             assertNull(payload);
+        } else if (message.getPayload().getLocalName().equals("Fault")) {
+            assertTrue(payload instanceof SOAPFault);
         } else {
             assertTrue(payload instanceof OMSourcedElement);
             ByteArray byteArray = (ByteArray)((OMSourcedElement)payload).getObject(ByteArrayDataSource.class);

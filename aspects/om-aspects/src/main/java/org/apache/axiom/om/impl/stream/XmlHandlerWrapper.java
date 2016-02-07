@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om.impl.stream;
 
+import org.apache.axiom.om.OMDataSource;
+
 public class XmlHandlerWrapper implements XmlHandler {
     private final XmlHandler parent;
 
@@ -81,5 +83,10 @@ public class XmlHandlerWrapper implements XmlHandler {
 
     public void processEntityReference(String name, String replacementText) throws StreamException {
         parent.processEntityReference(name, replacementText);
+    }
+
+    public void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource)
+            throws StreamException {
+        parent.processOMDataSource(namespaceURI, localName, dataSource);
     }
 }
