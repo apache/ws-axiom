@@ -40,10 +40,12 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
+import org.apache.axiom.om.impl.intf.Serializer;
+import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
-public abstract class Serializer {
+public abstract class SerializerImpl implements Serializer {
     private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
     private static final String XSI_LOCAL_NAME = "type";
     
@@ -65,7 +67,7 @@ public abstract class Serializer {
      *            indicates if the namespace context determined by the ancestors of the root node
      *            should be strictly preserved in the output
      */
-    public Serializer(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
+    public SerializerImpl(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
         this.root = root;
         if (root instanceof OMNode) {
             OMContainer parent = ((OMNode)root).getParent();
@@ -297,11 +299,27 @@ public abstract class Serializer {
         }
     }
     
+    public final void processCharacterData(Object data, boolean ignorable) throws StreamException {
+        if (data instanceof TextContent) {
+            TextContent textContent = (TextContent)data;
+            if (textContent.isBinary()) {
+                Object dataHandlerObject = textContent.getDataHandlerObject();
+                if (dataHandlerObject instanceof DataHandlerProvider) {
+                    writeDataHandler((DataHandlerProvider)dataHandlerObject, textContent.getContentID(), textContent.isOptimize());
+                } else {
+                    writeDataHandler(textContent.getDataHandler(), textContent.getContentID(), textContent.isOptimize());
+                }
+                return;
+            }
+        }
+        writeText(ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE, data.toString());
+    }
+    
+    public final void processCDATASection(String content) throws StreamException {
+        writeText(OMNode.CDATA_SECTION_NODE, content.toString());
+    }
+    
     protected abstract boolean isAssociated(String prefix, String namespace) throws StreamException;
-    
-    public abstract void writeStartDocument(String version) throws StreamException;
-    
-    public abstract void writeStartDocument(String encoding, String version) throws StreamException;
     
     public abstract void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException;
     
@@ -362,7 +380,7 @@ public abstract class Serializer {
     
     public abstract void endElement() throws StreamException;
     
-    public abstract void writeText(int type, String data) throws StreamException;
+    protected abstract void writeText(int type, String data) throws StreamException;
     
     public abstract void processComment(String data) throws StreamException;
 
@@ -370,9 +388,9 @@ public abstract class Serializer {
     
     public abstract void processEntityReference(String name, String replacementText) throws StreamException;
     
-    public abstract void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException;
+    protected abstract void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException;
 
-    public abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws StreamException;
+    protected abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws StreamException;
 
     /**
      * Serialize the given data source using {@link OMDataSource#serialize(XMLStreamWriter)}. The

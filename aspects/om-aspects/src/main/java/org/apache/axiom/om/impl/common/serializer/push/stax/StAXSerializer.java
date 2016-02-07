@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
@@ -37,7 +37,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class StAXSerializer extends Serializer {
+public class StAXSerializer extends SerializerImpl {
     private static final Log log = LogFactory.getLog(StAXSerializer.class);
     
     private final XMLStreamWriter writer;
@@ -59,17 +59,15 @@ public class StAXSerializer extends Serializer {
         }
     }
 
-    public void writeStartDocument(String version) throws StreamException {
+    @Override
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
+            boolean standalone) throws StreamException {
         try {
-            writer.writeStartDocument(version);
-        } catch (XMLStreamException ex) {
-            throw new StreamException(ex);
-        }
-    }
-
-    public void writeStartDocument(String encoding, String version) throws StreamException {
-        try {
-            writer.writeStartDocument(encoding, version);
+            if (xmlEncoding == null) {
+                writer.writeStartDocument(xmlVersion);
+            } else {
+                writer.writeStartDocument(xmlEncoding, xmlVersion);
+            }
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);
         }

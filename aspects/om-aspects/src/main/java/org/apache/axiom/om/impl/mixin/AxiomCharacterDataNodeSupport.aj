@@ -19,10 +19,17 @@
 package org.apache.axiom.om.impl.mixin;
 
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
+import org.apache.axiom.om.impl.intf.Serializer;
+import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomCharacterDataNodeSupport {
     public final int AxiomCharacterDataNode.getType() {
         return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
+    }
+
+    public final void AxiomCharacterDataNode.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
+        serializer.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
     }
 }

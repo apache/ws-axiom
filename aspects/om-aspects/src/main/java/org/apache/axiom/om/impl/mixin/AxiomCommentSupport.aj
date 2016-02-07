@@ -21,8 +21,8 @@ package org.apache.axiom.om.impl.mixin;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomComment;
+import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomCommentSupport {

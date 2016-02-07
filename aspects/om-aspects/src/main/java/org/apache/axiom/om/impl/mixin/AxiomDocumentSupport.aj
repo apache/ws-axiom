@@ -23,9 +23,9 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomDocumentSupport {
@@ -63,11 +63,7 @@ public aspect AxiomDocumentSupport {
             if (version == null) {
                 version = "1.0";
             }
-            if (encoding == null) {
-                serializer.writeStartDocument(version);
-            } else {
-                serializer.writeStartDocument(encoding, version);
-            }
+            serializer.startDocument(null, version, encoding, true);
         }
         serializeChildren(serializer, format, cache);
         serializer.endDocument();

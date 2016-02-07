@@ -28,7 +28,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
+import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
@@ -36,7 +36,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 
-public class SAXSerializer extends Serializer {
+public class SAXSerializer extends SerializerImpl {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
     private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
@@ -64,11 +64,9 @@ public class SAXSerializer extends Serializer {
         }
     }
     
-    public void writeStartDocument(String version) throws StreamException {
-        writeStartDocument();
-    }
-
-    public void writeStartDocument(String encoding, String version) throws StreamException {
+    @Override
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
+            boolean standalone) throws StreamException {
         writeStartDocument();
     }
 

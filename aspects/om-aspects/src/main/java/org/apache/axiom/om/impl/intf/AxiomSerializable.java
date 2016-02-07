@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
 
 public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {

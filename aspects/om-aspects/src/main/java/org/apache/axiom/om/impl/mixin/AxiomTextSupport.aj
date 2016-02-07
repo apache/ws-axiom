@@ -21,17 +21,13 @@ package org.apache.axiom.om.impl.mixin;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.serializer.push.Serializer;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomTextSupport {
     private TextContent AxiomText.getTextContent(boolean force) {
@@ -114,25 +110,6 @@ public aspect AxiomTextSupport {
 
     public final String AxiomText.getContentID() {
         return getTextContent(true).getContentID();
-    }
-
-    public final void AxiomText.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
-        Object content = coreGetCharacterData();
-        if (content instanceof TextContent) {
-            TextContent textContent = (TextContent)content;
-            if (textContent.isBinary()) {
-                Object dataHandlerObject = textContent.getDataHandlerObject();
-                if (dataHandlerObject instanceof DataHandlerProvider) {
-                    serializer.writeDataHandler((DataHandlerProvider)dataHandlerObject, textContent.getContentID(), textContent.isOptimize());
-                } else {
-                    serializer.writeDataHandler(textContent.getDataHandler(), textContent.getContentID(), textContent.isOptimize());
-                }
-            } else {
-                serializer.writeText(getType(), textContent.toString());
-            }
-        } else {
-            serializer.writeText(getType(), (String)content);
-        }
     }
 
     public final void AxiomText.buildWithAttachments() {

@@ -16,26 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.mixin;
+package org.apache.axiom.om.impl.intf;
 
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.intf.AxiomDocType;
-import org.apache.axiom.om.impl.intf.Serializer;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
-public aspect AxiomDocTypeSupport {
-    public final int AxiomDocType.getType() {
-        return DTD_NODE;
-    }
-
-    public final String AxiomDocType.getRootName() {
-        return coreGetRootName();
-    }
-
-    public final void AxiomDocType.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
-        serializer.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
-    }
-    
-    public final void AxiomDocType.buildWithAttachments() {
-    }
+public interface Serializer extends XmlHandler {
+    void serializeStartpart(OMElement element) throws StreamException;
+    void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws StreamException;
+    void serialize(OMDataSource dataSource) throws StreamException;
 }
