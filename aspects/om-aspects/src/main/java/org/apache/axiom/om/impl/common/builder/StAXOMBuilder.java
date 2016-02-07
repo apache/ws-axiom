@@ -46,7 +46,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 
 import java.io.Closeable;
 
@@ -604,10 +603,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                         parser.isAttributeSpecified(i));
             }
             handler.attributesCompleted();
-            Location location = parser.getLocation();
-            if (location != null) {
-                newElement.setLineNumber(location.getLineNumber());
-            }
         }
     }
     

@@ -576,8 +576,14 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      */
     OMElement cloneOMElement();
     
+    /**
+     * @deprecated
+     */
     void setLineNumber(int lineNumber);
 
+    /**
+     * @deprecated
+     */
     int getLineNumber();
 
     /**

@@ -78,8 +78,6 @@ import org.apache.commons.logging.LogFactory;
 public aspect AxiomElementSupport {
     private static final Log log = LogFactory.getLog(AxiomElementSupport.class);
     
-    private int AxiomElement.lineNumber;
-    
     public final void AxiomElement.initName(String localName, OMNamespace ns, boolean generateNSDecl) {
         internalSetLocalName(localName);
         internalSetNamespace(generateNSDecl ? NSUtil.handleNamespace(this, ns, false, true) : ns);
@@ -591,10 +589,9 @@ public aspect AxiomElementSupport {
     }
 
     public final void AxiomElement.setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
     }
 
     public final int AxiomElement.getLineNumber() {
-        return lineNumber;
+        return 0;
     }
 }
