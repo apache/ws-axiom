@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.serializer.push;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
 
 final class NamespaceHelper extends XmlHandlerWrapper {
@@ -30,8 +31,8 @@ final class NamespaceHelper extends XmlHandlerWrapper {
     private final SerializerImpl serializer;
     private final OMElement contextElement;
 
-    NamespaceHelper(SerializerImpl serializer, OMElement contextElement) {
-        super(serializer);
+    NamespaceHelper(SerializerImpl serializer, XmlHandler handler, OMElement contextElement) {
+        super(handler);
         this.serializer = serializer;
         this.contextElement = contextElement;
     }

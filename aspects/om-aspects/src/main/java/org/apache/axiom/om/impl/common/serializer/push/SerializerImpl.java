@@ -18,9 +18,7 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
@@ -45,9 +43,7 @@ import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public abstract class SerializerImpl implements Serializer {
-    private final OMSerializable root;
     private final XmlHandler handler;
-    private final boolean preserveNamespaceContext;
     
     /**
      * Constructor.
@@ -63,7 +59,6 @@ public abstract class SerializerImpl implements Serializer {
      *            should be strictly preserved in the output
      */
     public SerializerImpl(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
-        this.root = root;
         OMElement contextElement;
         if (root instanceof OMNode) {
             OMContainer parent = ((OMNode)root).getParent();
@@ -75,8 +70,14 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             contextElement = null;
         }
-        handler = namespaceRepairing ? new NamespaceHelper(this, contextElement) : this;
-        this.preserveNamespaceContext = preserveNamespaceContext;
+        XmlHandler handler = this;
+        if (preserveNamespaceContext && contextElement != null) {
+            handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
+        }
+        if (namespaceRepairing) {
+            handler = new NamespaceHelper(this, handler, contextElement);
+        }
+        this.handler = handler;
     }
 
     public final void serializeStartpart(OMElement element) throws StreamException {
@@ -86,30 +87,9 @@ public abstract class SerializerImpl implements Serializer {
         } else {
             handler.startElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
         }
-        if (preserveNamespaceContext && element == root) {
-            // Maintain a set of the prefixes we have already seen. This is required to take into
-            // account that a namespace mapping declared on an element can hide another one declared
-            // for the same prefix on an ancestor of the element.
-            Set<String> seenPrefixes = new HashSet<String>();
-            OMElement current = element;
-            while (true) {
-                for (Iterator<OMNamespace> it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                    ns = it.next();
-                    if (seenPrefixes.add(ns.getPrefix())) {
-                        handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
-                    }
-                }
-                OMContainer parent = current.getParent();
-                if (!(parent instanceof OMElement)) {
-                    break;
-                }
-                current = (OMElement)parent;
-            }
-        } else {
-            for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                ns = it.next();
-                handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
-            }
+        for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+            ns = it.next();
+            handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
         }
         for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
             OMAttribute attr = it.next();
@@ -120,7 +100,7 @@ public abstract class SerializerImpl implements Serializer {
                 handler.processAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
             }
         }
-        attributesCompleted();
+        handler.attributesCompleted();
     }
     
     /**
