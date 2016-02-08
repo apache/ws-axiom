@@ -107,7 +107,7 @@ public class StAXHelper {
      */
     private Exception parserException;
     
-    private int lookAheadToken = XMLStreamReader.START_DOCUMENT;
+    private int lookAheadToken;
     
     public StAXHelper(XMLStreamReader parser, XmlHandler handler, BuilderHandler builderHandler,
             Closeable closeable, boolean autoClose, PayloadSelector payloadSelector) {
@@ -118,13 +118,18 @@ public class StAXHelper {
         this.autoClose = autoClose;
         this.payloadSelector = payloadSelector;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
+        lookAheadToken = parser.getEventType();
+    }
+    
+    public StAXHelper(XMLStreamReader parser, XmlHandler handler) {
+        this(parser, handler, null, null, false, PayloadSelector.DEFAULT);
     }
 
     private static String normalize(String s) {
         return s == null ? "" : s;
     }
     
-    private void createOMText(int textType) throws StreamException {
+    private void processText(int textType) throws StreamException {
         if (textType == XMLStreamConstants.CHARACTERS && dataHandlerReader != null && dataHandlerReader.isBinary()) {
             TextContent data;
             if (dataHandlerReader.isDeferred()) {
@@ -232,11 +237,13 @@ public class StAXHelper {
      * @throws OMException
      */
     public int next() throws OMException {
-        if (!builderHandler.cache) {
-            throw new IllegalStateException("Can't process next node because caching is disabled");
-        }
-        if (builderHandler.done) {
-            throw new OMException();
+        if (builderHandler != null) {
+            if (!builderHandler.cache) {
+                throw new IllegalStateException("Can't process next node because caching is disabled");
+            }
+            if (builderHandler.done) {
+                throw new OMException();
+            }
         }
         int token = parserNext();
         
@@ -248,13 +255,13 @@ public class StAXHelper {
                     handler.startDocument(parser.getEncoding(), parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
                     break;
                 case XMLStreamConstants.START_ELEMENT: {
-                    createNextOMElement();
+                    processElement();
                     break;
                 }
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.CDATA:
                 case XMLStreamConstants.SPACE:
-                    createOMText(token);
+                    processText(token);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     handler.endElement();
@@ -266,7 +273,7 @@ public class StAXHelper {
                     handler.processComment(parser.getText());
                     break;
                 case XMLStreamConstants.DTD:
-                    createDTD();
+                    processDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
                     handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
@@ -275,14 +282,14 @@ public class StAXHelper {
                     handler.processEntityReference(parser.getLocalName(), parser.getText());
                     break;
                 default :
-                    throw new OMException();
+                    throw new IllegalStateException();
             }
         } catch (StreamException ex) {
             throw new OMException(ex);
         }
         
         // TODO: this will fail if there is whitespace before the document element
-        if (token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
+        if (builderHandler != null && token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
             // We get here if the document has been discarded (by getDocumentElement(true)
             // or because the builder is linked to an OMSourcedElement) and
             // we just processed the END_ELEMENT event for the root element. In this case, we consume
@@ -304,23 +311,20 @@ public class StAXHelper {
         return token;
     }
     
-    /**
-     * Creates a new OMElement using either a CustomBuilder or 
-     * the default Builder mechanism.
-     * @throws StreamException 
-     */
-    private void createNextOMElement() throws StreamException {
+    private void processElement() throws StreamException {
         String namespaceURI = normalize(parser.getNamespaceURI());
         String localName = parser.getLocalName();
         String prefix = normalize(parser.getPrefix());
-        if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)
-                && createWithCustomBuilder(customBuilderForPayload)) {
-            return;
-        }
-        if (customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
-            CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
-            if (customBuilder != null && createWithCustomBuilder(customBuilder)) {
+        if (builderHandler != null) {
+            if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)
+                    && processWithCustomBuilder(customBuilderForPayload)) {
                 return;
+            }
+            if (customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
+                CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
+                if (customBuilder != null && processWithCustomBuilder(customBuilder)) {
+                    return;
+                }
             }
         }
         handler.startElement(namespaceURI, localName, prefix);
@@ -341,7 +345,7 @@ public class StAXHelper {
         handler.attributesCompleted();
     }
     
-    private boolean createWithCustomBuilder(CustomBuilder customBuilder) throws StreamException {
+    private boolean processWithCustomBuilder(CustomBuilder customBuilder) throws StreamException {
         
         String namespace = parser.getNamespaceURI();
         if (namespace == null) {
@@ -372,7 +376,7 @@ public class StAXHelper {
         }
     }
     
-    private void createDTD() throws StreamException {
+    private void processDTD() throws StreamException {
         DTDReader dtdReader;
         try {
             dtdReader = (DTDReader)parser.getProperty(DTDReader.PROPERTY);
@@ -380,7 +384,7 @@ public class StAXHelper {
             dtdReader = null;
         }
         if (dtdReader == null) {
-            throw new OMException("Cannot create OMDocType because the XMLStreamReader doesn't support the DTDReader extension");
+            throw new StreamException("Cannot process DTD events because the XMLStreamReader doesn't support the DTDReader extension");
         }
         String internalSubset = getDTDText();
         // Woodstox returns an empty string if there is no internal subset
@@ -455,7 +459,7 @@ public class StAXHelper {
                     parserException = ex;
                     throw ex;
                 }
-                if (event == XMLStreamConstants.END_DOCUMENT) {
+                if (builderHandler != null && event == XMLStreamConstants.END_DOCUMENT) {
                     if (builderHandler.cache && builderHandler.elementLevel != 0) {
                         throw new OMException("Unexpected END_DOCUMENT event");
                     }

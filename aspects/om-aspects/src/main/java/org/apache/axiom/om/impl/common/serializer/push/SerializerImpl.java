@@ -28,9 +28,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.CoreAttribute;
-import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
@@ -39,12 +37,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 public abstract class SerializerImpl implements Serializer {
     private final OMSerializable root;
@@ -125,78 +123,6 @@ public abstract class SerializerImpl implements Serializer {
         attributesCompleted();
     }
     
-    public final void copyEvent(XMLStreamReader reader, DataHandlerReader dataHandlerReader) throws StreamException {
-        try {
-            int eventType = reader.getEventType();
-            switch (eventType) {
-                case XMLStreamReader.DTD:
-                    DTDReader dtdReader;
-                    try {
-                        dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
-                    } catch (IllegalArgumentException ex) {
-                        dtdReader = null;
-                    }
-                    if (dtdReader == null) {
-                        throw new XMLStreamException("Cannot serialize the DTD because the XMLStreamReader doesn't support the DTDReader extension");
-                    }
-                    processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(), dtdReader.getSystemId(), reader.getText());
-                    break;
-                case XMLStreamReader.START_ELEMENT:
-                    handler.startElement(normalize(reader.getNamespaceURI()), reader.getLocalName(), normalize(reader.getPrefix()));
-                    for (int i=0, count=reader.getNamespaceCount(); i<count; i++) {
-                        handler.processNamespaceDeclaration(normalize(reader.getNamespacePrefix(i)), normalize(reader.getNamespaceURI(i)));
-                    }
-                    for (int i=0, count=reader.getAttributeCount(); i<count; i++) {
-                        handler.processAttribute(
-                                normalize(reader.getAttributeNamespace(i)),
-                                reader.getAttributeLocalName(i),
-                                normalize(reader.getAttributePrefix(i)),
-                                reader.getAttributeValue(i),
-                                reader.getAttributeType(i),
-                                reader.isAttributeSpecified(i));
-                    }
-                    attributesCompleted();
-                    break;
-                case XMLStreamReader.END_ELEMENT:
-                    endElement();
-                    break;
-                case XMLStreamReader.CHARACTERS:
-                    if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
-                        if (dataHandlerReader.isDeferred()) {
-                            writeDataHandler(dataHandlerReader.getDataHandlerProvider(),
-                                    dataHandlerReader.getContentID(), dataHandlerReader.isOptimized());
-                        } else {
-                            writeDataHandler(dataHandlerReader.getDataHandler(),
-                                    dataHandlerReader.getContentID(), dataHandlerReader.isOptimized());
-                        }
-                        break;
-                    }
-                    // Fall through
-                case XMLStreamReader.SPACE:
-                case XMLStreamReader.CDATA:
-                    writeText(eventType, reader.getText());
-                    break;
-                case XMLStreamReader.PROCESSING_INSTRUCTION:
-                    processProcessingInstruction(reader.getPITarget(), reader.getPIData());
-                    break;
-                case XMLStreamReader.COMMENT:
-                    processComment(reader.getText());
-                    break;
-                case XMLStreamReader.ENTITY_REFERENCE:
-                    processEntityReference(reader.getLocalName(), reader.getText());
-                    break;
-                default:
-                    throw new IllegalStateException();
-            }
-        } catch (XMLStreamException ex) {
-            throw new DeferredParsingException(ex);
-        }
-    }
-    
-    private static String normalize(String s) {
-        return s == null ? "" : s;
-    }
-    
     /**
      * Serialize the given data source.
      * 
@@ -213,21 +139,17 @@ public abstract class SerializerImpl implements Serializer {
         if (OMDataSourceUtil.isPullDataSource(dataSource)) {
             try {
                 XMLStreamReader reader = dataSource.getReader();
-                DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
-                int depth = 0;
-                int eventType;
-                // Note: the loop is constructed in such a way that we skip both START_DOCUMENT and END_DOCUMENT
-                while ((eventType = reader.next()) != XMLStreamReader.END_DOCUMENT) {
-                    if (eventType == XMLStreamReader.START_ELEMENT) {
-                        depth++;
-                    }
-                    if (depth > 0) {
-                        copyEvent(reader, dataHandlerReader);
-                    }
-                    if (eventType == XMLStreamReader.END_ELEMENT) {
-                        depth--;
-                    }
+                StAXHelper helper = new StAXHelper(reader, this);
+                while (helper.lookahead() != XMLStreamReader.START_ELEMENT) {
+                    helper.parserNext();
                 }
+                int depth = 0;
+                do {
+                    switch (helper.next()) {
+                        case XMLStreamReader.START_ELEMENT: depth++; break;
+                        case XMLStreamReader.END_ELEMENT: depth--; break;
+                    }
+                } while (depth > 0);
                 reader.close();
             } catch (XMLStreamException ex) {
                 // XMLStreamExceptions occurring while _writing_ are wrapped in an OutputException.

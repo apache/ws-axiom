@@ -34,8 +34,6 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -54,6 +52,7 @@ import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapp
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
+import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
@@ -65,7 +64,6 @@ import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
@@ -377,23 +375,10 @@ public aspect AxiomContainerSupport {
             // events from the underlying XMLStreamReader.
             if (!isComplete() && getBuilder() != null) {
                 Builder builder = (Builder)getBuilder();
-                XMLStreamReader reader = builder.disableCaching();
-                DataHandlerReader dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
-                boolean first = true;
+                StAXHelper helper = new StAXHelper(builder.disableCaching(), serializer);
                 int depth = 0;
                 loop: while (true) {
-                    int event;
-                    if (first) {
-                        event = reader.getEventType();
-                        first = false;
-                    } else {
-                        try {
-                            event = reader.next();
-                        } catch (XMLStreamException ex) {
-                            throw new DeferredParsingException(ex);
-                        }
-                    }
-                    switch (event) {
+                    switch (helper.lookahead()) {
                         case XMLStreamReader.START_ELEMENT:
                             depth++;
                             break;
@@ -414,7 +399,7 @@ public aspect AxiomContainerSupport {
                     }
                     // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
                     // the container. This is the responsibility of the caller.
-                    serializer.copyEvent(reader, dataHandlerReader);
+                    helper.next();
                 }
                 builder.reenableCaching(this);
             }

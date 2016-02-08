@@ -18,11 +18,16 @@
  */
 package org.apache.axiom.om.impl.stream;
 
+// TODO: update Javadoc
 /**
  * Wraps an exception thrown by the underlying API (StAX, SAX, etc.) while writing data.
  */
 public class StreamException extends Exception {
     private static final long serialVersionUID = 7173617216602466028L;
+
+    public StreamException(String message) {
+        super(message);
+    }
 
     public StreamException(String message, Throwable cause) {
         super(message, cause);
