@@ -20,11 +20,7 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.ext.stax.DTDReader;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -35,62 +31,21 @@ import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.util.stax.XMLEventUtils;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
-import org.apache.axiom.util.xml.QNameMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.namespace.QName;
 
 import java.io.Closeable;
 
-/**
- * Internal implementation class.
- */
-/* Implementation note about error handling
- * ----------------------------------------
- * 
- * Usually, code that uses StAX directly just stops processing of an XML document
- * once the first parsing error has been reported. However, since Axiom
- * uses deferred parsing, and client code accesses the XML infoset using
- * an object model, things are more complicated. Indeed, if the XML
- * document is not well formed, the corresponding error might be reported
- * as a runtime exception by any call to a method of an OM node.
- * 
- * Typically the client code will have some error handling that will intercept
- * runtime exceptions and take appropriate action. Very often this error handling
- * code might want to access the object model again, for example to log the request that caused the
- * failure. This causes no problem except if the runtime exception was caused by a
- * parsing error, in which case Axiom would again try to pull events from the parser.
- * 
- * This would lead to a situation where Axiom accesses a parser that has reported a parsing
- * error before. While one would expect that after a first error reported by the parser, all
- * subsequent invocations of the parser will fail, this is not the case for all parsers
- * (at least not in all situations). Instead, the parser might be left in an inconsistent
- * state after the error. E.g. AXIOM-34 describes a case where Woodstox
- * encounters an error in XMLStreamReader#getText() but continues to return
- * (incorrect) events afterwards. The explanation for this behaviour might be that
- * the situation described here is quite uncommon when StAX is used directly (i.e. not through
- * Axiom).
- * 
- * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
- * them during a call to next().
- */
 public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBuilderSupport {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
-    /** Field parser */
-    private XMLStreamReader parser;
+    private final StAXHelper helper;
 
     private final Detachable detachable;
-    private final Closeable closeable;
     
     // keeps the state of the parser access. if the parser is
     // accessed atleast once,this flag will be set
@@ -99,34 +54,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     private boolean parserAccessed = false;
     private String charEncoding = null;
     
-    /**
-     * Specifies whether the builder/parser should be automatically closed when the
-     * {@link XMLStreamConstants#END_DOCUMENT} event is reached.
-     */
-    private final boolean autoClose;
-    
-    private boolean _isClosed = false;              // Indicate if parser is closed
-
-    // Fields for Custom Builder implementation
-    private final PayloadSelector payloadSelector;
-    private CustomBuilder customBuilderForPayload;
-    private QNameMap<CustomBuilder> customBuilders;
-    private int maxDepthForCustomBuilders = -1;
-    
-    /**
-     * Reference to the {@link DataHandlerReader} extension of the parser, or <code>null</code> if
-     * the parser doesn't support this extension.
-     */
-    private DataHandlerReader dataHandlerReader;
-    
-    /**
-     * Stores exceptions thrown by the parser. Used to avoid accessing the parser
-     * again after is has thrown a parse exception.
-     */
-    private Exception parserException;
-    
-    private int lookAheadToken = XMLStreamReader.START_DOCUMENT;
-
     protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector,
             AxiomSourcedElement root) {
@@ -135,13 +62,9 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
-        this.parser = parser;
-        this.autoClose = autoClose;
+        helper = new StAXHelper(parser, handler, builderHandler, closeable, autoClose, payloadSelector);
         this.detachable = detachable;
-        this.closeable = closeable;
-        this.payloadSelector = payloadSelector;
         charEncoding = parser.getEncoding();
-        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
@@ -155,53 +78,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, element);
     }
     
-    private static String normalize(String s) {
-        return s == null ? "" : s;
-    }
-    
-    private void createOMText(int textType) throws StreamException {
-        if (textType == XMLStreamConstants.CHARACTERS && dataHandlerReader != null && dataHandlerReader.isBinary()) {
-            TextContent data;
-            if (dataHandlerReader.isDeferred()) {
-                data = new TextContent(dataHandlerReader.getContentID(),
-                        dataHandlerReader.getDataHandlerProvider(),
-                        dataHandlerReader.isOptimized());
-            } else {
-                try {
-                    data = new TextContent(dataHandlerReader.getContentID(),
-                            dataHandlerReader.getDataHandler(),
-                            dataHandlerReader.isOptimized());
-                } catch (XMLStreamException ex) {
-                    throw new OMException(ex);
-                }
-            }
-            handler.processCharacterData(data, false);
-        } else {
-            // Some parsers (like Woodstox) parse text nodes lazily and may throw a
-            // RuntimeException in getText()
-            String text;
-            try {
-                text = parser.getText();
-            } catch (RuntimeException ex) {
-                parserException = ex;
-                throw ex;
-            }
-            switch (textType) {
-                case XMLStreamConstants.CHARACTERS:
-                    handler.processCharacterData(text, false);
-                    break;
-                case XMLStreamConstants.SPACE:
-                    handler.processCharacterData(text, true);
-                    break;
-                case XMLStreamConstants.CDATA:
-                    handler.processCDATASection(text);
-                    break;
-                default:
-                    throw new IllegalStateException();
-            }
-        }
-    }
-
     private void discarded(AxiomContainer container) {
         container.discarded();
         if (builderHandler.discardTracker != null) {
@@ -245,7 +121,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         }
         int skipDepth = 0;
         loop: while (true) {
-            switch (parserNext()) {
+            switch (helper.parserNext()) {
                 case XMLStreamReader.START_ELEMENT:
                     skipDepth++;
                     break;
@@ -278,7 +154,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
 
     public final String getNamespaceURI() {
-        return parser.getNamespaceURI();
+        return helper.parser.getNamespaceURI();
     }
 
     /**
@@ -302,11 +178,11 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
 
     public final String getLocalName() {
-        return parser.getLocalName();
+        return helper.parser.getLocalName();
     }
 
     public final String getPrefix() {
-        return parser.getPrefix();
+        return helper.parser.getPrefix();
     }
 
     /**
@@ -346,7 +222,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
                 discarded(current);
             }
             builderHandler.target = null;
-            return parser;
+            return helper.parser;
         } else {
             throw new IllegalStateException(
                     "cache must be switched off to access the parser");
@@ -357,11 +233,11 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         builderHandler.cache = false;
         // Always advance to the event right after the current node; this also takes
         // care of lookahead
-        parserNext();
+        helper.parserNext();
         if (log.isDebugEnabled()) {
             log.debug("Caching disabled; current element level is " + builderHandler.elementLevel);
         }
-        return parser;
+        return helper.parser;
     }
     
     // This method expects that the parser is currently positioned on the
@@ -388,7 +264,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
             builderHandler.done = true;
         } else if (builderHandler.elementLevel == 0 && builderHandler.document == null) {
             // Consume the remaining event; for the rationale, see StAXOMBuilder#next()
-            while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+            while (helper.parserNext() != XMLStreamConstants.END_DOCUMENT) {
                 // Just loop
             }
             builderHandler.target = null;
@@ -399,31 +275,19 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
         if (log.isDebugEnabled()) {
             log.debug("Caching re-enabled; new element level: " + builderHandler.elementLevel + "; done=" + builderHandler.done);
         }
-        if (builderHandler.done && autoClose) {
+        if (builderHandler.done && helper.autoClose) {
             close();
         }
         builderHandler.cache = true;
     }
 
     public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
-        CustomBuilder old = null;
-        if (customBuilders == null) {
-            customBuilders = new QNameMap<CustomBuilder>();
-        } else {
-            old = customBuilders.get(qName);
-        }
-        maxDepthForCustomBuilders = 
-                (maxDepthForCustomBuilders > maxDepth) ?
-                        maxDepthForCustomBuilders: maxDepth;
-        customBuilders.put(qName, customBuilder);
-        return old;
+        return helper.registerCustomBuilder(qName, maxDepth, customBuilder);
     }
     
     
     public final CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
-        CustomBuilder old = null;
-        this.customBuilderForPayload = customBuilder;
-        return old;
+        return helper.registerCustomBuilderForPayload(customBuilder);
     }
     
     public final String getCharsetEncoding() {
@@ -431,34 +295,11 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
 
     public final void close() {
-        try {
-            if (!isClosed()) {
-                parser.close();
-                if (closeable != null) {
-                    closeable.close();
-                }
-            }
-        } catch (Throwable e) {
-            // Can't see a reason why we would want to surface an exception
-            // while closing the parser.
-            if (log.isDebugEnabled()) {
-                log.debug("Exception occurred during parser close.  " +
-                                "Processing continues. " + e);
-            }
-        } finally {
-            _isClosed = true;
-            builderHandler.done = true;
-            // Release the parser so that it can be GC'd or reused. This is important because the
-            // object model keeps a reference to the builder even after the builder is complete.
-            parser = null;
-        }
+        helper.close();
     }
 
     public final Object getReaderProperty(String name) throws IllegalArgumentException {
-        if (!isClosed()) {
-            return parser.getProperty(name);
-        } 
-        return null;
+        return helper.getReaderProperty(name);
     }
 
     /**
@@ -473,7 +314,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
     
     public final boolean isClosed() {
-        return _isClosed;
+        return helper.isClosed();
     }
     
     public final void detach() throws OMException {
@@ -496,197 +337,9 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
      * @throws OMException
      */
     public int next() throws OMException {
-        if (!builderHandler.cache) {
-            throw new IllegalStateException("Can't process next node because caching is disabled");
-        }
-        if (builderHandler.done) {
-            throw new OMException();
-        }
-        int token = parserNext();
-        
-        // Note: if autoClose is enabled, then the parser may be null at this point
-        
-        try {
-            switch (token) {
-                case XMLStreamConstants.START_DOCUMENT:
-                    handler.startDocument(charEncoding, parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
-                    break;
-                case XMLStreamConstants.START_ELEMENT: {
-                    createNextOMElement();
-                    break;
-                }
-                case XMLStreamConstants.CHARACTERS:
-                case XMLStreamConstants.CDATA:
-                case XMLStreamConstants.SPACE:
-                    createOMText(token);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    handler.endElement();
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    handler.endDocument();
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    handler.processComment(parser.getText());
-                    break;
-                case XMLStreamConstants.DTD:
-                    createDTD();
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    handler.processEntityReference(parser.getLocalName(), parser.getText());
-                    break;
-                default :
-                    throw new OMException();
-            }
-        } catch (StreamException ex) {
-            throw new OMException(ex);
-        }
-        
-        // TODO: this will fail if there is whitespace before the document element
-        if (token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
-            // We get here if the document has been discarded (by getDocumentElement(true)
-            // or because the builder is linked to an OMSourcedElement) and
-            // we just processed the END_ELEMENT event for the root element. In this case, we consume
-            // the remaining events until we reach the end of the document. This serves several purposes:
-            //  * It allows us to detect documents that have an epilog that is not well formed.
-            //  * Many parsers will perform some cleanup when the end of the document is reached.
-            //    For example, Woodstox will recycle the symbol table if the parser gets past the
-            //    last END_ELEMENT. This improves performance because Woodstox by default interns
-            //    all symbols; if the symbol table can be recycled, then this reduces the number of
-            //    calls to String#intern().
-            //  * If autoClose is set, the parser will be closed so that even more resources
-            //    can be released.
-            while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                // Just loop
-            }
-            builderHandler.done = true;
-        }
-        
-        return token;
+        return helper.next();
     }
     
-    /**
-     * Creates a new OMElement using either a CustomBuilder or 
-     * the default Builder mechanism.
-     * @throws StreamException 
-     */
-    private void createNextOMElement() throws StreamException {
-        String namespaceURI = normalize(parser.getNamespaceURI());
-        String localName = parser.getLocalName();
-        String prefix = normalize(parser.getPrefix());
-        if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)
-                && createWithCustomBuilder(customBuilderForPayload)) {
-            return;
-        }
-        if (customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
-            CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
-            if (customBuilder != null && createWithCustomBuilder(customBuilder)) {
-                return;
-            }
-        }
-        handler.startElement(namespaceURI, localName, prefix);
-        for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
-            handler.processNamespaceDeclaration(
-                    normalize(parser.getNamespacePrefix(i)),
-                    normalize(parser.getNamespaceURI(i)));
-        }
-        for (int i = 0, count = parser.getAttributeCount(); i < count; i++) {
-            handler.processAttribute(
-                    normalize(parser.getAttributeNamespace(i)),
-                    parser.getAttributeLocalName(i),
-                    normalize(parser.getAttributePrefix(i)),
-                    parser.getAttributeValue(i),
-                    parser.getAttributeType(i),
-                    parser.isAttributeSpecified(i));
-        }
-        handler.attributesCompleted();
-    }
-    
-    private boolean createWithCustomBuilder(CustomBuilder customBuilder) throws StreamException {
-        
-        String namespace = parser.getNamespaceURI();
-        if (namespace == null) {
-            namespace = "";
-        }
-        String localPart = parser.getLocalName();
-        
-        if (log.isDebugEnabled()) {
-            log.debug("Invoking CustomBuilder, " + customBuilder.toString() + 
-                      ", to the OMNode for {" + namespace + "}" + localPart);
-        }
-        
-        OMDataSource ds = customBuilder.create(parser);
-        if (ds == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("The CustomBuilder, " + customBuilder.toString() + 
-                        " did not construct an OMDataSource for {" + namespace + "}" + localPart +
-                        ". The OMElement will be constructed using the installed stax om builder");
-            }
-            return false;
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("The CustomBuilder, " + customBuilder.toString() + 
-                          "successfully constructed the OMDataSource for {" + namespace + "}" + localPart);
-            }
-            handler.processOMDataSource(namespace, localPart, ds);
-            return true;
-        }
-    }
-    
-    private void createDTD() throws StreamException {
-        DTDReader dtdReader;
-        try {
-            dtdReader = (DTDReader)parser.getProperty(DTDReader.PROPERTY);
-        } catch (IllegalArgumentException ex) {
-            dtdReader = null;
-        }
-        if (dtdReader == null) {
-            throw new OMException("Cannot create OMDocType because the XMLStreamReader doesn't support the DTDReader extension");
-        }
-        String internalSubset = getDTDText();
-        // Woodstox returns an empty string if there is no internal subset
-        if (internalSubset != null && internalSubset.length() == 0) {
-            internalSubset = null;
-        }
-        handler.processDocumentTypeDeclaration(dtdReader.getRootName(), dtdReader.getPublicId(),
-                dtdReader.getSystemId(), internalSubset);
-    }
-    
-    /**
-     * The getText() method for a DOCTYPE returns the 
-     * subset of the DOCTYPE (not the direct infoset).
-     * This may force the parser to get information from 
-     * the network.
-     * @return doctype subset
-     * @throws OMException
-     */
-    private String getDTDText() throws OMException { 
-        String text = null;
-        try {
-            text = parser.getText();
-        } catch (RuntimeException e) {
-            // Woodstox (and perhaps other parsers)
-            // attempts to load the external subset even if
-            // external enties is false.  So ignore this error
-            // if external entity support is explicitly disabled.
-            Boolean b = (Boolean) parser.getProperty(
-                   XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
-            if (b == null || b == Boolean.TRUE) {
-                throw e;
-            }
-            if (log.isDebugEnabled()) {
-                log.debug("An exception occurred while calling getText() for a DOCTYPE.  " +
-                                "The exception is ignored because external " +
-                                "entites support is disabled.  " +
-                                "The ignored exception is " + e);
-            }
-        }
-        return text;
-    }
-
     public final OMElement getDocumentElement() {
         return getDocumentElement(false);
     }
@@ -701,53 +354,6 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
     }
 
     /**
-     * Pushes the virtual parser ahead one token.
-     * If a look ahead token was calculated it is returned.
-     * @return next token
-     * @throws DeferredParsingException
-     */
-    private int parserNext() {
-        if (lookAheadToken >= 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("Consuming look-ahead token " + XMLEventUtils.getEventTypeString(lookAheadToken));
-            }
-            int token = lookAheadToken;
-            lookAheadToken = -1; // Reset
-            return token;
-        } else {
-            try {
-                if (parserException != null) {
-                    log.warn("Attempt to access a parser that has thrown a parse exception before; " +
-                    		"rethrowing the original exception.");
-                    if (parserException instanceof XMLStreamException) {
-                        throw (XMLStreamException)parserException;
-                    } else {
-                        throw (RuntimeException)parserException;
-                    }
-                }
-                int event;
-                try {
-                    event = parser.next();
-                } catch (XMLStreamException ex) {
-                    parserException = ex;
-                    throw ex;
-                }
-                if (event == XMLStreamConstants.END_DOCUMENT) {
-                    if (builderHandler.cache && builderHandler.elementLevel != 0) {
-                        throw new OMException("Unexpected END_DOCUMENT event");
-                    }
-                    if (autoClose) {
-                        close();
-                    }
-                }
-                return event;
-            } catch (XMLStreamException ex) {
-                throw new DeferredParsingException(ex);
-            }
-        }
-    }
-    
-    /**
      * Look ahead to the next event. This method advanced the parser to the next event, but defers
      * creation of the corresponding node to the next call of {@link #next()}.
      * 
@@ -757,10 +363,7 @@ public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBui
      *         {@link #getNamespaceURI()} and {@link #getPrefix()}.
      */
     public final int lookahead() {
-        if (lookAheadToken < 0) {
-            lookAheadToken = parserNext();
-        }
-        return lookAheadToken;
+        return helper.lookahead();
     }
 
     public final AxiomContainer getTarget() {
