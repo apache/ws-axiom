@@ -20,8 +20,8 @@ package org.apache.axiom.om.impl.mixin;
 
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public aspect AxiomDocTypeSupport {
     public final int AxiomDocType.getType() {
@@ -32,8 +32,8 @@ public aspect AxiomDocTypeSupport {
         return coreGetRootName();
     }
 
-    public final void AxiomDocType.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
-        serializer.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
+    public final void AxiomDocType.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+        handler.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
     
     public final void AxiomDocType.buildWithAttachments() {

@@ -21,8 +21,8 @@ package org.apache.axiom.om.impl.mixin;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public aspect AxiomProcessingInstructionSupport {
     public final int AxiomProcessingInstruction.getType() {
@@ -41,8 +41,8 @@ public aspect AxiomProcessingInstructionSupport {
         coreSetCharacterData(value, AxiomSemantics.INSTANCE);
     }
     
-    public final void AxiomProcessingInstruction.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
-        serializer.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+    public final void AxiomProcessingInstruction.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+        handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
     }
     
     public final void AxiomProcessingInstruction.buildWithAttachments() {

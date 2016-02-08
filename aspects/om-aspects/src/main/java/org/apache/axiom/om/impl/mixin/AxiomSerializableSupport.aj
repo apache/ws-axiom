@@ -44,7 +44,7 @@ public aspect AxiomSerializableSupport {
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
-            internalSerialize(new StAXSerializer(this, writer), writer.getOutputFormat(), cache);
+            internalSerialize(new StAXSerializer(writer).buildHandler(this), writer.getOutputFormat(), cache);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }

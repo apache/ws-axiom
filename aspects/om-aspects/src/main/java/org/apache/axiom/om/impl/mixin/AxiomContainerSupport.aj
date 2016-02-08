@@ -60,8 +60,8 @@ import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -295,7 +295,7 @@ public aspect AxiomContainerSupport {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), format, true);
+                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, true);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -310,7 +310,7 @@ public aspect AxiomContainerSupport {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), format, true);
+                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, true);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -324,7 +324,7 @@ public aspect AxiomContainerSupport {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), format, false);
+                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, false);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -340,7 +340,7 @@ public aspect AxiomContainerSupport {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer(this, writer), format, false);
+                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, false);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -349,7 +349,7 @@ public aspect AxiomContainerSupport {
         }
     }
 
-    final void AxiomContainer.serializeChildren(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
+    final void AxiomContainer.serializeChildren(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
             Builder builder = (Builder)getBuilder();
             if (builder != null) {
@@ -360,14 +360,14 @@ public aspect AxiomContainerSupport {
         if (cache) {
             AxiomChildNode child = (AxiomChildNode)getFirstOMChild();
             while (child != null) {
-                child.internalSerialize(serializer, format, true);
+                child.internalSerialize(handler, format, true);
                 child = (AxiomChildNode)child.getNextOMSibling();
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
             AxiomChildNode child = (AxiomChildNode)coreGetFirstChildIfAvailable();
             while (child != null) {
-                child.internalSerialize(serializer, format, cache);
+                child.internalSerialize(handler, format, cache);
                 child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)
@@ -375,7 +375,7 @@ public aspect AxiomContainerSupport {
             // events from the underlying XMLStreamReader.
             if (!isComplete() && getBuilder() != null) {
                 Builder builder = (Builder)getBuilder();
-                StAXHelper helper = new StAXHelper(builder.disableCaching(), serializer);
+                StAXHelper helper = new StAXHelper(builder.disableCaching(), handler);
                 int depth = 0;
                 loop: while (true) {
                     switch (helper.lookahead()) {

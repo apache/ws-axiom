@@ -46,7 +46,7 @@ public class XMLReaderImpl extends AbstractXMLReader {
     
     private void parse() throws SAXException {
         try {
-            root.internalSerialize(new SAXSerializer(root, contentHandler, lexicalHandler),
+            root.internalSerialize(new SAXSerializer(contentHandler, lexicalHandler).buildHandler(root, false, true),
                     new OMOutputFormat(), cache);
         } catch (StreamException ex) {
             throw (SAXException)ex.getCause();

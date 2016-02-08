@@ -37,8 +37,8 @@ import org.apache.axiom.om.impl.common.builder.PushOMBuilder;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -400,20 +400,20 @@ public aspect AxiomSourcedElementSupport {
         }
     }
 
-    public void AxiomSourcedElement.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
+    public void AxiomSourcedElement.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache)
             throws StreamException {
         if (isExpanded()) {
-            defaultInternalSerialize(serializer, format, cache);
+            defaultInternalSerialize(handler, format, cache);
         } else if (cache) {
             if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
                 forceExpand();
-                defaultInternalSerialize(serializer, format, true);
+                defaultInternalSerialize(handler, format, true);
             } else {
                 // TODO: the serializer ignores namespaceURI and localName
-                serializer.processOMDataSource(null, null, dataSource);
+                handler.processOMDataSource(null, null, dataSource);
             }
         } else {
-            serializer.processOMDataSource(null, null, dataSource); 
+            handler.processOMDataSource(null, null, dataSource); 
         }
     }
 

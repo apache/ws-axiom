@@ -24,8 +24,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -128,13 +128,13 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    public void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache)
+    public void internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache)
             throws StreamException {
 
         if (!format.isIgnoreXMLDeclaration()) {
             String charSetEncoding = format.getCharSetEncoding();
             String xmlVersion = format.getXmlVersion();
-            serializer.startDocument(
+            handler.startDocument(
                     null,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION
                             : xmlVersion,
@@ -142,7 +142,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
                             : charSetEncoding,
                     true);
         }
-        super.internalSerialize(serializer, format, cache);
-        serializer.endDocument();
+        super.internalSerialize(handler, format, cache);
+        handler.endDocument();
     }
 }

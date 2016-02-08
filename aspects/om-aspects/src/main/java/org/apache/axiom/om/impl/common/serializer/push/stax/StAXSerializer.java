@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,11 +44,14 @@ public class StAXSerializer extends SerializerImpl {
     private final XMLStreamWriter writer;
     private DataHandlerWriter dataHandlerWriter;
     
-    public StAXSerializer(OMSerializable root, XMLStreamWriter writer) {
-        super(root, true, false);
+    public StAXSerializer(XMLStreamWriter writer) {
         this.writer = writer;
     }
 
+    public XmlHandler buildHandler(OMSerializable root) {
+        return buildHandler(root, true, false);
+    }
+    
     protected void serializePushOMDataSource(OMDataSource dataSource) throws StreamException {
         try {
             dataSource.serialize(writer);

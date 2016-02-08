@@ -27,7 +27,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
@@ -45,8 +44,7 @@ public class SAXSerializer extends SerializerImpl {
     private int depth;
     private final SAXHelper helper = new SAXHelper();
     
-    public SAXSerializer(OMSerializable root, ContentHandler contentHandler, LexicalHandler lexicalHandler) {
-        super(root, false, true);
+    public SAXSerializer(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }

@@ -18,33 +18,25 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
-import java.util.Iterator;
-
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 
-public abstract class SerializerImpl implements Serializer {
-    private final XmlHandler handler;
-    
+public abstract class SerializerImpl implements XmlHandler {
     /**
      * Constructor.
      * 
@@ -58,7 +50,7 @@ public abstract class SerializerImpl implements Serializer {
      *            indicates if the namespace context determined by the ancestors of the root node
      *            should be strictly preserved in the output
      */
-    public SerializerImpl(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
+    public XmlHandler buildHandler(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
         OMElement contextElement;
         if (root instanceof OMNode) {
             OMContainer parent = ((OMNode)root).getParent();
@@ -77,32 +69,9 @@ public abstract class SerializerImpl implements Serializer {
         if (namespaceRepairing) {
             handler = new NamespaceHelper(this, handler, contextElement);
         }
-        this.handler = handler;
+        return handler;
     }
 
-    public final void serializeStartpart(OMElement element) throws StreamException {
-        OMNamespace ns = element.getNamespace();
-        if (ns == null) {
-            handler.startElement("", element.getLocalName(), "");
-        } else {
-            handler.startElement(ns.getNamespaceURI(), element.getLocalName(), ns.getPrefix());
-        }
-        for (Iterator<OMNamespace> it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            ns = it.next();
-            handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
-        }
-        for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = it.next();
-            ns = attr.getNamespace();
-            if (ns == null) {
-                handler.processAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
-            } else {
-                handler.processAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
-            }
-        }
-        handler.attributesCompleted();
-    }
-    
     /**
      * Serialize the given data source.
      * 

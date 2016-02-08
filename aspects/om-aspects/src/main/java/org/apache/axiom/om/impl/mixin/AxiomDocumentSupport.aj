@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public aspect AxiomDocumentSupport {
     public final OMElement AxiomDocument.getOMDocumentElement() {
@@ -45,12 +45,12 @@ public aspect AxiomDocumentSupport {
         }
     }
 
-    public final void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
-        internalSerialize(serializer, format, cache, !format.isIgnoreXMLDeclaration());
+    public final void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+        internalSerialize(handler, format, cache, !format.isIgnoreXMLDeclaration());
     }
 
     // Overridden in AxiomSOAPMessageSupport
-    public void AxiomDocument.internalSerialize(Serializer serializer, OMOutputFormat format,
+    public void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format,
             boolean cache, boolean includeXMLDeclaration) throws StreamException {
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
@@ -63,10 +63,10 @@ public aspect AxiomDocumentSupport {
             if (version == null) {
                 version = "1.0";
             }
-            serializer.startDocument(null, version, encoding, true);
+            handler.startDocument(null, version, encoding, true);
         }
-        serializeChildren(serializer, format, cache);
-        serializer.endDocument();
+        serializeChildren(handler, format, cache);
+        handler.endDocument();
     }
 
     public final String AxiomDocument.getCharsetEncoding() {

@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {
     OMXMLParserWrapper getBuilder();
@@ -36,5 +37,5 @@ public interface AxiomSerializable extends OMSerializable, AxiomInformationItem 
      * @param cache indicates if caching should be enabled
      * @throws StreamException 
      */
-    void internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException;
+    void internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException;
 }

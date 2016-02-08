@@ -21,15 +21,15 @@ package org.apache.axiom.om.impl.mixin;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public aspect AxiomCDATASectionSupport {
     public final int AxiomCDATASection.getType() {
         return OMNode.CDATA_SECTION_NODE;
     }
 
-    public final void AxiomCDATASection.internalSerialize(Serializer serializer, OMOutputFormat format, boolean cache) throws StreamException {
-        serializer.processCDATASection(coreGetCharacterData().toString());
+    public final void AxiomCDATASection.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+        handler.processCDATASection(coreGetCharacterData().toString());
     }
 }

@@ -63,8 +63,8 @@ import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
-import org.apache.axiom.om.impl.intf.Serializer;
 import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -524,16 +524,35 @@ public aspect AxiomElementSupport {
         return findNamespaceURI("");
     }
 
-    public void AxiomElement.internalSerialize(Serializer serializer, OMOutputFormat format,
+    public void AxiomElement.internalSerialize(XmlHandler handler, OMOutputFormat format,
             boolean cache) throws StreamException {
-        defaultInternalSerialize(serializer, format, cache);
+        defaultInternalSerialize(handler, format, cache);
     }
     
-    public final void AxiomElement.defaultInternalSerialize(Serializer serializer, OMOutputFormat format,
+    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, OMOutputFormat format,
             boolean cache) throws StreamException {
-        serializer.serializeStartpart(this);
-        serializeChildren(serializer, format, cache);
-        serializer.endElement();
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            handler.startElement("", getLocalName(), "");
+        } else {
+            handler.startElement(ns.getNamespaceURI(), getLocalName(), ns.getPrefix());
+        }
+        for (Iterator<OMNamespace> it = getAllDeclaredNamespaces(); it.hasNext(); ) {
+            ns = it.next();
+            handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
+        }
+        for (Iterator<OMAttribute> it = getAllAttributes(); it.hasNext(); ) {
+            OMAttribute attr = it.next();
+            ns = attr.getNamespace();
+            if (ns == null) {
+                handler.processAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
+            } else {
+                handler.processAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
+            }
+        }
+        handler.attributesCompleted();
+        serializeChildren(handler, format, cache);
+        handler.endElement();
     }
 
     public final String AxiomElement.toStringWithConsume() throws XMLStreamException {
