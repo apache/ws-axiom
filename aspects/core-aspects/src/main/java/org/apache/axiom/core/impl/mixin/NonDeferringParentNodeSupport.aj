@@ -16,13 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreCommentSupport {
-    public final NodeType CoreComment.coreGetNodeType() {
-        return NodeType.COMMENT;
+import org.apache.axiom.core.NonDeferringParentNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
+
+public aspect NonDeferringParentNodeSupport {
+    public final OMXMLParserWrapper NonDeferringParentNode.getBuilder() {
+        return null;
+    }
+
+    public final void NonDeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
     }
     
-    public final <T> void CoreComment.init(ClonePolicy<T> policy, T options, CoreNode other) {
+    public final void NonDeferringParentNode.build() {
     }
 }

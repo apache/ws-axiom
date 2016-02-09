@@ -16,24 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl;
 
-public aspect CoreProcessingInstructionSupport {
-    private String CoreProcessingInstruction.target;
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.Semantics;
 
-    public final NodeType CoreProcessingInstruction.coreGetNodeType() {
-        return NodeType.PROCESSING_INSTRUCTION;
+public final class NodesIterator<S> extends AbstractNodeIterator<CoreNode,S> {
+    public NodesIterator(CoreParentNode startNode, Axis axis,
+            Mapper<? super CoreNode, S> mapper, Semantics semantics) {
+        super(startNode, axis, CoreNode.class, mapper, semantics);
     }
-    
-    public final String CoreProcessingInstruction.coreGetTarget() {
-        return target;
-    }
-    
-    public final void CoreProcessingInstruction.coreSetTarget(String target) {
-        this.target = target;
-    }
-    
-    public final <T> void CoreProcessingInstruction.init(ClonePolicy<T> policy, T options, CoreNode other) {
-        target = ((CoreProcessingInstruction)other).target;
+
+    @Override
+    protected boolean matches(CoreNode node) throws CoreModelException {
+        return true;
     }
 }

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core;
 
-final class Content {
-    CoreChildNode firstChild;
-    CoreChildNode lastChild;
+public final class Content {
+    public CoreChildNode firstChild;
+    public CoreChildNode lastChild;
 }

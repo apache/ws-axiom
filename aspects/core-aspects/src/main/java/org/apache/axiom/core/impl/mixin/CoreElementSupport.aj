@@ -16,9 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
 import java.util.Iterator;
+
+import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.Semantics;
+import org.apache.axiom.core.impl.AttributeIterator;
 
 public aspect CoreElementSupport {
     private CoreAttribute CoreElement.firstAttribute;

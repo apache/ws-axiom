@@ -16,10 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl;
 
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
+
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.NodeIterator;
+import org.apache.axiom.core.Semantics;
 
 public abstract class AbstractNodeIterator<T extends CoreNode,S> implements NodeIterator<S> {
     private final CoreParentNode startNode;

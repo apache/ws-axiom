@@ -16,7 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
+
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.Semantics;
+import org.apache.axiom.core.impl.Flags;
 
 public aspect CoreAttributeSupport {
     /**

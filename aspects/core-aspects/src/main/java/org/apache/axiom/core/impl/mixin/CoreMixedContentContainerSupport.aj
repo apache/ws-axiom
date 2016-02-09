@@ -16,19 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.core.CoreMixedContentContainer;
+import org.apache.axiom.core.ElementAction;
 
-public aspect NonDeferringParentNodeSupport {
-    public final OMXMLParserWrapper NonDeferringParentNode.getBuilder() {
-        return null;
-    }
-
-    public final void NonDeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
-        throw new UnsupportedOperationException();
-    }
-    
-    public final void NonDeferringParentNode.build() {
+public aspect CoreMixedContentContainerSupport {
+    public final Object CoreMixedContentContainer.coreGetCharacterData(ElementAction elementAction) {
+        return internalGetCharacterData(elementAction);
     }
 }

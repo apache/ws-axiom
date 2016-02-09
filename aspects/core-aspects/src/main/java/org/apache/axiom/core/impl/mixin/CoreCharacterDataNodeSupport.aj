@@ -16,7 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
+
+import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.Semantics;
+import org.apache.axiom.core.impl.Flags;
 
 public aspect CoreCharacterDataNodeSupport {
     /**

@@ -16,13 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.Semantics;
+
+public final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
     private final Class<T> type;
     private final Mapper<T,S> mapper;
     private final Semantics semantics;
@@ -38,7 +43,7 @@ final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> 
         nextAttributeSet = true;
     }
     
-    static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
+    public static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
         CoreAttribute attribute = element.coreGetFirstAttribute();
         while (attribute != null && !type.isInstance(attribute)) {
             attribute = attribute.coreGetNextAttribute();

@@ -16,9 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl;
 
-final class ElementsIterator<T extends CoreElement,S> extends AbstractNodeIterator<T,S> {
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.Semantics;
+
+public final class ElementsIterator<T extends CoreElement,S> extends AbstractNodeIterator<T,S> {
     private final ElementMatcher<? super T> matcher;
     private final String namespaceURI;
     private final String name;

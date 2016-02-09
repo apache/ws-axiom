@@ -16,28 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-final class Flags {
-    private Flags() {}
-    
-    /**
-     * Defines the bit mask for the part of the flags that indicate the state of a
-     * {@link CoreParentNode}.
-     */
-    static final int STATE_MASK = 7;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.NodeType;
 
-    /**
-     * Used by {@link CoreChildNode} instances to indicate whether the node has a parent or not.
-     * This is necessary to interpret the meaning of the <code>owner</code> attribute if it refers
-     * to a document node (which may be the parent or simply the owner document).
-     */
-    static final int HAS_PARENT = 8;
+public aspect CoreNamespaceDeclarationSupport {
+    public final NodeType CoreNamespaceDeclaration.coreGetNodeType() {
+        return NodeType.NAMESPACE_DECLARATION;
+    }
     
-    static final int DEFAULT_ATTR = 16;
-    
-    /**
-     * Used to store the information returned by {@link CoreCharacterDataNode#coreIsIgnorable()}.
-     */
-    static final int IGNORABLE = 32;
+    public final <T> void CoreNamespaceDeclaration.init(ClonePolicy<T> policy, T options, CoreNode other) {
+        // TODO: this is correct but bad for performance with the Axiom API
+        coreSetDeclaredNamespace(((CoreNamespaceDeclaration)other).coreGetDeclaredPrefix(), "");
+    }
 }

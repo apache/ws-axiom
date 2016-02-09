@@ -16,8 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.Content;
+import org.apache.axiom.core.CoreCDATASection;
+import org.apache.axiom.core.CoreCharacterDataContainer;
+import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentFragment;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.ElementAction;
+import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.NodeFilter;
+import org.apache.axiom.core.NodeIterator;
+import org.apache.axiom.core.Semantics;
+import org.apache.axiom.core.impl.ElementsIterator;
+import org.apache.axiom.core.impl.Flags;
+import org.apache.axiom.core.impl.NodesIterator;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -296,12 +318,7 @@ public aspect CoreParentNodeSupport {
     }
     
     public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Mapper<? super CoreNode,T> mapper, Semantics semantics) {
-        return new AbstractNodeIterator<CoreNode,T>(this, axis, CoreNode.class, mapper, semantics) {
-            @Override
-            protected boolean matches(CoreNode node) throws CoreModelException {
-                return true;
-            }
-        };
+        return new NodesIterator<T>(this, axis, mapper, semantics);
     }
     
     public final <T extends CoreElement,S> NodeIterator<S> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<? super T,S> mapper, Semantics semantics) {

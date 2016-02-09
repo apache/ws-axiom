@@ -16,20 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreTypedAttribute;
 
-public aspect DeferringParentNodeSupport {
-    private OMXMLParserWrapper DeferringParentNode.builder;
-
-    public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
-        forceExpand();
-        return builder;
+public aspect CoreTypedAttributeSupport {
+    private String CoreTypedAttribute.type;
+    
+    public final String CoreTypedAttribute.coreGetType() {
+        return type;
     }
-
-    public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
-        this.builder = builder;
-        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
+    
+    public final void CoreTypedAttribute.coreSetType(String type) {
+        this.type = type;
+    }
+    
+    public final <T> void CoreTypedAttribute.init(ClonePolicy<T> policy, T options, CoreNode other) {
+        CoreTypedAttribute o = (CoreTypedAttribute)other;
+        initName(o);
+        coreSetType(o.coreGetType());
     }
 }

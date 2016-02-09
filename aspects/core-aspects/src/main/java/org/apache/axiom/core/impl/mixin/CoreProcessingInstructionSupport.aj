@@ -16,27 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreDocumentFragmentSupport {
-    private CoreDocument CoreDocumentFragment.ownerDocument;
-    
-    public final NodeType CoreDocumentFragment.coreGetNodeType() {
-        return NodeType.DOCUMENT_FRAGMENT;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreProcessingInstruction;
+import org.apache.axiom.core.NodeType;
+
+public aspect CoreProcessingInstructionSupport {
+    private String CoreProcessingInstruction.target;
+
+    public final NodeType CoreProcessingInstruction.coreGetNodeType() {
+        return NodeType.PROCESSING_INSTRUCTION;
     }
     
-    public final CoreNode CoreDocumentFragment.getRootOrOwnerDocument() {
-        if (ownerDocument == null) {
-            return this;
-        } else {
-            return ownerDocument;
-        }
+    public final String CoreProcessingInstruction.coreGetTarget() {
+        return target;
     }
     
-    public final void CoreDocumentFragment.coreSetOwnerDocument(CoreDocument document) {
-        ownerDocument = document;
+    public final void CoreProcessingInstruction.coreSetTarget(String target) {
+        this.target = target;
     }
     
-    public final <T> void CoreDocumentFragment.init(ClonePolicy<T> policy, T options, CoreNode other) {
+    public final <T> void CoreProcessingInstruction.init(ClonePolicy<T> policy, T options, CoreNode other) {
+        target = ((CoreProcessingInstruction)other).target;
     }
 }

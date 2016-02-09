@@ -16,14 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreCharacterDataContainingParentNodeSupport {
-    public final Object CoreCharacterDataContainingParentNode.coreGetCharacterData() {
-        Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
-        if (characterData == null) {
-            throw new IllegalStateException();
-        }
-        return characterData;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNSUnawareElement;
+import org.apache.axiom.core.NodeType;
+
+public aspect CoreNSUnawareElementSupport {
+    public final NodeType CoreNSUnawareElement.coreGetNodeType() {
+        return NodeType.NS_UNAWARE_ELEMENT;
+    }
+    
+    public final String CoreNSUnawareElement.getImplicitNamespaceURI(String prefix) {
+        return null;
+    }
+
+    public final String CoreNSUnawareElement.getImplicitPrefix(String namespaceURI) {
+        return null;
+    }
+    
+    final void CoreNSUnawareElement.copyName(CoreElement clone) {
+        ((CoreNSUnawareElement)clone).coreSetName(coreGetName());
     }
 }

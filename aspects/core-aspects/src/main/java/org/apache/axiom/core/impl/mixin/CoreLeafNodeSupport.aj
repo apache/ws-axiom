@@ -16,22 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreTypedAttributeSupport {
-    private String CoreTypedAttribute.type;
-    
-    public final String CoreTypedAttribute.coreGetType() {
-        return type;
-    }
-    
-    public final void CoreTypedAttribute.coreSetType(String type) {
-        this.type = type;
-    }
-    
-    public final <T> void CoreTypedAttribute.init(ClonePolicy<T> policy, T options, CoreNode other) {
-        CoreTypedAttribute o = (CoreTypedAttribute)other;
-        initName(o);
-        coreSetType(o.coreGetType());
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreLeafNode;
+import org.apache.axiom.core.CoreNode;
+
+public aspect CoreLeafNodeSupport {
+    public final <T> void CoreLeafNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
     }
 }

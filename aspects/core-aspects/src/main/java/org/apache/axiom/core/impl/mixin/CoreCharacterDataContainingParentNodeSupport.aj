@@ -16,15 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreNamespaceDeclarationSupport {
-    public final NodeType CoreNamespaceDeclaration.coreGetNodeType() {
-        return NodeType.NAMESPACE_DECLARATION;
-    }
-    
-    public final <T> void CoreNamespaceDeclaration.init(ClonePolicy<T> policy, T options, CoreNode other) {
-        // TODO: this is correct but bad for performance with the Axiom API
-        coreSetDeclaredNamespace(((CoreNamespaceDeclaration)other).coreGetDeclaredPrefix(), "");
+import org.apache.axiom.core.CoreCharacterDataContainingParentNode;
+import org.apache.axiom.core.ElementAction;
+
+public aspect CoreCharacterDataContainingParentNodeSupport {
+    public final Object CoreCharacterDataContainingParentNode.coreGetCharacterData() {
+        Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
+        if (characterData == null) {
+            throw new IllegalStateException();
+        }
+        return characterData;
     }
 }

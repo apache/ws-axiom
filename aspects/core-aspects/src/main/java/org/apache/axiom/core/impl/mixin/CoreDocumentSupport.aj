@@ -16,7 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
+
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.NodeType;
 
 public aspect CoreDocumentSupport {
     private String CoreDocument.inputEncoding;

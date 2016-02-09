@@ -16,18 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreNSAwareElementSupport {
-    public final NodeType CoreNSAwareElement.coreGetNodeType() {
-        return NodeType.NS_AWARE_ELEMENT;
+import org.apache.axiom.core.CoreNSUnawareNamedNode;
+import org.apache.axiom.core.CoreNamedNode;
+
+public aspect CoreNSUnawareNamedNodeSupport {
+    private String CoreNSUnawareNamedNode.name;
+
+    public final String CoreNSUnawareNamedNode.coreGetName() {
+        return name;
     }
     
-    public final String CoreNSAwareElement.getImplicitNamespaceURI(String prefix) {
-        return prefix.equals(coreGetPrefix()) ? coreGetNamespaceURI() : null;
+    public final void CoreNSUnawareNamedNode.coreSetName(String name) {
+        this.name = name;
     }
-
-    public final String CoreNSAwareElement.getImplicitPrefix(String namespaceURI) {
-        return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
+    
+    public final void CoreNSUnawareNamedNode.initName(CoreNamedNode other) {
+        coreSetName(((CoreNSUnawareNamedNode)other).coreGetName());
     }
 }

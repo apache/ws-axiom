@@ -16,20 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreNSUnawareNamedNodeSupport {
-    private String CoreNSUnawareNamedNode.name;
+import org.apache.axiom.core.DeferringParentNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
-    public final String CoreNSUnawareNamedNode.coreGetName() {
-        return name;
+public aspect DeferringParentNodeSupport {
+    private OMXMLParserWrapper DeferringParentNode.builder;
+
+    public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
+        forceExpand();
+        return builder;
     }
-    
-    public final void CoreNSUnawareNamedNode.coreSetName(String name) {
-        this.name = name;
-    }
-    
-    public final void CoreNSUnawareNamedNode.initName(CoreNamedNode other) {
-        coreSetName(((CoreNSUnawareNamedNode)other).coreGetName());
+
+    public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
+        this.builder = builder;
+        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
     }
 }

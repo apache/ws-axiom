@@ -16,9 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreLeafNodeSupport {
-    public final <T> void CoreLeafNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
+import org.apache.axiom.core.CoreNSUnawareAttribute;
+import org.apache.axiom.core.NodeType;
+
+public aspect CoreNSUnawareAttributeSupport {
+    public final NodeType CoreNSUnawareAttribute.coreGetNodeType() {
+        return NodeType.NS_UNAWARE_ATTRIBUTE;
     }
 }

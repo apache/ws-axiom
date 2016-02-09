@@ -16,8 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.Content;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentFragment;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.NodeFilter;
+import org.apache.axiom.core.Semantics;
+import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Builder;

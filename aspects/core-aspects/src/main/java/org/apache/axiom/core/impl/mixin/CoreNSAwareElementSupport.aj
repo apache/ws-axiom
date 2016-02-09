@@ -16,10 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreMixedContentContainerSupport {
-    public final Object CoreMixedContentContainer.coreGetCharacterData(ElementAction elementAction) {
-        return internalGetCharacterData(elementAction);
+import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.NodeType;
+
+public aspect CoreNSAwareElementSupport {
+    public final NodeType CoreNSAwareElement.coreGetNodeType() {
+        return NodeType.NS_AWARE_ELEMENT;
+    }
+    
+    public final String CoreNSAwareElement.getImplicitNamespaceURI(String prefix) {
+        return prefix.equals(coreGetPrefix()) ? coreGetNamespaceURI() : null;
+    }
+
+    public final String CoreNSAwareElement.getImplicitPrefix(String namespaceURI) {
+        return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
 }

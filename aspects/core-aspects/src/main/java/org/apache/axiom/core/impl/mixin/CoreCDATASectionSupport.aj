@@ -16,10 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
 
-public aspect CoreNSUnawareAttributeSupport {
-    public final NodeType CoreNSUnawareAttribute.coreGetNodeType() {
-        return NodeType.NS_UNAWARE_ATTRIBUTE;
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreCDATASection;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.NodeType;
+
+public aspect CoreCDATASectionSupport {
+    public final NodeType CoreCDATASection.coreGetNodeType() {
+        return NodeType.CDATA_SECTION;
+    }
+    
+    public final <T> void CoreCDATASection.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 }

@@ -16,7 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.core.impl.mixin;
+
+import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.CoreParentNode;
 
 public aspect CoreNodeSupport {
     int CoreNode.flags;
