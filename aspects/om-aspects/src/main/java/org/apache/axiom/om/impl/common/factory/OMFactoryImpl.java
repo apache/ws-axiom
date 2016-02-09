@@ -41,7 +41,6 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -216,18 +215,17 @@ public class OMFactoryImpl implements OMFactoryEx {
     }
 
     protected final <T extends AxiomElement> T createAxiomElement(Class<T> type,
-            OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder) {
+            OMContainer parent, String localName, OMNamespace ns) {
         T element = createNode(type);
-        element.coreSetBuilder(builder);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(element, builder != null);
+            ((AxiomContainer)parent).addChild(element, false);
         }
         element.initName(localName, ns, true);
         return element;
     }
 
     public final OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return createAxiomElement(AxiomElement.class, parent, localName, ns, null);
+        return createAxiomElement(AxiomElement.class, parent, localName, ns);
     }
 
     public final OMElement createOMElement(QName qname, OMContainer parent) {

@@ -98,7 +98,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
     
     public final SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return createAxiomElement(getSOAPHelper().getEnvelopeClass(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, null);
+        return createAxiomElement(getSOAPHelper().getEnvelopeClass(), null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns);
     }
 
     public final SOAPHeader createSOAPHeader(SOAPEnvelope parent) {
@@ -111,11 +111,11 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) {
-        return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), parent, localName, ns, null);
+        return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), parent, localName, ns);
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) {
-        return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), null, localName, ns, null);
+        return createAxiomElement(getSOAPHelper().getHeaderBlockClass(), null, localName, ns);
     }
 
     public final SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
