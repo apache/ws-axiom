@@ -21,6 +21,8 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMTextNode;
 import org.apache.axiom.om.impl.intf.AxiomText;
 import org.w3c.dom.DOMException;
@@ -36,22 +38,26 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
      * node has no data.
      */
     public Text splitText(int offset) throws DOMException {
-        String value = getData();
-        if (offset < 0 || offset > value.length()) {
-            throw newDOMException(DOMException.INDEX_SIZE_ERR);
+        try {
+            String value = getData();
+            if (offset < 0 || offset > value.length()) {
+                throw newDOMException(DOMException.INDEX_SIZE_ERR);
+            }
+            String newValue = value.substring(offset);
+            this.deleteData(offset, value.length());
+    
+            TextImpl newText = (TextImpl) this.getOwnerDocument().createTextNode(
+                    newValue);
+    
+            ParentNode parentNode = (ParentNode)coreGetParent();
+            if (parentNode != null) {
+                coreInsertSiblingAfter(newText);
+            }
+    
+            return newText;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        String newValue = value.substring(offset);
-        this.deleteData(offset, value.length());
-
-        TextImpl newText = (TextImpl) this.getOwnerDocument().createTextNode(
-                newValue);
-
-        ParentNode parentNode = (ParentNode)coreGetParent();
-        if (parentNode != null) {
-            coreInsertSiblingAfter(newText);
-        }
-
-        return newText;
     }
 
     // /

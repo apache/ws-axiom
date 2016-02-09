@@ -150,6 +150,6 @@ public final class DOMSemantics implements Semantics {
     };
 
     public RuntimeException toUncheckedException(CoreModelException ex) {
-        throw new IllegalArgumentException("Don't know how to translate " + ex.getClass().getName());
+        return DOMExceptionUtil.toUncheckedException(ex);
     }
 }

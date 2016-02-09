@@ -19,6 +19,8 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
 import org.apache.axiom.dom.DOMText;
 import org.apache.axiom.dom.DOMTextNode;
@@ -73,27 +75,31 @@ public aspect DOMTextNodeSupport {
     }
 
     public final Text DOMTextNode.replaceWholeText(String content) throws DOMException {
-        DOMText newText;
-        if (content.length() > 0) {
-            newText = coreGetNodeFactory().createNode(DOMText.class);
-            newText.coreSetCharacterData(content);
-        } else {
-            newText = null;
-        }
-        if (coreHasParent()) {
-            DOMTextNode first = getWholeTextStartNode();
-            DOMTextNode last = getWholeTextEndNode();
-            if (newText != null) {
-                first.coreInsertSiblingBefore(newText);
+        try {
+            DOMText newText;
+            if (content.length() > 0) {
+                newText = coreGetNodeFactory().createNode(DOMText.class);
+                newText.coreSetCharacterData(content);
+            } else {
+                newText = null;
             }
-            DOMTextNode current = first;
-            DOMTextNode next;
-            do {
-                next = current == last ? null : (DOMTextNode)current.coreGetNextSibling();
-                current.coreDetach(DOMSemantics.INSTANCE);
-                current = next;
-            } while (next != null);
+            if (coreHasParent()) {
+                DOMTextNode first = getWholeTextStartNode();
+                DOMTextNode last = getWholeTextEndNode();
+                if (newText != null) {
+                    first.coreInsertSiblingBefore(newText);
+                }
+                DOMTextNode current = first;
+                DOMTextNode next;
+                do {
+                    next = current == last ? null : (DOMTextNode)current.coreGetNextSibling();
+                    current.coreDetach(DOMSemantics.INSTANCE);
+                    current = next;
+                } while (next != null);
+            }
+            return newText;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        return newText;
     }
 }

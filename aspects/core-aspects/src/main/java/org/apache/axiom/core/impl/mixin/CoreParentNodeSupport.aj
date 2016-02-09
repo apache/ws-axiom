@@ -42,7 +42,6 @@ import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.impl.NodesIterator;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Builder;
@@ -112,7 +111,7 @@ public aspect CoreParentNodeSupport {
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
         } else if (((Builder)builder).isClosed()) {
-            throw new OMException("The builder has already been closed");
+            throw new IllegalStateException("The builder has already been closed");
         } else if (!builder.isCompleted()) {
             builder.next();
         } else {

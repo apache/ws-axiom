@@ -18,10 +18,12 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
@@ -41,19 +43,27 @@ public aspect AxiomChildNodeSupport {
     }
 
     public final void AxiomChildNode.insertSiblingAfter(OMNode sibling) throws OMException {
-        AxiomContainer parent = (AxiomContainer)getParent();
-        if (parent == null) {
-            throw new OMException("Parent can not be null");
+        try {
+            AxiomContainer parent = (AxiomContainer)getParent();
+            if (parent == null) {
+                throw new OMException("Parent can not be null");
+            }
+            coreInsertSiblingAfter(parent.prepareNewChild(sibling));
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
-        coreInsertSiblingAfter(parent.prepareNewChild(sibling));
     }
 
     public final void AxiomChildNode.insertSiblingBefore(OMNode sibling) throws OMException {
-        AxiomContainer parent = (AxiomContainer)getParent();
-        if (parent == null) {
-            throw new OMException("Parent can not be null");
+        try {
+            AxiomContainer parent = (AxiomContainer)getParent();
+            if (parent == null) {
+                throw new OMException("Parent can not be null");
+            }
+            coreInsertSiblingBefore(parent.prepareNewChild(sibling));
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
-        coreInsertSiblingBefore(parent.prepareNewChild(sibling));
     }
     
     public OMNode AxiomChildNode.detach() {

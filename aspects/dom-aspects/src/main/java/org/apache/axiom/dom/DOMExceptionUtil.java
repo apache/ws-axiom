@@ -22,6 +22,8 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.HierarchyException;
 import org.w3c.dom.DOMException;
 
 public final class DOMExceptionUtil {
@@ -63,6 +65,14 @@ public final class DOMExceptionUtil {
             return new DOMException(code, key);
         } else {
             return new DOMException(code, key + ": " + message);
+        }
+    }
+    
+    public static RuntimeException toUncheckedException(CoreModelException ex) {
+        if (ex instanceof HierarchyException) {
+            return newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        } else {
+            return new RuntimeException(ex);
         }
     }
 }

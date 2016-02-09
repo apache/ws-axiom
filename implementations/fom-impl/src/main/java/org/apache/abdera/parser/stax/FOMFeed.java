@@ -29,9 +29,11 @@ import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Source;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.AbderaEntry;
 import org.apache.axiom.fom.AbderaFeed;
+import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
@@ -84,14 +86,18 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
 
     @Override
     public void _addChild(AbderaElement element) {
-        if (!(element instanceof Entry)) {
-            AbderaElement entry = _getFirstChildWithName(ENTRY);
-            if (entry != null) {
-                entry.coreInsertSiblingBefore(element);
-                return;
+        try {
+            if (!(element instanceof Entry)) {
+                AbderaElement entry = _getFirstChildWithName(ENTRY);
+                if (entry != null) {
+                    entry.coreInsertSiblingBefore(element);
+                    return;
+                }
             }
+            coreAppendChild(element, false);
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
-        coreAppendChild(element, false);
     }
 
     public Feed sortEntriesByUpdated(boolean new_first) {

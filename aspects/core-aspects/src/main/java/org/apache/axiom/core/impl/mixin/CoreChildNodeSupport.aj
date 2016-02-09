@@ -24,13 +24,15 @@ import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.NoParentException;
 import org.apache.axiom.core.NodeFilter;
+import org.apache.axiom.core.SelfRelationshipException;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.om.NodeUnavailableException;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Builder;
 
 public aspect CoreChildNodeSupport {
@@ -112,7 +114,7 @@ public aspect CoreChildNodeSupport {
         this.previousSibling = previousSibling;
     }
     
-    public final CoreChildNode CoreChildNode.coreGetNextSibling() throws OMException {
+    public final CoreChildNode CoreChildNode.coreGetNextSibling() {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
             CoreParentNode parent = coreGetParent();
@@ -140,13 +142,12 @@ public aspect CoreChildNodeSupport {
         return sibling;
     }
     
-    public final void CoreChildNode.coreInsertSiblingAfter(CoreChildNode sibling) {
+    public final void CoreChildNode.coreInsertSiblingAfter(CoreChildNode sibling) throws CoreModelException {
         CoreParentNode parent = coreGetParent();
-        // TODO: don't use OMException here
         if (parent == null) {
-            throw new OMException("Parent can not be null");
+            throw new NoParentException("Parent can not be null");
         } else if (this == sibling) {
-            throw new OMException("Inserting self as the sibling is not allowed");
+            throw new SelfRelationshipException("Inserting self as the sibling is not allowed");
         }
         sibling.internalDetach(null, parent);
         CoreChildNode nextSibling = coreGetNextSibling();
@@ -160,13 +161,12 @@ public aspect CoreChildNodeSupport {
         this.nextSibling = sibling;
     }
     
-    public final void CoreChildNode.coreInsertSiblingBefore(CoreChildNode sibling) {
+    public final void CoreChildNode.coreInsertSiblingBefore(CoreChildNode sibling) throws CoreModelException {
         CoreParentNode parent = coreGetParent();
-        // TODO: don't use OMException here
         if (parent == null) {
-            throw new OMException("Parent can not be null");
+            throw new NoParentException("Parent can not be null");
         } else if (this == sibling) {
-            throw new OMException("Inserting self as the sibling is not allowed");
+            throw new SelfRelationshipException("Inserting self as the sibling is not allowed");
         }
         sibling.internalDetach(null, parent);
         sibling.nextSibling = this;
