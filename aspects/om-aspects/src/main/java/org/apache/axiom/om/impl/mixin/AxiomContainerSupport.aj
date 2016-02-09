@@ -421,4 +421,17 @@ public aspect AxiomContainerSupport {
             this.setComplete(true);
         }
     }
+
+    public final void AxiomContainer.close(boolean build) {
+        OMXMLParserWrapper builder = coreGetBuilder();
+        if (build) {
+            this.build();
+        }
+        setComplete(true);
+        
+        // If this is a StAXBuilder, close it.
+        if (builder instanceof Builder) {
+            ((Builder) builder).close();
+        }
+    }
 }

@@ -21,9 +21,7 @@ package org.apache.axiom.om.impl.mixin;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
@@ -49,18 +47,5 @@ public aspect AxiomSerializableSupport {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
         writer.flush();
-    }
-
-    public void AxiomSerializable.close(boolean build) {
-        OMXMLParserWrapper builder = coreGetBuilder();
-        if (build) {
-            this.build();
-        }
-        setComplete(true);
-        
-        // If this is a StAXBuilder, close it.
-        if (builder instanceof Builder) {
-            ((Builder) builder).close();
-        }
     }
 }

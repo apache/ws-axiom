@@ -69,4 +69,8 @@ public aspect AxiomLeafNodeSupport {
     public final void AxiomLeafNode.discard() throws OMException {
         detach();
     }
+
+    public final void AxiomLeafNode.close(boolean build) {
+        // No-op on leaf nodes
+    }
 }
