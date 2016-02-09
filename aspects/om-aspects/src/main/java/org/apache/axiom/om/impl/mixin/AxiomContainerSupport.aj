@@ -77,6 +77,10 @@ public aspect AxiomContainerSupport {
         coreSetState(DISCARDED);
     }
 
+    public final OMXMLParserWrapper AxiomContainer.getBuilder() {
+        return coreGetBuilder();
+    }
+
     public final XMLStreamReader AxiomContainer.getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
@@ -94,7 +98,7 @@ public aspect AxiomContainerSupport {
     }
     
     public final XMLStreamReader AxiomContainer.defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        OMXMLParserWrapper builder = getBuilder();
+        OMXMLParserWrapper builder = coreGetBuilder();
         if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
         }
@@ -160,7 +164,7 @@ public aspect AxiomContainerSupport {
     }
     
     public final void AxiomContainer.build() {
-        OMXMLParserWrapper builder = getBuilder();
+        OMXMLParserWrapper builder = coreGetBuilder();
         // builder is null. Meaning this is a programatical created element but it has children which are not completed
         // Build them all.
         if (builder == null && getState() == INCOMPLETE) {
@@ -351,7 +355,7 @@ public aspect AxiomContainerSupport {
 
     final void AxiomContainer.serializeChildren(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
-            Builder builder = (Builder)getBuilder();
+            Builder builder = (Builder)coreGetBuilder();
             if (builder != null) {
                 builder.debugDiscarded(this);
             }
@@ -373,8 +377,8 @@ public aspect AxiomContainerSupport {
             // Next, if the container is incomplete, disable caching (temporarily)
             // and serialize the nodes that have not been built yet by copying the
             // events from the underlying XMLStreamReader.
-            if (!isComplete() && getBuilder() != null) {
-                Builder builder = (Builder)getBuilder();
+            if (!isComplete() && coreGetBuilder() != null) {
+                Builder builder = (Builder)coreGetBuilder();
                 StAXHelper helper = new StAXHelper(builder.disableCaching(), handler);
                 int depth = 0;
                 loop: while (true) {
@@ -407,7 +411,7 @@ public aspect AxiomContainerSupport {
     }
 
     public final void AxiomContainer.notifyChildComplete() {
-        if (getState() == INCOMPLETE && getBuilder() == null) {
+        if (getState() == INCOMPLETE && coreGetBuilder() == null) {
             for (Iterator<OMNode> iterator = getChildren(); iterator.hasNext(); ) {
                 OMNode node = iterator.next();
                 if (!node.isComplete()) {

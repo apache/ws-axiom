@@ -137,7 +137,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
             // let's try to close the builder/parser here since we are now done with the
             // non-caching code block serializing the top-level SOAPEnvelope element
             // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
-            OMXMLParserWrapper builder = getBuilder();
+            OMXMLParserWrapper builder = coreGetBuilder();
             if ((builder != null) && (builder instanceof Builder)) {
                 try {
                     if (log.isDebugEnabled()) {

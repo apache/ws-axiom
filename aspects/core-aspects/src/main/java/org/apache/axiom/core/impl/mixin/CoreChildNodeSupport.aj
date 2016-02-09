@@ -118,10 +118,10 @@ public aspect CoreChildNodeSupport {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
             CoreParentNode parent = coreGetParent();
-            if (parent != null && parent.getBuilder() != null) {
+            if (parent != null && parent.coreGetBuilder() != null) {
                 switch (parent.getState()) {
                     case CoreParentNode.DISCARDED:
-                        ((Builder)parent.getBuilder()).debugDiscarded(parent);
+                        ((Builder)parent.coreGetBuilder()).debugDiscarded(parent);
                         throw new NodeUnavailableException();
                     case CoreParentNode.INCOMPLETE:
                         do {

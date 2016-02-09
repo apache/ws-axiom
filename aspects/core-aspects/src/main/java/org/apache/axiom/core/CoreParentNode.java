@@ -30,7 +30,7 @@ public interface CoreParentNode extends CoreNode {
     int DISCARDED = 3;
     int COMPACT = 4;
     
-    OMXMLParserWrapper getBuilder();
+    OMXMLParserWrapper coreGetBuilder();
     void coreSetBuilder(OMXMLParserWrapper builder);
     int getState();
     void coreSetState(int state);

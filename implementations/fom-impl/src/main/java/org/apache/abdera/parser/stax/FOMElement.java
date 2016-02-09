@@ -655,7 +655,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
      * consumed, only that that particular element has been completely parsed.
      */
     public <T extends Base> T complete() {
-        if (!isComplete() && getBuilder() != null)
+        if (!isComplete() && coreGetBuilder() != null)
             build();
         return (T)this;
     }

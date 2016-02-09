@@ -22,7 +22,7 @@ import org.apache.axiom.core.NonDeferringParentNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 public aspect NonDeferringParentNodeSupport {
-    public final OMXMLParserWrapper NonDeferringParentNode.getBuilder() {
+    public final OMXMLParserWrapper NonDeferringParentNode.coreGetBuilder() {
         return null;
     }
 

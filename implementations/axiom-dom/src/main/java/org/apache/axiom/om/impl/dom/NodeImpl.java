@@ -304,5 +304,5 @@ public abstract class NodeImpl implements DOMNode {
     // /OMNode methods
     // /
 
-    public abstract OMXMLParserWrapper getBuilder();
+    public abstract OMXMLParserWrapper coreGetBuilder();
 }

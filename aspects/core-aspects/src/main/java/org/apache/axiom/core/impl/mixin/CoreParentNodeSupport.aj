@@ -107,7 +107,7 @@ public aspect CoreParentNodeSupport {
     }
 
     public void CoreParentNode.buildNext() {
-        OMXMLParserWrapper builder = getBuilder();
+        OMXMLParserWrapper builder = coreGetBuilder();
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
         } else if (((Builder)builder).isClosed()) {
@@ -126,7 +126,7 @@ public aspect CoreParentNodeSupport {
         if (firstChild == null) {
             switch (getState()) {
                 case CoreParentNode.DISCARDED:
-                    ((Builder)getBuilder()).debugDiscarded(this);
+                    ((Builder)coreGetBuilder()).debugDiscarded(this);
                     throw new NodeUnavailableException();
                 case CoreParentNode.INCOMPLETE:
                     do {
@@ -214,12 +214,12 @@ public aspect CoreParentNodeSupport {
             // We need to call this first because if may modify the state (applies to OMSourcedElements)
             CoreChildNode child = coreGetFirstChildIfAvailable();
             boolean updateState;
-            if (getState() == INCOMPLETE && getBuilder() != null) {
+            if (getState() == INCOMPLETE && coreGetBuilder() != null) {
                 CoreChildNode lastChild = coreGetLastKnownChild();
                 if (lastChild instanceof CoreParentNode) {
                     ((CoreParentNode)lastChild).build();
                 }
-                ((Builder)getBuilder()).discard((OMContainer)this);
+                ((Builder)coreGetBuilder()).discard((OMContainer)this);
                 updateState = true;
             } else {
                 updateState = false;

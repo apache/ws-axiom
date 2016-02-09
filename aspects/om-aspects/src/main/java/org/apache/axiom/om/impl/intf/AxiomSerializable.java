@@ -25,7 +25,7 @@ import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {
-    OMXMLParserWrapper getBuilder();
+    OMXMLParserWrapper coreGetBuilder();
     
     void setComplete(boolean state);
 

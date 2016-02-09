@@ -241,8 +241,8 @@ public aspect AxiomElementSupport {
     }
 
     public final void AxiomElement.discard() {
-        if (getState() == CoreParentNode.INCOMPLETE && getBuilder() != null) {
-            ((Builder)getBuilder()).discard((OMContainer)this);
+        if (getState() == CoreParentNode.INCOMPLETE && coreGetBuilder() != null) {
+            ((Builder)coreGetBuilder()).discard((OMContainer)this);
         }
         detach();
     }

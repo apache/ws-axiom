@@ -35,7 +35,7 @@ public aspect CoreElementSupport {
     private CoreAttribute CoreElement.firstAttribute;
 
     final void CoreElement.beforeDetach() {
-        if (getState() == CoreParentNode.INCOMPLETE && getBuilder() == coreGetParent().getBuilder()) {
+        if (getState() == CoreParentNode.INCOMPLETE && coreGetBuilder() == coreGetParent().coreGetBuilder()) {
             build();
         }
     }

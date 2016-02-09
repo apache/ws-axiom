@@ -36,7 +36,7 @@ public aspect AxiomSOAPBodySupport {
     }
 
     private boolean AxiomSOAPBody.hasLookahead() {
-        StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+        StAXOMBuilder builder = (StAXOMBuilder)coreGetBuilder();
         if (builder != null && !builder.isCompleted() && builder.getTarget() == this) {
             CoreChildNode child = coreGetFirstChildIfAvailable();
             while (child != null) {
@@ -58,7 +58,7 @@ public aspect AxiomSOAPBodySupport {
     public final boolean AxiomSOAPBody.hasFault() {
         // Set hasSOAPFault if it matches the name matches a SOAP Fault
         if (hasLookahead()) {
-            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+            StAXOMBuilder builder = (StAXOMBuilder)coreGetBuilder();
             return SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(builder.getLocalName())
                     && getSOAPHelper().getEnvelopeURI().equals(builder.getNamespaceURI());
         } else {
@@ -68,7 +68,7 @@ public aspect AxiomSOAPBodySupport {
 
     public final OMNamespace AxiomSOAPBody.getFirstElementNS() {
         if (hasLookahead()) {
-            StAXOMBuilder builder = (StAXOMBuilder)getBuilder();
+            StAXOMBuilder builder = (StAXOMBuilder)coreGetBuilder();
             String ns = builder.getNamespaceURI();
             if (ns == null) {
                 return null;
@@ -88,7 +88,7 @@ public aspect AxiomSOAPBodySupport {
     
     public final String AxiomSOAPBody.getFirstElementLocalName() {
         if (hasLookahead()) {
-            return ((StAXOMBuilder)getBuilder()).getLocalName();
+            return ((StAXOMBuilder)coreGetBuilder()).getLocalName();
         } else {
             OMElement element = getFirstElement();
             if (element == null) {

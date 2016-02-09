@@ -52,7 +52,7 @@ public aspect AxiomSerializableSupport {
     }
 
     public void AxiomSerializable.close(boolean build) {
-        OMXMLParserWrapper builder = getBuilder();
+        OMXMLParserWrapper builder = coreGetBuilder();
         if (build) {
             this.build();
         }

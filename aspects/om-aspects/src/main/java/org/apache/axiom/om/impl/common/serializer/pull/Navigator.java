@@ -588,7 +588,7 @@ final class Navigator extends PullSerializerState
             } else {
                 CoreParentNode parent = current.coreGetParent();
                 node = parent;
-                if (parent.getState() == CoreParentNode.COMPLETE || parent.getState() == CoreParentNode.COMPACT || parent.getBuilder() == null) { // TODO: review this condition
+                if (parent.getState() == CoreParentNode.COMPLETE || parent.getState() == CoreParentNode.COMPACT || parent.coreGetBuilder() == null) { // TODO: review this condition
                     visited = true;
                     return true;
                 } else {
@@ -639,13 +639,13 @@ final class Navigator extends PullSerializerState
             namespaceCount = -1;
         } else {
             CoreParentNode container = (CoreParentNode)node;
-            Builder builder = (Builder)container.getBuilder();
+            Builder builder = (Builder)container.coreGetBuilder();
             int depth = 1;
             // Find the root node for the builder (i.e. the topmost node having the same
             // builder as the current node)
             while (container != rootNode && container instanceof CoreElement) {
                 CoreParentNode parent = ((CoreElement)container).coreGetParent();
-                if (parent.getBuilder() != builder) {
+                if (parent.coreGetBuilder() != builder) {
                     break;
                 }
                 container = parent;
@@ -676,7 +676,7 @@ final class Navigator extends PullSerializerState
         } else {
             container = ((CoreChildNode)node).coreGetParent();
         }
-        OMXMLParserWrapper builder = container.getBuilder();
+        OMXMLParserWrapper builder = container.coreGetBuilder();
         // Delegate to the builder's parser.
         if (builder != null && builder instanceof Builder) {
             Builder staxBuilder = (Builder) builder;

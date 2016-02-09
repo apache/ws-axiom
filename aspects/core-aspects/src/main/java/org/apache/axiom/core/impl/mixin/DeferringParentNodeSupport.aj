@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 public aspect DeferringParentNodeSupport {
     private OMXMLParserWrapper DeferringParentNode.builder;
 
-    public final OMXMLParserWrapper DeferringParentNode.getBuilder() {
+    public final OMXMLParserWrapper DeferringParentNode.coreGetBuilder() {
         forceExpand();
         return builder;
     }
