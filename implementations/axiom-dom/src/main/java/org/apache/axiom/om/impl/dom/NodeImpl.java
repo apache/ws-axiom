@@ -24,7 +24,6 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.factory.DOOMNodeFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.w3c.dom.DOMException;
@@ -299,10 +298,4 @@ public abstract class NodeImpl implements DOMNode {
             throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
     }
-
-    // /
-    // /OMNode methods
-    // /
-
-    public abstract OMXMLParserWrapper coreGetBuilder();
 }
