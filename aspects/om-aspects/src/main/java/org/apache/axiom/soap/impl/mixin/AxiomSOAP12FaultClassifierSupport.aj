@@ -53,7 +53,7 @@ public aspect AxiomSOAP12FaultClassifierSupport {
     public final void AxiomSOAP12FaultClassifier.setValue(QName value) {
         SOAPFaultValue valueElement = getValue();
         if (valueElement == null) {
-            valueElement = ((SOAP12Factory)getOMFactory()).internalCreateSOAPFaultValue(this, null);
+            valueElement = ((SOAP12Factory)getOMFactory()).internalCreateSOAPFaultValue(this);
         }
         valueElement.setText(value);
     }

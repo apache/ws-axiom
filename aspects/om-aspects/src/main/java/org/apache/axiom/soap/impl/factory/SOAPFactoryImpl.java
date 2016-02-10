@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.soap.SOAPBody;
@@ -65,19 +64,13 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         return getSOAPHelper().getNamespace();
     }
     
-    protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname, OMXMLParserWrapper builder) {
+    protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname) {
         T element = createNode(type);
-        if (builder != null) {
-            element.coreSetBuilder(builder);
-        } else if (parent != null) {
-            element.checkParent(parent);
-        }
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(element, builder != null);
+            element.checkParent(parent);
+            ((AxiomContainer)parent).addChild(element, false);
         }
-        if (builder != null) {
-            element.internalSetLocalName(qname.getLocalPart());
-        } else if (qname.getNamespaceURI().length() == 0) {
+        if (qname.getNamespaceURI().length() == 0) {
             element.initName(qname.getLocalPart(), null, true);
         } else if (parent != null) {
             element.initName(qname.getLocalPart(), parent.getNamespace(), false);
@@ -103,7 +96,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPHeader createSOAPHeader(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName(), null);
+        return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName());
     }
 
     public final SOAPHeader createSOAPHeader() {
@@ -132,7 +125,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPBody createSOAPBody(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName(), null);
+        return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName());
     }
 
     public final SOAPBody createSOAPBody() {
@@ -141,7 +134,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPFault createSOAPFault(SOAPBody parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultClass(), parent, helper.getFaultQName(), null);
+        return createSOAPElement(helper.getFaultClass(), parent, helper.getFaultQName());
     }
 
     public final SOAPFault createSOAPFault() {
@@ -156,7 +149,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPFaultCode createSOAPFaultCode(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultCodeClass(), parent, helper.getFaultCodeQName(), null);
+        return createSOAPElement(helper.getFaultCodeClass(), parent, helper.getFaultCodeQName());
     }
 
     public final SOAPFaultCode createSOAPFaultCode() {
@@ -165,7 +158,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPFaultReason createSOAPFaultReason(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultReasonClass(), parent, helper.getFaultReasonQName(), null);
+        return createSOAPElement(helper.getFaultReasonClass(), parent, helper.getFaultReasonQName());
     }
 
     public final SOAPFaultReason createSOAPFaultReason() {
@@ -174,7 +167,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPFaultRole createSOAPFaultRole(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultRoleClass(), parent, helper.getFaultRoleQName(), null);
+        return createSOAPElement(helper.getFaultRoleClass(), parent, helper.getFaultRoleQName());
     }
 
     public final SOAPFaultRole createSOAPFaultRole() {
@@ -183,7 +176,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getFaultDetailClass(), parent, helper.getFaultDetailQName(), null);
+        return createSOAPElement(helper.getFaultDetailClass(), parent, helper.getFaultDetailQName());
     }
 
     public final SOAPFaultDetail createSOAPFaultDetail() {
