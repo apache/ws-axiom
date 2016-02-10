@@ -19,13 +19,12 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.soap.SOAPBody;
@@ -136,30 +135,20 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
         if (!cache) {
             // let's try to close the builder/parser here since we are now done with the
             // non-caching code block serializing the top-level SOAPEnvelope element
-            // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
-            OMXMLParserWrapper builder = coreGetBuilder();
-            if ((builder != null) && (builder instanceof Builder)) {
+            Builder builder = coreGetBuilder();
+            if (builder != null) {
                 try {
                     if (log.isDebugEnabled()) {
                         log.debug("closing builder: " + builder);
                     }
-                    Builder staxBuilder = (Builder) builder;
-                    staxBuilder.close();
+                    builder.close();
                 } catch (Exception e) {
                     if (log.isDebugEnabled()) {
                         log.error("Could not close builder or parser due to: ", e);
                     }
                 }
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Could not close builder or parser due to:");
-                    if (builder == null) {
-                        log.debug("builder is null");
-                    }
-                    if ((builder != null) && !(builder instanceof Builder)) {
-                        log.debug("builder is not instance of " + Builder.class.getName());
-                    }
-                }
+                log.debug("Could not close builder or parser due to: builder is null");
             }
         }
     }

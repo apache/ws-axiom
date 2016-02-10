@@ -42,6 +42,7 @@ import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -60,8 +61,6 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -639,7 +638,7 @@ final class Navigator extends PullSerializerState
             namespaceCount = -1;
         } else {
             CoreParentNode container = (CoreParentNode)node;
-            Builder builder = (Builder)container.coreGetBuilder();
+            Builder builder = container.coreGetBuilder();
             int depth = 1;
             // Find the root node for the builder (i.e. the topmost node having the same
             // builder as the current node)
@@ -676,17 +675,16 @@ final class Navigator extends PullSerializerState
         } else {
             container = ((CoreChildNode)node).coreGetParent();
         }
-        OMXMLParserWrapper builder = container.coreGetBuilder();
+        Builder builder = container.coreGetBuilder();
         // Delegate to the builder's parser.
-        if (builder != null && builder instanceof Builder) {
-            Builder staxBuilder = (Builder) builder;
-            if (!staxBuilder.isClosed()) {
+        if (builder != null) {
+            if (!builder.isClosed()) {
                 // If the parser was closed by something other
                 // than the builder, an IllegalStateException is
                 // thrown.  For now, return null as this is unexpected
                 // by the caller.
                 try {
-                    return ((Builder) builder).getReaderProperty(s);
+                    return builder.getReaderProperty(s);
                 } catch (IllegalStateException ise) {
                     return null;
                 }

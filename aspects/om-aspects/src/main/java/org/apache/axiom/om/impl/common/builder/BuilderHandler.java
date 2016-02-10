@@ -26,12 +26,12 @@ import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -60,7 +60,7 @@ public final class BuilderHandler implements XmlHandler {
     private final NodeFactory nodeFactory;
     private final Model model;
     private final AxiomSourcedElement root;
-    private final OMXMLParserWrapper builder;
+    private final Builder builder;
     private final OMNamespaceCache nsCache = new OMNamespaceCache();
     public AxiomContainer target;
     // returns the state of completion
@@ -84,7 +84,7 @@ public final class BuilderHandler implements XmlHandler {
     
     private ArrayList<NodePostProcessor> nodePostProcessors;
 
-    public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, OMXMLParserWrapper builder) {
+    public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.root = root;

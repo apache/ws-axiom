@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.builder.Detachable;
@@ -40,7 +39,7 @@ import javax.xml.namespace.QName;
 
 import java.io.Closeable;
 
-public class StAXOMBuilder extends AbstractBuilder implements Builder, CustomBuilderSupport {
+public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSupport {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
     private final StAXHelper helper;

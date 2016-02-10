@@ -52,7 +52,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.LiveNamespaceContext;
 import org.apache.axiom.om.impl.common.NSUtil;
@@ -242,7 +241,7 @@ public aspect AxiomElementSupport {
 
     public final void AxiomElement.discard() {
         if (getState() == CoreParentNode.INCOMPLETE && coreGetBuilder() != null) {
-            ((Builder)coreGetBuilder()).discard((OMContainer)this);
+            coreGetBuilder().discard(this);
         }
         detach();
     }

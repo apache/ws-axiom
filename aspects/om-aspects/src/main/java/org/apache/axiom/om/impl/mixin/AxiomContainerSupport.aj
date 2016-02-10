@@ -34,6 +34,7 @@ import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -45,7 +46,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.Builder;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
@@ -78,7 +78,7 @@ public aspect AxiomContainerSupport {
     }
 
     public final OMXMLParserWrapper AxiomContainer.getBuilder() {
-        return coreGetBuilder();
+        return (OMXMLParserWrapper)coreGetBuilder();
     }
 
     public final XMLStreamReader AxiomContainer.getXMLStreamReader() {
@@ -98,7 +98,7 @@ public aspect AxiomContainerSupport {
     }
     
     public final XMLStreamReader AxiomContainer.defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        OMXMLParserWrapper builder = coreGetBuilder();
+        Builder builder = coreGetBuilder();
         if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
         }
@@ -164,7 +164,7 @@ public aspect AxiomContainerSupport {
     }
     
     public final void AxiomContainer.build() {
-        OMXMLParserWrapper builder = coreGetBuilder();
+        Builder builder = coreGetBuilder();
         // builder is null. Meaning this is a programatical created element but it has children which are not completed
         // Build them all.
         if (builder == null && getState() == INCOMPLETE) {
@@ -175,7 +175,7 @@ public aspect AxiomContainerSupport {
         } else {
             if (getState() == AxiomContainer.DISCARDED) {
                 if (builder != null) {
-                    ((Builder)builder).debugDiscarded(this);
+                    builder.debugDiscarded(this);
                 }
                 throw new NodeUnavailableException();
             }
@@ -355,7 +355,7 @@ public aspect AxiomContainerSupport {
 
     final void AxiomContainer.serializeChildren(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
-            Builder builder = (Builder)coreGetBuilder();
+            Builder builder = coreGetBuilder();
             if (builder != null) {
                 builder.debugDiscarded(this);
             }
@@ -378,7 +378,7 @@ public aspect AxiomContainerSupport {
             // and serialize the nodes that have not been built yet by copying the
             // events from the underlying XMLStreamReader.
             if (!isComplete() && coreGetBuilder() != null) {
-                Builder builder = (Builder)coreGetBuilder();
+                Builder builder = coreGetBuilder();
                 StAXHelper helper = new StAXHelper(builder.disableCaching(), handler);
                 int depth = 0;
                 loop: while (true) {
@@ -423,15 +423,14 @@ public aspect AxiomContainerSupport {
     }
 
     public final void AxiomContainer.close(boolean build) {
-        OMXMLParserWrapper builder = coreGetBuilder();
+        Builder builder = coreGetBuilder();
         if (build) {
             this.build();
         }
         setComplete(true);
         
-        // If this is a StAXBuilder, close it.
-        if (builder instanceof Builder) {
-            ((Builder) builder).close();
+        if (builder != null) {
+            builder.close();
         }
     }
 }

@@ -18,9 +18,6 @@
  */
 package org.apache.axiom.om.impl.builder;
 
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
@@ -40,12 +37,4 @@ public interface Builder extends OMXMLParserWrapper {
      * @return TODO
      */
     Object getReaderProperty(String name) throws IllegalArgumentException;
-
-    XMLStreamReader disableCaching();
-
-    void reenableCaching(OMContainer container);
-
-    void discard(OMContainer container);
-
-    void debugDiscarded(Object container);
 }

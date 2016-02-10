@@ -33,7 +33,6 @@ import org.apache.axiom.core.SelfRelationshipException;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.om.NodeUnavailableException;
-import org.apache.axiom.om.impl.builder.Builder;
 
 public aspect CoreChildNodeSupport {
     private CoreParentNode CoreChildNode.owner;
@@ -121,7 +120,7 @@ public aspect CoreChildNodeSupport {
             if (parent != null && parent.coreGetBuilder() != null) {
                 switch (parent.getState()) {
                     case CoreParentNode.DISCARDED:
-                        ((Builder)parent.coreGetBuilder()).debugDiscarded(parent);
+                        parent.coreGetBuilder().debugDiscarded(parent);
                         throw new NodeUnavailableException();
                     case CoreParentNode.INCOMPLETE:
                         do {

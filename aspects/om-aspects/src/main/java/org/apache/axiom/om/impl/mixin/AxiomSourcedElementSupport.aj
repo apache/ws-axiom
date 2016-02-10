@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.mixin;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -214,7 +215,7 @@ public aspect AxiomSourcedElementSupport {
                 }
             }
 
-            OMXMLParserWrapper builder;
+            Builder builder;
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
                 builder = new PushOMBuilder(this, dataSource);
             } else {

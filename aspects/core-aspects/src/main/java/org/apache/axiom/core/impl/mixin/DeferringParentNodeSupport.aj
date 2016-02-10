@@ -19,17 +19,17 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.DeferringParentNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.core.builder.Builder;
 
 public aspect DeferringParentNodeSupport {
-    private OMXMLParserWrapper DeferringParentNode.builder;
+    private Builder DeferringParentNode.builder;
 
-    public final OMXMLParserWrapper DeferringParentNode.coreGetBuilder() {
+    public final Builder DeferringParentNode.coreGetBuilder() {
         forceExpand();
         return builder;
     }
 
-    public final void DeferringParentNode.coreSetBuilder(OMXMLParserWrapper builder) {
+    public final void DeferringParentNode.coreSetBuilder(Builder builder) {
         this.builder = builder;
         coreSetState(builder == null ? COMPLETE : INCOMPLETE);
     }

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.core.builder.Builder;
 
 /**
  * Interface for parent nodes.
@@ -30,8 +30,8 @@ public interface CoreParentNode extends CoreNode {
     int DISCARDED = 3;
     int COMPACT = 4;
     
-    OMXMLParserWrapper coreGetBuilder();
-    void coreSetBuilder(OMXMLParserWrapper builder);
+    Builder coreGetBuilder();
+    void coreSetBuilder(Builder builder);
     int getState();
     void coreSetState(int state);
     void build();

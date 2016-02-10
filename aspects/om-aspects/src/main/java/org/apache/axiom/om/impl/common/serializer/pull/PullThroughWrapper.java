@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.common.serializer.pull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.builder.Builder;
 
 final class PullThroughWrapper extends AbstractWrapper {
     private final Builder builder;

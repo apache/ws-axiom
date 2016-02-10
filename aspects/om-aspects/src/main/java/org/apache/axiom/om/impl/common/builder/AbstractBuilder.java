@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
@@ -26,7 +27,7 @@ import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 
-public abstract class AbstractBuilder implements OMXMLParserWrapper {
+public abstract class AbstractBuilder implements OMXMLParserWrapper, Builder, org.apache.axiom.om.impl.builder.Builder {
     protected final BuilderHandler builderHandler;
     protected final XmlHandler handler;
 

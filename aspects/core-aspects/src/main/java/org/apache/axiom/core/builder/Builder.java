@@ -16,20 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl.mixin;
+package org.apache.axiom.core.builder;
 
-import org.apache.axiom.core.NonDeferringParentNode;
-import org.apache.axiom.core.builder.Builder;
+import javax.xml.stream.XMLStreamReader;
 
-public aspect NonDeferringParentNodeSupport {
-    public final Builder NonDeferringParentNode.coreGetBuilder() {
-        return null;
-    }
+import org.apache.axiom.om.OMContainer;
 
-    public final void NonDeferringParentNode.coreSetBuilder(Builder builder) {
-        throw new UnsupportedOperationException();
-    }
-    
-    public final void NonDeferringParentNode.build() {
-    }
+public interface Builder {
+    int next();
+    boolean isCompleted();
+    void close();
+    boolean isClosed();
+
+    /**
+     * Get the value of a feature/property from the underlying XMLStreamReader implementation
+     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/AXIOM-348
+     *
+     * @param name
+     * @return TODO
+     */
+    Object getReaderProperty(String name) throws IllegalArgumentException;
+
+    XMLStreamReader disableCaching();
+
+    void reenableCaching(OMContainer container);
+
+    void discard(OMContainer container);
+
+    void debugDiscarded(Object container);
 }
