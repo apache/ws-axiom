@@ -33,6 +33,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreCharacterDataContainer;
 import org.apache.axiom.core.CoreChildNode;
@@ -42,7 +43,6 @@ import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -654,7 +654,7 @@ final class Navigator extends PullSerializerState
             if (log.isDebugEnabled()) {
                 log.debug("Switching to pull-through mode; first event is " + XMLEventUtils.getEventTypeString(reader.getEventType()) + "; depth is " + depth);
             }
-            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, (OMContainer)container, reader, depth);
+            PullThroughWrapper wrapper = new PullThroughWrapper(serializer, builder, container, reader, depth);
             serializer.pushState(wrapper);
             node = container;
             visited = true;

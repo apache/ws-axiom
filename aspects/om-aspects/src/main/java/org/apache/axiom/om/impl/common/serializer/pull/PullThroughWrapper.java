@@ -21,15 +21,15 @@ package org.apache.axiom.om.impl.common.serializer.pull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.core.builder.Builder;
-import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMDocument;
 
 final class PullThroughWrapper extends AbstractWrapper {
     private final Builder builder;
-    private final OMContainer container;
+    private final CoreParentNode container;
 
-    PullThroughWrapper(PullSerializer serializer, Builder builder, OMContainer container, XMLStreamReader reader, int startDepth) {
+    PullThroughWrapper(PullSerializer serializer, Builder builder, CoreParentNode container, XMLStreamReader reader, int startDepth) {
         super(serializer, reader, startDepth);
         this.builder = builder;
         this.container = container;

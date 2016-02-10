@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomDocument;

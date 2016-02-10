@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -77,14 +78,14 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, element);
     }
     
-    private void discarded(AxiomContainer container) {
-        container.discarded();
+    private void discarded(CoreParentNode container) {
+        ((AxiomContainer)container).discarded();
         if (builderHandler.discardTracker != null) {
             builderHandler.discardTracker.put(container, new Throwable());
         }
     }
     
-    public final void debugDiscarded(Object container) {
+    public final void debugDiscarded(CoreParentNode container) {
         if (log.isDebugEnabled() && builderHandler.discardTracker != null) {
             Throwable t = builderHandler.discardTracker.get(container);
             if (t != null) {
@@ -95,11 +96,11 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     // For compatibility only
     public final void discard(OMElement element) throws OMException {
-        discard((OMContainer)element);
+        discard((CoreParentNode)element);
         element.discard();
     }
     
-    public final void discard(OMContainer container) {
+    public final void discard(CoreParentNode container) {
         int targetElementLevel = builderHandler.elementLevel;
         AxiomContainer current = builderHandler.target;
         while (current != container) {
@@ -241,7 +242,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
-    public final void reenableCaching(OMContainer container) {
+    public final void reenableCaching(CoreParentNode container) {
         AxiomContainer current = builderHandler.target;
         while (true) {
             discarded(current);

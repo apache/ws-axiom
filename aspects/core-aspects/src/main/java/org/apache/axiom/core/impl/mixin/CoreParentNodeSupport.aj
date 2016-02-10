@@ -19,6 +19,7 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.Content;
@@ -37,7 +38,6 @@ import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.NodeFilter;
 import org.apache.axiom.core.NodeIterator;
 import org.apache.axiom.core.Semantics;
-import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.core.impl.ElementsIterator;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.impl.NodesIterator;
@@ -218,7 +218,7 @@ public aspect CoreParentNodeSupport {
                 if (lastChild instanceof CoreParentNode) {
                     ((CoreParentNode)lastChild).build();
                 }
-                coreGetBuilder().discard((OMContainer)this);
+                coreGetBuilder().discard(this);
                 updateState = true;
             } else {
                 updateState = false;

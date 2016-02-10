@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.DeferringParentNode;
-import org.apache.axiom.core.builder.Builder;
 
 public aspect DeferringParentNodeSupport {
     private Builder DeferringParentNode.builder;

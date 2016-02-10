@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.core.builder.Builder;
-
 /**
  * Interface for parent nodes.
  */

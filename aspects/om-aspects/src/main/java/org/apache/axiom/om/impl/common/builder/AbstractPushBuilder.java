@@ -20,8 +20,8 @@ package org.apache.axiom.om.impl.common.builder;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
@@ -89,16 +89,16 @@ public abstract class AbstractPushBuilder extends AbstractBuilder {
     }
 
     @Override
-    public final void reenableCaching(OMContainer container) {
+    public final void reenableCaching(CoreParentNode container) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public final void discard(OMContainer container) {
+    public final void discard(CoreParentNode container) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public final void debugDiscarded(Object container) {
+    public final void debugDiscarded(CoreParentNode container) {
     }
 }

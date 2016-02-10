@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.core.builder.Builder;
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;

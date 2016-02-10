@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;

@@ -24,9 +24,9 @@ import java.util.Map;
 
 import javax.xml.stream.XMLStreamConstants;
 
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.core.builder.Builder;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
@@ -80,7 +80,7 @@ public final class BuilderHandler implements XmlHandler {
      * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
      * only used if debug logging was enabled when builder was created.
      */
-    public Map<OMContainer,Throwable> discardTracker = log.isDebugEnabled() ? new LinkedHashMap<OMContainer,Throwable>() : null;
+    public Map<CoreParentNode,Throwable> discardTracker = log.isDebugEnabled() ? new LinkedHashMap<CoreParentNode,Throwable>() : null;
     
     private ArrayList<NodePostProcessor> nodePostProcessors;
 

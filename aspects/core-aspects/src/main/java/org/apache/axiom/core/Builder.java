@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.builder;
+package org.apache.axiom.core;
 
 import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.om.OMContainer;
 
 public interface Builder {
     int next();
@@ -39,9 +37,9 @@ public interface Builder {
 
     XMLStreamReader disableCaching();
 
-    void reenableCaching(OMContainer container);
+    void reenableCaching(CoreParentNode container);
 
-    void discard(OMContainer container);
+    void discard(CoreParentNode container);
 
-    void debugDiscarded(Object container);
+    void debugDiscarded(CoreParentNode container);
 }
