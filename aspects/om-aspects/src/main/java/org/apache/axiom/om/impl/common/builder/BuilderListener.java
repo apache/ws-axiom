@@ -18,8 +18,20 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
-import org.apache.axiom.om.OMSerializable;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNode;
 
-public interface NodePostProcessor {
-    void postProcessNode(OMSerializable node);
+public interface BuilderListener {
+    /**
+     * Inform the listener that a node has been added to the tree. Note that this method will also
+     * be invoked for the {@link CoreDocument}.
+     * 
+     * @param node
+     *            the node that has been added
+     * @param depth
+     *            the depth of the node, with 0 corresponding to the document
+     */
+    // TODO: specify if what happens for attributes (including depth)
+    // TODO: an ancestor of the node may have been detached or moved; specify what this means for the depth
+    void nodeAdded(CoreNode node, int depth);
 }

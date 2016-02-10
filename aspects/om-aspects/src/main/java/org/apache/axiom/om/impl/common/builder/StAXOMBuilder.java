@@ -101,7 +101,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     }
     
     public final void discard(CoreParentNode container) {
-        int targetElementLevel = builderHandler.elementLevel;
+        int targetElementLevel = builderHandler.depth;
         AxiomContainer current = builderHandler.target;
         while (current != container) {
             targetElementLevel--;
@@ -132,14 +132,14 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
                         discarded(builderHandler.target);
                         boolean found = container == builderHandler.target;
                         builderHandler.target = (AxiomContainer)((OMElement)builderHandler.target).getParent();
-                        builderHandler.elementLevel--;
+                        builderHandler.depth--;
                         if (found) {
                             break loop;
                         }
                     }
                     break;
                 case XMLStreamReader.END_DOCUMENT:
-                    if (skipDepth != 0 || builderHandler.elementLevel != 0) {
+                    if (skipDepth != 0 || builderHandler.depth != 0) {
                         throw new OMException("Unexpected END_DOCUMENT");
                     }
                     if (builderHandler.target != builderHandler.document) {
@@ -213,10 +213,10 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
             parserAccessed = true;
             // Mark all containers in the hierarchy as discarded because they can no longer be built
             AxiomContainer current = builderHandler.target;
-            while (builderHandler.elementLevel > 0) {
+            while (builderHandler.depth > 0) {
                 discarded(current);
                 current = (AxiomContainer)((OMElement)current).getParent();
-                builderHandler.elementLevel--;
+                builderHandler.depth--;
             }
             if (current != null && current == builderHandler.document) {
                 discarded(current);
@@ -235,7 +235,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         // care of lookahead
         helper.parserNext();
         if (log.isDebugEnabled()) {
-            log.debug("Caching disabled; current element level is " + builderHandler.elementLevel);
+            log.debug("Caching disabled; current element level is " + builderHandler.depth);
         }
         return helper.parser;
     }
@@ -246,13 +246,13 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         AxiomContainer current = builderHandler.target;
         while (true) {
             discarded(current);
-            if (builderHandler.elementLevel == 0) {
+            if (builderHandler.depth == 0) {
                 if (current != container || current != builderHandler.document) {
                     throw new IllegalStateException();
                 }
                 break;
             }
-            builderHandler.elementLevel--;
+            builderHandler.depth--;
             if (current == container) {
                 break;
             }
@@ -262,7 +262,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (container == builderHandler.document) {
             builderHandler.target = null;
             builderHandler.done = true;
-        } else if (builderHandler.elementLevel == 0 && builderHandler.document == null) {
+        } else if (builderHandler.depth == 0 && builderHandler.document == null) {
             // Consume the remaining event; for the rationale, see StAXOMBuilder#next()
             while (helper.parserNext() != XMLStreamConstants.END_DOCUMENT) {
                 // Just loop
@@ -273,7 +273,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
             builderHandler.target = (AxiomContainer)((OMElement)container).getParent();
         }
         if (log.isDebugEnabled()) {
-            log.debug("Caching re-enabled; new element level: " + builderHandler.elementLevel + "; done=" + builderHandler.done);
+            log.debug("Caching re-enabled; new element level: " + builderHandler.depth + "; done=" + builderHandler.done);
         }
         if (builderHandler.done && helper.autoClose) {
             close();

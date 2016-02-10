@@ -36,8 +36,8 @@ public abstract class AbstractBuilder implements OMXMLParserWrapper, Builder, or
         handler = repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler) : builderHandler;
     }
 
-    public final void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
-        builderHandler.addNodePostProcessor(nodePostProcessor);
+    public final void addListener(BuilderListener listener) {
+        builderHandler.addListener(listener);
     }
 
     public final boolean isCompleted() {

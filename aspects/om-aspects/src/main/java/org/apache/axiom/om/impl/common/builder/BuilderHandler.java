@@ -25,13 +25,12 @@ import java.util.Map;
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -70,11 +69,11 @@ public final class BuilderHandler implements XmlHandler {
     public AxiomDocument document;
     
     /**
-     * Tracks the depth of the node identified by {@link #target}. By definition, the level of the
-     * root element is defined as 1. Note that if caching is disabled, then this depth may be
-     * different from the actual depth reached by the underlying parser.
+     * Tracks the depth of the node identified by {@link #target}. By definition, the document has
+     * depth 0. Note that if caching is disabled, then this depth may be different from the actual
+     * depth reached by the underlying parser.
      */
-    public int elementLevel;
+    public int depth;
     
     /**
      * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
@@ -82,7 +81,7 @@ public final class BuilderHandler implements XmlHandler {
      */
     public Map<CoreParentNode,Throwable> discardTracker = log.isDebugEnabled() ? new LinkedHashMap<CoreParentNode,Throwable>() : null;
     
-    private ArrayList<NodePostProcessor> nodePostProcessors;
+    private ArrayList<BuilderListener> listeners;
 
     public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
@@ -91,17 +90,17 @@ public final class BuilderHandler implements XmlHandler {
         this.builder = builder;
     }
 
-    public void addNodePostProcessor(NodePostProcessor nodePostProcessor) {
-        if (nodePostProcessors == null) {
-            nodePostProcessors = new ArrayList<NodePostProcessor>();
+    public void addListener(BuilderListener listener) {
+        if (listeners == null) {
+            listeners = new ArrayList<BuilderListener>();
         }
-        nodePostProcessors.add(nodePostProcessor);
+        listeners.add(listener);
     }
     
-    public void postProcessNode(OMSerializable node) {
-        if (nodePostProcessors != null) {
-            for (int i=0, size=nodePostProcessors.size(); i<size; i++) {
-                nodePostProcessors.get(i).postProcessNode(node);
+    public void nodeAdded(CoreNode node) {
+        if (listeners != null) {
+            for (int i=0, size=listeners.size(); i<size; i++) {
+                listeners.get(i).nodeAdded(node, depth);
             }
         }
     }
@@ -120,7 +119,7 @@ public final class BuilderHandler implements XmlHandler {
     
     private void addChild(AxiomChildNode node) {
         target.addChild(node, true);
-        postProcessNode(node);
+        nodeAdded(node);
     }
     
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
@@ -131,7 +130,7 @@ public final class BuilderHandler implements XmlHandler {
             document.coreSetXmlEncoding(xmlEncoding);
             document.coreSetStandalone(standalone);
             document.coreSetBuilder(builder);
-            postProcessNode(document);
+            nodeAdded(document);
             target = document;
         }
     }
@@ -148,16 +147,16 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     public void startElement(String namespaceURI, String localName, String prefix) {
-        elementLevel++;
+        depth++;
         AxiomElement element;
         OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
-        if (elementLevel == 1 && root != null) {
+        if (depth == 1 && root != null) {
             root.validateName(prefix, localName, namespaceURI);
             root.initName(localName, ns, false);
             element = root;
         } else {
             element = nodeFactory.createNode(model.determineElementType(
-                    target, elementLevel, namespaceURI, localName));
+                    target, depth, namespaceURI, localName));
             element.coreSetBuilder(builder);
             element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
             element.initName(localName, ns, false);
@@ -167,9 +166,9 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     public void endElement() {
-        elementLevel--;
+        depth--;
         target.setComplete(true);
-        if (elementLevel == 0) {
+        if (depth == 0) {
             // This is relevant for OMSourcedElements and for the case where the document has been discarded
             // using getDocumentElement(true). In these cases, this will actually set target to null. In all
             // other cases, this will have the same effect as the instruction in the else clause.
@@ -242,7 +241,7 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     public void endDocument() {
-        if (elementLevel != 0) {
+        if (depth != 0) {
             throw new IllegalStateException();
         }
         if (document != null) {
@@ -254,7 +253,7 @@ public final class BuilderHandler implements XmlHandler {
 
     @Override
     public void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource) throws StreamException {
-        Class<? extends AxiomElement> elementType = model.determineElementType(target, elementLevel+1, namespaceURI, localName);
+        Class<? extends AxiomElement> elementType = model.determineElementType(target, depth+1, namespaceURI, localName);
         Class<? extends AxiomSourcedElement> sourcedElementType;
         if (elementType == AxiomElement.class) {
             sourcedElementType = AxiomSourcedElement.class;

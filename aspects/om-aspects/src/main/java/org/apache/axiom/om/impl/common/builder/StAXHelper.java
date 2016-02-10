@@ -316,11 +316,11 @@ public class StAXHelper {
         String localName = parser.getLocalName();
         String prefix = normalize(parser.getPrefix());
         if (builderHandler != null) {
-            if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.elementLevel+1, builderHandler.target)
+            if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.depth+1, builderHandler.target)
                     && processWithCustomBuilder(customBuilderForPayload)) {
                 return;
             }
-            if (customBuilders != null && builderHandler.elementLevel < this.maxDepthForCustomBuilders) {
+            if (customBuilders != null && builderHandler.depth < this.maxDepthForCustomBuilders) {
                 CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
                 if (customBuilder != null && processWithCustomBuilder(customBuilder)) {
                     return;
@@ -460,7 +460,7 @@ public class StAXHelper {
                     throw ex;
                 }
                 if (builderHandler != null && event == XMLStreamConstants.END_DOCUMENT) {
-                    if (builderHandler.cache && builderHandler.elementLevel != 0) {
+                    if (builderHandler.cache && builderHandler.depth != 0) {
                         throw new OMException("Unexpected END_DOCUMENT event");
                     }
                     if (autoClose) {

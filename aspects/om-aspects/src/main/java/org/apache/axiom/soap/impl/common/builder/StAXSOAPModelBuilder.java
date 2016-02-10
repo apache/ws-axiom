@@ -21,11 +21,11 @@ package org.apache.axiom.soap.impl.common.builder;
 
 import java.io.Closeable;
 
+import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.common.builder.NodePostProcessor;
+import org.apache.axiom.om.impl.common.builder.BuilderListener;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -47,11 +47,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.
-        addNodePostProcessor(new NodePostProcessor() {
+        addListener(new BuilderListener() {
             private AxiomSOAPMessage message;
             
             @Override
-            public void postProcessNode(OMSerializable node) {
+            public void nodeAdded(CoreNode node, int depth) {
                 if (node instanceof AxiomSOAPMessage) {
                     message = (AxiomSOAPMessage)node;
                 } else if (message != null && node instanceof AxiomSOAPEnvelope) {
