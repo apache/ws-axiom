@@ -41,8 +41,8 @@ public interface CoreNode {
      *            the policy to use when cloning this node (and its children)
      * @return the clone of this node
      */
-    <T> CoreNode coreClone(ClonePolicy<T> policy, T options);
+    <T> CoreNode coreClone(ClonePolicy<T> policy, T options) throws CoreModelException;
     
-    <T> void init(ClonePolicy<T> policy, T options, CoreNode other);
-    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone);
+    <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException;
+    <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException;
 }

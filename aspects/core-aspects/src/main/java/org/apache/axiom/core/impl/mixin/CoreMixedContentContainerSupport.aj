@@ -19,10 +19,11 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.CoreMixedContentContainer;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
 
 public aspect CoreMixedContentContainerSupport {
-    public final Object CoreMixedContentContainer.coreGetCharacterData(ElementAction elementAction) {
+    public final Object CoreMixedContentContainer.coreGetCharacterData(ElementAction elementAction) throws CoreModelException {
         return internalGetCharacterData(elementAction);
     }
 }

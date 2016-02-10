@@ -22,6 +22,7 @@ import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.ElementAction;
@@ -200,7 +201,11 @@ public aspect DOMElementSupport {
     }
     
     public final String DOMElement.getTextContent() {
-        return coreGetCharacterData(ElementAction.RECURSE).toString();
+        try {
+            return coreGetCharacterData(ElementAction.RECURSE).toString();
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final void DOMElement.setTextContent(String textContent) {

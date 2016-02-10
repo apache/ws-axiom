@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.stream.StreamException;
@@ -34,7 +36,11 @@ public aspect AxiomProcessingInstructionSupport {
     }
 
     public final String AxiomProcessingInstruction.getValue() {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final void AxiomProcessingInstruction.setValue(String value) {
@@ -42,7 +48,11 @@ public aspect AxiomProcessingInstructionSupport {
     }
     
     public final void AxiomProcessingInstruction.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
-        handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+        try {
+            handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public final void AxiomProcessingInstruction.buildWithAttachments() {

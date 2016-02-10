@@ -18,8 +18,10 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NSUtil;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
@@ -42,7 +44,11 @@ public aspect AxiomAttributeSupport {
     }
     
     public final String AxiomAttribute.getAttributeValue() {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public final void AxiomAttribute.setAttributeValue(String value) {

@@ -18,9 +18,11 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomInformationItem;
 
@@ -30,6 +32,10 @@ public aspect AxiomInformationItemSupport {
     }
     
     public final OMInformationItem AxiomInformationItem.clone(OMCloneOptions options) {
-        return (OMInformationItem)coreClone(AxiomSemantics.CLONE_POLICY, options);
+        try {
+            return (OMInformationItem)coreClone(AxiomSemantics.CLONE_POLICY, options);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 }

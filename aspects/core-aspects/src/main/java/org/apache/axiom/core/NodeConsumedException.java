@@ -16,28 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.dom.impl.mixin;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.dom.DOMChildNode;
-import org.apache.axiom.dom.DOMExceptionUtil;
-import org.apache.axiom.dom.DocumentWhitespaceFilter;
-import org.w3c.dom.Node;
+/**
+ * Indicates that a requested node has been consumed and is no longer available.
+ */
+public class NodeConsumedException extends DeferredBuildingException {
+    private static final long serialVersionUID = 1L;
 
-public aspect DOMChildNodeSupport {
-    public final Node DOMChildNode.getParentNode() {
-        return (Node)coreGetParent();
-    }
-    
-    public final Node DOMChildNode.getNextSibling() {
-        try {
-            return (Node)coreGetNextSibling(DocumentWhitespaceFilter.INSTANCE);
-        } catch (CoreModelException ex) {
-            throw DOMExceptionUtil.toUncheckedException(ex);
-        }
-    }
-    
-    public final Node DOMChildNode.getPreviousSibling() {
-        return (Node)coreGetPreviousSibling(DocumentWhitespaceFilter.INSTANCE);
+    public NodeConsumedException() {
     }
 }

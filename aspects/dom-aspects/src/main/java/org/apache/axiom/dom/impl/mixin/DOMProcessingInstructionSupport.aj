@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMProcessingInstruction;
 import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.Node;
@@ -28,7 +30,11 @@ public aspect DOMProcessingInstructionSupport {
     }
 
     public final String DOMProcessingInstruction.getData() {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
     
     public final void DOMProcessingInstruction.setData(String data) {

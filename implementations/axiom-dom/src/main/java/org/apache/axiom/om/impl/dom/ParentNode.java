@@ -50,28 +50,31 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     }
 
     private void checkNewChild(Node newChild, Node replacedChild) {
-        NodeImpl newDomChild = (NodeImpl) newChild;
-        
-        checkSameOwnerDocument(newDomChild);
-
-        if (isAncestorOrSelf(newChild)) {
-            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
-        }
-
-        if (this instanceof Document) {
-            if (newDomChild instanceof ElementImpl) {
-                if (!(replacedChild instanceof Element) && ((DocumentImpl) this).coreGetDocumentElement() != null) {
-                    // Throw exception since there cannot be two document elements
-                    throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
-                }
-            } else if (!(newDomChild instanceof CommentImpl
-                    || newDomChild instanceof ProcessingInstructionImpl
-                    || newDomChild instanceof DocumentFragmentImpl
-                    || newDomChild instanceof DocumentTypeImpl)) {
+        try {
+            NodeImpl newDomChild = (NodeImpl) newChild;
+            
+            checkSameOwnerDocument(newDomChild);
+    
+            if (isAncestorOrSelf(newChild)) {
                 throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
             }
+    
+            if (this instanceof Document) {
+                if (newDomChild instanceof ElementImpl) {
+                    if (!(replacedChild instanceof Element) && ((DocumentImpl) this).coreGetDocumentElement() != null) {
+                        // Throw exception since there cannot be two document elements
+                        throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+                    }
+                } else if (!(newDomChild instanceof CommentImpl
+                        || newDomChild instanceof ProcessingInstructionImpl
+                        || newDomChild instanceof DocumentFragmentImpl
+                        || newDomChild instanceof DocumentTypeImpl)) {
+                    throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+                }
+            }
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        
     }
     
     /**

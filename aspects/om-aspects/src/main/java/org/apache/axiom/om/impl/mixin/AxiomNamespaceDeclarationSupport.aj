@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
@@ -31,11 +33,15 @@ public aspect AxiomNamespaceDeclarationSupport {
     }
 
     public final OMNamespace AxiomNamespaceDeclaration.getDeclaredNamespace() {
-        String namespaceURI = coreGetCharacterData().toString();
-        if (!namespaceURI.equals(declaredNamespace.getNamespaceURI())) {
-            declaredNamespace = new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
+        try {
+            String namespaceURI = coreGetCharacterData().toString();
+            if (!namespaceURI.equals(declaredNamespace.getNamespaceURI())) {
+                declaredNamespace = new OMNamespaceImpl(namespaceURI, declaredNamespace.getPrefix());
+            }
+            return declaredNamespace;
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
-        return declaredNamespace;
     }
     
     public final void AxiomNamespaceDeclaration.coreSetDeclaredNamespace(String prefix, String namespaceURI) {

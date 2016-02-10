@@ -18,10 +18,12 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
@@ -30,18 +32,26 @@ import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public aspect AxiomDocumentSupport {
     public final OMElement AxiomDocument.getOMDocumentElement() {
-        return (OMElement)coreGetDocumentElement();
+        try {
+            return (OMElement)coreGetDocumentElement();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final void AxiomDocument.setOMDocumentElement(OMElement documentElement) {
-        if (documentElement == null) {
-            throw new IllegalArgumentException("documentElement must not be null");
-        }
-        AxiomElement existingDocumentElement = (AxiomElement)coreGetDocumentElement();
-        if (existingDocumentElement == null) {
-            addChild(documentElement);
-        } else {
-            existingDocumentElement.coreReplaceWith((AxiomElement)documentElement, AxiomSemantics.INSTANCE);
+        try {
+            if (documentElement == null) {
+                throw new IllegalArgumentException("documentElement must not be null");
+            }
+            AxiomElement existingDocumentElement = (AxiomElement)coreGetDocumentElement();
+            if (existingDocumentElement == null) {
+                addChild(documentElement);
+            } else {
+                existingDocumentElement.coreReplaceWith((AxiomElement)documentElement, AxiomSemantics.INSTANCE);
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 

@@ -22,6 +22,7 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 
@@ -45,7 +46,7 @@ public aspect CoreDocumentSupport {
         }
     }
     
-    public final CoreElement CoreDocument.coreGetDocumentElement() {
+    public final CoreElement CoreDocument.coreGetDocumentElement() throws CoreModelException {
         CoreChildNode child = coreGetFirstChild();
         while (child != null) {
             if (child instanceof CoreElement) {

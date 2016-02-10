@@ -18,12 +18,17 @@
 package org.apache.axiom.fom.impl.mixin;
 
 import org.apache.abdera.model.Attribute;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.fom.AbderaAttribute;
 import org.apache.axiom.fom.FOMSemantics;
 
 public aspect AbderaAttributeMixin {
     public final String AbderaAttribute.getText() {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     public final Attribute AbderaAttribute.setText(String text) {

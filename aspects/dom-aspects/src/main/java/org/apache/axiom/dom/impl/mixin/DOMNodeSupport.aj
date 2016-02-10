@@ -19,8 +19,10 @@
 package org.apache.axiom.dom.impl.mixin;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMDocument;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.dom.DOMNodeFactory;
 import org.apache.axiom.dom.DOMSemantics;
@@ -37,48 +39,64 @@ public aspect DOMNodeSupport {
     }
     
     public final String DOMNode.lookupNamespaceURI(String prefix) {
-        CoreElement context = getNamespaceContext();
-        if (context == null) {
-            return null;
+        try {
+            CoreElement context = getNamespaceContext();
+            if (context == null) {
+                return null;
+            }
+            if (prefix == null) {
+                prefix = "";
+            } else if (prefix.length() == 0) {
+                return null;
+            }
+            String namespaceURI = context.coreLookupNamespaceURI(prefix, DOMSemantics.INSTANCE);
+            return namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        if (prefix == null) {
-            prefix = "";
-        } else if (prefix.length() == 0) {
-            return null;
-        }
-        String namespaceURI = context.coreLookupNamespaceURI(prefix, DOMSemantics.INSTANCE);
-        return namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI;
     }
 
     public final String DOMNode.lookupPrefix(String namespaceURI) {
-        CoreElement context = getNamespaceContext();
-        if (context == null) {
-            return null;
-        }
-        if (namespaceURI == null) {
-            return null;
-        } else {
-            String prefix = context.coreLookupPrefix(namespaceURI, DOMSemantics.INSTANCE);
-            return prefix == null || prefix.length() == 0 ? null : prefix;
+        try {
+            CoreElement context = getNamespaceContext();
+            if (context == null) {
+                return null;
+            }
+            if (namespaceURI == null) {
+                return null;
+            } else {
+                String prefix = context.coreLookupPrefix(namespaceURI, DOMSemantics.INSTANCE);
+                return prefix == null || prefix.length() == 0 ? null : prefix;
+            }
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
 
     public final boolean DOMNode.isDefaultNamespace(String namespaceURI) {
-        CoreElement context = getNamespaceContext();
-        if (context == null) {
-            return false;
+        try {
+            CoreElement context = getNamespaceContext();
+            if (context == null) {
+                return false;
+            }
+            if (namespaceURI == null) {
+                namespaceURI = "";
+            }
+            return namespaceURI.equals(context.coreLookupNamespaceURI("", DOMSemantics.INSTANCE));
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        if (namespaceURI == null) {
-            namespaceURI = "";
-        }
-        return namespaceURI.equals(context.coreLookupNamespaceURI("", DOMSemantics.INSTANCE));
     }
 
     public final Node DOMNode.cloneNode(boolean deep) {
-        DOMNode clone = (DOMNode)coreClone(deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE, null);
-        if (!(clone instanceof DOMDocument)) {
-            clone.coreSetOwnerDocument(coreGetOwnerDocument(true));
+        try {
+            DOMNode clone = (DOMNode)coreClone(deep ? DOMSemantics.DEEP_CLONE : DOMSemantics.SHALLOW_CLONE, null);
+            if (!(clone instanceof DOMDocument)) {
+                clone.coreSetOwnerDocument(coreGetOwnerDocument(true));
+            }
+            return clone;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        return clone;
     }
 }

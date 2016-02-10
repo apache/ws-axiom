@@ -18,8 +18,10 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.om.impl.stream.StreamException;
@@ -31,7 +33,11 @@ public aspect AxiomCommentSupport {
     }
 
     public String AxiomComment.getValue() {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public void AxiomComment.setValue(String text) {
@@ -39,7 +45,11 @@ public aspect AxiomCommentSupport {
     }
     
     public final void AxiomComment.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
-        handler.processComment(coreGetCharacterData().toString());
+        try {
+            handler.processComment(coreGetCharacterData().toString());
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public final void AxiomComment.buildWithAttachments() {

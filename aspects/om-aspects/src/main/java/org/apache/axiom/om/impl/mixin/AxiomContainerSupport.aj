@@ -31,6 +31,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
@@ -194,7 +195,11 @@ public aspect AxiomContainerSupport {
     }
     
     public OMNode AxiomContainer.getFirstOMChild() {
-        return (OMNode)coreGetFirstChild();
+        try {
+            return (OMNode)coreGetFirstChild();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public void AxiomContainer.removeChildren() {

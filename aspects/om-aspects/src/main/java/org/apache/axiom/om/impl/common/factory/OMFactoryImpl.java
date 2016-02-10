@@ -22,6 +22,7 @@ import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -41,8 +42,9 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
@@ -169,8 +171,12 @@ public class OMFactoryImpl implements OMFactoryEx {
     }
 
     public final OMText createOMText(OMContainer parent, OMText source) {
-        // TODO: this doesn't necessarily produce a node with the expected OMFactory
-        return (AxiomText)((AxiomText)source).coreClone(AxiomSemantics.CLONE_POLICY, null, (AxiomContainer)parent);
+        try {
+            // TODO: this doesn't necessarily produce a node with the expected OMFactory
+            return (AxiomText)((AxiomText)source).coreClone(AxiomSemantics.CLONE_POLICY, null, (AxiomContainer)parent);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final OMText createOMText(Object dataHandler, boolean optimize) {

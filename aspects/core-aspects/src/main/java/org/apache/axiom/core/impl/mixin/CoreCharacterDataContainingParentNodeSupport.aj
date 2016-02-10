@@ -19,10 +19,11 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.CoreCharacterDataContainingParentNode;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
 
 public aspect CoreCharacterDataContainingParentNodeSupport {
-    public final Object CoreCharacterDataContainingParentNode.coreGetCharacterData() {
+    public final Object CoreCharacterDataContainingParentNode.coreGetCharacterData() throws CoreModelException {
         Object characterData = internalGetCharacterData(ElementAction.RETURN_NULL);
         if (characterData == null) {
             throw new IllegalStateException();

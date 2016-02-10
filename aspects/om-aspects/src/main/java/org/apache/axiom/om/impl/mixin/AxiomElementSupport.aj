@@ -38,6 +38,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
@@ -52,6 +53,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.LiveNamespaceContext;
 import org.apache.axiom.om.impl.common.NSUtil;
@@ -154,7 +156,11 @@ public aspect AxiomElementSupport {
 
     // TODO: this is (incorrectly) overridden by the SOAPFaultReason implementations for SOAP 1.2
     public String AxiomElement.getText() {
-        return coreGetCharacterData(ElementAction.SKIP).toString();
+        try {
+            return coreGetCharacterData(ElementAction.SKIP).toString();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2

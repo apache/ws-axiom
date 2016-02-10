@@ -35,7 +35,11 @@ public aspect AxiomChildNodeSupport {
     }
     
     public final OMNode AxiomChildNode.getNextOMSibling() {
-        return (OMNode)coreGetNextSibling();
+        try {
+            return (OMNode)coreGetNextSibling();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final OMNode AxiomChildNode.getPreviousOMSibling() {

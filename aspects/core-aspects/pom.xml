@@ -34,12 +34,6 @@
 
     <dependencies>
         <dependency>
-            <!-- This dependency will eventually go away -->
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
         </dependency>

@@ -21,9 +21,11 @@ package org.apache.axiom.om.impl.mixin;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomText;
@@ -31,15 +33,19 @@ import org.apache.axiom.om.impl.intf.TextContent;
 
 public aspect AxiomTextSupport {
     private TextContent AxiomText.getTextContent(boolean force) {
-        Object content = coreGetCharacterData();
-        if (content instanceof TextContent) {
-            return (TextContent)content;
-        } else if (force) {
-            TextContent textContent = new TextContent((String)content);
-            coreSetCharacterData(textContent, AxiomSemantics.INSTANCE);
-            return textContent;
-        } else {
-            return null;
+        try {
+            Object content = coreGetCharacterData();
+            if (content instanceof TextContent) {
+                return (TextContent)content;
+            } else if (force) {
+                TextContent textContent = new TextContent((String)content);
+                coreSetCharacterData(textContent, AxiomSemantics.INSTANCE);
+                return textContent;
+            } else {
+                return null;
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
     
@@ -68,15 +74,23 @@ public aspect AxiomTextSupport {
     }
     
     public final String AxiomText.getText() throws OMException {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final char[] AxiomText.getTextCharacters() {
-        Object content = coreGetCharacterData();
-        if (content instanceof TextContent) {
-            return ((TextContent)content).toCharArray();
-        } else {
-            return ((String)content).toCharArray();
+        try {
+            Object content = coreGetCharacterData();
+            if (content instanceof TextContent) {
+                return ((TextContent)content).toCharArray();
+            } else {
+                return ((String)content).toCharArray();
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 
@@ -100,11 +114,15 @@ public aspect AxiomTextSupport {
     }
 
     public final DataHandler AxiomText.getDataHandler() {
-        Object content = coreGetCharacterData();
-        if (content instanceof TextContent) {
-            return ((TextContent)content).getDataHandler();
-        } else {
-            throw new OMException("No DataHandler available");
+        try {
+            Object content = coreGetCharacterData();
+            if (content instanceof TextContent) {
+                return ((TextContent)content).getDataHandler();
+            } else {
+                throw new OMException("No DataHandler available");
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 

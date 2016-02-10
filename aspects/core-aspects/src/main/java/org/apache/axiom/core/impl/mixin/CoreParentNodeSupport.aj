@@ -30,20 +30,19 @@ import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.NodeConsumedException;
 import org.apache.axiom.core.NodeFilter;
 import org.apache.axiom.core.NodeIterator;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.ElementsIterator;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.impl.NodesIterator;
-import org.apache.axiom.om.NodeUnavailableException;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMNode;
 
 public aspect CoreParentNodeSupport {
     private Object CoreParentNode.content;
@@ -120,13 +119,13 @@ public aspect CoreParentNodeSupport {
         }         
     }
     
-    public CoreChildNode CoreParentNode.coreGetFirstChild() {
+    public CoreChildNode CoreParentNode.coreGetFirstChild() throws CoreModelException {
         CoreChildNode firstChild = coreGetFirstChildIfAvailable();
         if (firstChild == null) {
             switch (getState()) {
                 case CoreParentNode.DISCARDED:
                     coreGetBuilder().debugDiscarded(this);
-                    throw new NodeUnavailableException();
+                    throw new NodeConsumedException();
                 case CoreParentNode.INCOMPLETE:
                     do {
                         buildNext();
@@ -137,7 +136,7 @@ public aspect CoreParentNodeSupport {
         return firstChild;
     }
 
-    public final CoreChildNode CoreParentNode.coreGetFirstChild(NodeFilter filter) {
+    public final CoreChildNode CoreParentNode.coreGetFirstChild(NodeFilter filter) throws CoreModelException {
         CoreChildNode child = coreGetFirstChild();
         while (child != null && !filter.accept(child)) {
             child = child.coreGetNextSibling();
@@ -240,7 +239,7 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) {
+    final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
             return (String)content;
         } else {
@@ -323,7 +322,7 @@ public aspect CoreParentNodeSupport {
         return new ElementsIterator<T,S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
     }
 
-    public final <T> void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) {
+    public final <T> void CoreParentNode.cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException {
         CoreParentNode targetParent = (CoreParentNode)clone;
         if (policy.cloneChildren(options, coreGetNodeType()) && targetParent.isExpanded()) {
             if (getState() == COMPACT) {

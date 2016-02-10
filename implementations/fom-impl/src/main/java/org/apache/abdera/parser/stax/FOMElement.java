@@ -57,6 +57,7 @@ import org.apache.abdera.writer.Writer;
 import org.apache.abdera.writer.WriterOptions;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.IdentityMapper;
@@ -237,18 +238,22 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public final AbderaElement _getFirstChildWithName(QName qname) {
-        CoreChildNode child = coreGetFirstChild();
-        while (child != null) {
-            if (child instanceof AbderaElement) {
-                AbderaElement candidate = (AbderaElement)child;
-                if (candidate.coreGetLocalName().equals(qname.getLocalPart())
-                        && candidate.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
-                    return candidate;
+        try {
+            CoreChildNode child = coreGetFirstChild();
+            while (child != null) {
+                if (child instanceof AbderaElement) {
+                    AbderaElement candidate = (AbderaElement)child;
+                    if (candidate.coreGetLocalName().equals(qname.getLocalPart())
+                            && candidate.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
+                        return candidate;
+                    }
                 }
+                child = child.coreGetNextSibling();
             }
-            child = child.coreGetNextSibling();
+            return null;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
-        return null;
     }
 
     public void _setChild(QName qname, Element element) {
@@ -448,22 +453,26 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public void _removeChildren(QName qname, boolean many) {
-        CoreChildNode child = coreGetFirstChild();
-        while (child != null) {
-            if (child instanceof CoreNSAwareElement) {
-                CoreNSAwareElement element = (CoreNSAwareElement)child;
-                if (element.coreGetLocalName().equals(qname.getLocalPart())
-                        && element.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
-                    child = child.coreGetNextSibling();
-                    element.coreDetach(FOMSemantics.INSTANCE);
-                    if (many) {
-                        continue;
-                    } else {
-                        return;
+        try {
+            CoreChildNode child = coreGetFirstChild();
+            while (child != null) {
+                if (child instanceof CoreNSAwareElement) {
+                    CoreNSAwareElement element = (CoreNSAwareElement)child;
+                    if (element.coreGetLocalName().equals(qname.getLocalPart())
+                            && element.coreGetNamespaceURI().equals(qname.getNamespaceURI())) {
+                        child = child.coreGetNextSibling();
+                        element.coreDetach(FOMSemantics.INSTANCE);
+                        if (many) {
+                            continue;
+                        } else {
+                            return;
+                        }
                     }
                 }
+                child = child.coreGetNextSibling();
             }
-            child = child.coreGetNextSibling();
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
     }
 

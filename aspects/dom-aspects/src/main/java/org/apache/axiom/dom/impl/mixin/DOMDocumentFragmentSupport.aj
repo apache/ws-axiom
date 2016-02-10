@@ -21,8 +21,10 @@ package org.apache.axiom.dom.impl.mixin;
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.dom.DOMDocumentFragment;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -78,7 +80,11 @@ public aspect DOMDocumentFragmentSupport {
     }
     
     public final String DOMDocumentFragment.getTextContent() {
-        return coreGetCharacterData(ElementAction.RECURSE).toString();
+        try {
+            return coreGetCharacterData(ElementAction.RECURSE).toString();
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final void DOMDocumentFragment.setTextContent(String textContent) {

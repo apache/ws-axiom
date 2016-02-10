@@ -39,6 +39,7 @@ import org.apache.axiom.core.CoreCharacterDataContainer;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
@@ -61,6 +62,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -269,14 +271,18 @@ final class Navigator extends PullSerializerState
      * @return the text for the current node
      */
     private String getTextFromNode() {
-        switch (currentEvent) {
-            case CHARACTERS:
-            case CDATA:
-            case SPACE:
-            case COMMENT:
-                return ((CoreCharacterDataContainer)node).coreGetCharacterData().toString();
-            default:
-                throw new IllegalStateException();
+        try {
+            switch (currentEvent) {
+                case CHARACTERS:
+                case CDATA:
+                case SPACE:
+                case COMMENT:
+                    return ((CoreCharacterDataContainer)node).coreGetCharacterData().toString();
+                default:
+                    throw new IllegalStateException();
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 
@@ -384,10 +390,14 @@ final class Navigator extends PullSerializerState
     }
     
     String getNamespaceURI(int i) {
-        if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
-            return getNamespace(i).coreGetCharacterData().toString();
-        } else {
-            throw new IllegalStateException();
+        try {
+            if (currentEvent == START_ELEMENT || currentEvent == END_ELEMENT) {
+                return getNamespace(i).coreGetCharacterData().toString();
+            } else {
+                throw new IllegalStateException();
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 
@@ -421,11 +431,15 @@ final class Navigator extends PullSerializerState
     }
 
     String getAttributeValue(int i) {
-        if (currentEvent == START_ELEMENT) {
-            return getAttribute(i).coreGetCharacterData().toString();
-        } else {
-            throw new IllegalStateException(
-                    "attribute type accessed in illegal event!");
+        try {
+            if (currentEvent == START_ELEMENT) {
+                return getAttribute(i).coreGetCharacterData().toString();
+            } else {
+                throw new IllegalStateException(
+                        "attribute type accessed in illegal event!");
+            }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 
@@ -554,46 +568,50 @@ final class Navigator extends PullSerializerState
      *         mode
      */
     private boolean nextNode() {
-        if (node == null) {
-            // We get here if rootNode is an element and the current event is START_DOCUMENT
-            assert !visited;
-            node = rootNode;
-            return true;
-        } else if (node instanceof OMContainer && !visited) {
-            CoreParentNode current = (CoreParentNode)node;
-            CoreChildNode firstChild = cache ? current.coreGetFirstChild() : current.coreGetFirstChildIfAvailable();
-            if (firstChild != null) {
-                node = firstChild;
-                visited = false;
+        try {
+            if (node == null) {
+                // We get here if rootNode is an element and the current event is START_DOCUMENT
+                assert !visited;
+                node = rootNode;
                 return true;
-            } else if (current.getState() == CoreParentNode.COMPLETE || current.getState() == CoreParentNode.COMPACT) {
-                visited = true;
-                return true;
-            } else {
-                return false;
-            }
-        } else if (node == rootNode) {
-            // We get here if rootNode is an element and the next event is END_DOCUMENT
-            node = null;
-            visited = true;
-            return true;
-        } else {
-            CoreChildNode current = (CoreChildNode)node;
-            CoreChildNode nextSibling = cache ? current.coreGetNextSibling() : current.coreGetNextSiblingIfAvailable();
-            if (nextSibling != null) {
-                node = nextSibling;
-                visited = false;
-                return true;
-            } else {
-                CoreParentNode parent = current.coreGetParent();
-                node = parent;
-                if (parent.getState() == CoreParentNode.COMPLETE || parent.getState() == CoreParentNode.COMPACT || parent.coreGetBuilder() == null) { // TODO: review this condition
+            } else if (node instanceof OMContainer && !visited) {
+                CoreParentNode current = (CoreParentNode)node;
+                CoreChildNode firstChild = cache ? current.coreGetFirstChild() : current.coreGetFirstChildIfAvailable();
+                if (firstChild != null) {
+                    node = firstChild;
+                    visited = false;
+                    return true;
+                } else if (current.getState() == CoreParentNode.COMPLETE || current.getState() == CoreParentNode.COMPACT) {
                     visited = true;
                     return true;
                 } else {
                     return false;
                 }
+            } else if (node == rootNode) {
+                // We get here if rootNode is an element and the next event is END_DOCUMENT
+                node = null;
+                visited = true;
+                return true;
+            } else {
+                CoreChildNode current = (CoreChildNode)node;
+                CoreChildNode nextSibling = cache ? current.coreGetNextSibling() : current.coreGetNextSiblingIfAvailable();
+                if (nextSibling != null) {
+                    node = nextSibling;
+                    visited = false;
+                    return true;
+                } else {
+                    CoreParentNode parent = current.coreGetParent();
+                    node = parent;
+                    if (parent.getState() == CoreParentNode.COMPLETE || parent.getState() == CoreParentNode.COMPACT || parent.coreGetBuilder() == null) { // TODO: review this condition
+                        visited = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
             }
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
     

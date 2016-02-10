@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMConfigurationImpl;
+import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNode;
 import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.dom.DOMSemantics;
@@ -60,7 +60,11 @@ public aspect DOMParentNodeSupport {
     }
 
     public final Node DOMParentNode.getFirstChild() {
-        return (Node)coreGetFirstChild(DocumentWhitespaceFilter.INSTANCE);
+        try {
+            return (Node)coreGetFirstChild(DocumentWhitespaceFilter.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final Node DOMParentNode.getLastChild() {
@@ -76,15 +80,19 @@ public aspect DOMParentNodeSupport {
             ((CoreChildNode)oldChild).coreDetach(DOMSemantics.INSTANCE);
             return oldChild;
         } else {
-            throw newDOMException(DOMException.NOT_FOUND_ERR);
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 
     public void DOMParentNode.normalize(DOMConfigurationImpl config) {
-        CoreChildNode child = coreGetFirstChild();
-        while (child != null) {
-            ((DOMNode)child).normalize(config);
-            child = child.coreGetNextSibling();
+        try {
+            CoreChildNode child = coreGetFirstChild();
+            while (child != null) {
+                ((DOMNode)child).normalize(config);
+                child = child.coreGetNextSibling();
+            }
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
 }

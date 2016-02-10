@@ -21,6 +21,7 @@ package org.apache.axiom.dom.impl.mixin;
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMCDATASection;
 import org.apache.axiom.dom.DOMComment;
 import org.apache.axiom.dom.DOMConfigurationImpl;
@@ -109,11 +110,19 @@ public aspect DOMDocumentSupport {
     }
 
     public final Element DOMDocument.getDocumentElement() {
-        return (Element)coreGetDocumentElement();
+        try {
+            return (Element)coreGetDocumentElement();
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
     
     public final CoreElement DOMDocument.getNamespaceContext() {
-        return coreGetDocumentElement();
+        try {
+            return coreGetDocumentElement();
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final DOMImplementation DOMDocument.getImplementation() {

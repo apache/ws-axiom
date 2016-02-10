@@ -19,12 +19,17 @@
 package org.apache.axiom.fom.impl.mixin;
 
 import org.apache.abdera.model.ProcessingInstruction;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.fom.AbderaProcessingInstruction;
 import org.apache.axiom.fom.FOMSemantics;
 
 public aspect AbderaProcessingInstructionMixin {
     public final String AbderaProcessingInstruction.getText() {
-        return coreGetCharacterData().toString();
+        try {
+            return coreGetCharacterData().toString();
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     @SuppressWarnings("unchecked")

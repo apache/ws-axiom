@@ -42,35 +42,43 @@ public aspect DOMTextNodeSupport {
     }
     
     private DOMTextNode DOMTextNode.getWholeTextEndNode() {
-        DOMTextNode last = this;
-        while (true) {
-            CoreChildNode sibling = last.coreGetNextSibling();
-            if (sibling instanceof DOMTextNode) {
-                last = (DOMTextNode)sibling;
-            } else {
-                break;
+        try {
+            DOMTextNode last = this;
+            while (true) {
+                CoreChildNode sibling = last.coreGetNextSibling();
+                if (sibling instanceof DOMTextNode) {
+                    last = (DOMTextNode)sibling;
+                } else {
+                    break;
+                }
             }
+            return last;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        return last;
     }
 
     public final String DOMTextNode.getWholeText() {
-        DOMTextNode first = getWholeTextStartNode();
-        DOMTextNode last = getWholeTextEndNode();
-        if (first == last) {
-            return first.getData();
-        } else {
-            StringBuilder buffer = new StringBuilder();
-            DOMTextNode current = first;
-            while (true) {
-                buffer.append(current.getData());
-                if (current == last) {
-                    break;
-                } else {
-                    current = (DOMTextNode)current.coreGetNextSibling();
+        try {
+            DOMTextNode first = getWholeTextStartNode();
+            DOMTextNode last = getWholeTextEndNode();
+            if (first == last) {
+                return first.getData();
+            } else {
+                StringBuilder buffer = new StringBuilder();
+                DOMTextNode current = first;
+                while (true) {
+                    buffer.append(current.getData());
+                    if (current == last) {
+                        break;
+                    } else {
+                        current = (DOMTextNode)current.coreGetNextSibling();
+                    }
                 }
+                return buffer.toString();
             }
-            return buffer.toString();
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
 

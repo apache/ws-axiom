@@ -28,11 +28,11 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NoParentException;
+import org.apache.axiom.core.NodeConsumedException;
 import org.apache.axiom.core.NodeFilter;
 import org.apache.axiom.core.SelfRelationshipException;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
-import org.apache.axiom.om.NodeUnavailableException;
 
 public aspect CoreChildNodeSupport {
     private CoreParentNode CoreChildNode.owner;
@@ -113,7 +113,7 @@ public aspect CoreChildNodeSupport {
         this.previousSibling = previousSibling;
     }
     
-    public final CoreChildNode CoreChildNode.coreGetNextSibling() {
+    public final CoreChildNode CoreChildNode.coreGetNextSibling() throws CoreModelException {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
             CoreParentNode parent = coreGetParent();
@@ -121,7 +121,7 @@ public aspect CoreChildNodeSupport {
                 switch (parent.getState()) {
                     case CoreParentNode.DISCARDED:
                         parent.coreGetBuilder().debugDiscarded(parent);
-                        throw new NodeUnavailableException();
+                        throw new NodeConsumedException();
                     case CoreParentNode.INCOMPLETE:
                         do {
                             parent.buildNext();
@@ -133,7 +133,7 @@ public aspect CoreChildNodeSupport {
         return nextSibling;
     }
 
-    public final CoreChildNode CoreChildNode.coreGetNextSibling(NodeFilter filter) {
+    public final CoreChildNode CoreChildNode.coreGetNextSibling(NodeFilter filter) throws CoreModelException {
         CoreChildNode sibling = coreGetNextSibling();
         while (sibling != null && !filter.accept(sibling)) {
             sibling = sibling.coreGetNextSibling();
@@ -260,7 +260,7 @@ public aspect CoreChildNodeSupport {
         }
     }
 
-    public final <T> CoreNode CoreChildNode.coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) {
+    public final <T> CoreNode CoreChildNode.coreClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
         return internalClone(policy, options, targetParent);
     }
 }

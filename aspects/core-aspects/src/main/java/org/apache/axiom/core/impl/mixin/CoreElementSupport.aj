@@ -24,6 +24,7 @@ import org.apache.axiom.core.AttributeMatcher;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
@@ -146,7 +147,7 @@ public aspect CoreElementSupport {
 
     public abstract String CoreElement.getImplicitNamespaceURI(String prefix);
     
-    public final String CoreElement.coreLookupNamespaceURI(String prefix, Semantics semantics) {
+    public final String CoreElement.coreLookupNamespaceURI(String prefix, Semantics semantics) throws CoreModelException {
         if (!semantics.isUseStrictNamespaceLookup()) {
             String namespaceURI = getImplicitNamespaceURI(prefix);
             if (namespaceURI != null) {
@@ -173,7 +174,7 @@ public aspect CoreElementSupport {
 
     public abstract String CoreElement.getImplicitPrefix(String namespaceURI);
     
-    public final String CoreElement.coreLookupPrefix(String namespaceURI, Semantics semantics) {
+    public final String CoreElement.coreLookupPrefix(String namespaceURI, Semantics semantics) throws CoreModelException {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
         }
@@ -213,7 +214,7 @@ public aspect CoreElementSupport {
         }
     }
 
-    public final <T> void CoreElement.init(ClonePolicy<T> policy, T options, CoreNode other) {
+    public final <T> void CoreElement.init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException {
         CoreElement o = (CoreElement)other;
         initSource(policy, options, o);
         initName(o);

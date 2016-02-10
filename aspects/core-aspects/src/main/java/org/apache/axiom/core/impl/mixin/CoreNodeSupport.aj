@@ -21,6 +21,7 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 
@@ -82,14 +83,14 @@ public aspect CoreNodeSupport {
     }
     
     // TODO: merge this into internalClone once it is no longer referenced elsewhere
-    public final <T> CoreNode CoreNode.shallowClone(ClonePolicy<T> policy, T options) {
+    public final <T> CoreNode CoreNode.shallowClone(ClonePolicy<T> policy, T options) throws CoreModelException {
         CoreNode clone = coreGetNodeFactory().createNode(policy.getTargetNodeClass(options, this));
         clone.init(policy, options, this);
         clone.initAncillaryData(policy, options, this);
         return clone;
     }
 
-    final <T> CoreNode CoreNode.internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) {
+    final <T> CoreNode CoreNode.internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
         CoreNode clone = shallowClone(policy, options);
         if (targetParent != null) {
             targetParent.coreAppendChild((CoreChildNode)clone, false);
@@ -99,7 +100,7 @@ public aspect CoreNodeSupport {
         return clone;
     }
     
-    public final <T> CoreNode CoreNode.coreClone(ClonePolicy<T> policy, T options) {
+    public final <T> CoreNode CoreNode.coreClone(ClonePolicy<T> policy, T options) throws CoreModelException {
         return internalClone(policy, options, null);
     }
     
