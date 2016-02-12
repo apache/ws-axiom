@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.maven.enforcer.rule.api.EnforcerRule;
@@ -32,6 +33,7 @@ import org.codehaus.plexus.util.DirectoryScanner;
 import org.objectweb.asm.ClassReader;
 
 public class NoPackageCyclesEnforcerRule implements EnforcerRule {
+    private String ignore;
 
     @Override
     public void execute(EnforcerRuleHelper helper) throws EnforcerRuleException {
@@ -40,11 +42,18 @@ public class NoPackageCyclesEnforcerRule implements EnforcerRule {
             if (!classesDir.exists()) {
                 return;
             }
+            Set<Reference> ignoredClassReferences = new HashSet<Reference>();
+            if (ignore != null) {
+                for (String ignoreRule : ignore.split(",")) {
+                    String[] s = ignoreRule.split("->");
+                    ignoredClassReferences.add(new Reference(s[0].trim(), s[1].trim()));
+                }
+            }
             DirectoryScanner ds = new DirectoryScanner();
             ds.setIncludes(new String[] { "**/*.class" });
             ds.setBasedir(classesDir);
             ds.scan();
-            ReferenceCollector referenceCollector = new ReferenceCollector();
+            ReferenceCollector referenceCollector = new ReferenceCollector(ignoredClassReferences);
             for (String relativePath : ds.getIncludedFiles()) {
                 try {
                     InputStream in = new FileInputStream(new File(classesDir, relativePath));

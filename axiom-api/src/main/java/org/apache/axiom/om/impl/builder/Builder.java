@@ -21,7 +21,7 @@ package org.apache.axiom.om.impl.builder;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
- * For internal use only.
+ * @deprecated
  */
 public interface Builder extends OMXMLParserWrapper {
     /**

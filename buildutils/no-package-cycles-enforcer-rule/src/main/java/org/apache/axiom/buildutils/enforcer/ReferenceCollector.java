@@ -30,20 +30,28 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DirectedSubgraph;
 
 final class ReferenceCollector {
+    private final Set<Reference> ignoredClassReferences;
     private final Set<Reference> packageReferences = new HashSet<>();
     private final Map<Reference,Reference> classReferenceSamples = new HashMap<>();
     
+    ReferenceCollector(Set<Reference> ignoredClassReferences) {
+        this.ignoredClassReferences = ignoredClassReferences;
+    }
+
     private static String getPackageName(String className) {
         return className.substring(0, className.lastIndexOf('.'));
     }
     
     void collectClassReference(String from, String to) {
-        String fromPackage = getPackageName(from);
-        String toPackage = getPackageName(to);
-        if (!fromPackage.equals(toPackage)) {
-            Reference packageReference = new Reference(fromPackage, toPackage);
-            if (packageReferences.add(packageReference)) {
-                classReferenceSamples.put(packageReference, new Reference(from, to));
+        Reference classReference = new Reference(from, to);
+        if (!ignoredClassReferences.contains(classReference)) {
+            String fromPackage = getPackageName(from);
+            String toPackage = getPackageName(to);
+            if (!fromPackage.equals(toPackage)) {
+                Reference packageReference = new Reference(fromPackage, toPackage);
+                if (packageReferences.add(packageReference)) {
+                    classReferenceSamples.put(packageReference, classReference);
+                }
             }
         }
     }

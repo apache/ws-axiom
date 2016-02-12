@@ -26,6 +26,7 @@ import org.objectweb.asm.Type;
 
 final class ClassProcessor extends ClassVisitor {
     private final ReferenceCollector referenceCollector;
+    private boolean deprecated;
     private ReferenceProcessor referenceProcessor;
     
     ClassProcessor(ReferenceCollector referenceCollector) {
@@ -36,29 +37,38 @@ final class ClassProcessor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName,
             String[] interfaces) {
-        referenceProcessor = new ReferenceProcessor(referenceCollector, Type.getObjectType(name).getClassName());
-        referenceProcessor.processType(Type.getObjectType(superName));
-        for (String iface : interfaces) {
-            referenceProcessor.processType(Type.getObjectType(iface));
+        deprecated = (access & Opcodes.ACC_DEPRECATED) != 0;
+        if (!deprecated) {
+            referenceProcessor = new ReferenceProcessor(referenceCollector, Type.getObjectType(name).getClassName());
+            referenceProcessor.processType(Type.getObjectType(superName));
+            for (String iface : interfaces) {
+                referenceProcessor.processType(Type.getObjectType(iface));
+            }
         }
     }
 
     @Override
     public FieldVisitor visitField(int access, String name, String desc, String signature,
             Object value) {
-        referenceProcessor.processType(Type.getType(desc));
+        if (!deprecated) {
+            referenceProcessor.processType(Type.getType(desc));
+        }
         return null;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature,
             String[] exceptions) {
-        referenceProcessor.processType(Type.getMethodType(desc));
-        if (exceptions != null) {
-            for (String exception : exceptions) {
-                referenceProcessor.processType(Type.getObjectType(exception));
+        if (!deprecated && (access & Opcodes.ACC_DEPRECATED) == 0) {
+            referenceProcessor.processType(Type.getMethodType(desc));
+            if (exceptions != null) {
+                for (String exception : exceptions) {
+                    referenceProcessor.processType(Type.getObjectType(exception));
+                }
             }
+            return new MethodProcessor(referenceProcessor);
+        } else {
+            return null;
         }
-        return new MethodProcessor(referenceProcessor);
     }
 }

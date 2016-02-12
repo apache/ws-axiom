@@ -413,47 +413,6 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <itemizedlist>
                 <listitem>
                     <para>
-                        Check the dependencies between Java packages in the <filename>axiom-api</filename> module.
-                        The <package>org.apache.axiom.util</package> package (including its subpackages) is specified
-                        to contain utility classes that don't depend on higher level APIs. More precisely,
-                        <package>org.apache.axiom.util</package> should only have dependencies on
-                        <package>org.apache.axiom.ext</package>, but not e.g. on <package>org.apache.axiom.om</package>.
-                        <link xlink:href="http://www.hello2morrow.com/products/sonarj">SonarJ</link> can be used
-                        to check these dependencies. The following figure shows the expected structure:
-                    </para>
-                    <figure>
-                        <title>Package dependencies for r944680</title>
-                        <mediaobject>
-                            <imageobject>
-                                <imagedata fileref="sonarj-944680.png" format="PNG"/>
-                            </imageobject>
-                        </mediaobject>
-                    </figure>
-                    <para>
-                        In contrast, the following figure shows an earlier trunk version of <filename>axiom-api</filename>
-                        with incorrect layering and cyclic dependencies involving <package>org.apache.axiom.util</package>:
-                    </para>
-                    <figure>
-                        <title>Package dependencies for r939984</title>
-                        <mediaobject>
-                            <imageobject>
-                                <imagedata fileref="sonarj-939984.png" format="PNG"/>
-                            </imageobject>
-                        </mediaobject>
-                    </figure>
-                    <para>
-                        The check can also be done using <link xlink:href="http://mojo.codehaus.org/jdepend-maven-plugin/">jdepend-maven-plugin</link>.
-                        To do this, execute the following command in the <filename>axiom-api</filename> module:
-                    </para>
-                    <screen>mvn jdepend:generate</screen>
-                    <para>
-                        Then open <filename>target/site/jdepend-report.html</filename> and go the the "Cycles" section.
-                        The report should not show any package cycles involving <package>org.apache.axiom.mime</package>,
-                        <package>org.apache.axiom.util</package> and <package>org.apache.axiom.ext</package>.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
                         Check that the generated Javadoc contains the appropriate set of packages, i.e. only the public API.
                         This excludes classes from <filename>axiom-impl</filename> and <filename>axiom-dom</filename> as well as classes
                         related to unit tests.
