@@ -19,6 +19,7 @@
 package org.apache.axiom.locator;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,28 +83,35 @@ final class ImplementationFactory {
             // Since this code is used to discover Axiom implementations, we have to use DOM here.
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
-            Element root = dbf.newDocumentBuilder().parse(url.toString()).getDocumentElement();
-            QName rootQName = getQName(root);
-            if (rootQName.equals(QNAME_IMPLEMENTATIONS)) {
-                Node child = root.getFirstChild();
-                while (child != null) {
-                    if (child instanceof Element) {
-                        QName childQName = getQName(child);
-                        if (childQName.equals(QNAME_IMPLEMENTATION)) {
-                            Implementation implementation = parseImplementation(loader, (Element)child);
-                            if (implementation != null) {
-                                implementations.add(implementation);
+            // Use URL#openStream() (instead of converting the URL to a String and passing it to the
+            // parser) to avoid situations where the parser can't reconstruct/interpret the URL.
+            InputStream in = url.openStream();
+            try {
+                Element root = dbf.newDocumentBuilder().parse(in).getDocumentElement();
+                QName rootQName = getQName(root);
+                if (rootQName.equals(QNAME_IMPLEMENTATIONS)) {
+                    Node child = root.getFirstChild();
+                    while (child != null) {
+                        if (child instanceof Element) {
+                            QName childQName = getQName(child);
+                            if (childQName.equals(QNAME_IMPLEMENTATION)) {
+                                Implementation implementation = parseImplementation(loader, (Element)child);
+                                if (implementation != null) {
+                                    implementations.add(implementation);
+                                }
+                            } else {
+                                log.warn("Skipping unexpected element " + childQName + "; only "
+                                        + QNAME_IMPLEMENTATION + " is expected");
                             }
-                        } else {
-                            log.warn("Skipping unexpected element " + childQName + "; only "
-                                    + QNAME_IMPLEMENTATION + " is expected");
                         }
+                        child = child.getNextSibling();
                     }
-                    child = child.getNextSibling();
+                } else {
+                    log.error(url + " is not a valid implementation descriptor: unexpected root element "
+                            + rootQName + "; expected " + QNAME_IMPLEMENTATIONS);
                 }
-            } else {
-                log.error(url + " is not a valid implementation descriptor: unexpected root element "
-                        + rootQName + "; expected " + QNAME_IMPLEMENTATIONS);
+            } finally {
+                in.close();
             }
         } catch (ParserConfigurationException ex) {
             // If we get here, something went badly wrong
