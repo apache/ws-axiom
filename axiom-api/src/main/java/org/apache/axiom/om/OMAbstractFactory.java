@@ -174,7 +174,8 @@ public class OMAbstractFactory {
             StringBuilder buffer = new StringBuilder();
             buffer.append("No meta factory found for feature '").append(feature).append("'");
             if (jarHint != null) {
-                buffer.append("; this usually means that ").append(jarHint).append(" is not in the classpath");
+                buffer.append("; this usually means that ").append(jarHint)
+                      .append(" is not in the classpath or that the META-INF/axiom.xml resource can't be read");
             }
             throw new OMException(buffer.toString());
         } else {
