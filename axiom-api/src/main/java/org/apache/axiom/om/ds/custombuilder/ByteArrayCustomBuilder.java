@@ -22,7 +22,6 @@ package org.apache.axiom.om.ds.custombuilder;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 

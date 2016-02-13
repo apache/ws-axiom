@@ -16,19 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.common.builder;
+package org.apache.axiom.om.impl.common.builder;
 
-import org.apache.axiom.om.impl.common.builder.PayloadSelector;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
-import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 
-public final class SOAPPayloadSelector implements PayloadSelector {
-    public static final SOAPPayloadSelector INSTANCE = new SOAPPayloadSelector();
-
-    private SOAPPayloadSelector() {}
+final class CustomBuilderRegistration {
+    private final CustomBuilder.Selector selector;
+    private final CustomBuilder customBuilder;
     
-    @Override
-    public boolean isPayload(int elementLevel, AxiomContainer parent) {
-        return elementLevel == 3 && parent instanceof SOAPBody;
+    CustomBuilderRegistration(Selector selector, CustomBuilder customBuilder) {
+        this.selector = selector;
+        this.customBuilder = customBuilder;
+    }
+
+    CustomBuilder.Selector getSelector() {
+        return selector;
+    }
+
+    CustomBuilder getCustomBuilder() {
+        return customBuilder;
     }
 }

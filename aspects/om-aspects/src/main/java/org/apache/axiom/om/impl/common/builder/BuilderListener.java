@@ -24,14 +24,19 @@ import org.apache.axiom.core.CoreNode;
 public interface BuilderListener {
     /**
      * Inform the listener that a node has been added to the tree. Note that this method will also
-     * be invoked for the {@link CoreDocument}.
+     * be invoked for the {@link CoreDocument}. Since the builder is not reentrant, implementations
+     * must not perform any operations on the node that would require building additional nodes. If
+     * such operations need to be executed, the listener should return a {@link Runnable}
+     * encapsulating these operations. The builder will then execute that runnable as soon as it is
+     * safe to do so.
      * 
      * @param node
      *            the node that has been added
      * @param depth
      *            the depth of the node, with 0 corresponding to the document
+     * @return a runnable to be executed when the object model can safely be accessed again
      */
     // TODO: specify if what happens for attributes (including depth)
     // TODO: an ancestor of the node may have been detached or moved; specify what this means for the depth
-    void nodeAdded(CoreNode node, int depth);
+    Runnable nodeAdded(CoreNode node, int depth);
 }

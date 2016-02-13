@@ -35,6 +35,6 @@ public class TestRegisterCustomBuilderForPayloadJAXBWithDataHandlerReaderExtensi
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new TestDataSource('X', Integer.MAX_VALUE));
         OMElement document = createTestDocument(dh);
-        test(dh, OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), document.getXMLStreamReader()), true, true, false);
+        test(dh, OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), document.getXMLStreamReader()), true, true);
     }
 }

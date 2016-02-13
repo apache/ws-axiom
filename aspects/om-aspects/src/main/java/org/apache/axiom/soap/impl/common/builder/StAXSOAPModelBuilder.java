@@ -42,8 +42,7 @@ import javax.xml.stream.XMLStreamReader;
 public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
     public StAXSOAPModelBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable) {
-        super(nodeFactory, parser, autoClose, detachable, closeable, new SOAPModel(),
-                SOAPPayloadSelector.INSTANCE, null);
+        super(nodeFactory, parser, autoClose, detachable, closeable, new SOAPModel(), null);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.
@@ -51,12 +50,13 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             private AxiomSOAPMessage message;
             
             @Override
-            public void nodeAdded(CoreNode node, int depth) {
+            public Runnable nodeAdded(CoreNode node, int depth) {
                 if (node instanceof AxiomSOAPMessage) {
                     message = (AxiomSOAPMessage)node;
                 } else if (message != null && node instanceof AxiomSOAPEnvelope) {
                     message.initSOAPFactory((SOAPFactory)((AxiomSOAPEnvelope)node).getOMFactory());
                 }
+                return null;
             }
         });
     }

@@ -17,26 +17,68 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om.ds.custombuilder;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAPBody;
 
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * A Custom Builder is registered on the {@link OMXMLParserWrapper} for a particular QName or payload.
- * When the QName or payload is encountered, the CustomBuilder will build an {@link OMDataSource}
+ * A Custom Builder is registered on the {@link OMXMLParserWrapper} for a particular set of elements.
+ * When a matching element is encountered, the CustomBuilder will build an {@link OMDataSource}
  * for the builder.
  *
- * @see CustomBuilderSupport#registerCustomBuilder(javax.xml.namespace.QName, int, CustomBuilder)
- * @see CustomBuilderSupport#registerCustomBuilderForPayload(CustomBuilder)
+ * @see CustomBuilderSupport#registerCustomBuilder(Selector, CustomBuilder)
  */
 public interface CustomBuilder {
     /**
+     * Selects the elements to which a custom builder is applied. Note that this interface may be
+     * implemented by the {@link CustomBuilder} itself.
+     */
+    public interface Selector {
+        /**
+         * Selects the message payload element. For plain XML documents, that is the document
+         * element. For SOAP messages, that is the child element of the SOAP body.
+         */
+        Selector PAYLOAD = new Selector() {
+            @Override
+            public boolean accepts(OMContainer parent, int depth, String namespaceURI, String localName) {
+                // Note: usage of SOAPBody here may create a package cycle, but that cycle could easily
+                // be broken by introducing a marker interface to be extended by SOAPBody.
+                return parent instanceof OMDocument || parent instanceof SOAPBody;
+            }
+        };
+        
+        /**
+         * Check if the custom builder registered with this selector should be applied to the given
+         * element. Note that this method will only be invoked for elements that can be represented
+         * as {@link OMSourcedElement} instances in the object model. For plain XML documents this
+         * means every element, but for SOAP messages this restricts the set of elements. E.g. this
+         * method will never be invoked for SOAP faults.
+         * 
+         * @param parent
+         *            the parent of the {@link OMElement} to be built
+         * @param depth
+         *            the depth of the element (with the root element having depth 1)
+         * @param namespaceURI
+         *            the namespace URI of the element; never {@code null}
+         * @param localName
+         *            the local name of the element; never {@code null}
+         * @return {@code true} if the element should be built as an {@link OMSourcedElement} using
+         *         the custom builder registered with this selector, in which case
+         *         {@link CustomBuilder#create(XMLStreamReader)} will be called to create the
+         *         corresponding {@link OMDataSource}; {@code false} otherwise
+         */
+        boolean accepts(OMContainer parent, int depth, String namespaceURI, String localName);
+    }
+    
+    /**
      * Create an {@link OMDataSource} for this whole subtree.
-     * A null is returned if the default builder behavior should be used.
      * 
      * @param reader
      *            The stream reader to read the StAX events from. The data read
@@ -63,25 +105,7 @@ public interface CustomBuilder {
      *            work if the builder was created from an {@link XMLStreamReader}
      *            implementing the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
      *            extension).
-     *            <p>
-     *            The implementation MUST NOT assume that <code>reader</code> is the original
-     *            reader returned by the StAX implementation. In general, it
-     *            will be a wrapper around the original reader, e.g. one added
-     *            by the {@link org.apache.axiom.util.stax.dialect.StAXDialect}
-     *            implementation. If the method requires access to the original
-     *            parser (e.g. to pass the {@link XMLStreamReader} object to
-     *            another library that uses some special optimizations for
-     *            particular parser implementations), it SHOULD use
-     *            {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
-     *            to unwrap the reader. If the method solely relies on the
-     *            conformance of the reader to the StAX specification, it SHOULD
-     *            NOT attempt to unwrap it.
-     *            <p>
-     *            If the implementation requires both an
-     *            XOP encoded stream and wants to get access to the original reader, it should invoke
-     *            {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
-     *            after {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}.
-     * @return null or OMDataSource
+     * @return OMDataSource
      */
     public OMDataSource create(XMLStreamReader reader) throws OMException;
 }

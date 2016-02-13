@@ -27,7 +27,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -48,9 +49,9 @@ public abstract class RegisterCustomBuilderForPayloadJAXBTestCase extends AxiomT
         return document;
     }
     
-    protected final void test(DataHandler dh, OMXMLParserWrapper builder, boolean same, boolean usesAttachments, boolean expectBareReader) throws Exception {
-        JAXBCustomBuilder customBuilder = new JAXBCustomBuilder(JAXBContext.newInstance(MyDocument.class), expectBareReader);
-        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(customBuilder);
+    protected final void test(DataHandler dh, OMXMLParserWrapper builder, boolean same, boolean usesAttachments) throws Exception {
+        JAXBCustomBuilder customBuilder = new JAXBCustomBuilder(JAXBContext.newInstance(MyDocument.class));
+        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
         builder.getDocumentElement().build();
         MyDocument myDocument = (MyDocument)customBuilder.getJaxbObject();
         if (same) {

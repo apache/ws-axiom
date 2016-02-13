@@ -16,9 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.builder;
-
-import javax.xml.namespace.QName;
+package org.apache.axiom.om.ds.custombuilder;
 
 /**
  * Interface allowing registration of a custom builder. This is a semi-public API used by Axis2; it
@@ -26,21 +24,10 @@ import javax.xml.namespace.QName;
  */
 public interface CustomBuilderSupport {
     /**
-     * Register a CustomBuilder associated with the indicated QName.
-     * The CustomBuilder will be used when an element of that qname is encountered.
-     * @param qName
-     * @param maxDepth indicate the maximum depth that this qname will be found. (root = 0)
+     * Register a custom builder.
+     * 
+     * @param selector specifies the elements to which the custom builder will be applied
      * @param customBuilder
-     * @return replaced CustomBuilder or null
      */
-    CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder);
-    
-    /**
-     * Register a CustomBuilder for a payload.
-     * The payload is defined as the elements inside a SOAPBody or the 
-     * document element of a REST message.
-     * @param customBuilder
-     * @return replaced CustomBuilder or null
-     */
-    CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder);
+    void registerCustomBuilder(CustomBuilder.Selector selector, CustomBuilder customBuilder);
 }

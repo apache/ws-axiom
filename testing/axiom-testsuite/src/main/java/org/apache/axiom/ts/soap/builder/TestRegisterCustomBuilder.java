@@ -20,11 +20,11 @@ package org.apache.axiom.ts.soap.builder;
 
 import java.util.ArrayList;
 
-import javax.xml.namespace.QName;
-
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -41,7 +41,15 @@ public class TestRegisterCustomBuilder extends SOAPTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPModelBuilder builder = SOAPSampleSet.WSA.getMessage(spec).getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilder(new QName("http://www.w3.org/2005/08/addressing", "To"), 3,
+        ((CustomBuilderSupport)builder).registerCustomBuilder(
+                new CustomBuilder.Selector() {
+                    @Override
+                    public boolean accepts(OMContainer parent, int depth, String namespaceURI, String localName) {
+                        return depth == 3
+                                && namespaceURI.equals("http://www.w3.org/2005/08/addressing")
+                                && localName.equals("To");
+                    }
+                },
                 new ByteArrayCustomBuilder("utf-8"));
         SOAPHeader header = builder.getSOAPEnvelope().getHeader();
         ArrayList al = header.getHeaderBlocksWithNSURI("http://www.w3.org/2005/08/addressing");

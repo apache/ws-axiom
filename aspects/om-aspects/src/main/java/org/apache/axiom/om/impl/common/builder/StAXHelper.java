@@ -22,15 +22,12 @@ package org.apache.axiom.om.impl.common.builder;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
-import org.apache.axiom.util.xml.QNameMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,7 +35,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.namespace.QName;
 
 import java.io.Closeable;
 
@@ -89,12 +85,6 @@ public class StAXHelper {
     
     private boolean _isClosed = false;              // Indicate if parser is closed
 
-    // Fields for Custom Builder implementation
-    private final PayloadSelector payloadSelector;
-    private CustomBuilder customBuilderForPayload;
-    private QNameMap<CustomBuilder> customBuilders;
-    private int maxDepthForCustomBuilders = -1;
-    
     /**
      * Reference to the {@link DataHandlerReader} extension of the parser, or <code>null</code> if
      * the parser doesn't support this extension.
@@ -110,19 +100,18 @@ public class StAXHelper {
     private int lookAheadToken;
     
     public StAXHelper(XMLStreamReader parser, XmlHandler handler, BuilderHandler builderHandler,
-            Closeable closeable, boolean autoClose, PayloadSelector payloadSelector) {
+            Closeable closeable, boolean autoClose) {
         this.parser = parser;
         this.handler = handler;
         this.builderHandler = builderHandler;
         this.closeable = closeable;
         this.autoClose = autoClose;
-        this.payloadSelector = payloadSelector;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
         lookAheadToken = parser.getEventType();
     }
     
     public StAXHelper(XMLStreamReader parser, XmlHandler handler) {
-        this(parser, handler, null, null, false, PayloadSelector.DEFAULT);
+        this(parser, handler, null, null, false);
     }
 
     private static String normalize(String s) {
@@ -172,26 +161,6 @@ public class StAXHelper {
         }
     }
 
-    public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
-        CustomBuilder old = null;
-        if (customBuilders == null) {
-            customBuilders = new QNameMap<CustomBuilder>();
-        } else {
-            old = customBuilders.get(qName);
-        }
-        maxDepthForCustomBuilders = 
-                (maxDepthForCustomBuilders > maxDepth) ?
-                        maxDepthForCustomBuilders: maxDepth;
-        customBuilders.put(qName, customBuilder);
-        return old;
-    }
-    
-    public final CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
-        CustomBuilder old = null;
-        this.customBuilderForPayload = customBuilder;
-        return old;
-    }
-    
     public final void close() {
         try {
             if (!isClosed()) {
@@ -315,18 +284,6 @@ public class StAXHelper {
         String namespaceURI = normalize(parser.getNamespaceURI());
         String localName = parser.getLocalName();
         String prefix = normalize(parser.getPrefix());
-        if (builderHandler != null) {
-            if (customBuilderForPayload != null && payloadSelector.isPayload(builderHandler.depth+1, builderHandler.target)
-                    && processWithCustomBuilder(customBuilderForPayload)) {
-                return;
-            }
-            if (customBuilders != null && builderHandler.depth < this.maxDepthForCustomBuilders) {
-                CustomBuilder customBuilder = customBuilders.get(namespaceURI, localName);
-                if (customBuilder != null && processWithCustomBuilder(customBuilder)) {
-                    return;
-                }
-            }
-        }
         handler.startElement(namespaceURI, localName, prefix);
         for (int i = 0, count = parser.getNamespaceCount(); i < count; i++) {
             handler.processNamespaceDeclaration(
@@ -343,37 +300,6 @@ public class StAXHelper {
                     parser.isAttributeSpecified(i));
         }
         handler.attributesCompleted();
-    }
-    
-    private boolean processWithCustomBuilder(CustomBuilder customBuilder) throws StreamException {
-        
-        String namespace = parser.getNamespaceURI();
-        if (namespace == null) {
-            namespace = "";
-        }
-        String localPart = parser.getLocalName();
-        
-        if (log.isDebugEnabled()) {
-            log.debug("Invoking CustomBuilder, " + customBuilder.toString() + 
-                      ", to the OMNode for {" + namespace + "}" + localPart);
-        }
-        
-        OMDataSource ds = customBuilder.create(parser);
-        if (ds == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("The CustomBuilder, " + customBuilder.toString() + 
-                        " did not construct an OMDataSource for {" + namespace + "}" + localPart +
-                        ". The OMElement will be constructed using the installed stax om builder");
-            }
-            return false;
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("The CustomBuilder, " + customBuilder.toString() + 
-                          "successfully constructed the OMDataSource for {" + namespace + "}" + localPart);
-            }
-            handler.processOMDataSource(namespace, localPart, ds);
-            return true;
-        }
     }
     
     private void processDTD() throws StreamException {

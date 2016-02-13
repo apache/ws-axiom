@@ -34,6 +34,8 @@ import javax.xml.stream.XMLStreamReader;
  * This interface is used by
  * {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
  * to get access to the original parser.
+ * 
+ * @deprecated
  */
 public interface DelegatingXMLStreamReader extends XMLStreamReader {
     XMLStreamReader getParent();

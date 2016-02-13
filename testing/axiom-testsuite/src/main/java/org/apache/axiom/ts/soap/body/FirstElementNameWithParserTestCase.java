@@ -29,8 +29,8 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -60,7 +60,7 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
         if (supportsOptimization) {
             // To detect if the child element is instantiated or not, we register a custom
             // builder that throws an exception.
-            ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new CustomBuilder() {
+            ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new CustomBuilder() {
                 public OMDataSource create(XMLStreamReader reader) throws OMException {
                     throw new AssertionFailedError("Custom builder called.");
                 }

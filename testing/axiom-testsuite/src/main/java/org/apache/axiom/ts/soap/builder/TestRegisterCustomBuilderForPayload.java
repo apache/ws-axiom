@@ -33,7 +33,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.ByteArrayDataSource.ByteArray;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -53,7 +54,7 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8") {
+        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new ByteArrayCustomBuilder("utf-8") {
             @Override
             public OMDataSource create(XMLStreamReader reader) throws OMException {
                 if (reader.getName().equals(message.getSOAPSpec().getFaultQName())) {

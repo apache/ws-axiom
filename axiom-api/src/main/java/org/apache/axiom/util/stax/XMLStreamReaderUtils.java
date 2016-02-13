@@ -322,6 +322,8 @@ public class XMLStreamReaderUtils {
      * access the original stream reader.
      * @param parser XMLStreamReader used by Axiom
      * @return original parser 
+     * @deprecated As of version 1.3.0, Axiom no longer permits access to the original stream
+     *             reader.
      */
     public static XMLStreamReader getOriginalXMLStreamReader(XMLStreamReader parser) {
         if (log.isDebugEnabled()) {

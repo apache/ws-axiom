@@ -30,10 +30,8 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.BuilderListener;
-import org.apache.axiom.om.impl.common.builder.PayloadSelector;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 
 @SuppressWarnings("unchecked")
@@ -44,13 +42,14 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
 
     public FOMBuilder(final FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
         super(FOMNodeFactory.INSTANCE, new FOMStAXFilter(parser, parserOptions), false, (Detachable)null, (Closeable)null,
-                factory, PayloadSelector.DEFAULT, null);
+                factory, null);
         this.parserOptions = parserOptions;
         this.fomfactory = factory;
         addListener(new BuilderListener() {
             @Override
-            public void nodeAdded(CoreNode node, int depth) {
+            public Runnable nodeAdded(CoreNode node, int depth) {
                 ((AbderaNode)node).setFactory(factory);
+                return null;
             }
         });
     }

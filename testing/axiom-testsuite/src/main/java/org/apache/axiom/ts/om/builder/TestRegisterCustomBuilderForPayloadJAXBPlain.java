@@ -41,6 +41,6 @@ public class TestRegisterCustomBuilderForPayloadJAXBPlain extends RegisterCustom
         OutputStream out = blob.getOutputStream();
         createTestDocument(dh).serialize(out);
         out.close();
-        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), blob.getInputStream()), false, false, true);
+        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), blob.getInputStream()), false, false);
     }
 }

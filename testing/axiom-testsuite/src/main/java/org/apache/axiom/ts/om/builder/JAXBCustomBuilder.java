@@ -19,8 +19,6 @@
 
 package org.apache.axiom.ts.om.builder;
 
-import static org.junit.Assert.assertTrue;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -31,19 +29,17 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public class JAXBCustomBuilder implements CustomBuilder {
     private final JAXBContext jaxbContext;
-    private final boolean expectBareReader;
     private Object jaxbObject;
     private boolean attachmentsAccessed;
     
-    public JAXBCustomBuilder(JAXBContext jaxbContext, boolean expectBareReader) {
+    public JAXBCustomBuilder(JAXBContext jaxbContext) {
         this.jaxbContext = jaxbContext;
-        this.expectBareReader = expectBareReader;
     }
 
     public OMDataSource create(XMLStreamReader reader)
@@ -53,11 +49,6 @@ public class JAXBCustomBuilder implements CustomBuilder {
             final String localName = reader.getLocalName();
             XOPEncodedStream xopStream = XOPUtils.getXOPEncodedStream(reader);
             XMLStreamReader encodedReader = xopStream.getReader();
-            if (expectBareReader) {
-                String className = encodedReader.getClass().getName();
-                assertTrue(!className.startsWith("org.apache.axiom.")
-                        || className.startsWith("org.apache.axiom.util.stax.dialect."));
-            }
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             AttachmentUnmarshallerImpl attachmentUnmarshaller = new AttachmentUnmarshallerImpl(xopStream.getMimePartProvider());
             unmarshaller.setAttachmentUnmarshaller(attachmentUnmarshaller);

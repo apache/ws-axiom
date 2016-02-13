@@ -25,8 +25,9 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
@@ -36,7 +37,6 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.namespace.QName;
 
 import java.io.Closeable;
 
@@ -54,28 +54,30 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     private boolean parserAccessed = false;
     private String charEncoding = null;
     
+    private CustomBuilderManager customBuilderManager;
+    
     protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
-            boolean autoClose, Detachable detachable, Closeable closeable, Model model, PayloadSelector payloadSelector,
+            boolean autoClose, Detachable detachable, Closeable closeable, Model model,
             AxiomSourcedElement root) {
         // TODO: disable namespace repairing for XMLStreamReader created from a parser
         super(nodeFactory, model, root, true);
         if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
-        helper = new StAXHelper(parser, handler, builderHandler, closeable, autoClose, payloadSelector);
+        helper = new StAXHelper(parser, handler, builderHandler, closeable, autoClose);
         this.detachable = detachable;
         charEncoding = parser.getEncoding();
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
             Detachable detachable, Closeable closeable) {
-        this(nodeFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, null);
+        this(nodeFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, null);
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory,
                          XMLStreamReader parser, 
                          AxiomSourcedElement element) {
-        this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, PayloadSelector.DEFAULT, element);
+        this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, element);
     }
     
     private void discarded(CoreParentNode container) {
@@ -281,13 +283,13 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         builderHandler.cache = true;
     }
 
-    public final CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
-        return helper.registerCustomBuilder(qName, maxDepth, customBuilder);
-    }
-    
-    
-    public final CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
-        return helper.registerCustomBuilderForPayload(customBuilder);
+    @Override
+    public void registerCustomBuilder(Selector selector, CustomBuilder customBuilder) {
+        if (customBuilderManager == null) {
+            customBuilderManager = new CustomBuilderManager();
+            builderHandler.addListener(customBuilderManager);
+        }
+        customBuilderManager.register(selector, customBuilder);
     }
     
     public final String getCharsetEncoding() {
@@ -337,7 +339,9 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
      * @throws OMException
      */
     public int next() throws OMException {
-        return helper.next();
+        int result = helper.next();
+        builderHandler.executeDeferredListenerActions();
+        return result;
     }
     
     public final OMElement getDocumentElement() {

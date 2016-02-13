@@ -20,7 +20,9 @@ package org.apache.axiom.om.impl.common.builder;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import javax.xml.stream.XMLStreamConstants;
 
@@ -82,6 +84,7 @@ public final class BuilderHandler implements XmlHandler {
     public Map<CoreParentNode,Throwable> discardTracker = log.isDebugEnabled() ? new LinkedHashMap<CoreParentNode,Throwable>() : null;
     
     private ArrayList<BuilderListener> listeners;
+    private Queue<Runnable> deferredListenerActions;
 
     public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
@@ -97,14 +100,29 @@ public final class BuilderHandler implements XmlHandler {
         listeners.add(listener);
     }
     
-    public void nodeAdded(CoreNode node) {
+    private void nodeAdded(CoreNode node) {
         if (listeners != null) {
             for (int i=0, size=listeners.size(); i<size; i++) {
-                listeners.get(i).nodeAdded(node, depth);
+                Runnable action = listeners.get(i).nodeAdded(node, depth);
+                if (action != null) {
+                    if (deferredListenerActions == null) {
+                        deferredListenerActions = new LinkedList<Runnable>();
+                    }
+                    deferredListenerActions.add(action);
+                }
             }
         }
     }
 
+    void executeDeferredListenerActions() {
+        if (deferredListenerActions != null) {
+            Runnable action;
+            while ((action = deferredListenerActions.poll()) != null) {
+                action.run();
+            }
+        }
+    }
+    
     public boolean isCompleted() {
         return done;
     }

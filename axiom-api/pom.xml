@@ -307,9 +307,6 @@
                                         org.apache.axiom.om.ds.AbstractPullOMDataSource -> org.apache.axiom.om.impl.serialize.StreamingOMSerializer,
                                         <!-- ParserInputStreamDataSource will be deprecated -->
                                         org.apache.axiom.om.ds.ParserInputStreamDataSource$Data -> org.apache.axiom.om.util.CommonUtils,
-                                        <!-- TODO: CustomBuilder should not be in an impl package -->
-                                        org.apache.axiom.om.impl.builder.CustomBuilder -> org.apache.axiom.om.OMDataSource,
-                                        org.apache.axiom.om.impl.builder.CustomBuilder -> org.apache.axiom.om.OMException,
                                         <!-- TODO: Detachable should go to om-aspects -->
                                         org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
                                         <!-- TODO -->

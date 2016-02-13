@@ -28,7 +28,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
@@ -58,7 +59,7 @@ public class TestElementPullStreamAndOMExpansion2 extends AxiomTestCase {
         ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
         
         // Register the custom builder on the builder so that they body payload is stored as bytes
-        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(customBuilder);
+        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
         
         
         // Create an output stream

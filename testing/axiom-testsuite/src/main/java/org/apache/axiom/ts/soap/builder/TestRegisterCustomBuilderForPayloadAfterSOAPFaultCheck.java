@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilder;
-import org.apache.axiom.om.impl.builder.CustomBuilderSupport;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -52,7 +52,7 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends Samp
 
         // Do the registration here...this simulates when it could occure in the engine
         // (After the fault check and during phase processing...probably dispatch phase)
-        ((CustomBuilderSupport)builder).registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
+        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new ByteArrayCustomBuilder("utf-8"));
         
         OMElement bodyElement = envelope.getBody().getFirstElement();
         assertTrue(bodyElement instanceof OMSourcedElement);
