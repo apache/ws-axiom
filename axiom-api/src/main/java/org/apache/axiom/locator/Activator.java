@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.locator;
 
+import java.util.List;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.apache.axiom.om.util.StAXUtils;
@@ -36,14 +38,14 @@ import org.osgi.util.tracker.BundleTracker;
 public class Activator implements BundleActivator {
     private static final Log log = LogFactory.getLog(Activator.class);
     
-    private BundleTracker tracker;
+    private BundleTracker<List<RegisteredImplementation>> tracker;
 
     public void start(BundleContext context) throws Exception {
         OSGiOMMetaFactoryLocator locator = new OSGiOMMetaFactoryLocator(context);
         OMAbstractFactory.setMetaFactoryLocator(locator);
         // Bundle.STARTING covers the case where the implementation bundle has
         // "Bundle-ActivationPolicy: lazy".
-        tracker = new BundleTracker(context, Bundle.STARTING | Bundle.ACTIVE, locator);
+        tracker = new BundleTracker<List<RegisteredImplementation>>(context, Bundle.STARTING | Bundle.ACTIVE, locator);
         tracker.open();
         // In an OSGi environment, the thread context class loader is generally not set in a meaningful way.
         // Therefore we should use singleton factories. Note that if the StAX API is provided by Geronimo's or

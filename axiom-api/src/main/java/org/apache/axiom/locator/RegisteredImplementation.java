@@ -18,16 +18,17 @@
  */
 package org.apache.axiom.locator;
 
+import org.apache.axiom.om.OMMetaFactory;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 class RegisteredImplementation {
     private final Implementation implementation;
-    private final ServiceRegistration registration;
-    private final ServiceReference reference;
+    private final ServiceRegistration<OMMetaFactory> registration;
+    private final ServiceReference<OMMetaFactory> reference;
     
     RegisteredImplementation(Implementation implementation,
-            ServiceRegistration registration, ServiceReference reference) {
+            ServiceRegistration<OMMetaFactory> registration, ServiceReference<OMMetaFactory> reference) {
         this.implementation = implementation;
         this.registration = registration;
         this.reference = reference;
@@ -37,11 +38,11 @@ class RegisteredImplementation {
         return implementation;
     }
 
-    ServiceRegistration getRegistration() {
+    ServiceRegistration<OMMetaFactory> getRegistration() {
         return registration;
     }
 
-    ServiceReference getReference() {
+    ServiceReference<OMMetaFactory> getReference() {
         return reference;
     }
 }
