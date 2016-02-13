@@ -391,7 +391,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public void writeOptimized(OMText node) {
         log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
-        otherParts.add(new Part(node.getContentID(), (DataHandler)node.getDataHandler()));    
+        otherParts.add(new Part(node.getContentID(), node.getDataHandler()));
         log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
     }
 
@@ -411,7 +411,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         // The optimize argument is set to true for compatibility. Indeed, older versions
         // left it to the caller to check OMText#isOptimized().
         try {
-            return optimizationPolicy.isOptimized((DataHandler)node.getDataHandler(), true);
+            return optimizationPolicy.isOptimized(node.getDataHandler(), true);
         } catch (IOException ex) {
             return true;
         }

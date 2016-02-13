@@ -109,9 +109,9 @@ public class TextHelper {
     public static void toStringBuffer(OMText omText, StringBuffer buffer) throws IOException {
         // If an InputStream is present, stream the BASE64 text to the StreamBuffer
         if (omText.isOptimized()) {
-           Object dh = omText.getDataHandler();
-           if (dh instanceof DataHandler) {
-               InputStream is = ((DataHandler) dh).getInputStream();
+           DataHandler dh = omText.getDataHandler();
+           if (dh != null) {
+               InputStream is = dh.getInputStream();
                if (is != null) {
                    toStringBuffer(is, buffer);
                    return;

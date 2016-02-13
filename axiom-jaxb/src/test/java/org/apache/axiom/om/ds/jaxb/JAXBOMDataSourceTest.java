@@ -142,7 +142,7 @@ public class JAXBOMDataSourceTest {
         OMText content = (OMText)contentElement.getFirstOMChild();
         assertTrue(content.isBinary());
         assertTrue(content.isOptimized());
-        DataHandler dh = (DataHandler)content.getDataHandler();
+        DataHandler dh = content.getDataHandler();
         assertEquals("some content", dh.getContent());
     }
     

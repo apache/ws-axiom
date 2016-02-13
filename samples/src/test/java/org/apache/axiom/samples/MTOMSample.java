@@ -70,7 +70,7 @@ public class MTOMSample extends TestCase {
         OMElement retrieveContentResponse = response.getBody().getFirstElement();
         OMElement content = retrieveContentResponse.getFirstElement();
         // Extract the DataHandler representing the optimized binary data
-        DataHandler dh = (DataHandler)((OMText)content.getFirstOMChild()).getDataHandler();
+        DataHandler dh = ((OMText)content.getFirstOMChild()).getDataHandler();
         InputStream contentStream;
         // If possible, stream the content of the MIME part (feature available in Axiom 1.2.13)
         if (dh instanceof DataHandlerExt) {

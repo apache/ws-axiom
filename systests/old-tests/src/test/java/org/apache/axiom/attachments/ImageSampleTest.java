@@ -118,7 +118,7 @@ public class ImageSampleTest extends AbstractTestCase {
          */
 
         DataHandler actualDH;
-        actualDH = (DataHandler) blob.getDataHandler();
+        actualDH = blob.getDataHandler();
         BufferedImage bufferedImage = ImageIO.read(actualDH.getDataSource().getInputStream());
         this.saveImage("image/jpeg", bufferedImage, new FileOutputStream(imageOutFileName));
         

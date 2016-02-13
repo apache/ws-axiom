@@ -107,9 +107,8 @@ public class MIMEOutputUtils {
             Iterator binaryNodeIterator = binaryNodeList.iterator();
             while (binaryNodeIterator.hasNext()) {
                 OMText binaryNode = (OMText) binaryNodeIterator.next();
-                writeBodyPart(outStream, createMimeBodyPart(binaryNode
-                        .getContentID(), (DataHandler) binaryNode
-                        .getDataHandler(), omOutputFormat), boundary);
+                writeBodyPart(outStream, createMimeBodyPart(binaryNode.getContentID(),
+                        binaryNode.getDataHandler(), omOutputFormat), boundary);
             }
             finishWritingMime(outStream);
             outStream.flush();

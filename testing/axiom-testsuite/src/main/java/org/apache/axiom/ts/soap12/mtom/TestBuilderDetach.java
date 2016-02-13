@@ -22,8 +22,6 @@ import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
 
 import java.util.Iterator;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
@@ -60,7 +58,7 @@ public class TestBuilderDetach extends AxiomTestCase {
                 if (text.isBinary()) {
                     IOTestUtils.compareStreams(
                             sample.getPart(text.getContentID()),
-                            ((DataHandler)text.getDataHandler()).getInputStream());
+                            text.getDataHandler().getInputStream());
                     binaryCount++;
                 }
             }

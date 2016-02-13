@@ -127,7 +127,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         byte[] expectedObject = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2,
                 -1, 98 };
         DataHandler actualDH;
-        actualDH = (DataHandler) blob.getDataHandler();
+        actualDH = blob.getDataHandler();
         //ByteArrayInputStream object = (ByteArrayInputStream) actualDH
         //.getContent();
         //byte[] actualObject= null;
@@ -163,7 +163,7 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         for (Iterator it = binaryNodes.iterator(); it.hasNext(); ) {
             // Request the DataHandler and do something with it to make sure
             // the part is loaded
-            ((DataHandler)((OMText)it.next()).getDataHandler()).getInputStream().close();
+            ((OMText)it.next()).getDataHandler().getInputStream().close();
         }
         assertEquals(binaryNodes.size() + 1, attachments.getContentIDList().size());
     }

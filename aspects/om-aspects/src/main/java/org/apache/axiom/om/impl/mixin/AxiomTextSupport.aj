@@ -133,7 +133,7 @@ public aspect AxiomTextSupport {
     public final void AxiomText.buildWithAttachments() {
         if (isOptimized()) {
             // The call to getDataSource ensures that the MIME part is completely read
-            ((DataHandler)this.getDataHandler()).getDataSource();
+            getDataHandler().getDataSource();
         }
     }
 

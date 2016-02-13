@@ -55,7 +55,7 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMText text = factory.createOMText(null, prov, true);
         assertFalse(prov.isDataHandlerCreated());
-        assertEquals(((DataHandler)text.getDataHandler()).getContent(), "Data");
+        assertEquals(text.getDataHandler().getContent(), "Data");
         assertTrue(prov.isDataHandlerCreated());
     }
 }

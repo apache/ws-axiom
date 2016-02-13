@@ -87,7 +87,7 @@ public class TestReadAttachmentBeforeRootPartComplete extends AxiomTestCase {
         OMText text = (OMText)child1.getFirstOMChild();
         assertTrue(text.isBinary());
         // Access the DataHandler
-        DataHandler dh = (DataHandler)text.getDataHandler();
+        DataHandler dh = text.getDataHandler();
         IOTestUtils.compareStreams(ds.getInputStream(), dh.getInputStream());
         OMElement child2 = (OMElement)child1.getNextOMSibling();
         assertFalse(child2.isComplete());

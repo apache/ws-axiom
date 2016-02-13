@@ -77,7 +77,7 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
             Assert.assertSame(dh, child.getDataHandler());
         } else {
             child.setBinary(true);
-            IOTestUtils.compareStreams(dh.getInputStream(), ((DataHandler)child.getDataHandler()).getInputStream());
+            IOTestUtils.compareStreams(dh.getInputStream(), child.getDataHandler().getInputStream());
         }
     }
 }

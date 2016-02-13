@@ -810,7 +810,7 @@ final class Navigator extends PullSerializerState
 
     public DataHandler getDataHandler() throws XMLStreamException {
         if (node instanceof OMText) {
-            return (DataHandler)((OMText)node).getDataHandler();
+            return ((OMText)node).getDataHandler();
         } else {
             throw new IllegalStateException();
         }

@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 /**
@@ -83,7 +84,7 @@ public interface OMText extends OMNode {
      *
      * @return Returns datahandler.
      */
-    Object getDataHandler();
+    DataHandler getDataHandler();
 
     /** @return Returns boolean flag saying whether the node contains an optimized text or not. */
     // TODO: inconsistent naming

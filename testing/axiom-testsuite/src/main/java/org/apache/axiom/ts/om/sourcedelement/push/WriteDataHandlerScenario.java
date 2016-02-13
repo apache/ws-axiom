@@ -68,7 +68,7 @@ public class WriteDataHandlerScenario implements PushOMDataSourceScenario {
         } else {
             // TODO: this will only work if a single text node was created
             child.setBinary(true);
-            IOTestUtils.compareStreams(dh.getInputStream(), ((DataHandler)child.getDataHandler()).getInputStream());
+            IOTestUtils.compareStreams(dh.getInputStream(), child.getDataHandler().getInputStream());
         }
     }
 }

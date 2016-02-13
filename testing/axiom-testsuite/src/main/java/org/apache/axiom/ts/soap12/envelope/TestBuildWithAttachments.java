@@ -49,10 +49,10 @@ public class TestBuildWithAttachments extends AxiomTestCase {
         OMElement image1 = it.next();
         OMElement image2 = it.next();
         
-        IOTestUtils.compareStreams(((DataHandler)((OMText)image1.getFirstOMChild()).getDataHandler()).getInputStream(),
+        IOTestUtils.compareStreams(((OMText)image1.getFirstOMChild()).getDataHandler().getInputStream(),
                 sample.getPart(1));
 
-        IOTestUtils.compareStreams(((DataHandler)((OMText)image2.getFirstOMChild()).getDataHandler()).getInputStream(),
+        IOTestUtils.compareStreams(((OMText)image2.getFirstOMChild()).getDataHandler().getInputStream(),
                 sample.getPart(2));
     }
 }

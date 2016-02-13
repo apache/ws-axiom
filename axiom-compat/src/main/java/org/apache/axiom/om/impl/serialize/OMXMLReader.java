@@ -240,7 +240,7 @@ public class OMXMLReader extends AbstractXMLReader {
     private void generateEvents(OMText omText, boolean space) throws SAXException {
         if (omText.isBinary()) {
             // Stream the binary content
-            DataHandler dh = (DataHandler)omText.getDataHandler();
+            DataHandler dh = omText.getDataHandler();
             Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler));
             try {
                 dh.writeTo(out);
