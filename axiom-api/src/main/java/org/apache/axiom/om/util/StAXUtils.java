@@ -43,7 +43,6 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
@@ -100,17 +99,17 @@ public class StAXUtils {
     
     // These static singletons are used when the XML*Factory is created with
     // the StAXUtils classloader.
-    private static final Map/*<StAXParserConfiguration,XMLInputFactory>*/ inputFactoryMap
-            = Collections.synchronizedMap(new WeakHashMap());
-    private static final Map/*<StAXWriterConfiguration,XMLOutputFactory>*/ outputFactoryMap
-            = Collections.synchronizedMap(new WeakHashMap());
+    private static final Map<StAXParserConfiguration,XMLInputFactory> inputFactoryMap
+            = Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration,XMLInputFactory>());
+    private static final Map<StAXWriterConfiguration,XMLOutputFactory> outputFactoryMap
+            = Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration,XMLOutputFactory>());
     
     // These maps are used for the isFactoryPerClassLoader==true case
     // The maps are synchronized and weak.
-    private static final Map/*<StAXParserConfiguration,Map<ClassLoader,XMLInputFactory>>*/ inputFactoryPerCLMap
-            = Collections.synchronizedMap(new WeakHashMap());
-    private static final Map/*<StAXWriterConfiguration,Map<ClassLoader,XMLInputFactory>>*/ outputFactoryPerCLMap
-            = Collections.synchronizedMap(new WeakHashMap());
+    private static final Map<StAXParserConfiguration,Map<ClassLoader,XMLInputFactory>> inputFactoryPerCLMap
+            = Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration,Map<ClassLoader,XMLInputFactory>>());
+    private static final Map<StAXWriterConfiguration,Map<ClassLoader,XMLOutputFactory>> outputFactoryPerCLMap
+            = Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration,Map<ClassLoader,XMLOutputFactory>>());
     
     /**
      * Get a cached {@link XMLInputFactory} instance using the default
@@ -377,7 +376,7 @@ public class StAXUtils {
      * @return the factory properties
      */
     // This has package access since it is used from within anonymous inner classes
-    static Map loadFactoryProperties(String name) {
+    static Map<String,Object> loadFactoryProperties(String name) {
         ClassLoader cl = getContextClassLoader();
         InputStream in = cl.getResourceAsStream(name);
         if (in == null) {
@@ -385,10 +384,9 @@ public class StAXUtils {
         } else {
             try {
                 Properties rawProps = new Properties();
-                Map props = new HashMap();
+                Map<String,Object> props = new HashMap<String,Object>();
                 rawProps.load(in);
-                for (Iterator it = rawProps.entrySet().iterator(); it.hasNext(); ) {
-                    Map.Entry entry = (Map.Entry)it.next();
+                for (Map.Entry<Object,Object> entry : rawProps.entrySet()) {
                     String strValue = (String)entry.getValue();
                     Object value;
                     if (strValue.equals("true")) {
@@ -402,7 +400,7 @@ public class StAXUtils {
                             value = strValue;
                         }
                     }
-                    props.put(entry.getKey(), value);
+                    props.put((String)entry.getKey(), value);
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Loaded factory properties from " + name + ": " + props);
@@ -424,8 +422,8 @@ public class StAXUtils {
     private static XMLInputFactory newXMLInputFactory(final ClassLoader classLoader,
             final StAXParserConfiguration configuration) {
         
-        return (XMLInputFactory)AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
+        return AccessController.doPrivileged(new PrivilegedAction<XMLInputFactory>() {
+            public XMLInputFactory run() {
                 ClassLoader savedClassLoader;
                 if (classLoader == null) {
                     savedClassLoader = null;
@@ -440,11 +438,10 @@ public class StAXUtils {
                     // coalescing mode. Note that we need to do that before loading
                     // XMLInputFactory.properties so that this setting can be overridden.
                     factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-                    Map props = loadFactoryProperties("XMLInputFactory.properties");
+                    Map<String,Object> props = loadFactoryProperties("XMLInputFactory.properties");
                     if (props != null) {
-                        for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
-                            Map.Entry entry = (Map.Entry)it.next();
-                            factory.setProperty((String)entry.getKey(), entry.getValue());
+                        for (Map.Entry<String,Object> entry : props.entrySet()) {
+                            factory.setProperty(entry.getKey(), entry.getValue());
                         }
                     }
                     StAXDialect dialect = StAXDialectDetector.getDialect(factory);
@@ -476,13 +473,13 @@ public class StAXUtils {
             if (configuration == null) {
                 configuration = StAXParserConfiguration.DEFAULT;
             }
-            Map map = (Map)inputFactoryPerCLMap.get(configuration);
+            Map<ClassLoader,XMLInputFactory> map = inputFactoryPerCLMap.get(configuration);
             if (map == null) {
-                map = Collections.synchronizedMap(new WeakHashMap());
+                map = Collections.synchronizedMap(new WeakHashMap<ClassLoader,XMLInputFactory>());
                 inputFactoryPerCLMap.put(configuration, map);
                 factory = null;
             } else {
-                factory = (XMLInputFactory)map.get(cl);
+                factory = map.get(cl);
             }
             
             // If not found in the cache map, crate a new factory
@@ -536,7 +533,7 @@ public class StAXUtils {
         if (configuration == null) {
             configuration = StAXParserConfiguration.DEFAULT;
         }
-        XMLInputFactory f = (XMLInputFactory)inputFactoryMap.get(configuration);
+        XMLInputFactory f = inputFactoryMap.get(configuration);
         if (f == null) {
             f = newXMLInputFactory(StAXUtils.class.getClassLoader(), configuration);
             inputFactoryMap.put(configuration, f);
@@ -552,8 +549,8 @@ public class StAXUtils {
     
     private static XMLOutputFactory newXMLOutputFactory(final ClassLoader classLoader,
             final StAXWriterConfiguration configuration) {
-        return (XMLOutputFactory)AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
+        return AccessController.doPrivileged(new PrivilegedAction<XMLOutputFactory>() {
+            public XMLOutputFactory run() {
                 ClassLoader savedClassLoader;
                 if (classLoader == null) {
                     savedClassLoader = null;
@@ -565,11 +562,10 @@ public class StAXUtils {
                     XMLOutputFactory factory = XMLOutputFactory.newInstance();
                     factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
                                         Boolean.FALSE);
-                    Map props = loadFactoryProperties("XMLOutputFactory.properties");
+                    Map<String,Object> props = loadFactoryProperties("XMLOutputFactory.properties");
                     if (props != null) {
-                        for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
-                            Map.Entry entry = (Map.Entry)it.next();
-                            factory.setProperty((String)entry.getKey(), entry.getValue());
+                        for (Map.Entry<String,Object> entry : props.entrySet()) {
+                            factory.setProperty(entry.getKey(), entry.getValue());
                         }
                     }
                     StAXDialect dialect = StAXDialectDetector.getDialect(factory);
@@ -599,13 +595,13 @@ public class StAXUtils {
             if (configuration == null) {
                 configuration = StAXWriterConfiguration.DEFAULT;
             }
-            Map map = (Map)outputFactoryPerCLMap.get(configuration);
+            Map<ClassLoader,XMLOutputFactory> map = outputFactoryPerCLMap.get(configuration);
             if (map == null) {
-                map = Collections.synchronizedMap(new WeakHashMap());
+                map = Collections.synchronizedMap(new WeakHashMap<ClassLoader,XMLOutputFactory>());
                 outputFactoryPerCLMap.put(configuration, map);
                 factory = null;
             } else {
-                factory = (XMLOutputFactory)map.get(cl);
+                factory = map.get(cl);
             }
             
             if (factory == null) {
@@ -654,7 +650,7 @@ public class StAXUtils {
         if (configuration == null) {
             configuration = StAXWriterConfiguration.DEFAULT;
         }
-        XMLOutputFactory f = (XMLOutputFactory)outputFactoryMap.get(configuration);
+        XMLOutputFactory f = outputFactoryMap.get(configuration);
         if (f == null) {
             f = newXMLOutputFactory(StAXUtils.class.getClassLoader(), configuration);
             outputFactoryMap.put(configuration, f);
@@ -675,9 +671,9 @@ public class StAXUtils {
             // If there is no security manager, avoid the overhead of the doPrivileged call.
             return Thread.currentThread().getContextClassLoader();
         } else {
-            return (ClassLoader)AccessController.doPrivileged(
-                    new PrivilegedAction() {
-                        public Object run()  {
+            return AccessController.doPrivileged(
+                    new PrivilegedAction<ClassLoader>() {
+                        public ClassLoader run()  {
                             return Thread.currentThread().getContextClassLoader();
                         }
                     }
