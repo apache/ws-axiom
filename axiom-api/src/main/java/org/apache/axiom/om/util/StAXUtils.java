@@ -22,7 +22,6 @@ package org.apache.axiom.om.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 import org.apache.axiom.util.stax.wrapper.ImmutableXMLInputFactory;
@@ -171,15 +170,6 @@ public class StAXUtils {
         }
     }
 
-    /**
-     * @deprecated
-     * Returns an XMLInputFactory instance for reuse.
-     *
-     * @param factory An XMLInputFactory instance that is available for reuse
-     */
-    public static void releaseXMLInputFactory(XMLInputFactory factory) {
-    }
-
     public static XMLStreamReader createXMLStreamReader(InputStream in, String encoding)
             throws XMLStreamException {
         
@@ -307,15 +297,6 @@ public class StAXUtils {
         isFactoryPerClassLoader = value;
     }
 
-    /**
-     * @deprecated
-     * Returns an XMLOutputFactory instance for reuse.
-     *
-     * @param factory An XMLOutputFactory instance that is available for reuse.
-     */
-    public static void releaseXMLOutputFactory(XMLOutputFactory factory) {
-    }
-
     public static XMLStreamWriter createXMLStreamWriter(OutputStream out)
             throws XMLStreamException {
         
@@ -361,12 +342,6 @@ public class StAXUtils {
         return writer;
     }
 
-    /**
-     * @deprecated
-     */
-    public static void reset() {
-    }
-    
     /**
      * Load factory properties from a resource. The context class loader is used to locate
      * the resource. The method converts boolean and integer values to the right Java types.
@@ -679,50 +654,5 @@ public class StAXUtils {
                     }
             );
         }
-    }
-
-    /**
-     * @deprecated use {@link #createXMLStreamReader(StAXParserConfiguration, InputStream, String)}
-     *             with {@link StAXParserConfiguration#STANDALONE}
-     */
-    public static XMLStreamReader createNetworkDetachedXMLStreamReader(InputStream in, String encoding)
-            throws XMLStreamException {
-        
-        return createXMLStreamReader(StAXParserConfiguration.STANDALONE, in, encoding);
-    }
-
-    /**
-     * @deprecated use {@link #getXMLInputFactory(StAXParserConfiguration)} with
-     *             {@link StAXParserConfiguration#STANDALONE}
-     */
-    public static XMLInputFactory getNetworkDetachedXMLInputFactory() {
-        return getXMLInputFactory(StAXParserConfiguration.STANDALONE);
-    }
-    
-    /**
-     * @deprecated use {@link #createXMLStreamReader(StAXParserConfiguration, InputStream)}
-     *             with {@link StAXParserConfiguration#STANDALONE}
-     */
-    public static XMLStreamReader createNetworkDetachedXMLStreamReader(InputStream in)
-            throws XMLStreamException {
-        
-        return createXMLStreamReader(StAXParserConfiguration.STANDALONE, in);
-    }
-
-    /**
-     * @deprecated use {@link #createXMLStreamReader(StAXParserConfiguration, Reader)}
-     *             with {@link StAXParserConfiguration#STANDALONE}
-     */
-    public static XMLStreamReader createNetworkDetachedXMLStreamReader(Reader in)
-            throws XMLStreamException {
-        
-        return createXMLStreamReader(StAXParserConfiguration.STANDALONE, in);
-    }
-
-    /**
-     * @deprecated Use {@link XMLEventUtils#getEventTypeString(int)} instead
-     */
-    public static String getEventTypeString(int event) {
-        return XMLEventUtils.getEventTypeString(event);
     }
 }
