@@ -18,23 +18,16 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
 
 final class NamespaceHelper extends XmlHandlerWrapper {
-    private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
-    private static final String XSI_LOCAL_NAME = "type";
-    
     private final SerializerImpl serializer;
-    private final OMElement contextElement;
 
-    NamespaceHelper(SerializerImpl serializer, XmlHandler handler, OMElement contextElement) {
+    NamespaceHelper(SerializerImpl serializer, XmlHandler handler) {
         super(handler);
         this.serializer = serializer;
-        this.contextElement = contextElement;
     }
 
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
@@ -44,16 +37,6 @@ final class NamespaceHelper extends XmlHandlerWrapper {
     
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         mapNamespace(prefix, namespaceURI, true);
-        if (contextElement != null && namespaceURI.equals(XSI_URI) && localName.equals(XSI_LOCAL_NAME)) {
-            String trimmedValue = value.trim();
-            if (trimmedValue.indexOf(":") > 0) {
-                String refPrefix = trimmedValue.substring(0, trimmedValue.indexOf(":"));
-                OMNamespace ns = contextElement.findNamespaceURI(refPrefix);
-                if (ns != null) {
-                    mapNamespace(refPrefix, ns.getNamespaceURI(), true);
-                }
-            }
-        }
         super.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
     

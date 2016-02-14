@@ -64,11 +64,15 @@ public abstract class SerializerImpl implements XmlHandler {
             contextElement = null;
         }
         XmlHandler handler = this;
-        if (preserveNamespaceContext && contextElement != null) {
-            handler = new NamespaceContextPreservationFilterHandler(handler, (CoreElement)contextElement);
+        if (contextElement != null) {
+            if (preserveNamespaceContext) {
+                handler = new NamespaceContextPreservationFilterHandler(handler, (CoreElement)contextElement);
+            } else {
+                handler = new XsiTypeFilterHandler(handler, (CoreElement)contextElement);
+            }
         }
         if (namespaceRepairing) {
-            handler = new NamespaceHelper(this, handler, contextElement);
+            handler = new NamespaceHelper(this, handler);
         }
         return handler;
     }
