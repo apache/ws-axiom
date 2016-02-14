@@ -23,6 +23,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMContainer;
@@ -64,7 +65,7 @@ public abstract class SerializerImpl implements XmlHandler {
         }
         XmlHandler handler = this;
         if (preserveNamespaceContext && contextElement != null) {
-            handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
+            handler = new NamespaceContextPreservationFilterHandler(handler, (CoreElement)contextElement);
         }
         if (namespaceRepairing) {
             handler = new NamespaceHelper(this, handler, contextElement);

@@ -19,25 +19,26 @@
 package org.apache.axiom.om.impl.common.serializer.push;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
 
 public final class NamespaceContextPreservationFilterHandler extends XmlHandlerWrapper {
-    private final OMElement contextElement;
+    private final CoreElement contextElement;
     // Maintain a set of the prefixes we have already seen. This is required to take into
     // account that a namespace mapping declared on an element can hide another one declared
     // for the same prefix on an ancestor of the element.
     private Set<String> prefixesAlreadyBound;
     private boolean done = false;
     
-    public NamespaceContextPreservationFilterHandler(XmlHandler parent, OMElement contextElement) {
+    public NamespaceContextPreservationFilterHandler(XmlHandler parent, CoreElement contextElement) {
         super(parent);
         this.contextElement = contextElement;
     }
@@ -61,22 +62,31 @@ public final class NamespaceContextPreservationFilterHandler extends XmlHandlerW
     @Override
     public void attributesCompleted() throws StreamException {
         if (!done) {
-            OMElement current = contextElement;
-            while (true) {
-                for (Iterator<OMNamespace> it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                    OMNamespace ns = it.next();
-                    if (prefixesAlreadyBound.add(ns.getPrefix())) {
-                        super.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
+            try {
+                CoreElement current = contextElement;
+                while (true) {
+                    CoreAttribute attr = current.coreGetFirstAttribute();
+                    while (attr != null) {
+                        if (attr instanceof CoreNamespaceDeclaration) {
+                            CoreNamespaceDeclaration decl = (CoreNamespaceDeclaration)attr;
+                            String prefix = decl.coreGetDeclaredPrefix();
+                            if (prefixesAlreadyBound.add(prefix)) {
+                                super.processNamespaceDeclaration(prefix, decl.coreGetCharacterData().toString());
+                            }
+                        }
+                        attr = attr.coreGetNextAttribute();
                     }
+                    CoreParentNode parent = current.coreGetParent();
+                    if (!(parent instanceof CoreElement)) {
+                        break;
+                    }
+                    current = (CoreElement)parent;
                 }
-                OMContainer parent = current.getParent();
-                if (!(parent instanceof OMElement)) {
-                    break;
-                }
-                current = (OMElement)parent;
+                prefixesAlreadyBound = null;
+                done = true;
+            } catch (CoreModelException ex) {
+                throw new StreamException(ex);
             }
-            prefixesAlreadyBound = null;
-            done = true;
         }
         super.attributesCompleted();
     }
