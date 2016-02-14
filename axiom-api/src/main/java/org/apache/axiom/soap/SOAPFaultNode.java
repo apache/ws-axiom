@@ -20,21 +20,8 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMElement;
-import org.w3c.dom.Node;
 
 public interface SOAPFaultNode extends OMElement {
-    /**
-     * @deprecated This method conflicts with {@link Node#setNodeValue(String)} and will be removed
-     *             in Axiom 1.3. Please use {@link #setFaultNodeValue(String)} instead.
-     */
-    void setNodeValue(String uri);
-
-    /**
-     * @deprecated This method conflicts with {@link Node#getNodeValue()} and will be removed in
-     *             Axiom 1.3. Please use {@link #getFaultNodeValue()} instead.
-     */
-    String getNodeValue();
-
     /**
      * each SOAP node is identified by a URI. The value of the Node element information item is the
      * URI that identifies the SOAP node that generated the fault. SOAP nodes that do not act as the

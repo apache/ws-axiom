@@ -40,12 +40,4 @@ public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12Fault
     public String getFaultNodeValue() {
         return this.getText();
     }
-
-    public void setNodeValue(String uri) {
-        setFaultNodeValue(uri);
-    }
-
-    public String getNodeValue() {
-        return getFaultNodeValue();
-    }
 }

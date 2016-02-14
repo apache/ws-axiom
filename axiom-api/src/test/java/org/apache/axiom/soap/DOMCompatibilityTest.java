@@ -46,15 +46,7 @@ public class DOMCompatibilityTest extends TestCase {
         suite.addTest(new MethodCollisionTestCase(SOAPFault.class, Element.class, elementExceptions));
         suite.addTest(new MethodCollisionTestCase(SOAPFaultCode.class, Element.class, elementExceptions));
         suite.addTest(new MethodCollisionTestCase(SOAPFaultDetail.class, Element.class, elementExceptions));
-        
-        // The getNodeValue and setNodeValue methods are real collisions that will be fixed in Axiom 1.3; see AXIOM-363
-        suite.addTest(new MethodCollisionTestCase(SOAPFaultNode.class, Element.class, new MethodSignature[] {
-                new MethodSignature("getPrefix", new Class[0]),
-                new MethodSignature("getNamespaceURI", new Class[0]),
-                new MethodSignature("getLocalName", new Class[0]),
-                new MethodSignature("getNodeValue", new Class[0]),
-                new MethodSignature("setNodeValue", new Class[] { String.class }) }));
-        
+        suite.addTest(new MethodCollisionTestCase(SOAPFaultNode.class, Element.class, elementExceptions));
         suite.addTest(new MethodCollisionTestCase(SOAPFaultReason.class, Element.class, elementExceptions));
         suite.addTest(new MethodCollisionTestCase(SOAPFaultRole.class, Element.class, elementExceptions));
         suite.addTest(new MethodCollisionTestCase(SOAPFaultSubCode.class, Element.class, elementExceptions));
