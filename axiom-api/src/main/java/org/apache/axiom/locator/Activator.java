@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.Bundle;
@@ -47,20 +46,12 @@ public class Activator implements BundleActivator {
         // "Bundle-ActivationPolicy: lazy".
         tracker = new BundleTracker<List<RegisteredImplementation>>(context, Bundle.STARTING | Bundle.ACTIVE, locator);
         tracker.open();
-        // In an OSGi environment, the thread context class loader is generally not set in a meaningful way.
-        // Therefore we should use singleton factories. Note that if the StAX API is provided by Geronimo's or
-        // Servicemix's StAX bundle, then this actually doesn't change much because the factory locator code in
-        // these bundles don't care about the thread context class loader anyway. Nevertheless, it prevents
-        // Axiom from creating new factory instances unnecessarily. The setting may be more relevant if the
-        // StAX API is provided by the JRE.
-        StAXUtils.setFactoryPerClassLoader(false);
         log.debug("OSGi support enabled");
     }
 
     public void stop(BundleContext context) throws Exception {
         tracker.close();
         OMAbstractFactory.setMetaFactoryLocator(null);
-        StAXUtils.setFactoryPerClassLoader(true);
         log.debug("OSGi support disabled");
     }
 }

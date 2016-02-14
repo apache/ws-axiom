@@ -49,13 +49,12 @@ import java.util.WeakHashMap;
 /**
  * Utility class containing StAX related methods.
  * <p>This class defines a set of methods to get {@link XMLStreamReader} and {@link XMLStreamWriter}
- * instances. This class caches the corresponding factories ({@link XMLInputFactory}
- * and {@link XMLOutputFactory} objects) by classloader (default) or as singletons.
- * The behavior can be changed using {@link #setFactoryPerClassLoader(boolean)}.</p>
+ * instances. This class caches the corresponding factories, i.e. {@link XMLInputFactory}
+ * and {@link XMLOutputFactory} objects.</p>
  * <p>Default properties for these factories can be specified using
  * <tt>XMLInputFactory.properties</tt> and <tt>XMLOutputFactory.properties</tt> files.
- * When a new factory is instantiated, this class will attempt to load the corresponding file using
- * the context classloader. This class supports properties with boolean, integer and string values.
+ * These files are loaded using the class loader that loaded the {@link StAXUtils} class.
+ * Properties with boolean, integer and string values are supported.
  * Both standard StAX properties and implementation specific properties can be specified. This
  * feature should be used with care since changing some properties to non default values will break
  * Axiom. Good candidates for <tt>XMLInputFactory.properties</tt> are:</p>
@@ -86,50 +85,19 @@ import java.util.WeakHashMap;
 public class StAXUtils {
     private static final Log log = LogFactory.getLog(StAXUtils.class);
     
-    // If isFactoryPerClassLoader is true (default), then 
-    // a separate singleton XMLInputFactory and XMLOutputFactory is maintained
-    // for the each classloader.  The different classloaders may be using different
-    // implementations of STAX.
-    // 
-    // If isFactoryPerClassLoader is false, then
-    // a single XMLInputFactory and XMLOutputFactory is constructed using
-    // the classloader that loaded StAXUtils. 
-    private static boolean isFactoryPerClassLoader = true;
-    
-    // These static singletons are used when the XML*Factory is created with
-    // the StAXUtils classloader.
     private static final Map<StAXParserConfiguration,XMLInputFactory> inputFactoryMap
             = Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration,XMLInputFactory>());
     private static final Map<StAXWriterConfiguration,XMLOutputFactory> outputFactoryMap
             = Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration,XMLOutputFactory>());
     
-    // These maps are used for the isFactoryPerClassLoader==true case
-    // The maps are synchronized and weak.
-    private static final Map<StAXParserConfiguration,Map<ClassLoader,XMLInputFactory>> inputFactoryPerCLMap
-            = Collections.synchronizedMap(new WeakHashMap<StAXParserConfiguration,Map<ClassLoader,XMLInputFactory>>());
-    private static final Map<StAXWriterConfiguration,Map<ClassLoader,XMLOutputFactory>> outputFactoryPerCLMap
-            = Collections.synchronizedMap(new WeakHashMap<StAXWriterConfiguration,Map<ClassLoader,XMLOutputFactory>>());
-    
     /**
      * Get a cached {@link XMLInputFactory} instance using the default
-     * configuration and cache policy (i.e. one instance per class loader).
+     * configuration.
      * 
      * @return an {@link XMLInputFactory} instance.
      */
     public static XMLInputFactory getXMLInputFactory() {
-        return getXMLInputFactory(null, isFactoryPerClassLoader);
-    }
-    
-    /**
-     * Get a cached {@link XMLInputFactory} instance using the specified
-     * configuration and the default cache policy.
-     * 
-     * @param configuration
-     *            the configuration applied to the requested factory
-     * @return an {@link XMLInputFactory} instance.
-     */
-    public static XMLInputFactory getXMLInputFactory(StAXParserConfiguration configuration) {
-        return getXMLInputFactory(configuration, isFactoryPerClassLoader);
+        return getXMLInputFactory(null);
     }
     
     /**
@@ -141,6 +109,7 @@ public class StAXUtils {
      *            {@link #getXMLInputFactory(StAXParserConfiguration, boolean)}
      *            for more details
      * @return an {@link XMLInputFactory} instance.
+     * @deprecated
      */
     public static XMLInputFactory getXMLInputFactory(boolean factoryPerClassLoaderPolicy) {
         return getXMLInputFactory(null, factoryPerClassLoaderPolicy);
@@ -159,14 +128,15 @@ public class StAXUtils {
      *            the class loader that loaded {@link StAXUtils}) will be
      *            returned.
      * @return an {@link XMLInputFactory} instance.
+     * @deprecated
      */
     public static XMLInputFactory getXMLInputFactory(StAXParserConfiguration configuration,
             boolean factoryPerClassLoaderPolicy) {
         
         if (factoryPerClassLoaderPolicy) {
-            return getXMLInputFactory_perClassLoader(configuration);
+            throw new UnsupportedOperationException();
         } else {
-            return getXMLInputFactory_singleton(configuration);
+            return getXMLInputFactory(configuration);
         }
     }
 
@@ -230,24 +200,12 @@ public class StAXUtils {
 
     /**
      * Get a cached {@link XMLOutputFactory} instance using the default
-     * configuration and cache policy (i.e. one instance per class loader).
+     * configuration.
      * 
      * @return an {@link XMLOutputFactory} instance.
      */
     public static XMLOutputFactory getXMLOutputFactory() {
-        return getXMLOutputFactory(null, isFactoryPerClassLoader);
-    }
-    
-    /**
-     * Get a cached {@link XMLOutputFactory} instance using the specified
-     * configuration and the default cache policy.
-     * 
-     * @param configuration
-     *            the configuration applied to the requested factory
-     * @return an {@link XMLOutputFactory} instance.
-     */
-    public static XMLOutputFactory getXMLOutputFactory(StAXWriterConfiguration configuration) {
-        return getXMLOutputFactory(configuration, isFactoryPerClassLoader);
+        return getXMLOutputFactory(null);
     }
     
     /**
@@ -259,6 +217,7 @@ public class StAXUtils {
      *            {@link #getXMLOutputFactory(StAXWriterConfiguration, boolean)}
      *            for more details
      * @return an {@link XMLOutputFactory} instance.
+     * @deprecated
      */
     public static XMLOutputFactory getXMLOutputFactory(boolean factoryPerClassLoaderPolicy) {
         return getXMLOutputFactory(null, factoryPerClassLoaderPolicy);
@@ -277,24 +236,26 @@ public class StAXUtils {
      *            the class loader that loaded {@link StAXUtils}) will be
      *            returned.
      * @return an {@link XMLOutputFactory} instance.
+     * @deprecated
      */
     public static XMLOutputFactory getXMLOutputFactory(StAXWriterConfiguration configuration,
             boolean factoryPerClassLoaderPolicy) {
         
         if (factoryPerClassLoaderPolicy) {
-            return getXMLOutputFactory_perClassLoader(configuration);
+            throw new UnsupportedOperationException();
         } else {
-            return getXMLOutputFactory_singleton(configuration);
+            return getXMLOutputFactory(configuration);
         }
     }
 
     /**
-     * Set the policy for how to maintain the XMLInputFactory and XMLOutputFactory
-     * @param value (if false, then one singleton...if true...then singleton per class loader 
-     *  (default is true)
+     * @deprecated Per class loader factories are no longer supported. The code now always uses the
+     *             class loader that loaded the {@link StAXUtils} class.
      */
     public static void setFactoryPerClassLoader(boolean value) {
-        isFactoryPerClassLoader = value;
+        if (value) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     public static XMLStreamWriter createXMLStreamWriter(OutputStream out)
@@ -343,16 +304,15 @@ public class StAXUtils {
     }
 
     /**
-     * Load factory properties from a resource. The context class loader is used to locate
-     * the resource. The method converts boolean and integer values to the right Java types.
+     * Load factory properties from a resource. The method converts boolean and integer values to the right Java types.
      * All other values are returned as strings.
      * 
+     * @param cl
      * @param name
      * @return the factory properties
      */
     // This has package access since it is used from within anonymous inner classes
-    static Map<String,Object> loadFactoryProperties(String name) {
-        ClassLoader cl = getContextClassLoader();
+    static Map<String,Object> loadFactoryProperties(ClassLoader cl, String name) {
         InputStream in = cl.getResourceAsStream(name);
         if (in == null) {
             return null;
@@ -413,7 +373,7 @@ public class StAXUtils {
                     // coalescing mode. Note that we need to do that before loading
                     // XMLInputFactory.properties so that this setting can be overridden.
                     factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-                    Map<String,Object> props = loadFactoryProperties("XMLInputFactory.properties");
+                    Map<String,Object> props = loadFactoryProperties(classLoader, "XMLInputFactory.properties");
                     if (props != null) {
                         for (Map.Entry<String,Object> entry : props.entrySet()) {
                             factory.setProperty(entry.getKey(), entry.getValue());
@@ -435,76 +395,13 @@ public class StAXUtils {
     }
 
     /**
-     * @return XMLInputFactory for the current classloader
+     * Get a cached {@link XMLInputFactory} instance using the specified configuration.
+     * 
+     * @param configuration
+     *            the configuration applied to the requested factory
+     * @return an {@link XMLInputFactory} instance.
      */
-    private static XMLInputFactory getXMLInputFactory_perClassLoader(StAXParserConfiguration configuration) {
-        
-        ClassLoader cl = getContextClassLoader();
-        XMLInputFactory factory;
-        if (cl == null) {
-            factory = getXMLInputFactory_singleton(configuration);
-        } else {
-            // Check the cache
-            if (configuration == null) {
-                configuration = StAXParserConfiguration.DEFAULT;
-            }
-            Map<ClassLoader,XMLInputFactory> map = inputFactoryPerCLMap.get(configuration);
-            if (map == null) {
-                map = Collections.synchronizedMap(new WeakHashMap<ClassLoader,XMLInputFactory>());
-                inputFactoryPerCLMap.put(configuration, map);
-                factory = null;
-            } else {
-                factory = map.get(cl);
-            }
-            
-            // If not found in the cache map, crate a new factory
-            if (factory == null) {
-
-                if (log.isDebugEnabled()) {
-                    log.debug("About to create XMLInputFactory implementation with " +
-                                "classloader=" + cl);
-                    log.debug("The classloader for javax.xml.stream.XMLInputFactory is: "
-                              + XMLInputFactory.class.getClassLoader());
-                }
-                try {
-                    factory = newXMLInputFactory(null, configuration);
-                } catch (ClassCastException cce) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Failed creation of XMLInputFactory implementation with " +
-                                        "classloader=" + cl);
-                        log.debug("Exception is=" + cce);
-                        log.debug("Attempting with classloader: " + 
-                                  XMLInputFactory.class.getClassLoader());
-                    }
-                    factory = newXMLInputFactory(XMLInputFactory.class.getClassLoader(),
-                            configuration);
-                }
-                    
-                if (factory != null) {
-                    // Cache the new factory
-                    map.put(cl, factory);
-                    
-                    if (log.isDebugEnabled()) {
-                        log.debug("Created XMLInputFactory = " + factory.getClass() + 
-                                  " with classloader=" + cl);
-                        log.debug("Configuration = " + configuration);
-                        log.debug("Size of XMLInputFactory map for this configuration = " + map.size());
-                        log.debug("Configurations for which factories have been cached = " +
-                                inputFactoryPerCLMap.keySet());
-                    }
-                } else {
-                    factory = getXMLInputFactory_singleton(configuration);
-                }
-            }
-            
-        }
-        return factory;
-    }
-    
-    /**
-     * @return singleton XMLInputFactory loaded with the StAXUtils classloader
-     */
-    private static XMLInputFactory getXMLInputFactory_singleton(StAXParserConfiguration configuration) {
+    public static XMLInputFactory getXMLInputFactory(StAXParserConfiguration configuration) {
         if (configuration == null) {
             configuration = StAXParserConfiguration.DEFAULT;
         }
@@ -537,7 +434,7 @@ public class StAXUtils {
                     XMLOutputFactory factory = XMLOutputFactory.newInstance();
                     factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
                                         Boolean.FALSE);
-                    Map<String,Object> props = loadFactoryProperties("XMLOutputFactory.properties");
+                    Map<String,Object> props = loadFactoryProperties(classLoader, "XMLOutputFactory.properties");
                     if (props != null) {
                         for (Map.Entry<String,Object> entry : props.entrySet()) {
                             factory.setProperty(entry.getKey(), entry.getValue());
@@ -559,69 +456,13 @@ public class StAXUtils {
     }
     
     /**
-     * @return XMLOutputFactory for the current classloader
+     * Get a cached {@link XMLOutputFactory} instance using the specified configuration.
+     * 
+     * @param configuration
+     *            the configuration applied to the requested factory
+     * @return an {@link XMLOutputFactory} instance.
      */
-    private static XMLOutputFactory getXMLOutputFactory_perClassLoader(StAXWriterConfiguration configuration) {
-        ClassLoader cl = getContextClassLoader();
-        XMLOutputFactory factory;
-        if (cl == null) {
-            factory = getXMLOutputFactory_singleton(configuration);
-        } else {
-            if (configuration == null) {
-                configuration = StAXWriterConfiguration.DEFAULT;
-            }
-            Map<ClassLoader,XMLOutputFactory> map = outputFactoryPerCLMap.get(configuration);
-            if (map == null) {
-                map = Collections.synchronizedMap(new WeakHashMap<ClassLoader,XMLOutputFactory>());
-                outputFactoryPerCLMap.put(configuration, map);
-                factory = null;
-            } else {
-                factory = map.get(cl);
-            }
-            
-            if (factory == null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("About to create XMLOutputFactory implementation with " +
-                                "classloader=" + cl);
-                    log.debug("The classloader for javax.xml.stream.XMLOutputFactory is: " + 
-                              XMLOutputFactory.class.getClassLoader());
-                }
-                try {
-                    factory = newXMLOutputFactory(null, configuration);
-                } catch (ClassCastException cce) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("Failed creation of XMLOutputFactory implementation with " +
-                                        "classloader=" + cl);
-                        log.debug("Exception is=" + cce);
-                        log.debug("Attempting with classloader: " + 
-                                  XMLOutputFactory.class.getClassLoader());
-                    }
-                    factory = newXMLOutputFactory(XMLOutputFactory.class.getClassLoader(),
-                            configuration);
-                }
-                if (factory != null) {
-                    map.put(cl, factory);
-                    if (log.isDebugEnabled()) {
-                        log.debug("Created XMLOutputFactory = " + factory.getClass() 
-                                  + " for classloader=" + cl);
-                        log.debug("Configuration = " + configuration);
-                        log.debug("Size of XMLOutFactory map for this configuration = " + map.size());
-                        log.debug("Configurations for which factories have been cached = " +
-                                outputFactoryPerCLMap.keySet());
-                    }
-                } else {
-                    factory = getXMLOutputFactory_singleton(configuration);
-                }
-            }
-            
-        }
-        return factory;
-    }
-    
-    /**
-     * @return XMLOutputFactory singleton loaded with the StAXUtils classloader
-     */
-    private static XMLOutputFactory getXMLOutputFactory_singleton(StAXWriterConfiguration configuration) {
+    public static XMLOutputFactory getXMLOutputFactory(StAXWriterConfiguration configuration) {
         if (configuration == null) {
             configuration = StAXWriterConfiguration.DEFAULT;
         }
@@ -636,23 +477,5 @@ public class StAXUtils {
             }
         }
         return f;
-    }
-    
-    /**
-     * @return Trhead Context ClassLoader
-     */
-    private static ClassLoader getContextClassLoader() {
-        if (System.getSecurityManager() == null) {
-            // If there is no security manager, avoid the overhead of the doPrivileged call.
-            return Thread.currentThread().getContextClassLoader();
-        } else {
-            return AccessController.doPrivileged(
-                    new PrivilegedAction<ClassLoader>() {
-                        public ClassLoader run()  {
-                            return Thread.currentThread().getContextClassLoader();
-                        }
-                    }
-            );
-        }
     }
 }
