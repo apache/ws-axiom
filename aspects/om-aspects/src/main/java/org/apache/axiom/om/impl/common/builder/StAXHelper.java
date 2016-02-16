@@ -74,7 +74,6 @@ public class StAXHelper {
     public XMLStreamReader parser;
 
     private final XmlHandler handler;
-    private final BuilderHandler builderHandler;
     private final Closeable closeable;
     
     /**
@@ -99,11 +98,10 @@ public class StAXHelper {
     
     private int lookAheadToken;
     
-    public StAXHelper(XMLStreamReader parser, XmlHandler handler, BuilderHandler builderHandler,
+    public StAXHelper(XMLStreamReader parser, XmlHandler handler,
             Closeable closeable, boolean autoClose) {
         this.parser = parser;
         this.handler = handler;
-        this.builderHandler = builderHandler;
         this.closeable = closeable;
         this.autoClose = autoClose;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
@@ -111,7 +109,7 @@ public class StAXHelper {
     }
     
     public StAXHelper(XMLStreamReader parser, XmlHandler handler) {
-        this(parser, handler, null, null, false);
+        this(parser, handler, null, false);
     }
 
     private static String normalize(String s) {
@@ -206,14 +204,6 @@ public class StAXHelper {
      * @throws OMException
      */
     public int next() throws OMException {
-        if (builderHandler != null) {
-            if (!builderHandler.cache) {
-                throw new IllegalStateException("Can't process next node because caching is disabled");
-            }
-            if (builderHandler.done) {
-                throw new OMException();
-            }
-        }
         int token = parserNext();
         
         // Note: if autoClose is enabled, then the parser may be null at this point
@@ -255,26 +245,6 @@ public class StAXHelper {
             }
         } catch (StreamException ex) {
             throw new OMException(ex);
-        }
-        
-        // TODO: this will fail if there is whitespace before the document element
-        if (builderHandler != null && token != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
-            // We get here if the document has been discarded (by getDocumentElement(true)
-            // or because the builder is linked to an OMSourcedElement) and
-            // we just processed the END_ELEMENT event for the root element. In this case, we consume
-            // the remaining events until we reach the end of the document. This serves several purposes:
-            //  * It allows us to detect documents that have an epilog that is not well formed.
-            //  * Many parsers will perform some cleanup when the end of the document is reached.
-            //    For example, Woodstox will recycle the symbol table if the parser gets past the
-            //    last END_ELEMENT. This improves performance because Woodstox by default interns
-            //    all symbols; if the symbol table can be recycled, then this reduces the number of
-            //    calls to String#intern().
-            //  * If autoClose is set, the parser will be closed so that even more resources
-            //    can be released.
-            while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                // Just loop
-            }
-            builderHandler.done = true;
         }
         
         return token;
@@ -385,13 +355,8 @@ public class StAXHelper {
                     parserException = ex;
                     throw ex;
                 }
-                if (builderHandler != null && event == XMLStreamConstants.END_DOCUMENT) {
-                    if (builderHandler.cache && builderHandler.depth != 0) {
-                        throw new OMException("Unexpected END_DOCUMENT event");
-                    }
-                    if (autoClose) {
-                        close();
-                    }
+                if (autoClose && event == XMLStreamConstants.END_DOCUMENT) {
+                    close();
                 }
                 return event;
             } catch (XMLStreamException ex) {

@@ -64,7 +64,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
-        helper = new StAXHelper(parser, handler, builderHandler, closeable, autoClose);
+        helper = new StAXHelper(parser, handler, closeable, autoClose);
         this.detachable = detachable;
         charEncoding = parser.getEncoding();
     }
@@ -339,9 +339,36 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
      * @throws OMException
      */
     public int next() throws OMException {
-        int result = helper.next();
+        if (!builderHandler.cache) {
+            throw new IllegalStateException("Can't process next node because caching is disabled");
+        }
+        if (builderHandler.done) {
+            throw new OMException();
+        }
+        int event = helper.next();
         builderHandler.executeDeferredListenerActions();
-        return result;
+        
+        // TODO: this will fail if there is whitespace before the document element
+        if (event != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
+            // We get here if the document has been discarded (by getDocumentElement(true)
+            // or because the builder is linked to an OMSourcedElement) and
+            // we just processed the END_ELEMENT event for the root element. In this case, we consume
+            // the remaining events until we reach the end of the document. This serves several purposes:
+            //  * It allows us to detect documents that have an epilog that is not well formed.
+            //  * Many parsers will perform some cleanup when the end of the document is reached.
+            //    For example, Woodstox will recycle the symbol table if the parser gets past the
+            //    last END_ELEMENT. This improves performance because Woodstox by default interns
+            //    all symbols; if the symbol table can be recycled, then this reduces the number of
+            //    calls to String#intern().
+            //  * If autoClose is set, the parser will be closed so that even more resources
+            //    can be released.
+            while (helper.parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                // Just loop
+            }
+            builderHandler.done = true;
+        }
+        
+        return event;
     }
     
     public final OMElement getDocumentElement() {
