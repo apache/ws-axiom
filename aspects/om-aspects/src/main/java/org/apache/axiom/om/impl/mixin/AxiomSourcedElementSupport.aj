@@ -408,16 +408,12 @@ public aspect AxiomSourcedElementSupport {
             throws StreamException {
         if (isExpanded()) {
             defaultInternalSerialize(handler, format, cache);
-        } else if (cache) {
-            if (OMDataSourceUtil.isDestructiveWrite(dataSource)) {
-                forceExpand();
-                defaultInternalSerialize(handler, format, true);
-            } else {
-                // TODO: the serializer ignores namespaceURI and localName
-                handler.processOMDataSource(null, null, dataSource);
-            }
+        } else if (cache&& OMDataSourceUtil.isDestructiveWrite(dataSource)) {
+            forceExpand();
+            defaultInternalSerialize(handler, format, true);
         } else {
-            handler.processOMDataSource(null, null, dataSource); 
+            // TODO: the serializer ignores namespaceURI and localName
+            handler.processOMDataSource(null, null, dataSource);
         }
     }
 
