@@ -38,7 +38,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
+import org.apache.axiom.om.impl.common.builder.PushBuilder;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.stream.sax.SAXInput;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -208,7 +210,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     // TODO: don't need the omFactory argument anymore
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
             boolean expandEntityReferences) {
-        return new SAXOMBuilder(nodeFactory, PlainXMLModel.INSTANCE, source, expandEntityReferences);
+        return new PushBuilder(new SAXInput(source, expandEntityReferences), nodeFactory, PlainXMLModel.INSTANCE, null, true);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,

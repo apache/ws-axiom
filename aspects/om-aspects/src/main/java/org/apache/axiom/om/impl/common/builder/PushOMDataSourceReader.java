@@ -23,27 +23,29 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
+import org.apache.axiom.om.impl.stream.XmlReader;
 import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 
-public final class PushOMBuilder extends AbstractPushBuilder {
+public final class PushOMDataSourceReader implements XmlReader {
+    private final XmlHandler handler;
     private final AxiomSourcedElement root;
     private final OMDataSource dataSource;
 
-    public PushOMBuilder(AxiomSourcedElement root, OMDataSource dataSource) {
-        // Disable namespace repairing because the OMDataSource is required to produce well formed
-        // XML with respect to namespaces.
-        super(root.coreGetNodeFactory(), PlainXMLModel.INSTANCE, root, false);
+    public PushOMDataSourceReader(XmlHandler handler, AxiomSourcedElement root, OMDataSource dataSource) {
+        this.handler = handler;
         this.root = root;
         this.dataSource = dataSource;
     }
     
-    public int next() {
+    @Override
+    public void proceed() throws StreamException {
         try {
             XMLStreamWriter writer = new XmlHandlerStreamWriter(handler);
             // Seed the namespace context with the namespace context from the parent
@@ -56,8 +58,7 @@ public final class PushOMBuilder extends AbstractPushBuilder {
             }
             dataSource.serialize(new PushOMDataSourceStreamWriter(writer));
         } catch (XMLStreamException ex) {
-            throw new DeferredParsingException(ex);
+            throw new StreamException(ex);
         }
-        return -1;
     }
 }

@@ -22,16 +22,33 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlInput;
+import org.apache.axiom.om.impl.stream.XmlReader;
 
-public abstract class AbstractPushBuilder extends AbstractBuilder {
-    public AbstractPushBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root,
+public final class PushBuilder extends AbstractBuilder {
+    private final XmlReader reader;
+    
+    public PushBuilder(XmlInput input, NodeFactory nodeFactory, Model model, AxiomSourcedElement root,
             boolean repairNamespaces) {
         super(nodeFactory, model, root, repairNamespaces);
+        reader = input.createReader(handler);
     }
     
+    @Override
+    public int next() throws OMException {
+        try {
+            reader.proceed();
+        } catch (StreamException ex) {
+            throw new DeferredParsingException(ex);
+        }
+        return -1;
+    }
+
     public final void discard(OMElement el) throws OMException {
         throw new UnsupportedOperationException();
     }

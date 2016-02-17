@@ -29,12 +29,13 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.common.builder.PushOMBuilder;
+import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
+import org.apache.axiom.om.impl.common.builder.PushBuilder;
+import org.apache.axiom.om.impl.common.builder.PushOMDataSourceInput;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
@@ -217,7 +218,9 @@ public aspect AxiomSourcedElementSupport {
 
             Builder builder;
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
-                builder = new PushOMBuilder(this, dataSource);
+                // Disable namespace repairing because the OMDataSource is required to produce well formed
+                // XML with respect to namespaces.
+                builder = new PushBuilder(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, false);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;

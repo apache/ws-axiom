@@ -17,13 +17,12 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.common.factory;
+package org.apache.axiom.om.impl.stream.sax;
 
-import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.OMContentHandler;
-import org.apache.axiom.om.impl.common.builder.AbstractPushBuilder;
-import org.apache.axiom.om.impl.common.builder.Model;
+import org.apache.axiom.om.impl.stream.StreamException;
+import org.apache.axiom.om.impl.stream.XmlHandler;
+import org.apache.axiom.om.impl.stream.XmlReader;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -31,17 +30,19 @@ import java.io.IOException;
 
 import javax.xml.transform.sax.SAXSource;
 
-public final class SAXOMBuilder extends AbstractPushBuilder {
+public final class SAXReader implements XmlReader {
+    private final XmlHandler handler;
     private final boolean expandEntityReferences;
     private final SAXSource source;
     
-    public SAXOMBuilder(NodeFactory nodeFactory, Model model, SAXSource source, boolean expandEntityReferences) {
-        super(nodeFactory, model, null, true);
+    SAXReader(XmlHandler handler, SAXSource source, boolean expandEntityReferences) {
+        this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
         this.source = source;
     }
     
-    public int next() {
+    @Override
+    public void proceed() throws StreamException {
         XMLReader reader = source.getXMLReader();
         OMContentHandler contentHandler = new OMContentHandler(handler, expandEntityReferences);
         reader.setContentHandler(contentHandler);
@@ -59,10 +60,9 @@ public final class SAXOMBuilder extends AbstractPushBuilder {
         try {
             reader.parse(source.getInputSource());
         } catch (IOException ex) {
-            throw new OMException(ex);
+            throw new StreamException(ex);
         } catch (SAXException ex) {
-            throw new OMException(ex);
+            throw new StreamException(ex);
         }
-        return -1;
     }
 }
