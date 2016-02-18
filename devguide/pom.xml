@@ -59,7 +59,6 @@
                         <phase>compile</phase>
                         <configuration>
                             <foCustomization>${basedir}/../src/docbkx/xsl/fo.xsl</foCustomization>
-                            <imgSrcPath>${basedir}/src/docbkx/images/</imgSrcPath>
                             <admonGraphicsPath>${basedir}/../src/docbkx/images/</admonGraphicsPath>
                             <admonGraphicsExtension>.svg</admonGraphicsExtension>
                         </configuration>
@@ -83,7 +82,6 @@
                                     <fileset dir="${project.build.directory}/docbkx/html/devguide" />
                                 </copy>
                                 <copy todir="${project.reporting.outputDirectory}/images">
-                                    <fileset dir="src/docbkx/images" />
                                     <fileset dir="../src/docbkx/images">
                                         <include name="**/*.png" />
                                     </fileset>
