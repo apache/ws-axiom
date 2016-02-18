@@ -1154,12 +1154,6 @@
                             </exclusion>
                         </exclusions>
                     </dependency>
-                    <dependency>
-                        <!-- Fluido skin is not compatible with Velocity 1.7 -->
-                        <groupId>org.apache.velocity</groupId>
-                        <artifactId>velocity</artifactId>
-                        <version>1.5</version>
-                    </dependency>
                 </dependencies>
             </plugin>
             <plugin>
