@@ -38,6 +38,7 @@ import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -53,7 +54,6 @@ import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
@@ -267,7 +267,7 @@ public aspect AxiomContainerSupport {
     }
 
     public final SAXResult AxiomContainer.getSAXResult() {
-        OMContentHandler handler = new OMContentHandler(new SAXResultContentHandler(this), true);
+        XmlHandlerContentHandler handler = new XmlHandlerContentHandler(new SAXResultContentHandler(this), true);
         SAXResult result = new SAXResult();
         result.setHandler(handler);
         result.setLexicalHandler(handler);

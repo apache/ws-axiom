@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.stream.sax;
+package org.apache.axiom.core.stream.sax;
 
 import javax.xml.transform.sax.SAXSource;
 

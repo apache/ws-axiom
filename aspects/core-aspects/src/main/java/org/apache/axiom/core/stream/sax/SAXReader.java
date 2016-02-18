@@ -17,12 +17,11 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.stream.sax;
+package org.apache.axiom.core.stream.sax;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -44,7 +43,7 @@ public final class SAXReader implements XmlReader {
     @Override
     public void proceed() throws StreamException {
         XMLReader reader = source.getXMLReader();
-        OMContentHandler contentHandler = new OMContentHandler(handler, expandEntityReferences);
+        XmlHandlerContentHandler contentHandler = new XmlHandlerContentHandler(handler, expandEntityReferences);
         reader.setContentHandler(contentHandler);
         reader.setDTDHandler(contentHandler);
         try {

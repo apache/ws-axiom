@@ -16,12 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.core.stream.sax;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -33,9 +31,7 @@ import org.xml.sax.ext.LexicalHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.stream.XMLStreamConstants;
-
-public final class OMContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
+public final class XmlHandlerContentHandler implements ContentHandler, LexicalHandler, DeclHandler, DTDHandler {
     private final XmlHandler handler;
     private final boolean expandEntityReferences;
     
@@ -71,7 +67,7 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
 
     /**
      * Stores namespace declarations reported to {@link #startPrefixMapping(String, String)}. These
-     * declarations will be added to the {@link OMElement} by
+     * declarations will be passed to the {@link XmlHandler} by
      * {@link #startElement(String, String, String, Attributes)}. Each declaration is stored as
      * (prefix, uri) pair using two array elements.
      */
@@ -82,12 +78,12 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
      */
     private int namespaceCount;
 
-    private int textNodeType = OMNode.TEXT_NODE;
+    private boolean inCDATASection;
     
     private boolean inEntityReference;
     private int entityReferenceDepth;
 
-    public OMContentHandler(XmlHandler handler, boolean expandEntityReferences) {
+    public XmlHandlerContentHandler(XmlHandler handler, boolean expandEntityReferences) {
         this.handler = handler;
         this.expandEntityReferences = expandEntityReferences;
     }
@@ -312,52 +308,40 @@ public final class OMContentHandler implements ContentHandler, LexicalHandler, D
 
     public final void startCDATA() throws SAXException {
         if (!inEntityReference) {
-            textNodeType = OMNode.CDATA_SECTION_NODE;
+            inCDATASection = true;
         }
     }
 
     public final void endCDATA() throws SAXException {
         if (!inEntityReference) {
-            textNodeType = OMNode.TEXT_NODE;
-        }
-    }
-
-    private void characterData(char[] ch, int start, int length, int nodeType)
-            throws SAXException {
-        if (inEntityReference) {
-            return;
-        }
-        try {
-            String text = new String(ch, start, length);
-            switch (nodeType) {
-                case XMLStreamConstants.CHARACTERS:
-                    handler.processCharacterData(text, false);
-                    break;
-                case XMLStreamConstants.SPACE:
-                    handler.processCharacterData(text, true);
-                    break;
-                case XMLStreamConstants.CDATA:
-                    handler.processCDATASection(text);
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        } catch (StreamException ex) {
-            throw toSAXException(ex);
+            inCDATASection = false;
         }
     }
 
     public final void characters(char[] ch, int start, int length)
             throws SAXException {
         if (!inEntityReference) {
-            characterData(ch, start, length, textNodeType);
+            try {
+                if (inCDATASection) {
+                    // TODO: incorrect because it may split CDATA sections
+                    handler.processCDATASection(new String(ch, start, length));
+                } else {
+                    handler.processCharacterData(new String(ch, start, length), false);
+                }
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
     
     public final void ignorableWhitespace(char[] ch, int start, int length)
             throws SAXException {
         if (!inEntityReference) {
-            characterData(ch, start, length, OMNode.SPACE_NODE);
+            try {
+                handler.processCharacterData(new String(ch, start, length), true);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
 
