@@ -25,12 +25,14 @@
     </bannerLeft>
     <body>
         <head>
+            <![CDATA[
             <script async='' src='//www.google-analytics.com/analytics.js'> </script>
             <script>
               window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
               ga('create', 'UA-56790914-3', {'cookieDomain': 'ws.apache.org', 'cookiePath': '/axiom' });
               ga('send', 'pageview');
             </script>
+            ]]>
         </head>
         <menu name="About">
             <item name="Introduction" href="index.html"/>
