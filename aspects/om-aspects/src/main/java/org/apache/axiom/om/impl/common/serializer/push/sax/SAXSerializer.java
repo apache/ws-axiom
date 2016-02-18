@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common.serializer.push.sax;
 
 import java.io.IOException;
+import java.util.Stack;
 
 import javax.activation.DataHandler;
 
@@ -31,6 +32,7 @@ import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.AttributesImpl;
 
 public class SAXSerializer extends SerializerImpl {
     private final ContentHandler contentHandler;
@@ -39,13 +41,25 @@ public class SAXSerializer extends SerializerImpl {
     private boolean startDocumentWritten;
     private boolean autoStartDocument;
     private int depth;
-    private final SAXHelper helper = new SAXHelper();
+    private Stack<String> elementNameStack = new Stack<String>();
+    private String elementURI;
+    private String elementLocalName;
+    private String elementQName;
+    private final AttributesImpl attributes = new AttributesImpl();
     
     public SAXSerializer(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }
 
+    private static String getQName(String prefix, String localName) {
+        if (prefix.length() == 0) {
+            return localName;
+        } else {
+            return prefix + ":" + localName;
+        }
+    }
+    
     protected boolean isAssociated(String prefix, String namespace) throws StreamException {
         return nsContext.getNamespaceURI(prefix).equals(namespace);
     }
@@ -81,7 +95,9 @@ public class SAXSerializer extends SerializerImpl {
             writeStartDocument();
             autoStartDocument = true;
         }
-        helper.beginStartElement(prefix, namespaceURI, localName);
+        elementURI = namespaceURI;
+        elementLocalName = localName;
+        elementQName = getQName(prefix, localName);
         nsContext.startScope();
         depth++;
     }
@@ -97,12 +113,19 @@ public class SAXSerializer extends SerializerImpl {
     }
 
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
-        helper.addAttribute(prefix, namespaceURI, localName, type, value);
+        attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
 
     public void attributesCompleted() throws StreamException {
         try {
-            helper.finishStartElement(contentHandler);
+            contentHandler.startElement(elementURI, elementLocalName, elementQName, attributes);
+            elementNameStack.push(elementURI);
+            elementNameStack.push(elementLocalName);
+            elementNameStack.push(elementQName);
+            elementURI = null;
+            elementLocalName = null;
+            elementQName = null;
+            attributes.clear();
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
@@ -110,7 +133,14 @@ public class SAXSerializer extends SerializerImpl {
 
     public void endElement() throws StreamException {
         try {
-            helper.writeEndElement(contentHandler, nsContext);
+            String elementQName = elementNameStack.pop();
+            String elementLocalName = elementNameStack.pop();
+            String elementURI = elementNameStack.pop();
+            contentHandler.endElement(elementURI, elementLocalName, elementQName);
+            for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
+                contentHandler.endPrefixMapping(nsContext.getPrefix(i));
+            }
+            nsContext.endScope();
             if (--depth == 0 && autoStartDocument) {
                 contentHandler.endDocument();
             }
