@@ -20,14 +20,12 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public final  class SAXResultContentHandler implements XmlHandler {
@@ -118,12 +116,5 @@ public final  class SAXResultContentHandler implements XmlHandler {
             // Since we set expandEntityReferences=true, we should never get here
             throw new UnsupportedOperationException();
         }
-    }
-
-    @Override
-    public void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource)
-            throws StreamException {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 }

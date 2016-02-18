@@ -21,11 +21,8 @@ package org.apache.axiom.om.impl.common.serializer.push.sax;
 import java.io.IOException;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
 import org.apache.axiom.om.impl.stream.StreamException;
@@ -192,25 +189,9 @@ public class SAXSerializer extends SerializerImpl {
 
     public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
             boolean optimize) throws StreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    protected void serializePushOMDataSource(OMDataSource dataSource) throws StreamException {
         try {
-            XMLStreamWriter writer = new ContentHandlerXMLStreamWriter(helper, contentHandler, lexicalHandler, nsContext);
-            if (startDocumentWritten) {
-                dataSource.serialize(writer);
-            } else {
-                contentHandler.startDocument();
-                dataSource.serialize(writer);
-                contentHandler.endDocument();
-            }
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        } catch (SAXExceptionWrapper ex) {
-            throw new StreamException(ex.getCause());
-        } catch (XMLStreamException ex) {
+            writeDataHandler(dataHandlerProvider.getDataHandler(), contentID, optimize);
+        } catch (IOException ex) {
             throw new StreamException(ex);
         }
     }

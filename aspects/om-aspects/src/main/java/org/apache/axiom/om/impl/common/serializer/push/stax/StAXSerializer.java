@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
@@ -52,15 +51,8 @@ public class StAXSerializer extends SerializerImpl {
         return buildHandler(root, true, false);
     }
     
-    protected void serializePushOMDataSource(OMDataSource dataSource) throws StreamException {
-        try {
-            dataSource.serialize(writer);
-        } catch (XMLStreamException ex) {
-            // We cannot really differentiate between exceptions thrown by the XMLStreamWriter
-            // and exceptions thrown by the data source itself. We wrap all XMLStreamExceptions
-            // as OutputExceptions.
-            throw new StreamException(ex);
-        }
+    public XMLStreamWriter getWriter() {
+        return writer;
     }
 
     @Override

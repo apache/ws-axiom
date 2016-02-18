@@ -22,6 +22,7 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -36,11 +37,14 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
 import org.apache.axiom.om.impl.common.builder.PushBuilder;
 import org.apache.axiom.om.impl.common.builder.PushOMDataSourceInput;
+import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
+import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -411,9 +415,43 @@ public aspect AxiomSourcedElementSupport {
         } else if (cache&& OMDataSourceUtil.isDestructiveWrite(dataSource)) {
             forceExpand();
             defaultInternalSerialize(handler, format, true);
+        // Note: if we can't determine the type (push/pull) of the OMDataSource, we
+        // default to push
+        // TODO: the serializer ignores namespaceURI and localName
+        } else if (OMDataSourceUtil.isPullDataSource(dataSource)) {
+            try {
+                XMLStreamReader reader = dataSource.getReader();
+                StAXHelper helper = new StAXHelper(reader, handler);
+                while (helper.lookahead() != XMLStreamReader.START_ELEMENT) {
+                    helper.parserNext();
+                }
+                int depth = 0;
+                do {
+                    switch (helper.next()) {
+                        case XMLStreamReader.START_ELEMENT: depth++; break;
+                        case XMLStreamReader.END_ELEMENT: depth--; break;
+                    }
+                } while (depth > 0);
+                reader.close();
+            } catch (XMLStreamException ex) {
+                // XMLStreamExceptions occurring while _writing_ are wrapped in an OutputException.
+                // Therefore, if we get here, there must have been a problem while _reading_.
+                throw new DeferredParsingException(ex);
+            }
         } else {
-            // TODO: the serializer ignores namespaceURI and localName
-            handler.processOMDataSource(null, null, dataSource);
+            XmlHandler unwrappedHandler = handler;
+            while (unwrappedHandler instanceof XmlHandlerWrapper) {
+                unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
+            }
+            if (unwrappedHandler instanceof StAXSerializer) {
+                try {
+                    dataSource.serialize(((StAXSerializer)unwrappedHandler).getWriter());
+                } catch (XMLStreamException ex) {
+                    throw new StreamException(ex);
+                }
+            } else {
+                new PushOMDataSourceInput(this, dataSource).createReader(handler).proceed();
+            }
         }
     }
 

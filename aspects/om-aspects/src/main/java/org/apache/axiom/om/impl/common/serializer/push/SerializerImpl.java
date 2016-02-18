@@ -19,20 +19,15 @@
 package org.apache.axiom.om.impl.common.serializer.push;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.impl.common.builder.StAXHelper;
-import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.om.impl.stream.XmlHandler;
@@ -77,44 +72,6 @@ public abstract class SerializerImpl implements XmlHandler {
         return handler;
     }
 
-    /**
-     * Serialize the given data source.
-     * 
-     * @param dataSource
-     *            the data source to serialize
-     * @throws StreamException
-     *             if an error occurs while writing the data
-     * @throws DeferredParsingException
-     *             if an error occurs while reading from the data source
-     */
-    public final void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource) throws StreamException {
-        // Note: if we can't determine the type (push/pull) of the OMDataSource, we
-        // default to push
-        if (OMDataSourceUtil.isPullDataSource(dataSource)) {
-            try {
-                XMLStreamReader reader = dataSource.getReader();
-                StAXHelper helper = new StAXHelper(reader, this);
-                while (helper.lookahead() != XMLStreamReader.START_ELEMENT) {
-                    helper.parserNext();
-                }
-                int depth = 0;
-                do {
-                    switch (helper.next()) {
-                        case XMLStreamReader.START_ELEMENT: depth++; break;
-                        case XMLStreamReader.END_ELEMENT: depth--; break;
-                    }
-                } while (depth > 0);
-                reader.close();
-            } catch (XMLStreamException ex) {
-                // XMLStreamExceptions occurring while _writing_ are wrapped in an OutputException.
-                // Therefore, if we get here, there must have been a problem while _reading_.
-                throw new DeferredParsingException(ex);
-            }
-        } else {
-            serializePushOMDataSource(dataSource);
-        }
-    }
-    
     public final void processCharacterData(Object data, boolean ignorable) throws StreamException {
         if (data instanceof TextContent) {
             TextContent textContent = (TextContent)data;
@@ -208,20 +165,5 @@ public abstract class SerializerImpl implements XmlHandler {
 
     protected abstract void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws StreamException;
 
-    /**
-     * Serialize the given data source using {@link OMDataSource#serialize(XMLStreamWriter)}. The
-     * implementation must construct an appropriate {@link XMLStreamWriter} instance to pass to that
-     * method and wrap any {@link XMLStreamException} that may be thrown in an
-     * {@link StreamException} or {@link DeferredParsingException}.
-     * 
-     * @param dataSource
-     *            the data source to serialize
-     * @throws StreamException
-     *             if an error occurs while writing the data
-     * @throws DeferredParsingException
-     *             if an error occurs while reading from the data source
-     */
-    protected abstract void serializePushOMDataSource(OMDataSource dataSource) throws StreamException;
-    
     public abstract void endDocument() throws StreamException;
 }

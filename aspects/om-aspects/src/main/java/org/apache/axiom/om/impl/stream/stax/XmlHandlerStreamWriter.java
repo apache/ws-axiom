@@ -97,6 +97,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     }
 
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {
+        finishStartElement();
         try {
             handler.startElement(normalize(namespaceURI), localName, normalize(prefix));
         } catch (StreamException ex) {
@@ -110,6 +111,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     }
 
     protected void doWriteEndElement() throws XMLStreamException {
+        finishStartElement();
         try {
             handler.endElement();
         } catch (StreamException ex) {

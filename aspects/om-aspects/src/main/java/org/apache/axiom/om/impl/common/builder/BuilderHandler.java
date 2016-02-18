@@ -30,8 +30,6 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -267,21 +265,5 @@ public final class BuilderHandler implements XmlHandler {
         }
         target = null;
         done = true;
-    }
-
-    @Override
-    public void processOMDataSource(String namespaceURI, String localName, OMDataSource dataSource) throws StreamException {
-        Class<? extends AxiomElement> elementType = model.determineElementType(target, depth+1, namespaceURI, localName);
-        Class<? extends AxiomSourcedElement> sourcedElementType;
-        if (elementType == AxiomElement.class) {
-            sourcedElementType = AxiomSourcedElement.class;
-        } else if (AxiomSourcedElement.class.isAssignableFrom(elementType)) {
-            sourcedElementType = elementType.asSubclass(AxiomSourcedElement.class);
-        } else {
-            throw new OMException("Cannot build an OMSourcedElement where a " + elementType.getName() + " is expected");
-        }
-        AxiomSourcedElement element = nodeFactory.createNode(sourcedElementType);
-        element.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
-        addChild(element);
     }
 }
