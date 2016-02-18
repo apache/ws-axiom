@@ -838,7 +838,8 @@
                         <requireNoRepositories>
                             <message>The POM must not include repository definitions since non Apache repositories threaten the build stability.</message>
                             <banRepositories>true</banRepositories>
-                            <banPluginRepositories>true</banPluginRepositories>
+                            <!-- TODO: reenable this rule when maven-site-plugin 3.5 is out -->
+                            <banPluginRepositories>false</banPluginRepositories>
                             <!-- We still need to allow the Apache snapshot repository -->
                             <allowSnapshotRepositories>true</allowSnapshotRepositories>
                             <allowSnapshotPluginRepositories>true</allowSnapshotPluginRepositories>
