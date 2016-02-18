@@ -20,10 +20,10 @@ package org.apache.axiom.om.impl.common.serializer.push;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
 
 public class XsiTypeFilterHandler extends XmlHandlerWrapper {
     private final CoreElement contextElement;

@@ -21,11 +21,11 @@ package org.apache.axiom.om.impl.mixin;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
-import org.apache.axiom.om.impl.stream.StreamException;
 
 public aspect AxiomSerializableSupport {
     public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {

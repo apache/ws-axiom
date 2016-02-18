@@ -26,9 +26,9 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
 
 public final class NamespaceContextPreservationFilterHandler extends XmlHandlerWrapper {
     private final CoreElement contextElement;

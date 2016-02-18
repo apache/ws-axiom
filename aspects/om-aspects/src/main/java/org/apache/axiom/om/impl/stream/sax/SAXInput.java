@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.stream.sax;
 
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlInput;
-import org.apache.axiom.om.impl.stream.XmlReader;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.XmlReader;
 
 public final class SAXInput implements XmlInput {
     private final boolean expandEntityReferences;

@@ -23,14 +23,14 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlReader;
 import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 
 public final class PushOMDataSourceReader implements XmlReader {

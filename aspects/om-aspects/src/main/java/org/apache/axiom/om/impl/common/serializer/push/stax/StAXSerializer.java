@@ -20,14 +20,14 @@ package org.apache.axiom.om.impl.common.serializer.push.stax;
 
 import java.io.IOException;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

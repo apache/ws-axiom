@@ -19,10 +19,10 @@
 
 package org.apache.axiom.om.impl.stream.sax;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.impl.common.OMContentHandler;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlReader;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 

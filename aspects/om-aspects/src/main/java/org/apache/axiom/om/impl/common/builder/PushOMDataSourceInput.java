@@ -18,11 +18,11 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlInput;
-import org.apache.axiom.om.impl.stream.XmlReader;
 
 public final class PushOMDataSourceInput implements XmlInput {
     private final AxiomSourcedElement root;

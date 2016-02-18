@@ -23,12 +23,12 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements DataHandlerWriter {

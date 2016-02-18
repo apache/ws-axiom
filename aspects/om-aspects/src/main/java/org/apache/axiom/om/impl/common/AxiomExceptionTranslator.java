@@ -22,9 +22,9 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.NodeConsumedException;
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.stream.StreamException;
 
 public class AxiomExceptionTranslator {
     private AxiomExceptionTranslator() {}

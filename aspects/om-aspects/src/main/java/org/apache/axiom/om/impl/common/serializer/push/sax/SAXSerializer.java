@@ -22,10 +22,10 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
-import org.apache.axiom.om.impl.stream.StreamException;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;

@@ -18,11 +18,11 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public aspect AxiomEntityReferenceSupport {
     public final int AxiomEntityReference.getType() {

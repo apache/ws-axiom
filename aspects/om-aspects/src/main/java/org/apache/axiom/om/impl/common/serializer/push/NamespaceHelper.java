@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
-import org.apache.axiom.om.impl.stream.XmlHandlerWrapper;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
 
 final class NamespaceHelper extends XmlHandlerWrapper {
     private final SerializerImpl serializer;

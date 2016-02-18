@@ -22,6 +22,8 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -29,8 +31,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.om.impl.stream.StreamException;
-import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public abstract class SerializerImpl implements XmlHandler {
     /**

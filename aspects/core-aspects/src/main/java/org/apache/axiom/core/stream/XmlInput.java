@@ -16,8 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream;
+package org.apache.axiom.core.stream;
 
-public interface XmlReader {
-    void proceed() throws StreamException;
+public interface XmlInput {
+    XmlReader createReader(XmlHandler handler);
 }

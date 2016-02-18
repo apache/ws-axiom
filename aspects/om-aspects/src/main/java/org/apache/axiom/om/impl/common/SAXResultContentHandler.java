@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -26,7 +27,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.stream.XmlHandler;
 
 public final  class SAXResultContentHandler implements XmlHandler {
     private final OMContainer root;
