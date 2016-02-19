@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -41,10 +40,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
-import org.codehaus.plexus.util.xml.XMLWriter;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomWriter;
 
 @Mojo(name="post-process")
 public class PostProcessMojo extends AbstractMojo {
@@ -76,20 +71,13 @@ public class PostProcessMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         DecorationModel decorationModel;
         try {
-            decorationModel = siteTool.getDecorationModel(project, reactorProjects, localRepository, repositories,
-                    siteTool.getRelativePath(siteDirectory.getAbsolutePath(), project.getBasedir().getAbsolutePath()),
-                    siteTool.getAvailableLocales(locales).get(0));
+            decorationModel = siteTool.getDecorationModel(siteDirectory,
+                    siteTool.getSiteLocales(locales).get(0),
+                    project, reactorProjects, localRepository, repositories);
         } catch (SiteToolException ex) {
             throw new MojoExecutionException("SiteToolException: " + ex.getMessage(), ex);
         }
-        StringWriter sw = new StringWriter();
-        XMLWriter xmlWriter = new PrettyPrintXMLWriter(sw, null, null);
-        for (Xpp3Dom element : ((Xpp3Dom)decorationModel.getBody().getHead()).getChildren()) {
-            // Turn off escaping in scripts. Note that this mimics the behavior in the default-site.vm
-            // template in doxia-site-renderer.
-            Xpp3DomWriter.write(xmlWriter, element, !element.getName().equals("script"));
-        }
-        String headElements = sw.toString();
+        String head = decorationModel.getBody().getHead();
         DirectoryScanner ds = new DirectoryScanner();
         ds.setIncludes(new String[] { "**/*.html" });
         ds.setBasedir(javadocDirectory);
@@ -106,7 +94,7 @@ public class PostProcessMojo extends AbstractMojo {
                         String line;
                         while ((line = in.readLine()) != null) {
                             if (line.equals("</head>")) {
-                                out.println(headElements);
+                                out.println(head);
                             }
                             out.println(line);
                         }
