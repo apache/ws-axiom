@@ -25,14 +25,13 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
+import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -198,13 +197,32 @@ public class StAXSerializer extends SerializerImpl {
         }
     }
 
-    public void writeText(int type, String data) throws StreamException {
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
-            if (type == OMNode.CDATA_SECTION_NODE) {
-                writer.writeCData(data);
-            } else {
-                writer.writeCharacters(data);
+            if (data instanceof TextContent) {
+                TextContent textContent = (TextContent)data;
+                if (textContent.isBinary()) {
+                    Object dataHandlerObject = textContent.getDataHandlerObject();
+                    if (dataHandlerObject instanceof DataHandlerProvider) {
+                        getDataHandlerWriter().writeDataHandler((DataHandlerProvider)dataHandlerObject, textContent.getContentID(), textContent.isOptimize());
+                    } else {
+                        getDataHandlerWriter().writeDataHandler(textContent.getDataHandler(), textContent.getContentID(), textContent.isOptimize());
+                    }
+                    return;
+                }
             }
+            writer.writeCharacters(data.toString());
+        } catch (XMLStreamException ex) {
+            throw new StreamException(ex);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
+    }
+    
+    @Override
+    public void processCDATASection(String content) throws StreamException {
+        try {
+            writer.writeCData(content);
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);
         }
@@ -240,26 +258,6 @@ public class StAXSerializer extends SerializerImpl {
             dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
         }
         return dataHandlerWriter;
-    }
-
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException {
-        try {
-            getDataHandlerWriter().writeDataHandler(dataHandler, contentID, optimize);
-        } catch (IOException ex) {
-            throw new StreamException("Error while reading data handler", ex);
-        } catch (XMLStreamException ex) {
-            throw new StreamException(ex);
-        }
-    }
-
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID, boolean optimize) throws StreamException {
-        try {
-            getDataHandlerWriter().writeDataHandler(dataHandlerProvider, contentID, optimize);
-        } catch (IOException ex) {
-            throw new StreamException("Error while reading data handler", ex);
-        } catch (XMLStreamException ex) {
-            throw new StreamException(ex);
-        }
     }
 
     public void endDocument() throws StreamException {

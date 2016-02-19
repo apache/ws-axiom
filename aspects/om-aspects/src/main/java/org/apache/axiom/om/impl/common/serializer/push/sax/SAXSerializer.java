@@ -25,8 +25,8 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
+import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
@@ -149,24 +149,61 @@ public class SAXSerializer extends SerializerImpl {
         }
     }
 
-    public void writeText(int type, String data) throws StreamException {
-        char[] ch = data.toCharArray();
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
-            switch (type) {
-                case OMNode.TEXT_NODE:
-                    contentHandler.characters(ch, 0, ch.length);
-                    break;
-                case OMNode.CDATA_SECTION_NODE:
-                    if (lexicalHandler != null) {
-                        lexicalHandler.startCDATA();
+            if (ignorable) {
+                char[] ch = data.toString().toCharArray();
+                contentHandler.ignorableWhitespace(ch, 0, ch.length);
+            } else {
+                if (data instanceof TextContent) {
+                    TextContent textContent = (TextContent)data;
+                    if (textContent.isBinary()) {
+                        Object dataHandlerObject = textContent.getDataHandlerObject();
+                        DataHandler dataHandler;
+                        if (dataHandlerObject instanceof DataHandlerProvider) {
+                            try {
+                                dataHandler = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                            } catch (IOException ex) {
+                                throw new StreamException(ex);
+                            }
+                        } else {
+                            dataHandler = (DataHandler)dataHandlerObject;
+                        }
+                        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
+                        try {
+                            dataHandler.writeTo(out);
+                            out.complete();
+                        } catch (IOException ex) {
+                            Throwable cause = ex.getCause();
+                            SAXException saxException;
+                            if (cause instanceof SAXException) {
+                                saxException = (SAXException)cause;
+                            } else {
+                                saxException = new SAXException(ex);
+                            }
+                            throw new StreamException(saxException);
+                        }
+                        return;
                     }
-                    contentHandler.characters(ch, 0, ch.length);
-                    if (lexicalHandler != null) {
-                        lexicalHandler.endCDATA();
-                    }
-                    break;
-                case OMNode.SPACE_NODE:
-                    contentHandler.ignorableWhitespace(ch, 0, ch.length);
+                }
+                char[] ch = data.toString().toCharArray();
+                contentHandler.characters(ch, 0, ch.length);
+            }
+        } catch (SAXException ex) {
+            throw new StreamException(ex);
+        }
+    }
+    
+    @Override
+    public void processCDATASection(String content) throws StreamException {
+        try {
+            if (lexicalHandler != null) {
+                lexicalHandler.startCDATA();
+            }
+            char[] ch = content.toCharArray();
+            contentHandler.characters(ch, 0, ch.length);
+            if (lexicalHandler != null) {
+                lexicalHandler.endCDATA();
             }
         } catch (SAXException ex) {
             throw new StreamException(ex);
@@ -196,32 +233,6 @@ public class SAXSerializer extends SerializerImpl {
         try {
             contentHandler.skippedEntity(name);
         } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
-    }
-
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException {
-        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
-        try {
-            dataHandler.writeTo(out);
-            out.complete();
-        } catch (IOException ex) {
-            Throwable cause = ex.getCause();
-            SAXException saxException;
-            if (cause instanceof SAXException) {
-                saxException = (SAXException)cause;
-            } else {
-                saxException = new SAXException(ex);
-            }
-            throw new StreamException(saxException);
-        }
-    }
-
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
-            boolean optimize) throws StreamException {
-        try {
-            writeDataHandler(dataHandlerProvider.getDataHandler(), contentID, optimize);
-        } catch (IOException ex) {
             throw new StreamException(ex);
         }
     }
