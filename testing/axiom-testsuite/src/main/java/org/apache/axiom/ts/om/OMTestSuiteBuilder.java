@@ -477,7 +477,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMProcessingInstructionWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMText(metaFactory));
-        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromOMText(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextWithNullParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestFactoryIsSingleton(metaFactory));

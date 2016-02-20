@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import javax.activation.DataHandler;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -25,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.UIDGenerator;
 
 public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
     static class TestDataHandlerProvider implements DataHandlerProvider {
@@ -46,16 +49,26 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
         }
     }
     
-    public TestCreateOMTextFromDataHandlerProvider(OMMetaFactory metaFactory) {
+    private final boolean nullContentID;
+    
+    public TestCreateOMTextFromDataHandlerProvider(OMMetaFactory metaFactory, boolean nullContentID) {
         super(metaFactory);
+        this.nullContentID = nullContentID;
+        addTestParameter("nullContentId", nullContentID);
     }
 
     protected void runTest() throws Throwable {
         TestDataHandlerProvider prov = new TestDataHandlerProvider();
         OMFactory factory = metaFactory.getOMFactory();
-        OMText text = factory.createOMText(null, prov, true);
+        String contentID = nullContentID ? null : UIDGenerator.generateContentId();
+        OMText text = factory.createOMText(contentID, prov, true);
         assertFalse(prov.isDataHandlerCreated());
         assertEquals(((DataHandler)text.getDataHandler()).getContent(), "Data");
         assertTrue(prov.isDataHandlerCreated());
+        if (contentID == null) {
+            assertThat(text.getContentID()).isNotNull();
+        } else {
+            assertThat(text.getContentID()).isEqualTo(contentID);
+        }
     }
 }
