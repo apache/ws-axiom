@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>buildutils</artifactId>
-        <version>1.2.18</version>
+        <version>1.2.19-SNAPSHOT</version>
     </parent>
 
     <artifactId>javadoc-postprocessor-plugin</artifactId>
