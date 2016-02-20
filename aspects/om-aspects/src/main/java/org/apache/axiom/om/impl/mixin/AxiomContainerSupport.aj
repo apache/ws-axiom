@@ -421,7 +421,6 @@ public aspect AxiomContainerSupport {
         if (build) {
             this.build();
         }
-        setComplete(true);
         
         if (builder != null) {
             builder.close();
