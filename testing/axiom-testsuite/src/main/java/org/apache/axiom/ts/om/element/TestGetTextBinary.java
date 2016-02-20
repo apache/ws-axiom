@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -37,8 +38,12 @@ import org.apache.commons.codec.binary.Base64;
  * an element that has an {@link OMText} child constructed from a {@link DataHandler}.
  */
 public class TestGetTextBinary extends AxiomTestCase {
-    public TestGetTextBinary(OMMetaFactory metaFactory) {
+    private final boolean compact;
+    
+    public TestGetTextBinary(OMMetaFactory metaFactory, boolean compact) {
         super(metaFactory);
+        this.compact = compact;
+        addTestParameter("compact", compact);
     }
 
     @Override
@@ -47,6 +52,11 @@ public class TestGetTextBinary extends AxiomTestCase {
         DataSource ds = new RandomDataSource(99999, 1000);
         OMElement element = factory.createOMElement("elem", null);
         element.addChild(factory.createOMText(new DataHandler(ds), false));
+        if (compact) {
+            // Only the builder can create a compact element containing a DataHandler
+            element = OMXMLBuilderFactory.createStAXOMBuilder(factory, element.getXMLStreamReader()).getDocumentElement();
+            element.build();
+        }
         IOTestUtils.compareStreams(ds.getInputStream(),
                 new ByteArrayInputStream(Base64.decodeBase64(element.getText())));
     }

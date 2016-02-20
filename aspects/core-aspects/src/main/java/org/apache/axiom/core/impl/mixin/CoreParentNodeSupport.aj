@@ -241,7 +241,7 @@ public aspect CoreParentNodeSupport {
     
     final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
-            return (String)content;
+            return content;
         } else {
             Object textContent = null;
             StringBuilder buffer = null;
