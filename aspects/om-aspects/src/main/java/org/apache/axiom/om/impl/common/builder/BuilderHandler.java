@@ -27,6 +27,7 @@ import java.util.Queue;
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
@@ -74,6 +75,8 @@ public final class BuilderHandler implements XmlHandler {
      * depth reached by the underlying parser.
      */
     public int depth;
+    
+    private Object pendingCharacterData;
     
     /**
      * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
@@ -134,8 +137,16 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     private void addChild(AxiomChildNode node) {
+        if (pendingCharacterData != null) {
+            AxiomCharacterDataNode cdataNode = nodeFactory.createNode(AxiomCharacterDataNode.class);
+            cdataNode.coreSetCharacterData(pendingCharacterData);
+            target.addChild(cdataNode, true);
+            pendingCharacterData = null;
+        }
         target.addChild(node, true);
-        nodeAdded(node);
+        if (!(node instanceof CoreCharacterDataNode)) {
+            nodeAdded(node);
+        }
     }
     
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
@@ -182,8 +193,12 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     public void endElement() {
-        depth--;
         target.setComplete(true);
+        if (pendingCharacterData != null) {
+            target.coreSetCharacterData(pendingCharacterData, null);
+            pendingCharacterData = null;
+        }
+        depth--;
         if (depth == 0) {
             // This is relevant for OMSourcedElements and for the case where the document has been discarded
             // using getDocumentElement(true). In these cases, this will actually set target to null. In all
@@ -220,10 +235,14 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     public void processCharacterData(Object data, boolean ignorable) {
-        AxiomCharacterDataNode node = nodeFactory.createNode(AxiomCharacterDataNode.class);
-        node.coreSetCharacterData(data);
-        node.coreSetIgnorable(ignorable);
-        addChild(node);
+        if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
+            pendingCharacterData = data;
+        } else {
+            AxiomCharacterDataNode node = nodeFactory.createNode(AxiomCharacterDataNode.class);
+            node.coreSetCharacterData(data);
+            node.coreSetIgnorable(ignorable);
+            addChild(node);
+        }
     }
     
     public void processProcessingInstruction(String piTarget, String piData) {

@@ -47,7 +47,7 @@ public class TestDetach extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         String xml1 = "<root><a/><b/></root>";
-        String xml2 = "<child>test</child>";
+        String xml2 = "<child><c/><d/></child>";
         OMElement parent = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(xml1)).getDocumentElement();
         PullOMDataSource ds = new PullOMDataSource(xml2);
         OMSourcedElement omse = factory.createOMElement(ds, "child", null);
