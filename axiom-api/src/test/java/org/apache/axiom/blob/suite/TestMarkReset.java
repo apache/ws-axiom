@@ -45,15 +45,19 @@ public class TestMarkReset extends SizeSensitiveWritableBlobTestCase {
         out.write(sourceData2);
         out.close();
         InputStream in = blob.getInputStream();
-        assertThat(in.markSupported()).isTrue();
-        byte[] data1 = new byte[sourceData1.length];
-        byte[] data2 = new byte[sourceData2.length];
-        IOUtils.readFully(in, data1);
-        in.mark(sourceData2.length);
-        IOUtils.readFully(in, data2);
-        in.reset();
-        IOUtils.readFully(in, data2);
-        assertThat(data1).isEqualTo(sourceData1);
-        assertThat(data2).isEqualTo(sourceData2);
+        try {
+            assertThat(in.markSupported()).isTrue();
+            byte[] data1 = new byte[sourceData1.length];
+            byte[] data2 = new byte[sourceData2.length];
+            IOUtils.readFully(in, data1);
+            in.mark(sourceData2.length);
+            IOUtils.readFully(in, data2);
+            in.reset();
+            IOUtils.readFully(in, data2);
+            assertThat(data1).isEqualTo(sourceData1);
+            assertThat(data2).isEqualTo(sourceData2);
+        } finally {
+            in.close();
+        }
     }
 }
