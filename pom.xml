@@ -739,7 +739,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-invoker-plugin</artifactId>
-                    <version>1.8</version>
+                    <version>2.0.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-plugin-plugin</artifactId>
@@ -916,17 +916,19 @@
                         <configuration>
                             <scripts>
                                 <script><![CDATA[
+                                    import static groovy.json.StringEscapeUtils.escapeJava
+                                    
                                     if (project.packaging != 'pom' && project.properties['hermeticTests'] == 'true') {
                                         new File(project.build.directory, "test.policy").withWriter { out ->
                                             out.println "grant {"
-                                            out.println """  permission java.io.FilePermission "${java.home}${file.separator}-", "read";"""
-                                            out.println """  permission java.io.FilePermission "${settings.localRepository}${file.separator}-", "read";"""
+                                            out.println """  permission java.io.FilePermission "${escapeJava(System.properties.'java.home')}\${/}-", "read";"""
+                                            out.println """  permission java.io.FilePermission "${escapeJava(session.settings.localRepository)}\${/}-", "read";"""
                                             session.sortedProjects.each({
-                                                out.println """  permission java.io.FilePermission "${it.build.directory}${file.separator}*", "read";"""
+                                                out.println """  permission java.io.FilePermission "${escapeJava(it.build.directory)}\${/}*", "read";"""
                                             })
-                                            out.println """  permission java.io.FilePermission "${basedir}${file.separator}-", "read";"""
-                                            out.println """  permission java.io.FilePermission "${project.build.directory}", "read,write";"""
-                                            out.println """  permission java.io.FilePermission "${project.build.directory}${file.separator}-", "read,write,delete";"""
+                                            out.println """  permission java.io.FilePermission "${escapeJava(project.basedir.absolutePath)}\${/}-", "read";"""
+                                            out.println """  permission java.io.FilePermission "${escapeJava(project.build.directory)}", "read,write";"""
+                                            out.println """  permission java.io.FilePermission "${escapeJava(project.build.directory)}\${/}-", "read,write,delete";"""
                                             out.println """  permission java.lang.RuntimePermission "*";"""
                                             out.println """  permission java.lang.reflect.ReflectPermission "*";"""
                                             out.println """  permission java.net.NetPermission "*";"""
@@ -942,7 +944,7 @@
                                             out.println """  permission org.osgi.framework.ServicePermission "*", "register,get";"""
                                             out.println "};"
                                         }
-                                        project.properties['securityManagerArgs'] = '-Djava.security.manager -Djava.security.policy=${project.build.directory}/test.policy'
+                                        project.properties['securityManagerArgs'] = '-Djava.security.manager -Djava.security.policy=' + project.build.directory.replace('\\', '/') + '/test.policy'
                                     } else {
                                         project.properties['securityManagerArgs'] = ''
                                     }
