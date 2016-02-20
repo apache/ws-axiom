@@ -68,7 +68,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
         T element = createNode(type);
         if (parent != null) {
             element.checkParent(parent);
-            ((AxiomContainer)parent).addChild(element, false);
+            ((AxiomContainer)parent).addChild(element);
         }
         if (qname.getNamespaceURI().length() == 0) {
             element.initName(qname.getLocalPart(), null, true);

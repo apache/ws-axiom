@@ -44,7 +44,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
      * Add a SOAPHeader or SOAPBody object
      * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
-    public void addChild(OMNode child, boolean fromBuilder) {
+    public void addChild(OMNode child) {
         internalCheckChild(child);
 
         if (child instanceof SOAPHeader) {
@@ -77,7 +77,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
                 }
             }
         }
-        super.addChild(child, fromBuilder);        
+        super.addChild(child);
     }
     
     /**

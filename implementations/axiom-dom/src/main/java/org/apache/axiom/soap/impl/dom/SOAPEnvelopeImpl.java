@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
 
 public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         OMConstants {
-    public void addChild(OMNode child, boolean fromBuilder) {
+    public void addChild(OMNode child) {
         internalCheckChild(child);
 
         if (child instanceof SOAPHeader) {
@@ -70,7 +70,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
                 }
             }
         }
-        super.addChild(child, fromBuilder);
+        super.addChild(child);
     }
 
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {

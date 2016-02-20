@@ -122,10 +122,6 @@ public aspect AxiomContainerSupport {
         return reader;
     }
     
-    public void AxiomContainer.addChild(OMNode omNode) {
-        addChild(omNode, false);
-    }
-
     public final AxiomChildNode AxiomContainer.prepareNewChild(OMNode omNode) {
         AxiomChildNode child;
         // Careful here: if the child was created by another Axiom implementation, it doesn't
@@ -139,17 +135,10 @@ public aspect AxiomContainerSupport {
         return child;
     }
 
-    public void AxiomContainer.addChild(OMNode omNode, boolean fromBuilder) {
-        AxiomChildNode child;
-        if (fromBuilder) {
-            // If the new child was provided by the builder, we know that it was created by
-            // the same factory
-            child = (AxiomChildNode)omNode;
-        } else {
-            child = prepareNewChild(omNode);
-        }
+    public void AxiomContainer.addChild(OMNode omNode) {
+        AxiomChildNode child = prepareNewChild(omNode);
         
-        coreAppendChild(child, fromBuilder);
+        coreAppendChild(child, false);
 
         // For a normal OMNode, the incomplete status is
         // propogated up the tree.  
@@ -158,7 +147,7 @@ public aspect AxiomContainerSupport {
         // So only propogate the incomplete setting if this
         // is a normal OMNode
         // TODO: this is crap and needs to be reviewed
-        if (!fromBuilder && !child.isComplete() && 
+        if (!child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
             setComplete(false);
         }

@@ -140,10 +140,10 @@ public final class BuilderHandler implements XmlHandler {
         if (pendingCharacterData != null) {
             AxiomCharacterDataNode cdataNode = nodeFactory.createNode(AxiomCharacterDataNode.class);
             cdataNode.coreSetCharacterData(pendingCharacterData);
-            target.addChild(cdataNode, true);
+            target.coreAppendChild(cdataNode, true);
             pendingCharacterData = null;
         }
-        target.addChild(node, true);
+        target.coreAppendChild(node, true);
         if (!(node instanceof CoreCharacterDataNode)) {
             nodeAdded(node);
         }
