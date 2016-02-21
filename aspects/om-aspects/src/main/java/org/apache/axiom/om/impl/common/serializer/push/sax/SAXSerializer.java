@@ -24,7 +24,6 @@ import java.util.Stack;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
@@ -158,17 +157,7 @@ public class SAXSerializer extends SerializerImpl {
                 if (data instanceof TextContent) {
                     TextContent textContent = (TextContent)data;
                     if (textContent.isBinary()) {
-                        Object dataHandlerObject = textContent.getDataHandlerObject();
-                        DataHandler dataHandler;
-                        if (dataHandlerObject instanceof DataHandlerProvider) {
-                            try {
-                                dataHandler = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
-                            } catch (IOException ex) {
-                                throw new StreamException(ex);
-                            }
-                        } else {
-                            dataHandler = (DataHandler)dataHandlerObject;
-                        }
+                        DataHandler dataHandler = textContent.getDataHandler();
                         Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
                         try {
                             dataHandler.writeTo(out);
