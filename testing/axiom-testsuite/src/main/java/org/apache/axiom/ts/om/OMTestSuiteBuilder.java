@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -622,7 +623,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.text.TestGetNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetNamespaceNoNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler(metaFactory));
-        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory, OMNode.TEXT_NODE));
+        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory, OMNode.SPACE_NODE));
+        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory, OMNode.CDATA_SECTION_NODE));
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.xop.TestSetOptimize(metaFactory, false));
