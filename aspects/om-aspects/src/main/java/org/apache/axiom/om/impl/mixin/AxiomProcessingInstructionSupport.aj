@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -50,6 +53,14 @@ public aspect AxiomProcessingInstructionSupport {
     public final void AxiomProcessingInstruction.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
         try {
             handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
+    }
+
+    public final void AxiomProcessingInstruction.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        try {
+            writer.writeProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }

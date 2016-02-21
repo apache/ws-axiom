@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -47,6 +50,14 @@ public aspect AxiomCommentSupport {
     public final void AxiomComment.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
         try {
             handler.processComment(coreGetCharacterData().toString());
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
+    }
+
+    public final void AxiomComment.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        try {
+            writer.writeComment(coreGetCharacterData().toString());
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }

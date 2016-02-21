@@ -263,6 +263,19 @@ public aspect AxiomContainerSupport {
         return result;
     }
 
+    public final void AxiomContainer.serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
+        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
+        try {
+            internalSerialize(new StAXSerializer(writer).buildHandler(this), writer.getOutputFormat(), cache);
+        } catch (StreamException ex) {
+            throw AxiomExceptionTranslator.toXMLStreamException(ex);
+        }
+        writer.flush();
+    }
+
     public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
         serialize(output, new OMOutputFormat());
     }

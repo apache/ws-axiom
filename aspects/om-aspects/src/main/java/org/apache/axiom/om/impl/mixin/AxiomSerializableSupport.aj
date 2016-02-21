@@ -21,10 +21,6 @@ package org.apache.axiom.om.impl.mixin;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
 
 public aspect AxiomSerializableSupport {
@@ -34,18 +30,5 @@ public aspect AxiomSerializableSupport {
 
     public final void AxiomSerializable.serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
         serialize(xmlWriter, false);
-    }
-
-    public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
-        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        try {
-            internalSerialize(new StAXSerializer(writer).buildHandler(this), writer.getOutputFormat(), cache);
-        } catch (StreamException ex) {
-            throw AxiomExceptionTranslator.toXMLStreamException(ex);
-        }
-        writer.flush();
     }
 }

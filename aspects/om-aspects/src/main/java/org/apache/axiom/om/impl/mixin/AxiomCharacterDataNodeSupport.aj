@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
@@ -31,5 +34,9 @@ public aspect AxiomCharacterDataNodeSupport {
 
     public final void AxiomCharacterDataNode.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
         handler.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
+    }
+
+    public final void AxiomCharacterDataNode.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        writer.writeCharacters(coreGetCharacterData().toString());
     }
 }
