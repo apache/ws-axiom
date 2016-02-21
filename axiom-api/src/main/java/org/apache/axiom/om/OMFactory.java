@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
@@ -284,7 +285,7 @@ public interface OMFactory {
 
     OMText createOMText(String s, String mimeType, boolean optimize);
 
-    OMText createOMText(Object dataHandler, boolean optimize);
+    OMText createOMText(DataHandler dataHandler, boolean optimize);
 
     OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize);

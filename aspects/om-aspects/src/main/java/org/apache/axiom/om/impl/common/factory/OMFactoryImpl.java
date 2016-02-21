@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common.factory;
 
 import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreModelException;
@@ -179,7 +180,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         }
     }
 
-    public final OMText createOMText(Object dataHandler, boolean optimize) {
+    public final OMText createOMText(DataHandler dataHandler, boolean optimize) {
         return createAxiomText(null, new TextContent(null, dataHandler, optimize), OMNode.TEXT_NODE);
     }
 
