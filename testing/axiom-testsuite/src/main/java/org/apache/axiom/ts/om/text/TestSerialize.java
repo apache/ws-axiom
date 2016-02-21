@@ -26,20 +26,30 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.stax.XMLEventUtils;
 
 public class TestSerialize extends AxiomTestCase {
-    public TestSerialize(OMMetaFactory metaFactory) {
+    private final int type;
+    
+    public TestSerialize(OMMetaFactory metaFactory, int type) {
         super(metaFactory);
+        this.type = type;
+        addTestParameter("type", XMLEventUtils.getEventTypeString(type));
     }
 
     @Override
     protected void runTest() throws Throwable {
-        OMText text = metaFactory.getOMFactory().createOMText("test");
+        OMText text = metaFactory.getOMFactory().createOMText("test", type);
         XMLStreamWriter writer = mock(XMLStreamWriter.class);
         text.serialize(writer);
-        verify(writer).writeCharacters(text.getText());
+        if (type == OMNode.CDATA_SECTION_NODE) {
+            verify(writer).writeCData(text.getText());
+        } else {
+            verify(writer).writeCharacters(text.getText());
+        }
         verify(writer, atMost(1)).flush();
         verifyNoMoreInteractions(writer);
     }
