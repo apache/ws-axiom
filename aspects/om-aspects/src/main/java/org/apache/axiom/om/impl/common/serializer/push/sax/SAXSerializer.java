@@ -21,12 +21,9 @@ package org.apache.axiom.om.impl.common.serializer.push.sax;
 import java.io.IOException;
 import java.util.Stack;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -149,28 +146,20 @@ public class SAXSerializer implements XmlHandler {
             if (ignorable) {
                 char[] ch = data.toString().toCharArray();
                 contentHandler.ignorableWhitespace(ch, 0, ch.length);
-            } else {
-                if (data instanceof TextContent) {
-                    TextContent textContent = (TextContent)data;
-                    if (textContent.isBinary()) {
-                        DataHandler dataHandler = textContent.getDataHandler();
-                        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
-                        try {
-                            dataHandler.writeTo(out);
-                            out.complete();
-                        } catch (IOException ex) {
-                            Throwable cause = ex.getCause();
-                            SAXException saxException;
-                            if (cause instanceof SAXException) {
-                                saxException = (SAXException)cause;
-                            } else {
-                                saxException = new SAXException(ex);
-                            }
-                            throw new StreamException(saxException);
-                        }
-                        return;
+            } else if (data instanceof CharacterData) {
+                try {
+                    ((CharacterData)data).writeTo(new ContentHandlerWriter(contentHandler));
+                } catch (IOException ex) {
+                    Throwable cause = ex.getCause();
+                    SAXException saxException;
+                    if (cause instanceof SAXException) {
+                        saxException = (SAXException)cause;
+                    } else {
+                        saxException = new SAXException(ex);
                     }
+                    throw new StreamException(saxException);
                 }
+            } else {
                 char[] ch = data.toString().toCharArray();
                 contentHandler.characters(ch, 0, ch.length);
             }

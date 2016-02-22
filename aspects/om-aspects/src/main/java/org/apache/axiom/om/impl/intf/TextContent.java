@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.intf;
 
 import java.io.IOException;
+import java.io.Writer;
 
 import javax.activation.DataHandler;
 
@@ -29,6 +30,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public final class TextContent implements CharacterData {
@@ -161,5 +163,16 @@ public final class TextContent implements CharacterData {
             getDataHandler().getDataSource();
         }
         return new TextContent(this);
+    }
+
+    @Override
+    public void writeTo(Writer writer) throws IOException {
+        if (binary) {
+            Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(writer, 4096, true);
+            getDataHandler().writeTo(out);
+            out.complete();
+        } else {
+            writer.write(value);
+        }
     }
 }
