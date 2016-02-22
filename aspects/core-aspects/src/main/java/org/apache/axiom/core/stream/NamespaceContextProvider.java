@@ -16,11 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push;
+package org.apache.axiom.core.stream;
 
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
-
-public abstract class SerializerImpl implements XmlHandler {
-    protected abstract boolean isAssociated(String prefix, String namespace) throws StreamException;
+public interface NamespaceContextProvider {
+    boolean isBound(String prefix, String namespaceURI) throws StreamException;
 }
