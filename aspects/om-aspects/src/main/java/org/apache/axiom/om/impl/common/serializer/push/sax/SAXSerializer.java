@@ -24,7 +24,7 @@ import java.util.Stack;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
-public class SAXSerializer extends SerializerImpl {
+public class SAXSerializer implements XmlHandler {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
     private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
@@ -59,10 +59,6 @@ public class SAXSerializer extends SerializerImpl {
         }
     }
     
-    protected boolean isAssociated(String prefix, String namespace) throws StreamException {
-        return nsContext.getNamespaceURI(prefix).equals(namespace);
-    }
-
     private void writeStartDocument() throws StreamException {
         try {
             contentHandler.startDocument();
