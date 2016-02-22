@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push.stax;
+package org.apache.axiom.core.stream.stax;
 
 import org.apache.axiom.core.stream.NamespaceContextProvider;
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -83,7 +82,7 @@ public class XMLStreamWriterNamespaceContextProvider implements NamespaceContext
                 
                 // Neither XML 1.0 nor XML 1.1 allow to associate a prefix with an unqualified name (see also AXIOM-372).
                 if (prefix.length() > 0) {
-                    throw new OMException("Invalid namespace declaration: Prefixed namespace bindings may not be empty.");  
+                    throw new StreamException("Invalid namespace declaration: Prefixed namespace bindings may not be empty.");  
                 }
                 
                 // Get the namespace associated with the prefix.

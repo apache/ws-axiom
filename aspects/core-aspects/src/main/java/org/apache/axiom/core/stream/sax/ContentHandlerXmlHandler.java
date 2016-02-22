@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push.sax;
+package org.apache.axiom.core.stream.sax;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -24,16 +24,17 @@ import java.util.Stack;
 import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
-public class SAXSerializer implements XmlHandler {
+public class ContentHandlerXmlHandler implements XmlHandler {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
-    private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
+    private String[] prefixStack = new String[16];
+    private int bindings;
+    private int[] scopeStack = new int[8];
     private boolean startDocumentWritten;
     private boolean autoStartDocument;
     private int depth;
@@ -43,7 +44,7 @@ public class SAXSerializer implements XmlHandler {
     private String elementQName;
     private final AttributesImpl attributes = new AttributesImpl();
     
-    public SAXSerializer(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
+    public ContentHandlerXmlHandler(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }
@@ -90,12 +91,21 @@ public class SAXSerializer implements XmlHandler {
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
-        nsContext.startScope();
-        depth++;
+        if (depth == scopeStack.length) {
+            int[] newScopeStack = new int[scopeStack.length*2];
+            System.arraycopy(scopeStack, 0, newScopeStack, 0, scopeStack.length);
+            scopeStack = newScopeStack;
+        }
+        scopeStack[depth++] = bindings;
     }
 
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        nsContext.setPrefix(prefix, namespaceURI);
+        if (bindings == prefixStack.length) {
+            String[] newPrefixStack = new String[prefixStack.length*2];
+            System.arraycopy(prefixStack, 0, newPrefixStack, 0, prefixStack.length);
+            prefixStack = newPrefixStack;
+        }
+        prefixStack[bindings++] = prefix;
         try {
             contentHandler.startPrefixMapping(prefix, namespaceURI);
         } catch (SAXException ex) {
@@ -129,11 +139,11 @@ public class SAXSerializer implements XmlHandler {
             String elementLocalName = elementNameStack.pop();
             String elementURI = elementNameStack.pop();
             contentHandler.endElement(elementURI, elementLocalName, elementQName);
-            for (int i=nsContext.getBindingsCount()-1; i>=nsContext.getFirstBindingInCurrentScope(); i--) {
-                contentHandler.endPrefixMapping(nsContext.getPrefix(i));
+            for (int i=bindings-1; i>=scopeStack[depth-1]; i--) {
+                contentHandler.endPrefixMapping(prefixStack[i]);
             }
-            nsContext.endScope();
-            if (--depth == 0 && autoStartDocument) {
+            bindings = scopeStack[--depth];
+            if (depth == 0 && autoStartDocument) {
                 contentHandler.endDocument();
             }
         } catch (SAXException ex) {
