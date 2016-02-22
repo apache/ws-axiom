@@ -22,10 +22,10 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 
-final class NamespaceHelper extends XmlHandlerWrapper {
+public final class NamespaceHelper extends XmlHandlerWrapper {
     private final SerializerImpl serializer;
 
-    NamespaceHelper(SerializerImpl serializer, XmlHandler handler) {
+    public NamespaceHelper(SerializerImpl serializer, XmlHandler handler) {
         super(handler);
         this.serializer = serializer;
     }

@@ -18,53 +18,9 @@
  */
 package org.apache.axiom.om.impl.common.serializer.push;
 
-import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSerializable;
 
 public abstract class SerializerImpl implements XmlHandler {
-    /**
-     * Constructor.
-     * 
-     * @param root
-     *            the root node of the object model subtree that is being serialized; this
-     *            information is used by the serializer in scenarios that require access to the
-     *            namespace context of the parent of the root node
-     * @param namespaceRepairing
-     *            indicates if the serializer should perform namespace repairing
-     * @param preserveNamespaceContext
-     *            indicates if the namespace context determined by the ancestors of the root node
-     *            should be strictly preserved in the output
-     */
-    public XmlHandler buildHandler(OMSerializable root, boolean namespaceRepairing, boolean preserveNamespaceContext) {
-        OMElement contextElement;
-        if (root instanceof OMNode) {
-            OMContainer parent = ((OMNode)root).getParent();
-            if (parent instanceof OMElement) {
-                contextElement = (OMElement)parent; 
-            } else {
-                contextElement = null;
-            }
-        } else {
-            contextElement = null;
-        }
-        XmlHandler handler = this;
-        if (contextElement != null) {
-            if (preserveNamespaceContext) {
-                handler = new NamespaceContextPreservationFilterHandler(handler, (CoreElement)contextElement);
-            } else {
-                handler = new XsiTypeFilterHandler(handler, (CoreElement)contextElement);
-            }
-        }
-        if (namespaceRepairing) {
-            handler = new NamespaceHelper(this, handler);
-        }
-        return handler;
-    }
-
     protected abstract boolean isAssociated(String prefix, String namespace) throws StreamException;
 }

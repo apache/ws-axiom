@@ -31,6 +31,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
@@ -58,6 +59,8 @@ import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
+import org.apache.axiom.om.impl.common.serializer.push.NamespaceHelper;
+import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
@@ -263,13 +266,25 @@ public aspect AxiomContainerSupport {
         return result;
     }
 
+    private XmlHandler AxiomContainer.createSerializer(XMLStreamWriter writer) {
+        StAXSerializer serializer = new StAXSerializer(writer);
+        XmlHandler handler = serializer;
+        CoreElement contextElement = getContextElement();
+        if (contextElement != null) {
+            handler = new XsiTypeFilterHandler(handler, contextElement);
+        }
+        return new NamespaceHelper(serializer, handler);
+    }
+    
+    public abstract CoreElement AxiomContainer.getContextElement();
+    
     public final void AxiomContainer.serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
         // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
         MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
-            internalSerialize(new StAXSerializer(writer).buildHandler(this), writer.getOutputFormat(), cache);
+            internalSerialize(createSerializer(writer), writer.getOutputFormat(), cache);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
@@ -306,7 +321,7 @@ public aspect AxiomContainerSupport {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
             try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, true);
+                internalSerialize(createSerializer(writer), format, true);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -321,7 +336,7 @@ public aspect AxiomContainerSupport {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, true);
+                internalSerialize(createSerializer(writer), format, true);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -335,7 +350,7 @@ public aspect AxiomContainerSupport {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
             try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, false);
+                internalSerialize(createSerializer(writer), format, false);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -351,7 +366,7 @@ public aspect AxiomContainerSupport {
         writer.setOutputFormat(format);
         try {
             try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, false);
+                internalSerialize(createSerializer(writer), format, false);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }

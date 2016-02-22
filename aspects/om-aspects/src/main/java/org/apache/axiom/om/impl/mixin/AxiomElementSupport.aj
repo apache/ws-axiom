@@ -618,4 +618,9 @@ public aspect AxiomElementSupport {
     public final int AxiomElement.getLineNumber() {
         return 0;
     }
+
+    public final CoreElement AxiomElement.getContextElement() {
+        CoreParentNode parent = coreGetParent();
+        return parent instanceof CoreElement ? (CoreElement)parent : null;
+    }
 }

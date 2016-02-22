@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -127,5 +128,9 @@ public aspect AxiomDocumentSupport {
     }
 
     public void AxiomDocument.checkDocumentElement(OMElement element) {
+    }
+
+    public final CoreElement AxiomDocument.getContextElement() {
+        return null;
     }
 }
