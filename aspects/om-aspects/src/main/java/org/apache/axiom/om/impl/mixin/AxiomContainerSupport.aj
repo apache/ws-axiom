@@ -294,88 +294,73 @@ public aspect AxiomContainerSupport {
         writer.flush();
     }
 
-    public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
-        serialize(output, new OMOutputFormat());
-    }
-
-    public final void AxiomContainer.serialize(Writer writer) throws XMLStreamException {
+    private void AxiomContainer.serialize(Writer writer, boolean cache) throws XMLStreamException {
         XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
         try {
-            serialize(xmlStreamWriter);
+            serialize(xmlStreamWriter, cache);
         } finally {
             xmlStreamWriter.close();
         }
+    }
+
+    private void AxiomContainer.serialize(OutputStream output, OMOutputFormat format, boolean cache) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, cache);
+        try {
+            try {
+                internalSerialize(createSerializer(writer, false), format, cache);
+            } catch (StreamException ex) {
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
+            }
+        } finally {
+            writer.close();
+        }
+    }
+
+    private void AxiomContainer.serialize(Writer writer2, OMOutputFormat format, boolean cache) throws XMLStreamException {
+        MTOMXMLStreamWriter writer =
+                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
+        writer.setOutputFormat(format);
+        try {
+            try {
+                internalSerialize(createSerializer(writer, false), format, cache);
+            } catch (StreamException ex) {
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
+            }
+        } finally {
+            writer.close();
+        }
+    }
+
+    public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
+        serialize(output, new OMOutputFormat());
     }
 
     public final void AxiomContainer.serializeAndConsume(OutputStream output) throws XMLStreamException {
         serializeAndConsume(output, new OMOutputFormat());
     }
 
-    public final void AxiomContainer.serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
     public final void AxiomContainer.serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
-        try {
-            try {
-                internalSerialize(createSerializer(writer, false), format, true);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+        serialize(output, format, true);
     }
 
-    public final void AxiomContainer.serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer =
-                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            try {
-                internalSerialize(createSerializer(writer, false), format, true);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+    public final void AxiomContainer.serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+        serialize(output, format, false);
     }
 
-    public final void AxiomContainer.serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
-        try {
-            try {
-                internalSerialize(createSerializer(writer, false), format, false);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+    public final void AxiomContainer.serialize(Writer writer) throws XMLStreamException {
+        serialize(writer, true);
     }
 
-    public final void AxiomContainer.serializeAndConsume(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer =
-                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            try {
-                internalSerialize(createSerializer(writer, false), format, false);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+    public final void AxiomContainer.serializeAndConsume(Writer writer) throws XMLStreamException {
+        serialize(writer, false);
+    }
+
+    public final void AxiomContainer.serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        serialize(writer, format, true);
+    }
+
+    public final void AxiomContainer.serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        serialize(writer, format, false);
     }
 
     final void AxiomContainer.serializeChildren(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
