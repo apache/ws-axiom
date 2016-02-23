@@ -61,6 +61,7 @@ import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
+import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
@@ -267,9 +268,9 @@ public aspect AxiomContainerSupport {
         return result;
     }
 
-    private XmlHandler AxiomContainer.createSerializer(XMLStreamWriter writer, boolean useExistingNamespaceContext) {
+    private XmlHandler AxiomContainer.createSerializer(MTOMXMLStreamWriter writer, boolean useExistingNamespaceContext) {
         StAXSerializer serializer = new StAXSerializer(writer);
-        XmlHandler handler = serializer;
+        XmlHandler handler = new XmlDeclarationRewriterHandler(serializer, writer.getOutputFormat());
         CoreElement contextElement = getContextElement();
         if (contextElement != null) {
             handler = new XsiTypeFilterHandler(handler, contextElement);

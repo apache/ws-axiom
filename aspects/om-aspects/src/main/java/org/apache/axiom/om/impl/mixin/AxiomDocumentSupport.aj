@@ -63,19 +63,7 @@ public aspect AxiomDocumentSupport {
     // Overridden in AxiomSOAPMessageSupport
     public void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format,
             boolean cache, boolean includeXMLDeclaration) throws StreamException {
-        if (includeXMLDeclaration) {
-            //Check whether the OMOutput char encoding and OMDocument char
-            //encoding matches, if not use char encoding of OMOutput
-            String encoding = format.getCharSetEncoding();
-            if (encoding == null || "".equals(encoding)) {
-                encoding = getCharsetEncoding();
-            }
-            String version = getXMLVersion();
-            if (version == null) {
-                version = "1.0";
-            }
-            handler.startDocument(null, version, encoding, true);
-        }
+        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
         serializeChildren(handler, format, cache);
         handler.endDocument();
     }
