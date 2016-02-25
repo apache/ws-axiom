@@ -25,7 +25,6 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
@@ -56,9 +55,9 @@ public aspect AxiomDocumentSupport {
         }
     }
 
-    public final void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomDocument.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
-        serializeChildren(handler, format, cache);
+        serializeChildren(handler, cache);
         handler.endDocument();
     }
 

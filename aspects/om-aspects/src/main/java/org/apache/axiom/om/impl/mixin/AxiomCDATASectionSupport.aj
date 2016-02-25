@@ -25,7 +25,6 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 
@@ -34,7 +33,7 @@ public aspect AxiomCDATASectionSupport {
         return OMNode.CDATA_SECTION_NODE;
     }
 
-    public final void AxiomCDATASection.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomCDATASection.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         try {
             handler.processCDATASection(coreGetCharacterData().toString());
         } catch (CoreModelException ex) {

@@ -24,7 +24,6 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.ContentHandlerXmlHandler;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.util.sax.AbstractXMLReader;
@@ -55,7 +54,7 @@ public class XMLReaderImpl extends AbstractXMLReader {
             handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
         }
         try {
-            root.internalSerialize(handler, new OMOutputFormat(), cache);
+            root.internalSerialize(handler, cache);
         } catch (StreamException ex) {
             throw (SAXException)ex.getCause();
         }

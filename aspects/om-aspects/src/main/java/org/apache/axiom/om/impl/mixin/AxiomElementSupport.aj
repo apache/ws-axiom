@@ -52,7 +52,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
@@ -529,13 +528,11 @@ public aspect AxiomElementSupport {
         return findNamespaceURI("");
     }
 
-    public void AxiomElement.internalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache) throws StreamException {
-        defaultInternalSerialize(handler, format, cache);
+    public void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        defaultInternalSerialize(handler, cache);
     }
     
-    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache) throws StreamException {
+    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         OMNamespace ns = getNamespace();
         if (ns == null) {
             handler.startElement("", getLocalName(), "");
@@ -556,7 +553,7 @@ public aspect AxiomElementSupport {
             }
         }
         handler.attributesCompleted();
-        serializeChildren(handler, format, cache);
+        serializeChildren(handler, cache);
         handler.endElement();
     }
 

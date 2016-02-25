@@ -23,7 +23,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
@@ -37,13 +36,13 @@ public aspect AxiomDocTypeSupport {
         return coreGetRootName();
     }
 
-    public final void AxiomDocType.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomDocType.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         handler.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 
     public final void AxiomDocType.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
-            internalSerialize(new StAXSerializer(writer), null, cache);
+            internalSerialize(new StAXSerializer(writer), cache);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }

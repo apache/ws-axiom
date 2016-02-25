@@ -24,7 +24,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 
 public aspect AxiomCharacterDataNodeSupport {
@@ -32,7 +31,7 @@ public aspect AxiomCharacterDataNodeSupport {
         return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
     }
 
-    public final void AxiomCharacterDataNode.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomCharacterDataNode.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         handler.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
     }
 

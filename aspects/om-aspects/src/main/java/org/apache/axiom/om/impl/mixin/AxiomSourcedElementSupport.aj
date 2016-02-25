@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
@@ -408,13 +407,13 @@ public aspect AxiomSourcedElementSupport {
         }
     }
 
-    public void AxiomSourcedElement.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache)
+    public void AxiomSourcedElement.internalSerialize(XmlHandler handler, boolean cache)
             throws StreamException {
         if (isExpanded()) {
-            defaultInternalSerialize(handler, format, cache);
+            defaultInternalSerialize(handler, cache);
         } else if (cache&& OMDataSourceUtil.isDestructiveWrite(dataSource)) {
             forceExpand();
-            defaultInternalSerialize(handler, format, true);
+            defaultInternalSerialize(handler, true);
         // Note: if we can't determine the type (push/pull) of the OMDataSource, we
         // default to push
         // TODO: the serializer ignores namespaceURI and localName

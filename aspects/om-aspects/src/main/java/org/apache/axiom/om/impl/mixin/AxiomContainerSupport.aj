@@ -288,7 +288,7 @@ public aspect AxiomContainerSupport {
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
-            internalSerialize(createSerializer(writer, true), writer.getOutputFormat(), cache);
+            internalSerialize(createSerializer(writer, true), cache);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
@@ -298,7 +298,7 @@ public aspect AxiomContainerSupport {
     private void AxiomContainer.serialize(MTOMXMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
             try {
-                internalSerialize(createSerializer(writer, false), writer.getOutputFormat(), cache);
+                internalSerialize(createSerializer(writer, false), cache);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -351,7 +351,7 @@ public aspect AxiomContainerSupport {
         serialize(writer, format, false);
     }
 
-    final void AxiomContainer.serializeChildren(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    final void AxiomContainer.serializeChildren(XmlHandler handler, boolean cache) throws StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
             Builder builder = coreGetBuilder();
             if (builder != null) {
@@ -362,14 +362,14 @@ public aspect AxiomContainerSupport {
         if (cache) {
             AxiomChildNode child = (AxiomChildNode)getFirstOMChild();
             while (child != null) {
-                child.internalSerialize(handler, format, true);
+                child.internalSerialize(handler, true);
                 child = (AxiomChildNode)child.getNextOMSibling();
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
             AxiomChildNode child = (AxiomChildNode)coreGetFirstChildIfAvailable();
             while (child != null) {
-                child.internalSerialize(handler, format, cache);
+                child.internalSerialize(handler, cache);
                 child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)

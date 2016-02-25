@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 
 public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {
@@ -30,9 +29,8 @@ public interface AxiomSerializable extends OMSerializable, AxiomInformationItem 
      * Serializes the node.
      *
      * @param serializer
-     * @param format
      * @param cache indicates if caching should be enabled
      * @throws StreamException 
      */
-    void internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException;
+    void internalSerialize(XmlHandler handler, boolean cache) throws StreamException;
 }
