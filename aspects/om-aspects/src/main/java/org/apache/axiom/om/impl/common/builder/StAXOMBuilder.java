@@ -104,20 +104,20 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     public final void discard(CoreParentNode container) {
         int targetElementLevel = builderHandler.depth;
-        AxiomContainer current = builderHandler.target;
-        while (current != container) {
+        Context current = builderHandler.context;
+        while (current.target != container) {
             targetElementLevel--;
-            current = (AxiomContainer)((OMElement)current).getParent();
+            current = current.parentContext;
         }
         if (targetElementLevel == 0 || targetElementLevel == 1 && builderHandler.document == null) {
             close();
-            current = builderHandler.target;
+            current = builderHandler.context;
             while (true) {
-                discarded(current);
-                if (current == container) {
+                discarded(current.target);
+                if (current.target == container) {
                     break;
                 }
-                current = (AxiomContainer)((OMElement)current).getParent();
+                current = current.parentContext;
             }
             return;
         }
@@ -131,9 +131,9 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
                     if (skipDepth > 0) {
                         skipDepth--;
                     } else {
-                        discarded(builderHandler.target);
-                        boolean found = container == builderHandler.target;
-                        builderHandler.target = (AxiomContainer)((OMElement)builderHandler.target).getParent();
+                        discarded(builderHandler.context.target);
+                        boolean found = container == builderHandler.context.target;
+                        builderHandler.context = builderHandler.context.parentContext;
                         builderHandler.depth--;
                         if (found) {
                             break loop;
@@ -144,11 +144,11 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
                     if (skipDepth != 0 || builderHandler.depth != 0) {
                         throw new OMException("Unexpected END_DOCUMENT");
                     }
-                    if (builderHandler.target != builderHandler.document) {
+                    if (builderHandler.context.target != builderHandler.document) {
                         throw new OMException("Called discard for an element that is not being built by this builder");
                     }
-                    discarded(builderHandler.target);
-                    builderHandler.target = null;
+                    discarded(builderHandler.context.target);
+                    builderHandler.context = null;
                     builderHandler.done = true;
                     break loop;
             }
@@ -214,16 +214,16 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (!builderHandler.cache) {
             parserAccessed = true;
             // Mark all containers in the hierarchy as discarded because they can no longer be built
-            AxiomContainer current = builderHandler.target;
+            Context current = builderHandler.context;
             while (builderHandler.depth > 0) {
-                discarded(current);
-                current = (AxiomContainer)((OMElement)current).getParent();
+                discarded(current.target);
+                current = current.parentContext;
                 builderHandler.depth--;
             }
-            if (current != null && current == builderHandler.document) {
-                discarded(current);
+            if (current != null && current.target == builderHandler.document) {
+                discarded(current.target);
             }
-            builderHandler.target = null;
+            builderHandler.context = null;
             return helper.parser;
         } else {
             throw new IllegalStateException(
@@ -245,34 +245,34 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     // This method expects that the parser is currently positioned on the
     // end event corresponding to the container passed as parameter
     public final void reenableCaching(CoreParentNode container) {
-        AxiomContainer current = builderHandler.target;
+        Context current = builderHandler.context;
         while (true) {
-            discarded(current);
+            discarded(current.target);
             if (builderHandler.depth == 0) {
-                if (current != container || current != builderHandler.document) {
+                if (current.target != container || current.target != builderHandler.document) {
                     throw new IllegalStateException();
                 }
                 break;
             }
             builderHandler.depth--;
-            if (current == container) {
+            if (current.target == container) {
                 break;
             }
-            current = (AxiomContainer)((OMElement)current).getParent();
+            current = current.parentContext;
         }
         // Note that at this point current == container
         if (container == builderHandler.document) {
-            builderHandler.target = null;
+            builderHandler.context = null;
             builderHandler.done = true;
         } else if (builderHandler.depth == 0 && builderHandler.document == null) {
             // Consume the remaining event; for the rationale, see StAXOMBuilder#next()
             while (helper.parserNext() != XMLStreamConstants.END_DOCUMENT) {
                 // Just loop
             }
-            builderHandler.target = null;
+            builderHandler.context = null;
             builderHandler.done = true;
         } else {
-            builderHandler.target = (AxiomContainer)((OMElement)container).getParent();
+            builderHandler.context = builderHandler.context.parentContext;
         }
         if (log.isDebugEnabled()) {
             log.debug("Caching re-enabled; new element level: " + builderHandler.depth + "; done=" + builderHandler.done);
@@ -349,7 +349,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         builderHandler.executeDeferredListenerActions();
         
         // TODO: this will fail if there is whitespace before the document element
-        if (event != XMLStreamConstants.START_DOCUMENT && builderHandler.target == null && !builderHandler.done) {
+        if (event != XMLStreamConstants.START_DOCUMENT && builderHandler.depth == 0 && builderHandler.document == null && !builderHandler.done) {
             // We get here if the document has been discarded (by getDocumentElement(true)
             // or because the builder is linked to an OMSourcedElement) and
             // we just processed the END_ELEMENT event for the root element. In this case, we consume
@@ -398,6 +398,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     }
 
     public final AxiomContainer getTarget() {
-        return builderHandler.target;
+        return builderHandler.context.target;
     }
 }
