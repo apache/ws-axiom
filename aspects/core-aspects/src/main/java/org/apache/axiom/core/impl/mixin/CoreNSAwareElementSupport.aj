@@ -18,8 +18,12 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.core.CoreAttribute;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreNSAwareElementSupport {
     public final NodeType CoreNSAwareElement.coreGetNodeType() {
@@ -32,5 +36,15 @@ public aspect CoreNSAwareElementSupport {
 
     public final String CoreNSAwareElement.getImplicitPrefix(String namespaceURI) {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
+    }
+    
+    public final void CoreNSAwareElement.coreSerializeStartPart(XmlHandler handler) throws CoreModelException, StreamException {
+        handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
+        CoreAttribute attr = coreGetFirstAttribute();
+        while (attr != null) {
+            attr.coreSerialize(handler);
+            attr = attr.coreGetNextAttribute();
+        }
+        handler.attributesCompleted();
     }
 }

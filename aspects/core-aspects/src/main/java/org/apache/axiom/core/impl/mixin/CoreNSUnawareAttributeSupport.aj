@@ -18,11 +18,19 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreNSUnawareAttributeSupport {
     public final NodeType CoreNSUnawareAttribute.coreGetNodeType() {
         return NodeType.NS_UNAWARE_ATTRIBUTE;
+    }
+
+    public final void CoreNSUnawareAttribute.coreSerialize(XmlHandler handler) throws CoreModelException, StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

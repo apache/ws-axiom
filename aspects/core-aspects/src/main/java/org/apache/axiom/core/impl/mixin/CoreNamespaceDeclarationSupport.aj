@@ -19,9 +19,12 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreNamespaceDeclarationSupport {
     public final NodeType CoreNamespaceDeclaration.coreGetNodeType() {
@@ -31,5 +34,9 @@ public aspect CoreNamespaceDeclarationSupport {
     public final <T> void CoreNamespaceDeclaration.init(ClonePolicy<T> policy, T options, CoreNode other) {
         // TODO: this is correct but bad for performance with the Axiom API
         coreSetDeclaredNamespace(((CoreNamespaceDeclaration)other).coreGetDeclaredPrefix(), "");
+    }
+    
+    public final void CoreNamespaceDeclaration.coreSerialize(XmlHandler handler) throws CoreModelException, StreamException {
+        handler.processNamespaceDeclaration(coreGetDeclaredPrefix(), coreGetCharacterData().toString());
     }
 }

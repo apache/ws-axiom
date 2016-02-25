@@ -533,26 +533,11 @@ public aspect AxiomElementSupport {
     }
     
     public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            handler.startElement("", getLocalName(), "");
-        } else {
-            handler.startElement(ns.getNamespaceURI(), getLocalName(), ns.getPrefix());
+        try {
+            coreSerializeStartPart(handler);
+        } catch (CoreModelException ex) {
+            throw new StreamException(ex);
         }
-        for (Iterator<OMNamespace> it = getAllDeclaredNamespaces(); it.hasNext(); ) {
-            ns = it.next();
-            handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
-        }
-        for (Iterator<OMAttribute> it = getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = it.next();
-            ns = attr.getNamespace();
-            if (ns == null) {
-                handler.processAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
-            } else {
-                handler.processAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
-            }
-        }
-        handler.attributesCompleted();
         serializeChildren(handler, cache);
         handler.endElement();
     }
