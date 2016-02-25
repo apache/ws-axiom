@@ -57,12 +57,6 @@ public aspect AxiomDocumentSupport {
     }
 
     public final void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
-        internalSerialize(handler, format, cache, !format.isIgnoreXMLDeclaration());
-    }
-
-    // Overridden in AxiomSOAPMessageSupport
-    public void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws StreamException {
         handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
         serializeChildren(handler, format, cache);
         handler.endDocument();

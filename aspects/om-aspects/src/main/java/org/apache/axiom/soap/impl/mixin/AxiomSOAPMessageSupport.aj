@@ -20,11 +20,7 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
@@ -52,12 +48,6 @@ public aspect AxiomSOAPMessageSupport {
         return factory;
     }
     
-    // TODO: this violates OO design principles and should disappear in a future Axiom version
-    public final void AxiomSOAPMessage.internalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws StreamException {
-        ((AxiomElement)getOMDocumentElement()).internalSerialize(handler, format, cache);
-    }
-
     public final SOAPEnvelope AxiomSOAPMessage.getSOAPEnvelope() {
         return (SOAPEnvelope)getOMDocumentElement();
     }

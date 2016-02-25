@@ -52,7 +52,6 @@ public class TestSerialize extends AxiomTestCase {
         assertAbout(xml())
                 .that(serializationStrategy.serialize(soapMessage).getInputSource())
                 .ignoringRedundantNamespaceDeclarations()
-                .ignoringPrologAndEpilog()  // TODO: why???
                 .hasSameContentAs(message.getInputStream());
         soapMessage.close(false);
     }

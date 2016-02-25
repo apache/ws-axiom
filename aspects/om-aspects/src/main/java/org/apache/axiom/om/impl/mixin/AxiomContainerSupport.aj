@@ -377,31 +377,37 @@ public aspect AxiomContainerSupport {
             // events from the underlying XMLStreamReader.
             if (!isComplete() && coreGetBuilder() != null) {
                 Builder builder = coreGetBuilder();
-                StAXHelper helper = new StAXHelper(builder.disableCaching(), handler);
-                int depth = 0;
-                loop: while (true) {
-                    switch (helper.lookahead()) {
-                        case XMLStreamReader.START_ELEMENT:
-                            depth++;
-                            break;
-                        case XMLStreamReader.END_ELEMENT:
-                            if (depth == 0) {
+                XMLStreamReader reader = builder.disableCaching();
+                // The reader is null in the very special case where this is an OMDocument and
+                // the current event is END_DOCUMENT (which means that auto-close is triggered
+                // and the parser is released, resulting in a null value).
+                if (reader != null) {
+                    StAXHelper helper = new StAXHelper(reader, handler);
+                    int depth = 0;
+                    loop: while (true) {
+                        switch (helper.lookahead()) {
+                            case XMLStreamReader.START_ELEMENT:
+                                depth++;
+                                break;
+                            case XMLStreamReader.END_ELEMENT:
+                                if (depth == 0) {
+                                    break loop;
+                                } else {
+                                    depth--;
+                                }
+                                break;
+                            case XMLStreamReader.END_DOCUMENT:
+                                if (depth != 0) {
+                                    // If we get here, then we have seen a START_ELEMENT event without
+                                    // a matching END_ELEMENT
+                                    throw new IllegalStateException();
+                                }
                                 break loop;
-                            } else {
-                                depth--;
-                            }
-                            break;
-                        case XMLStreamReader.END_DOCUMENT:
-                            if (depth != 0) {
-                                // If we get here, then we have seen a START_ELEMENT event without
-                                // a matching END_ELEMENT
-                                throw new IllegalStateException();
-                            }
-                            break loop;
+                        }
+                        // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
+                        // the container. This is the responsibility of the caller.
+                        helper.next();
                     }
-                    // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
-                    // the container. This is the responsibility of the caller.
-                    helper.next();
                 }
                 builder.reenableCaching(this);
             }
