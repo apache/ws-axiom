@@ -18,17 +18,19 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNode;
 
 public interface BuilderListener {
     /**
-     * Inform the listener that a node has been added to the tree. Note that this method will also
-     * be invoked for the {@link CoreDocument}. Since the builder is not reentrant, implementations
-     * must not perform any operations on the node that would require building additional nodes. If
-     * such operations need to be executed, the listener should return a {@link Runnable}
-     * encapsulating these operations. The builder will then execute that runnable as soon as it is
-     * safe to do so.
+     * Inform the listener that a node has been added to the tree. Note that this method will not be
+     * invoked for {@link CoreCharacterDataNode}s (because they are created lazily). On the other
+     * hand, it will be invoked for the {@link CoreDocument}. Since the builder is not reentrant,
+     * implementations must not perform any operations on the node that would require building
+     * additional nodes. If such operations need to be executed, the listener should return a
+     * {@link Runnable} encapsulating these operations. The builder will then execute that runnable
+     * as soon as it is safe to do so.
      * 
      * @param node
      *            the node that has been added

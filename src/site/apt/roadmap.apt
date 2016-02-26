@@ -39,24 +39,6 @@ Introduction
    
 API inconsistencies to be eliminated
 
-* Usage of <<<Object>>> instead of <<<DataHandler>>>
-
-  There are several APIs that use <<<Object>>> although they expect or return
-  a <<<DataHandler>>>. This is probably a legacy of Axis 1.x where the Activation API
-  was an optional dependency. Today this no longer makes sense:
-  
-   * The Activation API is included in Java 6.
-   
-   * It is unlikely that Axiom actually works if Activation is not in the class path
-     because there is nothing in the build that enforces or tests that and there are no
-     known downstream projects that use Axiom without also depending on the Activation API.
-  
-  The following APIs will be changed to use <<<DataHandler>>> directly:
-  
-   * <<<OMText#getDataHandler()>>>
-   
-   * <<<OMFactory#createOMText(Object, boolean)>>>
-
 * Methods declared by the wrong interface in the node type hierarchy
 
   Some methods are declared at the wrong level in the node type hierarchy so that they may

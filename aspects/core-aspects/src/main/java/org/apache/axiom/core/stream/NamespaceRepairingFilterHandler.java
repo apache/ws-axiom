@@ -21,28 +21,19 @@ package org.apache.axiom.core.stream;
 import javax.xml.XMLConstants;
 
 public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
+    private final NamespaceContextProvider parentNamespaceContext;
+    private final boolean removeRedundantDeclarations;
     private String[] namespaceStack = new String[32];
     private int bindings;
     private int[] scopeStack = new int[8];
     private int scopes;
 
-    public NamespaceRepairingFilterHandler(XmlHandler parent) {
+    public NamespaceRepairingFilterHandler(XmlHandler parent, NamespaceContextProvider parentNamespaceContext, boolean removeRedundantDeclarations) {
         super(parent);
+        this.parentNamespaceContext = parentNamespaceContext;
+        this.removeRedundantDeclarations = removeRedundantDeclarations;
     }
 
-    private boolean isBound(String prefix, String namespaceURI) {
-        if (prefix.equals(XMLConstants.XML_NS_PREFIX) && namespaceURI.equals(XMLConstants.XML_NS_URI)) {
-            return true;
-        } else {
-            for (int i=(bindings-1)*2; i>=0; i-=2) {
-                if (prefix.equals(namespaceStack[i])) {
-                    return namespaceURI.equals(namespaceStack[i+1]);
-                }
-            }
-            return prefix.length() == 0 && namespaceURI.length() == 0;
-        }
-    }
-    
     private void setPrefix(String prefix, String namespaceURI) {
         if (bindings*2 == namespaceStack.length) {
             int len = namespaceStack.length;
@@ -56,7 +47,27 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
     }
     
     private void ensureNamespaceDeclared(String prefix, String namespaceURI) throws StreamException {
-        if (!isBound(prefix, namespaceURI)) {
+        if (prefix.equals(XMLConstants.XML_NS_PREFIX) && namespaceURI.equals(XMLConstants.XML_NS_URI)) {
+            return;
+        }
+        boolean prefixFound = false;
+        for (int i=(bindings-1)*2; i>=0; i-=2) {
+            if (prefix.equals(namespaceStack[i])) {
+                if (namespaceURI.equals(namespaceStack[i+1])) {
+                    return;
+                } else {
+                    prefixFound = true;
+                    break;
+                }
+            }
+        }
+        if (!prefixFound && parentNamespaceContext != null) {
+            if (!parentNamespaceContext.isBound(prefix, namespaceURI)) {
+                super.processNamespaceDeclaration(prefix, namespaceURI);
+            }
+            // Always call setPrefix even if the namespace is bound, so that we cache the lookup
+            setPrefix(prefix, namespaceURI);
+        } else if (prefixFound || !prefix.isEmpty() || !namespaceURI.isEmpty()) {
             super.processNamespaceDeclaration(prefix, namespaceURI);
             setPrefix(prefix, namespaceURI);
         }
@@ -86,17 +97,21 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
     }
     
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        for (int i = scopeStack[scopes-1]; i < bindings; i++) {
-            if (namespaceStack[i*2].equals(prefix)) {
-                if (namespaceStack[i*2+1].equals(namespaceURI)) {
-                    return;
-                } else {
-                    // TODO: this causes a failure in the FOM tests
+        if (removeRedundantDeclarations) {
+            ensureNamespaceDeclared(prefix, namespaceURI);
+        } else {
+            for (int i = scopeStack[scopes-1]; i < bindings; i++) {
+                if (namespaceStack[i*2].equals(prefix)) {
+                    if (namespaceStack[i*2+1].equals(namespaceURI)) {
+                        return;
+                    } else {
+                        // TODO: this causes a failure in the FOM tests
 //                        throw new OMException("The same prefix cannot be bound to two different namespaces");
+                    }
                 }
             }
+            super.processNamespaceDeclaration(prefix, namespaceURI);
+            setPrefix(prefix, namespaceURI);
         }
-        super.processNamespaceDeclaration(prefix, namespaceURI);
-        setPrefix(prefix, namespaceURI);
     }
 }

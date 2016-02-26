@@ -52,7 +52,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
@@ -529,34 +528,17 @@ public aspect AxiomElementSupport {
         return findNamespaceURI("");
     }
 
-    public void AxiomElement.internalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache) throws StreamException {
-        defaultInternalSerialize(handler, format, cache);
+    public void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        defaultInternalSerialize(handler, cache);
     }
     
-    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache) throws StreamException {
-        OMNamespace ns = getNamespace();
-        if (ns == null) {
-            handler.startElement("", getLocalName(), "");
-        } else {
-            handler.startElement(ns.getNamespaceURI(), getLocalName(), ns.getPrefix());
+    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        try {
+            coreSerializeStartPart(handler);
+        } catch (CoreModelException ex) {
+            throw new StreamException(ex);
         }
-        for (Iterator<OMNamespace> it = getAllDeclaredNamespaces(); it.hasNext(); ) {
-            ns = it.next();
-            handler.processNamespaceDeclaration(ns.getPrefix(), ns.getNamespaceURI());
-        }
-        for (Iterator<OMAttribute> it = getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = it.next();
-            ns = attr.getNamespace();
-            if (ns == null) {
-                handler.processAttribute("", attr.getLocalName(), "", attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
-            } else {
-                handler.processAttribute(ns.getNamespaceURI(), attr.getLocalName(), ns.getPrefix(), attr.getAttributeValue(), attr.getAttributeType(), ((CoreAttribute)attr).coreGetSpecified());
-            }
-        }
-        handler.attributesCompleted();
-        serializeChildren(handler, format, cache);
+        serializeChildren(handler, cache);
         handler.endElement();
     }
 
@@ -617,5 +599,10 @@ public aspect AxiomElementSupport {
 
     public final int AxiomElement.getLineNumber() {
         return 0;
+    }
+
+    public final CoreElement AxiomElement.getContextElement() {
+        CoreParentNode parent = coreGetParent();
+        return parent instanceof CoreElement ? (CoreElement)parent : null;
     }
 }

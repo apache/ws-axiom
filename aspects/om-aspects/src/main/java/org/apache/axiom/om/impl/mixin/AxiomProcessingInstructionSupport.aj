@@ -18,10 +18,12 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
@@ -47,9 +49,17 @@ public aspect AxiomProcessingInstructionSupport {
         coreSetCharacterData(value, AxiomSemantics.INSTANCE);
     }
     
-    public final void AxiomProcessingInstruction.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomProcessingInstruction.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         try {
             handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
+    }
+
+    public final void AxiomProcessingInstruction.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        try {
+            writer.writeProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }

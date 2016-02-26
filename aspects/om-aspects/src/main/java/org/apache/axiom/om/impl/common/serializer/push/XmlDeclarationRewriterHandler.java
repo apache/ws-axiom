@@ -16,26 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.mixin;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+package org.apache.axiom.om.impl.common.serializer.push;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
+import org.apache.axiom.om.OMOutputFormat;
 
-public aspect AxiomCharacterDataNodeSupport {
-    public final int AxiomCharacterDataNode.getType() {
-        return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
+public final class XmlDeclarationRewriterHandler extends XmlHandlerWrapper {
+    private final OMOutputFormat format;
+    
+    public XmlDeclarationRewriterHandler(XmlHandler parent, OMOutputFormat format) {
+        super(parent);
+        this.format = format;
     }
 
-    public final void AxiomCharacterDataNode.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        handler.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
-    }
-
-    public final void AxiomCharacterDataNode.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        writer.writeCharacters(coreGetCharacterData().toString());
+    @Override
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
+            boolean standalone) throws StreamException {
+        if (!format.isIgnoreXMLDeclaration()) {
+            if (format.getCharSetEncoding() != null) {
+                xmlEncoding = format.getCharSetEncoding();
+            }
+            super.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
+        }
     }
 }

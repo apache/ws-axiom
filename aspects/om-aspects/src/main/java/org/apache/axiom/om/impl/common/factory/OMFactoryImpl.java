@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common.factory;
 
 import static org.apache.axiom.util.xml.NSUtils.generatePrefix;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreModelException;
@@ -98,7 +99,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         node.coreSetSystemId(systemId);
         node.coreSetInternalSubset(internalSubset);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, false);
+            ((AxiomContainer)parent).addChild(node);
         }
         return node;
     }
@@ -124,7 +125,7 @@ public class OMFactoryImpl implements OMFactoryEx {
                 throw new IllegalArgumentException("Invalid node type");
         }
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, false);
+            ((AxiomContainer)parent).addChild(node);
         }
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         return node;
@@ -179,7 +180,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         }
     }
 
-    public final OMText createOMText(Object dataHandler, boolean optimize) {
+    public final OMText createOMText(DataHandler dataHandler, boolean optimize) {
         return createAxiomText(null, new TextContent(null, dataHandler, optimize), OMNode.TEXT_NODE);
     }
 
@@ -193,7 +194,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         node.coreSetTarget(piTarget);
         node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, false);
+            ((AxiomContainer)parent).addChild(node);
         }
         return node;
     }
@@ -202,7 +203,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         AxiomEntityReference node = createNode(AxiomEntityReference.class);
         node.coreSetName(name);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, false);
+            ((AxiomContainer)parent).addChild(node);
         }
         return node;
     }
@@ -211,7 +212,7 @@ public class OMFactoryImpl implements OMFactoryEx {
         AxiomComment node = createNode(AxiomComment.class);
         node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(node, false);
+            ((AxiomContainer)parent).addChild(node);
         }
         return node;
     }
@@ -224,7 +225,7 @@ public class OMFactoryImpl implements OMFactoryEx {
             OMContainer parent, String localName, OMNamespace ns) {
         T element = createNode(type);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(element, false);
+            ((AxiomContainer)parent).addChild(element);
         }
         element.initName(localName, ns, true);
         return element;

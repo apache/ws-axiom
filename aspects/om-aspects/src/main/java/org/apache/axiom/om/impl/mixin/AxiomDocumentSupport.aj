@@ -18,13 +18,13 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
@@ -55,27 +55,9 @@ public aspect AxiomDocumentSupport {
         }
     }
 
-    public final void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
-        internalSerialize(handler, format, cache, !format.isIgnoreXMLDeclaration());
-    }
-
-    // Overridden in AxiomSOAPMessageSupport
-    public void AxiomDocument.internalSerialize(XmlHandler handler, OMOutputFormat format,
-            boolean cache, boolean includeXMLDeclaration) throws StreamException {
-        if (includeXMLDeclaration) {
-            //Check whether the OMOutput char encoding and OMDocument char
-            //encoding matches, if not use char encoding of OMOutput
-            String encoding = format.getCharSetEncoding();
-            if (encoding == null || "".equals(encoding)) {
-                encoding = getCharsetEncoding();
-            }
-            String version = getXMLVersion();
-            if (version == null) {
-                version = "1.0";
-            }
-            handler.startDocument(null, version, encoding, true);
-        }
-        serializeChildren(handler, format, cache);
+    public final void AxiomDocument.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
+        serializeChildren(handler, cache);
         handler.endDocument();
     }
 
@@ -127,5 +109,9 @@ public aspect AxiomDocumentSupport {
     }
 
     public void AxiomDocument.checkDocumentElement(OMElement element) {
+    }
+
+    public final CoreElement AxiomDocument.getContextElement() {
+        return null;
     }
 }

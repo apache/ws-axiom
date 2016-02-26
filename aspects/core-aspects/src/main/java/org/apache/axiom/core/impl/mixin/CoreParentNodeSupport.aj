@@ -67,7 +67,7 @@ public aspect CoreParentNodeSupport {
             Content content = new Content();
             CoreCharacterDataNode cdata = coreGetNodeFactory().createNode(CoreCharacterDataNode.class);
             cdata.internalSetParent(this);
-            cdata.coreSetCharacterData((String)this.content);
+            cdata.coreSetCharacterData(this.content);
             content.firstChild = cdata;
             content.lastChild = cdata;
             this.content = content;
@@ -129,8 +129,8 @@ public aspect CoreParentNodeSupport {
                 case CoreParentNode.INCOMPLETE:
                     do {
                         buildNext();
-                    } while (getState() == CoreParentNode.INCOMPLETE
-                            && (firstChild = coreGetFirstChildIfAvailable()) == null);
+                    } while ((firstChild = coreGetFirstChildIfAvailable()) == null
+                            && getState() == CoreParentNode.INCOMPLETE);
             }
         }
         return firstChild;
@@ -241,7 +241,7 @@ public aspect CoreParentNodeSupport {
     
     final Object CoreParentNode.internalGetCharacterData(ElementAction elementAction) throws CoreModelException {
         if (getState() == COMPACT) {
-            return (String)content;
+            return content;
         } else {
             Object textContent = null;
             StringBuilder buffer = null;

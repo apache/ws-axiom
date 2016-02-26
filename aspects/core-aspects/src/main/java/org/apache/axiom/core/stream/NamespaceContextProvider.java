@@ -16,26 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.core.stream;
 
-package org.apache.axiom.om.impl.stream.sax;
-
-import javax.xml.transform.sax.SAXSource;
-
-import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.XmlInput;
-import org.apache.axiom.core.stream.XmlReader;
-
-public final class SAXInput implements XmlInput {
-    private final boolean expandEntityReferences;
-    private final SAXSource source;
-    
-    public SAXInput(SAXSource source, boolean expandEntityReferences) {
-        this.expandEntityReferences = expandEntityReferences;
-        this.source = source;
-    }
-    
-    @Override
-    public XmlReader createReader(XmlHandler handler) {
-        return new SAXReader(handler, source, expandEntityReferences);
-    }
+public interface NamespaceContextProvider {
+    boolean isBound(String prefix, String namespaceURI) throws StreamException;
 }

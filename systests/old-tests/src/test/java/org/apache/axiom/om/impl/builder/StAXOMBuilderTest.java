@@ -61,28 +61,6 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         assertTrue(childrenCount == 5);
     }
     
-    public void testClose1() throws Exception {
-        rootElement = stAXOMBuilder.getDocumentElement();
-        // get the first OMElement child
-        OMNode omnode = rootElement.getFirstOMChild();
-        while (omnode instanceof OMText) {
-            omnode = omnode.getNextOMSibling();
-        }
-        // Close the element immediately
-        OMElement omElement = (OMElement) omnode;
-        omElement.close(false);
-        
-        Iterator children = ((OMElement) omnode).getChildren();
-        int childrenCount = 0;
-        while (children.hasNext()) {
-            OMNode node = (OMNode) children.next();
-            if (node instanceof OMElement)
-                childrenCount++;
-        }
-        
-        assertTrue(childrenCount == 0);
-    }
-    
     public void testClose2() throws Exception {
         rootElement = stAXOMBuilder.getDocumentElement();
         // get the first OMElement child

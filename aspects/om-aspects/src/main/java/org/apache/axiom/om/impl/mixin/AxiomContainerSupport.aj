@@ -31,13 +31,17 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
+import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -53,11 +57,12 @@ import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
-import org.apache.axiom.om.impl.common.OMContentHandler;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
+import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
+import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
@@ -122,10 +127,6 @@ public aspect AxiomContainerSupport {
         return reader;
     }
     
-    public void AxiomContainer.addChild(OMNode omNode) {
-        addChild(omNode, false);
-    }
-
     public final AxiomChildNode AxiomContainer.prepareNewChild(OMNode omNode) {
         AxiomChildNode child;
         // Careful here: if the child was created by another Axiom implementation, it doesn't
@@ -139,17 +140,10 @@ public aspect AxiomContainerSupport {
         return child;
     }
 
-    public void AxiomContainer.addChild(OMNode omNode, boolean fromBuilder) {
-        AxiomChildNode child;
-        if (fromBuilder) {
-            // If the new child was provided by the builder, we know that it was created by
-            // the same factory
-            child = (AxiomChildNode)omNode;
-        } else {
-            child = prepareNewChild(omNode);
-        }
+    public void AxiomContainer.addChild(OMNode omNode) {
+        AxiomChildNode child = prepareNewChild(omNode);
         
-        coreAppendChild(child, fromBuilder);
+        coreAppendChild(child, false);
 
         // For a normal OMNode, the incomplete status is
         // propogated up the tree.  
@@ -158,7 +152,7 @@ public aspect AxiomContainerSupport {
         // So only propogate the incomplete setting if this
         // is a normal OMNode
         // TODO: this is crap and needs to be reviewed
-        if (!fromBuilder && !child.isComplete() && 
+        if (!child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
             setComplete(false);
         }
@@ -267,98 +261,97 @@ public aspect AxiomContainerSupport {
     }
 
     public final SAXResult AxiomContainer.getSAXResult() {
-        OMContentHandler handler = new OMContentHandler(new SAXResultContentHandler(this), true);
+        XmlHandlerContentHandler handler = new XmlHandlerContentHandler(new SAXResultContentHandler(this), true);
         SAXResult result = new SAXResult();
         result.setHandler(handler);
         result.setLexicalHandler(handler);
         return result;
     }
 
-    public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
-        serialize(output, new OMOutputFormat());
+    private XmlHandler AxiomContainer.createSerializer(MTOMXMLStreamWriter writer, boolean useExistingNamespaceContext) {
+        StAXSerializer serializer = new StAXSerializer(writer);
+        XmlHandler handler = new XmlDeclarationRewriterHandler(serializer, writer.getOutputFormat());
+        CoreElement contextElement = getContextElement();
+        if (contextElement != null) {
+            handler = new XsiTypeFilterHandler(handler, contextElement);
+        }
+        return new NamespaceRepairingFilterHandler(handler,
+                useExistingNamespaceContext ? new XMLStreamWriterNamespaceContextProvider(writer) : null,
+                true);
+    }
+    
+    public abstract CoreElement AxiomContainer.getContextElement();
+    
+    public final void AxiomContainer.serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
+        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
+        try {
+            internalSerialize(createSerializer(writer, true), cache);
+        } catch (StreamException ex) {
+            throw AxiomExceptionTranslator.toXMLStreamException(ex);
+        }
+        writer.flush();
     }
 
-    public final void AxiomContainer.serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
+    private void AxiomContainer.serialize(MTOMXMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
-            serialize(xmlStreamWriter);
+            try {
+                internalSerialize(createSerializer(writer, false), cache);
+            } catch (StreamException ex) {
+                throw AxiomExceptionTranslator.toXMLStreamException(ex);
+            }
         } finally {
-            xmlStreamWriter.close();
+            writer.close();
         }
+    }
+    
+    private void AxiomContainer.serialize(Writer writer, boolean cache) throws XMLStreamException {
+        serialize(new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer)), cache);
+    }
+
+    private void AxiomContainer.serialize(OutputStream output, OMOutputFormat format, boolean cache) throws XMLStreamException {
+        serialize(new MTOMXMLStreamWriter(output, format, cache), cache);
+    }
+
+    private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
+        serialize(new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer), format), cache);
+    }
+
+    public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {
+        serialize(output, new OMOutputFormat());
     }
 
     public final void AxiomContainer.serializeAndConsume(OutputStream output) throws XMLStreamException {
         serializeAndConsume(output, new OMOutputFormat());
     }
 
-    public final void AxiomContainer.serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
     public final void AxiomContainer.serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
-        try {
-            try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, true);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+        serialize(output, format, true);
     }
 
-    public final void AxiomContainer.serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer =
-                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, true);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+    public final void AxiomContainer.serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+        serialize(output, format, false);
     }
 
-    public final void AxiomContainer.serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
-        try {
-            try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, false);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+    public final void AxiomContainer.serialize(Writer writer) throws XMLStreamException {
+        serialize(writer, true);
     }
 
-    public final void AxiomContainer.serializeAndConsume(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer =
-                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            try {
-                internalSerialize(new StAXSerializer(writer).buildHandler(this), format, false);
-            } catch (StreamException ex) {
-                throw AxiomExceptionTranslator.toXMLStreamException(ex);
-            }
-        } finally {
-            writer.close();
-        }
+    public final void AxiomContainer.serializeAndConsume(Writer writer) throws XMLStreamException {
+        serialize(writer, false);
     }
 
-    final void AxiomContainer.serializeChildren(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomContainer.serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        serialize(writer, format, true);
+    }
+
+    public final void AxiomContainer.serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        serialize(writer, format, false);
+    }
+
+    final void AxiomContainer.serializeChildren(XmlHandler handler, boolean cache) throws StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
             Builder builder = coreGetBuilder();
             if (builder != null) {
@@ -369,14 +362,14 @@ public aspect AxiomContainerSupport {
         if (cache) {
             AxiomChildNode child = (AxiomChildNode)getFirstOMChild();
             while (child != null) {
-                child.internalSerialize(handler, format, true);
+                child.internalSerialize(handler, true);
                 child = (AxiomChildNode)child.getNextOMSibling();
             }
         } else {
             // First, recursively serialize all child nodes that have already been created
             AxiomChildNode child = (AxiomChildNode)coreGetFirstChildIfAvailable();
             while (child != null) {
-                child.internalSerialize(handler, format, cache);
+                child.internalSerialize(handler, cache);
                 child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
             }
             // Next, if the container is incomplete, disable caching (temporarily)
@@ -384,31 +377,37 @@ public aspect AxiomContainerSupport {
             // events from the underlying XMLStreamReader.
             if (!isComplete() && coreGetBuilder() != null) {
                 Builder builder = coreGetBuilder();
-                StAXHelper helper = new StAXHelper(builder.disableCaching(), handler);
-                int depth = 0;
-                loop: while (true) {
-                    switch (helper.lookahead()) {
-                        case XMLStreamReader.START_ELEMENT:
-                            depth++;
-                            break;
-                        case XMLStreamReader.END_ELEMENT:
-                            if (depth == 0) {
+                XMLStreamReader reader = builder.disableCaching();
+                // The reader is null in the very special case where this is an OMDocument and
+                // the current event is END_DOCUMENT (which means that auto-close is triggered
+                // and the parser is released, resulting in a null value).
+                if (reader != null) {
+                    StAXHelper helper = new StAXHelper(reader, handler);
+                    int depth = 0;
+                    loop: while (true) {
+                        switch (helper.lookahead()) {
+                            case XMLStreamReader.START_ELEMENT:
+                                depth++;
+                                break;
+                            case XMLStreamReader.END_ELEMENT:
+                                if (depth == 0) {
+                                    break loop;
+                                } else {
+                                    depth--;
+                                }
+                                break;
+                            case XMLStreamReader.END_DOCUMENT:
+                                if (depth != 0) {
+                                    // If we get here, then we have seen a START_ELEMENT event without
+                                    // a matching END_ELEMENT
+                                    throw new IllegalStateException();
+                                }
                                 break loop;
-                            } else {
-                                depth--;
-                            }
-                            break;
-                        case XMLStreamReader.END_DOCUMENT:
-                            if (depth != 0) {
-                                // If we get here, then we have seen a START_ELEMENT event without
-                                // a matching END_ELEMENT
-                                throw new IllegalStateException();
-                            }
-                            break loop;
+                        }
+                        // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
+                        // the container. This is the responsibility of the caller.
+                        helper.next();
                     }
-                    // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
-                    // the container. This is the responsibility of the caller.
-                    helper.next();
                 }
                 builder.reenableCaching(this);
             }
@@ -432,7 +431,6 @@ public aspect AxiomContainerSupport {
         if (build) {
             this.build();
         }
-        setComplete(true);
         
         if (builder != null) {
             builder.close();

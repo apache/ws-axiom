@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
@@ -44,7 +45,17 @@ public class SerializeToXMLStreamWriter extends SerializationStrategy {
 
     public XML serialize(OMContainer container) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(baos);
+        String encoding = null;
+        // Since Axiom has no way of knowing the encoding used by the XMLStreamWriter,
+        // it will just keep the original one when writing the XML declaration. Adjust
+        // the output encoding so that it will match the encoding in the XML declaration.
+        if (container instanceof OMDocument) {
+            encoding = ((OMDocument)container).getXMLEncoding();
+        }
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(baos, encoding);
         if (cache) {
             container.serialize(writer);
         } else {

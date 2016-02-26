@@ -106,7 +106,7 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
                 OMNode node = (OMNode)nodes.next();
                 node.serialize(writer);
             }
-            writer.writeEndElement(); 
+            writer.flush(); 
             return out.getBuffer().toString().substring(2);
         } catch (Exception e) {
         }

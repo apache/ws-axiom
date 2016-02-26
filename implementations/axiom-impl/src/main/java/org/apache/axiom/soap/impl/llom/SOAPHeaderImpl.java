@@ -152,7 +152,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
     }
 
     
-    public void addChild(OMNode child, boolean fromBuilder) {
+    public void addChild(OMNode child) {
         
         // Make sure a proper element is added.  The children of a SOAPHeader should be
         // SOAPHeaderBlock objects.
@@ -167,7 +167,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
                 log.debug(exceptionToString(e));
             }
         }
-        super.addChild(child, fromBuilder);
+        super.addChild(child);
     }
     
     public static String exceptionToString(Throwable e) {

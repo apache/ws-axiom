@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.core;
 
+import java.io.IOException;
+import java.io.Writer;
+
 /**
  * Represents character data stored by a {@link CoreCharacterDataNode} instance. The content of a
  * {@link CoreCharacterDataNode} is either a {@link String} object or an instance of this interface.
@@ -25,4 +28,5 @@ package org.apache.axiom.core;
 public interface CharacterData {
     <T> CharacterData clone(ClonePolicy<T> policy, T options);
     String toString();
+    void writeTo(Writer writer) throws IOException;
 }

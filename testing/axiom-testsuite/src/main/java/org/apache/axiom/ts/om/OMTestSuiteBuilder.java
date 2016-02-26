@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.dimension.AddAttributeStrategy;
@@ -140,6 +141,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestRegisterCustomBuilderForPayloadJAXBWithXOP(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
+        addTest(new org.apache.axiom.ts.om.comment.TestSerialize(metaFactory));
         for (XMLSample file : getInstances(XMLSample.class)) {
             for (OMContainerExtractor ce : getInstances(OMContainerExtractor.class)) {
                 for (BuilderFactory bf : getInstances(BuilderFactory.class)) {
@@ -162,6 +164,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.container.TestGetDescendants(metaFactory, cf, true));
             addTest(new org.apache.axiom.ts.om.container.TestGetDescendants(metaFactory, cf, false));
         }
+        addTest(new org.apache.axiom.ts.om.doctype.TestSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestAddChildWithExistingDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestBuild(metaFactory));
@@ -329,7 +332,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithNonTextChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithoutCaching(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithSingleTextNode(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestGetTextBinary(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextBinary(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextBinary(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithCDATASectionChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithMixedOMTextChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));
@@ -434,6 +438,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.sr.TestGetNamespaceContext(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.sr.TestNextTag(metaFactory));
+        addTest(new org.apache.axiom.ts.om.entref.TestSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeGeneratedPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeInterfaces(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeNullPrefixNoNamespace(metaFactory));
@@ -477,7 +482,8 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMProcessingInstructionWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMText(metaFactory));
-        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromOMText(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextWithNullParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestFactoryIsSingleton(metaFactory));
@@ -608,6 +614,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching(metaFactory, events));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
+        addTest(new org.apache.axiom.ts.om.pi.TestSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestCloneBinary(metaFactory, false));
@@ -616,6 +623,9 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.text.TestGetNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetNamespaceNoNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory, OMNode.TEXT_NODE));
+        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory, OMNode.SPACE_NODE));
+        addTest(new org.apache.axiom.ts.om.text.TestSerialize(metaFactory, OMNode.CDATA_SECTION_NODE));
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.xop.TestSerialize(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.xop.TestSetOptimize(metaFactory, false));

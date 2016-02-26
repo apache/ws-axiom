@@ -33,7 +33,7 @@ public abstract class AbstractBuilder implements OMXMLParserWrapper, Builder, or
 
     public AbstractBuilder(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, boolean repairNamespaces) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
-        handler = repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler) : builderHandler;
+        handler = repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler, null, false) : builderHandler;
     }
 
     public final void addListener(BuilderListener listener) {

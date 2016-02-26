@@ -19,32 +19,24 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.core.Builder;
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /** Class SOAPEnvelopeImpl */
 public abstract class SOAPEnvelopeImpl extends SOAPElement
         implements AxiomSOAPEnvelope, OMConstants {
-    private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
-
     /**
      * Add a SOAPHeader or SOAPBody object
      * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
-    public void addChild(OMNode child, boolean fromBuilder) {
+    public void addChild(OMNode child) {
         internalCheckChild(child);
 
         if (child instanceof SOAPHeader) {
@@ -77,7 +69,7 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
                 }
             }
         }
-        super.addChild(child, fromBuilder);        
+        super.addChild(child);
     }
     
     /**
@@ -116,40 +108,5 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
 
     public void checkParent(OMElement parent) throws SOAPProcessingException {
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
-    }
-
-    public void internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache)
-            throws StreamException {
-        if (!format.isIgnoreXMLDeclaration()) {
-            String charSetEncoding = format.getCharSetEncoding();
-            String xmlVersion = format.getXmlVersion();
-            handler.startDocument(
-                    null,
-                    xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion,
-                    charSetEncoding == null ? OMConstants.DEFAULT_CHAR_SET_ENCODING
-                            : charSetEncoding,
-                    true);
-        }
-        super.internalSerialize(handler, format, cache);
-        handler.endDocument();
-        if (!cache) {
-            // let's try to close the builder/parser here since we are now done with the
-            // non-caching code block serializing the top-level SOAPEnvelope element
-            Builder builder = coreGetBuilder();
-            if (builder != null) {
-                try {
-                    if (log.isDebugEnabled()) {
-                        log.debug("closing builder: " + builder);
-                    }
-                    builder.close();
-                } catch (Exception e) {
-                    if (log.isDebugEnabled()) {
-                        log.error("Could not close builder or parser due to: ", e);
-                    }
-                }
-            } else {
-                log.debug("Could not close builder or parser due to: builder is null");
-            }
-        }
     }
 }

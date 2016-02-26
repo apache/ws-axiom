@@ -18,10 +18,12 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 
 public aspect AxiomEntityReferenceSupport {
@@ -29,8 +31,12 @@ public aspect AxiomEntityReferenceSupport {
         return OMNode.ENTITY_REFERENCE_NODE;
     }
 
-    public final void AxiomEntityReference.internalSerialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws StreamException {
+    public final void AxiomEntityReference.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
         handler.processEntityReference(coreGetName(), coreGetReplacementText());
+    }
+
+    public final void AxiomEntityReference.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        writer.writeEntityRef(coreGetName());
     }
 
     public final String AxiomEntityReference.getName() {

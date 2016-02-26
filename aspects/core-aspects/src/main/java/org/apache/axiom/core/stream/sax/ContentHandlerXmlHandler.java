@@ -16,40 +16,47 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push.sax;
+package org.apache.axiom.core.stream.sax;
 
 import java.io.IOException;
+import java.util.Stack;
 
-import javax.activation.DataHandler;
-
+import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.common.serializer.push.SerializerImpl;
-import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
-import org.apache.axiom.util.namespace.ScopedNamespaceContext;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.AttributesImpl;
 
-public class SAXSerializer extends SerializerImpl {
+public class ContentHandlerXmlHandler implements XmlHandler {
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
-    private final ScopedNamespaceContext nsContext = new ScopedNamespaceContext();
+    private String[] prefixStack = new String[16];
+    private int bindings;
+    private int[] scopeStack = new int[8];
     private boolean startDocumentWritten;
     private boolean autoStartDocument;
     private int depth;
-    private final SAXHelper helper = new SAXHelper();
+    private Stack<String> elementNameStack = new Stack<String>();
+    private String elementURI;
+    private String elementLocalName;
+    private String elementQName;
+    private final AttributesImpl attributes = new AttributesImpl();
     
-    public SAXSerializer(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
+    public ContentHandlerXmlHandler(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }
 
-    protected boolean isAssociated(String prefix, String namespace) throws StreamException {
-        return nsContext.getNamespaceURI(prefix).equals(namespace);
+    private static String getQName(String prefix, String localName) {
+        if (prefix.length() == 0) {
+            return localName;
+        } else {
+            return prefix + ":" + localName;
+        }
     }
-
+    
     private void writeStartDocument() throws StreamException {
         try {
             contentHandler.startDocument();
@@ -81,13 +88,24 @@ public class SAXSerializer extends SerializerImpl {
             writeStartDocument();
             autoStartDocument = true;
         }
-        helper.beginStartElement(prefix, namespaceURI, localName);
-        nsContext.startScope();
-        depth++;
+        elementURI = namespaceURI;
+        elementLocalName = localName;
+        elementQName = getQName(prefix, localName);
+        if (depth == scopeStack.length) {
+            int[] newScopeStack = new int[scopeStack.length*2];
+            System.arraycopy(scopeStack, 0, newScopeStack, 0, scopeStack.length);
+            scopeStack = newScopeStack;
+        }
+        scopeStack[depth++] = bindings;
     }
 
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        nsContext.setPrefix(prefix, namespaceURI);
+        if (bindings == prefixStack.length) {
+            String[] newPrefixStack = new String[prefixStack.length*2];
+            System.arraycopy(prefixStack, 0, newPrefixStack, 0, prefixStack.length);
+            prefixStack = newPrefixStack;
+        }
+        prefixStack[bindings++] = prefix;
         try {
             contentHandler.startPrefixMapping(prefix, namespaceURI);
         } catch (SAXException ex) {
@@ -97,12 +115,19 @@ public class SAXSerializer extends SerializerImpl {
     }
 
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
-        helper.addAttribute(prefix, namespaceURI, localName, type, value);
+        attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
 
     public void attributesCompleted() throws StreamException {
         try {
-            helper.finishStartElement(contentHandler);
+            contentHandler.startElement(elementURI, elementLocalName, elementQName, attributes);
+            elementNameStack.push(elementURI);
+            elementNameStack.push(elementLocalName);
+            elementNameStack.push(elementQName);
+            elementURI = null;
+            elementLocalName = null;
+            elementQName = null;
+            attributes.clear();
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
@@ -110,8 +135,15 @@ public class SAXSerializer extends SerializerImpl {
 
     public void endElement() throws StreamException {
         try {
-            helper.writeEndElement(contentHandler, nsContext);
-            if (--depth == 0 && autoStartDocument) {
+            String elementQName = elementNameStack.pop();
+            String elementLocalName = elementNameStack.pop();
+            String elementURI = elementNameStack.pop();
+            contentHandler.endElement(elementURI, elementLocalName, elementQName);
+            for (int i=bindings-1; i>=scopeStack[depth-1]; i--) {
+                contentHandler.endPrefixMapping(prefixStack[i]);
+            }
+            bindings = scopeStack[--depth];
+            if (depth == 0 && autoStartDocument) {
                 contentHandler.endDocument();
             }
         } catch (SAXException ex) {
@@ -119,24 +151,43 @@ public class SAXSerializer extends SerializerImpl {
         }
     }
 
-    public void writeText(int type, String data) throws StreamException {
-        char[] ch = data.toCharArray();
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
-            switch (type) {
-                case OMNode.TEXT_NODE:
-                    contentHandler.characters(ch, 0, ch.length);
-                    break;
-                case OMNode.CDATA_SECTION_NODE:
-                    if (lexicalHandler != null) {
-                        lexicalHandler.startCDATA();
+            if (ignorable) {
+                char[] ch = data.toString().toCharArray();
+                contentHandler.ignorableWhitespace(ch, 0, ch.length);
+            } else if (data instanceof CharacterData) {
+                try {
+                    ((CharacterData)data).writeTo(new ContentHandlerWriter(contentHandler));
+                } catch (IOException ex) {
+                    Throwable cause = ex.getCause();
+                    SAXException saxException;
+                    if (cause instanceof SAXException) {
+                        saxException = (SAXException)cause;
+                    } else {
+                        saxException = new SAXException(ex);
                     }
-                    contentHandler.characters(ch, 0, ch.length);
-                    if (lexicalHandler != null) {
-                        lexicalHandler.endCDATA();
-                    }
-                    break;
-                case OMNode.SPACE_NODE:
-                    contentHandler.ignorableWhitespace(ch, 0, ch.length);
+                    throw new StreamException(saxException);
+                }
+            } else {
+                char[] ch = data.toString().toCharArray();
+                contentHandler.characters(ch, 0, ch.length);
+            }
+        } catch (SAXException ex) {
+            throw new StreamException(ex);
+        }
+    }
+    
+    @Override
+    public void processCDATASection(String content) throws StreamException {
+        try {
+            if (lexicalHandler != null) {
+                lexicalHandler.startCDATA();
+            }
+            char[] ch = content.toCharArray();
+            contentHandler.characters(ch, 0, ch.length);
+            if (lexicalHandler != null) {
+                lexicalHandler.endCDATA();
             }
         } catch (SAXException ex) {
             throw new StreamException(ex);
@@ -166,32 +217,6 @@ public class SAXSerializer extends SerializerImpl {
         try {
             contentHandler.skippedEntity(name);
         } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
-    }
-
-    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize) throws StreamException {
-        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler), 4096, true);
-        try {
-            dataHandler.writeTo(out);
-            out.complete();
-        } catch (IOException ex) {
-            Throwable cause = ex.getCause();
-            SAXException saxException;
-            if (cause instanceof SAXException) {
-                saxException = (SAXException)cause;
-            } else {
-                saxException = new SAXException(ex);
-            }
-            throw new StreamException(saxException);
-        }
-    }
-
-    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
-            boolean optimize) throws StreamException {
-        try {
-            writeDataHandler(dataHandlerProvider.getDataHandler(), contentID, optimize);
-        } catch (IOException ex) {
             throw new StreamException(ex);
         }
     }

@@ -32,6 +32,7 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.stream.sax.SAXInput;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -40,7 +41,6 @@ import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
 import org.apache.axiom.om.impl.common.builder.PushBuilder;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.stream.sax.SAXInput;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP12Constants;

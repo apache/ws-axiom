@@ -30,23 +30,8 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.intf.AxiomAttribute;
-import org.apache.axiom.om.impl.intf.AxiomCDATASection;
-import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
-import org.apache.axiom.om.impl.intf.AxiomChildNode;
-import org.apache.axiom.om.impl.intf.AxiomComment;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
-import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
-import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.intf.AxiomEntityReference;
-import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
-import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,14 +39,12 @@ import org.apache.commons.logging.LogFactory;
 public final class BuilderHandler implements XmlHandler {
     private static final Log log = LogFactory.getLog(BuilderHandler.class);
     
-    private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
-    
-    private final NodeFactory nodeFactory;
-    private final Model model;
-    private final AxiomSourcedElement root;
-    private final Builder builder;
-    private final OMNamespaceCache nsCache = new OMNamespaceCache();
-    public AxiomContainer target;
+    final NodeFactory nodeFactory;
+    final Model model;
+    final AxiomSourcedElement root;
+    final Builder builder;
+    final OMNamespaceCache nsCache = new OMNamespaceCache();
+    public Context context;
     // returns the state of completion
     public boolean done;
     // keeps the state of the cache
@@ -89,6 +72,7 @@ public final class BuilderHandler implements XmlHandler {
         this.model = model;
         this.root = root;
         this.builder = builder;
+        context = new Context(this, null, 0);
     }
 
     public void addListener(BuilderListener listener) {
@@ -98,7 +82,7 @@ public final class BuilderHandler implements XmlHandler {
         listeners.add(listener);
     }
     
-    private void nodeAdded(CoreNode node) {
+    void nodeAdded(CoreNode node) {
         if (listeners != null) {
             for (int i=0, size=listeners.size(); i<size; i++) {
                 Runnable action = listeners.get(i).nodeAdded(node, depth);
@@ -133,11 +117,6 @@ public final class BuilderHandler implements XmlHandler {
         }
     }
     
-    private void addChild(AxiomChildNode node) {
-        target.addChild(node, true);
-        nodeAdded(node);
-    }
-    
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
         if (root == null) {
             document = nodeFactory.createNode(model.getDocumentType());
@@ -147,123 +126,68 @@ public final class BuilderHandler implements XmlHandler {
             document.coreSetStandalone(standalone);
             document.coreSetBuilder(builder);
             nodeAdded(document);
-            target = document;
+            context.target = document;
         }
     }
     
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) {
         model.validateEventType(XMLStreamConstants.DTD);
-        AxiomDocType node = nodeFactory.createNode(AxiomDocType.class);
-        node.coreSetRootName(rootName);
-        node.coreSetPublicId(publicId);
-        node.coreSetSystemId(systemId);
-        node.coreSetInternalSubset(internalSubset);
-        addChild(node);
+        context.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
     
     public void startElement(String namespaceURI, String localName, String prefix) {
         depth++;
-        AxiomElement element;
-        OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
-        if (depth == 1 && root != null) {
-            root.validateName(prefix, localName, namespaceURI);
-            root.initName(localName, ns, false);
-            element = root;
-        } else {
-            element = nodeFactory.createNode(model.determineElementType(
-                    target, depth, namespaceURI, localName));
-            element.coreSetBuilder(builder);
-            element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
-            element.initName(localName, ns, false);
-            addChild(element);
-        }
-        target = element;
+        context = context.startElement(namespaceURI, localName, prefix);
     }
     
     public void endElement() {
+        context = context.endElement();
         depth--;
-        target.setComplete(true);
-        if (depth == 0) {
-            // This is relevant for OMSourcedElements and for the case where the document has been discarded
-            // using getDocumentElement(true). In these cases, this will actually set target to null. In all
-            // other cases, this will have the same effect as the instruction in the else clause.
-            target = document;
-        } else {
-            target = (AxiomContainer)((AxiomElement)target).getParent();
-        }
     }
 
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
-        OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
-        AxiomAttribute attr = nodeFactory.createNode(AxiomAttribute.class);
-        attr.internalSetLocalName(localName);
-        attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
-        attr.internalSetNamespace(ns);
-        attr.coreSetType(type);
-        attr.coreSetSpecified(specified);
-        ((AxiomElement)target).coreAppendAttribute(attr);
+        context.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
     
     public void processNamespaceDeclaration(String prefix, String namespaceURI) {
-        OMNamespace ns = nsCache.getOMNamespace(namespaceURI, prefix);
-        if (ns == null) {
-            ns = DEFAULT_NS;
-        }
-        AxiomNamespaceDeclaration decl = nodeFactory.createNode(AxiomNamespaceDeclaration.class);
-        decl.setDeclaredNamespace(ns);
-        ((AxiomElement)target).coreAppendAttribute(decl);
+        context.processNamespaceDeclaration(prefix, namespaceURI);
     }
     
     public void attributesCompleted() {
-        target.coreSetState(CoreParentNode.INCOMPLETE);
+        context.attributesCompleted();
     }
     
     public void processCharacterData(Object data, boolean ignorable) {
-        AxiomCharacterDataNode node = nodeFactory.createNode(AxiomCharacterDataNode.class);
-        node.coreSetCharacterData(data);
-        node.coreSetIgnorable(ignorable);
-        addChild(node);
+        context.processCharacterData(data, ignorable);
     }
     
     public void processProcessingInstruction(String piTarget, String piData) {
         model.validateEventType(XMLStreamConstants.PROCESSING_INSTRUCTION);
-        AxiomProcessingInstruction node = nodeFactory.createNode(AxiomProcessingInstruction.class);
-        node.coreSetTarget(piTarget);
-        node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
-        addChild(node);
+        context.processProcessingInstruction(piTarget, piData);
     }
 
     public void processComment(String content) {
         model.validateEventType(XMLStreamConstants.COMMENT);
-        AxiomComment node = nodeFactory.createNode(AxiomComment.class);
-        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
-        addChild(node);
+        context.processComment(content);
     }
     
     public void processCDATASection(String content) {
         model.validateEventType(XMLStreamConstants.CDATA);
-        AxiomCDATASection node = nodeFactory.createNode(AxiomCDATASection.class);
-        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
-        addChild(node);
+        context.processCDATASection(content);
     }
     
     public void processEntityReference(String name, String replacementText) {
         model.validateEventType(XMLStreamConstants.ENTITY_REFERENCE);
-        AxiomEntityReference node = nodeFactory.createNode(AxiomEntityReference.class);
-        node.coreSetName(name);
-        node.coreSetReplacementText(replacementText);
-        addChild(node);
+        context.processEntityReference(name, replacementText);
     }
     
     public void endDocument() {
         if (depth != 0) {
             throw new IllegalStateException();
         }
-        if (document != null) {
-            document.setComplete(true);
-        }
-        target = null;
+        context.endDocument();
+        context = null;
         done = true;
     }
 }

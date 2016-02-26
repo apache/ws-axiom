@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push.sax;
+package org.apache.axiom.core.stream.sax;
 
 import java.io.IOException;
 import java.io.Writer;

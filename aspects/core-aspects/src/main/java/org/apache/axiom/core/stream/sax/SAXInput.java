@@ -16,19 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.mixin;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+package org.apache.axiom.core.stream.sax;
 
-import org.apache.axiom.om.impl.intf.AxiomSerializable;
+import javax.xml.transform.sax.SAXSource;
 
-public aspect AxiomSerializableSupport {
-    public final void AxiomSerializable.serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, true);
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.XmlReader;
+
+public final class SAXInput implements XmlInput {
+    private final boolean expandEntityReferences;
+    private final SAXSource source;
+    
+    public SAXInput(SAXSource source, boolean expandEntityReferences) {
+        this.expandEntityReferences = expandEntityReferences;
+        this.source = source;
     }
-
-    public final void AxiomSerializable.serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, false);
+    
+    @Override
+    public XmlReader createReader(XmlHandler handler) {
+        return new SAXReader(handler, source, expandEntityReferences);
     }
 }

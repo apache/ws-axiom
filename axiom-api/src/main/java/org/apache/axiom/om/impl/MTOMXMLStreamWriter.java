@@ -95,16 +95,20 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     // Set the filter object if provided
     private XMLStreamWriterFilter xmlStreamWriterFilter  = null;
 
-    public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
+    public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter, OMOutputFormat format) {
         this.xmlWriter = xmlWriter;
         if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
-        format = new OMOutputFormat();
+        this.format = format;
         optimizationPolicy = new OptimizationPolicyImpl(format);
         preserveAttachments = true;
     }
 
+    public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
+        this(xmlWriter, new OMOutputFormat());
+    }
+    
     public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
             throws XMLStreamException, FactoryConfigurationError {
         this(outStream, format, true);
