@@ -396,8 +396,4 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     public final int lookahead() {
         return helper.lookahead();
     }
-
-    public final AxiomContainer getTarget() {
-        return builderHandler.context.target;
-    }
 }
