@@ -104,6 +104,7 @@ public final class Context {
     
     public Context endElement() {
         target.setComplete(true);
+        target.coreSetBuilder(null);
         if (pendingCharacterData != null) {
             target.coreSetCharacterData(pendingCharacterData, null);
             pendingCharacterData = null;
@@ -180,6 +181,7 @@ public final class Context {
         }
         if (target != null) {
             target.setComplete(true);
+            target.coreSetBuilder(null);
         }
         target = null;
     }
