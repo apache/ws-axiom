@@ -59,15 +59,6 @@ public interface OMXMLParserWrapper {
      */
     boolean isCache();
 
-    /**
-     * Allows to access the underlying parser. Since the parser depends on the underlying
-     * implementation, an Object is returned. However the implementations may have restrictions in
-     * letting access to the parser.
-     *
-     * @return Returns Object.
-     */
-    Object getParser();
-
     /** @return Returns the complete status. */
     boolean isCompleted();
 

@@ -61,10 +61,6 @@ public final class PushBuilder extends AbstractBuilder {
         throw new UnsupportedOperationException();
     }
 
-    public final Object getParser() {
-        throw new UnsupportedOperationException();
-    }
-
     public final OMElement getDocumentElement() {
         return getDocument().getOMDocumentElement();
     }
