@@ -30,6 +30,7 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
@@ -131,58 +132,58 @@ public final class BuilderHandler implements XmlHandler {
     }
     
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) {
+            String internalSubset) throws StreamException {
         model.validateEventType(XMLStreamConstants.DTD);
         context.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
     
-    public void startElement(String namespaceURI, String localName, String prefix) {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         depth++;
         context = context.startElement(namespaceURI, localName, prefix);
     }
     
-    public void endElement() {
+    public void endElement() throws StreamException {
         context = context.endElement();
         depth--;
     }
 
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         context.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
     
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) {
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         context.processNamespaceDeclaration(prefix, namespaceURI);
     }
     
-    public void attributesCompleted() {
+    public void attributesCompleted() throws StreamException {
         context.attributesCompleted();
     }
     
-    public void processCharacterData(Object data, boolean ignorable) {
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         context.processCharacterData(data, ignorable);
     }
     
-    public void processProcessingInstruction(String piTarget, String piData) {
+    public void processProcessingInstruction(String piTarget, String piData) throws StreamException {
         model.validateEventType(XMLStreamConstants.PROCESSING_INSTRUCTION);
         context.processProcessingInstruction(piTarget, piData);
     }
 
-    public void processComment(String content) {
+    public void processComment(String content) throws StreamException {
         model.validateEventType(XMLStreamConstants.COMMENT);
         context.processComment(content);
     }
     
-    public void processCDATASection(String content) {
+    public void processCDATASection(String content) throws StreamException {
         model.validateEventType(XMLStreamConstants.CDATA);
         context.processCDATASection(content);
     }
     
-    public void processEntityReference(String name, String replacementText) {
+    public void processEntityReference(String name, String replacementText) throws StreamException {
         model.validateEventType(XMLStreamConstants.ENTITY_REFERENCE);
         context.processEntityReference(name, replacementText);
     }
     
-    public void endDocument() {
+    public void endDocument() throws StreamException {
         if (depth != 0) {
             throw new IllegalStateException();
         }

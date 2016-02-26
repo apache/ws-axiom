@@ -22,6 +22,8 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.InputContext;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -49,6 +51,17 @@ public final class Context implements InputContext {
     
     private Object pendingCharacterData;
     
+    /**
+     * The {@link XmlHandler} object to send events to if pass-through is enabled. See
+     * {@link InputContext#setPassThroughHandler(XmlHandler)} for more details.
+     */
+    private XmlHandler passThroughHandler;
+    
+    /**
+     * Tracks the nesting depth when pass-through is enabled.
+     */
+    private int passThroughDepth;
+
     public Context(BuilderHandler builderHandler, Context parentContext, int depth) {
         this.builderHandler = builderHandler;
         this.parentContext = parentContext;
@@ -60,12 +73,34 @@ public final class Context implements InputContext {
         return builderHandler.builder;
     }
 
+    public void setPassThroughHandler(XmlHandler passThroughHandler) {
+        if (this.passThroughHandler != null) {
+            throw new IllegalStateException("A pass-through handler has already been set for this context");
+        }
+        target.coreSetState(CoreParentNode.DISCARDED);
+        this.passThroughHandler = passThroughHandler;
+    }
+    
     private Context newContext(AxiomContainer target) {
         if (nestedContext == null) {
             nestedContext = new Context(builderHandler, this, depth+1);
         }
         nestedContext.target = target;
+        target.coreSetInputContext(nestedContext);
         return nestedContext;
+    }
+    
+    private Context decrementPassThroughDepth() {
+        if (passThroughDepth == 0) {
+            target.coreSetInputContext(null);
+            target.coreSetState(CoreParentNode.DISCARDED);
+            passThroughHandler = null;
+            target = null;
+            return parentContext;
+        } else {
+            passThroughDepth--;
+            return this;
+        }
     }
     
     private void addChild(AxiomChildNode node) {
@@ -82,73 +117,104 @@ public final class Context implements InputContext {
     }
     
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
-            String internalSubset) {
-        AxiomDocType node = builderHandler.nodeFactory.createNode(AxiomDocType.class);
-        node.coreSetRootName(rootName);
-        node.coreSetPublicId(publicId);
-        node.coreSetSystemId(systemId);
-        node.coreSetInternalSubset(internalSubset);
-        addChild(node);
-    }
-    
-    public Context startElement(String namespaceURI, String localName, String prefix) {
-        AxiomElement element;
-        OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
-        if (depth == 0 && builderHandler.root != null) {
-            builderHandler.root.validateName(prefix, localName, namespaceURI);
-            builderHandler.root.initName(localName, ns, false);
-            builderHandler.root.coreSetInputContext(this);
-            builderHandler.root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
-            element = builderHandler.root;
+            String internalSubset) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
         } else {
-            element = builderHandler.nodeFactory.createNode(builderHandler.model.determineElementType(
-                    target, depth+1, namespaceURI, localName));
-            element.coreSetInputContext(this);
-            element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
-            element.initName(localName, ns, false);
-            addChild(element);
+            AxiomDocType node = builderHandler.nodeFactory.createNode(AxiomDocType.class);
+            node.coreSetRootName(rootName);
+            node.coreSetPublicId(publicId);
+            node.coreSetSystemId(systemId);
+            node.coreSetInternalSubset(internalSubset);
+            addChild(node);
         }
-        return newContext(element);
     }
     
-    public Context endElement() {
-        target.setComplete(true);
-        target.coreSetInputContext(null);
-        if (pendingCharacterData != null) {
-            target.coreSetCharacterData(pendingCharacterData, null);
-            pendingCharacterData = null;
+    public Context startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughDepth++;
+            passThroughHandler.startElement(namespaceURI, localName, prefix);
+            return this;
+        } else {
+            AxiomElement element;
+            OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
+            if (depth == 0 && builderHandler.root != null) {
+                builderHandler.root.validateName(prefix, localName, namespaceURI);
+                builderHandler.root.initName(localName, ns, false);
+                builderHandler.root.coreSetInputContext(this);
+                builderHandler.root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
+                element = builderHandler.root;
+            } else {
+                element = builderHandler.nodeFactory.createNode(builderHandler.model.determineElementType(
+                        target, depth+1, namespaceURI, localName));
+                element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
+                element.initName(localName, ns, false);
+                addChild(element);
+            }
+            return newContext(element);
         }
-        target = null;
-        return parentContext;
+    }
+    
+    public Context endElement() throws StreamException {
+        if (passThroughHandler != null) {
+            // TODO: hack
+            if (passThroughDepth > 0) {
+                passThroughHandler.endElement();
+            }
+            return decrementPassThroughDepth();
+        } else {
+            target.setComplete(true);
+            target.coreSetInputContext(null);
+            if (pendingCharacterData != null) {
+                target.coreSetCharacterData(pendingCharacterData, null);
+                pendingCharacterData = null;
+            }
+            target = null;
+            return parentContext;
+        }
     }
 
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) {
-        OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
-        AxiomAttribute attr = builderHandler.nodeFactory.createNode(AxiomAttribute.class);
-        attr.internalSetLocalName(localName);
-        attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
-        attr.internalSetNamespace(ns);
-        attr.coreSetType(type);
-        attr.coreSetSpecified(specified);
-        ((AxiomElement)target).coreAppendAttribute(attr);
-    }
-    
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) {
-        OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
-        if (ns == null) {
-            ns = DEFAULT_NS;
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processAttribute(namespaceURI, localName, prefix, value, type, specified);
+        } else {
+            OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
+            AxiomAttribute attr = builderHandler.nodeFactory.createNode(AxiomAttribute.class);
+            attr.internalSetLocalName(localName);
+            attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+            attr.internalSetNamespace(ns);
+            attr.coreSetType(type);
+            attr.coreSetSpecified(specified);
+            ((AxiomElement)target).coreAppendAttribute(attr);
         }
-        AxiomNamespaceDeclaration decl = builderHandler.nodeFactory.createNode(AxiomNamespaceDeclaration.class);
-        decl.setDeclaredNamespace(ns);
-        ((AxiomElement)target).coreAppendAttribute(decl);
     }
     
-    public void attributesCompleted() {
-        target.coreSetState(CoreParentNode.INCOMPLETE);
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processNamespaceDeclaration(prefix, namespaceURI);
+        } else {
+            OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
+            if (ns == null) {
+                ns = DEFAULT_NS;
+            }
+            AxiomNamespaceDeclaration decl = builderHandler.nodeFactory.createNode(AxiomNamespaceDeclaration.class);
+            decl.setDeclaredNamespace(ns);
+            ((AxiomElement)target).coreAppendAttribute(decl);
+        }
     }
     
-    public void processCharacterData(Object data, boolean ignorable) {
-        if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
+    public void attributesCompleted() throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.attributesCompleted();
+        } else {
+            target.coreSetState(CoreParentNode.INCOMPLETE);
+        }
+    }
+    
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processCharacterData(data, ignorable);
+        } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
             pendingCharacterData = data;
         } else {
             AxiomCharacterDataNode node = builderHandler.nodeFactory.createNode(AxiomCharacterDataNode.class);
@@ -158,40 +224,64 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processProcessingInstruction(String piTarget, String piData) {
-        AxiomProcessingInstruction node = builderHandler.nodeFactory.createNode(AxiomProcessingInstruction.class);
-        node.coreSetTarget(piTarget);
-        node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
-        addChild(node);
+    public void processProcessingInstruction(String piTarget, String piData) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processProcessingInstruction(piTarget, piData);
+        } else {
+            AxiomProcessingInstruction node = builderHandler.nodeFactory.createNode(AxiomProcessingInstruction.class);
+            node.coreSetTarget(piTarget);
+            node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
+            addChild(node);
+        }
     }
 
-    public void processComment(String content) {
-        AxiomComment node = builderHandler.nodeFactory.createNode(AxiomComment.class);
-        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
-        addChild(node);
-    }
-    
-    public void processCDATASection(String content) {
-        AxiomCDATASection node = builderHandler.nodeFactory.createNode(AxiomCDATASection.class);
-        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
-        addChild(node);
-    }
-    
-    public void processEntityReference(String name, String replacementText) {
-        AxiomEntityReference node = builderHandler.nodeFactory.createNode(AxiomEntityReference.class);
-        node.coreSetName(name);
-        node.coreSetReplacementText(replacementText);
-        addChild(node);
-    }
-    
-    public void endDocument() {
-        if (depth != 0) {
-            throw new IllegalStateException();
+    public void processComment(String content) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processComment(content);
+        } else {
+            AxiomComment node = builderHandler.nodeFactory.createNode(AxiomComment.class);
+            node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+            addChild(node);
         }
-        if (target != null) {
-            target.setComplete(true);
-            target.coreSetInputContext(null);
+    }
+    
+    public void processCDATASection(String content) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processCDATASection(content);
+        } else {
+            AxiomCDATASection node = builderHandler.nodeFactory.createNode(AxiomCDATASection.class);
+            node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+            addChild(node);
         }
-        target = null;
+    }
+    
+    public void processEntityReference(String name, String replacementText) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processEntityReference(name, replacementText);
+        } else {
+            AxiomEntityReference node = builderHandler.nodeFactory.createNode(AxiomEntityReference.class);
+            node.coreSetName(name);
+            node.coreSetReplacementText(replacementText);
+            addChild(node);
+        }
+    }
+    
+    public void endDocument() throws StreamException {
+        if (passThroughHandler != null) {
+            // TODO: hack
+            if (passThroughDepth > 0) {
+                passThroughHandler.endDocument();
+            }
+            decrementPassThroughDepth();
+        } else {
+            if (depth != 0) {
+                throw new IllegalStateException();
+            }
+            if (target != null) {
+                target.setComplete(true);
+                target.coreSetInputContext(null);
+            }
+            target = null;
+        }
     }
 }

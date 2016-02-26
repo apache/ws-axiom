@@ -36,6 +36,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -58,7 +59,6 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
-import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
@@ -372,44 +372,13 @@ public aspect AxiomContainerSupport {
                 child.internalSerialize(handler, cache);
                 child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
             }
-            // Next, if the container is incomplete, disable caching (temporarily)
-            // and serialize the nodes that have not been built yet by copying the
-            // events from the underlying XMLStreamReader.
-            if (!isComplete() && coreGetBuilder() != null) {
-                Builder builder = coreGetBuilder();
-                XMLStreamReader reader = builder.disableCaching();
-                // The reader is null in the very special case where this is an OMDocument and
-                // the current event is END_DOCUMENT (which means that auto-close is triggered
-                // and the parser is released, resulting in a null value).
-                if (reader != null) {
-                    StAXHelper helper = new StAXHelper(reader, handler);
-                    int depth = 0;
-                    loop: while (true) {
-                        switch (helper.lookahead()) {
-                            case XMLStreamReader.START_ELEMENT:
-                                depth++;
-                                break;
-                            case XMLStreamReader.END_ELEMENT:
-                                if (depth == 0) {
-                                    break loop;
-                                } else {
-                                    depth--;
-                                }
-                                break;
-                            case XMLStreamReader.END_DOCUMENT:
-                                if (depth != 0) {
-                                    // If we get here, then we have seen a START_ELEMENT event without
-                                    // a matching END_ELEMENT
-                                    throw new IllegalStateException();
-                                }
-                                break loop;
-                        }
-                        // Note that we don't copy the final END_ELEMENT/END_DOCUMENT event for
-                        // the container. This is the responsibility of the caller.
-                        helper.next();
-                    }
-                }
-                builder.reenableCaching(this);
+            InputContext context = coreGetInputContext();
+            if (context != null) {
+                context.setPassThroughHandler(handler);
+                Builder builder = context.getBuilder();
+                do {
+                    builder.next();
+                } while (coreGetInputContext() != null);
             }
         }
     }
