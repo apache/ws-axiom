@@ -18,8 +18,10 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.InputContext;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -35,7 +37,7 @@ import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
-public final class Context {
+public final class Context implements InputContext {
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
     
     private final BuilderHandler builderHandler;
@@ -51,6 +53,11 @@ public final class Context {
         this.builderHandler = builderHandler;
         this.parentContext = parentContext;
         this.depth = depth;
+    }
+
+    @Override
+    public Builder getBuilder() {
+        return builderHandler.builder;
     }
 
     private Context newContext(AxiomContainer target) {
@@ -90,11 +97,13 @@ public final class Context {
         if (depth == 0 && builderHandler.root != null) {
             builderHandler.root.validateName(prefix, localName, namespaceURI);
             builderHandler.root.initName(localName, ns, false);
+            builderHandler.root.coreSetInputContext(this);
+            builderHandler.root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
             element = builderHandler.root;
         } else {
             element = builderHandler.nodeFactory.createNode(builderHandler.model.determineElementType(
                     target, depth+1, namespaceURI, localName));
-            element.coreSetBuilder(builderHandler.builder);
+            element.coreSetInputContext(this);
             element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
             element.initName(localName, ns, false);
             addChild(element);
@@ -104,7 +113,7 @@ public final class Context {
     
     public Context endElement() {
         target.setComplete(true);
-        target.coreSetBuilder(null);
+        target.coreSetInputContext(null);
         if (pendingCharacterData != null) {
             target.coreSetCharacterData(pendingCharacterData, null);
             pendingCharacterData = null;
@@ -181,7 +190,7 @@ public final class Context {
         }
         if (target != null) {
             target.setComplete(true);
-            target.coreSetBuilder(null);
+            target.coreSetInputContext(null);
         }
         target = null;
     }

@@ -16,25 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl.mixin;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.Builder;
-import org.apache.axiom.core.InputContext;
-import org.apache.axiom.core.NonDeferringParentNode;
-
-public aspect NonDeferringParentNodeSupport {
-    public final Builder NonDeferringParentNode.coreGetBuilder() {
-        return null;
-    }
-
-    public final InputContext NonDeferringParentNode.coreGetInputContext() {
-        return null;
-    }
-
-    public final void NonDeferringParentNode.coreSetInputContext(InputContext context) {
-        throw new UnsupportedOperationException();
-    }
-    
-    public final void NonDeferringParentNode.build() {
-    }
+public interface InputContext {
+    Builder getBuilder();
 }

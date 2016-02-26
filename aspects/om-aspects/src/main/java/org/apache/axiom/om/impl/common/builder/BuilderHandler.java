@@ -124,7 +124,7 @@ public final class BuilderHandler implements XmlHandler {
             document.coreSetXmlVersion(xmlVersion);
             document.coreSetXmlEncoding(xmlEncoding);
             document.coreSetStandalone(standalone);
-            document.coreSetBuilder(builder);
+            document.coreSetInputContext(context);
             nodeAdded(document);
             context.target = document;
         }

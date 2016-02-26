@@ -20,17 +20,22 @@ package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.DeferringParentNode;
+import org.apache.axiom.core.InputContext;
 
 public aspect DeferringParentNodeSupport {
-    private Builder DeferringParentNode.builder;
+    private InputContext DeferringParentNode.context;
 
     public final Builder DeferringParentNode.coreGetBuilder() {
         forceExpand();
-        return builder;
+        return context == null ? null : context.getBuilder();
     }
 
-    public final void DeferringParentNode.coreSetBuilder(Builder builder) {
-        this.builder = builder;
-        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
+    public final InputContext DeferringParentNode.coreGetInputContext() {
+        return context;
+    }
+
+    public final void DeferringParentNode.coreSetInputContext(InputContext context) {
+        this.context = context;
+        coreSetState(context == null ? COMPLETE : INCOMPLETE);
     }
 }

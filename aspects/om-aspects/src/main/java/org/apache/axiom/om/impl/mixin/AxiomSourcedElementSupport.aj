@@ -235,7 +235,6 @@ public aspect AxiomSourcedElementSupport {
                 builder = new StAXOMBuilder(coreGetNodeFactory(), readerFromDS, this);
             }
             isExpanded = true;
-            coreSetBuilder(builder);
             coreSetState(ATTRIBUTES_PENDING);
             do {
                 builder.next();
@@ -484,7 +483,7 @@ public aspect AxiomSourcedElementSupport {
             this.dataSource = dataSource;
             setComplete(false);
             isExpanded = false;
-            coreSetBuilder(null);
+            coreSetInputContext(null);
             if (isLossyPrefix(dataSource)) {
                 // Create a deferred namespace that forces an expand to get the prefix
                 definedNamespace = new DeferredNamespace(this, definedNamespace.getNamespaceURI());
