@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.om.impl.stream.ds;
 
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;

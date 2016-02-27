@@ -38,12 +38,12 @@ import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
 import org.apache.axiom.om.impl.common.builder.PushBuilder;
-import org.apache.axiom.om.impl.common.builder.PushOMDataSourceInput;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceInput;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

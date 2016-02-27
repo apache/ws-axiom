@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.om.impl.stream.ds;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -28,8 +28,8 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
  * {@link XMLStreamWriter} wrapper that throws exceptions for invocations of methods that
  * {@link OMDataSource#serialize(XMLStreamWriter)} is not allowed to call.
  */
-public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
-    public PushOMDataSourceStreamWriter(XMLStreamWriter parent) {
+final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
+    PushOMDataSourceStreamWriter(XMLStreamWriter parent) {
         super(parent);
     }
 

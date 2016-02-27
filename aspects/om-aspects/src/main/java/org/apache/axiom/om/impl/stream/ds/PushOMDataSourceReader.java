@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.om.impl.stream.ds;
 
 import java.util.Iterator;
 
@@ -33,12 +33,12 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 
-public final class PushOMDataSourceReader implements XmlReader {
+final class PushOMDataSourceReader implements XmlReader {
     private final XmlHandler handler;
     private final AxiomSourcedElement root;
     private final OMDataSource dataSource;
 
-    public PushOMDataSourceReader(XmlHandler handler, AxiomSourcedElement root, OMDataSource dataSource) {
+    PushOMDataSourceReader(XmlHandler handler, AxiomSourcedElement root, OMDataSource dataSource) {
         this.handler = handler;
         this.root = root;
         this.dataSource = dataSource;
