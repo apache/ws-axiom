@@ -19,9 +19,12 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreProcessingInstructionSupport {
     private String CoreProcessingInstruction.target;
@@ -40,5 +43,9 @@ public aspect CoreProcessingInstructionSupport {
     
     public final <T> void CoreProcessingInstruction.init(ClonePolicy<T> policy, T options, CoreNode other) {
         target = ((CoreProcessingInstruction)other).target;
+    }
+    
+    public final void CoreProcessingInstruction.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
     }
 }

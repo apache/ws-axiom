@@ -22,8 +22,11 @@ import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.XmlReader;
 
 public aspect CoreNSAwareElementSupport {
     public final NodeType CoreNSAwareElement.coreGetNodeType() {
@@ -38,13 +41,29 @@ public aspect CoreNSAwareElementSupport {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
     
-    public final void CoreNSAwareElement.coreSerializeStartPart(XmlHandler handler) throws CoreModelException, StreamException {
-        handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
-        CoreAttribute attr = coreGetFirstAttribute();
-        while (attr != null) {
-            attr.internalSerialize(handler, true);
-            attr = attr.coreGetNextAttribute();
+    public XmlInput CoreNSAwareElement.getXmlInput(boolean cache) throws StreamException {
+        return null;
+    }
+    
+    public final void CoreNSAwareElement.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        XmlInput input = getXmlInput(cache);
+        if (input != null) {
+            // TODO: the serializer ignores namespaceURI and localName
+            XmlReader reader = input.createReader(new DocumentElementExtractingFilterHandler(handler));
+            while (!reader.proceed()) {
+                // Just loop
+            }
+        } else {
+            forceExpand();
+            handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
+            CoreAttribute attr = coreGetFirstAttribute();
+            while (attr != null) {
+                attr.internalSerialize(handler, true);
+                attr = attr.coreGetNextAttribute();
+            }
+            handler.attributesCompleted();
+            serializeChildren(handler, cache);
+            handler.endElement();
         }
-        handler.attributesCompleted();
     }
 }

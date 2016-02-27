@@ -20,8 +20,11 @@ package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreCDATASection;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreCDATASectionSupport {
     public final NodeType CoreCDATASection.coreGetNodeType() {
@@ -29,5 +32,9 @@ public aspect CoreCDATASectionSupport {
     }
     
     public final <T> void CoreCDATASection.init(ClonePolicy<T> policy, T options, CoreNode other) {
+    }
+
+    public final void CoreCDATASection.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        handler.processCDATASection(coreGetCharacterData().toString());
     }
 }

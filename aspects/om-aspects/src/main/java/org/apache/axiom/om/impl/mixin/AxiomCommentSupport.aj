@@ -22,8 +22,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
@@ -44,14 +42,6 @@ public aspect AxiomCommentSupport {
 
     public void AxiomComment.setValue(String text) {
         coreSetCharacterData(text, AxiomSemantics.INSTANCE);
-    }
-    
-    public final void AxiomComment.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        try {
-            handler.processComment(coreGetCharacterData().toString());
-        } catch (CoreModelException ex) {
-            throw AxiomExceptionTranslator.translate(ex);
-        }
     }
 
     public final void AxiomComment.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

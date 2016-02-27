@@ -36,7 +36,6 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
-import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -353,38 +352,6 @@ public aspect AxiomContainerSupport {
 
     public final void AxiomContainer.serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
         serialize(writer, format, false);
-    }
-
-    final void AxiomContainer.serializeChildren(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        if (getState() == AxiomContainer.DISCARDED) {
-            Builder builder = coreGetBuilder();
-            if (builder != null) {
-                builder.debugDiscarded(this);
-            }
-            throw new NodeUnavailableException();
-        }
-        if (cache) {
-            AxiomChildNode child = (AxiomChildNode)getFirstOMChild();
-            while (child != null) {
-                child.internalSerialize(handler, true);
-                child = (AxiomChildNode)child.getNextOMSibling();
-            }
-        } else {
-            // First, recursively serialize all child nodes that have already been created
-            AxiomChildNode child = (AxiomChildNode)coreGetFirstChildIfAvailable();
-            while (child != null) {
-                child.internalSerialize(handler, cache);
-                child = (AxiomChildNode)child.coreGetNextSiblingIfAvailable();
-            }
-            InputContext context = coreGetInputContext();
-            if (context != null) {
-                context.setPassThroughHandler(handler);
-                Builder builder = context.getBuilder();
-                do {
-                    builder.next();
-                } while (coreGetInputContext() != null);
-            }
-        }
     }
 
     public final void AxiomContainer.notifyChildComplete() {

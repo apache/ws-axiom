@@ -25,6 +25,8 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreDocumentSupport {
     private String CoreDocument.inputEncoding;
@@ -95,5 +97,11 @@ public aspect CoreDocumentSupport {
         coreSetXmlEncoding(o.coreGetXmlEncoding());
         coreSetStandalone(o.coreIsStandalone());
         coreSetInputEncoding(o.coreGetInputEncoding());
+    }
+
+    public final void CoreDocument.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
+        serializeChildren(handler, cache);
+        handler.endDocument();
     }
 }

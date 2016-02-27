@@ -20,8 +20,11 @@ package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreComment;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreCommentSupport {
     public final NodeType CoreComment.coreGetNodeType() {
@@ -29,5 +32,9 @@ public aspect CoreCommentSupport {
     }
     
     public final <T> void CoreComment.init(ClonePolicy<T> policy, T options, CoreNode other) {
+    }
+    
+    public final void CoreComment.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        handler.processComment(coreGetCharacterData().toString());
     }
 }

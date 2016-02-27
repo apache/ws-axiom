@@ -21,18 +21,12 @@ package org.apache.axiom.om.impl.mixin;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
 
 public aspect AxiomCharacterDataNodeSupport {
     public final int AxiomCharacterDataNode.getType() {
         return coreIsIgnorable() ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
-    }
-
-    public final void AxiomCharacterDataNode.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        handler.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
     }
 
     public final void AxiomCharacterDataNode.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
