@@ -173,9 +173,15 @@ public final class BuilderHandler implements XmlHandler {
         context.processComment(content);
     }
     
-    public void processCDATASection(String content) throws StreamException {
+    @Override
+    public void startCDATASection() throws StreamException {
         model.validateEventType(XMLStreamConstants.CDATA);
-        context.processCDATASection(content);
+        context = context.startCDATASection();
+    }
+
+    @Override
+    public void endCDATASection() throws StreamException {
+        context = context.endCDATASection();
     }
     
     public void processEntityReference(String name, String replacementText) throws StreamException {

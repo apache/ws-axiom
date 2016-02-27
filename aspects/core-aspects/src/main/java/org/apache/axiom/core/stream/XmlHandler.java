@@ -80,7 +80,21 @@ public interface XmlHandler {
     
     void processComment(String content) throws StreamException;
     
-    void processCDATASection(String content) throws StreamException;
+    /**
+     * Notify the handler of the beginning of a CDATA section.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void startCDATASection() throws StreamException;
+    
+    /**
+     * Notify the handler of the end of a CDATA section.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void endCDATASection() throws StreamException;
     
     void processEntityReference(String name, String replacementText) throws StreamException;
 }

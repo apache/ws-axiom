@@ -19,7 +19,9 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
+import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.stream.StreamException;
@@ -28,9 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
-import org.apache.axiom.om.impl.intf.AxiomCDATASection;
 import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
-import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
@@ -47,7 +47,7 @@ public final class Context implements InputContext {
     private final int depth;
     private Context nestedContext;
 
-    public AxiomContainer target;
+    public CoreParentNode target;
     
     private Object pendingCharacterData;
     
@@ -81,13 +81,24 @@ public final class Context implements InputContext {
         this.passThroughHandler = passThroughHandler;
     }
     
-    private Context newContext(AxiomContainer target) {
+    private Context newContext(CoreParentNode target) {
         if (nestedContext == null) {
             nestedContext = new Context(builderHandler, this, depth+1);
         }
         nestedContext.target = target;
         target.coreSetInputContext(nestedContext);
         return nestedContext;
+    }
+    
+    private Context endContext() {
+        target.coreSetState(CoreParentNode.COMPLETE);
+        target.coreSetInputContext(null);
+        if (pendingCharacterData != null) {
+            target.coreSetCharacterData(pendingCharacterData, null);
+            pendingCharacterData = null;
+        }
+        target = null;
+        return parentContext;
     }
     
     private Context decrementPassThroughDepth() {
@@ -103,7 +114,7 @@ public final class Context implements InputContext {
         }
     }
     
-    private void addChild(AxiomChildNode node) {
+    private void addChild(CoreChildNode node) {
         if (pendingCharacterData != null) {
             AxiomCharacterDataNode cdataNode = builderHandler.nodeFactory.createNode(AxiomCharacterDataNode.class);
             cdataNode.coreSetCharacterData(pendingCharacterData);
@@ -146,7 +157,7 @@ public final class Context implements InputContext {
                 element = builderHandler.root;
             } else {
                 element = builderHandler.nodeFactory.createNode(builderHandler.model.determineElementType(
-                        target, depth+1, namespaceURI, localName));
+                        (AxiomContainer)target, depth+1, namespaceURI, localName));
                 element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
                 element.initName(localName, ns, false);
                 addChild(element);
@@ -163,14 +174,7 @@ public final class Context implements InputContext {
             }
             return decrementPassThroughDepth();
         } else {
-            target.setComplete(true);
-            target.coreSetInputContext(null);
-            if (pendingCharacterData != null) {
-                target.coreSetCharacterData(pendingCharacterData, null);
-                pendingCharacterData = null;
-            }
-            target = null;
-            return parentContext;
+            return endContext();
         }
     }
 
@@ -245,13 +249,24 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processCDATASection(String content) throws StreamException {
+    public Context startCDATASection() throws StreamException {
         if (passThroughHandler != null) {
-            passThroughHandler.processCDATASection(content);
+            passThroughDepth++;
+            passThroughHandler.startCDATASection();
+            return this;
         } else {
-            AxiomCDATASection node = builderHandler.nodeFactory.createNode(AxiomCDATASection.class);
-            node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+            CoreCDATASection node = builderHandler.nodeFactory.createNode(CoreCDATASection.class);
             addChild(node);
+            return newContext(node);
+        }
+    }
+    
+    public Context endCDATASection() throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.endCDATASection();
+            return decrementPassThroughDepth();
+        } else {
+            return endContext();
         }
     }
     
@@ -278,7 +293,7 @@ public final class Context implements InputContext {
                 throw new IllegalStateException();
             }
             if (target != null) {
-                target.setComplete(true);
+                target.coreSetState(CoreParentNode.COMPLETE);
                 target.coreSetInputContext(null);
             }
             target = null;

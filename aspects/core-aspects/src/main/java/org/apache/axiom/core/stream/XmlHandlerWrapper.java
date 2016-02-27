@@ -79,8 +79,12 @@ public class XmlHandlerWrapper implements XmlHandler {
         parent.processComment(content);
     }
 
-    public void processCDATASection(String content) throws StreamException {
-        parent.processCDATASection(content);
+    public void startCDATASection() throws StreamException {
+        parent.startCDATASection();
+    }
+
+    public void endCDATASection() throws StreamException {
+        parent.endCDATASection();
     }
 
     public void processEntityReference(String name, String replacementText) throws StreamException {

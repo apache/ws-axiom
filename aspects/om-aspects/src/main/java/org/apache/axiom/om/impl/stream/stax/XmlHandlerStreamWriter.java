@@ -180,7 +180,9 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     protected void doWriteCData(String data) throws XMLStreamException {
         finishStartElement();
         try {
-            handler.processCDATASection(data);
+            handler.startCDATASection();
+            handler.processCharacterData(data, false);
+            handler.endCDATASection();
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }

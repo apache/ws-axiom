@@ -30,6 +30,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
@@ -173,6 +174,21 @@ public final class TextContent implements CharacterData {
             out.complete();
         } else {
             writer.write(value);
+        }
+    }
+
+    @Override
+    public void appendTo(StringBuilder buffer) {
+        if (binary) {
+            Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
+            try {
+                getDataHandler().writeTo(out);
+                out.complete();
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            }
+        } else {
+            buffer.append(value);
         }
     }
 }

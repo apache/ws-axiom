@@ -344,6 +344,20 @@ public aspect CoreParentNodeSupport {
         }
     }
 
+    void CoreParentNode.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+        throw new UnsupportedOperationException();
+    }
+
+    void CoreParentNode.serializeEndEvent(XmlHandler handler) throws StreamException {
+        throw new UnsupportedOperationException();
+    }
+
+    public void CoreParentNode.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        serializeStartEvent(handler);
+        serializeChildren(handler, cache);
+        serializeEndEvent(handler);
+    }
+
     public final void CoreParentNode.serializeChildren(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         if (getState() == DISCARDED) {
             Builder builder = coreGetBuilder();

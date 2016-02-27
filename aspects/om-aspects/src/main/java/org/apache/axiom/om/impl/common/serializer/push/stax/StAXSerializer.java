@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.impl.intf.TextContent;
@@ -33,6 +34,8 @@ import javax.xml.stream.XMLStreamWriter;
 public class StAXSerializer implements XmlHandler {
     private final XMLStreamWriter writer;
     private DataHandlerWriter dataHandlerWriter;
+    private final CharacterDataAccumulator buffer = new CharacterDataAccumulator();
+    private boolean buffering;
     
     public StAXSerializer(XMLStreamWriter writer) {
         this.writer = writer;
@@ -40,6 +43,13 @@ public class StAXSerializer implements XmlHandler {
 
     public XMLStreamWriter getWriter() {
         return writer;
+    }
+
+    private String stopBuffering() {
+        String content = buffer.toString();
+        buffer.clear();
+        buffering = false;
+        return content;
     }
 
     @Override
@@ -105,6 +115,10 @@ public class StAXSerializer implements XmlHandler {
     }
 
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+        if (buffering) {
+            buffer.append(data);
+            return;
+        }
         try {
             if (data instanceof TextContent) {
                 TextContent textContent = (TextContent)data;
@@ -127,9 +141,14 @@ public class StAXSerializer implements XmlHandler {
     }
     
     @Override
-    public void processCDATASection(String content) throws StreamException {
+    public void startCDATASection() throws StreamException {
+        buffering = true;
+    }
+
+    @Override
+    public void endCDATASection() throws StreamException {
         try {
-            writer.writeCData(content);
+            writer.writeCData(stopBuffering());
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);
         }

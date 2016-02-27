@@ -179,13 +179,19 @@ public class ContentHandlerXmlHandler implements XmlHandler {
     }
     
     @Override
-    public void processCDATASection(String content) throws StreamException {
+    public void startCDATASection() throws StreamException {
         try {
             if (lexicalHandler != null) {
                 lexicalHandler.startCDATA();
             }
-            char[] ch = content.toCharArray();
-            contentHandler.characters(ch, 0, ch.length);
+        } catch (SAXException ex) {
+            throw new StreamException(ex);
+        }
+    }
+
+    @Override
+    public void endCDATASection() throws StreamException {
+        try {
             if (lexicalHandler != null) {
                 lexicalHandler.endCDATA();
             }

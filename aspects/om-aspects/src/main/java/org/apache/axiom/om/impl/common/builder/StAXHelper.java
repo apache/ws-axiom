@@ -152,7 +152,9 @@ public class StAXHelper implements XmlReader {
                     handler.processCharacterData(text, true);
                     break;
                 case XMLStreamConstants.CDATA:
-                    handler.processCDATASection(text);
+                    handler.startCDATASection();
+                    handler.processCharacterData(text, false);
+                    handler.endCDATASection();
                     break;
                 default:
                     throw new IllegalStateException();

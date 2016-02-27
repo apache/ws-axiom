@@ -34,7 +34,11 @@ public aspect CoreCDATASectionSupport {
     public final <T> void CoreCDATASection.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
 
-    public final void CoreCDATASection.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        handler.processCDATASection(coreGetCharacterData().toString());
+    final void CoreCDATASection.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+        handler.startCDATASection();
+    }
+    
+    final void CoreCDATASection.serializeEndEvent(XmlHandler handler) throws StreamException {
+        handler.endCDATASection();
     }
 }
