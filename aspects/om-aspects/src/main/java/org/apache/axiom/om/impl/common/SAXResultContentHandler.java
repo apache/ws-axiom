@@ -36,6 +36,7 @@ public final  class SAXResultContentHandler implements XmlHandler {
     private OMContainer target;
     private final CharacterDataAccumulator buffer = new CharacterDataAccumulator();
     private boolean buffering;
+    private String piTarget;
 
     public SAXResultContentHandler(OMContainer root) {
         this.root = root;
@@ -121,12 +122,26 @@ public final  class SAXResultContentHandler implements XmlHandler {
         factory.createOMText(target, stopBuffering(), OMNode.CDATA_SECTION_NODE);
     }
 
-    public void processProcessingInstruction(String piTarget, String piData) {
-        factory.createOMProcessingInstruction(target, piTarget, piData);
+    @Override
+    public void startProcessingInstruction(String target) throws StreamException {
+        buffering = true;
+        piTarget = target;
     }
 
-    public void processComment(String content) {
-        factory.createOMComment(target, content);
+    @Override
+    public void endProcessingInstruction() throws StreamException {
+        factory.createOMProcessingInstruction(target, piTarget, stopBuffering());
+        piTarget = null;
+    }
+
+    @Override
+    public void startComment() throws StreamException {
+        buffering = true;
+    }
+
+    @Override
+    public void endComment() throws StreamException {
+        factory.createOMComment(target, stopBuffering());
     }
 
     public void processEntityReference(String name, String replacementText) {

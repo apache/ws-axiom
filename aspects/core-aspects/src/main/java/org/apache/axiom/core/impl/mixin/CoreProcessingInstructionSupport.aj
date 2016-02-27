@@ -45,7 +45,11 @@ public aspect CoreProcessingInstructionSupport {
         target = ((CoreProcessingInstruction)other).target;
     }
     
-    public final void CoreProcessingInstruction.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        handler.processProcessingInstruction(coreGetTarget() + " ", coreGetCharacterData().toString());
+    final void CoreProcessingInstruction.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+        handler.startProcessingInstruction(coreGetTarget() + " ");
+    }
+
+    final void CoreProcessingInstruction.serializeEndEvent(XmlHandler handler) throws StreamException {
+        handler.endProcessingInstruction();
     }
 }

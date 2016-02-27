@@ -350,7 +350,9 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
             throws SAXException {
         if (!inEntityReference) {
             try {
-                handler.processProcessingInstruction(piTarget, data);
+                handler.startProcessingInstruction(piTarget);
+                handler.processCharacterData(data, false);
+                handler.endProcessingInstruction();
             } catch (StreamException ex) {
                 throw toSAXException(ex);
             }
@@ -360,7 +362,9 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     public void comment(char[] ch, int start, int length) throws SAXException {
         if (!inEntityReference) {
             try {
-                handler.processComment(new String(ch, start, length));
+                handler.startComment();
+                handler.processCharacterData(new String(ch, start, length), false);
+                handler.endComment();
             } catch (StreamException ex) {
                 throw toSAXException(ex);
             }

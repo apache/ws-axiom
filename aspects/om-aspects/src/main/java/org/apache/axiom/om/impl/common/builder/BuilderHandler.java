@@ -163,14 +163,26 @@ public final class BuilderHandler implements XmlHandler {
         context.processCharacterData(data, ignorable);
     }
     
-    public void processProcessingInstruction(String piTarget, String piData) throws StreamException {
+    @Override
+    public void startProcessingInstruction(String target) throws StreamException {
         model.validateEventType(XMLStreamConstants.PROCESSING_INSTRUCTION);
-        context.processProcessingInstruction(piTarget, piData);
+        context = context.startProcessingInstruction(target);
     }
 
-    public void processComment(String content) throws StreamException {
+    @Override
+    public void endProcessingInstruction() throws StreamException {
+        context = context.endProcessingInstruction();
+    }
+
+    @Override
+    public void startComment() throws StreamException {
         model.validateEventType(XMLStreamConstants.COMMENT);
-        context.processComment(content);
+        context = context.startComment();
+    }
+
+    @Override
+    public void endComment() throws StreamException {
+        context = context.endComment();
     }
     
     @Override

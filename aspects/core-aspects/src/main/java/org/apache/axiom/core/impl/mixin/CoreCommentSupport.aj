@@ -34,7 +34,11 @@ public aspect CoreCommentSupport {
     public final <T> void CoreComment.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
     
-    public final void CoreComment.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        handler.processComment(coreGetCharacterData().toString());
+    final void CoreComment.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+        handler.startComment();
+    }
+
+    final void CoreComment.serializeEndEvent(XmlHandler handler) throws StreamException {
+        handler.endComment();
     }
 }

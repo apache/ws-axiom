@@ -237,13 +237,17 @@ public class StAXHelper implements XmlReader {
                     handler.endDocument();
                     break;
                 case XMLStreamConstants.COMMENT:
-                    handler.processComment(parser.getText());
+                    handler.startComment();
+                    handler.processCharacterData(parser.getText(), false);
+                    handler.endComment();
                     break;
                 case XMLStreamConstants.DTD:
                     processDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
+                    handler.startProcessingInstruction(parser.getPITarget());
+                    handler.processCharacterData(parser.getPIData(), false);
+                    handler.endProcessingInstruction();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
                     handler.processEntityReference(parser.getLocalName(), parser.getText());

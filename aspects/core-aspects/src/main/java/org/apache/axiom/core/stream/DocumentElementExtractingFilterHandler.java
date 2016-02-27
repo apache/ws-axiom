@@ -57,16 +57,30 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void processProcessingInstruction(String piTarget, String piData) throws StreamException {
+    public void startProcessingInstruction(String target) throws StreamException {
         if (depth > 0) {
-            super.processProcessingInstruction(piTarget, piData);
+            super.startProcessingInstruction(target);
         }
     }
 
     @Override
-    public void processComment(String content) throws StreamException {
+    public void endProcessingInstruction() throws StreamException {
         if (depth > 0) {
-            super.processComment(content);
+            super.endProcessingInstruction();
+        }
+    }
+
+    @Override
+    public void startComment() throws StreamException {
+        if (depth > 0) {
+            super.startComment();
+        }
+    }
+
+    @Override
+    public void endComment() throws StreamException {
+        if (depth > 0) {
+            super.endComment();
         }
     }
 }

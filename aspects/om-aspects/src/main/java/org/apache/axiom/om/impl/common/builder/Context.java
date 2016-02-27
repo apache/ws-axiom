@@ -228,24 +228,46 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processProcessingInstruction(String piTarget, String piData) throws StreamException {
+    public Context startProcessingInstruction(String piTarget) throws StreamException {
         if (passThroughHandler != null) {
-            passThroughHandler.processProcessingInstruction(piTarget, piData);
+            passThroughDepth++;
+            passThroughHandler.startProcessingInstruction(piTarget);
+            return this;
         } else {
             AxiomProcessingInstruction node = builderHandler.nodeFactory.createNode(AxiomProcessingInstruction.class);
             node.coreSetTarget(piTarget);
-            node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
             addChild(node);
+            return newContext(node);
         }
     }
 
-    public void processComment(String content) throws StreamException {
+    public Context endProcessingInstruction() throws StreamException {
         if (passThroughHandler != null) {
-            passThroughHandler.processComment(content);
+            passThroughHandler.endProcessingInstruction();
+            return decrementPassThroughDepth();
+        } else {
+            return endContext();
+        }
+    }
+
+    public Context startComment() throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughDepth++;
+            passThroughHandler.startComment();
+            return this;
         } else {
             AxiomComment node = builderHandler.nodeFactory.createNode(AxiomComment.class);
-            node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
             addChild(node);
+            return newContext(node);
+        }
+    }
+    
+    public Context endComment() throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.endComment();
+            return decrementPassThroughDepth();
+        } else {
+            return endContext();
         }
     }
     

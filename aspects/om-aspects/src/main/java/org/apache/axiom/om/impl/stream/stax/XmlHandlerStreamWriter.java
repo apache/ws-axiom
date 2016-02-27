@@ -191,7 +191,9 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     protected void doWriteComment(String data) throws XMLStreamException {
         finishStartElement();
         try {
-            handler.processComment(data);
+            handler.startComment();
+            handler.processCharacterData(data, false);
+            handler.endComment();
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -209,7 +211,9 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     protected void doWriteProcessingInstruction(String piTarget, String data) throws XMLStreamException {
         finishStartElement();
         try {
-            handler.processProcessingInstruction(piTarget, data);
+            handler.startProcessingInstruction(piTarget);
+            handler.processCharacterData(data, false);
+            handler.endProcessingInstruction();
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
