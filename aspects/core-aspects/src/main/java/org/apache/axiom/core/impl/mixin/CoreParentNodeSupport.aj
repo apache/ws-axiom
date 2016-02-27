@@ -359,11 +359,11 @@ public aspect CoreParentNodeSupport {
         }
     }
 
-    void CoreParentNode.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+    public void CoreParentNode.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         throw new UnsupportedOperationException();
     }
 
-    void CoreParentNode.serializeEndEvent(XmlHandler handler) throws StreamException {
+    public void CoreParentNode.serializeEndEvent(XmlHandler handler) throws StreamException {
         throw new UnsupportedOperationException();
     }
 

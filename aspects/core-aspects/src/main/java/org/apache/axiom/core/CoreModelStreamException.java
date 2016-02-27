@@ -16,29 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl.mixin;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.ClonePolicy;
-import org.apache.axiom.core.CoreCDATASection;
-import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 
-public aspect CoreCDATASectionSupport {
-    public final NodeType CoreCDATASection.coreGetNodeType() {
-        return NodeType.CDATA_SECTION;
+/**
+ * {@link StreamException} wrapper for {@link CoreModelException} used by the {@link XmlInput}
+ * returned by {@link CoreParentNode#coreGetInput(boolean)}.
+ */
+public class CoreModelStreamException extends StreamException {
+    private static final long serialVersionUID = 1L;
+
+    public CoreModelStreamException(CoreModelException cause) {
+        super(cause);
+    }
+
+    @Override
+    public Throwable initCause(Throwable cause) {
+        if (!(cause instanceof CoreModelException)) {
+            throw new IllegalArgumentException();
+        }
+        return super.initCause(cause);
     }
     
-    public final <T> void CoreCDATASection.init(ClonePolicy<T> policy, T options, CoreNode other) {
-    }
-
-    public final void CoreCDATASection.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
-        handler.startCDATASection();
-    }
-    
-    public final void CoreCDATASection.serializeEndEvent(XmlHandler handler) throws StreamException {
-        handler.endCDATASection();
+    /**
+     * Get the {@link CoreModelException} wrapped by this exception.
+     * 
+     * @return the wrapped exception
+     */
+    public CoreModelException getCoreModelException() {
+        return (CoreModelException)getCause();
     }
 }

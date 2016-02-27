@@ -99,11 +99,11 @@ public aspect CoreDocumentSupport {
         coreSetInputEncoding(o.coreGetInputEncoding());
     }
 
-    final void CoreDocument.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void CoreDocument.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
     }
     
-    final void CoreDocument.serializeEndEvent(XmlHandler handler) throws StreamException {
+    public final void CoreDocument.serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endDocument();
     }
 }

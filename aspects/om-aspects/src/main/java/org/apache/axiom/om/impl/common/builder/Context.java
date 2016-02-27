@@ -168,10 +168,7 @@ public final class Context implements InputContext {
     
     public Context endElement() throws StreamException {
         if (passThroughHandler != null) {
-            // TODO: hack
-            if (passThroughDepth > 0) {
-                passThroughHandler.endElement();
-            }
+            passThroughHandler.endElement();
             return decrementPassThroughDepth();
         } else {
             return endContext();

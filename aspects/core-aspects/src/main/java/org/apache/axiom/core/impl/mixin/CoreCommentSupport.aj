@@ -34,11 +34,11 @@ public aspect CoreCommentSupport {
     public final <T> void CoreComment.init(ClonePolicy<T> policy, T options, CoreNode other) {
     }
     
-    final void CoreComment.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void CoreComment.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
         handler.startComment();
     }
 
-    final void CoreComment.serializeEndEvent(XmlHandler handler) throws StreamException {
+    public final void CoreComment.serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endComment();
     }
 }
