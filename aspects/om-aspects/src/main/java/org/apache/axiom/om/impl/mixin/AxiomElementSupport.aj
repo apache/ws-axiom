@@ -43,8 +43,11 @@ import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -528,18 +531,28 @@ public aspect AxiomElementSupport {
         return findNamespaceURI("");
     }
 
-    public void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        defaultInternalSerialize(handler, cache);
+    public XmlInput AxiomElement.getXmlInput(boolean cache) throws StreamException {
+        return null;
     }
     
-    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        try {
-            coreSerializeStartPart(handler);
-        } catch (CoreModelException ex) {
-            throw new StreamException(ex);
+    public final void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        XmlInput input = getXmlInput(cache);
+        if (input != null) {
+            // TODO: the serializer ignores namespaceURI and localName
+            XmlReader reader = input.createReader(new DocumentElementExtractingFilterHandler(handler));
+            while (!reader.proceed()) {
+                // Just loop
+            }
+        } else {
+            forceExpand();
+            try {
+                coreSerializeStartPart(handler);
+            } catch (CoreModelException ex) {
+                throw new StreamException(ex);
+            }
+            serializeChildren(handler, cache);
+            handler.endElement();
         }
-        serializeChildren(handler, cache);
-        handler.endElement();
     }
 
     public final String AxiomElement.toStringWithConsume() throws XMLStreamException {

@@ -22,11 +22,8 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
-import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -406,31 +403,20 @@ public aspect AxiomSourcedElementSupport {
         }
     }
 
-    public void AxiomSourcedElement.internalSerialize(XmlHandler handler, boolean cache)
-            throws StreamException {
-        if (isExpanded()) {
-            defaultInternalSerialize(handler, cache);
-        } else if (cache&& OMDataSourceUtil.isDestructiveWrite(dataSource)) {
-            forceExpand();
-            defaultInternalSerialize(handler, true);
+    public final XmlInput AxiomSourcedElement.getXmlInput(boolean cache) throws StreamException {
+        if (isExpanded() || (cache && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
+            return null;
+        }
+        // Note: if we can't determine the type (push/pull) of the OMDataSource, we
+        // default to push
+        if (OMDataSourceUtil.isPullDataSource(dataSource)) {
+            try {
+                return new StAXPullInput(dataSource.getReader());
+            } catch (XMLStreamException ex) {
+                throw new StreamException(ex);
+            }
         } else {
-            XmlInput input;
-            // Note: if we can't determine the type (push/pull) of the OMDataSource, we
-            // default to push
-            if (OMDataSourceUtil.isPullDataSource(dataSource)) {
-                try {
-                    input = new StAXPullInput(dataSource.getReader());
-                } catch (XMLStreamException ex) {
-                    throw new StreamException(ex);
-                }
-            } else {
-                input = new PushOMDataSourceInput(this, dataSource);
-            }
-            // TODO: the serializer ignores namespaceURI and localName
-            XmlReader reader = input.createReader(new DocumentElementExtractingFilterHandler(handler));
-            while (!reader.proceed()) {
-                // Just loop
-            }
+            return new PushOMDataSourceInput(this, dataSource);
         }
     }
 
