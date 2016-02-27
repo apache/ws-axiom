@@ -19,9 +19,8 @@
 package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.core.CoreDocument;
-import org.apache.axiom.core.DeferringParentNode;
 import org.apache.axiom.om.OMDocument;
 
-public interface AxiomDocument extends OMDocument, AxiomContainer, CoreDocument, DeferringParentNode {
+public interface AxiomDocument extends OMDocument, AxiomContainer, CoreDocument {
 
 }

@@ -48,6 +48,7 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreParentNodeSupport {
+    private InputContext CoreParentNode.context;
     private Object CoreParentNode.content;
     
     // TODO: rename & make final
@@ -64,6 +65,20 @@ public aspect CoreParentNodeSupport {
     }
     
     public void CoreParentNode.forceExpand() {}
+
+    public final Builder CoreParentNode.coreGetBuilder() {
+        forceExpand();
+        return context == null ? null : context.getBuilder();
+    }
+
+    public final InputContext CoreParentNode.coreGetInputContext() {
+        return context;
+    }
+
+    public final void CoreParentNode.coreSetInputContext(InputContext context) {
+        this.context = context;
+        coreSetState(context == null ? COMPLETE : INCOMPLETE);
+    }
     
     final Content CoreParentNode.getContent(boolean create) {
         if (getState() == COMPACT) {

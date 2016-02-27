@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreAttribute extends NonDeferringParentNode, CoreCharacterDataContainingParentNode {
+public interface CoreAttribute extends CoreCharacterDataContainingParentNode {
     /**
      * Get the owner element of this attribute.
      * 

@@ -57,4 +57,8 @@ public aspect AxiomProcessingInstructionSupport {
     
     public final void AxiomProcessingInstruction.buildWithAttachments() {
     }
+    
+    public final void AxiomProcessingInstruction.build() {
+        // TODO
+    }
 }

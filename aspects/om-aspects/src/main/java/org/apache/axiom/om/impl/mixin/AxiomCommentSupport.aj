@@ -54,4 +54,8 @@ public aspect AxiomCommentSupport {
     
     public final void AxiomComment.buildWithAttachments() {
     }
+    
+    public final void AxiomComment.build() {
+        // TODO
+    }
 }

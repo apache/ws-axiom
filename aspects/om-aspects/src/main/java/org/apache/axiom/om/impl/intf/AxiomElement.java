@@ -19,11 +19,10 @@
 package org.apache.axiom.om.impl.intf;
 
 import org.apache.axiom.core.CoreNSAwareElement;
-import org.apache.axiom.core.DeferringParentNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 
-public interface AxiomElement extends OMElement, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement, DeferringParentNode {
+public interface AxiomElement extends OMElement, AxiomContainer, AxiomChildNode, AxiomNamedInformationItem, CoreNSAwareElement {
     /**
      * Adds a namespace declaration without doing any additional checks. This method is used
      * internally by the builder (which can safely assume that the data received from the parser is
