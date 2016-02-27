@@ -289,6 +289,8 @@ public aspect AxiomContainerSupport {
                     new MTOMXMLStreamWriter(xmlWriter);
         try {
             internalSerialize(createSerializer(writer, true), cache);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
@@ -299,6 +301,8 @@ public aspect AxiomContainerSupport {
         try {
             try {
                 internalSerialize(createSerializer(writer, false), cache);
+            } catch (CoreModelException ex) {
+                throw AxiomExceptionTranslator.translate(ex);
             } catch (StreamException ex) {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
@@ -351,7 +355,7 @@ public aspect AxiomContainerSupport {
         serialize(writer, format, false);
     }
 
-    final void AxiomContainer.serializeChildren(XmlHandler handler, boolean cache) throws StreamException {
+    final void AxiomContainer.serializeChildren(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         if (getState() == AxiomContainer.DISCARDED) {
             Builder builder = coreGetBuilder();
             if (builder != null) {

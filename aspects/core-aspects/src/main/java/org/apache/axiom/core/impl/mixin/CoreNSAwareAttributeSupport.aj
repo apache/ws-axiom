@@ -29,7 +29,7 @@ public aspect CoreNSAwareAttributeSupport {
         return NodeType.NS_AWARE_ATTRIBUTE;
     }
 
-    public final void CoreNSAwareAttribute.coreSerialize(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void CoreNSAwareAttribute.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processAttribute(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix(), coreGetCharacterData().toString(), coreGetType(), coreGetSpecified());
     }
 }

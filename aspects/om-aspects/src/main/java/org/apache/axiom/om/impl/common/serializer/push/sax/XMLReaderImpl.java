@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.serializer.push.sax;
 import java.io.IOException;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.ContentHandlerXmlHandler;
@@ -55,6 +56,8 @@ public class XMLReaderImpl extends AbstractXMLReader {
         }
         try {
             root.internalSerialize(handler, cache);
+        } catch (CoreModelException ex) {
+            throw new SAXException(ex);
         } catch (StreamException ex) {
             throw (SAXException)ex.getCause();
         }

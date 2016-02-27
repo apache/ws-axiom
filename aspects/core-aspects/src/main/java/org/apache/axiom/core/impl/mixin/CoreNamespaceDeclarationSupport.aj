@@ -36,7 +36,7 @@ public aspect CoreNamespaceDeclarationSupport {
         coreSetDeclaredNamespace(((CoreNamespaceDeclaration)other).coreGetDeclaredPrefix(), "");
     }
     
-    public final void CoreNamespaceDeclaration.coreSerialize(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void CoreNamespaceDeclaration.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.processNamespaceDeclaration(coreGetDeclaredPrefix(), coreGetCharacterData().toString());
     }
 }

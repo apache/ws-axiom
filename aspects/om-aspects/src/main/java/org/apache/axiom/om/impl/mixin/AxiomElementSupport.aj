@@ -535,7 +535,7 @@ public aspect AxiomElementSupport {
         return null;
     }
     
-    public final void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+    public final void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         XmlInput input = getXmlInput(cache);
         if (input != null) {
             // TODO: the serializer ignores namespaceURI and localName
@@ -545,11 +545,7 @@ public aspect AxiomElementSupport {
             }
         } else {
             forceExpand();
-            try {
-                coreSerializeStartPart(handler);
-            } catch (CoreModelException ex) {
-                throw new StreamException(ex);
-            }
+            coreSerializeStartPart(handler);
             serializeChildren(handler, cache);
             handler.endElement();
         }

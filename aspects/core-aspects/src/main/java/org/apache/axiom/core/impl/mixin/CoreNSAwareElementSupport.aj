@@ -42,7 +42,7 @@ public aspect CoreNSAwareElementSupport {
         handler.startElement(coreGetNamespaceURI(), coreGetLocalName(), coreGetPrefix());
         CoreAttribute attr = coreGetFirstAttribute();
         while (attr != null) {
-            attr.coreSerialize(handler);
+            attr.internalSerialize(handler, true);
             attr = attr.coreGetNextAttribute();
         }
         handler.attributesCompleted();

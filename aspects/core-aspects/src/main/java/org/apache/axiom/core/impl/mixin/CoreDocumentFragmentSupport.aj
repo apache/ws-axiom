@@ -21,8 +21,11 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentFragment;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreDocumentFragmentSupport {
     private CoreDocument CoreDocumentFragment.ownerDocument;
@@ -44,5 +47,10 @@ public aspect CoreDocumentFragmentSupport {
     }
     
     public final <T> void CoreDocumentFragment.init(ClonePolicy<T> policy, T options, CoreNode other) {
+    }
+
+    public final void CoreDocumentFragment.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

@@ -55,7 +55,7 @@ public aspect AxiomDocumentSupport {
         }
     }
 
-    public final void AxiomDocument.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+    public final void AxiomDocument.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
         serializeChildren(handler, cache);
         handler.endDocument();
