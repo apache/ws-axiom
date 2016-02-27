@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
@@ -67,7 +68,7 @@ import java.io.Closeable;
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
-public class StAXHelper {
+public class StAXHelper implements XmlReader {
     private static final Log log = LogFactory.getLog(StAXHelper.class);
     
     /** Field parser */
@@ -194,6 +195,11 @@ public class StAXHelper {
         return _isClosed;
     }
     
+    @Override
+    public boolean proceed() throws StreamException {
+        return next() == XMLStreamReader.END_DOCUMENT;
+    }
+
     /**
      * Forwards the parser one step further, if parser is not completed yet. If this is called after
      * parser is done, then throw an OMException. If the cache is set to false, then returns the

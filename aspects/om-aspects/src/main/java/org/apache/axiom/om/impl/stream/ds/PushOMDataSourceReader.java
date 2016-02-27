@@ -45,7 +45,7 @@ final class PushOMDataSourceReader implements XmlReader {
     }
     
     @Override
-    public void proceed() throws StreamException {
+    public boolean proceed() throws StreamException {
         try {
             XMLStreamWriter writer = new XmlHandlerStreamWriter(handler);
             // Seed the namespace context with the namespace context from the parent
@@ -60,5 +60,6 @@ final class PushOMDataSourceReader implements XmlReader {
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);
         }
+        return true;
     }
 }

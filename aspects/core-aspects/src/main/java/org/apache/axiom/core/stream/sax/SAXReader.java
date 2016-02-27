@@ -41,7 +41,7 @@ public final class SAXReader implements XmlReader {
     }
     
     @Override
-    public void proceed() throws StreamException {
+    public boolean proceed() throws StreamException {
         XMLReader reader = source.getXMLReader();
         XmlHandlerContentHandler contentHandler = new XmlHandlerContentHandler(handler, expandEntityReferences);
         reader.setContentHandler(contentHandler);
@@ -63,5 +63,6 @@ public final class SAXReader implements XmlReader {
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
+        return true;
     }
 }

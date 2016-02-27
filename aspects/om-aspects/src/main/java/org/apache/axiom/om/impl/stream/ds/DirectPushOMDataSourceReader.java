@@ -35,11 +35,12 @@ final class DirectPushOMDataSourceReader implements XmlReader {
     }
 
     @Override
-    public void proceed() throws StreamException {
+    public boolean proceed() throws StreamException {
         try {
             dataSource.serialize(writer);
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);
         }
+        return true;
     }
 }
