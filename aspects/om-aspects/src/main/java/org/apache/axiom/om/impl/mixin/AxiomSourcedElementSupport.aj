@@ -24,7 +24,6 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
@@ -40,7 +39,6 @@ import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
 import org.apache.axiom.om.impl.common.builder.PushBuilder;
 import org.apache.axiom.om.impl.common.builder.StAXHelper;
 import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceInput;
@@ -437,19 +435,7 @@ public aspect AxiomSourcedElementSupport {
                 throw new DeferredParsingException(ex);
             }
         } else {
-            XmlHandler unwrappedHandler = handler;
-            while (unwrappedHandler instanceof XmlHandlerWrapper) {
-                unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
-            }
-            if (unwrappedHandler instanceof StAXSerializer) {
-                try {
-                    dataSource.serialize(((StAXSerializer)unwrappedHandler).getWriter());
-                } catch (XMLStreamException ex) {
-                    throw new StreamException(ex);
-                }
-            } else {
-                new PushOMDataSourceInput(this, dataSource).createReader(handler).proceed();
-            }
+            new PushOMDataSourceInput(this, dataSource).createReader(handler).proceed();
         }
     }
 

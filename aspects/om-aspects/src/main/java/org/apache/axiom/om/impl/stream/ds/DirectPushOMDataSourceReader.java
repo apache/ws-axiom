@@ -18,33 +18,28 @@
  */
 package org.apache.axiom.om.impl.stream.ds;
 
-import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.XmlHandlerWrapper;
-import org.apache.axiom.core.stream.XmlInput;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
-import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-public final class PushOMDataSourceInput implements XmlInput {
-    private final AxiomSourcedElement root;
+final class DirectPushOMDataSourceReader implements XmlReader {
+    private final XMLStreamWriter writer;
     private final OMDataSource dataSource;
 
-    public PushOMDataSourceInput(AxiomSourcedElement root, OMDataSource dataSource) {
-        this.root = root;
+    DirectPushOMDataSourceReader(XMLStreamWriter writer, OMDataSource dataSource) {
+        this.writer = writer;
         this.dataSource = dataSource;
     }
-    
+
     @Override
-    public XmlReader createReader(XmlHandler handler) {
-        XmlHandler unwrappedHandler = handler;
-        while (unwrappedHandler instanceof XmlHandlerWrapper) {
-            unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
-        }
-        if (unwrappedHandler instanceof StAXSerializer) {
-            return new DirectPushOMDataSourceReader(((StAXSerializer)unwrappedHandler).getWriter(), dataSource);
-        } else {
-            return new PushOMDataSourceReader(handler, root, dataSource);
+    public void proceed() throws StreamException {
+        try {
+            dataSource.serialize(writer);
+        } catch (XMLStreamException ex) {
+            throw new StreamException(ex);
         }
     }
 }
