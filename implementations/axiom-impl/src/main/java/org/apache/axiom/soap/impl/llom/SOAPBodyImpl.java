@@ -21,8 +21,6 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
@@ -34,10 +32,5 @@ public abstract class SOAPBodyImpl extends SOAPElement
             throw new SOAPProcessingException(
                     "Expecting an implementation of SOAP Envelope as the parent. But received some other implementation");
         }
-    }
-
-    public OMNode detach() throws OMException {
-        throw new SOAPProcessingException(
-                "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
     }
 }

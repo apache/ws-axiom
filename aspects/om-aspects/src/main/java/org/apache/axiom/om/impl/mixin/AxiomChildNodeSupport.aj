@@ -70,7 +70,7 @@ public aspect AxiomChildNodeSupport {
         }
     }
     
-    public OMNode AxiomChildNode.detach() {
+    public final OMNode AxiomChildNode.detach() {
         if (!coreHasParent()) {
             throw new OMException(
                     "Nodes that don't have a parent can not be detached");
