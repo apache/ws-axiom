@@ -29,6 +29,7 @@ import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.fom.AbderaText;
+import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMNode;
 
@@ -74,7 +75,7 @@ public class FOMText extends FOMElement implements AbderaText {
             removeChildren();
             _addChild((AbderaDiv)value);
         } else
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         return this;
     }
 
@@ -109,7 +110,7 @@ public class FOMText extends FOMElement implements AbderaText {
             }
             getOMFactory().createOMText(this, value);
         } else
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         return (T)this;
     }
 
@@ -133,7 +134,7 @@ public class FOMText extends FOMElement implements AbderaText {
                     setValueElement((Div)element);
             }
         } else
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         return this;
     }
 

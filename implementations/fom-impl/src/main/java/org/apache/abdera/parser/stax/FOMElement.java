@@ -381,7 +381,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
             }
             getOMFactory().createOMText(this, text);
         } else
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         // return (T)this;
     }
 
@@ -648,7 +648,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public <T extends Element> T setText(DataHandler handler) {
-        _removeAllChildren();
+        coreRemoveChildren(FOMSemantics.INSTANCE);
         addChild(getOMFactory().createOMText(handler, true));
         return (T)this;
     }

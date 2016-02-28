@@ -37,6 +37,7 @@ import org.apache.abdera.util.Constants;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.fom.AbderaContent;
 import org.apache.axiom.fom.AbderaElement;
+import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.IRIUtil;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
@@ -108,7 +109,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
             removeChildren();
             _addChild(el);
         } else {
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         }
         return this;
     }
@@ -176,7 +177,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
             } catch (Exception e) {
             }
         }
-        _removeAllChildren();
+        coreRemoveChildren(FOMSemantics.INSTANCE);
         addChild(getOMFactory().createOMText(dataHandler, true));
         return this;
     }
@@ -214,7 +215,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
             }
             getOMFactory().createOMText(this, value);
         } else
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         return (T)this;
     }
 
@@ -229,10 +230,10 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
         if (value != null) {
             Type type = getContentType();
             if (Type.TEXT.equals(type)) {
-                _removeAllChildren();
+                coreRemoveChildren(FOMSemantics.INSTANCE);
                 setText(type, value);
             } else if (Type.HTML.equals(type)) {
-                _removeAllChildren();
+                coreRemoveChildren(FOMSemantics.INSTANCE);
                 setText(type, value);
             } else if (Type.XHTML.equals(type)) {
                 IRI baseUri = null;
@@ -261,7 +262,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
                 } catch (Exception e) {
                 }
             } else if (Type.MEDIA.equals(type)) {
-                _removeAllChildren();
+                coreRemoveChildren(FOMSemantics.INSTANCE);
                 setText(type, value);
                 try {
                     if (getMimeType() == null)
@@ -270,7 +271,7 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
                 }
             }
         } else {
-            _removeAllChildren();
+            coreRemoveChildren(FOMSemantics.INSTANCE);
         }
         return this;
     }

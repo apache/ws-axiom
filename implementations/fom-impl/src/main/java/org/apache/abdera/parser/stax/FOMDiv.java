@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
 import org.apache.axiom.fom.AbderaDiv;
+import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
@@ -81,7 +82,7 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public void setValue(String value) {
-        _removeAllChildren();
+        coreRemoveChildren(FOMSemantics.INSTANCE);
         if (value != null) {
             IRI baseUri = null;
             value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
