@@ -165,6 +165,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAndConsumeWithOMSEInBody(metaFactory, spec));
         }
+        addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAsChild(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateDefaultSOAPMessage(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
         for (SOAPElementType type : SOAPElementType.getAll()) {
