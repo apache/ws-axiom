@@ -18,6 +18,11 @@
   ~ under the License.
   -->
 <project name="Axiom">
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.5</version>
+    </skin>
     <bannerLeft>
         <name>Apache Axiom</name>
         <src>images/logo.png</src>
@@ -25,12 +30,14 @@
     </bannerLeft>
     <body>
         <head>
+            <![CDATA[
             <script async='' src='//www.google-analytics.com/analytics.js'> </script>
             <script>
               window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
               ga('create', 'UA-56790914-3', {'cookieDomain': 'ws.apache.org', 'cookiePath': '/axiom' });
               ga('send', 'pageview');
             </script>
+            ]]>
         </head>
         <menu name="About">
             <item name="Introduction" href="index.html"/>

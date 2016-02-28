@@ -33,7 +33,7 @@
 
     <properties>
         <maven.version>3.0</maven.version>
-        <doxia.version>1.6</doxia.version>
+        <doxia.version>1.7</doxia.version>
     </properties>
 
     <dependencyManagement>
