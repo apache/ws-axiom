@@ -24,6 +24,7 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -33,6 +34,10 @@ import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public aspect AxiomSOAPHeaderBlockSupport {
     private boolean AxiomSOAPHeaderBlock.processed;
+
+    public final boolean AxiomSOAPHeaderBlock.isChildElementAllowed(OMElement child) {
+        return true;
+    }
 
     public final SOAPVersion AxiomSOAPHeaderBlock.getVersion() {
         return getSOAPHelper().getVersion();

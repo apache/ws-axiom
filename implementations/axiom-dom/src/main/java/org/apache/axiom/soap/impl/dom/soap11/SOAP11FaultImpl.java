@@ -19,17 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11Fault;
 
 public class SOAP11FaultImpl extends SOAPFaultImpl implements AxiomSOAP11Fault {
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!(parent instanceof SOAP11BodyImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Body as the " +
-                            "parent. But received some other implementation");
-        }
-    }
+
 }

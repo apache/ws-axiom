@@ -16,12 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.mixin;
 
-package org.apache.axiom.soap.impl.llom.soap12;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
-import org.apache.axiom.soap.impl.llom.SOAPElement;
-
-public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12FaultValue {
-
+public aspect AxiomSOAPHeaderSupport {
+    public final boolean AxiomSOAPHeader.isChildElementAllowed(OMElement child) {
+        return child instanceof SOAPHeaderBlock;
+    }
 }

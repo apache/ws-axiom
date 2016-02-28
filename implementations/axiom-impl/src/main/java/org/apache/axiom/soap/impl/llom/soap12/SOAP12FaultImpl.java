@@ -19,16 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12Fault;
 import org.apache.axiom.soap.impl.llom.SOAPFaultImpl;
 
 public class SOAP12FaultImpl extends SOAPFaultImpl implements AxiomSOAP12Fault {
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!(parent instanceof SOAP12BodyImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Body as the parent. But received some other implementation");
-        }
-    }
+
 }

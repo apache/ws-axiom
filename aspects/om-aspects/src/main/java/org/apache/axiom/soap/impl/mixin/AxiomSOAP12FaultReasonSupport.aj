@@ -19,6 +19,7 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 
@@ -27,6 +28,10 @@ public aspect AxiomSOAP12FaultReasonSupport {
         return AxiomSOAP12FaultReason.class;
     }
 
+    public final boolean AxiomSOAP12FaultReason.isChildElementAllowed(OMElement child) {
+        return child instanceof SOAPFaultText;
+    }
+    
     public final void AxiomSOAP12FaultReason.addSOAPText(SOAPFaultText soapFaultText) {
         addChild(soapFaultText);
     }

@@ -19,17 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
 public abstract class SOAPElement extends OMElementImpl implements AxiomSOAPElement {
-    public void internalSetParent(CoreParentNode element) {
-        super.internalSetParent(element);
 
-        if (element instanceof OMElement) {
-            checkParent((OMElement) element);
-        }
-    }
 }

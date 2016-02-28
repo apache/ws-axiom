@@ -19,19 +19,10 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 
 /** Class SOAPHeaderBlockImpl */
-public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
-        implements AxiomSOAPHeaderBlock {
-    public void internalSetParent(CoreParentNode element) {
-        super.internalSetParent(element);
+public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl implements AxiomSOAPHeaderBlock {
 
-        if (element instanceof OMElement) {
-            checkParent((OMElement) element);
-        }
-    }
 }

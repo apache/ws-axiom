@@ -20,11 +20,8 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12Envelope;
 
 public aspect AxiomSOAP12EnvelopeSupport {
@@ -32,12 +29,7 @@ public aspect AxiomSOAP12EnvelopeSupport {
         return AxiomSOAP12Envelope.class;
     }
 
-    public final void AxiomSOAP12Envelope.internalCheckChild(OMNode child) {
-        if ((child instanceof OMElement)
-                && !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
-            throw new SOAPProcessingException(
-                    "SOAP Envelope can not have children other than SOAP Header and Body",
-                    SOAP12Constants.FAULT_CODE_SENDER);
-        }
+    public final boolean AxiomSOAP12Envelope.isChildElementAllowed(OMElement child) {
+        return child instanceof SOAPHeader || child instanceof SOAPBody;
     }
 }

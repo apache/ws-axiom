@@ -26,10 +26,19 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.soap.SOAPFaultNode;
+import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFault;
 
 public aspect AxiomSOAPFaultSupport {
+    public final boolean AxiomSOAPFault.isChildElementAllowed(OMElement child) {
+        return child instanceof SOAPFaultCode || child instanceof SOAPFaultDetail
+                || child instanceof SOAPFaultReason || child instanceof SOAPFaultRole || child instanceof SOAPFaultNode;
+    }
+
     public final void AxiomSOAPFault.setException(Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));

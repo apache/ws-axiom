@@ -20,7 +20,6 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -28,14 +27,6 @@ import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 
 public aspect AxiomSOAPEnvelopeSupport {
-    /**
-     * Check that a node is allowed as a child of a SOAP envelope.
-     * 
-     * @param child
-     */
-    // TODO: this should be integrated into the checkChild API
-    public abstract void AxiomSOAPEnvelope.internalCheckChild(OMNode child);
-
     public final SOAPVersion AxiomSOAPEnvelope.getVersion() {
         return getSOAPHelper().getVersion();
     }

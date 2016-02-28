@@ -35,8 +35,6 @@ import org.w3c.dom.Node;
 public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope,
         OMConstants {
     public void addChild(OMNode child) {
-        internalCheckChild(child);
-
         if (child instanceof SOAPHeader) {
             // The SOAPHeader is added before the SOAPBody
             // We must be sensitive to the state of the parser.  It is possible that the
@@ -119,9 +117,5 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
             }
         }
         return null;
-    }
-
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 }

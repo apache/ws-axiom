@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.mixin;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -37,6 +38,10 @@ public aspect AxiomSOAP12FaultTextSupport {
     
     public final Class<? extends CoreNode> AxiomSOAP12FaultText.coreGetNodeClass() {
         return AxiomSOAP12FaultText.class;
+    }
+
+    public final boolean AxiomSOAP12FaultText.isChildElementAllowed(OMElement child) {
+        return false;
     }
 
     public final void AxiomSOAP12FaultText.setLang(String lang) {

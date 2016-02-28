@@ -19,14 +19,18 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11Envelope;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
 public aspect AxiomSOAP11EnvelopeSupport {
     public final Class<? extends CoreNode> AxiomSOAP11Envelope.coreGetNodeClass() {
         return AxiomSOAP11Envelope.class;
     }
     
-    public final void AxiomSOAP11Envelope.internalCheckChild(OMNode child) {
+    public final boolean AxiomSOAP11Envelope.isChildElementAllowed(OMElement child) {
+        return !(child instanceof AxiomSOAPElement) || child instanceof SOAPHeader || child instanceof SOAPBody;
     }
 }

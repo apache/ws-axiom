@@ -20,6 +20,7 @@ package org.apache.axiom.soap.impl.mixin;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
@@ -28,6 +29,10 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
 
 public aspect AxiomSOAP12FaultClassifierSupport {
     private static final Class<?>[] sequence = { SOAPFaultValue.class, SOAPFaultSubCode.class };
+    
+    public final boolean AxiomSOAP12FaultClassifier.isChildElementAllowed(OMElement child) {
+        return child instanceof SOAPFaultValue || child instanceof SOAPFaultSubCode;
+    }
     
     public final SOAPFaultValue AxiomSOAP12FaultClassifier.getValue() {
         return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);

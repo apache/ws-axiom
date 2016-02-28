@@ -30,8 +30,13 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
+import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
 
 public aspect AxiomSOAPBodySupport {
+    public final boolean AxiomSOAPBody.isChildElementAllowed(OMElement child) {
+        return !(child instanceof AxiomSOAPElement) || child instanceof SOAPFault;
+    }
+    
     public final SOAPFault AxiomSOAPBody.addFault(Exception e) throws OMException {
         return ((SOAPFactory)getOMFactory()).createSOAPFault(this, e);
     }

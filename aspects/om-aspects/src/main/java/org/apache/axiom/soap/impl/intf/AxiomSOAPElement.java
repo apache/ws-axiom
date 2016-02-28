@@ -18,11 +18,8 @@
  */
 package org.apache.axiom.soap.impl.intf;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.soap.SOAPProcessingException;
 
 public interface AxiomSOAPElement extends AxiomElement {
     SOAPHelper getSOAPHelper();
-    void checkParent(OMElement parent) throws SOAPProcessingException;
 }

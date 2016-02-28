@@ -19,17 +19,18 @@
 package org.apache.axiom.ts.soap.fault;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests that {@link OMContainer#addChild(OMNode)} throws an exception if an attempt is made to add
- * a {@link SOAPFault} to a plain {@link OMElement}.
+ * a {@link SOAPFault} to a SOAP element other than {@link SOAPBody}.
  */
 public class TestWrongParent1 extends SOAPTestCase {
     public TestWrongParent1(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -37,7 +38,7 @@ public class TestWrongParent1 extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMElement parent = soapFactory.createOMElement("parent", null);
+        SOAPFaultCode parent = soapFactory.createSOAPFaultCode();
         SOAPFault fault = soapFactory.createSOAPFault();
         try {
             parent.addChild(fault);

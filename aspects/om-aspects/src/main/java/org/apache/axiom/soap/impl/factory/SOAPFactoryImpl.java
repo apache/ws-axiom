@@ -67,7 +67,6 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname) {
         T element = createNode(type);
         if (parent != null) {
-            element.checkParent(parent);
             ((AxiomContainer)parent).addChild(element);
         }
         if (qname.getNamespaceURI().length() == 0) {

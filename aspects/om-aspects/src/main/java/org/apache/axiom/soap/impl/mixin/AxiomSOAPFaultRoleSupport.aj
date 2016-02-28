@@ -18,9 +18,14 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultRole;
 
 public aspect AxiomSOAPFaultRoleSupport {
+    public final boolean AxiomSOAPFaultRole.isChildElementAllowed(OMElement child) {
+        return false;
+    }
+
     public final void AxiomSOAPFaultRole.setRoleValue(String uri) {
         setText(uri);
     }

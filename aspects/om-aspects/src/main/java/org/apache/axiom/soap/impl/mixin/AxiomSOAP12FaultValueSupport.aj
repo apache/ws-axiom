@@ -19,9 +19,14 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
 
 public aspect AxiomSOAP12FaultValueSupport {
+    public final boolean AxiomSOAP12FaultValue.isChildElementAllowed(OMElement child) {
+        return false;
+    }
+
     public final Class<? extends CoreNode> AxiomSOAP12FaultValue.coreGetNodeClass() {
         return AxiomSOAP12FaultValue.class;
     }

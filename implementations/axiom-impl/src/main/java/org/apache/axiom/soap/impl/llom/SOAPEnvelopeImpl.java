@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 
 /** Class SOAPEnvelopeImpl */
@@ -37,8 +36,6 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
      * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
     public void addChild(OMNode child) {
-        internalCheckChild(child);
-
         if (child instanceof SOAPHeader) {
             // The SOAPHeader is added before the SOAPBody
             // We must be sensitive to the state of the parser.  It is possible that the
@@ -104,9 +101,5 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement
             }
         }
         return null;
-    }
-
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 }

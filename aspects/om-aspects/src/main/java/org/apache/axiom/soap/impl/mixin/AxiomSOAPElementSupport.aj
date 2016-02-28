@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -30,6 +31,9 @@ public aspect AxiomSOAPElementSupport {
     }
 
     public final void AxiomSOAPElement.checkChild(OMNode child) {
+        if (child instanceof OMElement && !isChildElementAllowed((OMElement)child)) {
+            throw new SOAPProcessingException(child.getClass().getName() + " is not allowed as a child of " + getClass().getName());
+        }
         if (child instanceof AxiomSOAPElement) {
             SOAPHelper soapHelper = getSOAPHelper();
             SOAPHelper childSOAPHelper = ((AxiomSOAPElement)child).getSOAPHelper();
@@ -38,4 +42,6 @@ public aspect AxiomSOAPElementSupport {
             }
         }
     }
+    
+    public abstract boolean AxiomSOAPElement.isChildElementAllowed(OMElement child);
 }

@@ -19,17 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultValue;
 
 public class SOAP12FaultValueImpl extends SOAPElement implements AxiomSOAP12FaultValue {
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!((parent instanceof SOAP12FaultSubCodeImpl) ||
-                (parent instanceof SOAP12FaultCodeImpl))) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP FaultSubCode or SOAP FaultCode as the parent. But received some other implementation");
-        }
-    }
+
 }

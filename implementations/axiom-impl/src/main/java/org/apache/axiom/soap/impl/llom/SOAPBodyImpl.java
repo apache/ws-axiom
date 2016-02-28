@@ -19,18 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
 
 /** Class SOAPBodyImpl */
-public abstract class SOAPBodyImpl extends SOAPElement
-        implements AxiomSOAPBody, OMConstants {
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!(parent instanceof SOAPEnvelopeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting an implementation of SOAP Envelope as the parent. But received some other implementation");
-        }
-    }
+public abstract class SOAPBodyImpl extends SOAPElement implements AxiomSOAPBody {
+
 }

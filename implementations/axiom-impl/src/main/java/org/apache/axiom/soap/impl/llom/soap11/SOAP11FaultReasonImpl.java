@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
@@ -33,12 +32,5 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomS
 
     public SOAPFaultText getFirstSOAPText() {
         throw new UnsupportedOperationException("getFirstSOAPText() not allowed for SOAP 1.1!");
-    }
-
-    public void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!(parent instanceof SOAP11FaultImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP11FaultImpl, got " + parent.getClass());
-        }
     }
 }

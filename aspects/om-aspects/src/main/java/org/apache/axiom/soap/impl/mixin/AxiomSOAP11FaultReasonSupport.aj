@@ -19,10 +19,15 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
 
 public aspect AxiomSOAP11FaultReasonSupport {
     public final Class<? extends CoreNode> AxiomSOAP11FaultReason.coreGetNodeClass() {
         return AxiomSOAP11FaultReason.class;
+    }
+
+    public final boolean AxiomSOAP11FaultReason.isChildElementAllowed(OMElement child) {
+        return false;
     }
 }

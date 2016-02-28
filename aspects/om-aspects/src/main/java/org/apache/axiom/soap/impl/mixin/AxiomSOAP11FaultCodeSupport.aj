@@ -21,11 +21,16 @@ package org.apache.axiom.soap.impl.mixin;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultCode;
 
 public aspect AxiomSOAP11FaultCodeSupport {
+    public final boolean AxiomSOAP11FaultCode.isChildElementAllowed(OMElement child) {
+        return false;
+    }
+
     public final Class<? extends CoreNode> AxiomSOAP11FaultCode.coreGetNodeClass() {
         return AxiomSOAP11FaultCode.class;
     }
