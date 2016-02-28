@@ -18,10 +18,7 @@
  */
 package org.apache.axiom.core;
 
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
-
-public interface CoreAttribute extends NonDeferringParentNode, CoreCharacterDataContainingParentNode {
+public interface CoreAttribute extends CoreCharacterDataContainingParentNode {
     /**
      * Get the owner element of this attribute.
      * 
@@ -62,6 +59,4 @@ public interface CoreAttribute extends NonDeferringParentNode, CoreCharacterData
      *         of its owner element or if the attribute has no owner element
      */
     CoreAttribute coreGetPreviousAttribute();
-    
-    void coreSerialize(XmlHandler handler) throws CoreModelException, StreamException;
 }

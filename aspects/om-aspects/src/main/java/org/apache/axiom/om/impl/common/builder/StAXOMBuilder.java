@@ -21,10 +21,8 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
@@ -185,50 +183,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
 
     public final String getPrefix() {
         return helper.parser.getPrefix();
-    }
-
-    /**
-     * Get the underlying {@link XMLStreamReader} used by this builder. Note that for this type of
-     * builder, accessing the underlying parser implies that can no longer be used, and any attempt
-     * to call {@link #next()} will result in an exception.
-     * 
-     * @return The {@link XMLStreamReader} object used by this builder. Note that the constraints
-     *         described in the Javadoc of the <code>reader</code> parameter of the
-     *         {@link CustomBuilder#create(String, String, OMContainer, XMLStreamReader, OMFactory)}
-     *         method also apply to the stream reader returned by this method, i.e.:
-     *         <ul>
-     *         <li>The caller should use
-     *         {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}
-     *         to get an XOP encoded stream from the return value.
-     *         <li>To get access to the bare StAX parser implementation, the caller should use
-     *         {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}.
-     *         </ul>
-     * @throws IllegalStateException
-     *             if the parser has already been accessed
-     */
-    public final Object getParser() {
-        if (parserAccessed) {
-            throw new IllegalStateException(
-                    "Parser already accessed!");
-        }
-        if (!builderHandler.cache) {
-            parserAccessed = true;
-            // Mark all containers in the hierarchy as discarded because they can no longer be built
-            Context current = builderHandler.context;
-            while (builderHandler.depth > 0) {
-                discarded(current.target);
-                current = current.parentContext;
-                builderHandler.depth--;
-            }
-            if (current != null && current.target == builderHandler.document) {
-                discarded(current.target);
-            }
-            builderHandler.context = null;
-            return helper.parser;
-        } else {
-            throw new IllegalStateException(
-                    "cache must be switched off to access the parser");
-        }
     }
 
     public final XMLStreamReader disableCaching() {
@@ -395,9 +349,5 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
      */
     public final int lookahead() {
         return helper.lookahead();
-    }
-
-    public final AxiomContainer getTarget() {
-        return builderHandler.context.target;
     }
 }

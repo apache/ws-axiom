@@ -22,6 +22,8 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreEntityReferenceSupport {
     private String CoreEntityReference.name;
@@ -51,5 +53,9 @@ public aspect CoreEntityReferenceSupport {
         CoreEntityReference o = (CoreEntityReference)other;
         coreSetName(o.coreGetName());
         coreSetReplacementText(o.coreGetReplacementText());
+    }
+
+    public final void CoreEntityReference.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        handler.processEntityReference(coreGetName(), coreGetReplacementText());
     }
 }

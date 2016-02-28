@@ -43,8 +43,6 @@ import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -526,20 +524,6 @@ public aspect AxiomElementSupport {
 
     public final OMNamespace AxiomElement.getDefaultNamespace() {
         return findNamespaceURI("");
-    }
-
-    public void AxiomElement.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        defaultInternalSerialize(handler, cache);
-    }
-    
-    public final void AxiomElement.defaultInternalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        try {
-            coreSerializeStartPart(handler);
-        } catch (CoreModelException ex) {
-            throw new StreamException(ex);
-        }
-        serializeChildren(handler, cache);
-        handler.endElement();
     }
 
     public final String AxiomElement.toStringWithConsume() throws XMLStreamException {

@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -32,12 +34,22 @@ public final  class SAXResultContentHandler implements XmlHandler {
     private final OMContainer root;
     private final OMFactory factory;
     private OMContainer target;
+    private final CharacterDataAccumulator buffer = new CharacterDataAccumulator();
+    private boolean buffering;
+    private String piTarget;
 
     public SAXResultContentHandler(OMContainer root) {
         this.root = root;
         factory = root.getOMFactory();
     }
     
+    private String stopBuffering() {
+        String content = buffer.toString();
+        buffer.clear();
+        buffering = false;
+        return content;
+    }
+
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
         target = root;
     }
@@ -93,20 +105,43 @@ public final  class SAXResultContentHandler implements XmlHandler {
 
     @Override
     public void processCharacterData(Object data, boolean ignorable) {
-        factory.createOMText(target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
+        if (buffering) {
+            buffer.append(data);
+        } else {
+            factory.createOMText(target, data.toString(), ignorable ? OMNode.SPACE_NODE : OMNode.TEXT_NODE);
+        }
     }
 
     @Override
-    public void processCDATASection(String content) {
-        factory.createOMText(target, content, OMNode.CDATA_SECTION_NODE);
+    public void startCDATASection() throws StreamException {
+        buffering = true;
     }
 
-    public void processProcessingInstruction(String piTarget, String piData) {
-        factory.createOMProcessingInstruction(target, piTarget, piData);
+    @Override
+    public void endCDATASection() throws StreamException {
+        factory.createOMText(target, stopBuffering(), OMNode.CDATA_SECTION_NODE);
     }
 
-    public void processComment(String content) {
-        factory.createOMComment(target, content);
+    @Override
+    public void startProcessingInstruction(String target) throws StreamException {
+        buffering = true;
+        piTarget = target;
+    }
+
+    @Override
+    public void endProcessingInstruction() throws StreamException {
+        factory.createOMProcessingInstruction(target, piTarget, stopBuffering());
+        piTarget = null;
+    }
+
+    @Override
+    public void startComment() throws StreamException {
+        buffering = true;
+    }
+
+    @Override
+    public void endComment() throws StreamException {
+        factory.createOMComment(target, stopBuffering());
     }
 
     public void processEntityReference(String name, String replacementText) {

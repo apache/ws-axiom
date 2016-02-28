@@ -29,7 +29,8 @@ public interface CoreParentNode extends CoreNode {
     int COMPACT = 4;
     
     Builder coreGetBuilder();
-    void coreSetBuilder(Builder builder);
+    InputContext coreGetInputContext();
+    void coreSetInputContext(InputContext context);
     int getState();
     void coreSetState(int state);
     void build();

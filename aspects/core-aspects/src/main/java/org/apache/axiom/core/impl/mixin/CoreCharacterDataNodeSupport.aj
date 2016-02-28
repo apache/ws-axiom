@@ -25,6 +25,8 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.Flags;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreCharacterDataNodeSupport {
     /**
@@ -60,5 +62,9 @@ public aspect CoreCharacterDataNodeSupport {
         CoreCharacterDataNode o = (CoreCharacterDataNode)other;
         data = o.data instanceof CharacterData ? ((CharacterData)o.data).clone(policy, options) : o.data;
         coreSetIgnorable(o.coreIsIgnorable());
+    }
+
+    public final void CoreCharacterDataNode.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        handler.processCharacterData(coreGetCharacterData(), coreIsIgnorable());
     }
 }

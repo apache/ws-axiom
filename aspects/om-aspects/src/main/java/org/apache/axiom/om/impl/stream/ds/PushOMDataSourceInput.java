@@ -16,12 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.om.impl.stream.ds;
 
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public final class PushOMDataSourceInput implements XmlInput {
@@ -35,6 +37,14 @@ public final class PushOMDataSourceInput implements XmlInput {
     
     @Override
     public XmlReader createReader(XmlHandler handler) {
-        return new PushOMDataSourceReader(handler, root, dataSource);
+        XmlHandler unwrappedHandler = handler;
+        while (unwrappedHandler instanceof XmlHandlerWrapper) {
+            unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
+        }
+        if (unwrappedHandler instanceof StAXSerializer) {
+            return new DirectPushOMDataSourceReader(((StAXSerializer)unwrappedHandler).getWriter(), dataSource);
+        } else {
+            return new PushOMDataSourceReader(handler, root, dataSource);
+        }
     }
 }

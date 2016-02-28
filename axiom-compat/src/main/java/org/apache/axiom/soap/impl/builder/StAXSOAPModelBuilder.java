@@ -87,10 +87,6 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         return target.isCache();
     }
 
-    public Object getParser() {
-        return target.getParser();
-    }
-
     public boolean isCompleted() {
         return target.isCompleted();
     }

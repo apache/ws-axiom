@@ -55,7 +55,6 @@ public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
         OMElement payload = soapFactory.createOMElement(new DummySource(), "dummy", ns);
         payload.setNamespace(ns); // This line will cause NoSuchElementException
         body.addChild(payload);
-        payload.getBuilder().setCache(false); // Or This line will cause NoSuchElementException
         StringWriter writer = new StringWriter();
         envelope.serializeAndConsume(writer);
 //        System.out.println(writer);

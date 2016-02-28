@@ -76,11 +76,55 @@ public interface XmlHandler {
     
     void processCharacterData(Object data, boolean ignorable) throws StreamException;
     
-    void processProcessingInstruction(String piTarget, String piData) throws StreamException;
+    /**
+     * Notify the handler of the beginning of a processing instruction.
+     * 
+     * @param target
+     *            the target of the processing instruction
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void startProcessingInstruction(String target) throws StreamException;
     
-    void processComment(String content) throws StreamException;
+    /**
+     * Notify the handler of the end of a processing instruction.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void endProcessingInstruction() throws StreamException;
     
-    void processCDATASection(String content) throws StreamException;
+    /**
+     * Notify the handler of the beginning of a comment.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void startComment() throws StreamException;
+    
+    /**
+     * Notify the handler of the end of a comment.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void endComment() throws StreamException;
+    
+    /**
+     * Notify the handler of the beginning of a CDATA section.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void startCDATASection() throws StreamException;
+    
+    /**
+     * Notify the handler of the end of a CDATA section.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void endCDATASection() throws StreamException;
     
     void processEntityReference(String name, String replacementText) throws StreamException;
 }

@@ -20,7 +20,7 @@ package org.apache.axiom.core;
 
 import java.util.Iterator;
 
-public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, CoreNamedNode, DeferringParentNode {
+public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, CoreNamedNode {
     /**
      * Get the first attribute of this element.
      * 

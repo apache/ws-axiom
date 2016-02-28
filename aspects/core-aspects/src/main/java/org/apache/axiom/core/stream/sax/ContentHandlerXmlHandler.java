@@ -24,12 +24,15 @@ import java.util.Stack;
 import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
 public class ContentHandlerXmlHandler implements XmlHandler {
+    private enum CharacterDataMode { PASS_THROUGH, BUFFER, SKIP, ACCUMULATE };
+    
     private final ContentHandler contentHandler;
     private final LexicalHandler lexicalHandler;
     private String[] prefixStack = new String[16];
@@ -43,6 +46,11 @@ public class ContentHandlerXmlHandler implements XmlHandler {
     private String elementLocalName;
     private String elementQName;
     private final AttributesImpl attributes = new AttributesImpl();
+    private CharacterDataMode characterDataMode = CharacterDataMode.PASS_THROUGH;
+    private char[] buffer = new char[4096];
+    private int bufferPos;
+    private CharacterDataAccumulator accumulator;
+    private String piTarget;
     
     public ContentHandlerXmlHandler(ContentHandler contentHandler, LexicalHandler lexicalHandler) {
         this.contentHandler = contentHandler;
@@ -151,27 +159,55 @@ public class ContentHandlerXmlHandler implements XmlHandler {
         }
     }
 
+    private void writeToBuffer(String data) {
+        int dataLen = data.length();
+        if (buffer.length-bufferPos < dataLen) {
+            int newLength = buffer.length;
+            do {
+                newLength *= 2;
+            } while (newLength-bufferPos < dataLen);
+            char[] newBuffer = new char[newLength];
+            System.arraycopy(buffer, 0, newBuffer, 0, bufferPos);
+            buffer = newBuffer;
+        }
+        data.getChars(0, dataLen, buffer, bufferPos);
+        bufferPos += dataLen;
+    }
+
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         try {
-            if (ignorable) {
-                char[] ch = data.toString().toCharArray();
-                contentHandler.ignorableWhitespace(ch, 0, ch.length);
-            } else if (data instanceof CharacterData) {
-                try {
-                    ((CharacterData)data).writeTo(new ContentHandlerWriter(contentHandler));
-                } catch (IOException ex) {
-                    Throwable cause = ex.getCause();
-                    SAXException saxException;
-                    if (cause instanceof SAXException) {
-                        saxException = (SAXException)cause;
+            switch (characterDataMode) {
+                case PASS_THROUGH:
+                    if (ignorable) {
+                        writeToBuffer(data.toString());
+                        contentHandler.ignorableWhitespace(buffer, 0, bufferPos);
+                        bufferPos = 0;
+                    } else if (data instanceof CharacterData) {
+                        try {
+                            ((CharacterData)data).writeTo(new ContentHandlerWriter(contentHandler));
+                        } catch (IOException ex) {
+                            Throwable cause = ex.getCause();
+                            SAXException saxException;
+                            if (cause instanceof SAXException) {
+                                saxException = (SAXException)cause;
+                            } else {
+                                saxException = new SAXException(ex);
+                            }
+                            throw new StreamException(saxException);
+                        }
                     } else {
-                        saxException = new SAXException(ex);
+                        writeToBuffer(data.toString());
+                        contentHandler.characters(buffer, 0, bufferPos);
+                        bufferPos = 0;
                     }
-                    throw new StreamException(saxException);
-                }
-            } else {
-                char[] ch = data.toString().toCharArray();
-                contentHandler.characters(ch, 0, ch.length);
+                    break;
+                case BUFFER:
+                    writeToBuffer(data.toString());
+                    break;
+                case ACCUMULATE:
+                    accumulator.append(data);
+                    break;
+                case SKIP:
             }
         } catch (SAXException ex) {
             throw new StreamException(ex);
@@ -179,13 +215,19 @@ public class ContentHandlerXmlHandler implements XmlHandler {
     }
     
     @Override
-    public void processCDATASection(String content) throws StreamException {
+    public void startCDATASection() throws StreamException {
         try {
             if (lexicalHandler != null) {
                 lexicalHandler.startCDATA();
             }
-            char[] ch = content.toCharArray();
-            contentHandler.characters(ch, 0, ch.length);
+        } catch (SAXException ex) {
+            throw new StreamException(ex);
+        }
+    }
+
+    @Override
+    public void endCDATASection() throws StreamException {
+        try {
             if (lexicalHandler != null) {
                 lexicalHandler.endCDATA();
             }
@@ -194,20 +236,40 @@ public class ContentHandlerXmlHandler implements XmlHandler {
         }
     }
 
-    public void processComment(String data) throws StreamException {
+    @Override
+    public void startComment() throws StreamException {
+        characterDataMode = lexicalHandler == null ? CharacterDataMode.SKIP : CharacterDataMode.BUFFER;
+    }
+
+    @Override
+    public void endComment() throws StreamException {
         if (lexicalHandler != null) {
-            char[] ch = data.toCharArray();
             try {
-                lexicalHandler.comment(ch, 0, ch.length);
+                lexicalHandler.comment(buffer, 0, bufferPos);
+                bufferPos = 0;
             } catch (SAXException ex) {
                 throw new StreamException(ex);
             }
         }
+        characterDataMode = CharacterDataMode.PASS_THROUGH;
     }
 
-    public void processProcessingInstruction(String target, String data) throws StreamException {
+    @Override
+    public void startProcessingInstruction(String target) throws StreamException {
+        if (accumulator == null) {
+            accumulator = new CharacterDataAccumulator();
+        }
+        piTarget = target;
+        characterDataMode = CharacterDataMode.ACCUMULATE;
+    }
+
+    @Override
+    public void endProcessingInstruction() throws StreamException {
         try {
-            contentHandler.processingInstruction(target, data);
+            contentHandler.processingInstruction(piTarget, accumulator.toString());
+            accumulator.clear();
+            piTarget = null;
+            characterDataMode = CharacterDataMode.PASS_THROUGH;
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }

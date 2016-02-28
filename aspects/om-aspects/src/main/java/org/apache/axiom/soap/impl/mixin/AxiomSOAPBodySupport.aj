@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.mixin;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.InputContext;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -36,8 +37,8 @@ public aspect AxiomSOAPBodySupport {
     }
 
     private boolean AxiomSOAPBody.hasLookahead() {
-        StAXOMBuilder builder = (StAXOMBuilder)coreGetBuilder();
-        if (builder != null && !builder.isCompleted() && builder.getTarget() == this) {
+        InputContext context = coreGetInputContext();
+        if (context != null) {
             CoreChildNode child = coreGetFirstChildIfAvailable();
             while (child != null) {
                 if (child instanceof OMElement) {
@@ -45,12 +46,13 @@ public aspect AxiomSOAPBodySupport {
                 }
                 child = child.coreGetNextSiblingIfAvailable();
             }
+            StAXOMBuilder builder = (StAXOMBuilder)context.getBuilder();
             do {
                 if (builder.lookahead() == XMLStreamReader.START_ELEMENT) {
                     return true;
                 }
                 builder.next();
-            } while (builder.getTarget() == this);
+            } while (coreGetInputContext() != null);
         }
         return false;
     }

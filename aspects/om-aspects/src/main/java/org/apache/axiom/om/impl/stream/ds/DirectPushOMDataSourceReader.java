@@ -16,20 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl.mixin;
+package org.apache.axiom.om.impl.stream.ds;
 
-import org.apache.axiom.core.Builder;
-import org.apache.axiom.core.NonDeferringParentNode;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
-public aspect NonDeferringParentNodeSupport {
-    public final Builder NonDeferringParentNode.coreGetBuilder() {
-        return null;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.om.OMDataSource;
+
+final class DirectPushOMDataSourceReader implements XmlReader {
+    private final XMLStreamWriter writer;
+    private final OMDataSource dataSource;
+
+    DirectPushOMDataSourceReader(XMLStreamWriter writer, OMDataSource dataSource) {
+        this.writer = writer;
+        this.dataSource = dataSource;
     }
 
-    public final void NonDeferringParentNode.coreSetBuilder(Builder builder) {
-        throw new UnsupportedOperationException();
-    }
-    
-    public final void NonDeferringParentNode.build() {
+    @Override
+    public boolean proceed() throws StreamException {
+        try {
+            dataSource.serialize(writer);
+        } catch (XMLStreamException ex) {
+            throw new StreamException(ex);
+        }
+        return true;
     }
 }

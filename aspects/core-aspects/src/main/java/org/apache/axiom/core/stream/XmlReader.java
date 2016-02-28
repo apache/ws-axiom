@@ -19,5 +19,5 @@
 package org.apache.axiom.core.stream;
 
 public interface XmlReader {
-    void proceed() throws StreamException;
+    boolean proceed() throws StreamException;
 }

@@ -18,6 +18,6 @@
  */
 package org.apache.axiom.core;
 
-public interface CoreDocumentFragment extends CoreMixedContentContainer, NonDeferringParentNode {
+public interface CoreDocumentFragment extends CoreMixedContentContainer {
 
 }

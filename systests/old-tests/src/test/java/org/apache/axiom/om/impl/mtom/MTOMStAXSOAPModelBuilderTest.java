@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.MTOMSample;
@@ -76,28 +75,6 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
             assertTrue(msg.indexOf("xop:Include") < 0);
             assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") < 0);
         }
-    }
-    
-    public void testAccessToParser() throws Exception {
-        OMElement root = createTestMTOMMessage();
-        OMXMLParserWrapper builder = root.getBuilder();
-        // Disable caching so that the reader can be accessed.
-        builder.setCache(false);
-        XMLStreamReader reader = (XMLStreamReader) builder.getParser();
-        
-        // For an MTOM message, the reader is actually an XOPDecodingStreamReader. This one
-        // cannot be unwrapped by getOriginalXMLStreamReader
-        assertSame(reader, XMLStreamReaderUtils.getOriginalXMLStreamReader(reader));
-        
-        // To get access to the original reader, we first need to unwrap the
-        // XOPDecodingStreamReader using XOPUtils
-        XMLStreamReader encodedReader = XOPUtils.getXOPEncodedStream(reader).getReader();
-        assertTrue(encodedReader != reader);
-
-        // Now we can get to the original parser
-        XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(encodedReader);
-        
-        assertTrue(!original.getClass().getName().startsWith("org.apache.axiom."));
     }
     
     public void testAccessToCachedParser() throws Exception {

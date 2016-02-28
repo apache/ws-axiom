@@ -16,21 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl.mixin;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.Builder;
-import org.apache.axiom.core.DeferringParentNode;
+import org.apache.axiom.core.stream.XmlHandler;
 
-public aspect DeferringParentNodeSupport {
-    private Builder DeferringParentNode.builder;
+public interface InputContext {
+    Builder getBuilder();
 
-    public final Builder DeferringParentNode.coreGetBuilder() {
-        forceExpand();
-        return builder;
-    }
-
-    public final void DeferringParentNode.coreSetBuilder(Builder builder) {
-        this.builder = builder;
-        coreSetState(builder == null ? COMPLETE : INCOMPLETE);
-    }
+    /**
+     * Enables pass-through mode for this context. In this mode, events for the parent information
+     * item linked to this context (and its descendants) are passed directly to the specified
+     * handler instead of building nodes for them.
+     * 
+     * @param handler
+     *            the handler to send events to
+     * @throws IllegalStateException
+     *             if a pass-through handler has already been set for this context
+     */
+    void setPassThroughHandler(XmlHandler passThroughHandler);
 }

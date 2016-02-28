@@ -29,7 +29,7 @@ public aspect CoreNSUnawareAttributeSupport {
         return NodeType.NS_UNAWARE_ATTRIBUTE;
     }
 
-    public final void CoreNSUnawareAttribute.coreSerialize(XmlHandler handler) throws CoreModelException, StreamException {
+    public final void CoreNSUnawareAttribute.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         // TODO
         throw new UnsupportedOperationException();
     }

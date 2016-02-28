@@ -22,6 +22,8 @@ import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreDocumentTypeDeclaration;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreDocumentTypeDeclarationSupport {
     private String CoreDocumentTypeDeclaration.rootName;
@@ -71,5 +73,9 @@ public aspect CoreDocumentTypeDeclarationSupport {
         coreSetPublicId(o.coreGetPublicId());
         coreSetSystemId(o.coreGetSystemId());
         coreSetInternalSubset(o.coreGetInternalSubset());
+    }
+
+    public final void CoreDocumentTypeDeclaration.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
+        handler.processDocumentTypeDeclaration(coreGetRootName(), coreGetPublicId(), coreGetSystemId(), coreGetInternalSubset());
     }
 }

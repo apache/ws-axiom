@@ -70,17 +70,28 @@ public class XmlHandlerWrapper implements XmlHandler {
         parent.processCharacterData(data, ignorable);
     }
 
-    public void processProcessingInstruction(String piTarget, String piData)
-            throws StreamException {
-        parent.processProcessingInstruction(piTarget, piData);
+    public void startProcessingInstruction(String target) throws StreamException {
+        parent.startProcessingInstruction(target);
     }
 
-    public void processComment(String content) throws StreamException {
-        parent.processComment(content);
+    public void endProcessingInstruction() throws StreamException {
+        parent.endProcessingInstruction();
     }
 
-    public void processCDATASection(String content) throws StreamException {
-        parent.processCDATASection(content);
+    public void startComment() throws StreamException {
+        parent.startComment();
+    }
+
+    public void endComment() throws StreamException {
+        parent.endComment();
+    }
+
+    public void startCDATASection() throws StreamException {
+        parent.startCDATASection();
+    }
+
+    public void endCDATASection() throws StreamException {
+        parent.endCDATASection();
     }
 
     public void processEntityReference(String name, String replacementText) throws StreamException {

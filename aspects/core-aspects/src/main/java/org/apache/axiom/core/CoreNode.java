@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.core;
 
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+
 public interface CoreNode {
     void coreSetOwnerDocument(CoreDocument document);
     
@@ -45,4 +48,6 @@ public interface CoreNode {
     
     <T> void init(ClonePolicy<T> policy, T options, CoreNode other) throws CoreModelException;
     <T> void cloneChildrenIfNecessary(ClonePolicy<T> policy, T options, CoreNode clone) throws CoreModelException;
+
+    void internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException;
 }

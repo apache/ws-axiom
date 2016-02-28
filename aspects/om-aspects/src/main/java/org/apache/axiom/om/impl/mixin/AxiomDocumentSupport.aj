@@ -20,8 +20,6 @@ package org.apache.axiom.om.impl.mixin;
 
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
@@ -53,12 +51,6 @@ public aspect AxiomDocumentSupport {
         } catch (CoreModelException ex) {
             throw AxiomExceptionTranslator.translate(ex);
         }
-    }
-
-    public final void AxiomDocument.internalSerialize(XmlHandler handler, boolean cache) throws StreamException {
-        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
-        serializeChildren(handler, cache);
-        handler.endDocument();
     }
 
     public final String AxiomDocument.getCharsetEncoding() {

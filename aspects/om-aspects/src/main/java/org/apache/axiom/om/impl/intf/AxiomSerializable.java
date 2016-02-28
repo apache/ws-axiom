@@ -18,19 +18,8 @@
  */
 package org.apache.axiom.om.impl.intf;
 
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMSerializable;
 
 public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {
     void setComplete(boolean state);
-
-    /**
-     * Serializes the node.
-     *
-     * @param serializer
-     * @param cache indicates if caching should be enabled
-     * @throws StreamException 
-     */
-    void internalSerialize(XmlHandler handler, boolean cache) throws StreamException;
 }

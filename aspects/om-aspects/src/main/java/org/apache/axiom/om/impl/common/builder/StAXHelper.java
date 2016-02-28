@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
@@ -67,7 +68,7 @@ import java.io.Closeable;
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
-public class StAXHelper {
+public class StAXHelper implements XmlReader {
     private static final Log log = LogFactory.getLog(StAXHelper.class);
     
     /** Field parser */
@@ -151,7 +152,9 @@ public class StAXHelper {
                     handler.processCharacterData(text, true);
                     break;
                 case XMLStreamConstants.CDATA:
-                    handler.processCDATASection(text);
+                    handler.startCDATASection();
+                    handler.processCharacterData(text, false);
+                    handler.endCDATASection();
                     break;
                 default:
                     throw new IllegalStateException();
@@ -194,6 +197,11 @@ public class StAXHelper {
         return _isClosed;
     }
     
+    @Override
+    public boolean proceed() throws StreamException {
+        return next() == XMLStreamReader.END_DOCUMENT;
+    }
+
     /**
      * Forwards the parser one step further, if parser is not completed yet. If this is called after
      * parser is done, then throw an OMException. If the cache is set to false, then returns the
@@ -229,13 +237,17 @@ public class StAXHelper {
                     handler.endDocument();
                     break;
                 case XMLStreamConstants.COMMENT:
-                    handler.processComment(parser.getText());
+                    handler.startComment();
+                    handler.processCharacterData(parser.getText(), false);
+                    handler.endComment();
                     break;
                 case XMLStreamConstants.DTD:
                     processDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    handler.processProcessingInstruction(parser.getPITarget(), parser.getPIData());
+                    handler.startProcessingInstruction(parser.getPITarget());
+                    handler.processCharacterData(parser.getPIData(), false);
+                    handler.endProcessingInstruction();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
                     handler.processEntityReference(parser.getLocalName(), parser.getText());

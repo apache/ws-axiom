@@ -26,6 +26,7 @@ import org.apache.axiom.truth.xml.spi.Traverser;
 import org.apache.axiom.truth.xml.spi.TraverserException;
 import org.apache.axiom.truth.xml.spi.XML;
 
+import com.ctc.wstx.api.WstxInputProperties;
 import com.ctc.wstx.stax.WstxInputFactory;
 
 abstract class StAXXML implements XML {
@@ -41,6 +42,7 @@ abstract class StAXXML implements XML {
         factory.setProperty(WstxInputFactory.P_AUTO_CLOSE_INPUT, Boolean.TRUE);
         factory.setProperty(WstxInputFactory.P_REPORT_PROLOG_WHITESPACE, Boolean.TRUE);
         factory.setProperty(WstxInputFactory.P_REPORT_CDATA, Boolean.TRUE);
+        factory.setProperty(WstxInputProperties.P_MIN_TEXT_SEGMENT, Integer.MAX_VALUE);
         try {
             return new StAXTraverser(createXMLStreamReader(factory));
         } catch (XMLStreamException ex) {

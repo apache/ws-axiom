@@ -29,4 +29,5 @@ public interface CharacterData {
     <T> CharacterData clone(ClonePolicy<T> policy, T options);
     String toString();
     void writeTo(Writer writer) throws IOException;
+    void appendTo(StringBuilder buffer);
 }

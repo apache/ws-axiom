@@ -16,11 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.stream.stax;
 
-/**
- * Marker interface for {@link CoreParentNode} implementations that don't support deferred parsing.
- */
-public interface NonDeferringParentNode extends CoreParentNode {
+import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.om.impl.common.builder.StAXHelper;
+
+public final class StAXPullInput implements XmlInput {
+    private final XMLStreamReader reader;
+
+    public StAXPullInput(XMLStreamReader reader) {
+        this.reader = reader;
+    }
+
+    @Override
+    public XmlReader createReader(XmlHandler handler) {
+        return new StAXHelper(reader, handler, null, true);
+    }
 }

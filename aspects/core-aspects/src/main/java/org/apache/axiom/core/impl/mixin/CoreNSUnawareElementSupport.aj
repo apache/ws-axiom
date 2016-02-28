@@ -19,8 +19,11 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSUnawareElement;
 import org.apache.axiom.core.NodeType;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 
 public aspect CoreNSUnawareElementSupport {
     public final NodeType CoreNSUnawareElement.coreGetNodeType() {
@@ -37,5 +40,10 @@ public aspect CoreNSUnawareElementSupport {
     
     final void CoreNSUnawareElement.copyName(CoreElement clone) {
         ((CoreNSUnawareElement)clone).coreSetName(coreGetName());
+    }
+
+    public final void CoreNSUnawareElement.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }
