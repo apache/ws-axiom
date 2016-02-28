@@ -178,12 +178,14 @@ public aspect CoreParentNodeSupport {
         return child;
     }
     
-    public final void CoreParentNode.coreAppendChild(CoreChildNode child, boolean fromBuilder) {
+    public final void CoreParentNode.coreAppendChild(CoreChildNode child) {
+        // TODO: this is wrong; we only need to build the node locally, but build() builds incomplete children as well
+        build();
+        internalAppendChildWithoutBuild(child);
+    }
+    
+    public final void CoreParentNode.internalAppendChildWithoutBuild(CoreChildNode child) {
         CoreParentNode parent = child.coreGetParent();
-        if (!fromBuilder) {
-            // TODO: this is wrong; we only need to build the node locally, but build() builds incomplete children as well
-            build();
-        }
         Content content = getContent(true);
         if (parent == this && child == content.lastChild) {
             // The child is already the last node. 

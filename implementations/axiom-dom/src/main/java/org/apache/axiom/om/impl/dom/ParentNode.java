@@ -40,7 +40,7 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     public final Node appendChild(Node newChild) throws DOMException {
         checkNewChild(newChild, null);
         if (newChild instanceof CoreChildNode) {
-            coreAppendChild((CoreChildNode)newChild, false);
+            coreAppendChild((CoreChildNode)newChild);
         } else if (newChild instanceof CoreDocumentFragment) {
             coreAppendChildren((CoreDocumentFragment)newChild);
         } else {
@@ -119,7 +119,7 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
             oldChild.coreDetach(DOMSemantics.INSTANCE);
             if (newChild instanceof CoreChildNode) {
                 if (nextSibling == null) {
-                    coreAppendChild((CoreChildNode)newChild, false);
+                    coreAppendChild((CoreChildNode)newChild);
                 } else {
                     nextSibling.coreInsertSiblingBefore((CoreChildNode)newChild);
                 }

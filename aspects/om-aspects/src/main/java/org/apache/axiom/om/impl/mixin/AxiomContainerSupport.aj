@@ -142,7 +142,7 @@ public aspect AxiomContainerSupport {
     public void AxiomContainer.addChild(OMNode omNode) {
         AxiomChildNode child = prepareNewChild(omNode);
         
-        coreAppendChild(child, false);
+        coreAppendChild(child);
 
         // For a normal OMNode, the incomplete status is
         // propogated up the tree.  

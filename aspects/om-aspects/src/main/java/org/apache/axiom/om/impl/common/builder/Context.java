@@ -118,10 +118,10 @@ public final class Context implements InputContext {
         if (pendingCharacterData != null) {
             AxiomCharacterDataNode cdataNode = builderHandler.nodeFactory.createNode(AxiomCharacterDataNode.class);
             cdataNode.coreSetCharacterData(pendingCharacterData);
-            target.coreAppendChild(cdataNode, true);
+            target.internalAppendChildWithoutBuild(cdataNode);
             pendingCharacterData = null;
         }
-        target.coreAppendChild(node, true);
+        target.internalAppendChildWithoutBuild(node);
         if (!(node instanceof CoreCharacterDataNode)) {
             builderHandler.nodeAdded(node);
         }

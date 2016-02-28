@@ -93,7 +93,7 @@ public aspect CoreNodeSupport {
     final <T> CoreNode CoreNode.internalClone(ClonePolicy<T> policy, T options, CoreParentNode targetParent) throws CoreModelException {
         CoreNode clone = shallowClone(policy, options);
         if (targetParent != null) {
-            targetParent.coreAppendChild((CoreChildNode)clone, false);
+            targetParent.coreAppendChild((CoreChildNode)clone);
         }
         policy.postProcess(options, clone);
         cloneChildrenIfNecessary(policy, options, clone);

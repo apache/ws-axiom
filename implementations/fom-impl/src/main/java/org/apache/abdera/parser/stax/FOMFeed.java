@@ -94,7 +94,7 @@ public class FOMFeed extends FOMSource implements AbderaFeed {
                     return;
                 }
             }
-            coreAppendChild(element, false);
+            coreAppendChild(element);
         } catch (CoreModelException ex) {
             throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }

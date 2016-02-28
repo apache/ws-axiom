@@ -80,8 +80,9 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 
 @SuppressWarnings("unchecked")
 public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement {
+    // Overridden in subclasses!
     public void _addChild(AbderaElement element) {
-        coreAppendChild(element, false);
+        coreAppendChild(element);
     }
     
     protected void setParentDocument(Document parent) {
@@ -259,7 +260,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     public void _setChild(QName qname, Element element) {
         AbderaElement e = _getFirstChildWithName(qname);
         if (e == null && element != null) {
-            coreAppendChild((AbderaElement)element, false);
+            coreAppendChild((AbderaElement)element);
         } else if (e != null && element != null) {
             e.coreReplaceWith((AbderaElement)element, FOMSemantics.INSTANCE);
         } else if (e != null && element == null) {
