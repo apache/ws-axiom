@@ -31,6 +31,7 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
@@ -44,8 +45,10 @@ import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.ElementsIterator;
 import org.apache.axiom.core.impl.Flags;
 import org.apache.axiom.core.impl.NodesIterator;
+import org.apache.axiom.core.impl.TreeWalkerImpl;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlReader;
 
 public aspect CoreParentNodeSupport {
     private InputContext CoreParentNode.context;
@@ -368,40 +371,13 @@ public aspect CoreParentNodeSupport {
     }
 
     public void CoreParentNode.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        serializeStartEvent(handler);
-        serializeChildren(handler, cache);
-        serializeEndEvent(handler);
-    }
-
-    public final void CoreParentNode.serializeChildren(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        if (getState() == DISCARDED) {
-            Builder builder = coreGetBuilder();
-            if (builder != null) {
-                builder.debugDiscarded(this);
+        try {
+            XmlReader reader = new TreeWalkerImpl(handler, this, cache);
+            while (!reader.proceed()) {
+                // Just loop
             }
-            throw new NodeConsumedException();
-        }
-        if (cache) {
-            CoreChildNode child = coreGetFirstChild();
-            while (child != null) {
-                child.internalSerialize(handler, true);
-                child = child.coreGetNextSibling();
-            }
-        } else {
-            // First, recursively serialize all child nodes that have already been created
-            CoreChildNode child = coreGetFirstChildIfAvailable();
-            while (child != null) {
-                child.internalSerialize(handler, cache);
-                child = child.coreGetNextSiblingIfAvailable();
-            }
-            InputContext context = coreGetInputContext();
-            if (context != null) {
-                context.setPassThroughHandler(handler);
-                Builder builder = context.getBuilder();
-                do {
-                    builder.next();
-                } while (coreGetInputContext() != null);
-            }
+        } catch (CoreModelStreamException ex) {
+            throw ex.getCoreModelException();
         }
     }
 }

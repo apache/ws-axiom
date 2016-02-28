@@ -19,14 +19,11 @@
 package org.apache.axiom.core.impl.mixin;
 
 import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.NodeType;
-import org.apache.axiom.core.impl.TreeWalkerImpl;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
-import org.apache.axiom.core.stream.XmlReader;
 
 public aspect CoreNSAwareElementSupport {
     public final NodeType CoreNSAwareElement.coreGetNodeType() {
@@ -51,16 +48,5 @@ public aspect CoreNSAwareElementSupport {
 
     public final void CoreNSAwareElement.serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endElement();
-    }
-
-    public final void CoreNSAwareElement.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
-        try {
-            XmlReader reader = new TreeWalkerImpl(handler, this, cache);
-            while (!reader.proceed()) {
-                // Just loop
-            }
-        } catch (CoreModelStreamException ex) {
-            throw ex.getCoreModelException();
-        }
     }
 }
