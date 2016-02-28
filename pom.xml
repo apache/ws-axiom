@@ -279,14 +279,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-        <repository>
-            <id>maven-fluido-skin-1.5</id>
-            <name>Maven Fluido Skin 1.5 staging repository</name>
-            <url>https://repository.apache.org/content/repositories/maven-1253/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -835,8 +827,7 @@
                         </requireMavenVersion>
                         <requireNoRepositories>
                             <message>The POM must not include repository definitions since non Apache repositories threaten the build stability.</message>
-                            <!-- TODO: change this when Fluido Skin has been released -->
-                            <banRepositories>false</banRepositories>
+                            <banRepositories>true</banRepositories>
                             <banPluginRepositories>true</banPluginRepositories>
                             <!-- We still need to allow the Apache snapshot repository -->
                             <allowSnapshotRepositories>true</allowSnapshotRepositories>
