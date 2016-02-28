@@ -27,11 +27,6 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12Fault;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultDetail;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
-import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultRole;
 
 public aspect AxiomSOAP12FaultSupport {
     private static final Class<?>[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
@@ -42,44 +37,23 @@ public aspect AxiomSOAP12FaultSupport {
     }
     
     public final void AxiomSOAP12Fault.setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException {
-        if (!(soapFaultCode instanceof AxiomSOAP12FaultCode)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Code. " +
-                            "But received some other implementation");
-        }
         insertChild(sequence, 0, soapFaultCode);
     }
 
 
     public final void AxiomSOAP12Fault.setReason(SOAPFaultReason reason) throws SOAPProcessingException {
-        if (!(reason instanceof AxiomSOAP12FaultReason)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Reason. But received some other implementation");
-        }
         insertChild(sequence, 1, reason);
     }
 
     public final void AxiomSOAP12Fault.setNode(SOAPFaultNode node) throws SOAPProcessingException {
-        if (!(node instanceof AxiomSOAP12FaultNode)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Node. But received some other implementation");
-        }
         insertChild(sequence, 2, node);
     }
 
     public final void AxiomSOAP12Fault.setRole(SOAPFaultRole role) throws SOAPProcessingException {
-        if (!(role instanceof AxiomSOAP12FaultRole)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Role. But received some other implementation");
-        }
         insertChild(sequence, 3, role);
     }
 
     public final void AxiomSOAP12Fault.setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
-        if (!(detail instanceof AxiomSOAP12FaultDetail)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Detail. But received some other implementation");
-        }
         insertChild(sequence, 4, detail);
     }
 

@@ -19,10 +19,23 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPElement;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public aspect AxiomSOAPElementSupport {
     public final OMFactory AxiomSOAPElement.getOMFactory() {
         return getSOAPHelper().getSOAPFactory(getMetaFactory());
+    }
+
+    public final void AxiomSOAPElement.checkChild(OMNode child) {
+        if (child instanceof AxiomSOAPElement) {
+            SOAPHelper soapHelper = getSOAPHelper();
+            SOAPHelper childSOAPHelper = ((AxiomSOAPElement)child).getSOAPHelper();
+            if (childSOAPHelper != soapHelper) {
+                throw new SOAPProcessingException("Cannot add a " + childSOAPHelper.getSpecName() + " element as a child of a " + soapHelper.getSpecName() + " element");
+            }
+        }
     }
 }
