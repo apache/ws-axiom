@@ -20,6 +20,7 @@ package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -40,6 +41,22 @@ public aspect AxiomSOAPEnvelopeSupport {
     public final SOAPHeader AxiomSOAPEnvelope.getOrCreateHeader() {
         SOAPHeader header = getHeader();
         return header != null ? header : ((SOAPFactory)getOMFactory()).createSOAPHeader(this);
+    }
+
+    public final SOAPBody AxiomSOAPEnvelope.getBody() {
+        OMElement element = getFirstElement();
+        if (element instanceof SOAPBody) {
+            return (SOAPBody)element;
+        } else if (element instanceof SOAPHeader) {
+            OMNode node = element.getNextOMSibling();
+            while (node != null && !(node instanceof OMElement)) {
+                node = node.getNextOMSibling();
+            }
+            if (node instanceof SOAPBody) {
+                return (SOAPBody)node;
+            }
+        }
+        return null;
     }
 
     public final boolean AxiomSOAPEnvelope.hasFault() {

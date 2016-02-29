@@ -20,14 +20,10 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -79,43 +75,5 @@ public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPE
             checkChild((OMNode)newChild);
         }
         return super.insertBefore(newChild, refChild);
-    }
-
-    /**
-     * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
-     * object.
-     * <p/>
-     * This SOAPBody will just be a container for all the BodyElements in the <CODE>OMMessage</CODE>
-     * </P>
-     *
-     * @return the <CODE>SOAPBody</CODE> object for this <CODE> SOAPEnvelope</CODE> object or
-     *         <CODE>null</CODE> if there is none
-     * @throws org.apache.axiom.om.OMException
-     *                     if there is a problem obtaining the <CODE>SOAPBody</CODE> object
-     * @throws OMException
-     */
-    public SOAPBody getBody() throws OMException {
-        // check for the first element
-        OMElement element = getFirstElement();
-        if (element != null) {
-            if (SOAPConstants.BODY_LOCAL_NAME.equals(element.getLocalName())) {
-                return (SOAPBody) element;
-            } else { // if not second element SHOULD be the body
-                OMNode node = element.getNextOMSibling();
-                while (node != null && node.getType() != OMNode.ELEMENT_NODE) {
-                    node = node.getNextOMSibling();
-                }
-                if (node == null) {
-                    // The envelope only contains a header
-                    return null;
-                } else if (SOAPConstants.BODY_LOCAL_NAME.equals(((OMElement)node).getLocalName())) {
-                    return (SOAPBody)node;
-                } else {
-                    throw new OMException("SOAPEnvelope must contain a body element " +
-                            "which is either first or second child element of the SOAPEnvelope.");
-                }
-            }
-        }
-        return null;
     }
 }
