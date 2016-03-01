@@ -25,7 +25,6 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12Fault;
 
 public aspect AxiomSOAP12FaultSupport {
@@ -36,25 +35,12 @@ public aspect AxiomSOAP12FaultSupport {
         return AxiomSOAP12Fault.class;
     }
     
-    public final void AxiomSOAP12Fault.setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException {
-        insertChild(sequence, 0, soapFaultCode);
+    public final Class[] AxiomSOAP12Fault.getSequence() {
+        return sequence;
     }
-
-
-    public final void AxiomSOAP12Fault.setReason(SOAPFaultReason reason) throws SOAPProcessingException {
-        insertChild(sequence, 1, reason);
-    }
-
-    public final void AxiomSOAP12Fault.setNode(SOAPFaultNode node) throws SOAPProcessingException {
-        insertChild(sequence, 2, node);
-    }
-
-    public final void AxiomSOAP12Fault.setRole(SOAPFaultRole role) throws SOAPProcessingException {
-        insertChild(sequence, 3, role);
-    }
-
-    public final void AxiomSOAP12Fault.setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
-        insertChild(sequence, 4, detail);
+    
+    public final void AxiomSOAP12Fault.setNode(SOAPFaultNode node) {
+        insertChild(sequence, SOAPFaultNode.class, node);
     }
 
     public final SOAPFaultCode AxiomSOAP12Fault.getCode() {

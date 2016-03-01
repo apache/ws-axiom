@@ -39,6 +39,22 @@ public aspect AxiomSOAPFaultSupport {
                 || child instanceof SOAPFaultReason || child instanceof SOAPFaultRole || child instanceof SOAPFaultNode;
     }
 
+    public final void AxiomSOAPFault.setCode(SOAPFaultCode soapFaultCode) {
+        insertChild(getSequence(), SOAPFaultCode.class, soapFaultCode);
+    }
+
+    public final void AxiomSOAPFault.setReason(SOAPFaultReason reason) {
+        insertChild(getSequence(), SOAPFaultReason.class, reason);
+    }
+
+    public final void AxiomSOAPFault.setRole(SOAPFaultRole role) {
+        insertChild(getSequence(), SOAPFaultRole.class, role);
+    }
+
+    public final void AxiomSOAPFault.setDetail(SOAPFaultDetail detail) {
+        insertChild(getSequence(), SOAPFaultDetail.class, detail);
+    }
+
     public final void AxiomSOAPFault.setException(Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));

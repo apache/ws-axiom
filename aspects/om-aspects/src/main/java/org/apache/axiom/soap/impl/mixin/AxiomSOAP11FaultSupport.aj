@@ -25,7 +25,6 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11Fault;
 
 public aspect AxiomSOAP11FaultSupport {
@@ -36,25 +35,12 @@ public aspect AxiomSOAP11FaultSupport {
         return AxiomSOAP11Fault.class;
     }
     
-    public final void AxiomSOAP11Fault.setCode(SOAPFaultCode soapFaultCode)
-            throws SOAPProcessingException {
-        insertChild(sequence, 0, soapFaultCode);
+    public final Class[] AxiomSOAP11Fault.getSequence() {
+        return sequence;
     }
-
-    public final void AxiomSOAP11Fault.setReason(SOAPFaultReason reason) throws SOAPProcessingException {
-        insertChild(sequence, 1, reason);
-    }
-
-    public final void AxiomSOAP11Fault.setNode(SOAPFaultNode node) throws SOAPProcessingException {
+    
+    public final void AxiomSOAP11Fault.setNode(SOAPFaultNode node) {
         throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
-    }
-
-    public final void AxiomSOAP11Fault.setRole(SOAPFaultRole role) throws SOAPProcessingException {
-        insertChild(sequence, 2, role);
-    }
-
-    public final void AxiomSOAP11Fault.setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
-        insertChild(sequence, 3, detail);
     }
 
     public final SOAPFaultCode AxiomSOAP11Fault.getCode() {

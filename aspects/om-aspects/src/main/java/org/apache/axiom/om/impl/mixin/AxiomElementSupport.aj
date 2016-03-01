@@ -255,8 +255,15 @@ public aspect AxiomElementSupport {
         coreSetNextSibling(null);
     }
     
-    public void AxiomElement.insertChild(Class[] sequence, int pos, OMNode newChild) {
-        if (!sequence[pos].isInstance(newChild)) {
+    public <T extends OMElement> void AxiomElement.insertChild(Class[] sequence, Class<T> type, T newChild) {
+        int pos = -1;
+        for (int i=0; i<sequence.length; i++) {
+            if (sequence[i] == type) {
+                pos = i;
+                break;
+            }
+        }
+        if (pos == -1) {
             throw new IllegalArgumentException();
         }
         OMNode child = getFirstOMChild();
@@ -267,7 +274,7 @@ public aspect AxiomElementSupport {
                     // the right position
                     return;
                 }
-                if (sequence[pos].isInstance(child)) {
+                if (type.isInstance(child)) {
                     // Replace the existing child
                     child.insertSiblingAfter(newChild);
                     child.detach();
