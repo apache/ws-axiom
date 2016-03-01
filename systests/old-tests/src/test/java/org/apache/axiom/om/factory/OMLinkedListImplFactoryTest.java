@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -85,16 +84,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertEquals("Namespace wasn't found correctly",
                      element.getNamespace(),
                      namespace);
-    }
-
-    public void testCreateSOAPBody() throws Exception {
-        OMXMLParserWrapper omBuilder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.MINIMAL_MESSAGE), null);
-        SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
-        SOAPBody soapBodyOne = omFactory.createSOAPBody(soapEnvelope);
-        assertTrue(
-                "Programatically created SOAPBody should have done = true ",
-                soapBodyOne.isComplete());
     }
 
     public void testCreateSOAPEnvelope() throws Exception {
