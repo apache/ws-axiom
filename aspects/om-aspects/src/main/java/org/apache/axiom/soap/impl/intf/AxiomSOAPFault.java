@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.soap.impl.intf;
 
+import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAPFault;
 
 public interface AxiomSOAPFault extends AxiomSOAPElement, SOAPFault {
-    Class[] getSequence();
+    Sequence getSequence();
 }

@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -40,19 +41,21 @@ public aspect AxiomSOAPFaultSupport {
     }
 
     public final void AxiomSOAPFault.setCode(SOAPFaultCode soapFaultCode) {
-        insertChild(getSequence(), SOAPFaultCode.class, soapFaultCode);
+        insertChild(getSequence(), 0, soapFaultCode);
     }
 
     public final void AxiomSOAPFault.setReason(SOAPFaultReason reason) {
-        insertChild(getSequence(), SOAPFaultReason.class, reason);
+        insertChild(getSequence(), 1, reason);
     }
 
     public final void AxiomSOAPFault.setRole(SOAPFaultRole role) {
-        insertChild(getSequence(), SOAPFaultRole.class, role);
+        Sequence sequence = getSequence();
+        insertChild(sequence, sequence.index(SOAPFaultRole.class), role);
     }
 
     public final void AxiomSOAPFault.setDetail(SOAPFaultDetail detail) {
-        insertChild(getSequence(), SOAPFaultDetail.class, detail);
+        Sequence sequence = getSequence();
+        insertChild(sequence, sequence.index(SOAPFaultDetail.class), detail);
     }
 
     public final void AxiomSOAPFault.setException(Exception e) {

@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.mixin;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
@@ -28,7 +29,7 @@ import org.apache.axiom.soap.impl.factory.SOAP12Factory;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultClassifier;
 
 public aspect AxiomSOAP12FaultClassifierSupport {
-    private static final Class<?>[] sequence = { SOAPFaultValue.class, SOAPFaultSubCode.class };
+    private static final Sequence sequence = new Sequence(SOAPFaultValue.class, SOAPFaultSubCode.class);
     
     public final boolean AxiomSOAP12FaultClassifier.isChildElementAllowed(OMElement child) {
         return child instanceof SOAPFaultValue || child instanceof SOAPFaultSubCode;
@@ -39,7 +40,7 @@ public aspect AxiomSOAP12FaultClassifierSupport {
     }
 
     public final void AxiomSOAP12FaultClassifier.setValue(SOAPFaultValue value) {
-        insertChild(sequence, SOAPFaultValue.class, value);
+        insertChild(sequence, 0, value);
     }
     
     public final SOAPFaultSubCode AxiomSOAP12FaultClassifier.getSubCode() {
@@ -47,7 +48,7 @@ public aspect AxiomSOAP12FaultClassifierSupport {
     }
     
     public final void AxiomSOAP12FaultClassifier.setSubCode(SOAPFaultSubCode subCode) {
-        insertChild(sequence, SOAPFaultSubCode.class, subCode);
+        insertChild(sequence, 1, subCode);
     }
 
     public final QName AxiomSOAP12FaultClassifier.getValueAsQName() {

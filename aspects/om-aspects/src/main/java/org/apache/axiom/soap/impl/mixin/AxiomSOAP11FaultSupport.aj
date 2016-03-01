@@ -19,6 +19,7 @@
 package org.apache.axiom.soap.impl.mixin;
 
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -28,14 +29,14 @@ import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11Fault;
 
 public aspect AxiomSOAP11FaultSupport {
-    private static final Class<?>[] sequence = { SOAPFaultCode.class, SOAPFaultReason.class,
-            SOAPFaultRole.class, SOAPFaultDetail.class };
+    private static final Sequence sequence = new Sequence(SOAPFaultCode.class, SOAPFaultReason.class,
+            SOAPFaultRole.class, SOAPFaultDetail.class);
 
     public final Class<? extends CoreNode> AxiomSOAP11Fault.coreGetNodeClass() {
         return AxiomSOAP11Fault.class;
     }
     
-    public final Class[] AxiomSOAP11Fault.getSequence() {
+    public final Sequence AxiomSOAP11Fault.getSequence() {
         return sequence;
     }
     

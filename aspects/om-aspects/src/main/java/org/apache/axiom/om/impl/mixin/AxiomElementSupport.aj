@@ -63,6 +63,7 @@ import org.apache.axiom.om.impl.intf.AxiomAttribute;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
+import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -255,15 +256,8 @@ public aspect AxiomElementSupport {
         coreSetNextSibling(null);
     }
     
-    public <T extends OMElement> void AxiomElement.insertChild(Class[] sequence, Class<T> type, T newChild) {
-        int pos = -1;
-        for (int i=0; i<sequence.length; i++) {
-            if (sequence[i] == type) {
-                pos = i;
-                break;
-            }
-        }
-        if (pos == -1) {
+    public <T extends OMElement> void AxiomElement.insertChild(Sequence sequence, int pos, T newChild) {
+        if (!sequence.item(pos).isInstance(newChild)) {
             throw new IllegalArgumentException();
         }
         OMNode child = getFirstOMChild();
@@ -274,7 +268,7 @@ public aspect AxiomElementSupport {
                     // the right position
                     return;
                 }
-                if (type.isInstance(child)) {
+                if (sequence.item(pos).isInstance(child)) {
                     // Replace the existing child
                     child.insertSiblingAfter(newChild);
                     child.detach();
@@ -283,7 +277,7 @@ public aspect AxiomElementSupport {
                 // isAfter indicates if the new child should be inserted after the current child
                 boolean isAfter = false;
                 for (int i=0; i<pos; i++) {
-                    if (sequence[i].isInstance(child)) {
+                    if (sequence.item(i).isInstance(child)) {
                         isAfter = true;
                         break;
                     }
