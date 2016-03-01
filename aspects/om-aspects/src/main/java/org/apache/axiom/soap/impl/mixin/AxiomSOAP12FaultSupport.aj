@@ -41,7 +41,7 @@ public aspect AxiomSOAP12FaultSupport {
     }
     
     public final void AxiomSOAP12Fault.setNode(SOAPFaultNode node) {
-        insertChild(sequence, 2, node);
+        insertChild(sequence, 2, node, true);
     }
 
     public final SOAPFaultCode AxiomSOAP12Fault.getCode() {

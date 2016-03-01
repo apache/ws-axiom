@@ -40,7 +40,7 @@ public aspect AxiomSOAP12FaultClassifierSupport {
     }
 
     public final void AxiomSOAP12FaultClassifier.setValue(SOAPFaultValue value) {
-        insertChild(sequence, 0, value);
+        insertChild(sequence, 0, value, true);
     }
     
     public final SOAPFaultSubCode AxiomSOAP12FaultClassifier.getSubCode() {
@@ -48,7 +48,7 @@ public aspect AxiomSOAP12FaultClassifierSupport {
     }
     
     public final void AxiomSOAP12FaultClassifier.setSubCode(SOAPFaultSubCode subCode) {
-        insertChild(sequence, 1, subCode);
+        insertChild(sequence, 1, subCode, true);
     }
 
     public final QName AxiomSOAP12FaultClassifier.getValueAsQName() {

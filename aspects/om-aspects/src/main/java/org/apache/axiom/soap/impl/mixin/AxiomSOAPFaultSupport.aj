@@ -41,21 +41,21 @@ public aspect AxiomSOAPFaultSupport {
     }
 
     public final void AxiomSOAPFault.setCode(SOAPFaultCode soapFaultCode) {
-        insertChild(getSequence(), 0, soapFaultCode);
+        insertChild(getSequence(), 0, soapFaultCode, true);
     }
 
     public final void AxiomSOAPFault.setReason(SOAPFaultReason reason) {
-        insertChild(getSequence(), 1, reason);
+        insertChild(getSequence(), 1, reason, true);
     }
 
     public final void AxiomSOAPFault.setRole(SOAPFaultRole role) {
         Sequence sequence = getSequence();
-        insertChild(sequence, sequence.index(SOAPFaultRole.class), role);
+        insertChild(sequence, sequence.index(SOAPFaultRole.class), role, true);
     }
 
     public final void AxiomSOAPFault.setDetail(SOAPFaultDetail detail) {
         Sequence sequence = getSequence();
-        insertChild(sequence, sequence.index(SOAPFaultDetail.class), detail);
+        insertChild(sequence, sequence.index(SOAPFaultDetail.class), detail, true);
     }
 
     public final void AxiomSOAPFault.setException(Exception e) {

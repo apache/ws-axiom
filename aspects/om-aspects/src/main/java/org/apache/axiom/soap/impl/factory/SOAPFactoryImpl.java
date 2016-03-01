@@ -26,7 +26,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
+import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -46,6 +47,8 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFactory {
+    private static final Sequence envelopeSequence = new Sequence(SOAPHeader.class, SOAPBody.class);
+    
     public SOAPFactoryImpl(OMMetaFactory metaFactory, NodeFactory nodeFactory) {
         super(metaFactory, nodeFactory);
     }
@@ -65,9 +68,17 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
     }
     
     protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname) {
+        return createSOAPElement(type, parent, qname, null, -1);
+    }
+    
+    protected final <T extends AxiomSOAPElement> T createSOAPElement(Class<T> type, OMElement parent, QName qname, Sequence sequence, int pos) {
         T element = createNode(type);
         if (parent != null) {
-            ((AxiomContainer)parent).addChild(element);
+            if (sequence != null) {
+                ((AxiomElement)parent).insertChild(sequence, pos, element, false);
+            } else {
+                ((AxiomElement)parent).addChild(element);
+            }
         }
         if (qname.getNamespaceURI().length() == 0) {
             element.initName(qname.getLocalPart(), null, true);
@@ -95,7 +106,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPHeader createSOAPHeader(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName());
+        return createSOAPElement(helper.getHeaderClass(), parent, helper.getHeaderQName(), envelopeSequence, 0);
     }
 
     public final SOAPHeader createSOAPHeader() {
@@ -124,7 +135,7 @@ public abstract class SOAPFactoryImpl extends OMFactoryImpl implements SOAPFacto
 
     public final SOAPBody createSOAPBody(SOAPEnvelope parent) {
         SOAPHelper helper = getSOAPHelper();
-        return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName());
+        return createSOAPElement(helper.getBodyClass(), parent, helper.getBodyQName(), envelopeSequence, 1);
     }
 
     public final SOAPBody createSOAPBody() {

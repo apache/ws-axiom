@@ -19,50 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 
 /** Class SOAPEnvelopeImpl */
-public abstract class SOAPEnvelopeImpl extends SOAPElement
-        implements AxiomSOAPEnvelope, OMConstants {
-    /**
-     * Add a SOAPHeader or SOAPBody object
-     * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
-     */
-    public void addChild(OMNode child) {
-        if (child instanceof SOAPHeader) {
-            // The SOAPHeader is added before the SOAPBody
-            // We must be sensitive to the state of the parser.  It is possible that the
-            // has not been processed yet.
-            if (getState() == COMPLETE) {
-                // Parsing is complete, therefore it is safe to
-                // call getBody.
-                SOAPBody body = getBody();
-                if (body != null) {
-                    body.insertSiblingBefore(child);
-                    return;
-                }
-            } else {
-                // Flow to here indicates that we are still expanding the
-                // envelope.  The body or body contents may not be
-                // parsed yet.  We can't use getBody() yet...it will
-                // cause a failure.  So instead, carefully find the
-                // body and insert the header.  If the body is not found,
-                // this indicates that it has not been parsed yet...and
-                // the code will fall through to the super.addChild.
-                OMNode node = (OMNode)coreGetLastKnownChild();
-                while (node != null) {
-                    if (node instanceof SOAPBody) {
-                        node.insertSiblingBefore(child);
-                        return;
-                    }
-                    node = node.getPreviousOMSibling();
-                }
-            }
-        }
-        super.addChild(child);
-    }
+public abstract class SOAPEnvelopeImpl extends SOAPElement implements AxiomSOAPEnvelope {
+
 }
