@@ -21,7 +21,13 @@ package org.apache.axiom.core.stream;
 public interface XmlHandler {
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) throws StreamException;
     
-    void endDocument() throws StreamException;
+    /**
+     * Notify the handler of the beginning of a fragment.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void startFragment() throws StreamException;
     
     void processDocumentTypeDeclaration(String rootName, String publicId,
             String systemId, String internalSubset) throws StreamException;
@@ -127,4 +133,12 @@ public interface XmlHandler {
     void endCDATASection() throws StreamException;
     
     void processEntityReference(String name, String replacementText) throws StreamException;
+    
+    /**
+     * Notify the handler that the document or fragment is complete.
+     * 
+     * @throws StreamException
+     *             if an error occurs when processing the event
+     */
+    void completed() throws StreamException;
 }

@@ -108,7 +108,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
 
     public void endDocument() throws SAXException {
         try {
-            handler.endDocument();
+            handler.completed();
         } catch (StreamException ex) {
             throw toSAXException(ex);
         }

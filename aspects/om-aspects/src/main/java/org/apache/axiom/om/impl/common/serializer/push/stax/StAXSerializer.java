@@ -66,6 +66,12 @@ public class StAXSerializer implements XmlHandler {
             throw new StreamException(ex);
         }
     }
+    
+    @Override
+    public void startFragment() throws StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         try {
@@ -201,7 +207,7 @@ public class StAXSerializer implements XmlHandler {
         return dataHandlerWriter;
     }
 
-    public void endDocument() throws StreamException {
+    public void completed() throws StreamException {
         // TODO: the original StAX serialization code newer called writeEndDocument; this is probably a mistake
     }
 }

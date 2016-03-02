@@ -86,7 +86,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
 
     protected void doWriteEndDocument() throws XMLStreamException {
         try {
-            handler.endDocument();
+            handler.completed();
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }

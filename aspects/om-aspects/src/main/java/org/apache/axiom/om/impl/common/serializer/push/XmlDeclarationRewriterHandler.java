@@ -41,4 +41,14 @@ public final class XmlDeclarationRewriterHandler extends XmlHandlerWrapper {
             super.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
         }
     }
+
+    @Override
+    public void startFragment() throws StreamException {
+        // Ignore this event
+    }
+
+    @Override
+    public void completed() throws StreamException {
+        // Ignore this event
+    }
 }

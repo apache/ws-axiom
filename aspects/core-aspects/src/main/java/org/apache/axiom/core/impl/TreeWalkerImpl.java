@@ -220,7 +220,7 @@ public final class TreeWalkerImpl implements XmlReader {
             
             switch (state) {
                 case STATE_START_FRAGMENT:
-//                    handler.startEntity(true, null);
+                    handler.startFragment();
                     break;
                 case STATE_LEAF:
                     ((CoreLeafNode)nextNode).internalSerialize(handler, preserve);
@@ -236,7 +236,7 @@ public final class TreeWalkerImpl implements XmlReader {
                     break;
                 case STATE_VISITED:
                     if (nextNode == null) {
-//                        handler.completed();
+                        handler.completed();
                     } else {
                         ((CoreParentNode)nextNode).serializeEndEvent(handler);
                     }

@@ -302,7 +302,7 @@ public final class Context implements InputContext {
     
     public void endDocument() throws StreamException {
         if (passThroughHandler != null) {
-            passThroughHandler.endDocument();
+            passThroughHandler.completed();
             decrementPassThroughDepth();
         } else {
             if (depth != 0) {

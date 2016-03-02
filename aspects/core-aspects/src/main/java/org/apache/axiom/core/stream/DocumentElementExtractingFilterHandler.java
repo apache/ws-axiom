@@ -30,7 +30,7 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void endDocument() throws StreamException {
+    public void completed() throws StreamException {
     }
 
     @Override

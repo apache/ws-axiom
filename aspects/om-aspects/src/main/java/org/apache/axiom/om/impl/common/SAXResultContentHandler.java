@@ -53,8 +53,14 @@ public final  class SAXResultContentHandler implements XmlHandler {
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
         target = root;
     }
+    
+    @Override
+    public void startFragment() throws StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 
-    public void endDocument() {
+    public void completed() {
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId,

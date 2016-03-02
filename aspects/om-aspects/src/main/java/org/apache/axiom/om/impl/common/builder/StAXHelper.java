@@ -234,7 +234,7 @@ public class StAXHelper implements XmlReader {
                     handler.endElement();
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
-                    handler.endDocument();
+                    handler.completed();
                     break;
                 case XMLStreamConstants.COMMENT:
                     handler.startComment();

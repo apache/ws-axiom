@@ -34,8 +34,12 @@ public class XmlHandlerWrapper implements XmlHandler {
         parent.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
 
-    public void endDocument() throws StreamException {
-        parent.endDocument();
+    public void startFragment() throws StreamException {
+        parent.startFragment();
+    }
+
+    public void completed() throws StreamException {
+        parent.completed();
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,

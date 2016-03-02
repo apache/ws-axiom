@@ -104,6 +104,6 @@ public aspect CoreDocumentSupport {
     }
     
     public final void CoreDocument.serializeEndEvent(XmlHandler handler) throws StreamException {
-        handler.endDocument();
+        handler.completed();
     }
 }

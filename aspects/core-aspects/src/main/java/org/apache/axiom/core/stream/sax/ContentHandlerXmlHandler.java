@@ -38,8 +38,6 @@ public class ContentHandlerXmlHandler implements XmlHandler {
     private String[] prefixStack = new String[16];
     private int bindings;
     private int[] scopeStack = new int[8];
-    private boolean startDocumentWritten;
-    private boolean autoStartDocument;
     private int depth;
     private Stack<String> elementNameStack = new Stack<String>();
     private String elementURI;
@@ -65,19 +63,23 @@ public class ContentHandlerXmlHandler implements XmlHandler {
         }
     }
     
-    private void writeStartDocument() throws StreamException {
+    @Override
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
+            boolean standalone) throws StreamException {
         try {
             contentHandler.startDocument();
-            startDocumentWritten = true;
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
     }
     
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            boolean standalone) throws StreamException {
-        writeStartDocument();
+    public void startFragment() throws StreamException {
+        try {
+            contentHandler.startDocument();
+        } catch (SAXException ex) {
+            throw new StreamException(ex);
+        }
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
@@ -92,10 +94,6 @@ public class ContentHandlerXmlHandler implements XmlHandler {
     }
 
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
-        if (!startDocumentWritten) {
-            writeStartDocument();
-            autoStartDocument = true;
-        }
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
@@ -151,9 +149,6 @@ public class ContentHandlerXmlHandler implements XmlHandler {
                 contentHandler.endPrefixMapping(prefixStack[i]);
             }
             bindings = scopeStack[--depth];
-            if (depth == 0 && autoStartDocument) {
-                contentHandler.endDocument();
-            }
         } catch (SAXException ex) {
             throw new StreamException(ex);
         }
@@ -283,7 +278,7 @@ public class ContentHandlerXmlHandler implements XmlHandler {
         }
     }
 
-    public void endDocument() throws StreamException {
+    public void completed() throws StreamException {
         try {
             contentHandler.endDocument();
         } catch (SAXException ex) {
