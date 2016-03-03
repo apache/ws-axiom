@@ -184,7 +184,7 @@ public class StAXSerializer implements XmlHandler {
     @Override
     public void endProcessingInstruction() throws StreamException {
         try {
-            writer.writeProcessingInstruction(piTarget, stopBuffering());
+            writer.writeProcessingInstruction(piTarget + " ", stopBuffering());
             piTarget = null;
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);

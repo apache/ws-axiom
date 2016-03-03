@@ -46,7 +46,7 @@ public aspect CoreProcessingInstructionSupport {
     }
     
     public final void CoreProcessingInstruction.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
-        handler.startProcessingInstruction(coreGetTarget() + " ");
+        handler.startProcessingInstruction(coreGetTarget());
     }
 
     public final void CoreProcessingInstruction.serializeEndEvent(XmlHandler handler) throws StreamException {
