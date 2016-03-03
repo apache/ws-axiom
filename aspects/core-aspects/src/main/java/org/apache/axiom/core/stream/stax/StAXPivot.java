@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.core.stream.stax;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.xml.XMLConstants;
@@ -33,7 +35,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 
-public final class StAXPivot implements XMLStreamReader, XmlHandler {
+public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     private class NamespaceContextImpl implements NamespaceContext {
         @Override
         public String getNamespaceURI(String prefix) {
@@ -137,7 +139,9 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
      */
     private static final int STATE_SKIP_CONTENT = 4;
     
+    private final XMLStreamReaderExtensionFactory extensionFactory;
     private XmlReader reader;
+    private Map<String,Object> extensions;
     private int state = STATE_DEFAULT;
     private int eventType = -1;
     private int depth;
@@ -155,10 +159,14 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
     private String rootName;
     private String publicId;
     private String systemId;
-    private String text;
+    private Object text;
     // Entity reference name or processing instruction target
     private String name;
     
+    public StAXPivot(XMLStreamReaderExtensionFactory extensionFactory) {
+        this.extensionFactory = extensionFactory;
+    }
+
     private static String emptyToNull(String value) {
         return value == null || value.isEmpty() ? null : value;
     }
@@ -294,7 +302,7 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
         } else {
             checkState();
             eventType = ignorable ? SPACE : CHARACTERS;
-            text = data.toString();
+            text = data;
             state = STATE_EVENT_COMPLETE;
         }
     }
@@ -354,7 +362,22 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
 
     @Override
     public Object getProperty(String name) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
+        if (extensions != null) {
+            Object extension = extensions.get(name);
+            if (extension != null) {
+                return extension;
+            }
+        }
+        if (extensionFactory != null) {
+            Object extension = extensionFactory.createExtension(name, this);
+            if (extension != null) {
+                if (extensions == null) {
+                    extensions = new HashMap<String,Object>();
+                }
+                extensions.put(name, extension);
+                return extension;
+            }
+        }
         return null;
     }
 
@@ -486,6 +509,7 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
                 // points to a character data event that consists of all whitespace". This
                 // means that this method may return true for a CHARACTER event and we need
                 // to scan the text of the node.
+                String text = this.text.toString();
                 for (int i=0; i<text.length(); i++) {
                     char c = text.charAt(i);
                     if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
@@ -642,7 +666,7 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
             case COMMENT:
             case DTD:
             case ENTITY_REFERENCE:
-                return text;
+                return text == null ? null : text.toString();
             default:
                 throw new IllegalStateException();
         }
@@ -655,7 +679,8 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
             case CDATA:
             case SPACE:
             case COMMENT:
-                return text.toCharArray();
+                // TODO: optimize this
+                return text.toString().toCharArray();
             default:
                 throw new IllegalStateException();
         }
@@ -688,7 +713,8 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
             case CDATA:
             case SPACE:
             case COMMENT:
-                return text.length();
+                // TODO: optimize this
+                return text.toString().length();
             default:
                 throw new IllegalStateException();
         }
@@ -777,9 +803,29 @@ public final class StAXPivot implements XMLStreamReader, XmlHandler {
     @Override
     public String getPIData() {
         if (eventType == PROCESSING_INSTRUCTION) {
-            return text;
+            return text.toString();
         } else {
             throw new IllegalStateException();
         }
+    }
+
+    @Override
+    public String getRootName() {
+        return rootName;
+    }
+
+    @Override
+    public String getPublicId() {
+        return publicId;
+    }
+
+    @Override
+    public String getSystemId() {
+        return systemId;
+    }
+
+    @Override
+    public Object getCharacterData() {
+        return text;
     }
 }

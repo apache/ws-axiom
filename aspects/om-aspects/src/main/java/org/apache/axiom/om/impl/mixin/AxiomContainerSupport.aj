@@ -68,6 +68,7 @@ import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.om.impl.stream.stax.AxiomXMLStreamReaderExtensionFactory;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -126,7 +127,7 @@ public aspect AxiomContainerSupport {
 //        
 //        return reader;
         
-        StAXPivot pivot = new StAXPivot();
+        StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
         try {
             pivot.setReader(coreGetReader(pivot, cache));
         } catch (StreamException ex) {
