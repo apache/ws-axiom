@@ -372,9 +372,13 @@ public aspect CoreParentNodeSupport {
         throw new UnsupportedOperationException();
     }
 
+    public final XmlReader CoreParentNode.coreGetReader(XmlHandler handler, boolean cache) {
+        return new TreeWalkerImpl(handler, this, cache);
+    }
+    
     public void CoreParentNode.internalSerialize(XmlHandler handler, boolean cache) throws CoreModelException, StreamException {
         try {
-            XmlReader reader = new TreeWalkerImpl(handler, this, cache);
+            XmlReader reader = coreGetReader(handler, cache);
             while (!reader.proceed()) {
                 // Just loop
             }

@@ -41,6 +41,7 @@ import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
+import org.apache.axiom.core.stream.stax.StAXPivot;
 import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
@@ -103,27 +104,35 @@ public aspect AxiomContainerSupport {
     }
     
     public final XMLStreamReader AxiomContainer.defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        Builder builder = coreGetBuilder();
-        if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
-            throw new UnsupportedOperationException("The parser is already consumed!");
+//        Builder builder = coreGetBuilder();
+//        if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
+//            throw new UnsupportedOperationException("The parser is already consumed!");
+//        }
+//        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(this, cache, configuration.isPreserveNamespaceContext()));
+//        
+//        if (configuration.isNamespaceURIInterning()) {
+//            reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
+//        }
+//        
+//        // If debug is enabled, wrap the OMXMLStreamReader in a validator.
+//        // The validator will check for mismatched events to help determine if the OMStAXWrapper
+//        // is functioning correctly.  All problems are reported as debug.log messages
+//        
+//        if (log.isDebugEnabled()) {
+//            reader = 
+//                new OMXMLStreamReaderValidator(reader, // delegate to actual reader
+//                     false); // log problems (true will cause exceptions to be thrown)
+//        }
+//        
+//        return reader;
+        
+        StAXPivot pivot = new StAXPivot();
+        try {
+            pivot.setReader(coreGetReader(pivot, cache));
+        } catch (StreamException ex) {
+            throw new OMException(ex);
         }
-        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(this, cache, configuration.isPreserveNamespaceContext()));
-        
-        if (configuration.isNamespaceURIInterning()) {
-            reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
-        }
-        
-        // If debug is enabled, wrap the OMXMLStreamReader in a validator.
-        // The validator will check for mismatched events to help determine if the OMStAXWrapper
-        // is functioning correctly.  All problems are reported as debug.log messages
-        
-        if (log.isDebugEnabled()) {
-            reader = 
-                new OMXMLStreamReaderValidator(reader, // delegate to actual reader
-                     false); // log problems (true will cause exceptions to be thrown)
-        }
-        
-        return reader;
+        return pivot;
     }
     
     public final AxiomChildNode AxiomContainer.prepareNewChild(OMNode omNode) {
