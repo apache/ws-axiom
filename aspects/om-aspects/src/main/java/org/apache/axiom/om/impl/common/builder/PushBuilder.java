@@ -110,8 +110,4 @@ public final class PushBuilder extends AbstractBuilder {
     public final void discard(CoreParentNode container) {
         throw new UnsupportedOperationException();
     }
-
-    @Override
-    public final void debugDiscarded(CoreParentNode container) {
-    }
 }

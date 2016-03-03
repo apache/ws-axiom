@@ -19,9 +19,7 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -58,12 +56,6 @@ public final class BuilderHandler implements XmlHandler {
      * depth reached by the underlying parser.
      */
     public int depth;
-    
-    /**
-     * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
-     * only used if debug logging was enabled when builder was created.
-     */
-    public Map<CoreParentNode,Throwable> discardTracker = log.isDebugEnabled() ? new LinkedHashMap<CoreParentNode,Throwable>() : null;
     
     private ArrayList<BuilderListener> listeners;
     private Queue<Runnable> deferredListenerActions;

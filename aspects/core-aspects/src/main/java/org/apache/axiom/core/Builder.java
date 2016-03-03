@@ -40,6 +40,4 @@ public interface Builder {
     void reenableCaching(CoreParentNode container);
 
     void discard(CoreParentNode container);
-
-    void debugDiscarded(CoreParentNode container);
 }

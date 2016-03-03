@@ -80,18 +80,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     private void discarded(CoreParentNode container) {
         ((AxiomContainer)container).discarded();
-        if (builderHandler.discardTracker != null) {
-            builderHandler.discardTracker.put(container, new Throwable());
-        }
-    }
-    
-    public final void debugDiscarded(CoreParentNode container) {
-        if (log.isDebugEnabled() && builderHandler.discardTracker != null) {
-            Throwable t = builderHandler.discardTracker.get(container);
-            if (t != null) {
-                log.debug("About to throw NodeUnavailableException. Location of the code that caused the node to be discarded/consumed:", t);
-            }
-        }
     }
     
     // For compatibility only
