@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.core.stream.stax;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -48,64 +49,78 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
         @Override
         public String getPrefix(String namespaceURI) {
-            // TODO
-            int bindings = getNamespaceBindingsCount();
-            outer: for (int i=(bindings-1)*2; i>=0; i-=2) {
-                if (namespaceURI.equals(namespaceStack[i+1])) {
-                    String prefix = namespaceStack[i];
-                    // Now check that the prefix is not masked
-                    for (int j=i+2; j<bindings*2; j+=2) {
-                        if (prefix.equals(namespaceStack[j])) {
-                            continue outer;
+            if (namespaceURI == null) {
+                throw new IllegalArgumentException();
+            } else if (namespaceURI.equals(XMLConstants.XML_NS_URI)) {
+                return XMLConstants.XML_NS_PREFIX;
+            } else if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+                return XMLConstants.XMLNS_ATTRIBUTE;
+            } else {
+                int bindings = getNamespaceBindingsCount();
+                outer: for (int i=(bindings-1)*2; i>=0; i-=2) {
+                    if (namespaceURI.equals(namespaceStack[i+1])) {
+                        String prefix = namespaceStack[i];
+                        // Now check that the prefix is not masked
+                        for (int j=i+2; j<bindings*2; j+=2) {
+                            if (prefix.equals(namespaceStack[j])) {
+                                continue outer;
+                            }
                         }
+                        return prefix;
                     }
-                    return prefix;
                 }
+                return null;
             }
-            return null;
         }
 
         @Override
-        public Iterator getPrefixes(final String namespaceURI) {
-            // TODO
-            final int bindings = getNamespaceBindingsCount();
-            return new Iterator<String>() {
-                private int binding = bindings;
-                private String next;
+        public Iterator<String> getPrefixes(final String namespaceURI) {
+            if (namespaceURI == null) {
+                throw new IllegalArgumentException("namespaceURI can't be null");
+            } else if (namespaceURI.equals(XMLConstants.XML_NS_URI)) {
+                return Collections.singleton(XMLConstants.XML_NS_PREFIX).iterator();
+            } else if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+                return Collections.singleton(XMLConstants.XMLNS_ATTRIBUTE).iterator();
+            } else {
+                final int bindings = getNamespaceBindingsCount();
+                return new Iterator<String>() {
+                    private int binding = bindings;
+                    private String next;
 
-                public boolean hasNext() {
-                    if (next == null) {
-                        outer: while (--binding >= 0) {
-                            if (namespaceURI.equals(namespaceStack[binding*2+1])) {
-                                String prefix = namespaceStack[binding*2];
-                                // Now check that the prefix is not masked
-                                for (int j=binding+1; j<bindings; j++) {
-                                    if (prefix.equals(namespaceStack[j*2])) {
-                                        continue outer;
+                    public boolean hasNext() {
+                        if (next == null) {
+                            outer: while (--binding >= 0) {
+                                if (namespaceURI.equals(namespaceStack[binding*2+1])) {
+                                    String prefix = namespaceStack[binding*2];
+                                    // Now check that the prefix is not masked
+                                    for (int j=binding+1; j<bindings; j++) {
+                                        if (prefix.equals(namespaceStack[j*2])) {
+                                            continue outer;
+                                        }
                                     }
+                                    next = prefix;
+                                    break;
                                 }
-                                next = prefix;
-                                break;
                             }
                         }
+                        return next != null;
                     }
-                    return next != null;
-                }
 
-                public String next() {
-                    if (hasNext()) {
-                        String result = next;
-                        next = null;
-                        return result;
-                    } else {
-                        throw new NoSuchElementException();
+                    public String next() {
+                        if (hasNext()) {
+                            String result = next;
+                            next = null;
+                            return result;
+                        } else {
+                            throw new NoSuchElementException();
+                        }
                     }
-                }
 
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-            };
+                    public void remove() {
+                        throw new UnsupportedOperationException();
+                    }
+                };
+            }
         }
     }
     
@@ -471,12 +486,18 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
     
     String lookupNamespaceURI(String prefix) {
-        for (int i=(getNamespaceBindingsCount()-1)*2; i>=0; i-=2) {
-            if (prefix.equals(namespaceStack[i])) {
-                return namespaceStack[i+1];
+        if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
+            return XMLConstants.XML_NS_URI;
+        } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+        } else {
+            for (int i=(getNamespaceBindingsCount()-1)*2; i>=0; i-=2) {
+                if (prefix.equals(namespaceStack[i])) {
+                    return namespaceStack[i+1];
+                }
             }
+            return prefix.isEmpty() ? "" : null;
         }
-        return prefix.isEmpty() ? "" : null;
     }
     
     @Override
