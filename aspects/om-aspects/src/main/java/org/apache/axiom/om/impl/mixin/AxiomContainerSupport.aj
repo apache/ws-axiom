@@ -38,6 +38,7 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
+import org.apache.axiom.core.stream.NamespaceURIInterningFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
@@ -61,6 +62,7 @@ import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
+import org.apache.axiom.om.impl.common.serializer.push.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
@@ -128,8 +130,18 @@ public aspect AxiomContainerSupport {
 //        return reader;
         
         StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
+        XmlHandler handler = pivot;
+        if (configuration.isNamespaceURIInterning()) {
+            handler = new NamespaceURIInterningFilterHandler(handler);
+        }
+        if (configuration.isPreserveNamespaceContext()) {
+            CoreElement contextElement = getContextElement();
+            if (contextElement != null) {
+                handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
+            }
+        }
         try {
-            pivot.setReader(coreGetReader(pivot, cache));
+            pivot.setReader(coreGetReader(handler, cache));
         } catch (StreamException ex) {
             throw new OMException(ex);
         }
