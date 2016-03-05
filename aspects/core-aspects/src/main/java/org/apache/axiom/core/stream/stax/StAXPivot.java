@@ -154,10 +154,16 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
      */
     private static final int STATE_SKIP_CONTENT = 4;
     
+    /**
+     * Indicates that an error has occurred an that the instance is no longer usable.
+     */
+    private static final int STATE_ERROR = 5;
+    
     private final XMLStreamReaderExtensionFactory extensionFactory;
     private XmlReader reader;
     private Map<String,Object> extensions;
     private int state = STATE_DEFAULT;
+    private int previousState = -1;
     private int eventType = -1;
     private int depth;
     private String[] elementStack = new String[24];
@@ -334,27 +340,65 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
-        checkState();
-        eventType = PROCESSING_INSTRUCTION;
-        name = target;
-        startCollectingText();
+        switch (state) {
+            case STATE_DEFAULT:
+                eventType = PROCESSING_INSTRUCTION;
+                name = target;
+                startCollectingText();
+                break;
+            case STATE_COLLECT_TEXT:
+            case STATE_NEXT_TAG:
+                previousState = state;
+                state = STATE_SKIP_CONTENT;
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
     public void endProcessingInstruction() throws StreamException {
-        text = stopCollectingText();
+        switch (state) {
+            case STATE_COLLECT_TEXT:
+                text = stopCollectingText();
+                break;
+            case STATE_SKIP_CONTENT:
+                state = previousState;
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
     public void startComment() throws StreamException {
-        checkState();
-        eventType = COMMENT;
-        startCollectingText();
+        switch (state) {
+            case STATE_DEFAULT:
+                eventType = COMMENT;
+                startCollectingText();
+                break;
+            case STATE_COLLECT_TEXT:
+            case STATE_NEXT_TAG:
+                previousState = state;
+                state = STATE_SKIP_CONTENT;
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
     public void endComment() throws StreamException {
-        text = stopCollectingText();
+        switch (state) {
+            case STATE_COLLECT_TEXT:
+                text = stopCollectingText();
+                break;
+            case STATE_SKIP_CONTENT:
+                state = previousState;
+                break;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
@@ -409,6 +453,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public int next() throws XMLStreamException {
         try {
+            switch (state) {
+                case STATE_EVENT_COMPLETE:
+                    state = STATE_DEFAULT;
+                    break;
+                case STATE_ERROR:
+                    throw new IllegalStateException();
+            }
             switch (eventType) {
                 case CHARACTERS:
                 case SPACE:
@@ -427,13 +478,19 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
                 case END_DOCUMENT:
                     throw new NoSuchElementException();
             }
-            state = STATE_DEFAULT;
             while (state != STATE_EVENT_COMPLETE) {
                 reader.proceed();
             }
             return eventType;
         } catch (StreamException ex) {
+            state = STATE_ERROR;
             throw StAXExceptionUtil.toXMLStreamException(ex);
+        } catch (RuntimeException ex) {
+            state = STATE_ERROR;
+            throw ex;
+        } catch (Error ex) {
+            state = STATE_ERROR;
+            throw ex;
         }
     }
 
@@ -481,8 +538,9 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public String getElementText() throws XMLStreamException {
-        // TODO Auto-generated method stub
-        return null;
+        startCollectingText();
+        next();
+        return stopCollectingText();
     }
 
     @Override
