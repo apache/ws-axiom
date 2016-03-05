@@ -18,26 +18,11 @@
  */
 package org.apache.axiom.core;
 
-import javax.xml.stream.XMLStreamReader;
-
 public interface Builder {
     int next();
     boolean isCompleted();
     void close();
     boolean isClosed();
-
-    /**
-     * Get the value of a feature/property from the underlying XMLStreamReader implementation
-     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/AXIOM-348
-     *
-     * @param name
-     * @return TODO
-     */
-    Object getReaderProperty(String name) throws IllegalArgumentException;
-
-    XMLStreamReader disableCaching();
-
-    void reenableCaching(CoreParentNode container);
 
     void discard(CoreParentNode container);
 }
