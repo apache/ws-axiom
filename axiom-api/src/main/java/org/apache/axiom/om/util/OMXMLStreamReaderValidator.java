@@ -21,8 +21,6 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 
-import javax.activation.DataHandler;
-
 /**
  * Subclass of {@link XMLStreamReaderValidator} that also implements {@link OMXMLStreamReader}.
  *
@@ -36,11 +34,6 @@ public class OMXMLStreamReaderValidator extends XMLStreamReaderValidator impleme
     public OMXMLStreamReaderValidator(OMXMLStreamReader delegate, boolean throwExceptions) {
         super(delegate, throwExceptions);
     }
-
-    public DataHandler getDataHandler(String blobcid) {
-        return ((OMXMLStreamReader)getParent()).getDataHandler(blobcid);
-    }
-
 
     public boolean isInlineMTOM() {
         return ((OMXMLStreamReader)getParent()).isInlineMTOM();

@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Objects returned by OMElement.getXMLStreamReader may implement this interface
  */
-public interface OMXMLStreamReader extends XMLStreamReader, OMAttachmentAccessor {
+public interface OMXMLStreamReader extends XMLStreamReader {
     
     /**
      * By default, an OMText item that has an MTOM datahandler 

@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
@@ -55,10 +54,6 @@ public final class NamespaceURIInterningXMLStreamReaderWrapper extends XMLStream
 
     public String getNamespaceURI(String prefix) {
         return intern(super.getNamespaceURI(prefix));
-    }
-
-    public DataHandler getDataHandler(String blobcid) {
-        return ((OMXMLStreamReader)getParent()).getDataHandler(blobcid);
     }
 
     public NamespaceContext getNamespaceContext() {

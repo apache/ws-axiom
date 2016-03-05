@@ -18,20 +18,14 @@
  */
 package org.apache.axiom.om.impl.common.serializer.pull;
 
-import java.io.IOException;
-
-import javax.activation.DataHandler;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Adapter that adds the {@link OMXMLStreamReaderEx} interface to a {@link PullSerializer}.
@@ -40,8 +34,6 @@ import org.apache.commons.logging.LogFactory;
  * {@link OMXMLStreamReader} are deprecated.
  */
 public class OMXMLStreamReaderExAdapter extends StreamReaderDelegate implements OMXMLStreamReaderEx {
-    private static final Log log = LogFactory.getLog(OMXMLStreamReaderExAdapter.class);
-    
     private final PullSerializer serializer;
     private XOPEncodingStreamReader xopEncoder;
     
@@ -75,27 +67,6 @@ public class OMXMLStreamReaderExAdapter extends StreamReaderDelegate implements 
         }
     }
 
-    public DataHandler getDataHandler(String contentID) {
-        if (contentID.startsWith("cid:")) {
-            log.warn("Invalid usage of OMStAXWrapper#getDataHandler(String): the argument must " +
-            		"be a content ID, not an href; see OMAttachmentAccessor.");
-            contentID = contentID.substring(4);
-        }
-        
-        if (xopEncoder == null) {
-            throw new IllegalStateException("The wrapper is in inlineMTOM=true mode");
-        }
-        if (xopEncoder.getContentIDs().contains(contentID)) {
-            try {
-                return xopEncoder.getDataHandler(contentID);
-            } catch (IOException ex) {
-                throw new OMException(ex);
-            }
-        } else {
-            return null;
-        }
-    }
-    
     public OMDataSource getDataSource() {
         return serializer.getDataSource();
     }

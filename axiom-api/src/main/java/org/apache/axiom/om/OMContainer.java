@@ -27,7 +27,6 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.ext.DeclHandler;
@@ -327,40 +326,6 @@ public interface OMContainer extends OMSerializable {
      * <p>
      * The caller MUST NOT make any other assumption about the returned reader, in particular about
      * its runtime type.
-     * <p>
-     * <b>Note</b> (non normative): For various reasons, existing code based on Axiom versions
-     * prior to 1.2.9 makes assumptions on the returned reader that should no longer be considered
-     * valid:
-     * <ul>
-     * <li>Some code uses the {@link OMXMLStreamReader} interface of the returned reader to switch
-     * off MTOM inlining using {@link OMXMLStreamReader#setInlineMTOM(boolean)}. This has now been
-     * deprecated and it is recommended to use
-     * {@link XOPEncodingStreamReader} instead.</li>
-     * <li>Some existing code uses the {@link OMAttachmentAccessor} interface of the returned
-     * reader to fetch attachments using {@link OMAttachmentAccessor#getDataHandler(String)}. There
-     * is no reason anymore to do so:
-     * <ul>
-     * <li>When {@link OMXMLStreamReader#setInlineMTOM(boolean)} is used to disable MTOM inlining,
-     * {@link OMAttachmentAccessor#getDataHandler(String)} must be used to retrieve the binary
-     * content. The fact that this method is deprecated removes the need for this.</li>
-     * <li>In Axiom versions prior to 1.2.9, the sequence of events was inconsistent if the
-     * underlying stream is XOP encoded and caching is disabled (see AXIOM-255). This made it
-     * necessary for the caller to (partially) handle the XOP processing and to use
-     * {@link OMAttachmentAccessor#getDataHandler(String)} to retrieve the binary content. Starting
-     * with 1.2.9 this is no longer be the case: as specified above, the sequence of events is
-     * independent of the state of the object model and the value of the <code>cache</code>
-     * parameter, and all binary content is reported through the
-     * {@link DataHandlerReader} extension.</li>
-     * <li>Finally, it should be noted that {@link OMAttachmentAccessor#getDataHandler(String)}
-     * doesn't give access to the attachments in the SwA case (neither in 1.2.9 nor in previous
-     * versions).</li>
-     * </ul>
-     * </li>
-     * </ul>
-     * <p>
-     * Code making any of these assumptions should be fixed, so that only {@link XMLStreamReader}
-     * and {@link DataHandlerReader} are used (and if
-     * necessary, {@link XOPEncodingStreamReader}).
      * 
      * @param cache
      *            indicates if caching should be enabled
