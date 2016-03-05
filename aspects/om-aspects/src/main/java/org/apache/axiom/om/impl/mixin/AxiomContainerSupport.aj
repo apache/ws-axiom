@@ -50,7 +50,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
@@ -58,7 +57,6 @@ import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
-import org.apache.axiom.om.impl.common.serializer.pull.OMXMLStreamReaderExAdapter;
 import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
@@ -67,8 +65,8 @@ import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
-import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
@@ -107,7 +105,7 @@ public aspect AxiomContainerSupport {
         if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
             throw new UnsupportedOperationException("The parser is already consumed!");
         }
-        OMXMLStreamReader reader = new OMXMLStreamReaderExAdapter(new PullSerializer(this, cache, configuration.isPreserveNamespaceContext()));
+        XMLStreamReader reader = new PullSerializer(this, cache, configuration.isPreserveNamespaceContext());
         
         if (configuration.isNamespaceURIInterning()) {
             reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
@@ -119,7 +117,7 @@ public aspect AxiomContainerSupport {
         
         if (log.isDebugEnabled()) {
             reader = 
-                new OMXMLStreamReaderValidator(reader, // delegate to actual reader
+                new XMLStreamReaderValidator(reader, // delegate to actual reader
                      false); // log problems (true will cause exceptions to be thrown)
         }
         
