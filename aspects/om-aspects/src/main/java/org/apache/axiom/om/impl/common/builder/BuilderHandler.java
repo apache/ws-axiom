@@ -26,18 +26,13 @@ import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public final class BuilderHandler implements XmlHandler {
-    private static final Log log = LogFactory.getLog(BuilderHandler.class);
-    
     final NodeFactory nodeFactory;
     final Model model;
     final AxiomSourcedElement root;

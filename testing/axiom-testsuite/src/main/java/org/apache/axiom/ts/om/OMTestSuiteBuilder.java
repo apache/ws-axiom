@@ -58,6 +58,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     
     public OMTestSuiteBuilder(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
+        // This test is particularly slow because it checks all XMLStreamReader methods on
+        // every event and many of these invocations throw exceptions. Exclude it because
+        // it doesn't add value (with respect to the other TestGetXMLStreamReader runs.
+        exclude(org.apache.axiom.ts.om.container.TestGetXMLStreamReader.class, "(file=large.xml)");
     }
     
     protected void addTests() {
