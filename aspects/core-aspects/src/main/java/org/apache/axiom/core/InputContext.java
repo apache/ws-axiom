@@ -34,4 +34,6 @@ public interface InputContext {
      *             if a pass-through handler has already been set for this context
      */
     void setPassThroughHandler(XmlHandler passThroughHandler);
+
+    void discard();
 }

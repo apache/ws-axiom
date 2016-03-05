@@ -24,6 +24,7 @@ import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.InputContext;
+import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNamespace;
@@ -81,6 +82,12 @@ public final class Context implements InputContext {
         this.passThroughHandler = passThroughHandler;
     }
     
+    @Override
+    public void discard() {
+        target.coreSetState(CoreParentNode.DISCARDED);
+        passThroughHandler = NullXmlHandler.INSTANCE;
+    }
+
     private Context newContext(CoreParentNode target) {
         if (nestedContext == null) {
             nestedContext = new Context(builderHandler, this, depth+1);

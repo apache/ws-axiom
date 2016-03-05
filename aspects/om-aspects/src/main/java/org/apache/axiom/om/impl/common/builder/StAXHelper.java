@@ -392,4 +392,10 @@ public class StAXHelper implements XmlReader {
         }
         return lookAheadToken;
     }
+
+    @Override
+    public void dispose() {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
 }

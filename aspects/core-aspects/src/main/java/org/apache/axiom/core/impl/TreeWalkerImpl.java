@@ -25,6 +25,7 @@ import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.NodeConsumedException;
 import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -262,6 +263,23 @@ public final class TreeWalkerImpl implements XmlReader {
             return state == STATE_VISITED && (nextNode == null || nextNode instanceof CoreDocument);
         } catch (CoreModelException ex) {
             throw new CoreModelStreamException(ex);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (!preserve && node != null) {
+            CoreParentNode parent = node instanceof CoreParentNode ? (CoreParentNode)node : ((CoreChildNode)node).coreGetParent();
+            while (true) {
+                InputContext context = parent.coreGetInputContext();
+                if (context != null) {
+                    context.discard();
+                }
+                if (parent == root) {
+                    break;
+                }
+                parent = ((CoreChildNode)parent).coreGetParent();
+            }
         }
     }
 }

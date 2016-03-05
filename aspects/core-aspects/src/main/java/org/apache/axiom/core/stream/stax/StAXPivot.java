@@ -498,8 +498,8 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public void close() throws XMLStreamException {
-        // TODO Auto-generated method stub
-        
+        // TODO: update state
+        reader.dispose();
     }
 
     int getNamespaceBindingsCount() {

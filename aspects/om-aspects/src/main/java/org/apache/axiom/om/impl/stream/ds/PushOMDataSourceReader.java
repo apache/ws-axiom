@@ -62,4 +62,8 @@ final class PushOMDataSourceReader implements XmlReader {
         }
         return true;
     }
+
+    @Override
+    public void dispose() {
+    }
 }
