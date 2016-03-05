@@ -27,7 +27,6 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
@@ -41,7 +40,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map;
 
-public class Attachments implements OMAttachmentAccessor {
+public class Attachments {
     private final AttachmentsDelegate delegate;
    
     /**

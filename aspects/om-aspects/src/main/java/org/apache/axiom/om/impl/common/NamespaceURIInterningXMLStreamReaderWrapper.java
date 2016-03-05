@@ -18,11 +18,9 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
@@ -30,10 +28,10 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
  * {@link XMLStreamReader} wrapper that interns namespace URIs. It is used to implement the
  * {@link OMXMLStreamReaderConfiguration#isNamespaceURIInterning()} option.
  */
-public final class NamespaceURIInterningXMLStreamReaderWrapper extends XMLStreamReaderWrapper implements OMXMLStreamReader {
+public final class NamespaceURIInterningXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
     private NamespaceURIInterningNamespaceContextWrapper namespaceContextWrapper;
     
-    public NamespaceURIInterningXMLStreamReaderWrapper(OMXMLStreamReader parent) {
+    public NamespaceURIInterningXMLStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
 
@@ -57,24 +55,11 @@ public final class NamespaceURIInterningXMLStreamReaderWrapper extends XMLStream
         return intern(super.getNamespaceURI(prefix));
     }
 
-    public DataHandler getDataHandler(String blobcid) {
-        return ((OMXMLStreamReader)getParent()).getDataHandler(blobcid);
-    }
-
     public NamespaceContext getNamespaceContext() {
         NamespaceContext namespaceContext = super.getNamespaceContext();
         if (namespaceContextWrapper == null || namespaceContextWrapper.getParent() != namespaceContext) {
             namespaceContextWrapper = new NamespaceURIInterningNamespaceContextWrapper(namespaceContext);
         }
         return namespaceContextWrapper;
-    }
-
-    public boolean isInlineMTOM() {
-        return ((OMXMLStreamReader)getParent()).isInlineMTOM();
-    }
-
-
-    public void setInlineMTOM(boolean value) {
-        ((OMXMLStreamReader)getParent()).setInlineMTOM(value);
     }
 }

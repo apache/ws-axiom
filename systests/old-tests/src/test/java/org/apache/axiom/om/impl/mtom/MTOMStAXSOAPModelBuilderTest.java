@@ -26,14 +26,11 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.soap.MTOMSample;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamReader;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -75,16 +72,6 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
             assertTrue(msg.indexOf("xop:Include") < 0);
             assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") < 0);
         }
-    }
-    
-    public void testAccessToCachedParser() throws Exception {
-        OMElement root = createTestMTOMMessage();
-        XMLStreamReader reader = root.getXMLStreamReader(true);
-        
-        XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
-        
-        // The caching parser will be an OMStaXWrapper.
-        assertTrue(original instanceof OMXMLStreamReader);
     }
     
     public void testCreateOMElement() throws Exception {

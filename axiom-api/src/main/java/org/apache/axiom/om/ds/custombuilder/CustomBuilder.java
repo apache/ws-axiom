@@ -97,16 +97,7 @@ public interface CustomBuilder {
      *            library that supports XOP, it may want to use that encoding
      *            to optimize the transfer of binary data. To do so, the
      *            custom builder MUST use {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}
-     *            to get an XOP encoded stream. This guarantees that the original
-     *            reader is wrapped or unwrapped properly and also that
-     *            the custom builder correctly gets access to the attachments,
-     *            regardless of the type of the original reader. In particular,
-     *            the custom builder MUST NOT attempt to retrieve attachments
-     *            through the {@link org.apache.axiom.om.OMAttachmentAccessor}
-     *            that may be implemented by the builder (because this wouldn't
-     *            work if the builder was created from an {@link XMLStreamReader}
-     *            implementing the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
-     *            extension).
+     *            to get an XOP encoded stream.
      * @return OMDataSource
      */
     public OMDataSource create(XMLStreamReader reader) throws OMException;

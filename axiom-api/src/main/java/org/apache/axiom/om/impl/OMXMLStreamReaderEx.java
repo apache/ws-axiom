@@ -18,14 +18,15 @@
  */
 package org.apache.axiom.om.impl;
 
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMXMLStreamReader;
 
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
  * public API.
  */
-public interface OMXMLStreamReaderEx extends OMXMLStreamReader {
+public interface OMXMLStreamReaderEx extends XMLStreamReader {
     // *** Methods used by StreamingOMSerializer
     
     /**
