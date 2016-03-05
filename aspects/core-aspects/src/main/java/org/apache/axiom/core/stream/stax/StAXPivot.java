@@ -204,6 +204,23 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         }
     }
 
+    public void setPrefix(String prefix, String namespaceURI) {
+        if (depth != 0) {
+            throw new IllegalStateException();
+        }
+        putNamespaceDeclaration(scopeStack[0]++, prefix, namespaceURI);
+    }
+
+    private void putNamespaceDeclaration(int index, String prefix, String namespaceURI) {
+        if (index*2 == namespaceStack.length) {
+            String[] newNamespaceStack = new String[namespaceStack.length*2];
+            System.arraycopy(namespaceStack, 0, newNamespaceStack, 0, namespaceStack.length);
+            namespaceStack = newNamespaceStack;
+        }
+        namespaceStack[2*index] = prefix;
+        namespaceStack[2*index+1] = namespaceURI;
+    }
+
     private void checkState() {
         if (state == STATE_EVENT_COMPLETE) {
             throw new IllegalStateException();
@@ -302,14 +319,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        int index = scopeStack[depth+1]++;
-        if (index*2 == namespaceStack.length) {
-            String[] newNamespaceStack = new String[namespaceStack.length*2];
-            System.arraycopy(namespaceStack, 0, newNamespaceStack, 0, namespaceStack.length);
-            namespaceStack = newNamespaceStack;
-        }
-        namespaceStack[2*index] = prefix;
-        namespaceStack[2*index+1] = namespaceURI;
+        putNamespaceDeclaration(scopeStack[depth+1]++, prefix, namespaceURI);
     }
 
     @Override

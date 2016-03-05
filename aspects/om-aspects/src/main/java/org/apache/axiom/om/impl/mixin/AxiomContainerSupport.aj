@@ -47,6 +47,7 @@ import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
@@ -132,10 +133,15 @@ public aspect AxiomContainerSupport {
         if (configuration.isNamespaceURIInterning()) {
             handler = new NamespaceURIInterningFilterHandler(handler);
         }
-        if (configuration.isPreserveNamespaceContext()) {
-            CoreElement contextElement = getContextElement();
-            if (contextElement != null) {
+        CoreElement contextElement = getContextElement();
+        if (contextElement != null) {
+            if (configuration.isPreserveNamespaceContext()) {
                 handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
+            } else {
+                for (Iterator<OMNamespace> it = ((OMElement)contextElement).getNamespacesInScope(); it.hasNext(); ) {
+                    OMNamespace ns = it.next();
+                    pivot.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
+                }
             }
         }
         try {
