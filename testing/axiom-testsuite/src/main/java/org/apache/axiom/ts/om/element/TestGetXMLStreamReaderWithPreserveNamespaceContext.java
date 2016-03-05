@@ -18,11 +18,13 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
@@ -33,26 +35,46 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests the behavior of
- * {@link OMElement#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)} with
- * {@link OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()} set to <code>true</code>.
+ * {@link OMElement#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)} in conjunction with
+ * {@link OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()}.
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTestCase {
-    public TestGetXMLStreamReaderWithPreserveNamespaceContext(OMMetaFactory metaFactory) {
+    private final boolean preserveNamespaceContext;
+    private final boolean cache;
+
+    public TestGetXMLStreamReaderWithPreserveNamespaceContext(OMMetaFactory metaFactory, boolean preserveNamespaceContext, boolean cache) {
         super(metaFactory);
+        this.preserveNamespaceContext = preserveNamespaceContext;
+        addTestParameter("preserveNamespaceContext", preserveNamespaceContext);
+        this.cache = cache;
+        addTestParameter("cache", cache);
     }
 
     protected void runTest() throws Throwable {
         InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocumentElement();
+        root.declareNamespace("http://example.org", "p");
         OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
-        configuration.setPreserveNamespaceContext(true);
-        XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(true, configuration);
-        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(4, reader.getNamespaceCount());
+        configuration.setPreserveNamespaceContext(preserveNamespaceContext);
+        XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(cache, configuration);
+        assertThat(reader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
         Set<String> prefixes = new HashSet<>();
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<reader.getNamespaceCount(); i++) {
             prefixes.add(reader.getNamespacePrefix(i));
         }
-        assertEquals(new HashSet<>(Arrays.asList(new String[] { "soapenv", "xsd", "xsi", "ns"} )), prefixes);
+        if (preserveNamespaceContext) {
+            assertThat(prefixes).containsExactly("soapenv", "xsd", "xsi", "ns", "p");
+        } else {
+            assertThat(prefixes).containsExactly("ns");
+        }
+        // Make sure that we start pulling events directly from the underlying parser.
+        reader.nextTag();
+        // The following assertions are true irrespective of the value of preserveNamespaceContext.
+        assertThat(reader.getNamespaceURI("xsd")).isEqualTo("http://www.w3.org/2001/XMLSchema");
+        // Namespace declarations added programmatically on an ancestor should also be visible.
+        assertThat(reader.getNamespaceURI("p")).isEqualTo("http://example.org");
+        NamespaceContext nc = reader.getNamespaceContext();
+        assertThat(nc.getPrefix("http://www.w3.org/2001/XMLSchema")).isEqualTo("xsd");
+        assertThat(nc.getPrefix("http://example.org")).isEqualTo("p");
     }
 }
