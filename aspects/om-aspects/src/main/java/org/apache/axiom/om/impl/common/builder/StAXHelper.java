@@ -395,7 +395,6 @@ public class StAXHelper implements XmlReader {
 
     @Override
     public void dispose() {
-        // TODO
-        throw new UnsupportedOperationException();
+        close();
     }
 }

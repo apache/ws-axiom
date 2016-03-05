@@ -80,12 +80,16 @@ public final class Context implements InputContext {
         }
         target.coreSetState(CoreParentNode.DISCARDED);
         this.passThroughHandler = passThroughHandler;
+        if (passThroughHandler == NullXmlHandler.INSTANCE) {
+            builderHandler.decrementActiveContextCount();
+        }
     }
     
     @Override
     public void discard() {
         target.coreSetState(CoreParentNode.DISCARDED);
         passThroughHandler = NullXmlHandler.INSTANCE;
+        builderHandler.decrementActiveContextCount();
     }
 
     private Context newContext(CoreParentNode target) {
@@ -94,6 +98,7 @@ public final class Context implements InputContext {
         }
         nestedContext.target = target;
         target.coreSetInputContext(nestedContext);
+        builderHandler.incrementActiveContextCount();
         return nestedContext;
     }
     
@@ -105,11 +110,15 @@ public final class Context implements InputContext {
             pendingCharacterData = null;
         }
         target = null;
+        builderHandler.decrementActiveContextCount();
         return parentContext;
     }
     
     private Context decrementPassThroughDepth() {
         if (passThroughDepth == 0) {
+            if (passThroughHandler != NullXmlHandler.INSTANCE) {
+                builderHandler.decrementActiveContextCount();
+            }
             target.coreSetInputContext(null);
             target.coreSetState(CoreParentNode.DISCARDED);
             passThroughHandler = null;

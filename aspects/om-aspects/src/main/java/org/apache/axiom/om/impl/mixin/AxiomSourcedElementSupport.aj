@@ -407,9 +407,7 @@ public aspect AxiomSourcedElementSupport {
         if (isExpanded() || (cache && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
             return null;
         }
-        // Note: if we can't determine the type (push/pull) of the OMDataSource, we
-        // default to push
-        if (OMDataSourceUtil.isPullDataSource(dataSource)) {
+        if (OMDataSourceUtil.isPullDataSource(dataSource) || (incremental && !OMDataSourceUtil.isPushDataSource(dataSource))) {
             try {
                 return new StAXPullInput(dataSource.getReader());
             } catch (XMLStreamException ex) {

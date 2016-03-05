@@ -283,5 +283,8 @@ public final class TreeWalkerImpl implements XmlReader {
                 parent = ((CoreChildNode)parent).coreGetParent();
             }
         }
+        if (reader != null) {
+            reader.dispose();
+        }
     }
 }

@@ -39,6 +39,7 @@ public final class BuilderHandler implements XmlHandler {
     final Builder builder;
     final OMNamespaceCache nsCache = new OMNamespaceCache();
     public Context context;
+    private int activeContextCount;
     // returns the state of completion
     public boolean done;
     // keeps the state of the cache
@@ -61,6 +62,7 @@ public final class BuilderHandler implements XmlHandler {
         this.root = root;
         this.builder = builder;
         context = new Context(this, null, 0);
+        activeContextCount = 1;
     }
 
     public void addListener(BuilderListener listener) {
@@ -90,6 +92,16 @@ public final class BuilderHandler implements XmlHandler {
             while ((action = deferredListenerActions.poll()) != null) {
                 action.run();
             }
+        }
+    }
+    
+    void incrementActiveContextCount() {
+        activeContextCount++;
+    }
+    
+    void decrementActiveContextCount() {
+        if (--activeContextCount == 0) {
+            builder.close();
         }
     }
     
