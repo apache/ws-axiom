@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
+import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithPreserveNamespaceContext;
 import org.apache.axiom.ts.om.element.sr.TestClose;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
@@ -49,6 +50,9 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: test case needing review
         builder.exclude(TestClose.class);
+        
+        // TODO: the namespace context is different when cache=false
+        builder.exclude(TestGetXMLStreamReaderWithPreserveNamespaceContext.class, "(cache=false)");
         
         return builder.build();
     }
