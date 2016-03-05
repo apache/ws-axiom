@@ -403,7 +403,7 @@ public aspect AxiomSourcedElementSupport {
         }
     }
 
-    public final XmlInput AxiomSourcedElement.getXmlInput(boolean cache) throws StreamException {
+    public final XmlInput AxiomSourcedElement.getXmlInput(boolean cache, boolean incremental) throws StreamException {
         if (isExpanded() || (cache && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
             return null;
         }
@@ -415,8 +415,10 @@ public aspect AxiomSourcedElementSupport {
             } catch (XMLStreamException ex) {
                 throw new StreamException(ex);
             }
-        } else {
+        } else if (!incremental) {
             return new PushOMDataSourceInput(this, dataSource);
+        } else {
+            return null;
         }
     }
 

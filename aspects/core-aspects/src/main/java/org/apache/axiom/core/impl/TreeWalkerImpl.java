@@ -80,6 +80,7 @@ public final class TreeWalkerImpl implements XmlReader {
     private final XmlHandler handler;
     private final CoreParentNode root;
     private final boolean preserve;
+    private final boolean incremental;
     private CoreNode node;
     
     /**
@@ -90,10 +91,11 @@ public final class TreeWalkerImpl implements XmlReader {
     
     private int state = STATE_NONE;
     
-    public TreeWalkerImpl(XmlHandler handler, CoreParentNode root, boolean preserve) {
+    public TreeWalkerImpl(XmlHandler handler, CoreParentNode root, boolean preserve, boolean incremental) {
         this.handler = handler;
         this.root = root;
         this.preserve = preserve;
+        this.incremental = incremental;
     }
     
     @Override
@@ -207,7 +209,7 @@ public final class TreeWalkerImpl implements XmlReader {
             // been visited yet. It may be a sourced element or a leaf node
             if (state == STATE_NOT_VISITED) {
                 if (nextNode instanceof CoreNSAwareElement) {
-                    XmlInput input = ((CoreNSAwareElement)nextNode).getXmlInput(preserve);
+                    XmlInput input = ((CoreNSAwareElement)nextNode).getXmlInput(preserve, incremental);
                     if (input != null) {
                         reader = input.createReader(new DocumentElementExtractingFilterHandler(handler));
                         state = STATE_STREAMING;

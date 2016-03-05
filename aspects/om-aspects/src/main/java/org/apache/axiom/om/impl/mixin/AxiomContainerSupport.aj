@@ -141,7 +141,7 @@ public aspect AxiomContainerSupport {
             }
         }
         try {
-            pivot.setReader(coreGetReader(handler, cache));
+            pivot.setReader(coreGetReader(handler, cache, true));
         } catch (StreamException ex) {
             throw new OMException(ex);
         }
