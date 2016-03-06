@@ -18,8 +18,6 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
@@ -94,16 +92,6 @@ public final class PushBuilder extends AbstractBuilder {
     @Override
     public final Object getReaderProperty(String name) throws IllegalArgumentException {
         return null;
-    }
-
-    @Override
-    public final XMLStreamReader disableCaching() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public final void reenableCaching(CoreParentNode container) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

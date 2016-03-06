@@ -38,13 +38,16 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
+import org.apache.axiom.core.stream.NamespaceURIInterningFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
+import org.apache.axiom.core.stream.stax.StAXPivot;
 import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
@@ -54,10 +57,9 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.NamespaceURIInterningXMLStreamReaderWrapper;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
-import org.apache.axiom.om.impl.common.serializer.pull.PullSerializer;
+import org.apache.axiom.om.impl.common.serializer.push.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
@@ -65,8 +67,8 @@ import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.om.impl.stream.stax.AxiomXMLStreamReaderExtensionFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
@@ -101,27 +103,28 @@ public aspect AxiomContainerSupport {
     }
     
     public final XMLStreamReader AxiomContainer.defaultGetXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        Builder builder = coreGetBuilder();
-        if (builder != null && builder.isCompleted() && !cache && !isComplete()) {
-            throw new UnsupportedOperationException("The parser is already consumed!");
-        }
-        XMLStreamReader reader = new PullSerializer(this, cache, configuration.isPreserveNamespaceContext());
-        
+        StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
+        XmlHandler handler = pivot;
         if (configuration.isNamespaceURIInterning()) {
-            reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
+            handler = new NamespaceURIInterningFilterHandler(handler);
         }
-        
-        // If debug is enabled, wrap the OMXMLStreamReader in a validator.
-        // The validator will check for mismatched events to help determine if the OMStAXWrapper
-        // is functioning correctly.  All problems are reported as debug.log messages
-        
-        if (log.isDebugEnabled()) {
-            reader = 
-                new XMLStreamReaderValidator(reader, // delegate to actual reader
-                     false); // log problems (true will cause exceptions to be thrown)
+        CoreElement contextElement = getContextElement();
+        if (contextElement != null) {
+            if (configuration.isPreserveNamespaceContext()) {
+                handler = new NamespaceContextPreservationFilterHandler(handler, contextElement);
+            } else {
+                for (Iterator<OMNamespace> it = ((OMElement)contextElement).getNamespacesInScope(); it.hasNext(); ) {
+                    OMNamespace ns = it.next();
+                    pivot.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
+                }
+            }
         }
-        
-        return reader;
+        try {
+            pivot.setReader(coreGetReader(handler, cache, true));
+        } catch (StreamException ex) {
+            throw new OMException(ex);
+        }
+        return pivot;
     }
     
     public final AxiomChildNode AxiomContainer.prepareNewChild(OMNode omNode) {

@@ -16,40 +16,56 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.pull;
+package org.apache.axiom.om.impl.stream.stax;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.stream.stax.InternalXMLStreamReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.om.impl.intf.TextContent;
 
-final class NullDataHandlerReader implements DataHandlerReader {
-    static final NullDataHandlerReader INSTANCE = new NullDataHandlerReader();
-    
-    private NullDataHandlerReader() {}
+final class DataHandlerReaderImpl implements DataHandlerReader {
+    private final InternalXMLStreamReader reader;
 
+    DataHandlerReaderImpl(InternalXMLStreamReader reader) {
+        this.reader = reader;
+    }
+
+    @Override
     public boolean isBinary() {
-        return false;
+        if (reader.getEventType() == XMLStreamReader.CHARACTERS) {
+            Object data = reader.getCharacterData();
+            return data instanceof TextContent && ((TextContent)data).isBinary();
+        } else {
+            return false;
+        }
     }
 
+    @Override
     public boolean isOptimized() {
-        throw new IllegalStateException();
+        return ((TextContent)reader.getCharacterData()).isOptimize();
     }
 
+    @Override
     public boolean isDeferred() {
-        throw new IllegalStateException();
+        return ((TextContent)reader.getCharacterData()).getDataHandlerObject() instanceof DataHandlerProvider;
     }
 
+    @Override
     public String getContentID() {
-        throw new IllegalStateException();
+        return ((TextContent)reader.getCharacterData()).getContentID();
     }
 
+    @Override
     public DataHandler getDataHandler() throws XMLStreamException {
-        throw new IllegalStateException();
+        return ((TextContent)reader.getCharacterData()).getDataHandler();
     }
 
+    @Override
     public DataHandlerProvider getDataHandlerProvider() {
-        throw new IllegalStateException();
+        return (DataHandlerProvider)((TextContent)reader.getCharacterData()).getDataHandlerObject();
     }
 }

@@ -38,7 +38,7 @@ public aspect CoreNSAwareElementSupport {
         return namespaceURI.equals(coreGetNamespaceURI()) ? coreGetPrefix() : null;
     }
     
-    public XmlInput CoreNSAwareElement.getXmlInput(boolean cache) throws StreamException {
+    public XmlInput CoreNSAwareElement.getXmlInput(boolean cache, boolean incremental) throws StreamException {
         return null;
     }
     

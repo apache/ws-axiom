@@ -392,4 +392,9 @@ public class StAXHelper implements XmlReader {
         }
         return lookAheadToken;
     }
+
+    @Override
+    public void dispose() {
+        close();
+    }
 }

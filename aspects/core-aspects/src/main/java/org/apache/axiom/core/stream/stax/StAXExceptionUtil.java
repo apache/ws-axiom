@@ -16,24 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.pull;
+package org.apache.axiom.core.stream.stax;
 
-import org.apache.axiom.ext.stax.DTDReader;
+import javax.xml.stream.XMLStreamException;
 
-final class NullDTDReader implements DTDReader {
-    static final NullDTDReader INSTANCE = new NullDTDReader();
+import org.apache.axiom.core.stream.StreamException;
+
+public final class StAXExceptionUtil {
+    private StAXExceptionUtil() {}
     
-    private NullDTDReader() {}
-
-    public String getRootName() {
-        throw new UnsupportedOperationException();
+    public static StreamException toStreamException(XMLStreamException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof StreamException) {
+            return (StreamException)cause;
+        } else {
+            return new StreamException(ex);
+        }
     }
-
-    public String getPublicId() {
-        throw new UnsupportedOperationException();
-    }
-
-    public String getSystemId() {
-        throw new UnsupportedOperationException();
+    
+    public static XMLStreamException toXMLStreamException(StreamException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof XMLStreamException) {
+            return (XMLStreamException)cause;
+        } else {
+            return new XMLStreamException(ex.getMessage(), ex);
+        }
     }
 }

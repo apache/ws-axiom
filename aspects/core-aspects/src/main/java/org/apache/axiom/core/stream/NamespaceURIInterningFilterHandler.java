@@ -16,35 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.ds;
+package org.apache.axiom.core.stream;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.om.OMDataSource;
-
-final class DirectPushOMDataSourceReader implements XmlReader {
-    private final XMLStreamWriter writer;
-    private final OMDataSource dataSource;
-
-    DirectPushOMDataSourceReader(XMLStreamWriter writer, OMDataSource dataSource) {
-        this.writer = writer;
-        this.dataSource = dataSource;
+public final class NamespaceURIInterningFilterHandler extends XmlHandlerWrapper {
+    public NamespaceURIInterningFilterHandler(XmlHandler parent) {
+        super(parent);
     }
 
     @Override
-    public boolean proceed() throws StreamException {
-        try {
-            dataSource.serialize(writer);
-        } catch (XMLStreamException ex) {
-            throw new StreamException(ex);
-        }
-        return true;
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        super.startElement(namespaceURI.intern(), localName, prefix);
     }
 
     @Override
-    public void dispose() {
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+        super.processAttribute(namespaceURI.intern(), localName, prefix, value, type, specified);
+    }
+
+    @Override
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+        super.processNamespaceDeclaration(prefix, namespaceURI.intern());
     }
 }

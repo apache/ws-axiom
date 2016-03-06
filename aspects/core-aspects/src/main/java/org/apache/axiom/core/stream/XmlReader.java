@@ -20,4 +20,5 @@ package org.apache.axiom.core.stream;
 
 public interface XmlReader {
     boolean proceed() throws StreamException;
+    void dispose();
 }

@@ -25,6 +25,7 @@ import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.NodeConsumedException;
 import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -79,6 +80,7 @@ public final class TreeWalkerImpl implements XmlReader {
     private final XmlHandler handler;
     private final CoreParentNode root;
     private final boolean preserve;
+    private final boolean incremental;
     private CoreNode node;
     
     /**
@@ -89,10 +91,11 @@ public final class TreeWalkerImpl implements XmlReader {
     
     private int state = STATE_NONE;
     
-    public TreeWalkerImpl(XmlHandler handler, CoreParentNode root, boolean preserve) {
+    public TreeWalkerImpl(XmlHandler handler, CoreParentNode root, boolean preserve, boolean incremental) {
         this.handler = handler;
         this.root = root;
         this.preserve = preserve;
+        this.incremental = incremental;
     }
     
     @Override
@@ -206,7 +209,7 @@ public final class TreeWalkerImpl implements XmlReader {
             // been visited yet. It may be a sourced element or a leaf node
             if (state == STATE_NOT_VISITED) {
                 if (nextNode instanceof CoreNSAwareElement) {
-                    XmlInput input = ((CoreNSAwareElement)nextNode).getXmlInput(preserve);
+                    XmlInput input = ((CoreNSAwareElement)nextNode).getXmlInput(preserve, incremental);
                     if (input != null) {
                         reader = input.createReader(new DocumentElementExtractingFilterHandler(handler));
                         state = STATE_STREAMING;
@@ -262,6 +265,26 @@ public final class TreeWalkerImpl implements XmlReader {
             return state == STATE_VISITED && (nextNode == null || nextNode instanceof CoreDocument);
         } catch (CoreModelException ex) {
             throw new CoreModelStreamException(ex);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (!preserve && node != null) {
+            CoreParentNode parent = node instanceof CoreParentNode ? (CoreParentNode)node : ((CoreChildNode)node).coreGetParent();
+            while (true) {
+                InputContext context = parent.coreGetInputContext();
+                if (context != null) {
+                    context.discard();
+                }
+                if (parent == root) {
+                    break;
+                }
+                parent = ((CoreChildNode)parent).coreGetParent();
+            }
+        }
+        if (reader != null) {
+            reader.dispose();
         }
     }
 }

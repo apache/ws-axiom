@@ -24,6 +24,7 @@ import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.InputContext;
+import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMNamespace;
@@ -79,14 +80,25 @@ public final class Context implements InputContext {
         }
         target.coreSetState(CoreParentNode.DISCARDED);
         this.passThroughHandler = passThroughHandler;
+        if (passThroughHandler == NullXmlHandler.INSTANCE) {
+            builderHandler.decrementActiveContextCount();
+        }
     }
     
+    @Override
+    public void discard() {
+        target.coreSetState(CoreParentNode.DISCARDED);
+        passThroughHandler = NullXmlHandler.INSTANCE;
+        builderHandler.decrementActiveContextCount();
+    }
+
     private Context newContext(CoreParentNode target) {
         if (nestedContext == null) {
             nestedContext = new Context(builderHandler, this, depth+1);
         }
         nestedContext.target = target;
         target.coreSetInputContext(nestedContext);
+        builderHandler.incrementActiveContextCount();
         return nestedContext;
     }
     
@@ -98,11 +110,15 @@ public final class Context implements InputContext {
             pendingCharacterData = null;
         }
         target = null;
+        builderHandler.decrementActiveContextCount();
         return parentContext;
     }
     
     private Context decrementPassThroughDepth() {
         if (passThroughDepth == 0) {
+            if (passThroughHandler != NullXmlHandler.INSTANCE) {
+                builderHandler.decrementActiveContextCount();
+            }
             target.coreSetInputContext(null);
             target.coreSetState(CoreParentNode.DISCARDED);
             passThroughHandler = null;

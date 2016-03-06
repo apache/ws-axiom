@@ -16,21 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.pull;
+package org.apache.axiom.core.stream.stax;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.axiom.ext.stax.CharacterDataReader;
-
-final class NullCharacterDataReader implements CharacterDataReader {
-    static final NullCharacterDataReader INSTANCE = new NullCharacterDataReader();
-    
-    private NullCharacterDataReader() {}
-
-    public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
-        throw new IllegalStateException();
-    }
+public interface XMLStreamReaderExtensionFactory {
+    Object createExtension(String propertyName, InternalXMLStreamReader reader);
 }

@@ -65,4 +65,8 @@ public final class SAXReader implements XmlReader {
         }
         return true;
     }
+
+    @Override
+    public void dispose() {
+    }
 }

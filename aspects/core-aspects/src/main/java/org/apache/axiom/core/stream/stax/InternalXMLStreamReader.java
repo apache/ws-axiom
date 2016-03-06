@@ -16,17 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.pull;
+package org.apache.axiom.core.stream.stax;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-final class IncludeWrapper extends AbstractWrapper {
-    IncludeWrapper(PullSerializer serializer, XMLStreamReader parent) {
-        super(serializer, parent, 0);
-    }
-
-    void released() throws XMLStreamException {
-        reader.close();
-    }
+public interface InternalXMLStreamReader extends XMLStreamReader {
+    String getRootName();
+    String getPublicId();
+    String getSystemId();
+    Object getCharacterData();
 }

@@ -30,8 +30,6 @@ import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -39,8 +37,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.Closeable;
 
 public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSupport {
-    private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
-    
     private final StAXHelper helper;
 
     private final Detachable detachable;
@@ -171,58 +167,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
 
     public final String getPrefix() {
         return helper.parser.getPrefix();
-    }
-
-    public final XMLStreamReader disableCaching() {
-        builderHandler.cache = false;
-        // Always advance to the event right after the current node; this also takes
-        // care of lookahead
-        helper.parserNext();
-        if (log.isDebugEnabled()) {
-            log.debug("Caching disabled; current element level is " + builderHandler.depth);
-        }
-        return helper.parser;
-    }
-    
-    // This method expects that the parser is currently positioned on the
-    // end event corresponding to the container passed as parameter
-    public final void reenableCaching(CoreParentNode container) {
-        Context current = builderHandler.context;
-        while (true) {
-            discarded(current.target);
-            if (builderHandler.depth == 0) {
-                if (current.target != container || current.target != builderHandler.document) {
-                    throw new IllegalStateException();
-                }
-                break;
-            }
-            builderHandler.depth--;
-            if (current.target == container) {
-                break;
-            }
-            current = current.parentContext;
-        }
-        // Note that at this point current == container
-        if (container == builderHandler.document) {
-            builderHandler.context = null;
-            builderHandler.done = true;
-        } else if (builderHandler.depth == 0 && builderHandler.document == null) {
-            // Consume the remaining event; for the rationale, see StAXOMBuilder#next()
-            while (helper.parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                // Just loop
-            }
-            builderHandler.context = null;
-            builderHandler.done = true;
-        } else {
-            builderHandler.context = builderHandler.context.parentContext;
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("Caching re-enabled; new element level: " + builderHandler.depth + "; done=" + builderHandler.done);
-        }
-        if (builderHandler.done && helper.autoClose) {
-            close();
-        }
-        builderHandler.cache = true;
     }
 
     @Override
