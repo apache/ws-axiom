@@ -404,19 +404,31 @@ public aspect AxiomSourcedElementSupport {
     }
 
     public final XmlInput AxiomSourcedElement.getXmlInput(boolean cache, boolean incremental) throws StreamException {
-        if (isExpanded() || (cache && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
+        if (isExpanded()) {
             return null;
         }
-        if (OMDataSourceUtil.isPullDataSource(dataSource) || (incremental && !OMDataSourceUtil.isPushDataSource(dataSource))) {
+        boolean pull;
+        if (OMDataSourceUtil.isPullDataSource(dataSource)) {
+            pull = true;
+        } else if (OMDataSourceUtil.isPushDataSource(dataSource)) {
+            if (incremental) {
+                return null;
+            }
+            pull = false;
+        } else {
+            pull = incremental;
+        }
+        if (cache && (pull && OMDataSourceUtil.isDestructiveRead(dataSource) || !pull && OMDataSourceUtil.isDestructiveWrite(dataSource))) {
+            return null;
+        }
+        if (pull) {
             try {
                 return new StAXPullInput(dataSource.getReader());
             } catch (XMLStreamException ex) {
                 throw new StreamException(ex);
             }
-        } else if (!incremental) {
-            return new PushOMDataSourceInput(this, dataSource);
         } else {
-            return null;
+            return new PushOMDataSourceInput(this, dataSource);
         }
     }
 
