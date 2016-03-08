@@ -239,7 +239,7 @@ public aspect CoreParentNodeSupport {
                 if (lastChild instanceof CoreParentNode) {
                     ((CoreParentNode)lastChild).build();
                 }
-                coreGetBuilder().discard(this);
+                coreGetInputContext().discard();
                 updateState = true;
             } else {
                 updateState = false;
