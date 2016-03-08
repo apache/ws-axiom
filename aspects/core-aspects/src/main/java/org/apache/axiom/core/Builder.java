@@ -23,6 +23,4 @@ public interface Builder {
     boolean isCompleted();
     void close();
     boolean isClosed();
-
-    void discard(CoreParentNode container);
 }

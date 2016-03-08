@@ -227,6 +227,29 @@ public aspect CoreParentNodeSupport {
         fragmentContent.lastChild = null;
     }
 
+    public final void CoreParentNode.coreDiscard(boolean consumeInput) {
+        if (!isExpanded()) {
+            return;
+        }
+        CoreChildNode child = coreGetFirstChildIfAvailable();
+        while (child != null) {
+            if (child instanceof CoreParentNode) {
+                ((CoreParentNode)child).coreDiscard(consumeInput);
+            }
+            child = child.coreGetNextSiblingIfAvailable();
+        }
+        InputContext context = coreGetInputContext();
+        if (context != null) {
+            context.discard();
+            if (consumeInput) {
+                Builder builder = context.getBuilder();
+                do {
+                    builder.next();
+                } while (getState() != DISCARDED);
+            }
+        }
+    }
+
     public final void CoreParentNode.coreRemoveChildren(Semantics semantics) {
         if (getState() == COMPACT) {
             coreSetState(COMPLETE);
@@ -257,7 +280,6 @@ public aspect CoreParentNodeSupport {
             }
             content = null;
             if (updateState) {
-                // TODO: need to check that the builder will not modify the state to DISCARDED later
                 coreSetState(COMPLETE);
             }
         }

@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.common.builder;
 
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -27,7 +26,6 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
@@ -74,63 +72,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, element);
     }
     
-    private void discarded(CoreParentNode container) {
-        ((AxiomContainer)container).discarded();
-    }
-    
-    public final void discard(CoreParentNode container) {
-        int targetElementLevel = builderHandler.depth;
-        Context current = builderHandler.context;
-        while (current.target != container) {
-            targetElementLevel--;
-            current = current.parentContext;
-        }
-        if (targetElementLevel == 0 || targetElementLevel == 1 && builderHandler.document == null) {
-            close();
-            current = builderHandler.context;
-            while (true) {
-                discarded(current.target);
-                if (current.target == container) {
-                    break;
-                }
-                current = current.parentContext;
-            }
-            return;
-        }
-        int skipDepth = 0;
-        loop: while (true) {
-            switch (helper.parserNext()) {
-                case XMLStreamReader.START_ELEMENT:
-                    skipDepth++;
-                    break;
-                case XMLStreamReader.END_ELEMENT:
-                    if (skipDepth > 0) {
-                        skipDepth--;
-                    } else {
-                        discarded(builderHandler.context.target);
-                        boolean found = container == builderHandler.context.target;
-                        builderHandler.context = builderHandler.context.parentContext;
-                        builderHandler.depth--;
-                        if (found) {
-                            break loop;
-                        }
-                    }
-                    break;
-                case XMLStreamReader.END_DOCUMENT:
-                    if (skipDepth != 0 || builderHandler.depth != 0) {
-                        throw new OMException("Unexpected END_DOCUMENT");
-                    }
-                    if (builderHandler.context.target != builderHandler.document) {
-                        throw new OMException("Called discard for an element that is not being built by this builder");
-                    }
-                    discarded(builderHandler.context.target);
-                    builderHandler.context = null;
-                    builderHandler.done = true;
-                    break loop;
-            }
-        }
-    }
-
     public final String getNamespaceURI() {
         return helper.parser.getNamespaceURI();
     }

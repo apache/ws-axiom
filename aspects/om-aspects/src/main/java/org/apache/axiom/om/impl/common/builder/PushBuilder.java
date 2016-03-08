@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
@@ -88,10 +87,5 @@ public final class PushBuilder extends AbstractBuilder {
     @Override
     public final Object getReaderProperty(String name) throws IllegalArgumentException {
         return null;
-    }
-
-    @Override
-    public final void discard(CoreParentNode container) {
-        throw new UnsupportedOperationException();
     }
 }

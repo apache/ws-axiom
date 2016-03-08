@@ -117,16 +117,18 @@ public aspect CoreChildNodeSupport {
         CoreChildNode nextSibling = coreGetNextSiblingIfAvailable();
         if (nextSibling == null) {
             CoreParentNode parent = coreGetParent();
-            if (parent != null && parent.coreGetBuilder() != null) {
+            if (parent != null) {
                 switch (parent.getState()) {
                     case CoreParentNode.DISCARDING:
                     case CoreParentNode.DISCARDED:
                         throw new NodeConsumedException();
                     case CoreParentNode.INCOMPLETE:
-                        do {
-                            parent.buildNext();
-                        } while (parent.getState() == CoreParentNode.INCOMPLETE
-                                && (nextSibling = coreGetNextSiblingIfAvailable()) == null);
+                        if (parent.coreGetBuilder() != null) {
+                            do {
+                                parent.buildNext();
+                            } while (parent.getState() == CoreParentNode.INCOMPLETE
+                                    && (nextSibling = coreGetNextSiblingIfAvailable()) == null);
+                        }
                 }
             }
         }

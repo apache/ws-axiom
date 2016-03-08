@@ -119,8 +119,12 @@ public final class Context implements InputContext {
             if (passThroughHandler != NullXmlHandler.INSTANCE) {
                 builderHandler.decrementActiveContextCount();
             }
+            // TODO: handle this in a better way
+            boolean updateState = target.getState() == CoreParentNode.DISCARDING;
             target.coreSetInputContext(null);
-            target.coreSetState(CoreParentNode.DISCARDED);
+            if (updateState) {
+                target.coreSetState(CoreParentNode.DISCARDED);
+            }
             passThroughHandler = null;
             target = null;
             return parentContext;
