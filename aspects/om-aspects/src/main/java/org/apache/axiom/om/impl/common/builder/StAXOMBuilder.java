@@ -39,11 +39,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
 
     private final Detachable detachable;
     
-    // keeps the state of the parser access. if the parser is
-    // accessed atleast once,this flag will be set
-
-    /** Field parserAccessed */
-    private boolean parserAccessed = false;
     private String charEncoding = null;
     
     private CustomBuilderManager customBuilderManager;
@@ -74,26 +69,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     public final String getNamespaceURI() {
         return helper.parser.getNamespaceURI();
-    }
-
-    /**
-     * Method setCache.
-     *
-     * @param b
-     */
-    public final void setCache(boolean b) {
-        if (parserAccessed && b) {
-            throw new UnsupportedOperationException(
-                    "parser accessed. cannot set cache");
-        }
-        builderHandler.cache = b;
-    }
-    
-    /**
-     * @return true if caching
-     */
-    public final boolean isCache() {
-        return builderHandler.cache;
     }
 
     public final String getLocalName() {
@@ -160,9 +135,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
      * @throws OMException
      */
     public int next() throws OMException {
-        if (!builderHandler.cache) {
-            throw new IllegalStateException("Can't process next node because caching is disabled");
-        }
         if (builderHandler.done) {
             throw new OMException();
         }

@@ -46,14 +46,6 @@ public final class PushBuilder extends AbstractBuilder {
         return -1;
     }
 
-    public final void setCache(boolean b) throws OMException {
-        throw new UnsupportedOperationException();
-    }
-
-    public final boolean isCache() {
-        throw new UnsupportedOperationException();
-    }
-
     public final OMElement getDocumentElement() {
         return getDocument().getOMDocumentElement();
     }

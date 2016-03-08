@@ -42,8 +42,6 @@ public final class BuilderHandler implements XmlHandler {
     private int activeContextCount;
     // returns the state of completion
     public boolean done;
-    // keeps the state of the cache
-    public boolean cache = true;
     public AxiomDocument document;
     
     /**

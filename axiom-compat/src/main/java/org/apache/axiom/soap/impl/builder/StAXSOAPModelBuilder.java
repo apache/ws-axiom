@@ -75,14 +75,6 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         return target.getSOAPMessage();
     }
 
-    public void setCache(boolean b) throws OMException {
-        target.setCache(b);
-    }
-
-    public boolean isCache() {
-        return target.isCache();
-    }
-
     public boolean isCompleted() {
         return target.isCompleted();
     }

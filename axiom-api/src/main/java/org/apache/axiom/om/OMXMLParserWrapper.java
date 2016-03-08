@@ -41,19 +41,6 @@ public interface OMXMLParserWrapper {
      */
     int next() throws OMException;
 
-    /**
-     * @param b
-     * @throws org.apache.axiom.om.OMException
-     *
-     * @throws OMException
-     */
-    void setCache(boolean b) throws OMException;
-    
-    /**
-     * @return true if caching
-     */
-    boolean isCache();
-
     /** @return Returns the complete status. */
     boolean isCompleted();
 
