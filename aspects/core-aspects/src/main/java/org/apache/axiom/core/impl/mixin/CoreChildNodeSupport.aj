@@ -119,6 +119,7 @@ public aspect CoreChildNodeSupport {
             CoreParentNode parent = coreGetParent();
             if (parent != null && parent.coreGetBuilder() != null) {
                 switch (parent.getState()) {
+                    case CoreParentNode.DISCARDING:
                     case CoreParentNode.DISCARDED:
                         throw new NodeConsumedException();
                     case CoreParentNode.INCOMPLETE:

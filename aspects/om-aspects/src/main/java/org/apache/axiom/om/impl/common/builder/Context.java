@@ -78,7 +78,7 @@ public final class Context implements InputContext {
         if (this.passThroughHandler != null) {
             throw new IllegalStateException("A pass-through handler has already been set for this context");
         }
-        target.coreSetState(CoreParentNode.DISCARDED);
+        target.coreSetState(CoreParentNode.DISCARDING);
         this.passThroughHandler = passThroughHandler;
         if (passThroughHandler == NullXmlHandler.INSTANCE) {
             builderHandler.decrementActiveContextCount();
@@ -87,7 +87,7 @@ public final class Context implements InputContext {
     
     @Override
     public void discard() {
-        target.coreSetState(CoreParentNode.DISCARDED);
+        target.coreSetState(CoreParentNode.DISCARDING);
         passThroughHandler = NullXmlHandler.INSTANCE;
         builderHandler.decrementActiveContextCount();
     }

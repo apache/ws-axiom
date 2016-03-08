@@ -145,7 +145,7 @@ public final class TreeWalkerImpl implements XmlReader {
                     CoreChildNode child = parent.coreGetFirstChildIfAvailable();
                     if (child == null) {
                         nextNode = parent;
-                        if (nodeState == CoreParentNode.DISCARDED) {
+                        if (nodeState == CoreParentNode.DISCARDING || nodeState == CoreParentNode.DISCARDED) {
                             throw new NodeConsumedException();
                         }
                         parent.coreGetInputContext().setPassThroughHandler(handler);
@@ -181,7 +181,7 @@ public final class TreeWalkerImpl implements XmlReader {
                         
                         if (nodeState == CoreParentNode.COMPLETE) {
                             state = STATE_VISITED;
-                        } else if (nodeState == CoreParentNode.DISCARDED) {
+                        } else if (nodeState == CoreParentNode.DISCARDING || nodeState == CoreParentNode.DISCARDED) {
                             throw new NodeConsumedException();
                         } else {
                             parent.coreGetInputContext().setPassThroughHandler(handler);

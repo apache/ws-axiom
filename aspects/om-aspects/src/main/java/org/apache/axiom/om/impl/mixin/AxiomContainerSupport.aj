@@ -168,7 +168,7 @@ public aspect AxiomContainerSupport {
                 omNode.build();
             }
         } else {
-            if (getState() == AxiomContainer.DISCARDED) {
+            if (getState() == AxiomContainer.DISCARDING || getState() == AxiomContainer.DISCARDED) {
                 throw new NodeUnavailableException();
             }
             if (builder != null && builder.isCompleted()) {

@@ -25,8 +25,19 @@ public interface CoreParentNode extends CoreNode {
     int COMPLETE = 0;
     int ATTRIBUTES_PENDING = 1;
     int INCOMPLETE = 2;
-    int DISCARDED = 3;
-    int COMPACT = 4;
+    
+    /**
+     * A request was made to discard the node, but some of the events corresponding to this node
+     * have not been consumed yet.
+     */
+    int DISCARDING = 3;
+    
+    /**
+     * The node has been discarded and all corresponding events have been consumed.
+     */
+    int DISCARDED = 4;
+    
+    int COMPACT = 5;
     
     Builder coreGetBuilder();
     InputContext coreGetInputContext();

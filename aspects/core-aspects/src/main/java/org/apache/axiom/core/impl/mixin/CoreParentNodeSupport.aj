@@ -144,6 +144,7 @@ public aspect CoreParentNodeSupport {
         CoreChildNode firstChild = coreGetFirstChildIfAvailable();
         if (firstChild == null) {
             switch (getState()) {
+                case CoreParentNode.DISCARDING:
                 case CoreParentNode.DISCARDED:
                     throw new NodeConsumedException();
                 case CoreParentNode.INCOMPLETE:
@@ -256,6 +257,7 @@ public aspect CoreParentNodeSupport {
             }
             content = null;
             if (updateState) {
+                // TODO: need to check that the builder will not modify the state to DISCARDED later
                 coreSetState(COMPLETE);
             }
         }
