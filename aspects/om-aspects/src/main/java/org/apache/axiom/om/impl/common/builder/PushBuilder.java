@@ -47,10 +47,6 @@ public final class PushBuilder extends AbstractBuilder {
         return -1;
     }
 
-    public final void discard(OMElement el) throws OMException {
-        throw new UnsupportedOperationException();
-    }
-
     public final void setCache(boolean b) throws OMException {
         throw new UnsupportedOperationException();
     }

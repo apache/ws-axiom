@@ -42,11 +42,6 @@ public interface OMXMLParserWrapper {
     int next() throws OMException;
 
     /**
-     * @deprecated Use {@link OMNode#discard()} to discard elements.
-     */
-    void discard(OMElement el) throws OMException;
-
-    /**
      * @param b
      * @throws org.apache.axiom.om.OMException
      *

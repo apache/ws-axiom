@@ -78,12 +78,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         ((AxiomContainer)container).discarded();
     }
     
-    // For compatibility only
-    public final void discard(OMElement element) throws OMException {
-        discard((CoreParentNode)element);
-        element.discard();
-    }
-    
     public final void discard(CoreParentNode container) {
         int targetElementLevel = builderHandler.depth;
         Context current = builderHandler.context;

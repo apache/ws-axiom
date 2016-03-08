@@ -75,10 +75,6 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         return target.getSOAPMessage();
     }
 
-    public void discard(OMElement el) throws OMException {
-        target.discard(el);
-    }
-
     public void setCache(boolean b) throws OMException {
         target.setCache(b);
     }
