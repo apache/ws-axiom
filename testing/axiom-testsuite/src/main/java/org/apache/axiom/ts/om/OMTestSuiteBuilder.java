@@ -425,8 +425,6 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.sr.TestClose(metaFactory, true));
-        addTest(new org.apache.axiom.ts.om.element.sr.TestClose(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding(metaFactory, false));
         for (BuilderFactory bf : getInstances(BuilderFactory.class)) {

@@ -75,9 +75,4 @@ public final class PushBuilder extends AbstractBuilder {
     public final boolean isClosed() {
         return true;
     }
-
-    @Override
-    public final Object getReaderProperty(String name) throws IllegalArgumentException {
-        return null;
-    }
 }

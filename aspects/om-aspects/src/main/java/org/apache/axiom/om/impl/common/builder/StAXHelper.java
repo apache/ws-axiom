@@ -184,13 +184,6 @@ public class StAXHelper implements XmlReader {
         }
     }
 
-    public final Object getReaderProperty(String name) throws IllegalArgumentException {
-        if (!isClosed()) {
-            return parser.getProperty(name);
-        } 
-        return null;
-    }
-
     public final boolean isClosed() {
         return _isClosed;
     }

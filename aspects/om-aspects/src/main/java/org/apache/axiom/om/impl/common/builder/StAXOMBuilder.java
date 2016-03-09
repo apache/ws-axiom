@@ -81,10 +81,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         helper.close();
     }
 
-    public final Object getReaderProperty(String name) throws IllegalArgumentException {
-        return helper.getReaderProperty(name);
-    }
-
     /**
      * Returns the encoding style of the XML data
      * @return the character encoding, defaults to "UTF-8"

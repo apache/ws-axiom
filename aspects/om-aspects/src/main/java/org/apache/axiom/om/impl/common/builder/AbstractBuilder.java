@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-public abstract class AbstractBuilder implements OMXMLParserWrapper, Builder, org.apache.axiom.om.impl.builder.Builder {
+public abstract class AbstractBuilder implements OMXMLParserWrapper, Builder {
     protected final BuilderHandler builderHandler;
     protected final XmlHandler handler;
 
