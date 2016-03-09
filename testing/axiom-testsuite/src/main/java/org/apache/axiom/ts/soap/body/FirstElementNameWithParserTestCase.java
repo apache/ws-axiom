@@ -18,17 +18,21 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.AssertionFailedError;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
@@ -57,16 +61,28 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
                 qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 new StringReader(orgEnvelope.toString()));
+        SOAPBody body = builder.getSOAPEnvelope().getBody();
+        runTest(body);
         if (supportsOptimization) {
-            // To detect if the child element is instantiated or not, we register a custom
-            // builder that throws an exception.
+            // The expectation is that even after looking at the payload element name, registering
+            // a custom builder still transforms the element.
             ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new CustomBuilder() {
                 public OMDataSource create(XMLStreamReader reader) throws OMException {
-                    throw new AssertionFailedError("Custom builder called.");
+                    return new AbstractPushOMDataSource() {
+                        @Override
+                        public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+                            xmlWriter.writeEmptyElement(qname.getPrefix(), qname.getLocalPart(), qname.getNamespaceURI());
+                        }
+                        
+                        @Override
+                        public boolean isDestructiveWrite() {
+                            return false;
+                        }
+                    };
                 }
             });
+            assertThat(body.getFirstElement()).isInstanceOf(OMSourcedElement.class);
         }
-        runTest(builder.getSOAPEnvelope().getBody());
     }
 
     protected abstract void runTest(SOAPBody body) throws Throwable;
