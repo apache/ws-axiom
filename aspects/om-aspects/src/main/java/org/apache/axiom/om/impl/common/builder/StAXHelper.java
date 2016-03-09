@@ -27,7 +27,6 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,7 +71,7 @@ public class StAXHelper implements XmlReader {
     private static final Log log = LogFactory.getLog(StAXHelper.class);
     
     /** Field parser */
-    public XMLStreamReader parser;
+    private XMLStreamReader parser;
 
     private final XmlHandler handler;
     private final Closeable closeable;
@@ -97,7 +96,7 @@ public class StAXHelper implements XmlReader {
      */
     private Exception parserException;
     
-    private int lookAheadToken;
+    private boolean start = true;
     
     public StAXHelper(XMLStreamReader parser, XmlHandler handler,
             Closeable closeable, boolean autoClose) {
@@ -106,7 +105,6 @@ public class StAXHelper implements XmlReader {
         this.closeable = closeable;
         this.autoClose = autoClose;
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
-        lookAheadToken = parser.getEventType();
     }
     
     public StAXHelper(XMLStreamReader parser, XmlHandler handler) {
@@ -342,13 +340,9 @@ public class StAXHelper implements XmlReader {
      * @throws DeferredParsingException
      */
     public int parserNext() {
-        if (lookAheadToken >= 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("Consuming look-ahead token " + XMLEventUtils.getEventTypeString(lookAheadToken));
-            }
-            int token = lookAheadToken;
-            lookAheadToken = -1; // Reset
-            return token;
+        if (start) {
+            start = false;
+            return parser.getEventType();
         } else {
             try {
                 if (parserException != null) {
@@ -377,22 +371,6 @@ public class StAXHelper implements XmlReader {
         }
     }
     
-    /**
-     * Look ahead to the next event. This method advanced the parser to the next event, but defers
-     * creation of the corresponding node to the next call of {@link #next()}.
-     * 
-     * @return The type of the next event. If the return value is
-     *         {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}, then the information related
-     *         to that element can be obtained by calls to {@link #getLocalName()},
-     *         {@link #getNamespaceURI()} and {@link #getPrefix()}.
-     */
-    public final int lookahead() {
-        if (lookAheadToken < 0) {
-            lookAheadToken = parserNext();
-        }
-        return lookAheadToken;
-    }
-
     @Override
     public void dispose() {
         close();

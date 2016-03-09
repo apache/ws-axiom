@@ -18,15 +18,9 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.InputContext;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
-import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPBody;
@@ -41,69 +35,18 @@ public aspect AxiomSOAPBodySupport {
         return ((SOAPFactory)getOMFactory()).createSOAPFault(this, e);
     }
 
-    private boolean AxiomSOAPBody.hasLookahead() {
-        InputContext context = coreGetInputContext();
-        if (context != null) {
-            CoreChildNode child = coreGetFirstChildIfAvailable();
-            while (child != null) {
-                if (child instanceof OMElement) {
-                    return false;
-                }
-                child = child.coreGetNextSiblingIfAvailable();
-            }
-            StAXOMBuilder builder = (StAXOMBuilder)context.getBuilder();
-            do {
-                if (builder.lookahead() == XMLStreamReader.START_ELEMENT) {
-                    return true;
-                }
-                builder.next();
-            } while (coreGetInputContext() != null);
-        }
-        return false;
-    }
-    
     public final boolean AxiomSOAPBody.hasFault() {
-        // Set hasSOAPFault if it matches the name matches a SOAP Fault
-        if (hasLookahead()) {
-            StAXOMBuilder builder = (StAXOMBuilder)coreGetBuilder();
-            return SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(builder.getLocalName())
-                    && getSOAPHelper().getEnvelopeURI().equals(builder.getNamespaceURI());
-        } else {
-            return getFirstElement() instanceof SOAPFault;
-        }
+        return getFirstElement() instanceof SOAPFault;
     }
 
     public final OMNamespace AxiomSOAPBody.getFirstElementNS() {
-        if (hasLookahead()) {
-            StAXOMBuilder builder = (StAXOMBuilder)coreGetBuilder();
-            String ns = builder.getNamespaceURI();
-            if (ns == null) {
-                return null;
-            } else {
-                String prefix = builder.getPrefix();
-                return getOMFactory().createOMNamespace(ns, prefix == null ? "" : prefix);
-            }
-        } else {
-            OMElement element = getFirstElement();
-            if (element == null) {
-                return null;
-            } else {
-                return element.getNamespace();
-            } 
-        }
+        OMElement element = getFirstElement();
+        return element == null ? null : element.getNamespace();
     }
     
     public final String AxiomSOAPBody.getFirstElementLocalName() {
-        if (hasLookahead()) {
-            return ((StAXOMBuilder)coreGetBuilder()).getLocalName();
-        } else {
-            OMElement element = getFirstElement();
-            if (element == null) {
-                return null;
-            } else {
-                return element.getLocalName();
-            } 
-        }
+        OMElement element = getFirstElement();
+        return element == null ? null : element.getLocalName();
     }
 
     public final SOAPFault AxiomSOAPBody.getFault() {

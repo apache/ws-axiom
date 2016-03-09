@@ -41,7 +41,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     private String charEncoding = null;
     
-    private CustomBuilderManager customBuilderManager;
+    private final CustomBuilderManager customBuilderManager = new CustomBuilderManager();
     
     protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
             boolean autoClose, Detachable detachable, Closeable closeable, Model model,
@@ -54,6 +54,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         helper = new StAXHelper(parser, handler, closeable, autoClose);
         this.detachable = detachable;
         charEncoding = parser.getEncoding();
+        builderHandler.addListener(customBuilderManager);
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
@@ -67,24 +68,8 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, element);
     }
     
-    public final String getNamespaceURI() {
-        return helper.parser.getNamespaceURI();
-    }
-
-    public final String getLocalName() {
-        return helper.parser.getLocalName();
-    }
-
-    public final String getPrefix() {
-        return helper.parser.getPrefix();
-    }
-
     @Override
     public void registerCustomBuilder(Selector selector, CustomBuilder customBuilder) {
-        if (customBuilderManager == null) {
-            customBuilderManager = new CustomBuilderManager();
-            builderHandler.addListener(customBuilderManager);
-        }
         customBuilderManager.register(selector, customBuilder);
     }
     
@@ -175,18 +160,5 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
             builderHandler.document = null;
         }
         return element;
-    }
-
-    /**
-     * Look ahead to the next event. This method advanced the parser to the next event, but defers
-     * creation of the corresponding node to the next call of {@link #next()}.
-     * 
-     * @return The type of the next event. If the return value is
-     *         {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}, then the information related
-     *         to that element can be obtained by calls to {@link #getLocalName()},
-     *         {@link #getNamespaceURI()} and {@link #getPrefix()}.
-     */
-    public final int lookahead() {
-        return helper.lookahead();
     }
 }
