@@ -320,7 +320,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void endDocument() throws StreamException {
+    public void completed() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.completed();
             decrementPassThroughDepth();

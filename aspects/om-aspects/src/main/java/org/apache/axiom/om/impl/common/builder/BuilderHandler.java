@@ -208,7 +208,7 @@ public final class BuilderHandler implements XmlHandler {
         if (depth != 0) {
             throw new IllegalStateException();
         }
-        context.endDocument();
+        context.completed();
         context = null;
         done = true;
     }
