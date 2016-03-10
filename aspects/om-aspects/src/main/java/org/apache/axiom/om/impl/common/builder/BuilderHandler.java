@@ -32,7 +32,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-public final class BuilderHandler implements XmlHandler {
+final class BuilderHandler implements XmlHandler {
     final NodeFactory nodeFactory;
     final Model model;
     final AxiomSourcedElement root;
@@ -54,7 +54,7 @@ public final class BuilderHandler implements XmlHandler {
     private ArrayList<BuilderListener> listeners;
     private Queue<Runnable> deferredListenerActions;
 
-    public BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
+    BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.root = root;
@@ -63,7 +63,7 @@ public final class BuilderHandler implements XmlHandler {
         activeContextCount = 1;
     }
 
-    public void addListener(BuilderListener listener) {
+    void addListener(BuilderListener listener) {
         if (listeners == null) {
             listeners = new ArrayList<BuilderListener>();
         }
@@ -103,11 +103,11 @@ public final class BuilderHandler implements XmlHandler {
         }
     }
     
-    public boolean isCompleted() {
+    boolean isCompleted() {
         return done;
     }
     
-    public AxiomDocument getDocument() {
+    AxiomDocument getDocument() {
         if (root != null) {
             throw new UnsupportedOperationException("There is no document linked to this builder");
         } else {

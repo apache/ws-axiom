@@ -40,7 +40,7 @@ import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
-public final class Context implements InputContext {
+final class Context implements InputContext {
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
     
     private final BuilderHandler builderHandler;
@@ -63,7 +63,7 @@ public final class Context implements InputContext {
      */
     private int passThroughDepth;
 
-    public Context(BuilderHandler builderHandler, Context parentContext, int depth) {
+    Context(BuilderHandler builderHandler, Context parentContext, int depth) {
         this.builderHandler = builderHandler;
         this.parentContext = parentContext;
         this.depth = depth;
@@ -147,7 +147,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
+    void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
@@ -161,7 +161,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public Context startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+    Context startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         if (passThroughHandler != null) {
             passThroughDepth++;
             passThroughHandler.startElement(namespaceURI, localName, prefix);
@@ -186,7 +186,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public Context endElement() throws StreamException {
+    Context endElement() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.endElement();
             return decrementPassThroughDepth();
@@ -195,7 +195,7 @@ public final class Context implements InputContext {
         }
     }
 
-    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+    void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processAttribute(namespaceURI, localName, prefix, value, type, specified);
         } else {
@@ -210,7 +210,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+    void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processNamespaceDeclaration(prefix, namespaceURI);
         } else {
@@ -224,7 +224,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void attributesCompleted() throws StreamException {
+    void attributesCompleted() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.attributesCompleted();
         } else {
@@ -232,7 +232,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+    void processCharacterData(Object data, boolean ignorable) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processCharacterData(data, ignorable);
         } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
@@ -245,7 +245,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public Context startProcessingInstruction(String piTarget) throws StreamException {
+    Context startProcessingInstruction(String piTarget) throws StreamException {
         if (passThroughHandler != null) {
             passThroughDepth++;
             passThroughHandler.startProcessingInstruction(piTarget);
@@ -258,7 +258,7 @@ public final class Context implements InputContext {
         }
     }
 
-    public Context endProcessingInstruction() throws StreamException {
+    Context endProcessingInstruction() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.endProcessingInstruction();
             return decrementPassThroughDepth();
@@ -267,7 +267,7 @@ public final class Context implements InputContext {
         }
     }
 
-    public Context startComment() throws StreamException {
+    Context startComment() throws StreamException {
         if (passThroughHandler != null) {
             passThroughDepth++;
             passThroughHandler.startComment();
@@ -279,7 +279,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public Context endComment() throws StreamException {
+    Context endComment() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.endComment();
             return decrementPassThroughDepth();
@@ -288,7 +288,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public Context startCDATASection() throws StreamException {
+    Context startCDATASection() throws StreamException {
         if (passThroughHandler != null) {
             passThroughDepth++;
             passThroughHandler.startCDATASection();
@@ -300,7 +300,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public Context endCDATASection() throws StreamException {
+    Context endCDATASection() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.endCDATASection();
             return decrementPassThroughDepth();
@@ -309,7 +309,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void processEntityReference(String name, String replacementText) throws StreamException {
+    void processEntityReference(String name, String replacementText) throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.processEntityReference(name, replacementText);
         } else {
@@ -320,7 +320,7 @@ public final class Context implements InputContext {
         }
     }
     
-    public void completed() throws StreamException {
+    void completed() throws StreamException {
         if (passThroughHandler != null) {
             passThroughHandler.completed();
             decrementPassThroughDepth();
