@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -43,9 +44,11 @@ import javax.xml.stream.XMLStreamReader;
  *       For these events, the wrapper directly delegates to the parent reader.</li>
  *   <li>A synthetic END_DOCUMENT event.</li>
  * </ul>
- * After all events have been consumed from the wrapper, the current event on the parent reader
- * will be the event following the last END_ELEMENT of the fragment. In the example above this
- * will be <code>&lt;/a&gt;</code>.
+ * By default, after all events have been consumed from the wrapper, the current event on the
+ * parent reader will be the event following the last END_ELEMENT of the fragment. In the example
+ * above this will be <code>&lt;/a&gt;</code>. The
+ * {@link #XMLFragmentStreamReader(XMLStreamReader, boolean)} constructor allows to override this
+ * behavior.
  * <p>
  * The wrapper will release the reference to the parent reader when {@link #close()} is called.
  * For obvious reasons, the wrapper will never call {@link XMLStreamReader#close()} on the parent
@@ -65,6 +68,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     private static final int STATE_END_DOCUMENT = 3;
     
     private XMLStreamReader parent;
+    private final boolean proceedToNext;
     private int state;
     private int depth;
     
@@ -75,7 +79,25 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
      * @throws IllegalStateException if the current event on the parent is not a START_ELEMENT
      */
     public XMLFragmentStreamReader(XMLStreamReader parent) {
+        this(parent, true);
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param parent
+     *            the parent reader to read the fragment from
+     * @param proceedToNext
+     *            determines whether the parent reader should be positioned on the
+     *            {@link XMLStreamConstants#END_ELEMENT} event of the fragment ({@code false}) or on
+     *            event following the {@link XMLStreamConstants#END_ELEMENT} event ({@code true})
+     *            after all events have been consumed from the wrapper
+     * @throws IllegalStateException
+     *             if the current event on the parent is not a START_ELEMENT
+     */
+    public XMLFragmentStreamReader(XMLStreamReader parent, boolean proceedToNext) {
         this.parent = parent;
+        this.proceedToNext = proceedToNext;
         if (parent.getEventType() != START_ELEMENT) {
             throw new IllegalStateException("Expected START_ELEMENT as current event");
         }
@@ -117,8 +139,9 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
                 }
                 return type;
             case STATE_FRAGMENT_END:
-                // Consume the event from the parent to put the parser in a well-defined state
-                parent.next();
+                if (proceedToNext) {
+                    parent.next();
+                }
                 state = STATE_END_DOCUMENT;
                 return END_DOCUMENT;
             default:

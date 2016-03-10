@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
@@ -45,5 +47,18 @@ public class XMLFragmentStreamReaderTest extends TestCase {
         assertEquals(XMLStreamReader.END_DOCUMENT, reader.getEventType());
         expected.close();
         reader.close();
+    }
+    
+    public void testWithoutProceedToNext() throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a><b/><c/></a>"));
+        reader.nextTag();
+        reader.nextTag();
+        XMLStreamReader fragmentReader = new XMLFragmentStreamReader(reader, false);
+        assertThat(fragmentReader.getEventType()).isEqualTo(XMLStreamReader.START_DOCUMENT);
+        assertThat(fragmentReader.next()).isEqualTo(XMLStreamReader.START_ELEMENT);
+        assertThat(fragmentReader.getLocalName()).isEqualTo("b");
+        assertThat(fragmentReader.next()).isEqualTo(XMLStreamReader.END_ELEMENT);
+        assertThat(fragmentReader.next()).isEqualTo(XMLStreamReader.END_DOCUMENT);
+        assertThat(reader.getEventType()).isEqualTo(XMLStreamReader.END_ELEMENT);
     }
 }
