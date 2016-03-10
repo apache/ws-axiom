@@ -37,13 +37,12 @@ public final class PushBuilder extends AbstractBuilder {
     }
     
     @Override
-    public int next() throws OMException {
+    public void next() throws OMException {
         try {
             reader.proceed();
         } catch (StreamException ex) {
             throw new DeferredParsingException(ex);
         }
-        return -1;
     }
 
     public final OMElement getDocumentElement() {

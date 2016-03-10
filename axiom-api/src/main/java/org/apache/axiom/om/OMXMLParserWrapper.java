@@ -31,16 +31,6 @@ import org.w3c.dom.Node;
 
 /** Interface OMXMLParserWrapper */
 public interface OMXMLParserWrapper {
-    /**
-     * Proceed the parser one step and return the event value.
-     *
-     * @return Returns int.
-     * @throws org.apache.axiom.om.OMException
-     *
-     * @throws OMException
-     */
-    int next() throws OMException;
-
     /** @return Returns the complete status. */
     boolean isCompleted();
 

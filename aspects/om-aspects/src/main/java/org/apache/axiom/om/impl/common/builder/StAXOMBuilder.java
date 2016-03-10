@@ -115,7 +115,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
      * @return Returns int.
      * @throws OMException
      */
-    public int next() throws OMException {
+    public void next() throws OMException {
         if (builderHandler.done) {
             throw new OMException();
         }
@@ -141,8 +141,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
             }
             builderHandler.done = true;
         }
-        
-        return event;
     }
     
     public final OMElement getDocumentElement() {

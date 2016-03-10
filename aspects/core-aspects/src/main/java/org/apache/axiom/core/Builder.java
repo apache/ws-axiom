@@ -19,7 +19,7 @@
 package org.apache.axiom.core;
 
 public interface Builder {
-    int next();
+    void next();
     boolean isCompleted();
     void close();
     boolean isClosed();

@@ -64,9 +64,9 @@ public class FOMBuilder extends StAXOMBuilder implements Constants {
      * @return Returns int.
      * @throws OMException
      */
-    public int next() throws OMException {
+    public void next() throws OMException {
         try {
-            return super.next();
+            super.next();
         } catch (OMException e) {
             // TODO: transforming the OMException here is not ideal!
             throw new ParseException(e);

@@ -18,11 +18,14 @@
  */
 package org.apache.axiom.ts.om.builder;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.DeferredParsingException;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -38,36 +41,34 @@ public class TestInvalidXML extends AxiomTestCase {
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
         
-        OMXMLParserWrapper stAXOMBuilder =
-                OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(),
-                                                        reader);
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(
+                metaFactory.getOMFactory(), reader).getDocumentElement();
         
-        Exception exception = null;
-        while (exception == null || stAXOMBuilder.isCompleted()) {
-            try {
-                stAXOMBuilder.next();
-            } catch (Exception e) {
-                exception =e;
-            }
+        DeferredParsingException exception;
+        try {
+            element.getNextOMSibling();
+            exception = null;
+        } catch (DeferredParsingException ex) {
+            exception = ex;
         }
         
-        assertTrue("Expected an exception because invalid_xml.xml is wrong", exception != null);
+        assertThat(exception).isNotNull();
         
         assertTrue(invocationCounter.getInvocationCount() > 0);
         invocationCounter.reset();
         
         // Intentionally call builder again to make sure the same error is returned.
-        Exception exception2 = null;
+        DeferredParsingException exception2;
         try {
-            stAXOMBuilder.next();
-        } catch (Exception e) {
-            exception2 = e;
+            element.getNextOMSibling();
+            exception2 = null;
+        } catch (DeferredParsingException ex) {
+            exception2 = ex;
         }
         
-        assertEquals(0, invocationCounter.getInvocationCount());
+        assertThat(invocationCounter.getInvocationCount()).isEqualTo(0);
         
-        assertTrue("Expected a second exception because invalid_xml.xml is wrong", exception2 != null);
-        assertTrue("Expected the same exception. first=" + exception + " second=" + exception2, 
-                    exception.getMessage().equals(exception2.getMessage()));
+        assertThat(exception2).isNotNull();
+        assertThat(exception2.getMessage()).isEqualTo(exception.getMessage());
     }
 }

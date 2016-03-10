@@ -23,9 +23,9 @@ import java.io.InputStream;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
@@ -59,12 +59,12 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
         
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(
+                metaFactory.getOMFactory(), reader).getDocumentElement();
         
         try {
-            while (true) {
-                builder.next();
-            }
+            element.getNextOMSibling();
+            fail("Expected exception");
         } catch (Exception ex) {
             // Expected
         }
@@ -72,15 +72,11 @@ public class TestIOExceptionInGetText extends AxiomTestCase {
         assertTrue(invocationCounter.getInvocationCount() > 0);
         invocationCounter.reset();
 
-        Exception exception;
         try {
-            builder.next();
-            exception = null;
-        } catch (Exception ex) {
-            exception = ex;
-        }
-        if (exception == null) {
+            element.getNextOMSibling();
             fail("Expected exception");
+        } catch (Exception ex) {
+            // Expected
         }
         
         assertEquals(0, invocationCounter.getInvocationCount());

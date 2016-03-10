@@ -23,7 +23,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -61,10 +60,6 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
     
     public SOAPEnvelope getSOAPEnvelope() {
         return target.getSOAPEnvelope();
-    }
-
-    public int next() throws OMException {
-        return target.next();
     }
 
     public SOAPMessage getSOAPMessage() {
