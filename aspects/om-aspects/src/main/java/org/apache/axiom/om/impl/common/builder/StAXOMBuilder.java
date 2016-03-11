@@ -20,16 +20,16 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.Closeable;
@@ -119,28 +119,8 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (builderHandler.done) {
             throw new OMException();
         }
-        int event = helper.next();
-        builderHandler.executeDeferredListenerActions();
-        
-        // TODO: this will fail if there is whitespace before the document element
-        if (event != XMLStreamConstants.START_DOCUMENT && builderHandler.depth == 0 && builderHandler.document == null && !builderHandler.done) {
-            // We get here if the document has been discarded (by getDocumentElement(true)
-            // or because the builder is linked to an OMSourcedElement) and
-            // we just processed the END_ELEMENT event for the root element. In this case, we consume
-            // the remaining events until we reach the end of the document. This serves several purposes:
-            //  * It allows us to detect documents that have an epilog that is not well formed.
-            //  * Many parsers will perform some cleanup when the end of the document is reached.
-            //    For example, Woodstox will recycle the symbol table if the parser gets past the
-            //    last END_ELEMENT. This improves performance because Woodstox by default interns
-            //    all symbols; if the symbol table can be recycled, then this reduces the number of
-            //    calls to String#intern().
-            //  * If autoClose is set, the parser will be closed so that even more resources
-            //    can be released.
-            while (helper.parserNext() != XMLStreamConstants.END_DOCUMENT) {
-                // Just loop
-            }
-            builderHandler.done = true;
-        }
+        helper.next();
+        builderHandler.executeDeferredActions();
     }
     
     public final OMElement getDocumentElement() {
@@ -148,9 +128,11 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     }
 
     public final OMElement getDocumentElement(boolean discardDocument) {
-        OMElement element = getDocument().getOMDocumentElement();
+        OMDocument document = getDocument();
+        OMElement element = document.getOMDocumentElement();
         if (discardDocument) {
-            ((AxiomElement)element).detachAndDiscardParent();
+            element.detach();
+            ((AxiomDocument)document).coreDiscard(false);
             builderHandler.document = null;
         }
         return element;

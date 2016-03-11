@@ -43,12 +43,15 @@ final class UnwrappingContext extends Context {
     }
 
     @Override
-    BuildableContext startElement(String namespaceURI, String localName, String prefix)
+    Context startElement(String namespaceURI, String localName, String prefix)
             throws StreamException {
         root.validateName(prefix, localName, namespaceURI);
         root.initName(localName, builderHandler.nsCache.getOMNamespace(namespaceURI, prefix), false);
         root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
-        return newContext(root);
+        Context nestedContext = newContext(root);
+        // We will basically ignore events in the epilog, so mark this context as inactive
+        builderHandler.decrementActiveContextCount();
+        return nestedContext;
     }
 
     @Override

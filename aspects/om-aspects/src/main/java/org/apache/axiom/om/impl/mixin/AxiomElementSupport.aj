@@ -248,12 +248,6 @@ public aspect AxiomElementSupport {
         detach();
     }
     
-    public void AxiomElement.detachAndDiscardParent() {
-        internalUnsetParent(null);
-        coreSetPreviousSibling(null);
-        coreSetNextSibling(null);
-    }
-    
     public <T extends OMElement> void AxiomElement.insertChild(Sequence sequence, int pos, T newChild, boolean allowReplace) {
         if (!sequence.item(pos).isInstance(newChild)) {
             throw new IllegalArgumentException();

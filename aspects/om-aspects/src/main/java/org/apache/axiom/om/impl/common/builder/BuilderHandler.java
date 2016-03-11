@@ -52,7 +52,7 @@ final class BuilderHandler implements XmlHandler {
     public int depth;
     
     private ArrayList<BuilderListener> listeners;
-    private Queue<Runnable> deferredListenerActions;
+    private Queue<Runnable> deferredActions;
 
     BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
@@ -78,19 +78,23 @@ final class BuilderHandler implements XmlHandler {
             for (int i=0, size=listeners.size(); i<size; i++) {
                 Runnable action = listeners.get(i).nodeAdded(node, depth);
                 if (action != null) {
-                    if (deferredListenerActions == null) {
-                        deferredListenerActions = new LinkedList<Runnable>();
-                    }
-                    deferredListenerActions.add(action);
+                    scheduleDeferredAction(action);
                 }
             }
         }
     }
 
-    void executeDeferredListenerActions() {
-        if (deferredListenerActions != null) {
+    private void scheduleDeferredAction(Runnable action) {
+        if (deferredActions == null) {
+            deferredActions = new LinkedList<Runnable>();
+        }
+        deferredActions.add(action);
+    }
+
+    void executeDeferredActions() {
+        if (deferredActions != null) {
             Runnable action;
-            while ((action = deferredListenerActions.poll()) != null) {
+            while ((action = deferredActions.poll()) != null) {
                 action.run();
             }
         }
@@ -102,7 +106,14 @@ final class BuilderHandler implements XmlHandler {
     
     void decrementActiveContextCount() {
         if (--activeContextCount == 0) {
-            builder.close();
+            scheduleDeferredAction(new Runnable() {
+                @Override
+                public void run() {
+                    while (!done) {
+                        builder.next();
+                    }
+                }
+            });
         }
     }
     

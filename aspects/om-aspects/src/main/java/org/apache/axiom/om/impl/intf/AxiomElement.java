@@ -39,7 +39,5 @@ public interface AxiomElement extends OMElement, AxiomContainer, AxiomChildNode,
      */
     OMNamespace addNamespaceDeclaration(String uri, String prefix);
     
-    void detachAndDiscardParent();
-    
     void addNamespaceDeclaration(OMNamespace ns);
 }
