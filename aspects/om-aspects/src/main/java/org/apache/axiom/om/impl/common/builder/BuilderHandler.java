@@ -35,9 +35,9 @@ import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 final class BuilderHandler implements XmlHandler {
     final NodeFactory nodeFactory;
     final Model model;
-    final AxiomSourcedElement root;
     final Builder builder;
     final OMNamespaceCache nsCache = new OMNamespaceCache();
+    private final Context rootContext;
     public Context context;
     private int activeContextCount;
     // returns the state of completion
@@ -57,9 +57,9 @@ final class BuilderHandler implements XmlHandler {
     BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
-        this.root = root;
         this.builder = builder;
-        context = new Context(this, null, 0);
+        rootContext = root == null ? new BuildableContext(this, null, 0) : new UnwrappingContext(this, root);
+        context = rootContext;
         activeContextCount = 1;
     }
 
@@ -71,6 +71,9 @@ final class BuilderHandler implements XmlHandler {
     }
     
     void nodeAdded(CoreNode node) {
+        if (node instanceof AxiomDocument) {
+            document = (AxiomDocument)node;
+        }
         if (listeners != null) {
             for (int i=0, size=listeners.size(); i<size; i++) {
                 Runnable action = listeners.get(i).nodeAdded(node, depth);
@@ -108,7 +111,7 @@ final class BuilderHandler implements XmlHandler {
     }
     
     AxiomDocument getDocument() {
-        if (root != null) {
+        if (rootContext instanceof UnwrappingContext) {
             throw new UnsupportedOperationException("There is no document linked to this builder");
         } else {
             return document;
@@ -116,16 +119,7 @@ final class BuilderHandler implements XmlHandler {
     }
     
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
-        if (root == null) {
-            document = nodeFactory.createNode(model.getDocumentType());
-            document.coreSetInputEncoding(inputEncoding);
-            document.coreSetXmlVersion(xmlVersion);
-            document.coreSetXmlEncoding(xmlEncoding);
-            document.coreSetStandalone(standalone);
-            document.coreSetInputContext(context);
-            nodeAdded(document);
-            context.target = document;
-        }
+        context.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
     
     @Override

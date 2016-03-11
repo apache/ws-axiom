@@ -74,7 +74,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     }
     
     public final String getCharsetEncoding() {
-        return builderHandler.document.getCharsetEncoding();
+        return builderHandler.getDocument().getCharsetEncoding();
     }
 
     public final void close() {
