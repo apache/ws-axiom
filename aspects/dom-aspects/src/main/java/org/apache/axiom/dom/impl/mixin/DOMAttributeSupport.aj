@@ -74,7 +74,11 @@ public aspect DOMAttributeSupport {
     }
     
     public final void DOMAttribute.setValue(String value) {
-        coreSetCharacterData(value, DOMSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(value, DOMSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
     
     public final CoreElement DOMAttribute.getNamespaceContext() {

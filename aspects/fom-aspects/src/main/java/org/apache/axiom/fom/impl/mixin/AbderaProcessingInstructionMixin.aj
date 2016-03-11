@@ -34,7 +34,11 @@ public aspect AbderaProcessingInstructionMixin {
 
     @SuppressWarnings("unchecked")
     public final <T extends ProcessingInstruction> T AbderaProcessingInstruction.setText(String text) {
-        coreSetCharacterData(text, FOMSemantics.INSTANCE);
-        return (T)this;
+        try {
+            coreSetCharacterData(text, FOMSemantics.INSTANCE);
+            return (T)this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 }

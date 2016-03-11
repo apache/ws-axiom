@@ -82,7 +82,11 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElement {
     // Overridden in subclasses!
     public void _addChild(AbderaElement element) {
-        coreAppendChild(element);
+        try {
+            coreAppendChild(element);
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
     
     protected void setParentDocument(Document parent) {
@@ -218,12 +222,16 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public <T extends Element> T setAttributeValue(QName qname, String value) {
-        if (value == null) {
-            coreRemoveAttribute(FOMSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), FOMSemantics.INSTANCE);
-        } else {
-            coreSetAttribute(FOMSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
+        try {
+            if (value == null) {
+                coreRemoveAttribute(FOMSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), FOMSemantics.INSTANCE);
+            } else {
+                coreSetAttribute(FOMSemantics.ATTRIBUTE_MATCHER, qname.getNamespaceURI(), qname.getLocalPart(), qname.getPrefix(), value);
+            }
+            return (T)this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
-        return (T)this;
     }
 
     private static final IdentityMapper<AbderaElement> abderaElementMapper = new IdentityMapper<AbderaElement>();
@@ -258,13 +266,17 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public void _setChild(QName qname, Element element) {
-        AbderaElement e = _getFirstChildWithName(qname);
-        if (e == null && element != null) {
-            coreAppendChild((AbderaElement)element);
-        } else if (e != null && element != null) {
-            e.coreReplaceWith((AbderaElement)element, FOMSemantics.INSTANCE);
-        } else if (e != null && element == null) {
-            e.coreDetach(FOMSemantics.INSTANCE);
+        try {
+            AbderaElement e = _getFirstChildWithName(qname);
+            if (e == null && element != null) {
+                coreAppendChild((AbderaElement)element);
+            } else if (e != null && element != null) {
+                e.coreReplaceWith((AbderaElement)element, FOMSemantics.INSTANCE);
+            } else if (e != null && element == null) {
+                e.coreDetach(FOMSemantics.INSTANCE);
+            }
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
     }
 
@@ -372,18 +384,22 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public void setText(String text) {
-        if (text != null) {
-            OMNode child = this.getFirstOMChild();
-            while (child != null) {
-                if (child.getType() == OMNode.TEXT_NODE) {
-                    child.detach();
+        try {
+            if (text != null) {
+                OMNode child = this.getFirstOMChild();
+                while (child != null) {
+                    if (child.getType() == OMNode.TEXT_NODE) {
+                        child.detach();
+                    }
+                    child = child.getNextOMSibling();
                 }
-                child = child.getNextOMSibling();
-            }
-            getOMFactory().createOMText(this, text);
-        } else
-            coreRemoveChildren(FOMSemantics.INSTANCE);
-        // return (T)this;
+                getOMFactory().createOMText(this, text);
+            } else
+                coreRemoveChildren(FOMSemantics.INSTANCE);
+            // return (T)this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     public String getText() {
@@ -649,9 +665,13 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
     }
 
     public <T extends Element> T setText(DataHandler handler) {
-        coreRemoveChildren(FOMSemantics.INSTANCE);
-        addChild(getOMFactory().createOMText(handler, true));
-        return (T)this;
+        try {
+            coreRemoveChildren(FOMSemantics.INSTANCE);
+            addChild(getOMFactory().createOMText(handler, true));
+            return (T)this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     public WriterOptions getDefaultWriterOptions() {

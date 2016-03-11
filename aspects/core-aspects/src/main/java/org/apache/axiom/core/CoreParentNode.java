@@ -44,7 +44,7 @@ public interface CoreParentNode extends CoreNode {
     void coreSetInputContext(InputContext context);
     int getState();
     void coreSetState(int state);
-    void build();
+    void coreBuild() throws CoreModelException;
 
     <T> NodeIterator<T> coreGetNodes(Axis axis, Mapper<? super CoreNode,T> mapper, Semantics semantics);
 

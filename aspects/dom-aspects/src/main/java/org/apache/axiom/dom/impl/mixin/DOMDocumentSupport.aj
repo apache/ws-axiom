@@ -174,10 +174,14 @@ public aspect DOMDocumentSupport {
     }
 
     public final CDATASection DOMDocument.createCDATASection(String data) {
-        DOMCDATASection cdataSection = coreGetNodeFactory().createNode(DOMCDATASection.class);
-        cdataSection.coreSetOwnerDocument(this);
-        cdataSection.coreSetCharacterData(data, DOMSemantics.INSTANCE);
-        return cdataSection;
+        try {
+            DOMCDATASection cdataSection = coreGetNodeFactory().createNode(DOMCDATASection.class);
+            cdataSection.coreSetOwnerDocument(this);
+            cdataSection.coreSetCharacterData(data, DOMSemantics.INSTANCE);
+            return cdataSection;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
     
     public final Element DOMDocument.createElement(String tagName) {
@@ -243,11 +247,15 @@ public aspect DOMDocumentSupport {
     }
 
     public final ProcessingInstruction DOMDocument.createProcessingInstruction(String target, String data) {
-        DOMProcessingInstruction pi = coreGetNodeFactory().createNode(DOMProcessingInstruction.class);
-        pi.coreSetOwnerDocument(this);
-        pi.coreSetTarget(target);
-        pi.coreSetCharacterData(data, DOMSemantics.INSTANCE);
-        return pi;
+        try {
+            DOMProcessingInstruction pi = coreGetNodeFactory().createNode(DOMProcessingInstruction.class);
+            pi.coreSetOwnerDocument(this);
+            pi.coreSetTarget(target);
+            pi.coreSetCharacterData(data, DOMSemantics.INSTANCE);
+            return pi;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final EntityReference DOMDocument.createEntityReference(String name) throws DOMException {
@@ -258,10 +266,14 @@ public aspect DOMDocumentSupport {
     }
 
     public final Comment DOMDocument.createComment(String data) {
-        DOMComment node = coreGetNodeFactory().createNode(DOMComment.class);
-        node.coreSetOwnerDocument(this);
-        node.coreSetCharacterData(data, DOMSemantics.INSTANCE);
-        return node;
+        try {
+            DOMComment node = coreGetNodeFactory().createNode(DOMComment.class);
+            node.coreSetOwnerDocument(this);
+            node.coreSetCharacterData(data, DOMSemantics.INSTANCE);
+            return node;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final DocumentFragment DOMDocument.createDocumentFragment() {

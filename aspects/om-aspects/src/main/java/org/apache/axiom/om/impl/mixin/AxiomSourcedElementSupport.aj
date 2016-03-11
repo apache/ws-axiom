@@ -471,14 +471,8 @@ public aspect AxiomSourcedElementSupport {
         }
     }
 
-    /**
-     * setComplete override The OMSourcedElement has its own isolated builder/reader during the
-     * expansion process. Thus calls to setCompete should stop here and not propogate up to the
-     * parent (which may have a different builder or no builder).
-     */
-    public void AxiomSourcedElement.setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-        if (complete && dataSource != null) {
+    public void AxiomSourcedElement.completed() {
+        if (dataSource != null) {
             if (dataSource instanceof OMDataSourceExt) {
                 ((OMDataSourceExt)dataSource).close();
             }

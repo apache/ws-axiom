@@ -38,8 +38,4 @@ public aspect AxiomCDATASectionSupport {
             throw AxiomExceptionTranslator.translate(ex);
         }
     }
-    
-    public final void AxiomCDATASection.build() {
-        // TODO
-    }
 }

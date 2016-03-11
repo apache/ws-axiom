@@ -49,8 +49,12 @@ public aspect AxiomNamespaceDeclarationSupport {
     }
     
     public final void AxiomNamespaceDeclaration.setDeclaredNamespace(OMNamespace declaredNamespace) {
-        this.declaredNamespace = declaredNamespace;
-        coreSetCharacterData(declaredNamespace.getNamespaceURI(), AxiomSemantics.INSTANCE);
+        try {
+            this.declaredNamespace = declaredNamespace;
+            coreSetCharacterData(declaredNamespace.getNamespaceURI(), AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public final void AxiomNamespaceDeclaration.build() {

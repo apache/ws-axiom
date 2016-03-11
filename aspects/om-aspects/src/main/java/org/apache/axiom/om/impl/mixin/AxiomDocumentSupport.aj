@@ -86,10 +86,6 @@ public aspect AxiomDocumentSupport {
         coreSetStandalone("yes".equalsIgnoreCase(standalone));
     }
 
-    public final void AxiomDocument.setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-    }
-
     public final void AxiomDocument.checkChild(OMNode child) {
         if (child instanceof OMElement) {
             if (getOMDocumentElement() != null) {

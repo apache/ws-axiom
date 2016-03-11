@@ -88,7 +88,7 @@ public final class DOMSemantics implements Semantics {
             return ((DOMAttribute)attr).getName();
         }
 
-        public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) {
+        public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
             CoreNSUnawareAttribute attr = element.coreCreateNode(CoreNSUnawareAttribute.class);
             attr.coreSetName(name);
             attr.coreSetCharacterData(value, null);
@@ -96,7 +96,7 @@ public final class DOMSemantics implements Semantics {
             return attr;
         }
 
-        public void update(CoreAttribute attr, String prefix, String value) {
+        public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
             attr.coreSetCharacterData(value, INSTANCE);
         }
     };

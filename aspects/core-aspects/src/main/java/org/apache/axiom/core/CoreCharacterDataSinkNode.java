@@ -19,5 +19,5 @@
 package org.apache.axiom.core;
 
 public interface CoreCharacterDataSinkNode {
-    void coreSetCharacterData(Object data, Semantics semantics);
+    void coreSetCharacterData(Object data, Semantics semantics) throws CoreModelException;
 }

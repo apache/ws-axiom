@@ -35,6 +35,7 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.ElementWrapper;
 import org.apache.abdera.util.Constants;
 import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.fom.AbderaContent;
 import org.apache.axiom.fom.AbderaElement;
 import org.apache.axiom.fom.FOMSemantics;
@@ -85,33 +86,37 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public <T extends Element> Content setValueElement(T value) {
-        if (value != null) {
-            if (this.getFirstElement() != null)
-                this.getFirstElement().discard();
-
-            MimeType mtype = this.getMimeType();
-            if (mtype == null) {
-                String mt = getFactory().getMimeType(value);
-                if (mt != null) {
-                    setMimeType(mt);
-                    mtype = getMimeType();
-                }
-            }
-
-            if (value instanceof Div && !getContentType().equals(Content.Type.XML))
-                setContentType(Content.Type.XHTML);
-            else {
+        try {
+            if (value != null) {
+                if (this.getFirstElement() != null)
+                    this.getFirstElement().discard();
+    
+                MimeType mtype = this.getMimeType();
                 if (mtype == null) {
-                    setContentType(Content.Type.XML);
+                    String mt = getFactory().getMimeType(value);
+                    if (mt != null) {
+                        setMimeType(mt);
+                        mtype = getMimeType();
+                    }
                 }
+    
+                if (value instanceof Div && !getContentType().equals(Content.Type.XML))
+                    setContentType(Content.Type.XHTML);
+                else {
+                    if (mtype == null) {
+                        setContentType(Content.Type.XML);
+                    }
+                }
+                AbderaElement el = (AbderaElement)(value instanceof ElementWrapper ? ((ElementWrapper)value).getInternal() : value);
+                removeChildren();
+                _addChild(el);
+            } else {
+                coreRemoveChildren(FOMSemantics.INSTANCE);
             }
-            AbderaElement el = (AbderaElement)(value instanceof ElementWrapper ? ((ElementWrapper)value).getInternal() : value);
-            removeChildren();
-            _addChild(el);
-        } else {
-            coreRemoveChildren(FOMSemantics.INSTANCE);
+            return this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
-        return this;
     }
 
     public MimeType getMimeType() {
@@ -169,17 +174,21 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public Content setDataHandler(DataHandler dataHandler) {
-        if (!Type.MEDIA.equals(getContentType()))
-            throw new IllegalArgumentException();
-        if (dataHandler.getContentType() != null) {
-            try {
-                setMimeType(dataHandler.getContentType());
-            } catch (Exception e) {
+        try {
+            if (!Type.MEDIA.equals(getContentType()))
+                throw new IllegalArgumentException();
+            if (dataHandler.getContentType() != null) {
+                try {
+                    setMimeType(dataHandler.getContentType());
+                } catch (Exception e) {
+                }
             }
+            coreRemoveChildren(FOMSemantics.INSTANCE);
+            addChild(getOMFactory().createOMText(dataHandler, true));
+            return this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
-        coreRemoveChildren(FOMSemantics.INSTANCE);
-        addChild(getOMFactory().createOMText(dataHandler, true));
-        return this;
     }
 
     public String getValue() {
@@ -204,19 +213,23 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
     }
 
     public <T extends Element> T setText(Content.Type type, String value) {
-        setContentType(type);
-        if (value != null) {
-            OMNode child = this.getFirstOMChild();
-            while (child != null) {
-                if (child.getType() == OMNode.TEXT_NODE) {
-                    child.detach();
+        try {
+            setContentType(type);
+            if (value != null) {
+                OMNode child = this.getFirstOMChild();
+                while (child != null) {
+                    if (child.getType() == OMNode.TEXT_NODE) {
+                        child.detach();
+                    }
+                    child = child.getNextOMSibling();
                 }
-                child = child.getNextOMSibling();
-            }
-            getOMFactory().createOMText(this, value);
-        } else
-            coreRemoveChildren(FOMSemantics.INSTANCE);
-        return (T)this;
+                getOMFactory().createOMText(this, value);
+            } else
+                coreRemoveChildren(FOMSemantics.INSTANCE);
+            return (T)this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     // TODO: the AspectJ compiler doesn't like this
@@ -225,55 +238,59 @@ public class FOMContent extends FOMExtensibleElement implements AbderaContent {
 //    }
 
     public Content setValue(String value) {
-        if (value != null)
-            removeAttribute(SRC);
-        if (value != null) {
-            Type type = getContentType();
-            if (Type.TEXT.equals(type)) {
+        try {
+            if (value != null)
+                removeAttribute(SRC);
+            if (value != null) {
+                Type type = getContentType();
+                if (Type.TEXT.equals(type)) {
+                    coreRemoveChildren(FOMSemantics.INSTANCE);
+                    setText(type, value);
+                } else if (Type.HTML.equals(type)) {
+                    coreRemoveChildren(FOMSemantics.INSTANCE);
+                    setText(type, value);
+                } else if (Type.XHTML.equals(type)) {
+                    IRI baseUri = null;
+                    Element element = null;
+                    value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
+                    try {
+                        baseUri = getResolvedBaseUri();
+                        element = _parse(value, baseUri);
+                    } catch (Exception e) {
+                    }
+                    if (element != null && element instanceof Div)
+                        setValueElement((Div)element);
+                } else if (Type.XML.equals(type)) {
+                    IRI baseUri = null;
+                    Element element = null;
+                    try {
+                        baseUri = getResolvedBaseUri();
+                        element = _parse(value, baseUri);
+                    } catch (Exception e) {
+                    }
+                    if (element != null)
+                        setValueElement(element);
+                    try {
+                        if (getMimeType() == null)
+                            setMimeType("application/xml");
+                    } catch (Exception e) {
+                    }
+                } else if (Type.MEDIA.equals(type)) {
+                    coreRemoveChildren(FOMSemantics.INSTANCE);
+                    setText(type, value);
+                    try {
+                        if (getMimeType() == null)
+                            setMimeType("text/plain");
+                    } catch (Exception e) {
+                    }
+                }
+            } else {
                 coreRemoveChildren(FOMSemantics.INSTANCE);
-                setText(type, value);
-            } else if (Type.HTML.equals(type)) {
-                coreRemoveChildren(FOMSemantics.INSTANCE);
-                setText(type, value);
-            } else if (Type.XHTML.equals(type)) {
-                IRI baseUri = null;
-                Element element = null;
-                value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
-                try {
-                    baseUri = getResolvedBaseUri();
-                    element = _parse(value, baseUri);
-                } catch (Exception e) {
-                }
-                if (element != null && element instanceof Div)
-                    setValueElement((Div)element);
-            } else if (Type.XML.equals(type)) {
-                IRI baseUri = null;
-                Element element = null;
-                try {
-                    baseUri = getResolvedBaseUri();
-                    element = _parse(value, baseUri);
-                } catch (Exception e) {
-                }
-                if (element != null)
-                    setValueElement(element);
-                try {
-                    if (getMimeType() == null)
-                        setMimeType("application/xml");
-                } catch (Exception e) {
-                }
-            } else if (Type.MEDIA.equals(type)) {
-                coreRemoveChildren(FOMSemantics.INSTANCE);
-                setText(type, value);
-                try {
-                    if (getMimeType() == null)
-                        setMimeType("text/plain");
-                } catch (Exception e) {
-                }
             }
-        } else {
-            coreRemoveChildren(FOMSemantics.INSTANCE);
+            return this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
-        return this;
     }
 
     public String getWrappedValue() {

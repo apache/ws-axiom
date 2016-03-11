@@ -84,14 +84,14 @@ public final class NSAwareAttributeMatcher implements AttributeMatcher {
         return ((CoreNSAwareAttribute)attr).coreGetLocalName();
     }
 
-    public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) {
+    public CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
         CoreNSAwareAttribute attr = element.coreCreateNode(CoreNSAwareAttribute.class);
         attr.coreSetName(namespaceURI, name, prefix);
         attr.coreSetCharacterData(value, null);
         return attr;
     }
 
-    public void update(CoreAttribute attr, String prefix, String value) {
+    public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
         attr.coreSetCharacterData(value, semantics);
         if (updatePrefix && attr instanceof CoreNSAwareAttribute) {
             ((CoreNSAwareAttribute)attr).coreSetPrefix(prefix);

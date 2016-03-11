@@ -88,6 +88,10 @@ public aspect DOMDocumentFragmentSupport {
     }
 
     public final void DOMDocumentFragment.setTextContent(String textContent) {
-        coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 }

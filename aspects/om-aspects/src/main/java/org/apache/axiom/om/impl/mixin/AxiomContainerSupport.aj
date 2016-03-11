@@ -44,14 +44,12 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
 import org.apache.axiom.core.stream.stax.StAXPivot;
 import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
-import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSerializable;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
@@ -141,47 +139,10 @@ public aspect AxiomContainerSupport {
     }
 
     public void AxiomContainer.addChild(OMNode omNode) {
-        AxiomChildNode child = prepareNewChild(omNode);
-        
-        coreAppendChild(child);
-
-        // For a normal OMNode, the incomplete status is
-        // propogated up the tree.  
-        // However, a OMSourcedElement is self-contained 
-        // (it has an independent parser source).
-        // So only propogate the incomplete setting if this
-        // is a normal OMNode
-        // TODO: this is crap and needs to be reviewed
-        if (!child.isComplete() && 
-            !(child instanceof OMSourcedElement)) {
-            setComplete(false);
-        }
-    }
-    
-    public final void AxiomContainer.build() {
-        Builder builder = coreGetBuilder();
-        // builder is null. Meaning this is a programatical created element but it has children which are not completed
-        // Build them all.
-        if (builder == null && getState() == INCOMPLETE) {
-            for (Iterator<OMNode> childrenIterator = getChildren(); childrenIterator.hasNext();) {
-                OMNode omNode = childrenIterator.next();
-                omNode.build();
-            }
-        } else {
-            if (getState() == AxiomContainer.DISCARDING || getState() == AxiomContainer.DISCARDED) {
-                throw new NodeUnavailableException();
-            }
-            if (builder != null && builder.isCompleted()) {
-                log.debug("Builder is already complete.");
-            }
-            while (!isComplete()) {
-    
-                builder.next();    
-                if (builder.isCompleted() && !isComplete()) {
-                    log.debug("Builder is complete.  Setting OMObject to complete.");
-                    setComplete(true);
-                }
-            }
+        try {
+            coreAppendChild(prepareNewChild(omNode));
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
     
@@ -194,7 +155,11 @@ public aspect AxiomContainerSupport {
     }
     
     public void AxiomContainer.removeChildren() {
-        coreRemoveChildren(AxiomSemantics.INSTANCE);
+        try {
+            coreRemoveChildren(AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     private static final Mapper<CoreNode,OMNode> childrenMapper = new Mapper<CoreNode,OMNode>() {
@@ -352,18 +317,6 @@ public aspect AxiomContainerSupport {
         serialize(writer, format, false);
     }
 
-    public final void AxiomContainer.notifyChildComplete() {
-        if (getState() == INCOMPLETE && coreGetBuilder() == null) {
-            for (Iterator<OMNode> iterator = getChildren(); iterator.hasNext(); ) {
-                OMNode node = iterator.next();
-                if (!node.isComplete()) {
-                    return;
-                }
-            }
-            this.setComplete(true);
-        }
-    }
-
     public final void AxiomContainer.close(boolean build) {
         Builder builder = coreGetBuilder();
         if (build) {
@@ -373,5 +326,10 @@ public aspect AxiomContainerSupport {
         if (builder != null) {
             builder.close();
         }
+    }
+
+    // TODO: overridden in AxiomSourcedElementSupport
+    public void AxiomContainer.setComplete(boolean complete) {
+        coreSetState(complete ? COMPLETE : INCOMPLETE);
     }
 }

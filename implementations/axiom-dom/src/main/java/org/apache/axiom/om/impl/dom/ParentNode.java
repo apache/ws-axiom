@@ -38,15 +38,19 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     // /
 
     public final Node appendChild(Node newChild) throws DOMException {
-        checkNewChild(newChild, null);
-        if (newChild instanceof CoreChildNode) {
-            coreAppendChild((CoreChildNode)newChild);
-        } else if (newChild instanceof CoreDocumentFragment) {
-            coreAppendChildren((CoreDocumentFragment)newChild);
-        } else {
-            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        try {
+            checkNewChild(newChild, null);
+            if (newChild instanceof CoreChildNode) {
+                coreAppendChild((CoreChildNode)newChild);
+            } else if (newChild instanceof CoreDocumentFragment) {
+                coreAppendChildren((CoreDocumentFragment)newChild);
+            } else {
+                throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            }
+            return newChild;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
-        return newChild;
     }
 
     private void checkNewChild(Node newChild, Node replacedChild) {

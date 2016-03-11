@@ -63,7 +63,7 @@ public final class NamespaceDeclarationMatcher implements AttributeMatcher {
         return ((CoreNamespaceDeclaration)attr).coreGetDeclaredPrefix();
     }
 
-    public void update(CoreAttribute attr, String prefix, String value) {
+    public void update(CoreAttribute attr, String prefix, String value) throws CoreModelException {
         attr.coreSetCharacterData(value, semantics);
     }
 }

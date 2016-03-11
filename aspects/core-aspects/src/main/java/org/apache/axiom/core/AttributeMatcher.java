@@ -81,8 +81,9 @@ public interface AttributeMatcher {
      * @param value
      *            see above
      * @return
+     * @throws CoreModelException 
      */
-    CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value);
+    CoreAttribute createAttribute(CoreElement element, String namespaceURI, String name, String prefix, String value) throws CoreModelException;
     
     /**
      * Update an existing attribute. The values of the <code>prefix</code> and <code>value</code>
@@ -95,6 +96,7 @@ public interface AttributeMatcher {
      *            see above
      * @param value
      *            see above
+     * @throws CoreModelException 
      */
-    void update(CoreAttribute attr, String prefix, String value);
+    void update(CoreAttribute attr, String prefix, String value) throws CoreModelException;
 }

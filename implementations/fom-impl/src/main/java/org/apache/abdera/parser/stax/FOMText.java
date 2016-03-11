@@ -27,6 +27,7 @@ import org.apache.abdera.model.Div;
 import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Text;
 import org.apache.abdera.util.Constants;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.fom.AbderaText;
 import org.apache.axiom.fom.FOMSemantics;
@@ -68,15 +69,19 @@ public class FOMText extends FOMElement implements AbderaText {
     }
 
     public Text setValueElement(Div value) {
-        if (value != null) {
-            if (_getFirstChildWithName(Constants.DIV) != null)
-                _getFirstChildWithName(Constants.DIV).discard();
-            setTextType(Text.Type.XHTML);
-            removeChildren();
-            _addChild((AbderaDiv)value);
-        } else
-            coreRemoveChildren(FOMSemantics.INSTANCE);
-        return this;
+        try {
+            if (value != null) {
+                if (_getFirstChildWithName(Constants.DIV) != null)
+                    _getFirstChildWithName(Constants.DIV).discard();
+                setTextType(Text.Type.XHTML);
+                removeChildren();
+                _addChild((AbderaDiv)value);
+            } else
+                coreRemoveChildren(FOMSemantics.INSTANCE);
+            return this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     public String getValue() {
@@ -99,43 +104,51 @@ public class FOMText extends FOMElement implements AbderaText {
 //    }
 
     public <T extends Element> T setText(Text.Type type, String value) {
-        setTextType(type);
-        if (value != null) {
-            OMNode child = this.getFirstOMChild();
-            while (child != null) {
-                if (child.getType() == OMNode.TEXT_NODE) {
-                    child.detach();
+        try {
+            setTextType(type);
+            if (value != null) {
+                OMNode child = this.getFirstOMChild();
+                while (child != null) {
+                    if (child.getType() == OMNode.TEXT_NODE) {
+                        child.detach();
+                    }
+                    child = child.getNextOMSibling();
                 }
-                child = child.getNextOMSibling();
-            }
-            getOMFactory().createOMText(this, value);
-        } else
-            coreRemoveChildren(FOMSemantics.INSTANCE);
-        return (T)this;
+                getOMFactory().createOMText(this, value);
+            } else
+                coreRemoveChildren(FOMSemantics.INSTANCE);
+            return (T)this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     public Text setValue(String value) {
-        if (value != null) {
-            Type type = getTextType();
-            if (Type.TEXT.equals(type)) {
-                setText(type, value);
-            } else if (Type.HTML.equals(type)) {
-                setText(type, value);
-            } else if (Type.XHTML.equals(type)) {
-                IRI baseUri = null;
-                value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
-                Element element = null;
-                try {
-                    baseUri = getResolvedBaseUri();
-                    element = _parse(value, baseUri);
-                } catch (Exception e) {
+        try {
+            if (value != null) {
+                Type type = getTextType();
+                if (Type.TEXT.equals(type)) {
+                    setText(type, value);
+                } else if (Type.HTML.equals(type)) {
+                    setText(type, value);
+                } else if (Type.XHTML.equals(type)) {
+                    IRI baseUri = null;
+                    value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
+                    Element element = null;
+                    try {
+                        baseUri = getResolvedBaseUri();
+                        element = _parse(value, baseUri);
+                    } catch (Exception e) {
+                    }
+                    if (element != null && element instanceof Div)
+                        setValueElement((Div)element);
                 }
-                if (element != null && element instanceof Div)
-                    setValueElement((Div)element);
-            }
-        } else
-            coreRemoveChildren(FOMSemantics.INSTANCE);
-        return this;
+            } else
+                coreRemoveChildren(FOMSemantics.INSTANCE);
+            return this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 
     public String getWrappedValue() {

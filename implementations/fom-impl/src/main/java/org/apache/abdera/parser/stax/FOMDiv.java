@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.om.OMElement;
@@ -82,19 +83,23 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     public void setValue(String value) {
-        coreRemoveChildren(FOMSemantics.INSTANCE);
-        if (value != null) {
-            IRI baseUri = null;
-            value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
-            OMElement element = null;
-            try {
-                baseUri = getResolvedBaseUri();
-                element = (OMElement)_parse(value, baseUri);
-            } catch (Exception e) {
+        try {
+            coreRemoveChildren(FOMSemantics.INSTANCE);
+            if (value != null) {
+                IRI baseUri = null;
+                value = "<div xmlns=\"" + XHTML_NS + "\">" + value + "</div>";
+                OMElement element = null;
+                try {
+                    baseUri = getResolvedBaseUri();
+                    element = (OMElement)_parse(value, baseUri);
+                } catch (Exception e) {
+                }
+                for (Iterator<?> i = element.getChildren(); i.hasNext();) {
+                    this.addChild((OMNode)i.next());
+                }
             }
-            for (Iterator<?> i = element.getChildren(); i.hasNext();) {
-                this.addChild((OMNode)i.next());
-            }
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
         }
     }
 

@@ -32,7 +32,11 @@ public aspect AbderaAttributeMixin {
     }
 
     public final Attribute AbderaAttribute.setText(String text) {
-        coreSetCharacterData(text, FOMSemantics.INSTANCE);
-        return this;
+        try {
+            coreSetCharacterData(text, FOMSemantics.INSTANCE);
+            return this;
+        } catch (CoreModelException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 }

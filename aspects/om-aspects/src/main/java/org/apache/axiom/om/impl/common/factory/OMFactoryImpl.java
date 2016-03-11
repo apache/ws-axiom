@@ -127,7 +127,11 @@ public class OMFactoryImpl implements OMFactoryEx {
         if (parent != null) {
             ((AxiomContainer)parent).addChild(node);
         }
-        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+        try {
+            node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
         return node;
     }
 
@@ -192,7 +196,11 @@ public class OMFactoryImpl implements OMFactoryEx {
             OMContainer parent, String piTarget, String piData) {
         AxiomProcessingInstruction node = createNode(AxiomProcessingInstruction.class);
         node.coreSetTarget(piTarget);
-        node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
+        try {
+            node.coreSetCharacterData(piData, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
         if (parent != null) {
             ((AxiomContainer)parent).addChild(node);
         }
@@ -210,7 +218,11 @@ public class OMFactoryImpl implements OMFactoryEx {
 
     public final OMComment createOMComment(OMContainer parent, String content) {
         AxiomComment node = createNode(AxiomComment.class);
-        node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+        try {
+            node.coreSetCharacterData(content, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
         if (parent != null) {
             ((AxiomContainer)parent).addChild(node);
         }
@@ -323,7 +335,11 @@ public class OMFactoryImpl implements OMFactoryEx {
         }
         AxiomAttribute attr = createNode(AxiomAttribute.class);
         attr.internalSetLocalName(localName);
-        attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        try {
+            attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
         attr.internalSetNamespace(ns);
         attr.coreSetType(OMConstants.XMLATTRTYPE_CDATA);
         return attr;

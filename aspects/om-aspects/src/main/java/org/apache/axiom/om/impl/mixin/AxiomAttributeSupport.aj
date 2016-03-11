@@ -52,7 +52,11 @@ public aspect AxiomAttributeSupport {
     }
     
     public final void AxiomAttribute.setAttributeValue(String value) {
-        coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public final String AxiomAttribute.getAttributeType() {

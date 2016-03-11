@@ -60,7 +60,6 @@ import org.apache.axiom.om.impl.common.NamespaceDeclarationMapper;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.Sequence;
@@ -230,7 +229,11 @@ public aspect AxiomElementSupport {
     
     // Not final because overridden in Abdera
     public void AxiomElement.setText(String text) {
-        coreSetCharacterData(text, AxiomSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(text, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final void AxiomElement.setText(QName qname) {
@@ -538,18 +541,6 @@ public aspect AxiomElementSupport {
             throw new OMException("Failed to serialize node", ex);
         }
         return sw.toString();
-    }
-
-    public void AxiomElement.setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-        AxiomContainer parent = (AxiomContainer)coreGetParent();
-        if (parent != null) {
-            if (!complete) {
-                parent.setComplete(false);
-            } else {
-                parent.notifyChildComplete();
-            }
-        }
     }
 
     public final OMElement AxiomElement.cloneOMElement() {

@@ -42,6 +42,10 @@ public aspect DOMCommentSupport {
     }
 
     public final void DOMComment.setData(String data) {
-        coreSetCharacterData(data, DOMSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(data, DOMSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 }

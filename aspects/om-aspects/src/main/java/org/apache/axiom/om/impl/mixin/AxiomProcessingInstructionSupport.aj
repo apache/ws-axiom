@@ -44,7 +44,11 @@ public aspect AxiomProcessingInstructionSupport {
     }
 
     public final void AxiomProcessingInstruction.setValue(String value) {
-        coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final void AxiomProcessingInstruction.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
@@ -56,9 +60,5 @@ public aspect AxiomProcessingInstructionSupport {
     }
     
     public final void AxiomProcessingInstruction.buildWithAttachments() {
-    }
-    
-    public final void AxiomProcessingInstruction.build() {
-        // TODO
     }
 }

@@ -72,7 +72,7 @@ public aspect CoreElementSupport {
         }
     }
 
-    public final void CoreElement.coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value) {
+    public final void CoreElement.coreSetAttribute(AttributeMatcher matcher, String namespaceURI, String name, String prefix, String value) throws CoreModelException {
         CoreAttribute attr = firstAttribute;
         CoreAttribute previousAttr = null;
         while (attr != null && !matcher.matches(attr, namespaceURI, name)) {

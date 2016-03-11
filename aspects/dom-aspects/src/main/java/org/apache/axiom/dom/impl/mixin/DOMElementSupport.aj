@@ -113,27 +113,35 @@ public aspect DOMElementSupport {
     }
 
     public final void DOMElement.setAttribute(String name, String value) {
-        NSUtil.validateName(name);
-        coreSetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name, null, value);
+        try {
+            NSUtil.validateName(name);
+            coreSetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name, null, value);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final void DOMElement.setAttributeNS(String namespaceURI, String qualifiedName, String value) throws DOMException {
-        int i = NSUtil.validateQualifiedName(qualifiedName);
-        String prefix;
-        String localName;
-        if (i == -1) {
-            prefix = "";
-            localName = qualifiedName;
-        } else {
-            prefix = qualifiedName.substring(0, i);
-            localName = qualifiedName.substring(i+1);
-        }
-        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-            coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, NSUtil.getDeclaredPrefix(localName, prefix), null, value);
-        } else {
-            namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
-            NSUtil.validateAttributeName(namespaceURI, localName, prefix);
-            coreSetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
+        try {
+            int i = NSUtil.validateQualifiedName(qualifiedName);
+            String prefix;
+            String localName;
+            if (i == -1) {
+                prefix = "";
+                localName = qualifiedName;
+            } else {
+                prefix = qualifiedName.substring(0, i);
+                localName = qualifiedName.substring(i+1);
+            }
+            if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
+                coreSetAttribute(DOMSemantics.NAMESPACE_DECLARATION_MATCHER, null, NSUtil.getDeclaredPrefix(localName, prefix), null, value);
+            } else {
+                namespaceURI = NSUtil.normalizeNamespaceURI(namespaceURI);
+                NSUtil.validateAttributeName(namespaceURI, localName, prefix);
+                coreSetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, namespaceURI, localName, prefix, value);
+            }
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
 
@@ -207,7 +215,11 @@ public aspect DOMElementSupport {
     }
 
     public final void DOMElement.setTextContent(String textContent) {
-        coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(textContent, DOMSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final NodeList DOMElement.getElementsByTagName(String tagname) {

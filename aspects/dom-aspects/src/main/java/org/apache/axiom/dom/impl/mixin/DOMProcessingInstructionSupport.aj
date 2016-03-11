@@ -38,7 +38,11 @@ public aspect DOMProcessingInstructionSupport {
     }
     
     public final void DOMProcessingInstruction.setData(String data) {
-        coreSetCharacterData(data, DOMSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(data, DOMSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
     
     public final String DOMProcessingInstruction.getNodeName() {

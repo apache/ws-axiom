@@ -68,7 +68,11 @@ public aspect DOMParentNodeSupport {
     }
 
     public final Node DOMParentNode.getLastChild() {
-        return (Node)coreGetLastChild(DocumentWhitespaceFilter.INSTANCE);
+        try {
+            return (Node)coreGetLastChild(DocumentWhitespaceFilter.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
     }
 
     public final boolean DOMParentNode.hasChildNodes() {

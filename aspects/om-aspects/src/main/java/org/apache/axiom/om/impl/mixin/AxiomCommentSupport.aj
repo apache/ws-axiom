@@ -41,7 +41,11 @@ public aspect AxiomCommentSupport {
     }
 
     public void AxiomComment.setValue(String text) {
-        coreSetCharacterData(text, AxiomSemantics.INSTANCE);
+        try {
+            coreSetCharacterData(text, AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
 
     public final void AxiomComment.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
@@ -53,9 +57,5 @@ public aspect AxiomCommentSupport {
     }
     
     public final void AxiomComment.buildWithAttachments() {
-    }
-    
-    public final void AxiomComment.build() {
-        // TODO
     }
 }

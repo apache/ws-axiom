@@ -23,6 +23,8 @@ import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.stream.NullXmlHandler;
@@ -89,11 +91,15 @@ final class BuildableContext extends Context implements InputContext {
         builderHandler.decrementActiveContextCount();
     }
 
-    private Context endContext() {
+    private Context endContext() throws StreamException {
         target.coreSetState(CoreParentNode.COMPLETE);
         target.coreSetInputContext(null);
         if (pendingCharacterData != null) {
-            target.coreSetCharacterData(pendingCharacterData, null);
+            try {
+                target.coreSetCharacterData(pendingCharacterData, null);
+            } catch (CoreModelException ex) {
+                throw new CoreModelStreamException(ex);
+            }
             pendingCharacterData = null;
         }
         target = null;
@@ -195,7 +201,11 @@ final class BuildableContext extends Context implements InputContext {
             OMNamespace ns = builderHandler.nsCache.getOMNamespace(namespaceURI, prefix);
             AxiomAttribute attr = builderHandler.nodeFactory.createNode(AxiomAttribute.class);
             attr.internalSetLocalName(localName);
-            attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+            try {
+                attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+            } catch (CoreModelException ex) {
+                throw new CoreModelStreamException(ex);
+            }
             attr.internalSetNamespace(ns);
             attr.coreSetType(type);
             attr.coreSetSpecified(specified);
