@@ -23,6 +23,7 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
@@ -50,5 +51,19 @@ public abstract class AbstractBuilder implements OMXMLParserWrapper, Builder {
             next();
         }
         return document;
+    }
+    
+    public final OMElement getDocumentElement() {
+        return getDocumentElement(false);
+    }
+
+    public final OMElement getDocumentElement(boolean discardDocument) {
+        OMDocument document = getDocument();
+        OMElement element = document.getOMDocumentElement();
+        if (discardDocument) {
+            element.detach();
+            ((AxiomDocument)document).coreDiscard(false);
+        }
+        return element;
     }
 }

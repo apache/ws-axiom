@@ -20,14 +20,11 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 import javax.xml.stream.XMLStreamReader;
@@ -121,19 +118,5 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         }
         helper.next();
         builderHandler.executeDeferredActions();
-    }
-    
-    public final OMElement getDocumentElement() {
-        return getDocumentElement(false);
-    }
-
-    public final OMElement getDocumentElement(boolean discardDocument) {
-        OMDocument document = getDocument();
-        OMElement element = document.getOMDocumentElement();
-        if (discardDocument) {
-            element.detach();
-            ((AxiomDocument)document).coreDiscard(false);
-        }
-        return element;
     }
 }

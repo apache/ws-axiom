@@ -23,7 +23,6 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
@@ -43,18 +42,6 @@ public final class PushBuilder extends AbstractBuilder {
         } catch (StreamException ex) {
             throw new DeferredParsingException(ex);
         }
-    }
-
-    public final OMElement getDocumentElement() {
-        return getDocument().getOMDocumentElement();
-    }
-
-    public final OMElement getDocumentElement(boolean discardDocument) {
-        OMElement documentElement = getDocument().getOMDocumentElement();
-        if (discardDocument) {
-            documentElement.detach();
-        }
-        return documentElement;
     }
 
     public final String getCharacterEncoding() {
