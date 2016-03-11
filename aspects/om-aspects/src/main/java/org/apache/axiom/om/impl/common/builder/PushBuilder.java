@@ -44,10 +44,6 @@ public final class PushBuilder extends AbstractBuilder {
         }
     }
 
-    public final String getCharacterEncoding() {
-        throw new UnsupportedOperationException();
-    }
-
     public final void close() {
         // This is a no-op
     }

@@ -85,12 +85,6 @@ public interface OMXMLParserWrapper {
     OMElement getDocumentElement(boolean discardDocument);
 
     /**
-     * Returns the encoding style of the XML data
-     * @return the character encoding, defaults to "UTF-8"
-     */
-    public String getCharacterEncoding();
-    
-    /**
      * Close this builder. This method frees the resources associated with this builder. In
      * particular, it releases the resources held by the underlying parser. This method does
      * <b>not</b> close the underlying input source.

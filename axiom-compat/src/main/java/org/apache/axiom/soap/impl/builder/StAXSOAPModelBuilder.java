@@ -86,10 +86,6 @@ public class StAXSOAPModelBuilder implements SOAPModelBuilder {
         return target.getDocumentElement(discardDocument);
     }
 
-    public String getCharacterEncoding() {
-        return target.getCharacterEncoding();
-    }
-
     public void close() {
         target.close();
     }

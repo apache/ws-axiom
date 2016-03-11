@@ -39,8 +39,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
 
     private final Detachable detachable;
     
-    private String charEncoding = null;
-    
     private final CustomBuilderManager customBuilderManager = new CustomBuilderManager();
     
     protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
@@ -53,7 +51,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         }
         reader = new StAXPullReader(parser, handler, closeable, autoClose);
         this.detachable = detachable;
-        charEncoding = parser.getEncoding();
         builderHandler.addListener(customBuilderManager);
     }
     
@@ -73,25 +70,10 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         customBuilderManager.register(selector, customBuilder);
     }
     
-    public final String getCharsetEncoding() {
-        return builderHandler.getDocument().getCharsetEncoding();
-    }
-
     public final void close() {
         reader.dispose();
     }
 
-    /**
-     * Returns the encoding style of the XML data
-     * @return the character encoding, defaults to "UTF-8"
-     */
-    public final String getCharacterEncoding() {
-        if(this.charEncoding == null){
-            return "UTF-8";
-        }
-        return this.charEncoding;
-    }
-    
     public final void detach() throws OMException {
         if (detachable != null) {
             detachable.detach();
