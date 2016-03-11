@@ -27,7 +27,6 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.core.Semantics;
 import org.apache.axiom.core.impl.AttributeIterator;
@@ -35,12 +34,6 @@ import org.apache.axiom.core.impl.AttributeIterator;
 public aspect CoreElementSupport {
     private CoreAttribute CoreElement.firstAttribute;
 
-    final void CoreElement.beforeDetach() {
-        if (getState() == CoreParentNode.INCOMPLETE && coreGetBuilder() == coreGetParent().coreGetBuilder()) {
-            build();
-        }
-    }
-    
     public final CoreAttribute CoreElement.coreGetFirstAttribute() {
         forceExpand();
         return firstAttribute;

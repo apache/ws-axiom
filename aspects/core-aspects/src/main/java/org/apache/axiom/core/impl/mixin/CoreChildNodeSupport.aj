@@ -205,8 +205,6 @@ public aspect CoreChildNodeSupport {
         fragmentContent.lastChild = null;
     }
     
-    void CoreChildNode.beforeDetach() {}
-    
     public final void CoreChildNode.coreDetach(Semantics semantics) {
         internalDetach(semantics, null);
     }
@@ -214,7 +212,6 @@ public aspect CoreChildNodeSupport {
     final void CoreChildNode.internalDetach(Semantics semantics, CoreParentNode newParent) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
-            beforeDetach();
             if (previousSibling == null) {
                 parent.getContent(true).firstChild = nextSibling;
             } else {
@@ -243,7 +240,6 @@ public aspect CoreChildNodeSupport {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             newNode.internalDetach(null, parent);
-            beforeDetach();
             if (previousSibling == null) {
                 parent.getContent(true).firstChild = newNode;
             } else {
