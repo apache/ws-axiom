@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.om.impl.common.builder.StAXHelper;
+import org.apache.axiom.om.impl.common.builder.StAXPullReader;
 
 public final class StAXPullInput implements XmlInput {
     private final XMLStreamReader reader;
@@ -34,6 +34,6 @@ public final class StAXPullInput implements XmlInput {
 
     @Override
     public XmlReader createReader(XmlHandler handler) {
-        return new StAXHelper(reader, handler, null, true);
+        return new StAXPullReader(reader, handler, null, true);
     }
 }

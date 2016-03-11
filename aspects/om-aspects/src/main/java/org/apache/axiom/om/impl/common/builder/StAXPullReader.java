@@ -67,8 +67,8 @@ import java.io.Closeable;
  * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
  * them during a call to next().
  */
-public class StAXHelper implements XmlReader {
-    private static final Log log = LogFactory.getLog(StAXHelper.class);
+public final class StAXPullReader implements XmlReader {
+    private static final Log log = LogFactory.getLog(StAXPullReader.class);
     
     /** Field parser */
     private XMLStreamReader parser;
@@ -98,7 +98,7 @@ public class StAXHelper implements XmlReader {
     
     private boolean start = true;
     
-    public StAXHelper(XMLStreamReader parser, XmlHandler handler,
+    public StAXPullReader(XMLStreamReader parser, XmlHandler handler,
             Closeable closeable, boolean autoClose) {
         this.parser = parser;
         this.handler = handler;
@@ -107,7 +107,7 @@ public class StAXHelper implements XmlReader {
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
-    public StAXHelper(XMLStreamReader parser, XmlHandler handler) {
+    public StAXPullReader(XMLStreamReader parser, XmlHandler handler) {
         this(parser, handler, null, false);
     }
 
@@ -160,7 +160,8 @@ public class StAXHelper implements XmlReader {
         }
     }
 
-    public final void close() {
+    @Override
+    public void dispose() {
         try {
             if (!_isClosed) {
                 parser.close();
@@ -186,67 +187,50 @@ public class StAXHelper implements XmlReader {
 
     @Override
     public boolean proceed() throws StreamException {
-        return next() == XMLStreamReader.END_DOCUMENT;
-    }
-
-    /**
-     * Forwards the parser one step further, if parser is not completed yet. If this is called after
-     * parser is done, then throw an OMException. If the cache is set to false, then returns the
-     * event, *without* building the OM tree. If the cache is set to true, then handles all the
-     * events within this, and builds the object structure appropriately and returns the event.
-     *
-     * @return Returns int.
-     * @throws OMException
-     */
-    public int next() throws OMException {
         int token = parserNext();
         
         // Note: if autoClose is enabled, then the parser may be null at this point
         
-        try {
-            switch (token) {
-                case XMLStreamConstants.START_DOCUMENT:
-                    handler.startDocument(parser.getEncoding(), parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
-                    break;
-                case XMLStreamConstants.START_ELEMENT: {
-                    processElement();
-                    break;
-                }
-                case XMLStreamConstants.CHARACTERS:
-                case XMLStreamConstants.CDATA:
-                case XMLStreamConstants.SPACE:
-                    processText(token);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    handler.endElement();
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    handler.completed();
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    handler.startComment();
-                    handler.processCharacterData(parser.getText(), false);
-                    handler.endComment();
-                    break;
-                case XMLStreamConstants.DTD:
-                    processDTD();
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    handler.startProcessingInstruction(parser.getPITarget());
-                    handler.processCharacterData(parser.getPIData(), false);
-                    handler.endProcessingInstruction();
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    handler.processEntityReference(parser.getLocalName(), parser.getText());
-                    break;
-                default :
-                    throw new IllegalStateException();
+        switch (token) {
+            case XMLStreamConstants.START_DOCUMENT:
+                handler.startDocument(parser.getEncoding(), parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
+                break;
+            case XMLStreamConstants.START_ELEMENT: {
+                processElement();
+                break;
             }
-        } catch (StreamException ex) {
-            throw new OMException(ex);
+            case XMLStreamConstants.CHARACTERS:
+            case XMLStreamConstants.CDATA:
+            case XMLStreamConstants.SPACE:
+                processText(token);
+                break;
+            case XMLStreamConstants.END_ELEMENT:
+                handler.endElement();
+                break;
+            case XMLStreamConstants.END_DOCUMENT:
+                handler.completed();
+                break;
+            case XMLStreamConstants.COMMENT:
+                handler.startComment();
+                handler.processCharacterData(parser.getText(), false);
+                handler.endComment();
+                break;
+            case XMLStreamConstants.DTD:
+                processDTD();
+                break;
+            case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                handler.startProcessingInstruction(parser.getPITarget());
+                handler.processCharacterData(parser.getPIData(), false);
+                handler.endProcessingInstruction();
+                break;
+            case XMLStreamConstants.ENTITY_REFERENCE:
+                handler.processEntityReference(parser.getLocalName(), parser.getText());
+                break;
+            default :
+                throw new IllegalStateException();
         }
         
-        return token;
+        return token == XMLStreamReader.END_DOCUMENT;
     }
     
     private void processElement() throws StreamException {
@@ -328,7 +312,7 @@ public class StAXHelper implements XmlReader {
      * @return next token
      * @throws DeferredParsingException
      */
-    public int parserNext() {
+    private int parserNext() {
         if (start) {
             start = false;
             return parser.getEventType();
@@ -351,17 +335,12 @@ public class StAXHelper implements XmlReader {
                     throw ex;
                 }
                 if (autoClose && event == XMLStreamConstants.END_DOCUMENT) {
-                    close();
+                    dispose();
                 }
                 return event;
             } catch (XMLStreamException ex) {
                 throw new DeferredParsingException(ex);
             }
         }
-    }
-    
-    @Override
-    public void dispose() {
-        close();
     }
 }

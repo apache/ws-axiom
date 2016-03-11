@@ -20,6 +20,9 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
@@ -32,7 +35,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.Closeable;
 
 public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSupport {
-    private final StAXHelper helper;
+    private final XmlReader reader;
 
     private final Detachable detachable;
     
@@ -48,7 +51,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
             throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
         }
-        helper = new StAXHelper(parser, handler, closeable, autoClose);
+        reader = new StAXPullReader(parser, handler, closeable, autoClose);
         this.detachable = detachable;
         charEncoding = parser.getEncoding();
         builderHandler.addListener(customBuilderManager);
@@ -75,7 +78,7 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     }
 
     public final void close() {
-        helper.close();
+        reader.dispose();
     }
 
     /**
@@ -112,7 +115,11 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (builderHandler.done) {
             throw new OMException();
         }
-        helper.next();
+        try {
+            reader.proceed();
+        } catch (StreamException ex) {
+            throw new DeferredParsingException(ex);
+        }
         builderHandler.executeDeferredActions();
     }
 }
