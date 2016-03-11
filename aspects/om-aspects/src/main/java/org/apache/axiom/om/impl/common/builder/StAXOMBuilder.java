@@ -133,7 +133,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         if (discardDocument) {
             element.detach();
             ((AxiomDocument)document).coreDiscard(false);
-            builderHandler.document = null;
         }
         return element;
     }

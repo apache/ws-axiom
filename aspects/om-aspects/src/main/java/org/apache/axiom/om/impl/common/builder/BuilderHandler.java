@@ -42,7 +42,7 @@ final class BuilderHandler implements XmlHandler {
     private int activeContextCount;
     // returns the state of completion
     public boolean done;
-    public AxiomDocument document;
+    private AxiomDocument document;
     
     /**
      * Tracks the depth of the node identified by {@link #target}. By definition, the document has
