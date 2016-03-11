@@ -162,7 +162,7 @@ public class StAXHelper implements XmlReader {
 
     public final void close() {
         try {
-            if (!isClosed()) {
+            if (!_isClosed) {
                 parser.close();
                 if (closeable != null) {
                     closeable.close();
@@ -184,10 +184,6 @@ public class StAXHelper implements XmlReader {
         }
     }
 
-    public final boolean isClosed() {
-        return _isClosed;
-    }
-    
     @Override
     public boolean proceed() throws StreamException {
         return next() == XMLStreamReader.END_DOCUMENT;

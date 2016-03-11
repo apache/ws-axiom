@@ -89,10 +89,6 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
         return this.charEncoding;
     }
     
-    public final boolean isClosed() {
-        return helper.isClosed();
-    }
-    
     public final void detach() throws OMException {
         if (detachable != null) {
             detachable.detach();

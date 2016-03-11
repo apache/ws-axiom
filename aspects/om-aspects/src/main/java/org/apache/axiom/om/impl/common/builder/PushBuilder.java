@@ -56,9 +56,4 @@ public final class PushBuilder extends AbstractBuilder {
         // Force processing of the SAX source
         getDocument();
     }
-
-    @Override
-    public final boolean isClosed() {
-        return true;
-    }
 }

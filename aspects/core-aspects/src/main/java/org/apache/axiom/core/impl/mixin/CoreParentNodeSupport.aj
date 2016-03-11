@@ -129,8 +129,6 @@ public aspect CoreParentNodeSupport {
         Builder builder = coreGetBuilder();
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
-        } else if (builder.isClosed()) {
-            throw new IllegalStateException("The builder has already been closed");
         } else if (!builder.isCompleted()) {
             builder.next();
         } else {

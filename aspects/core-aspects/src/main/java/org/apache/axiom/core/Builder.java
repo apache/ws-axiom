@@ -22,5 +22,4 @@ public interface Builder {
     void next();
     boolean isCompleted();
     void close();
-    boolean isClosed();
 }
