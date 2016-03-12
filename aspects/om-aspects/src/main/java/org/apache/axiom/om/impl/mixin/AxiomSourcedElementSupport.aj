@@ -34,9 +34,8 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.builder.BuilderImpl;
 import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
-import org.apache.axiom.om.impl.common.builder.PushBuilder;
-import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceInput;
@@ -220,7 +219,7 @@ public aspect AxiomSourcedElementSupport {
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
                 // Disable namespace repairing because the OMDataSource is required to produce well formed
                 // XML with respect to namespaces.
-                builder = new PushBuilder(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, false);
+                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, false, null);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
@@ -229,7 +228,7 @@ public aspect AxiomSourcedElementSupport {
                 } catch (XMLStreamException ex) {
                     throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                builder = new StAXOMBuilder(coreGetNodeFactory(), readerFromDS, this);
+                builder = new BuilderImpl(new StAXPullInput(readerFromDS), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, true, null);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);

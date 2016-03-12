@@ -30,6 +30,10 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
+    public void startFragment() throws StreamException {
+    }
+
+    @Override
     public void completed() throws StreamException {
     }
 

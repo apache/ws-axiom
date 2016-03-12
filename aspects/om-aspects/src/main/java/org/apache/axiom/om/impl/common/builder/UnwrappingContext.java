@@ -36,6 +36,10 @@ final class UnwrappingContext extends Context {
     }
 
     @Override
+    void startFragment() {
+    }
+
+    @Override
     void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
         // TODO Auto-generated method stub

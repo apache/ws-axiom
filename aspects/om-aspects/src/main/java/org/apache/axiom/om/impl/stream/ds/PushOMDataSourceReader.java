@@ -56,7 +56,9 @@ final class PushOMDataSourceReader implements XmlReader {
                     writer.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
             }
+            handler.startFragment();
             dataSource.serialize(new PushOMDataSourceStreamWriter(writer));
+            handler.completed();
         } catch (XMLStreamException ex) {
             throw new StreamException(ex);
         }

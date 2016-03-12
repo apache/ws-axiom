@@ -38,10 +38,10 @@ final class BuilderHandler implements XmlHandler {
     final Builder builder;
     final OMNamespaceCache nsCache = new OMNamespaceCache();
     private final Context rootContext;
-    public Context context;
+    private Context context;
     private int activeContextCount;
     // returns the state of completion
-    public boolean done;
+    private boolean done;
     private AxiomDocument document;
     
     /**
@@ -135,8 +135,7 @@ final class BuilderHandler implements XmlHandler {
     
     @Override
     public void startFragment() throws StreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+        context.startFragment();
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,

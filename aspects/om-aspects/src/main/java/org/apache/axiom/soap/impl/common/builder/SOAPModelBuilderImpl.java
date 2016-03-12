@@ -24,8 +24,8 @@ import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.BuilderImpl;
 import org.apache.axiom.om.impl.common.builder.BuilderListener;
-import org.apache.axiom.om.impl.common.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
@@ -36,9 +36,9 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 /**
  * Internal implementation class.
  */
-public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
-    public StAXSOAPModelBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable) {
-        super(nodeFactory, input, detachable, new SOAPModel(), null);
+public class SOAPModelBuilderImpl extends BuilderImpl implements SOAPModelBuilder {
+    public SOAPModelBuilderImpl(XmlInput input, NodeFactory nodeFactory, boolean repairNamespaces, Detachable detachable) {
+        super(input, nodeFactory, new SOAPModel(), null, true, detachable);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.

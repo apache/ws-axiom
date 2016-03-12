@@ -43,6 +43,8 @@ abstract class Context {
     
     abstract void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone);
     
+    abstract void startFragment();
+    
     abstract void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException;
     
