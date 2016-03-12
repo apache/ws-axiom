@@ -33,12 +33,14 @@ public aspect AxiomCoreParentNodeSupport {
                 case COMPACT:
                     return true;
                 case COMPLETE:
-                    CoreChildNode child = coreGetFirstChild();
-                    while (child != null) {
-                        if (!(child instanceof AxiomSourcedElement || ((AxiomSerializable)child).isComplete())) {
-                            return false;
+                    if (isExpanded()) {
+                        CoreChildNode child = coreGetFirstChild();
+                        while (child != null) {
+                            if (!(child instanceof AxiomSourcedElement || ((AxiomSerializable)child).isComplete())) {
+                                return false;
+                            }
+                            child = child.coreGetNextSibling();
                         }
-                        child = child.coreGetNextSibling();
                     }
                     return true;
                 default:
@@ -56,6 +58,10 @@ public aspect AxiomCoreParentNodeSupport {
                 case DISCARDED:
                     throw new NodeUnavailableException();
                 case COMPLETE:
+                    if (!isExpanded()) {
+                        break;
+                    }
+                    // Fall through
                 case INCOMPLETE:
                     // First do the children that have already been created; only they need recursion.
                     CoreChildNode child = coreGetFirstChildIfAvailable();
