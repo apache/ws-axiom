@@ -35,7 +35,7 @@ abstract class Context {
         if (nestedContext == null) {
             nestedContext = new BuildableContext(builderHandler, this, depth+1);
         }
-        nestedContext.target = target;
+        nestedContext.init(target);
         target.coreSetInputContext(nestedContext);
         builderHandler.incrementActiveContextCount();
         return nestedContext;

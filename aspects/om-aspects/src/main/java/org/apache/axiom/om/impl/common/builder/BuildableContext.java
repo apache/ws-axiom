@@ -22,10 +22,14 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreCDATASection;
 import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreComment;
 import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreDocumentTypeDeclaration;
+import org.apache.axiom.core.CoreEntityReference;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.CoreProcessingInstruction;
 import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -34,21 +38,16 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
-import org.apache.axiom.om.impl.intf.AxiomCharacterDataNode;
-import org.apache.axiom.om.impl.intf.AxiomComment;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
-import org.apache.axiom.om.impl.intf.AxiomDocType;
 import org.apache.axiom.om.impl.intf.AxiomElement;
-import org.apache.axiom.om.impl.intf.AxiomEntityReference;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
-import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
 final class BuildableContext extends Context implements InputContext {
     private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
     
-    final Context parentContext;
+    private final Context parentContext;
 
-    public CoreParentNode target;
+    private CoreParentNode target;
     
     private Object pendingCharacterData;
     
@@ -66,6 +65,10 @@ final class BuildableContext extends Context implements InputContext {
     BuildableContext(BuilderHandler builderHandler, Context parentContext, int depth) {
         super(builderHandler, depth);
         this.parentContext = parentContext;
+    }
+
+    void init(CoreParentNode target) {
+        this.target = target;
     }
 
     @Override
@@ -129,7 +132,7 @@ final class BuildableContext extends Context implements InputContext {
     
     private void addChild(CoreChildNode node) {
         if (pendingCharacterData != null) {
-            AxiomCharacterDataNode cdataNode = builderHandler.nodeFactory.createNode(AxiomCharacterDataNode.class);
+            CoreCharacterDataNode cdataNode = builderHandler.nodeFactory.createNode(CoreCharacterDataNode.class);
             cdataNode.coreSetCharacterData(pendingCharacterData);
             target.internalAppendChildWithoutBuild(cdataNode);
             pendingCharacterData = null;
@@ -164,7 +167,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
         } else {
-            AxiomDocType node = builderHandler.nodeFactory.createNode(AxiomDocType.class);
+            CoreDocumentTypeDeclaration node = builderHandler.nodeFactory.createNode(CoreDocumentTypeDeclaration.class);
             node.coreSetRootName(rootName);
             node.coreSetPublicId(publicId);
             node.coreSetSystemId(systemId);
@@ -250,7 +253,7 @@ final class BuildableContext extends Context implements InputContext {
         } else if (!ignorable && pendingCharacterData == null && target.coreGetFirstChildIfAvailable() == null) {
             pendingCharacterData = data;
         } else {
-            AxiomCharacterDataNode node = builderHandler.nodeFactory.createNode(AxiomCharacterDataNode.class);
+            CoreCharacterDataNode node = builderHandler.nodeFactory.createNode(CoreCharacterDataNode.class);
             node.coreSetCharacterData(data);
             node.coreSetIgnorable(ignorable);
             addChild(node);
@@ -264,7 +267,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.startProcessingInstruction(piTarget);
             return this;
         } else {
-            AxiomProcessingInstruction node = builderHandler.nodeFactory.createNode(AxiomProcessingInstruction.class);
+            CoreProcessingInstruction node = builderHandler.nodeFactory.createNode(CoreProcessingInstruction.class);
             node.coreSetTarget(piTarget);
             addChild(node);
             return newContext(node);
@@ -288,7 +291,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.startComment();
             return this;
         } else {
-            AxiomComment node = builderHandler.nodeFactory.createNode(AxiomComment.class);
+            CoreComment node = builderHandler.nodeFactory.createNode(CoreComment.class);
             addChild(node);
             return newContext(node);
         }
@@ -332,7 +335,7 @@ final class BuildableContext extends Context implements InputContext {
         if (passThroughHandler != null) {
             passThroughHandler.processEntityReference(name, replacementText);
         } else {
-            AxiomEntityReference node = builderHandler.nodeFactory.createNode(AxiomEntityReference.class);
+            CoreEntityReference node = builderHandler.nodeFactory.createNode(CoreEntityReference.class);
             node.coreSetName(name);
             node.coreSetReplacementText(replacementText);
             addChild(node);
