@@ -19,10 +19,9 @@
 
 package org.apache.axiom.soap.impl.common.builder;
 
-import java.io.Closeable;
-
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.BuilderListener;
@@ -34,15 +33,12 @@ import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 
-import javax.xml.stream.XMLStreamReader;
-
 /**
  * Internal implementation class.
  */
 public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
-    public StAXSOAPModelBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
-            boolean autoClose, Detachable detachable, Closeable closeable) {
-        super(nodeFactory, parser, autoClose, detachable, closeable, new SOAPModel(), null);
+    public StAXSOAPModelBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable) {
+        super(nodeFactory, input, detachable, new SOAPModel(), null);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.

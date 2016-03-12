@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.om.impl.stream.stax;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -100,6 +100,9 @@ public final class StAXPullReader implements XmlReader {
     
     public StAXPullReader(XMLStreamReader parser, XmlHandler handler,
             Closeable closeable, boolean autoClose) {
+        if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
+            throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
+        }
         this.parser = parser;
         this.handler = handler;
         this.closeable = closeable;
@@ -107,10 +110,6 @@ public final class StAXPullReader implements XmlReader {
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
     
-    public StAXPullReader(XMLStreamReader parser, XmlHandler handler) {
-        this(parser, handler, null, false);
-    }
-
     private static String normalize(String s) {
         return s == null ? "" : s;
     }

@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.DeferredParsingException;
 import org.apache.axiom.om.OMException;
@@ -29,10 +30,9 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
 
 import javax.xml.stream.XMLStreamReader;
-
-import java.io.Closeable;
 
 public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSupport {
     private final XmlReader reader;
@@ -41,28 +41,23 @@ public class StAXOMBuilder extends AbstractBuilder implements CustomBuilderSuppo
     
     private final CustomBuilderManager customBuilderManager = new CustomBuilderManager();
     
-    protected StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser,
-            boolean autoClose, Detachable detachable, Closeable closeable, Model model,
+    protected StAXOMBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable, Model model,
             AxiomSourcedElement root) {
         // TODO: disable namespace repairing for XMLStreamReader created from a parser
         super(nodeFactory, model, root, true);
-        if (parser.getEventType() != XMLStreamReader.START_DOCUMENT) {
-            throw new IllegalStateException("The XMLStreamReader must be positioned on a START_DOCUMENT event");
-        }
-        reader = new StAXPullReader(parser, handler, closeable, autoClose);
+        reader = input.createReader(handler);
         this.detachable = detachable;
         builderHandler.addListener(customBuilderManager);
     }
     
-    public StAXOMBuilder(NodeFactory nodeFactory, XMLStreamReader parser, boolean autoClose,
-            Detachable detachable, Closeable closeable) {
-        this(nodeFactory, parser, autoClose, detachable, closeable, PlainXMLModel.INSTANCE, null);
+    public StAXOMBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable) {
+        this(nodeFactory, input, detachable, PlainXMLModel.INSTANCE, null);
     }
     
     public StAXOMBuilder(NodeFactory nodeFactory,
                          XMLStreamReader parser, 
                          AxiomSourcedElement element) {
-        this(nodeFactory, parser, true, null, null, PlainXMLModel.INSTANCE, element);
+        this(nodeFactory, new StAXPullInput(parser), null, PlainXMLModel.INSTANCE, element);
     }
     
     @Override
