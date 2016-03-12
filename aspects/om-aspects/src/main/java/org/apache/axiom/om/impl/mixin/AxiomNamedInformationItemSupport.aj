@@ -24,6 +24,7 @@ import org.apache.axiom.core.CoreNamedNode;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamedInformationItem;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
@@ -47,6 +48,11 @@ public aspect AxiomNamedInformationItemSupport {
     
     private String AxiomNamedInformationItem.localName;
     private QName AxiomNamedInformationItem.qName;
+    
+    public final void AxiomNamedInformationItem.initName(String namespaceURI, String localName, String prefix, Object namespaceHelper) {
+        this.localName = localName;
+        namespace = ((OMNamespaceCache)namespaceHelper).getOMNamespace(namespaceURI, prefix);
+    }
     
     /**
      * Set the namespace of the node without adding a corresponding namespace declaration.

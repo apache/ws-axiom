@@ -23,11 +23,19 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 
 public aspect AxiomNamespaceDeclarationSupport {
+    private static final OMNamespace DEFAULT_NS = new OMNamespaceImpl("", "");
+    
     private OMNamespace AxiomNamespaceDeclaration.declaredNamespace;
     
+    public final void AxiomNamespaceDeclaration.init(String prefix, String namespaceURI, Object namespaceHelper) {
+        OMNamespace ns = ((OMNamespaceCache)namespaceHelper).getOMNamespace(namespaceURI, prefix);
+        setDeclaredNamespace(ns == null ? DEFAULT_NS : ns);
+    }
+
     public final String AxiomNamespaceDeclaration.coreGetDeclaredPrefix() {
         return declaredNamespace.getPrefix();
     }

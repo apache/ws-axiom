@@ -22,6 +22,8 @@ package org.apache.axiom.core;
  * Represents a namespace declaration information item.
  */
 public interface CoreNamespaceDeclaration extends CoreAttribute {
+    void init(String prefix, String namespaceURI, Object namespaceHelper);
+    
     /**
      * Get the prefix declared by this namespace declaration.
      * 

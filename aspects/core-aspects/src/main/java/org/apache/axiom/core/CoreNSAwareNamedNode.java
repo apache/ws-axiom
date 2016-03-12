@@ -22,6 +22,7 @@ package org.apache.axiom.core;
  * Represents a namespace aware named information item.
  */
 public interface CoreNSAwareNamedNode extends CoreNamedNode {
+    void initName(String namespaceURI, String localName, String prefix, Object namespaceHelper);
     String coreGetNamespaceURI();
     String coreGetPrefix();
     void coreSetPrefix(String prefix);
