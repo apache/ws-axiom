@@ -18,17 +18,13 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
@@ -45,42 +41,6 @@ public abstract class OMSourcedElementVariant {
                 // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
                 OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
                 return factory.createOMElement(new PullOMDataSource(orgElement.toString()));
-            }
-        },
-        new OMSourcedElementVariant("lossy-prefix", false, false, true) {
-            public void addTestProperties(MatrixTestCase test) {
-                test.addTestParameter("method", "QName");
-            }
-
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
-                // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
-                OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                orgElement.serialize(baos);
-                OMDataSourceExt ds = new ByteArrayDataSource(baos.toByteArray(), "UTF-8");
-                ds.setProperty(OMDataSourceExt.LOSSY_PREFIX, Boolean.TRUE);
-                return factory.createOMElement(ds, new QName(qname.getNamespaceURI(), qname.getLocalPart()));
-            }
-        },
-        new OMSourcedElementVariant("lossy-prefix", false, false, true) {
-            public void addTestProperties(MatrixTestCase test) {
-                test.addTestParameter("method", "OMNamespace");
-            }
-
-            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
-                // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
-                OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                orgElement.serialize(baos);
-                OMDataSourceExt ds = new ByteArrayDataSource(baos.toByteArray(), "UTF-8");
-                ds.setProperty(OMDataSourceExt.LOSSY_PREFIX, Boolean.TRUE);
-                OMNamespace ns;
-                if (qname.getNamespaceURI().length() == 0) {
-                    ns = null;
-                } else {
-                    ns = factory.createOMNamespace(qname.getNamespaceURI(), "");
-                }
-                return factory.createOMElement(ds, qname.getLocalPart(), ns);
             }
         },
         new OMSourcedElementVariant("unknown-prefix", false, false, true) {

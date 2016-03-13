@@ -38,13 +38,6 @@ import java.io.UnsupportedEncodingException;
  */
 public interface OMDataSourceExt extends OMDataSource {
     /**
-     * @deprecated To create an {@link OMSourcedElement} with unknown prefix, use
-     *             {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)} and pass
-     *             <code>null</code> as prefix.
-     */
-    String LOSSY_PREFIX = "lossyPrefix";
-    
-    /**
      * Get the object that backs this data source. Application code should in general not call this
      * method directly, but use {@link OMSourcedElement#getObject(Class)} instead.
      * <p>

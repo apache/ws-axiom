@@ -120,7 +120,7 @@ public aspect AxiomSourcedElementSupport {
         if (ns != null && ns.getNamespaceURI().length() == 0) {
             ns = null;
         }
-        if (ns == null || !(isLossyPrefix(dataSource) || ns.getPrefix() == null)) {
+        if (ns == null || ns.getPrefix() != null) {
             // Believe the prefix and create a normal OMNamespace
             definedNamespace = ns;
         } else {
@@ -145,32 +145,8 @@ public aspect AxiomSourcedElementSupport {
         internalSetLocalName(qName.getLocalPart());
         dataSource = source;
         isExpanded = false;
-        if (!isLossyPrefix(dataSource)) {
-            // Believe the prefix and create a normal OMNamespace
-            definedNamespace = getOMNamespace(qName);
-        } else {
-            // Create a deferred namespace that forces an expand to get the prefix
-            String uri = qName.getNamespaceURI();
-            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(this, uri);
-        }
+        definedNamespace = getOMNamespace(qName);
         definedNamespaceSet = true;
-    }
-
-    /**
-     * The namespace uri is immutable, but the OMDataSource may change
-     * the value of the prefix.  This method queries the OMDataSource to 
-     * see if the prefix is known.
-     * @param source
-     * @return true or false
-     */
-    private static boolean isLossyPrefix(OMDataSource source) {
-        Object lossyPrefix = null;
-        if (source instanceof OMDataSourceExt) {
-            lossyPrefix = 
-                ((OMDataSourceExt) source).getProperty(OMDataSourceExt.LOSSY_PREFIX);
-                        
-        }
-        return lossyPrefix == Boolean.TRUE;
     }
 
     /**
@@ -462,10 +438,6 @@ public aspect AxiomSourcedElementSupport {
             setComplete(false);
             isExpanded = false;
             coreSetInputContext(null);
-            if (isLossyPrefix(dataSource)) {
-                // Create a deferred namespace that forces an expand to get the prefix
-                definedNamespace = new DeferredNamespace(this, definedNamespace.getNamespaceURI());
-            }
             return oldDS;
         }
     }
