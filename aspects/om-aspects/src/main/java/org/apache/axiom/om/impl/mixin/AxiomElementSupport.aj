@@ -42,8 +42,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
-import org.apache.axiom.core.IdentityMapper;
-import org.apache.axiom.core.Mapper;
+import org.apache.axiom.core.Mappers;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -112,15 +111,9 @@ public aspect AxiomElementSupport {
         return null;
     }
 
-    private static final Mapper<OMElement,CoreElement> childElementMapper = new Mapper<OMElement,CoreElement>() {
-        public OMElement map(CoreElement element) {
-            return (OMElement)element;
-        }
-    };
-    
     public final Iterator<OMElement> AxiomElement.getChildElements() {
-        return coreGetElements(Axis.CHILDREN, CoreElement.class, ElementMatcher.ANY, null, null,
-                childElementMapper, AxiomSemantics.INSTANCE);
+        return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.ANY, null, null,
+                Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
     }
 
     public final Iterator<OMNamespace> AxiomElement.getNamespacesInScope() {
@@ -346,10 +339,8 @@ public aspect AxiomElementSupport {
         return addAttribute(getOMFactory().createOMAttribute(localName, namespace, value));
     }
 
-    private static final Mapper<OMAttribute,AxiomAttribute> attributeMapper = new IdentityMapper<OMAttribute,AxiomAttribute>();
-    
     public final Iterator<OMAttribute> AxiomElement.getAllAttributes() {
-        return coreGetAttributesByType(AxiomAttribute.class, attributeMapper, AxiomSemantics.INSTANCE);
+        return coreGetAttributesByType(AxiomAttribute.class, Mappers.<OMAttribute>identity(), AxiomSemantics.INSTANCE);
     }
     
     public final OMAttribute AxiomElement.getAttribute(QName qname) {

@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.core;
 
-public final class IdentityMapper<S,T extends S> implements Mapper<S,T> {
+final class IdentityMapper<S,T extends S> implements Mapper<S,T> {
     public S map(T object) {
         return object;
     }

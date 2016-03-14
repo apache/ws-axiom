@@ -16,23 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.impl;
+package org.apache.axiom.core;
 
-import org.apache.axiom.core.Axis;
-import org.apache.axiom.core.CoreModelException;
-import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.core.CoreParentNode;
-import org.apache.axiom.core.Mapper;
-import org.apache.axiom.core.Semantics;
-
-public final class NodesIterator<T extends CoreNode,S> extends AbstractNodeIterator<T,S> {
-    public NodesIterator(CoreParentNode startNode, Axis axis, Class<T> type,
-            Mapper<S,? super T> mapper, Semantics semantics) {
-        super(startNode, axis, type, mapper, semantics);
+public final class Mappers {
+    @SuppressWarnings("rawtypes")
+    private static final IdentityMapper IDENTITY = new IdentityMapper();
+    
+    private Mappers() {}
+    
+    @SuppressWarnings("unchecked")
+    public static <S,T extends S> Mapper<S,T> upcast() {
+        // This is an optimization for the following type safe instruction:
+        // return new IdentityMapper<S,T>();
+        return IDENTITY;
     }
-
-    @Override
-    protected boolean matches(CoreNode node) throws CoreModelException {
-        return true;
+    
+    public static <T> Mapper<T,T> identity() {
+        return upcast();
     }
 }
