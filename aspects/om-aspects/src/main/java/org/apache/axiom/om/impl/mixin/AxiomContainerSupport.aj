@@ -162,7 +162,7 @@ public aspect AxiomContainerSupport {
         }
     }
     
-    private static final Mapper<CoreNode,OMNode> childrenMapper = new Mapper<CoreNode,OMNode>() {
+    private static final Mapper<OMNode,CoreNode> childrenMapper = new Mapper<OMNode,CoreNode>() {
         public OMNode map(CoreNode node) {
             return (OMNode)node;
         }
@@ -172,7 +172,7 @@ public aspect AxiomContainerSupport {
         return coreGetNodes(Axis.CHILDREN, childrenMapper, AxiomSemantics.INSTANCE);
     }
 
-    private static final Mapper<CoreNSAwareElement,OMElement> childElementMapper = new Mapper<CoreNSAwareElement,OMElement>() {
+    private static final Mapper<OMElement,CoreNSAwareElement> childElementMapper = new Mapper<OMElement,CoreNSAwareElement>() {
         public OMElement map(CoreNSAwareElement element) {
             return (OMElement)element;
         }
@@ -195,7 +195,7 @@ public aspect AxiomContainerSupport {
         return new OMChildrenQNameIterator(getFirstOMChild(), elementQName);
     }
     
-    private static final Mapper<CoreNode,OMSerializable> descendantsMapper = new Mapper<CoreNode,OMSerializable>() {
+    private static final Mapper<OMSerializable,CoreNode> descendantsMapper = new Mapper<OMSerializable,CoreNode>() {
         public OMSerializable map(CoreNode node) {
             return (OMSerializable)node;
         }

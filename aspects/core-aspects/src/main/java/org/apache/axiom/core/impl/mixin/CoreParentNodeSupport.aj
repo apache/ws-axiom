@@ -362,11 +362,11 @@ public aspect CoreParentNodeSupport {
         }
     }
     
-    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Mapper<? super CoreNode,T> mapper, Semantics semantics) {
+    public final <T> NodeIterator<T> CoreParentNode.coreGetNodes(Axis axis, Mapper<T,? super CoreNode> mapper, Semantics semantics) {
         return new NodesIterator<T>(this, axis, mapper, semantics);
     }
     
-    public final <T extends CoreElement,S> NodeIterator<S> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<? super T,S> mapper, Semantics semantics) {
+    public final <T extends CoreElement,S> NodeIterator<S> CoreParentNode.coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<S,? super T> mapper, Semantics semantics) {
         return new ElementsIterator<T,S>(this, axis, type, matcher, namespaceURI, name, mapper, semantics);
     }
 

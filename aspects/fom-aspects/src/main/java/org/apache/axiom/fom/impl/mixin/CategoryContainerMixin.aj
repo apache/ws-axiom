@@ -56,7 +56,7 @@ public aspect CategoryContainerMixin {
         return _getChildrenAsSet(Constants.CATEGORY);
     }
 
-    private static final Mapper<AbderaCategory,Category> categoryMapper = new Mapper<AbderaCategory,Category>() {
+    private static final Mapper<Category,AbderaCategory> categoryMapper = new Mapper<Category,AbderaCategory>() {
         public Category map(AbderaCategory category) {
             return category;
         }

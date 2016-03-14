@@ -234,7 +234,7 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         }
     }
 
-    private static final IdentityMapper<AbderaElement> abderaElementMapper = new IdentityMapper<AbderaElement>();
+    private static final IdentityMapper<AbderaElement,AbderaElement> abderaElementMapper = new IdentityMapper<AbderaElement,AbderaElement>();
     
     public final Iterator<AbderaElement> _getChildrenWithName(QName qname) {
         return coreGetElements(Axis.CHILDREN, AbderaElement.class, ElementMatcher.BY_QNAME,

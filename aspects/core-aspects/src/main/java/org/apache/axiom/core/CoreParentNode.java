@@ -46,7 +46,7 @@ public interface CoreParentNode extends CoreNode {
     void coreSetState(int state);
     void coreBuild() throws CoreModelException;
 
-    <T> NodeIterator<T> coreGetNodes(Axis axis, Mapper<? super CoreNode,T> mapper, Semantics semantics);
+    <T> NodeIterator<T> coreGetNodes(Axis axis, Mapper<T,? super CoreNode> mapper, Semantics semantics);
 
-    <T extends CoreElement,S> NodeIterator<S> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<? super T,S> mapper, Semantics semantics);
+    <T extends CoreElement,S> NodeIterator<S> coreGetElements(Axis axis, Class<T> type, ElementMatcher<? super T> matcher, String namespaceURI, String name, Mapper<S,? super T> mapper, Semantics semantics);
 }

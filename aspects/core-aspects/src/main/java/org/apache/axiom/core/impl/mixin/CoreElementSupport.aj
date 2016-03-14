@@ -134,7 +134,7 @@ public aspect CoreElementSupport {
         }
     }
 
-    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
+    public final <T extends CoreAttribute,S> Iterator<S> CoreElement.coreGetAttributesByType(Class<T> type, Mapper<S,T> mapper, Semantics semantics) {
         return AttributeIterator.create(this, type, mapper, semantics);
     }
 

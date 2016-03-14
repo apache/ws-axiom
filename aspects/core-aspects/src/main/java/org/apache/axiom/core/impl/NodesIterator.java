@@ -27,7 +27,7 @@ import org.apache.axiom.core.Semantics;
 
 public final class NodesIterator<S> extends AbstractNodeIterator<CoreNode,S> {
     public NodesIterator(CoreParentNode startNode, Axis axis,
-            Mapper<? super CoreNode, S> mapper, Semantics semantics) {
+            Mapper<S,? super CoreNode> mapper, Semantics semantics) {
         super(startNode, axis, CoreNode.class, mapper, semantics);
     }
 

@@ -29,13 +29,13 @@ import org.apache.axiom.core.Semantics;
 
 public final class AttributeIterator<T extends CoreAttribute,S> implements Iterator<S> {
     private final Class<T> type;
-    private final Mapper<T,S> mapper;
+    private final Mapper<S,T> mapper;
     private final Semantics semantics;
     private CoreAttribute currentAttribute;
     private CoreAttribute nextAttribute;
     private boolean nextAttributeSet;
     
-    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
+    private AttributeIterator(CoreAttribute firstAttribute, Class<T> type, Mapper<S,T> mapper, Semantics semantics) {
         this.type = type;
         this.mapper = mapper;
         this.semantics = semantics;
@@ -43,7 +43,7 @@ public final class AttributeIterator<T extends CoreAttribute,S> implements Itera
         nextAttributeSet = true;
     }
     
-    public static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<T,S> mapper, Semantics semantics) {
+    public static <T extends CoreAttribute,S> Iterator<S> create(CoreElement element, Class<T> type, Mapper<S,T> mapper, Semantics semantics) {
         CoreAttribute attribute = element.coreGetFirstAttribute();
         while (attribute != null && !type.isInstance(attribute)) {
             attribute = attribute.coreGetNextAttribute();

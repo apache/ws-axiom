@@ -119,7 +119,7 @@ public interface CoreElement extends CoreChildNode, CoreMixedContentContainer, C
      */
     boolean coreRemoveAttribute(AttributeMatcher matcher, String namespaceURI, String name, Semantics semantics);
     
-    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<T,S> mapper, Semantics semantics);
+    <T extends CoreAttribute,S> Iterator<S> coreGetAttributesByType(Class<T> type, Mapper<S,T> mapper, Semantics semantics);
     
     /**
      * Look up the namespace URI associated to the given prefix.

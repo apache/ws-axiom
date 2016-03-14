@@ -26,7 +26,7 @@ import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.Mapper;
 import org.w3c.dom.Node;
 
-public class ElementsByTagName extends NodeListImpl implements Mapper<CoreElement,Node> {
+public class ElementsByTagName extends NodeListImpl implements Mapper<Node,CoreElement> {
     private final DOMParentNode node;
     private final String tagname;
     

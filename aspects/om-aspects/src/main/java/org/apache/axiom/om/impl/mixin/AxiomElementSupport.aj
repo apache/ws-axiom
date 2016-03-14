@@ -42,6 +42,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.core.IdentityMapper;
 import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
@@ -111,7 +112,7 @@ public aspect AxiomElementSupport {
         return null;
     }
 
-    private static final Mapper<CoreElement,OMElement> childElementMapper = new Mapper<CoreElement,OMElement>() {
+    private static final Mapper<OMElement,CoreElement> childElementMapper = new Mapper<OMElement,CoreElement>() {
         public OMElement map(CoreElement element) {
             return (OMElement)element;
         }
@@ -345,11 +346,7 @@ public aspect AxiomElementSupport {
         return addAttribute(getOMFactory().createOMAttribute(localName, namespace, value));
     }
 
-    private static final Mapper<AxiomAttribute,OMAttribute> attributeMapper = new Mapper<AxiomAttribute,OMAttribute>() {
-        public OMAttribute map(AxiomAttribute object) {
-            return object;
-        }
-    };
+    private static final Mapper<OMAttribute,AxiomAttribute> attributeMapper = new IdentityMapper<OMAttribute,AxiomAttribute>();
     
     public final Iterator<OMAttribute> AxiomElement.getAllAttributes() {
         return coreGetAttributesByType(AxiomAttribute.class, attributeMapper, AxiomSemantics.INSTANCE);

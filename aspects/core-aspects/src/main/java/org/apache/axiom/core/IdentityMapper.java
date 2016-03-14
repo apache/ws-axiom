@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.core;
 
-public final class IdentityMapper<T> implements Mapper<T,T> {
-    public T map(T object) {
+public final class IdentityMapper<S,T extends S> implements Mapper<S,T> {
+    public S map(T object) {
         return object;
     }
 }

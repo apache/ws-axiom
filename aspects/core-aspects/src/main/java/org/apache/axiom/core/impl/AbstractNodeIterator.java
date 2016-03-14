@@ -34,7 +34,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
     private final CoreParentNode startNode;
     private final Axis axis;
     private final Class<T> type;
-    private final Mapper<? super T,S> mapper;
+    private final Mapper<S,? super T> mapper;
     private final Semantics semantics;
     private T currentNode;
     
@@ -47,7 +47,7 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
     private boolean hasNext;
     private int depth;
     
-    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, Mapper<? super T,S> mapper, Semantics semantics) {
+    public AbstractNodeIterator(CoreParentNode startNode, Axis axis, Class<T> type, Mapper<S,? super T> mapper, Semantics semantics) {
         this.startNode = startNode;
         this.axis = axis;
         this.type = type;
