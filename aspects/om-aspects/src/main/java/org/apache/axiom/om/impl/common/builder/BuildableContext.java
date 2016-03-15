@@ -85,6 +85,11 @@ final class BuildableContext extends Context implements InputContext {
     }
     
     @Override
+    public void setTarget(CoreParentNode target) {
+        this.target = target;
+    }
+
+    @Override
     public void discard() {
         target.coreSetState(CoreParentNode.DISCARDING);
         passThroughHandler = NullXmlHandler.INSTANCE;

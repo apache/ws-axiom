@@ -90,16 +90,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
         return new HeaderIterator(this, new MURoleChecker(actor));
     }
 
-    public Iterator examineAllHeaderBlocks() {
-        class DefaultChecker implements Checker {
-            public boolean checkHeader(SOAPHeaderBlock header) {
-                return true;
-            }
-        }
-
-        return new HeaderIterator(this, new DefaultChecker());
-    }
-
     public Iterator extractAllHeaderBlocks() {
         List result = new ArrayList();
         for (Iterator iter = getChildElements(); iter.hasNext();) {

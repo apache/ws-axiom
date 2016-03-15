@@ -125,7 +125,7 @@ public interface SOAPHeader extends OMElement {
      * @return An iterator over all the {@link SOAPHeaderBlock} objects contained by this
      *         {@link SOAPHeader}. If there are no header blocks then an empty iterator is returned.
      */
-    Iterator examineAllHeaderBlocks();
+    Iterator<SOAPHeaderBlock> examineAllHeaderBlocks();
 
     /**
      * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}

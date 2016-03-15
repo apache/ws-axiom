@@ -35,5 +35,7 @@ public interface InputContext {
      */
     void setPassThroughHandler(XmlHandler passThroughHandler);
 
+    void setTarget(CoreParentNode target);
+
     void discard();
 }

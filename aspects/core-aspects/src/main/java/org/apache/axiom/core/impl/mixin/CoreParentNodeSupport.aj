@@ -426,4 +426,25 @@ public aspect CoreParentNodeSupport {
                 }
         }
     }
+    
+    public final void CoreParentNode.coreMoveChildrenFrom(CoreParentNode other, Semantics semantics) throws CoreModelException {
+        coreRemoveChildren(semantics);
+        context = other.context;
+        content = other.content;
+        int state = other.getState();
+        coreSetState(state);
+        if (state != COMPACT) {
+            CoreChildNode child = coreGetFirstChildIfAvailable();
+            while (child != null) {
+                child.internalSetParent(this);
+                child = child.coreGetNextSiblingIfAvailable();
+            }
+            if (context != null ) {
+                context.setTarget(this);
+            }
+        }
+        other.context = null;
+        other.content = null;
+        other.coreSetState(DISCARDED);
+    }
 }

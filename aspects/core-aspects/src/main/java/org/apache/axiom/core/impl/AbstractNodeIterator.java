@@ -134,7 +134,11 @@ public abstract class AbstractNodeIterator<T extends CoreNode,S> implements Node
             currentNode = nextNode;
             currentParent = currentNode instanceof CoreChildNode ? ((CoreChildNode)currentNode).coreGetParent() : null;
             hasNext = false;
-            return mapper.map(currentNode);
+            S mapped = mapper.map(currentNode);
+            if (mapped != currentNode && mapped instanceof CoreNode) {
+                currentNode = type.cast(mapped);
+            }
+            return mapped;
         } else {
             throw new NoSuchElementException();
         }

@@ -35,6 +35,7 @@ public class SOAPDOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     }
     
     private void addTests(SOAPSpec spec) {
+        addTest(new org.apache.axiom.ts.soapdom.header.TestExamineAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soapdom.message.TestLazySOAPFactorySelection(metaFactory, spec));
     }
 }

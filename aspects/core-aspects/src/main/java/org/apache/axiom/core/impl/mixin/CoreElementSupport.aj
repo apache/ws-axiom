@@ -225,4 +225,18 @@ public aspect CoreElementSupport {
     // This is basically a hook for OMSourcedElement
     public <T> void CoreElement.initSource(ClonePolicy<T> policy, T options, CoreElement other) {
     }
+    
+    public final <T extends CoreElement> T CoreElement.corePromote(Class<T> type, Semantics semantics) throws CoreModelException {
+        T newElement = coreCreateNode(type);
+        newElement.initName(this);
+        CoreAttribute attr = newElement.firstAttribute = firstAttribute;
+        while (attr != null) {
+            attr.internalSetOwnerElement(newElement);
+            attr = attr.coreGetNextAttribute();
+        }
+        firstAttribute = null;
+        newElement.coreMoveChildrenFrom(this, semantics);
+        coreReplaceWith(newElement, semantics);
+        return newElement;
+    }
 }

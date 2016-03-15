@@ -84,10 +84,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
         return new HeaderIterator(this, new MURoleChecker(actor));
     }
 
-    public Iterator examineAllHeaderBlocks() {
-        return this.getChildrenWithName(null);
-    }
-
     public Iterator extractAllHeaderBlocks() {
         List result = new ArrayList();
         for (Iterator iter = getChildElements(); iter.hasNext();) {

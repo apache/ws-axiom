@@ -16,26 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap.impl.mixin;
+package org.apache.axiom.soap.impl.common;
 
-import java.util.Iterator;
-
-import org.apache.axiom.core.Axis;
-import org.apache.axiom.core.ElementMatcher;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.Mapper;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.impl.common.SOAPHeaderBlockMapper;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 
-public aspect AxiomSOAPHeaderSupport {
-    public final boolean AxiomSOAPHeader.isChildElementAllowed(OMElement child) {
-        return child instanceof SOAPHeaderBlock;
-    }
-
-    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.examineAllHeaderBlocks() {
-        return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.ANY, null, null,
-                SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
+public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock,AxiomElement> {
+    public static final SOAPHeaderBlockMapper INSTANCE = new SOAPHeaderBlockMapper();
+    
+    private SOAPHeaderBlockMapper() {}
+    
+    @Override
+    public SOAPHeaderBlock map(AxiomElement element) {
+        try {
+            return element.corePromote(((AxiomSOAPHeader)element.coreGetParent()).getSOAPHelper().getHeaderBlockClass(), AxiomSemantics.INSTANCE);
+        } catch (CoreModelException ex) {
+            throw AxiomSemantics.INSTANCE.toUncheckedException(ex);
+        }
     }
 }
