@@ -31,6 +31,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.ElementMatcher;
@@ -53,7 +54,6 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.serializer.push.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
@@ -188,17 +188,22 @@ public aspect AxiomContainerSupport {
         return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomSerializable.class, Mappers.<OMSerializable>identity(), AxiomSemantics.INSTANCE);
     }
 
-    public OMElement AxiomContainer.getFirstChildWithName(QName elementQName) throws OMException {
-        OMChildrenQNameIterator omChildrenQNameIterator =
-                new OMChildrenQNameIterator(getFirstOMChild(),
-                                            elementQName);
-        OMNode omNode = null;
-        if (omChildrenQNameIterator.hasNext()) {
-            omNode = (OMNode) omChildrenQNameIterator.next();
+    public final OMElement AxiomContainer.getFirstChildWithName(QName name) throws OMException {
+        try {
+            CoreChildNode child = coreGetFirstChild();
+            while (child != null) {
+                if (child instanceof AxiomElement) {
+                    AxiomElement element = (AxiomElement)child;
+                    if (name.getLocalPart().equals(element.coreGetLocalName()) && name.getNamespaceURI().equals(element.coreGetNamespaceURI())) {
+                        return element;
+                    }
+                }
+                child = child.coreGetNextSibling();
+            }
+            return null;
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
-
-        return ((omNode != null) && (OMNode.ELEMENT_NODE == omNode.getType())) ?
-                (OMElement) omNode : null;
     }
 
     public final SAXSource AxiomContainer.getSAXSource(boolean cache) {
