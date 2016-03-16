@@ -32,10 +32,14 @@ public final class SOAPHeaderBlockMapper implements Mapper<SOAPHeaderBlock,Axiom
     
     @Override
     public SOAPHeaderBlock map(AxiomElement element) {
-        try {
-            return element.corePromote(((AxiomSOAPHeader)element.coreGetParent()).getSOAPHelper().getHeaderBlockClass(), AxiomSemantics.INSTANCE);
-        } catch (CoreModelException ex) {
-            throw AxiomSemantics.INSTANCE.toUncheckedException(ex);
+        if (element instanceof SOAPHeaderBlock) {
+            return (SOAPHeaderBlock)element;
+        } else {
+            try {
+                return element.corePromote(((AxiomSOAPHeader)element.coreGetParent()).getSOAPHelper().getHeaderBlockClass(), AxiomSemantics.INSTANCE);
+            } catch (CoreModelException ex) {
+                throw AxiomSemantics.INSTANCE.toUncheckedException(ex);
+            }
         }
     }
 }
