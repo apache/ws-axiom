@@ -178,9 +178,10 @@ public aspect AxiomContainerSupport {
                 Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
     }
 
-    // TODO: DOOM actually supported elementQName == null; need to test and document this
-    public Iterator<OMElement> AxiomContainer.getChildrenWithName(QName elementQName) {
-        return new OMChildrenQNameIterator(getFirstOMChild(), elementQName);
+    public Iterator<OMElement> AxiomContainer.getChildrenWithName(QName name) {
+        return coreGetElements(Axis.CHILDREN, AxiomElement.class,
+                ElementMatcher.BY_QNAME, name.getNamespaceURI(), name.getLocalPart(),
+                Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
     }
     
     public Iterator<OMSerializable> AxiomContainer.getDescendants(boolean includeSelf) {
