@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
@@ -38,7 +39,7 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
  */
 public class SOAPModelBuilderImpl extends BuilderImpl implements SOAPModelBuilder {
     public SOAPModelBuilderImpl(XmlInput input, NodeFactory nodeFactory, boolean repairNamespaces, Detachable detachable) {
-        super(input, nodeFactory, new SOAPModel(), null, true, detachable);
+        super(new FilteredXmlInput(input, SOAPFilter.INSTANCE), nodeFactory, new SOAPModel(), null, true, detachable);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
         // SOAPEnvelope. Register a post-processor that does the necessary updates on the
         // SOAPMessage.

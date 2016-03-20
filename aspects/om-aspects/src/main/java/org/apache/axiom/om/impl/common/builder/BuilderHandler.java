@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.xml.stream.XMLStreamConstants;
-
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
@@ -140,7 +138,6 @@ final class BuilderHandler implements XmlHandler {
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
-        model.validateEventType(XMLStreamConstants.DTD);
         context.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
     
@@ -172,7 +169,6 @@ final class BuilderHandler implements XmlHandler {
     
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
-        model.validateEventType(XMLStreamConstants.PROCESSING_INSTRUCTION);
         context = context.startProcessingInstruction(target);
     }
 
@@ -183,7 +179,6 @@ final class BuilderHandler implements XmlHandler {
 
     @Override
     public void startComment() throws StreamException {
-        model.validateEventType(XMLStreamConstants.COMMENT);
         context = context.startComment();
     }
 
@@ -194,7 +189,6 @@ final class BuilderHandler implements XmlHandler {
     
     @Override
     public void startCDATASection() throws StreamException {
-        model.validateEventType(XMLStreamConstants.CDATA);
         context = context.startCDATASection();
     }
 
@@ -204,7 +198,6 @@ final class BuilderHandler implements XmlHandler {
     }
     
     public void processEntityReference(String name, String replacementText) throws StreamException {
-        model.validateEventType(XMLStreamConstants.ENTITY_REFERENCE);
         context.processEntityReference(name, replacementText);
     }
     

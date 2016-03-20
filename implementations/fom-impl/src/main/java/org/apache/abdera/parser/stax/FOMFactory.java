@@ -511,10 +511,6 @@ public class FOMFactory extends OMFactoryImpl implements AbderaFactory, Constant
     }
 
     @Override
-    public void validateEventType(int eventType) {
-    }
-
-    @Override
     public Class<? extends AxiomDocument> getDocumentType() {
         return FOMDocument.class;
     }

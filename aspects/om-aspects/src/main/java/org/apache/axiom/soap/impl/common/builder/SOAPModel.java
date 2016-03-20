@@ -19,8 +19,6 @@
 
 package org.apache.axiom.soap.impl.common.builder;
 
-import javax.xml.stream.XMLStreamConstants;
-
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.builder.Model;
@@ -50,18 +48,6 @@ public final class SOAPModel implements Model {
     private boolean processingFault = false;
 
     private SOAPBuilderHelper builderHelper;
-
-    @Override
-    public void validateEventType(int eventType) {
-        switch (eventType) {
-            case XMLStreamConstants.DTD:
-                throw new SOAPProcessingException("SOAP message MUST NOT contain a Document Type Declaration(DTD)");
-            case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                throw new SOAPProcessingException("SOAP message MUST NOT contain Processing Instructions(PI)");
-            case XMLStreamConstants.ENTITY_REFERENCE:
-                throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
-        }
-    }
 
     @Override
     public Class<? extends AxiomDocument> getDocumentType() {

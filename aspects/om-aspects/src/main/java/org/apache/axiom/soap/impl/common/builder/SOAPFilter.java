@@ -16,25 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.soap.impl.common.builder;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
-import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.core.stream.XmlFilter;
+import org.apache.axiom.core.stream.XmlHandler;
 
-public final class PlainXMLModel implements Model {
-    public static final PlainXMLModel INSTANCE = new PlainXMLModel();
-
-    private PlainXMLModel() {}
-
-    @Override
-    public Class<? extends AxiomDocument> getDocumentType() {
-        return AxiomDocument.class;
-    }
+final class SOAPFilter implements XmlFilter {
+    static final SOAPFilter INSTANCE = new SOAPFilter();
+    
+    private SOAPFilter() {}
 
     @Override
-    public Class<? extends AxiomElement> determineElementType(OMContainer parent, int elementLevel,
-            String namespaceURI, String localName) {
-        return AxiomElement.class;
+    public XmlHandler createFilterHandler(XmlHandler parent) {
+        return new SOAPFilterHandler(parent);
     }
 }
