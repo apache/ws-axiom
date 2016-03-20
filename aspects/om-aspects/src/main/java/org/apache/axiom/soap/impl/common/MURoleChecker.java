@@ -18,17 +18,23 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 /** A Checker to see that we both match a given role AND are mustUnderstand=true */
-public class MURoleChecker extends RoleChecker {
-    public MURoleChecker(String role) {
-        super(role);
+public class MURoleChecker implements ElementMatcher<AxiomElement> {
+    private final SOAPHelper soapHelper;
+    private final String role;
+
+    public MURoleChecker(SOAPHelper soapHelper, String role) {
+        this.soapHelper = soapHelper;
+        this.role = role;
     }
 
-    public boolean checkHeader(SOAPHeaderBlock header) {
-        if (header.getMustUnderstand())
-            return super.checkHeader(header);
-        return false;
+    @Override
+    public boolean matches(AxiomElement element, String namespaceURI, String name) {
+        return SOAPHeaderBlockHelper.getMustUnderstand(element, soapHelper)
+                && (role == null || role.equals(SOAPHeaderBlockHelper.getRole(element, soapHelper)));
     }
 }

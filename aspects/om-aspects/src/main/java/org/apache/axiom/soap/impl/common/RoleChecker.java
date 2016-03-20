@@ -18,24 +18,25 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.core.ElementMatcher;
+import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 /**
  * A Checker to make sure headers match a given role.  If the role we're looking for is null, then
  * everything matches.
  */
-public class RoleChecker implements Checker {
-    String role;
+public class RoleChecker implements ElementMatcher<AxiomElement> {
+    private final SOAPHelper soapHelper;
+    private final String role;
 
-    public RoleChecker(String role) {
+    public RoleChecker(SOAPHelper soapHelper, String role) {
+        this.soapHelper = soapHelper;
         this.role = role;
     }
 
-    public boolean checkHeader(SOAPHeaderBlock header) {
-        if (role == null) {
-            return true;
-        }
-        String thisRole = header.getRole();
-        return (role.equals(thisRole));
+    @Override
+    public boolean matches(AxiomElement element, String namespaceURI, String name) {
+        return role == null || role.equals(SOAPHeaderBlockHelper.getRole(element, soapHelper));
     }
 }

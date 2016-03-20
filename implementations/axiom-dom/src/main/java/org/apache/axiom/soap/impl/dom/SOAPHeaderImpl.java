@@ -34,8 +34,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.common.HeaderIterator;
-import org.apache.axiom.soap.impl.common.MURoleChecker;
-import org.apache.axiom.soap.impl.common.RoleChecker;
 import org.apache.axiom.soap.impl.common.RolePlayerChecker;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 
@@ -74,15 +72,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
         return new HeaderIterator(this, new RolePlayerChecker(rolePlayer, namespace));
     }
 
-    public Iterator examineHeaderBlocks(String role) {
-        return new HeaderIterator(this, new RoleChecker(role));
-    }
-
     public abstract Iterator extractHeaderBlocks(String role);
-
-    public Iterator examineMustUnderstandHeaderBlocks(String actor) {
-        return new HeaderIterator(this, new MURoleChecker(actor));
-    }
 
     public Iterator extractAllHeaderBlocks() {
         List result = new ArrayList();

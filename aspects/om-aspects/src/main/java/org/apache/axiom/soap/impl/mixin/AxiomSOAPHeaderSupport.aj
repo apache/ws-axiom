@@ -26,6 +26,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.impl.common.MURoleChecker;
+import org.apache.axiom.soap.impl.common.RoleChecker;
 import org.apache.axiom.soap.impl.common.SOAPHeaderBlockMapper;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 
@@ -36,6 +38,16 @@ public aspect AxiomSOAPHeaderSupport {
 
     public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.examineAllHeaderBlocks() {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.ANY, null, null,
+                SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
+    }
+
+    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.examineHeaderBlocks(String role) {
+        return coreGetElements(Axis.CHILDREN, AxiomElement.class, new RoleChecker(getSOAPHelper(), role), null, null,
+                SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
+    }
+
+    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.examineMustUnderstandHeaderBlocks(String role) {
+        return coreGetElements(Axis.CHILDREN, AxiomElement.class, new MURoleChecker(getSOAPHelper(), role), null, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
     }
 }

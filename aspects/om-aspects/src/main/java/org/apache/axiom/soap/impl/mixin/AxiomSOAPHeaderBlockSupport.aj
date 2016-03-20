@@ -22,13 +22,12 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreNode;
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.impl.common.SOAPHeaderBlockHelper;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeaderBlock;
 import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
@@ -51,38 +50,8 @@ public aspect AxiomSOAPHeaderBlockSupport {
         processed = true;
     }
 
-    private String AxiomSOAPHeaderBlock.getAttributeValue(String key, QName qname) {
-        // First, try getting the information from the property.
-        // Fallback to getting the information from the attribute.
-        if (!isExpanded()) {
-            OMDataSource ds = getDataSource();
-            if (ds instanceof OMDataSourceExt) {
-                OMDataSourceExt dsExt = (OMDataSourceExt)ds;
-                if (dsExt.hasProperty(key)) {
-                    return (String)dsExt.getProperty(key);
-                }
-            }
-        }
-        return getAttributeValue(qname);
-    }
-    
-    private boolean AxiomSOAPHeaderBlock.getBooleanAttributeValue(String key, QName qname) {
-        String literal = getAttributeValue(key, qname);
-        if (literal != null) {
-            Boolean value = getSOAPHelper().parseBoolean(literal);
-            if (value != null) {
-                return value.booleanValue();
-            } else {
-                throw new SOAPProcessingException(
-                        "Invalid value for attribute " + qname.getLocalPart() + " in header block " + getQName());
-            }
-        } else {
-            return false;
-        }
-    }
-    
     public final boolean AxiomSOAPHeaderBlock.getMustUnderstand() throws SOAPProcessingException {
-        return getBooleanAttributeValue(MUST_UNDERSTAND_PROPERTY, getSOAPHelper().getMustUnderstandAttributeQName());
+        return SOAPHeaderBlockHelper.getMustUnderstand(this, getSOAPHelper());
     }
     
     public final void AxiomSOAPHeaderBlock.setMustUnderstand(String mustUnderstand) throws SOAPProcessingException {
@@ -101,7 +70,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
     }
 
     public final String AxiomSOAPHeaderBlock.getRole() {
-        return getAttributeValue(ROLE_PROPERTY, getSOAPHelper().getRoleAttributeQName());
+        return SOAPHeaderBlockHelper.getRole(this, getSOAPHelper());
     }
     
     public final void AxiomSOAPHeaderBlock.setRole(String role) {
@@ -114,7 +83,7 @@ public aspect AxiomSOAPHeaderBlockSupport {
         if (attributeQName == null) {
             throw new UnsupportedOperationException("Not supported for " + helper.getSpecName());
         } else {
-            return getBooleanAttributeValue(RELAY_PROPERTY, attributeQName);
+            return SOAPHeaderBlockHelper.getBooleanAttributeValue(this, helper, RELAY_PROPERTY, attributeQName);
         }
     }
     

@@ -89,7 +89,7 @@ public interface SOAPHeader extends OMElement {
      *         role
      * @see #extractHeaderBlocks(String)
      */
-    Iterator examineHeaderBlocks(String role);
+    Iterator<SOAPHeaderBlock> examineHeaderBlocks(String role);
 
     /**
      * Returns a list of all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader} object
@@ -116,7 +116,7 @@ public interface SOAPHeader extends OMElement {
      * @return an iterator over all the {@link SOAPHeaderBlock} objects that contain the specified
      *         role and are marked as MustUnderstand.
      */
-    Iterator examineMustUnderstandHeaderBlocks(String role);
+    Iterator<SOAPHeaderBlock> examineMustUnderstandHeaderBlocks(String role);
 
     /**
      * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}
