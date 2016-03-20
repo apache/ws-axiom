@@ -49,4 +49,7 @@ public aspect CoreNSAwareElementSupport {
     public final void CoreNSAwareElement.serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.endElement();
     }
+
+    public void CoreNSAwareElement.validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
+    }
 }

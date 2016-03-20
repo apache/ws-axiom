@@ -18,14 +18,14 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 final class UnwrappingContext extends Context {
-    private final AxiomSourcedElement root;
+    private final CoreNSAwareElement root;
     
-    UnwrappingContext(BuilderHandler builderHandler, AxiomSourcedElement root) {
+    UnwrappingContext(BuilderHandler builderHandler, CoreNSAwareElement root) {
         super(builderHandler, 0);
         this.root = root;
     }
@@ -50,7 +50,7 @@ final class UnwrappingContext extends Context {
     Context startElement(String namespaceURI, String localName, String prefix)
             throws StreamException {
         root.validateName(prefix, localName, namespaceURI);
-        root.initName(localName, builderHandler.nsCache.getOMNamespace(namespaceURI, prefix), false);
+        root.initName(namespaceURI, localName, prefix, builderHandler.nsCache);
         root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
         Context nestedContext = newContext(root);
         // We will basically ignore events in the epilog, so mark this context as inactive

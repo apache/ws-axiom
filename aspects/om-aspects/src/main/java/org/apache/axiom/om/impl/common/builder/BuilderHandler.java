@@ -25,12 +25,12 @@ import java.util.Queue;
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
-import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 final class BuilderHandler implements XmlHandler {
     final NodeFactory nodeFactory;
@@ -42,7 +42,7 @@ final class BuilderHandler implements XmlHandler {
     private int activeContextCount;
     // returns the state of completion
     private boolean done;
-    private AxiomDocument document;
+    private CoreDocument document;
     
     /**
      * Tracks the depth of the node identified by {@link #target}. By definition, the document has
@@ -54,7 +54,7 @@ final class BuilderHandler implements XmlHandler {
     private ArrayList<BuilderListener> listeners;
     private Queue<Runnable> deferredActions;
 
-    BuilderHandler(NodeFactory nodeFactory, Model model, AxiomSourcedElement root, Builder builder) {
+    BuilderHandler(NodeFactory nodeFactory, Model model, CoreNSAwareElement root, Builder builder) {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.builder = builder;
@@ -71,8 +71,8 @@ final class BuilderHandler implements XmlHandler {
     }
     
     void nodeAdded(CoreNode node) {
-        if (node instanceof AxiomDocument) {
-            document = (AxiomDocument)node;
+        if (node instanceof CoreDocument) {
+            document = (CoreDocument)node;
         }
         if (listeners != null) {
             for (int i=0, size=listeners.size(); i<size; i++) {
@@ -121,7 +121,7 @@ final class BuilderHandler implements XmlHandler {
         return done;
     }
     
-    AxiomDocument getDocument() {
+    CoreDocument getDocument() {
         if (rootContext instanceof UnwrappingContext) {
             throw new UnsupportedOperationException("There is no document linked to this builder");
         } else {

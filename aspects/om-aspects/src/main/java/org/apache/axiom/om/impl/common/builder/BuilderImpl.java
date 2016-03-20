@@ -19,6 +19,8 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.Builder;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
@@ -34,7 +36,6 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
-import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
 public class BuilderImpl implements OMXMLParserWrapper, Builder, CustomBuilderSupport {
     private final XmlReader reader;
@@ -43,7 +44,7 @@ public class BuilderImpl implements OMXMLParserWrapper, Builder, CustomBuilderSu
     private final CustomBuilderManager customBuilderManager = new CustomBuilderManager();
 
     public BuilderImpl(XmlInput input, NodeFactory nodeFactory, Model model,
-            AxiomSourcedElement root, boolean repairNamespaces, Detachable detachable) {
+            CoreNSAwareElement root, boolean repairNamespaces, Detachable detachable) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
         reader = input.createReader(repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler, null, false) : builderHandler);
         this.detachable = detachable;
@@ -79,11 +80,11 @@ public class BuilderImpl implements OMXMLParserWrapper, Builder, CustomBuilderSu
 
     @Override
     public final OMDocument getDocument() {
-        AxiomDocument document;
+        CoreDocument document;
         while ((document = builderHandler.getDocument()) == null) {
             next();
         }
-        return document;
+        return (AxiomDocument)document;
     }
     
     @Override
