@@ -37,7 +37,13 @@ import org.apache.abdera.parser.ParserOptions;
 import org.apache.abdera.parser.stax.util.FOMSniffingInputStream;
 import org.apache.abdera.parser.stax.util.FOMXmlRestrictedCharReader;
 import org.apache.abdera.util.AbstractParser;
+import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.impl.common.builder.BuilderImpl;
+import org.apache.axiom.om.impl.common.builder.BuilderListener;
+import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
@@ -74,9 +80,14 @@ public class FOMParser extends AbstractParser implements Parser {
         return factory;
     }
 
-    private <T extends Element> Document<T> getDocument(FOMBuilder builder, IRI base, ParserOptions options)
+    private <T extends Element> Document<T> getDocument(BuilderImpl builder, IRI base, ParserOptions options)
         throws ParseException {
-        Document<T> document = builder.getFomDocument();
+        // For compatibility with earlier Abdera versions, force creation of the document element.
+        // Note that the only known case where this has a visible effect is when the document is
+        // not well formed. At least one unit test depends on this behavior.
+        builder.getDocumentElement();
+        @SuppressWarnings("unchecked")
+        Document<T> document = (Document<T>)builder.getDocument();
         try {
             if (base != null)
                 document.setBaseUri(base.toString());
@@ -163,7 +174,16 @@ public class FOMParser extends AbstractParser implements Parser {
     public <T extends Element> Document<T> parse(XMLStreamReader reader, String base, ParserOptions options)
         throws ParseException {
         try {
-            FOMBuilder builder = new FOMBuilder(getFomFactory(options), reader, options);
+            final FOMFactory factory = getFomFactory(options);
+            BuilderImpl builder = new BuilderImpl(new StAXPullInput(new FOMStAXFilter(reader, options), false, null), FOMNodeFactory.INSTANCE,
+                    factory, null, true, null); // TODO: probably we can use repairNamespaces=false here
+            builder.addListener(new BuilderListener() {
+                @Override
+                public Runnable nodeAdded(CoreNode node, int depth) {
+                    ((AbderaNode)node).setFactory(factory);
+                    return null;
+                }
+            });
             return getDocument(builder, base != null ? new IRI(base) : null, options);
         } catch (Exception e) {
             if (!(e instanceof ParseException))
