@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;

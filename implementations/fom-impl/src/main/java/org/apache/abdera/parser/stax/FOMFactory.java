@@ -57,12 +57,12 @@ import org.apache.abdera.util.Version;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.impl.builder.Model;
 import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.common.factory.OMFactoryImpl;
 import org.apache.axiom.util.xml.QNameMap;
 

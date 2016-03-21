@@ -16,25 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.core.impl.builder;
 
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreParentNode;
 
-public final class PlainXMLModel implements Model {
-    public static final PlainXMLModel INSTANCE = new PlainXMLModel();
-
-    private PlainXMLModel() {}
-
-    @Override
-    public Class<? extends CoreDocument> getDocumentType() {
-        return CoreDocument.class;
-    }
-
-    @Override
-    public Class<? extends CoreNSAwareElement> determineElementType(CoreParentNode parent, int elementLevel,
-            String namespaceURI, String localName) {
-        return CoreNSAwareElement.class;
-    }
+public interface Model {
+    Class<? extends CoreDocument> getDocumentType();
+    
+    /**
+     * Determine the element type to use for the current element.
+     * 
+     * @param parent
+     *            the parent for the element
+     * @param elementName
+     *            the local name for the element
+     * @return the type of element to create; must not be <code>null</code>
+     */
+    Class<? extends CoreNSAwareElement> determineElementType(CoreParentNode parent, int elementLevel,
+            String namespaceURI, String localName);
 }

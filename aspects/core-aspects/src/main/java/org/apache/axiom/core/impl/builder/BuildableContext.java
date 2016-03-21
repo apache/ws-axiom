@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.builder;
+package org.apache.axiom.core.impl.builder;
 
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreCDATASection;

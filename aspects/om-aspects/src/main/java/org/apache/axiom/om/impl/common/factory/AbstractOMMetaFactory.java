@@ -34,6 +34,10 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
+import org.apache.axiom.core.impl.builder.BuilderImpl;
+import org.apache.axiom.core.impl.builder.BuilderListener;
+import org.apache.axiom.core.impl.builder.Model;
+import org.apache.axiom.core.impl.builder.PlainXMLModel;
 import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
@@ -42,11 +46,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.common.builder.BuilderImpl;
-import org.apache.axiom.om.impl.common.builder.BuilderListener;
-import org.apache.axiom.om.impl.common.builder.Model;
 import org.apache.axiom.om.impl.common.builder.OMXMLParserWrapperImpl;
-import org.apache.axiom.om.impl.common.builder.PlainXMLModel;
 import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
@@ -68,7 +68,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Base class for {@link OMMetaFactory} implementations that make use of the standard builders
- * ({@link org.apache.axiom.om.impl.builder.BuilderImpl} and its subclasses).
+ * ({@link org.apache.axiom.core.impl.builder.BuilderImpl} and its subclasses).
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     private final static class SourceInfo {
