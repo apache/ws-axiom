@@ -21,8 +21,8 @@ package org.apache.axiom.soap.impl.common.builder;
 import org.apache.axiom.core.stream.XmlFilter;
 import org.apache.axiom.core.stream.XmlHandler;
 
-final class SOAPFilter implements XmlFilter {
-    static final SOAPFilter INSTANCE = new SOAPFilter();
+public final class SOAPFilter implements XmlFilter {
+    public static final SOAPFilter INSTANCE = new SOAPFilter();
     
     private SOAPFilter() {}
 

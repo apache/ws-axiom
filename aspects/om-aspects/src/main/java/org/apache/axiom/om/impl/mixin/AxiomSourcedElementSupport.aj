@@ -195,7 +195,7 @@ public aspect AxiomSourcedElementSupport {
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
                 // Disable namespace repairing because the OMDataSource is required to produce well formed
                 // XML with respect to namespaces.
-                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, false, null);
+                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, false);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
@@ -204,7 +204,7 @@ public aspect AxiomSourcedElementSupport {
                 } catch (XMLStreamException ex) {
                     throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                builder = new BuilderImpl(new StAXPullInput(readerFromDS), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, true, null);
+                builder = new BuilderImpl(new StAXPullInput(readerFromDS), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, true);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);

@@ -27,39 +27,31 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
-import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
-import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
-import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
 
-public class BuilderImpl implements OMXMLParserWrapper, Builder, CustomBuilderSupport {
+public final class BuilderImpl implements Builder {
     private final XmlReader reader;
-    private final Detachable detachable;
     private final BuilderHandler builderHandler;
-    private final CustomBuilderManager customBuilderManager = new CustomBuilderManager();
+    private Object facade;
 
     public BuilderImpl(XmlInput input, NodeFactory nodeFactory, Model model,
-            CoreNSAwareElement root, boolean repairNamespaces, Detachable detachable) {
+            CoreNSAwareElement root, boolean repairNamespaces) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
         reader = input.createReader(repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler, null, false) : builderHandler);
-        this.detachable = detachable;
-        addListener(customBuilderManager);
     }
 
-    public final void addListener(BuilderListener listener) {
+    public void addListener(BuilderListener listener) {
         builderHandler.addListener(listener);
     }
     
-    @Override
-    public void registerCustomBuilder(Selector selector, CustomBuilder customBuilder) {
-        customBuilderManager.register(selector, customBuilder);
+    public Object getFacade() {
+        return facade;
     }
-    
+
+    public void setFacade(Object facade) {
+        this.facade = facade;
+    }
+
     @Override
     public void next() {
         if (isCompleted()) {
@@ -74,48 +66,20 @@ public class BuilderImpl implements OMXMLParserWrapper, Builder, CustomBuilderSu
     }
 
     @Override
-    public final boolean isCompleted() {
+    public boolean isCompleted() {
         return builderHandler.isCompleted();
     }
 
-    @Override
-    public final OMDocument getDocument() {
+    public CoreDocument getDocument() {
         CoreDocument document;
         while ((document = builderHandler.getDocument()) == null) {
             next();
         }
-        return (AxiomDocument)document;
+        return document;
     }
     
     @Override
-    public final OMElement getDocumentElement() {
-        return getDocumentElement(false);
-    }
-
-    @Override
-    public final OMElement getDocumentElement(boolean discardDocument) {
-        OMDocument document = getDocument();
-        OMElement element = document.getOMDocumentElement();
-        if (discardDocument) {
-            element.detach();
-            ((AxiomDocument)document).coreDiscard(false);
-        }
-        return element;
-    }
-
-    @Override
-    public final void close() {
+    public void close() {
         reader.dispose();
-    }
-
-    @Override
-    public final void detach() throws OMException {
-        if (detachable != null) {
-            detachable.detach();
-        } else {
-            while (!isCompleted()) {
-                next();
-            }
-        }
     }
 }

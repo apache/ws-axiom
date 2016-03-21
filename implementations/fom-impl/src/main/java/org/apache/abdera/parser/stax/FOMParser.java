@@ -82,12 +82,12 @@ public class FOMParser extends AbstractParser implements Parser {
 
     private <T extends Element> Document<T> getDocument(BuilderImpl builder, IRI base, ParserOptions options)
         throws ParseException {
+        @SuppressWarnings("unchecked")
+        Document<T> document = (Document<T>)builder.getDocument();
         // For compatibility with earlier Abdera versions, force creation of the document element.
         // Note that the only known case where this has a visible effect is when the document is
         // not well formed. At least one unit test depends on this behavior.
-        builder.getDocumentElement();
-        @SuppressWarnings("unchecked")
-        Document<T> document = (Document<T>)builder.getDocument();
+        document.getRoot();
         try {
             if (base != null)
                 document.setBaseUri(base.toString());
@@ -176,7 +176,7 @@ public class FOMParser extends AbstractParser implements Parser {
         try {
             final FOMFactory factory = getFomFactory(options);
             BuilderImpl builder = new BuilderImpl(new StAXPullInput(new FOMStAXFilter(reader, options), false, null), FOMNodeFactory.INSTANCE,
-                    factory, null, true, null); // TODO: probably we can use repairNamespaces=false here
+                    factory, null, true); // TODO: probably we can use repairNamespaces=false here
             builder.addListener(new BuilderListener() {
                 @Override
                 public Runnable nodeAdded(CoreNode node, int depth) {

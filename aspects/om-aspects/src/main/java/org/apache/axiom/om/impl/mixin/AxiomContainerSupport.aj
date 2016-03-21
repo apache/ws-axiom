@@ -55,6 +55,8 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
+import org.apache.axiom.om.impl.common.builder.BuilderImpl;
+import org.apache.axiom.om.impl.common.builder.OMXMLParserWrapperImpl;
 import org.apache.axiom.om.impl.common.serializer.push.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
@@ -81,7 +83,12 @@ public aspect AxiomContainerSupport {
     }
 
     public final OMXMLParserWrapper AxiomContainer.getBuilder() {
-        return (OMXMLParserWrapper)coreGetBuilder();
+        BuilderImpl builder = (BuilderImpl)coreGetBuilder();
+        OMXMLParserWrapper facade = (OMXMLParserWrapper)builder.getFacade();
+        if (facade == null) {
+            facade = new OMXMLParserWrapperImpl(builder, null);
+        }
+        return facade;
     }
 
     public final XMLStreamReader AxiomContainer.getXMLStreamReader() {
