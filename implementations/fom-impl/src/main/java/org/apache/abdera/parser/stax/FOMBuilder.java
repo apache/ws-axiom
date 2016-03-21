@@ -34,15 +34,9 @@ import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
 
 @SuppressWarnings("unchecked")
 public class FOMBuilder extends BuilderImpl implements Constants {
-
-    private final FOMFactory fomfactory;
-    private final ParserOptions parserOptions;
-
     public FOMBuilder(final FOMFactory factory, XMLStreamReader parser, ParserOptions parserOptions) {
         super(new StAXPullInput(new FOMStAXFilter(parser, parserOptions), false, null), FOMNodeFactory.INSTANCE,
                 factory, null, true, null); // TODO: probably we can use repairNamespaces=false here
-        this.parserOptions = parserOptions;
-        this.fomfactory = factory;
         addListener(new BuilderListener() {
             @Override
             public Runnable nodeAdded(CoreNode node, int depth) {
@@ -50,10 +44,6 @@ public class FOMBuilder extends BuilderImpl implements Constants {
                 return null;
             }
         });
-    }
-
-    public ParserOptions getParserOptions() {
-        return parserOptions;
     }
 
     /**
@@ -77,9 +67,5 @@ public class FOMBuilder extends BuilderImpl implements Constants {
         // not well formed. At least one unit test depends on this behavior.
         getDocumentElement();
         return (Document<T>)getDocument();
-    }
-
-    public FOMFactory getFactory() {
-        return fomfactory;
     }
 }
