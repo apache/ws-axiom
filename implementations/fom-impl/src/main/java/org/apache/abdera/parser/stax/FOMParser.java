@@ -38,7 +38,9 @@ import org.apache.abdera.parser.stax.util.FOMSniffingInputStream;
 import org.apache.abdera.parser.stax.util.FOMXmlRestrictedCharReader;
 import org.apache.abdera.util.AbstractParser;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.fom.AbderaNode;
+import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.impl.common.builder.BuilderImpl;
@@ -82,8 +84,12 @@ public class FOMParser extends AbstractParser implements Parser {
 
     private <T extends Element> Document<T> getDocument(BuilderImpl builder, IRI base, ParserOptions options)
         throws ParseException {
-        @SuppressWarnings("unchecked")
-        Document<T> document = (Document<T>)builder.getDocument();
+        Document<T> document;
+        try {
+            document = (Document<T>)builder.getDocument();
+        } catch (DeferredParsingException ex) {
+            throw FOMSemantics.INSTANCE.toUncheckedException(ex);
+        }
         // For compatibility with earlier Abdera versions, force creation of the document element.
         // Note that the only known case where this has a visible effect is when the document is
         // not well formed. At least one unit test depends on this behavior.

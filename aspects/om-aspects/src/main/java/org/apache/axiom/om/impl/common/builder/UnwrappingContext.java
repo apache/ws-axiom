@@ -50,7 +50,7 @@ final class UnwrappingContext extends Context {
     Context startElement(String namespaceURI, String localName, String prefix)
             throws StreamException {
         root.validateName(prefix, localName, namespaceURI);
-        root.initName(namespaceURI, localName, prefix, builderHandler.nsCache);
+        root.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
         root.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
         Context nestedContext = newContext(root);
         // We will basically ignore events in the epilog, so mark this context as inactive

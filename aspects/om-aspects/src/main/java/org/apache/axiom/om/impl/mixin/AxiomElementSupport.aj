@@ -241,8 +241,12 @@ public aspect AxiomElementSupport {
     }
 
     public final void AxiomElement.discard() {
-        coreDiscard(true);
-        detach();
+        try {
+            coreDiscard(true);
+            detach();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     public <T extends OMElement> void AxiomElement.insertChild(Sequence sequence, int pos, T newChild, boolean allowReplace) {

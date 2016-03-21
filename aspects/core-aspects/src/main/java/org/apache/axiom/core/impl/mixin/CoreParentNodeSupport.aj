@@ -130,7 +130,7 @@ public aspect CoreParentNodeSupport {
         return content == null ? null : content.lastChild;
     }
 
-    public void CoreParentNode.buildNext() {
+    public void CoreParentNode.buildNext() throws CoreModelException {
         Builder builder = coreGetBuilder();
         if (builder == null) {
             throw new IllegalStateException("The node has no builder");
@@ -230,7 +230,7 @@ public aspect CoreParentNodeSupport {
         fragmentContent.lastChild = null;
     }
 
-    public final void CoreParentNode.coreDiscard(boolean consumeInput) {
+    public final void CoreParentNode.coreDiscard(boolean consumeInput) throws CoreModelException {
         if (!isExpanded()) {
             return;
         }

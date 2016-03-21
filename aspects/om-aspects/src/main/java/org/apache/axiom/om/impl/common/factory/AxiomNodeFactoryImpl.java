@@ -16,10 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core;
+package org.apache.axiom.om.impl.common.factory;
 
-public interface Builder {
-    void next() throws DeferredParsingException;
-    boolean isCompleted();
-    void close();
+import org.apache.axiom.core.NodeFactoryImpl;
+import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
+
+public abstract class AxiomNodeFactoryImpl extends NodeFactoryImpl {
+    public AxiomNodeFactoryImpl(ClassLoader cl, String... packages) {
+        super(cl, packages);
+    }
+
+    @Override
+    public final OMNamespaceCache createNamespaceHelper() {
+        return new OMNamespaceCache();
+    }
 }

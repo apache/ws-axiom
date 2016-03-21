@@ -38,8 +38,6 @@ import org.apache.axiom.core.InputContext;
 import org.apache.axiom.core.stream.NullXmlHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.om.impl.common.AxiomSemantics;
-import org.apache.axiom.om.impl.intf.AxiomContainer;
 
 final class BuildableContext extends Context implements InputContext {
     private final Context parentContext;
@@ -186,9 +184,9 @@ final class BuildableContext extends Context implements InputContext {
             return this;
         } else {
             CoreNSAwareElement element = builderHandler.nodeFactory.createNode(builderHandler.model.determineElementType(
-                    (AxiomContainer)target, depth+1, namespaceURI, localName));
+                    target, depth+1, namespaceURI, localName));
             element.coreSetState(CoreParentNode.ATTRIBUTES_PENDING);
-            element.initName(namespaceURI, localName, prefix, builderHandler.nsCache);
+            element.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
             addChild(element);
             return newContext(element);
         }
@@ -210,9 +208,9 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.processAttribute(namespaceURI, localName, prefix, value, type, specified);
         } else {
             CoreNSAwareAttribute attr = builderHandler.nodeFactory.createNode(CoreNSAwareAttribute.class);
-            attr.initName(namespaceURI, localName, prefix, builderHandler.nsCache);
+            attr.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
             try {
-                attr.coreSetCharacterData(value, AxiomSemantics.INSTANCE);
+                attr.coreSetCharacterData(value, null);
             } catch (CoreModelException ex) {
                 throw new CoreModelStreamException(ex);
             }
@@ -228,7 +226,7 @@ final class BuildableContext extends Context implements InputContext {
             passThroughHandler.processNamespaceDeclaration(prefix, namespaceURI);
         } else {
             CoreNamespaceDeclaration decl = builderHandler.nodeFactory.createNode(CoreNamespaceDeclaration.class);
-            decl.init(prefix, namespaceURI, builderHandler.nsCache);
+            decl.init(prefix, namespaceURI, builderHandler.namespaceHelper);
             ((CoreElement)target).coreAppendAttribute(decl);
         }
     }

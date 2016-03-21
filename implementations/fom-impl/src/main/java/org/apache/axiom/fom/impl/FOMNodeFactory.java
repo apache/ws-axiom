@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.fom.impl;
 
-import org.apache.axiom.core.NodeFactoryImpl;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
 
-public final class FOMNodeFactory extends NodeFactoryImpl {
+public final class FOMNodeFactory extends AxiomNodeFactoryImpl {
     public static final FOMNodeFactory INSTANCE = new FOMNodeFactory();
     
     private FOMNodeFactory() {

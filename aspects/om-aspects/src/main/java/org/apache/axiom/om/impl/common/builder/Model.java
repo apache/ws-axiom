@@ -18,12 +18,12 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
-import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.CoreParentNode;
 
 public interface Model {
-    Class<? extends AxiomDocument> getDocumentType();
+    Class<? extends CoreDocument> getDocumentType();
     
     /**
      * Determine the element type to use for the current element.
@@ -34,6 +34,6 @@ public interface Model {
      *            the local name for the element
      * @return the type of element to create; must not be <code>null</code>
      */
-    Class<? extends AxiomElement> determineElementType(OMContainer parent, int elementLevel,
+    Class<? extends CoreNSAwareElement> determineElementType(CoreParentNode parent, int elementLevel,
             String namespaceURI, String localName);
 }

@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common.builder;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -26,6 +27,7 @@ import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder.Selector;
 import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 
 public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilderSupport {
@@ -52,7 +54,11 @@ public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilder
 
     @Override
     public final OMDocument getDocument() {
-        return (AxiomDocument)builder.getDocument();
+        try {
+            return (AxiomDocument)builder.getDocument();
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        }
     }
     
     @Override
@@ -62,13 +68,17 @@ public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilder
 
     @Override
     public final OMElement getDocumentElement(boolean discardDocument) {
-        OMDocument document = getDocument();
-        OMElement element = document.getOMDocumentElement();
-        if (discardDocument) {
-            element.detach();
-            ((AxiomDocument)document).coreDiscard(false);
+        try {
+            OMDocument document = getDocument();
+            OMElement element = document.getOMDocumentElement();
+            if (discardDocument) {
+                element.detach();
+                ((AxiomDocument)document).coreDiscard(false);
+            }
+            return element;
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
-        return element;
     }
 
     @Override
@@ -81,8 +91,12 @@ public class OMXMLParserWrapperImpl implements OMXMLParserWrapper, CustomBuilder
         if (detachable != null) {
             detachable.detach();
         } else {
-            while (!builder.isCompleted()) {
-                builder.next();
+            try {
+                while (!builder.isCompleted()) {
+                    builder.next();
+                }
+            } catch (CoreModelException ex) {
+                throw AxiomExceptionTranslator.translate(ex);
             }
         }
     }

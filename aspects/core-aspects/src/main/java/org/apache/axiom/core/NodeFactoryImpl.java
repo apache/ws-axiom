@@ -33,7 +33,7 @@ import java.util.Set;
 import org.apache.axiom.core.util.EdgeRelation;
 import org.apache.axiom.core.util.TopologicalSort;
 
-public class NodeFactoryImpl implements NodeFactory {
+public abstract class NodeFactoryImpl implements NodeFactory {
     private final Map<Class<?>,Constructor<?>> constructorMap;
     
     public NodeFactoryImpl(ClassLoader cl, String... packages) {

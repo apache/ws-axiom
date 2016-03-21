@@ -21,13 +21,12 @@ package org.apache.axiom.om.impl.common.builder;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
-import org.apache.axiom.om.DeferredParsingException;
-import org.apache.axiom.om.OMException;
 
 public final class BuilderImpl implements Builder {
     private final XmlReader reader;
@@ -53,9 +52,9 @@ public final class BuilderImpl implements Builder {
     }
 
     @Override
-    public void next() {
+    public void next() throws DeferredParsingException {
         if (isCompleted()) {
-            throw new OMException();
+            throw new IllegalStateException();
         }
         try {
             reader.proceed();
@@ -70,7 +69,7 @@ public final class BuilderImpl implements Builder {
         return builderHandler.isCompleted();
     }
 
-    public CoreDocument getDocument() {
+    public CoreDocument getDocument() throws DeferredParsingException {
         CoreDocument document;
         while ((document = builderHandler.getDocument()) == null) {
             next();

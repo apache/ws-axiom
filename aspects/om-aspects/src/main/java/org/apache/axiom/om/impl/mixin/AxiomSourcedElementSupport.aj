@@ -22,6 +22,7 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.om.OMCloneOptions;
@@ -32,6 +33,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.builder.BuilderImpl;
@@ -208,9 +210,13 @@ public aspect AxiomSourcedElementSupport {
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);
-            do {
-                builder.next();
-            } while (getState() == ATTRIBUTES_PENDING);
+            try {
+                do {
+                    builder.next();
+                } while (getState() == ATTRIBUTES_PENDING);
+            } catch (DeferredParsingException ex) {
+                throw AxiomExceptionTranslator.translate(ex);
+            }
         }
     }
     

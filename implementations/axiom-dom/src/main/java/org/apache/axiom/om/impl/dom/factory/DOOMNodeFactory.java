@@ -18,10 +18,10 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.core.NodeFactoryImpl;
 import org.apache.axiom.dom.DOMNodeFactory;
+import org.apache.axiom.om.impl.common.factory.AxiomNodeFactoryImpl;
 
-public final class DOOMNodeFactory extends NodeFactoryImpl implements DOMNodeFactory {
+public final class DOOMNodeFactory extends AxiomNodeFactoryImpl implements DOMNodeFactory {
     public static final DOOMNodeFactory INSTANCE = new DOOMNodeFactory();
     
     private DOOMNodeFactory() {

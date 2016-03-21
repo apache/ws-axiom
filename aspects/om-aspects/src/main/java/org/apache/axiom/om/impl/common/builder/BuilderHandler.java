@@ -26,6 +26,7 @@ import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
+import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
@@ -34,7 +35,7 @@ final class BuilderHandler implements XmlHandler {
     final NodeFactory nodeFactory;
     final Model model;
     final Builder builder;
-    final OMNamespaceCache nsCache = new OMNamespaceCache();
+    final Object namespaceHelper;
     private final Context rootContext;
     private Context context;
     private int activeContextCount;
@@ -56,6 +57,7 @@ final class BuilderHandler implements XmlHandler {
         this.nodeFactory = nodeFactory;
         this.model = model;
         this.builder = builder;
+        namespaceHelper = nodeFactory.createNamespaceHelper();
         rootContext = root == null ? new BuildableContext(this, null, 0) : new UnwrappingContext(this, root);
         context = rootContext;
         activeContextCount = 1;
@@ -108,7 +110,12 @@ final class BuilderHandler implements XmlHandler {
                 @Override
                 public void run() {
                     while (!done) {
-                        builder.next();
+                        try {
+                            builder.next();
+                        } catch (DeferredParsingException ex) {
+                            // TODO: proper exception
+                            throw new RuntimeException(ex.getStreamException());
+                        }
                     }
                 }
             });

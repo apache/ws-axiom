@@ -19,10 +19,11 @@
 
 package org.apache.axiom.soap.impl.common.builder;
 
-import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.core.CoreDocument;
+import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.common.builder.Model;
-import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -50,12 +51,12 @@ public final class SOAPModel implements Model {
     private SOAPBuilderHelper builderHelper;
 
     @Override
-    public Class<? extends AxiomDocument> getDocumentType() {
+    public Class<? extends CoreDocument> getDocumentType() {
         return AxiomSOAPMessage.class;
     }
 
     @Override
-    public Class<? extends AxiomElement> determineElementType(OMContainer parent,
+    public Class<? extends CoreNSAwareElement> determineElementType(CoreParentNode parent,
             int elementLevel, String namespaceURI, String localName) {
         Class<? extends AxiomElement> elementType;
         if (elementLevel == 1) {
