@@ -84,11 +84,15 @@ public aspect AxiomContainerSupport {
 
     public final OMXMLParserWrapper AxiomContainer.getBuilder() {
         BuilderImpl builder = (BuilderImpl)coreGetBuilder();
-        OMXMLParserWrapper facade = (OMXMLParserWrapper)builder.getFacade();
-        if (facade == null) {
-            facade = new OMXMLParserWrapperImpl(builder, null);
+        if (builder == null) {
+            return null;
+        } else {
+            OMXMLParserWrapper facade = (OMXMLParserWrapper)builder.getFacade();
+            if (facade == null) {
+                facade = new OMXMLParserWrapperImpl(builder, null);
+            }
+            return facade;
         }
-        return facade;
     }
 
     public final XMLStreamReader AxiomContainer.getXMLStreamReader() {

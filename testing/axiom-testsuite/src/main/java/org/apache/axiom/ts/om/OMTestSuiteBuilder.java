@@ -164,6 +164,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         for (OMContainerFactory cf : getInstances(OMContainerFactory.class)) {
             addTest(new org.apache.axiom.ts.om.container.TestAddChildWithIncompleteSibling(metaFactory, cf));
+            addTest(new org.apache.axiom.ts.om.container.TestGetBuilderNull(metaFactory, cf));
             addTest(new org.apache.axiom.ts.om.container.TestGetDescendants(metaFactory, cf, true));
             addTest(new org.apache.axiom.ts.om.container.TestGetDescendants(metaFactory, cf, false));
         }
