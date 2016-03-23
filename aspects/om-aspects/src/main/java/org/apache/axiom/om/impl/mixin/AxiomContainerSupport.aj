@@ -149,7 +149,7 @@ public aspect AxiomContainerSupport {
         return child;
     }
 
-    public void AxiomContainer.addChild(OMNode omNode) {
+    public final void AxiomContainer.addChild(OMNode omNode) {
         try {
             coreAppendChild(prepareNewChild(omNode));
         } catch (CoreModelException ex) {

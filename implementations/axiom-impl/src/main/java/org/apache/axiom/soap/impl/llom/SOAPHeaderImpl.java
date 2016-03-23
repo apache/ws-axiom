@@ -123,24 +123,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
 
     }
 
-    public void addChild(OMNode child) {
-        
-        // Make sure a proper element is added.  The children of a SOAPHeader should be
-        // SOAPHeaderBlock objects.
-        // Due to legacy usages (AXIS2 has a lot of tests that violate this constraint)
-        // I am only going to log an exception when debug is enabled. 
-        if (log.isDebugEnabled()) {
-            if (child instanceof OMElement &&
-            !(child instanceof SOAPHeaderBlock)) {
-                Exception e = new SOAPProcessingException(
-                  "An attempt was made to add a normal OMElement as a child of a SOAPHeader." +
-                  "  This is not supported.  The child should be a SOAPHeaderBlock.");
-                log.debug(exceptionToString(e));
-            }
-        }
-        super.addChild(child);
-    }
-    
     public static String exceptionToString(Throwable e) {
         java.io.StringWriter sw = new java.io.StringWriter();
         java.io.BufferedWriter bw = new java.io.BufferedWriter(sw);
