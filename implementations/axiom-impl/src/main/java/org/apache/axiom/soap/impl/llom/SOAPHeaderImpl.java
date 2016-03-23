@@ -29,12 +29,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.impl.common.HeaderIterator;
-import org.apache.axiom.soap.impl.common.RolePlayerChecker;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPHeader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,14 +64,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
 
     public SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
         return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
-    }
-
-    public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
-        return new HeaderIterator(this, new RolePlayerChecker(rolePlayer));
-    }
-
-    public Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
-        return new HeaderIterator(this, new RolePlayerChecker(rolePlayer, namespace));
     }
 
     public abstract Iterator extractHeaderBlocks(String role);

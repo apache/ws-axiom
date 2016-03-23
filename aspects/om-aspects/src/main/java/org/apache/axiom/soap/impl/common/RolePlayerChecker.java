@@ -21,39 +21,43 @@ package org.apache.axiom.soap.impl.common;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.impl.intf.SOAPHelper;
 
 /**
  * This Checker uses a RolePlayer to return the appropriate headers for that RolePlayer to process.
  * Ignore "none", always "next", etc.
  */
-public class RolePlayerChecker implements Checker {
-    RolePlayer rolePlayer;
-
-    /** Optional namespace - if non-null we'll only return headers that match */
-    String namespace;
+public class RolePlayerChecker implements ElementMatcher<AxiomElement> {
+    private final SOAPHelper soapHelper;
+    private final RolePlayer rolePlayer;
+    private final String namespace;
 
     /**
      * Constructor.
      *
-     * @param rolePlayer the RolePlayer to check against.  This can be null, in which
-     *                   case we assume we're the ultimate destination.
+     * @param soapHelper
+     *            the helper corresponding to the SOAP version
+     * @param rolePlayer
+     *            the RolePlayer to check against, or {@code null} to match only header blocks for
+     *            the ultimate destination.
+     * @param namespace
+     *            the namespace URI to check for, or {@code null} to match any header block
      */
-    public RolePlayerChecker(RolePlayer rolePlayer) {
-        this.rolePlayer = rolePlayer;
-    }
-
-    public RolePlayerChecker(RolePlayer rolePlayer, String namespace) {
+    public RolePlayerChecker(SOAPHelper soapHelper, RolePlayer rolePlayer, String namespace) {
+        this.soapHelper = soapHelper;
         this.rolePlayer = rolePlayer;
         this.namespace = namespace;
     }
 
-    public boolean checkHeader(SOAPHeaderBlock header) {
+    @Override
+    public boolean matches(AxiomElement header, String unused1, String unused2) {
         // If we're filtering on namespace, check that first since the compare is simpler.
         if (namespace != null) {
             OMNamespace headerNamespace = header.getNamespace();
@@ -62,8 +66,8 @@ public class RolePlayerChecker implements Checker {
             }
         }
 
-        String role = header.getRole();
-        SOAPVersion version = header.getVersion();
+        String role = SOAPHeaderBlockHelper.getRole(header, soapHelper);
+        SOAPVersion version = soapHelper.getVersion();
 
         // 1. If role is ultimatedest, go by what the rolePlayer says
         if (role == null || role.equals("") ||

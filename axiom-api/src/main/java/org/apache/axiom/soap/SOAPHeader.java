@@ -73,7 +73,7 @@ public interface SOAPHeader extends OMElement {
      * @return an iterator over all the {@link SOAPHeaderBlock} objects the RolePlayer should
      *         process
      */
-    Iterator getHeadersToProcess(RolePlayer rolePlayer);
+    Iterator<SOAPHeaderBlock> getHeadersToProcess(RolePlayer rolePlayer);
 
     /**
      * Returns a list of all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader} object
@@ -162,5 +162,5 @@ public interface SOAPHeader extends OMElement {
      * @return an iterator over all the {@link SOAPHeaderBlock} objects the RolePlayer should
      *         process
      */
-    Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace);
+    Iterator<SOAPHeaderBlock> getHeadersToProcess(RolePlayer rolePlayer, String namespace);
 }
