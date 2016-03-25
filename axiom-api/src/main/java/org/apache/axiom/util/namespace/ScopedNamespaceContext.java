@@ -180,8 +180,8 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
         return null;
     }
 
-    protected Iterator doGetPrefixes(final String namespaceURI) {
-        return new Iterator() {
+    protected Iterator<String> doGetPrefixes(final String namespaceURI) {
+        return new Iterator<String>() {
             private int binding = bindings;
             private String next;
 
@@ -204,7 +204,7 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
                 return next != null;
             }
 
-            public Object next() {
+            public String next() {
                 if (hasNext()) {
                     String result = next;
                     next = null;

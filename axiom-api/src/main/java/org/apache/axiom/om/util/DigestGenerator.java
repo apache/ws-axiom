@@ -61,11 +61,11 @@ public class DigestGenerator {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             DataOutputStream dos = new DataOutputStream(baos);
             dos.writeInt(9);
-            Collection childNodes = getValidElements(document);
+            Collection<OMNode> childNodes = getValidElements(document);
             dos.writeInt(childNodes.size());
-            Iterator itr = childNodes.iterator();
+            Iterator<OMNode> itr = childNodes.iterator();
             while (itr.hasNext()) {
-                OMNode node = (OMNode) itr.next();
+                OMNode node = itr.next();
                 if (node.getType() == OMNode.PI_NODE)
                     dos.write(getDigest((OMProcessingInstruction) node, digestAlgorithm));
                 else if (
@@ -118,19 +118,18 @@ public class DigestGenerator {
             dos.write(getExpandedName(element).getBytes("UnicodeBigUnmarked"));
             dos.write((byte) 0);
             dos.write((byte) 0);
-            Collection attrs = getAttributesWithoutNS(element);
+            Collection<OMAttribute> attrs = getAttributesWithoutNS(element);
             dos.writeInt(attrs.size());
-            Iterator itr = attrs.iterator();
-            while (itr.hasNext())
-                dos.write(getDigest((OMAttribute) itr.next(), digestAlgorithm));
+            for (Iterator<OMAttribute> itr = attrs.iterator(); itr.hasNext(); ) {
+                dos.write(getDigest(itr.next(), digestAlgorithm));
+            }
             OMNode node = element.getFirstOMChild();
             // adjoining Texts are merged,
             // there is  no 0-length Text, and
             // comment nodes are removed.
             int length = 0;
-            itr = element.getChildren();
-            while (itr.hasNext()) {
-                OMNode child = (OMNode)itr.next();
+            for (Iterator<OMNode> itr = element.getChildren(); itr.hasNext(); ) {
+                OMNode child = itr.next();
                 if (child instanceof OMElement || child instanceof OMText || child instanceof OMProcessingInstruction) {
                     length++;
                 }
@@ -266,11 +265,11 @@ public class DigestGenerator {
      * @param element
      * @return Returns the collection of attributes which are none namespace declarations
      */
-    public Collection getAttributesWithoutNS(OMElement element) {
-        SortedMap map = new TreeMap();
-        Iterator itr = element.getAllAttributes();
+    public Collection<OMAttribute> getAttributesWithoutNS(OMElement element) {
+        SortedMap<String,OMAttribute> map = new TreeMap<String,OMAttribute>();
+        Iterator<OMAttribute> itr = element.getAllAttributes();
         while (itr.hasNext()) {
-            OMAttribute attribute = (OMAttribute) itr.next();
+            OMAttribute attribute = itr.next();
             if (!(attribute.getLocalName().equals("xmlns") ||
                     attribute.getLocalName().startsWith("xmlns:")))
                 map.put(getExpandedName(attribute), attribute);
@@ -285,11 +284,11 @@ public class DigestGenerator {
      * @param document
      * @return Returns a collection of OMProcessingInstructions and OMElements
      */
-    public Collection getValidElements(OMDocument document) {
-        ArrayList list = new ArrayList();
-        Iterator itr = document.getChildren();
+    public Collection<OMNode> getValidElements(OMDocument document) {
+        ArrayList<OMNode> list = new ArrayList<OMNode>();
+        Iterator<OMNode> itr = document.getChildren();
         while (itr.hasNext()) {
-            OMNode node = (OMNode) itr.next();
+            OMNode node = itr.next();
             if (node.getType() == OMNode.ELEMENT_NODE || node.getType() == OMNode.PI_NODE)
                 list.add(node);
         }

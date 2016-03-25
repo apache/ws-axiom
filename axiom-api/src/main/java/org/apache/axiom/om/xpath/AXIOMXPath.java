@@ -33,7 +33,7 @@ public class AXIOMXPath extends BaseXPath {
 
     private static final long serialVersionUID = -5839161412925154639L;
 
-    private Map namespaces = new HashMap();
+    private Map<String,String> namespaces = new HashMap<String,String>();
 
     /**
      * Construct an XPath expression from a given string.
@@ -115,8 +115,8 @@ public class AXIOMXPath extends BaseXPath {
      * @throws JaxenException if an error occurred when adding the namespace declarations
      */
     public void addNamespaces(OMElement element) throws JaxenException {
-        for (Iterator it = element.getNamespacesInScope(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace) it.next();
+        for (Iterator<OMNamespace> it = element.getNamespacesInScope(); it.hasNext(); ) {
+            OMNamespace ns = it.next();
             String prefix = ns.getPrefix();
             // Exclude the default namespace as explained in the Javadoc above
             if (prefix.length() != 0) {
@@ -130,7 +130,7 @@ public class AXIOMXPath extends BaseXPath {
      *
      * @return a Map of namespace prefixes to the URIs
      */
-    public Map getNamespaces() {
+    public Map<String,String> getNamespaces() {
         return namespaces;
     }
 }

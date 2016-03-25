@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.common;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.axiom.core.ElementMatcher;
@@ -86,10 +85,9 @@ public class RolePlayerChecker implements ElementMatcher<AxiomElement> {
         }
 
         // 4. Return t/f depending on match
-        List roles = (rolePlayer == null) ? null : rolePlayer.getRoles();
+        List<String> roles = (rolePlayer == null) ? null : rolePlayer.getRoles();
         if (roles != null) {
-            for (Iterator i = roles.iterator(); i.hasNext();) {
-                String thisRole = (String) i.next();
+            for (String thisRole : roles) {
                 if (thisRole.equals(role)) return true;
             }
         }

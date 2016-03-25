@@ -38,8 +38,8 @@ public class WriteCharactersCharArrayScenario implements PushOMDataSourceScenari
         testCase.addTestParameter("scenario", "writeCharactersCharArray");
     }
 
-    public Map getNamespaceContext() {
-        return Collections.EMPTY_MAP;
+    public Map<String,String> getNamespaceContext() {
+        return Collections.emptyMap();
     }
 
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {

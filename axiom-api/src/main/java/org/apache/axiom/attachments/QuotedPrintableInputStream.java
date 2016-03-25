@@ -270,7 +270,7 @@ final class QuotedPrintableInputStream extends InputStream {
                 } else if (Character.isWhitespace(b)) {
                     blanks.append(b);
                 } else {
-                    index = transfer((int) b & 0xFF, buffer, index, to, true);
+                    index = transfer(b & 0xFF, buffer, index, to, true);
                 }
             }
         }

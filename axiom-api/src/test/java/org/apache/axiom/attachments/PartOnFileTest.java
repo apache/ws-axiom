@@ -120,7 +120,7 @@ public class PartOnFileTest extends TestCase {
         temp = File.createTempFile("partOnFileTest", ".tmp");
 
         if (!temp.delete()) {
-            fail("Cannot delete from temporary directory. File: " + temp.toURL());
+            fail("Cannot delete from temporary directory. File: " + temp);
         }
 
         if (!temp.mkdir()) {

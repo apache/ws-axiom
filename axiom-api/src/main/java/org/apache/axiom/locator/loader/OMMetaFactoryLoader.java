@@ -37,5 +37,5 @@ public interface OMMetaFactoryLoader {
      *            reserved for future use
      * @return the {@link OMMetaFactory} instance; must not be <code>null</code>
      */
-    OMMetaFactory load(Map properties);
+    OMMetaFactory load(Map<String,Object> properties);
 }

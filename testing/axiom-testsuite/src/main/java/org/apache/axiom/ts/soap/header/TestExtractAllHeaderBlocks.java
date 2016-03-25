@@ -39,7 +39,7 @@ public class TestExtractAllHeaderBlocks extends SOAPTestCase {
         OMNamespace ns = soapFactory.createOMNamespace("urn:ns", "p");
         SOAPHeaderBlock h1 = header.addHeaderBlock("header1", ns);
         SOAPHeaderBlock h2 = header.addHeaderBlock("header2", ns);
-        Iterator it = header.extractAllHeaderBlocks();
+        Iterator<SOAPHeaderBlock> it = header.extractAllHeaderBlocks();
         assertTrue(it.hasNext());
         assertSame(h1, it.next());
         assertTrue(it.hasNext());

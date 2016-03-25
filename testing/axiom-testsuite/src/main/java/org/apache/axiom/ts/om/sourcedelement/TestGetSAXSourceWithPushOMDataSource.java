@@ -62,14 +62,14 @@ public class TestGetSAXSourceWithPushOMDataSource extends AxiomTestCase {
                 return false;
             }
         });
-        Iterator it = scenario.getNamespaceContext().entrySet().iterator();
+        Iterator<Map.Entry<String,String>> it = scenario.getNamespaceContext().entrySet().iterator();
         OMElement parent;
         if (it.hasNext()) {
-            Map.Entry binding = (Map.Entry)it.next();
-            parent = factory.createOMElement("parent", factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
+            Map.Entry<String,String> binding = it.next();
+            parent = factory.createOMElement("parent", factory.createOMNamespace(binding.getValue(), binding.getKey()));
             while (it.hasNext()) {
-                binding = (Map.Entry)it.next();
-                parent.declareNamespace(factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
+                binding = it.next();
+                parent.declareNamespace(factory.createOMNamespace(binding.getValue(), binding.getKey()));
             }
         } else {
             parent = factory.createOMElement("parent", null);

@@ -40,9 +40,9 @@ public class TestExamineHeaderBlocks extends SOAPTestCase {
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
         soapHeader.addHeaderBlock("echoOk1", namespace).setRole("urn:test-role");
         soapHeader.addHeaderBlock("echoOk2", namespace).setRole(roleNextURI);
-        Iterator iterator = soapHeader.examineHeaderBlocks(roleNextURI);
+        Iterator<SOAPHeaderBlock> iterator = soapHeader.examineHeaderBlocks(roleNextURI);
         iterator.hasNext();
-        SOAPHeaderBlock headerBlockWithRole = (SOAPHeaderBlock) iterator.next();
+        SOAPHeaderBlock headerBlockWithRole = iterator.next();
         assertEquals(
                 "SOAP Header Test : - headerBlockWithRole local name mismatch",
                 "echoOk2", headerBlockWithRole.getLocalName());

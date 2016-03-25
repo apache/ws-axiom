@@ -27,7 +27,7 @@ import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 
 public class MyLifecycleManager extends LifecycleManagerImpl {
-    private final Set/*<File>*/ files = new HashSet();
+    private final Set<File> files = new HashSet<File>();
 
     public FileAccessor create(String attachmentDir) throws IOException {
         FileAccessor accessor = super.create(attachmentDir);

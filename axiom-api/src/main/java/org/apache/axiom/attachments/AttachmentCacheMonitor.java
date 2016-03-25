@@ -21,6 +21,7 @@ package org.apache.axiom.attachments;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,7 +58,7 @@ public final class AttachmentCacheMonitor {
     // HashMap
     // Key String = Absolute file name
     // Value Long = Last Access Time
-    private HashMap files = new HashMap();
+    private Map<String,Long> files = new HashMap<String,Long>();
 
     // Delete detection is batched
     private Long priorDeleteMillis = getTime();
@@ -197,7 +198,7 @@ public final class AttachmentCacheMonitor {
 
     private synchronized void _access(String fileName) {
         Long currentTime = getTime();
-        Long priorTime = (Long) files.get(fileName);
+        Long priorTime = files.get(fileName);
         if (priorTime != null) {
             files.put(fileName, currentTime);
             if (log.isDebugEnabled()) {
@@ -224,10 +225,10 @@ public final class AttachmentCacheMonitor {
         if (isExpired(priorDeleteMillis,
                       currentTime,
                       refreshSeconds)) {
-            Iterator it = files.keySet().iterator();
+            Iterator<String> it = files.keySet().iterator();
             while (it.hasNext()) {
-                String fileName = (String) it.next();
-                Long lastAccess = (Long) files.get(fileName);
+                String fileName = it.next();
+                Long lastAccess = files.get(fileName);
                 if (isExpired(lastAccess,
                               currentTime,
                               attachmentTimeoutSeconds)) {
@@ -254,15 +255,14 @@ public final class AttachmentCacheMonitor {
     }
 
     private boolean deleteFile(final String fileName ) {
-        Boolean privRet = (Boolean) AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
+        return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+                public Boolean run() {
                     return _deleteFile(fileName);
                 }
             });
-        return privRet.booleanValue();
     }
 
-    private Boolean _deleteFile(String fileName) {
+    private boolean _deleteFile(String fileName) {
         boolean ret = false;
         File file = new File(fileName);
         if (file.exists()) {
@@ -275,7 +275,7 @@ public final class AttachmentCacheMonitor {
                 log.debug("This file no longer exists = " + fileName);
             }
         }
-        return new Boolean(ret);
+        return ret;
     }
 
 

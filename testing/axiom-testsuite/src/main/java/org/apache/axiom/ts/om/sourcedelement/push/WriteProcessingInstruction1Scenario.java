@@ -35,8 +35,8 @@ public class WriteProcessingInstruction1Scenario implements PushOMDataSourceScen
         testCase.addTestParameter("scenario", "writeProcessingInstruction1");
     }
 
-    public Map getNamespaceContext() {
-        return Collections.EMPTY_MAP;
+    public Map<String,String> getNamespaceContext() {
+        return Collections.emptyMap();
     }
 
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {

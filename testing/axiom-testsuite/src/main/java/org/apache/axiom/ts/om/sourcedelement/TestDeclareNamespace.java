@@ -22,9 +22,6 @@ import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
 
 import java.util.Iterator;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;

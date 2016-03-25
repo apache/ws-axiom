@@ -19,17 +19,17 @@
 
 package org.apache.axiom.ts.soap.builder;
 
-import junit.framework.Assert;
-
 import java.util.Iterator;
 
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
+import org.junit.Assert;
 
 public class OMTestUtils {
     public static void walkThrough(OMElement element) {
         Assert.assertFalse("Expected " + element.getQName() + " to be incomplete", element.isComplete());
-        for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
+        for (Iterator<OMAttribute> it = element.getAllAttributes(); it.hasNext(); ) {
             Assert.assertNotNull(it.next());
         }
         OMNode child = element.getFirstOMChild();

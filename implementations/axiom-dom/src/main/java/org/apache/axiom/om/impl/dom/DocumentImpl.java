@@ -27,9 +27,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.axiom.core.CoreChildNode;
-import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMDocument;
-import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.w3c.dom.Attr;

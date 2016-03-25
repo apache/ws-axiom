@@ -77,7 +77,7 @@ public class FactoryTest {
 
     @Test
     public void testLLOMMetaFactoryServicePresent() throws Exception {
-        ServiceReference[] omfactRefs = context
+        ServiceReference<?>[] omfactRefs = context
                 .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
         assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);
@@ -85,7 +85,7 @@ public class FactoryTest {
     
     @Test
     public void testDOOMMetaFactoryServicePresent() throws Exception {
-        ServiceReference[] omfactRefs = context
+        ServiceReference<?>[] omfactRefs = context
                 .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
         assertNotNull(omfactRefs);
         assertEquals(1, omfactRefs.length);

@@ -35,14 +35,14 @@ import org.apache.axiom.om.OMException;
  * attachment parts.
  */
 class AttachmentSet extends AttachmentsDelegate {
-    private final Map attachmentsMap = new LinkedHashMap();
+    private final Map<String,DataHandler> attachmentsMap = new LinkedHashMap<String,DataHandler>();
 
     ContentType getContentType() {
         return null;
     }
 
     DataHandler getDataHandler(String contentID) {
-        return (DataHandler)attachmentsMap.get(contentID);
+        return attachmentsMap.get(contentID);
     }
 
     void addDataHandler(String contentID, DataHandler dataHandler) {
@@ -71,11 +71,11 @@ class AttachmentSet extends AttachmentsDelegate {
                 "The attachments map was created programatically. No streams are available.");
     }
 
-    Set getContentIDs(boolean fetchAll) {
+    Set<String> getContentIDs(boolean fetchAll) {
         return attachmentsMap.keySet();
     }
     
-    Map getMap() {
+    Map<String,DataHandler> getMap() {
         return Collections.unmodifiableMap(attachmentsMap);
     }
     

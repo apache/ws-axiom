@@ -31,13 +31,13 @@ public class TestGetMustUnderstandWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Iterator iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
+        Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
         assertTrue(
                 "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
-                ((SOAPHeaderBlock) iterator.next()).getMustUnderstand());
+                iterator.next().getMustUnderstand());
         assertFalse(
                 "SOAP HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
-                ((SOAPHeaderBlock) iterator.next()).getMustUnderstand());
-        ((SOAPHeaderBlock) iterator.next()).getMustUnderstand();
+                iterator.next().getMustUnderstand());
+        iterator.next().getMustUnderstand();
     }
 }

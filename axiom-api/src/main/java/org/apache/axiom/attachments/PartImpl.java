@@ -73,7 +73,7 @@ final class PartImpl implements Part {
     
     private final WritableBlobFactory blobFactory;
     
-    private List/*<Header>*/ headers;
+    private List<Header> headers;
     
     private int state = STATE_UNREAD;
     
@@ -97,7 +97,7 @@ final class PartImpl implements Part {
      * @see org.apache.axiom.attachments.PartContentFactory
      * @param headers
      */
-    PartImpl(WritableBlobFactory blobFactory, List headers, MimeTokenStream parser) {
+    PartImpl(WritableBlobFactory blobFactory, List<Header> headers, MimeTokenStream parser) {
         this.blobFactory = blobFactory;;
         this.headers = headers;
         this.parser = parser;
@@ -107,7 +107,7 @@ final class PartImpl implements Part {
     public String getHeader(String name) {
         String value = null;
         for (int i=0, l=headers.size(); i<l; i++) {
-            Header header = (Header)headers.get(i);
+            Header header = headers.get(i);
             if (header.getName().equalsIgnoreCase(name)) {
                 value = header.getValue();
                 break;

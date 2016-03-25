@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IncomingAttachmentInputStream extends InputStream {
-    private HashMap _headers = null;
+    private Map<String,String> _headers = null;
 
-    private HashMap _headersLowerCase = null;
+    private Map<String,String> _headersLowerCase = null;
     
     private InputStream _stream = null;
     private IncomingAttachmentStreams parentContainer;
@@ -47,7 +47,7 @@ public class IncomingAttachmentInputStream extends InputStream {
     }
 
     /** @return MIME headers for this attachment. May be null if no headers were set. */
-    public Map getHeaders() {
+    public Map<String,String> getHeaders() {
         return _headers;
     }
 
@@ -59,8 +59,8 @@ public class IncomingAttachmentInputStream extends InputStream {
      */
     public void addHeader(String name, String value) {
         if (_headers == null) {
-            _headers = new HashMap();
-            _headersLowerCase = new HashMap();
+            _headers = new HashMap<String,String>();
+            _headersLowerCase = new HashMap<String,String>();
         }
         _headers.put(name, value);
         _headersLowerCase.put(name.toLowerCase(), value);

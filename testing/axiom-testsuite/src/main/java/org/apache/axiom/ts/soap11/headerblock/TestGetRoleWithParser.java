@@ -31,10 +31,10 @@ public class TestGetRoleWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Iterator iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
+        Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
         assertTrue(
                 "SOAP HeaderBlock Test With Parser : - getRole method returns incorrect role value",
-                ((SOAPHeaderBlock) iterator.next()).getRole().equals(
+                iterator.next().getRole().equals(
                         "http://schemas.xmlsoap.org/soap/actor/next"));
     }
 }

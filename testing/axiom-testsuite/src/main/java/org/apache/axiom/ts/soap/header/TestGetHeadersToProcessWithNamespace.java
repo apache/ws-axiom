@@ -52,7 +52,7 @@ public class TestGetHeadersToProcessWithNamespace extends SOAPTestCase {
         headerBlock3.setRole(myRole);
         SOAPHeaderBlock headerBlock4 = header.addHeaderBlock("header4", ns1);
         headerBlock4.setRole(otherRole);
-        Iterator it = header.getHeadersToProcess(new MyRolePlayer(false, new String[] { myRole }), ns1.getNamespaceURI());
+        Iterator<SOAPHeaderBlock> it = header.getHeadersToProcess(new MyRolePlayer(false, new String[] { myRole }), ns1.getNamespaceURI());
         assertTrue(it.hasNext());
         assertSame(headerBlock1, it.next());
         assertTrue(it.hasNext());

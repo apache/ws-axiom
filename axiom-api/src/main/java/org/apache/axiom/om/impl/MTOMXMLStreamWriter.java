@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,7 +79,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
-    private List/*<Part>*/ otherParts = new LinkedList();
+    private List<Part> otherParts = new LinkedList<Part>();
     private OMMultipartWriter multipartWriter;
     private OutputStream rootPartOutputStream;
     private OMOutputFormat format;
@@ -243,8 +242,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                 rootPartOutputStream.close();
                 // First write the attachments added properly through the DataHandlerWriter extension
                 XOPEncodingStreamWriter encoder = (XOPEncodingStreamWriter)xmlWriter;
-                for (Iterator it = encoder.getContentIDs().iterator(); it.hasNext(); ) {
-                    String contentID = (String)it.next();
+                for (String contentID : encoder.getContentIDs()) {
                     DataHandler dataHandler = encoder.getDataHandler(contentID);
                     if (preserveAttachments || !(dataHandler instanceof DataHandlerExt)) {
                         multipartWriter.writePart(dataHandler, contentID);
@@ -255,8 +253,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                     }
                 }
                 // Now write parts that have been added by prepareDataHandler
-                for (Iterator it = otherParts.iterator(); it.hasNext();) {
-                    Part part = (Part)it.next();
+                for (Part part : otherParts) {
                     multipartWriter.writePart(part.getDataHandler(), part.getContentID());
                 }
                 multipartWriter.complete();

@@ -60,7 +60,7 @@ public class TestGetNamespaceContext extends AxiomTestCase {
         assertEquals("", context.getPrefix("urn:test4"));
         assertNull(context.getPrefix("unbound"));
         
-        Iterator it = context.getPrefixes("urn:test1");
+        Iterator<?> it = context.getPrefixes("urn:test1");
         assertFalse(it.hasNext());
         
         it = context.getPrefixes("urn:test2");

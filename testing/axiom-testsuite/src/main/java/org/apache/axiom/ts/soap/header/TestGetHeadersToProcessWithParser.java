@@ -41,12 +41,12 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
         String roles [] = { "http://example.org/myCustomRole" };
         RolePlayer rp = new MyRolePlayer(true, roles);
 
-        Iterator headers = soapHeader.getHeadersToProcess(rp);
+        Iterator<SOAPHeaderBlock> headers = soapHeader.getHeadersToProcess(rp);
         assertTrue("No headers!", headers.hasNext());
 
         int numHeaders = 0;
         while (headers.hasNext()) {
-            SOAPHeaderBlock header = (SOAPHeaderBlock)headers.next();
+            headers.next();
             numHeaders++;
         }
 
@@ -59,7 +59,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
 
         numHeaders = 0;
         while (headers.hasNext()) {
-            SOAPHeaderBlock header = (SOAPHeaderBlock)headers.next();
+            headers.next();
             numHeaders++;
         }
 
@@ -73,7 +73,7 @@ public class TestGetHeadersToProcessWithParser extends SampleBasedSOAPTestCase {
 
         numHeaders = 0;
         while (headers.hasNext()) {
-            SOAPHeaderBlock header = (SOAPHeaderBlock)headers.next();
+            headers.next();
             numHeaders++;
         }
 

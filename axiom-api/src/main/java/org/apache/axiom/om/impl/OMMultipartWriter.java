@@ -130,7 +130,7 @@ public class OMMultipartWriter {
      * @throws IOException
      *             if an I/O error occurs when writing to the underlying stream
      */
-    public OutputStream writePart(String contentType, String contentID, List/*<Header>*/ extraHeaders) throws IOException {    
+    public OutputStream writePart(String contentType, String contentID, List<Header> extraHeaders) throws IOException {    
         return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, extraHeaders);
     }
     
@@ -148,7 +148,7 @@ public class OMMultipartWriter {
      * @throws IOException
      *             if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(DataHandler dataHandler, String contentID, List/*<Header>*/ extraHeaders) throws IOException {
+    public void writePart(DataHandler dataHandler, String contentID, List<Header> extraHeaders) throws IOException {
         String contentTransferEncoding = null;
         if (dataHandler instanceof ConfigurableDataHandler) {
             contentTransferEncoding = ((ConfigurableDataHandler)dataHandler).getTransferEncoding();

@@ -38,7 +38,7 @@ public class GetNamespaceContextScenario implements PushOMDataSourceScenario {
         testCase.addTestParameter("scenario", "getNamespaceContext");
     }
 
-    public Map getNamespaceContext() {
+    public Map<String,String> getNamespaceContext() {
         return Collections.singletonMap("p", "urn:test");
     }
 

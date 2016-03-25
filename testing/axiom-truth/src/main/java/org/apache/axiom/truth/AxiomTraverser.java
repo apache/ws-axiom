@@ -131,8 +131,8 @@ final class AxiomTraverser implements Traverser {
     @Override
     public Map<QName,String> getAttributes() {
         Map<QName,String> attributes = null;
-        for (Iterator it = ((OMElement)node).getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = (OMAttribute)it.next();
+        for (Iterator<OMAttribute> it = ((OMElement)node).getAllAttributes(); it.hasNext(); ) {
+            OMAttribute attr = it.next();
             if (attributes == null) {
                 attributes = new HashMap<QName,String>();
             }
@@ -144,8 +144,8 @@ final class AxiomTraverser implements Traverser {
     @Override
     public Map<String, String> getNamespaces() {
         Map<String,String> namespaces = null;
-        for (Iterator it = ((OMElement)node).getAllDeclaredNamespaces(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
+        for (Iterator<OMNamespace> it = ((OMElement)node).getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = it.next();
             if (namespaces == null) {
                 namespaces = new HashMap<String,String>();
             }

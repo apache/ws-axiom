@@ -20,7 +20,6 @@ package org.apache.axiom.mime.impl.axiom;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -85,7 +84,7 @@ class MultipartWriterImpl implements MultipartWriter {
     }
     
     public OutputStream writePart(String contentType, String contentTransferEncoding,
-            String contentID, List/*<Header>*/ extraHeaders) throws IOException {
+            String contentID, List<Header> extraHeaders) throws IOException {
         OutputStream transferEncoder;
         if (contentTransferEncoding.equals("8bit") || contentTransferEncoding.equals("binary")) {
             transferEncoder = out;
@@ -110,8 +109,7 @@ class MultipartWriterImpl implements MultipartWriter {
             out.write('>');
         }
         if (extraHeaders != null) {
-            for (Iterator it = extraHeaders.iterator(); it.hasNext(); ) {
-                Header header = (Header)it.next();
+            for (Header header : extraHeaders) {
                 writeAscii("\r\n");
                 writeAscii(header.getName());
                 writeAscii(": ");
@@ -127,7 +125,7 @@ class MultipartWriterImpl implements MultipartWriter {
         return writePart(contentType, contentTransferEncoding, contentID, null);
     }
     
-    public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID, List/*<Header>*/ extraHeaders)
+    public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID, List<Header> extraHeaders)
             throws IOException {
         OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID, extraHeaders);
         dataHandler.writeTo(partOutputStream);

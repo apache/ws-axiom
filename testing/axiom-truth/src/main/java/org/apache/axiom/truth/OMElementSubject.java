@@ -37,7 +37,7 @@ public final class OMElementSubject extends AbstractOMContainerSubject<OMElement
     }
     
     public void hasNamespaceDeclaration(OMNamespace ns) {
-        for (Iterator it = getSubject().getAllDeclaredNamespaces(); it.hasNext(); ) {
+        for (Iterator<OMNamespace> it = getSubject().getAllDeclaredNamespaces(); it.hasNext(); ) {
             if (it.next().equals(ns)) {
                 return;
             }

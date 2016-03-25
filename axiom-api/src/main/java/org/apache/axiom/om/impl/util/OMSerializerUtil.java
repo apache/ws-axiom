@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.util;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -196,8 +195,8 @@ public class OMSerializerUtil {
         // ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
         // ... generate writeAttribute for each attribute
 
-        ArrayList writePrefixList = null;
-        ArrayList writeNSList = null;
+        ArrayList<String> writePrefixList = null;
+        ArrayList<String> writeNSList = null;
 
         // Get the namespace and prefix of the element
         OMNamespace eOMNamespace = element.getNamespace();
@@ -214,8 +213,8 @@ public class OMSerializerUtil {
             if (ePrefix == null) {
                 if (!isAssociated("", eNamespace, writer)) {
                     if (writePrefixList == null) {
-                        writePrefixList = new ArrayList();
-                        writeNSList = new ArrayList();
+                        writePrefixList = new ArrayList<String>();
+                        writeNSList = new ArrayList<String>();
                     }
                     if (! writePrefixList.contains("")) {
                         writePrefixList.add("");
@@ -230,8 +229,8 @@ public class OMSerializerUtil {
                  */
                 if (!isAssociated(ePrefix, eNamespace, writer)) {
                     if (writePrefixList == null) {
-                        writePrefixList = new ArrayList();
-                        writeNSList = new ArrayList();
+                        writePrefixList = new ArrayList<String>();
+                        writeNSList = new ArrayList<String>();
                     }
                     if (! writePrefixList.contains(ePrefix)) {
                         writePrefixList.add(ePrefix);
@@ -246,9 +245,9 @@ public class OMSerializerUtil {
         }
 
         // Generate setPrefix for the namespace declarations
-        Iterator it = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         while (it != null && it.hasNext()) {
-            OMNamespace omNamespace = (OMNamespace) it.next();
+            OMNamespace omNamespace = it.next();
             String prefix = null;
             String namespace = null;
             if (omNamespace != null) {
@@ -263,8 +262,8 @@ public class OMSerializerUtil {
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
-                    writePrefixList = new ArrayList();
-                    writeNSList = new ArrayList();
+                    writePrefixList = new ArrayList<String>();
+                    writeNSList = new ArrayList<String>();
                 }
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
@@ -279,8 +278,8 @@ public class OMSerializerUtil {
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
-                writePrefixList = new ArrayList();
-                writeNSList = new ArrayList();
+                writePrefixList = new ArrayList<String>();
+                writeNSList = new ArrayList<String>();
             }
             if (!writePrefixList.contains(newPrefix)) {
                 writePrefixList.add(newPrefix);
@@ -289,9 +288,9 @@ public class OMSerializerUtil {
         }
 
         // Now Generate setPrefix for each attribute
-        Iterator attrs = element.getAllAttributes();
+        Iterator<OMAttribute> attrs = element.getAllAttributes();
         while (attrs != null && attrs.hasNext()) {
-            OMAttribute attr = (OMAttribute) attrs.next();
+            OMAttribute attr = attrs.next();
             OMNamespace omNamespace = attr.getNamespace();
             String prefix = null;
             String namespace = null;
@@ -315,8 +314,8 @@ public class OMSerializerUtil {
             // write out a namespace declaration
             if (newPrefix != null) {
                 if (writePrefixList == null) {
-                    writePrefixList = new ArrayList();
-                    writeNSList = new ArrayList();
+                    writePrefixList = new ArrayList<String>();
+                    writeNSList = new ArrayList<String>();
                 }
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
@@ -330,7 +329,7 @@ public class OMSerializerUtil {
         // The following code will make sure that setPrefix is called for "p".
         attrs = element.getAllAttributes();
         while (attrs != null && attrs.hasNext()) {
-            OMAttribute attr = (OMAttribute) attrs.next();
+            OMAttribute attr = attrs.next();
             OMNamespace omNamespace = attr.getNamespace();
             String prefix = null;
             String namespace = null;
@@ -367,8 +366,8 @@ public class OMSerializerUtil {
                                     log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
                                 }
                                 if (writePrefixList == null) {
-                                    writePrefixList = new ArrayList();
-                                    writeNSList = new ArrayList();
+                                    writePrefixList = new ArrayList<String>();
+                                    writeNSList = new ArrayList<String>();
                                 }
                                 if (!writePrefixList.contains(newPrefix)) {
                                     writePrefixList.add(newPrefix);
@@ -385,8 +384,8 @@ public class OMSerializerUtil {
         // while doing the "set" processing.
         if (writePrefixList != null) {
             for (int i = 0; i < writePrefixList.size(); i++) {
-                String prefix = (String) writePrefixList.get(i);
-                String namespace = (String) writeNSList.get(i);
+                String prefix = writePrefixList.get(i);
+                String namespace = writeNSList.get(i);
                 if (prefix != null) {
                     if (namespace == null) {
                         writer.writeNamespace(prefix, "");
@@ -402,7 +401,7 @@ public class OMSerializerUtil {
         // Now write the attributes
         attrs = element.getAllAttributes();
         while (attrs != null && attrs.hasNext()) {
-            OMAttribute attr = (OMAttribute) attrs.next();
+            OMAttribute attr = attrs.next();
             OMNamespace omNamespace = attr.getNamespace();
             String prefix = null;
             String namespace = null;
@@ -425,8 +424,8 @@ public class OMSerializerUtil {
                 //XMLStreamWriter.getPrefix), so we hack it in here...
                 if (prefix == null || "".equals(prefix)) {
                     for (int i = 0; i < writePrefixList.size(); i++) {
-                        if (namespace.equals((String) writeNSList.get(i))) {
-                            prefix = (String) writePrefixList.get(i);
+                        if (namespace.equals(writeNSList.get(i))) {
+                            prefix = writePrefixList.get(i);
                         }
                     }
                 }
@@ -461,7 +460,7 @@ public class OMSerializerUtil {
     private static boolean checkForPrefixInTheCurrentContext(XMLStreamWriter writer,
                                                              String nameSpaceName, String prefix)
             throws XMLStreamException {
-        Iterator prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
+        Iterator<?> prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
         while (prefixesIter.hasNext()) {
             String prefix_w = (String) prefixesIter.next();
             if (prefix_w.equals(prefix)) {
@@ -484,10 +483,10 @@ public class OMSerializerUtil {
             (OMElement
                     element,
              XMLStreamWriter writer) throws XMLStreamException {
-        Iterator namespaces = element.getAllDeclaredNamespaces();
+        Iterator<OMNamespace> namespaces = element.getAllDeclaredNamespaces();
         if (namespaces != null) {
             while (namespaces.hasNext()) {
-                serializeNamespace((OMNamespace) namespaces.next(), writer);
+                serializeNamespace(namespaces.next(), writer);
             }
         }
     }
@@ -504,11 +503,10 @@ public class OMSerializerUtil {
             (OMElement
                     element,
              XMLStreamWriter writer) throws XMLStreamException {
-        Iterator attributes = element.getAllAttributes();
+        Iterator<OMAttribute> attributes = element.getAllAttributes();
         if (attributes != null && attributes.hasNext()) {
             while (attributes.hasNext()) {
-                serializeAttribute((OMAttribute) attributes.next(),
-                                   writer);
+                serializeAttribute(attributes.next(), writer);
             }
         }
     }

@@ -231,8 +231,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
         // ... generate writeAttribute for each attribute
 
-        ArrayList writePrefixList = null;
-        ArrayList writeNSList = null;
+        ArrayList<String> writePrefixList = null;
+        ArrayList<String> writeNSList = null;
 
         // Get the prefix and namespace of the element.  "" and null are identical.
         String ePrefix = reader.getPrefix();
@@ -246,8 +246,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                 if (!OMSerializerUtil.isAssociated("", eNamespace, writer)) {
                     
                     if (writePrefixList == null) {
-                        writePrefixList = new ArrayList();
-                        writeNSList = new ArrayList();
+                        writePrefixList = new ArrayList<String>();
+                        writeNSList = new ArrayList<String>();
                     }
                     writePrefixList.add("");
                     writeNSList.add(eNamespace);
@@ -258,8 +258,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                 
                 if (!OMSerializerUtil.isAssociated(ePrefix, eNamespace, writer)) {
                     if (writePrefixList == null) {
-                        writePrefixList = new ArrayList();
-                        writeNSList = new ArrayList();
+                        writePrefixList = new ArrayList<String>();
+                        writeNSList = new ArrayList<String>();
                     }   
                     writePrefixList.add(ePrefix);
                     writeNSList.add(eNamespace);
@@ -283,8 +283,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
-                    writePrefixList = new ArrayList();
-                    writeNSList = new ArrayList();
+                    writePrefixList = new ArrayList<String>();
+                    writeNSList = new ArrayList<String>();
                 }
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
@@ -300,8 +300,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
-                writePrefixList = new ArrayList();
-                writeNSList = new ArrayList();
+                writePrefixList = new ArrayList<String>();
+                writeNSList = new ArrayList<String>();
             }
             if (!writePrefixList.contains(newPrefix)) {
                 writePrefixList.add(newPrefix);
@@ -331,8 +331,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             // write out a namespace declaration
             if (newPrefix != null) {
                 if (writePrefixList == null) {
-                    writePrefixList = new ArrayList();
-                    writeNSList = new ArrayList();
+                    writePrefixList = new ArrayList<String>();
+                    writeNSList = new ArrayList<String>();
                 }
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
@@ -376,8 +376,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                                     log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
                                 }
                                 if (writePrefixList == null) {
-                                    writePrefixList = new ArrayList();
-                                    writeNSList = new ArrayList();
+                                    writePrefixList = new ArrayList<String>();
+                                    writeNSList = new ArrayList<String>();
                                 }
                                 if (!writePrefixList.contains(newPrefix)) {
                                     writePrefixList.add(newPrefix);
@@ -395,8 +395,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // while doing the "set" processing.
         if (writePrefixList != null) {
             for (int i = 0; i < writePrefixList.size(); i++) {
-                String prefix = (String) writePrefixList.get(i);
-                String namespace = (String) writeNSList.get(i);
+                String prefix = writePrefixList.get(i);
+                String namespace = writeNSList.get(i);
                 if (prefix != null) {
                     if (namespace == null) {
                         writer.writeNamespace(prefix, "");
@@ -430,8 +430,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                 //XMLStreamWriter.getPrefix), so we hack it in here...
                 if (prefix == null || "".equals(prefix)) {
                     for (int j = 0; j < writePrefixList.size(); j++) {
-                        if (namespace.equals((String) writeNSList.get(j))) {
-                            prefix = (String) writePrefixList.get(j);
+                        if (namespace.equals(writeNSList.get(j))) {
+                            prefix = writePrefixList.get(j);
                         }
                     }
                 }

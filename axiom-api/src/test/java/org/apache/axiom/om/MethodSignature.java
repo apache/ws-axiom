@@ -25,9 +25,9 @@ public class MethodSignature {
     // Note: Although the JVM considers the return type as part of the signature,
     //       the Java compiler does not. 
     private final String name;
-    private final Class[] parameterTypes;
+    private final Class<?>[] parameterTypes;
     
-    public MethodSignature(String name, Class[] parameterTypes) {
+    public MethodSignature(String name, Class<?>[] parameterTypes) {
         this.name = name;
         this.parameterTypes = parameterTypes;
     }

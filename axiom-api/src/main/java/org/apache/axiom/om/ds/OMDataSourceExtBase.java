@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -56,7 +57,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 
     private static final Log log = LogFactory.getLog(OMDataSourceExtBase.class);
 	
-    HashMap map = null;  // Map of properties
+    private Map<String,Object> map;  // Map of properties
 
     public Object getProperty(String key) {
         if (map == null) {
@@ -67,7 +68,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 
     public Object setProperty(String key, Object value) {
         if (map == null) {
-            map = new HashMap();
+            map = new HashMap<String,Object>();
         }
         return map.put(key, value);
     }
@@ -152,10 +153,10 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();
-            Iterator it = omDocument.getChildren();
+            Iterator<OMNode> it = omDocument.getChildren();
             while (it.hasNext()) {
                 // TODO: this is extremely inefficient since next() will actually build the node!
-                OMNode omNode = (OMNode) it.next();
+                OMNode omNode = it.next();
                 // TODO: quick fix required because OMChildrenIterator#next() no longer builds the node
                 omNode.getNextOMSibling();
                 omNode.serializeAndConsume(writer);

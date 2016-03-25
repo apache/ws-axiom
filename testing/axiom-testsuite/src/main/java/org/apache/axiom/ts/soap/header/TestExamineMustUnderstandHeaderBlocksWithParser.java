@@ -39,9 +39,9 @@ public class TestExamineMustUnderstandHeaderBlocksWithParser extends SampleBased
     @Override
     protected void runTest(SOAPEnvelope envelope) throws Throwable {
         String roleNextURI = spec.getNextRoleURI();
-        Iterator it = envelope.getHeader().examineMustUnderstandHeaderBlocks(roleNextURI);
+        Iterator<SOAPHeaderBlock> it = envelope.getHeader().examineMustUnderstandHeaderBlocks(roleNextURI);
         assertThat(it.hasNext()).isTrue();
-        SOAPHeaderBlock headerBlock = (SOAPHeaderBlock)it.next();
+        SOAPHeaderBlock headerBlock = it.next();
         assertThat(headerBlock.getQName()).isEqualTo(new QName("http://example.org/RoleTest", "h7"));
         assertThat(headerBlock.getRole()).isEqualTo(roleNextURI);
         assertThat(it.hasNext()).isFalse();

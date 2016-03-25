@@ -24,7 +24,6 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.Iterator;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -74,8 +73,7 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
 
     public static TestSuite suite() throws Exception {
         TestSuite suite = new TestSuite();
-        for (Iterator it = Multiton.getInstances(XMLSample.class).iterator(); it.hasNext(); ) {
-            XMLSample file = (XMLSample)it.next();
+        for (XMLSample file : Multiton.getInstances(XMLSample.class)) {
             suite.addTest(new StreamingOMSerializerTest(file.getName(), file));
         }
         return suite;

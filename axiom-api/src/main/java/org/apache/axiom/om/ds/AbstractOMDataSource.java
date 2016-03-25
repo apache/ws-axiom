@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -44,7 +45,7 @@ import org.apache.axiom.om.util.StAXUtils;
  * actually use {@link AbstractPullOMDataSource} or {@link AbstractPushOMDataSource}.
  */
 public abstract class AbstractOMDataSource implements OMDataSourceExt {
-    private HashMap properties = null;
+    private Map<String,Object> properties;
 
     public final Object getProperty(String key) {
         return properties == null ? null : properties.get(key);
@@ -56,7 +57,7 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
 
     public final Object setProperty(String key, Object value) {
         if (properties == null) {
-            properties = new HashMap();
+            properties = new HashMap<String,Object>();
         }
         return properties.put(key, value);
     }

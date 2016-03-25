@@ -39,7 +39,7 @@ public class TestGetChildrenWithName extends AxiomTestCase {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();
         QName qname = new QName("urn:ns2", "subelement");
-        Iterator iter = elt.getChildrenWithName(qname);
+        Iterator<OMElement> iter = elt.getChildrenWithName(qname);
         int counter = 0;
         while (iter.hasNext()) {
             counter ++;

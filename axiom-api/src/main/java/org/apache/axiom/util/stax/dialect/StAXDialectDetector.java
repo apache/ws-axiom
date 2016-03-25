@@ -72,8 +72,8 @@ public class StAXDialectDetector {
      * in the case of a JAR file, this is not the URL pointing to the JAR, but a <tt>jar:</tt>
      * URL that points to the root folder of the archive.
      */
-    private static final Map/*<URL,StAXDialect>*/ dialectByUrl =
-            Collections.synchronizedMap(new HashMap());
+    private static final Map<URL,StAXDialect> dialectByUrl =
+            Collections.synchronizedMap(new HashMap<URL,StAXDialect>());
 
     private StAXDialectDetector() {}
     
@@ -109,7 +109,7 @@ public class StAXDialectDetector {
         }
     }
     
-    private static URL getRootUrlForClass(Class cls) {
+    private static URL getRootUrlForClass(Class<?> cls) {
         return getRootUrlForResource(cls.getClassLoader(),
                 cls.getName().replace('.', '/') + ".class");
     }
@@ -153,7 +153,7 @@ public class StAXDialectDetector {
      *            {@link javax.xml.stream.XMLStreamWriter} implementation
      * @return the detected dialect
      */
-    public static StAXDialect getDialect(Class implementationClass) {
+    public static StAXDialect getDialect(Class<?> implementationClass) {
         URL rootUrl = getRootUrlForClass(implementationClass);
         if (rootUrl == null) {
             log.warn("Unable to determine location of StAX implementation containing class "
@@ -192,7 +192,7 @@ public class StAXDialectDetector {
     }
     
     private static StAXDialect getDialect(ClassLoader classLoader, URL rootUrl) {
-        StAXDialect dialect = (StAXDialect)dialectByUrl.get(rootUrl);
+        StAXDialect dialect = dialectByUrl.get(rootUrl);
         if (dialect != null) {
             return dialect;
         } else {
@@ -292,12 +292,12 @@ public class StAXDialectDetector {
         }
     }
 
-    private static Class loadClass(ClassLoader classLoader, URL rootUrl, String name) {
+    private static Class<?> loadClass(ClassLoader classLoader, URL rootUrl, String name) {
         try {
             if (classLoader == null) {
                 classLoader = ClassLoader.getSystemClassLoader();
             }
-            Class cls = classLoader.loadClass(name);
+            Class<?> cls = classLoader.loadClass(name);
             // Cross check if the class was loaded from the same location (JAR)
             return rootUrl.equals(getRootUrlForClass(cls)) ? cls : null;
         } catch (ClassNotFoundException ex) {
@@ -306,7 +306,7 @@ public class StAXDialectDetector {
     }
     
     private static StAXDialect detectDialectFromClasses(ClassLoader classLoader, URL rootUrl) {
-        Class cls;
+        Class<?> cls;
         
         // Try Sun's implementation found in JREs
         cls = loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
@@ -314,7 +314,7 @@ public class StAXDialectDetector {
             // Some JREs (such as IBM Java 1.7) include com.sun.xml.internal.stream.XMLOutputFactoryImpl
             // for compatibility (in which case it extends the XMLOutputFactory implementation from
             // another StAX implementation, e.g. XLXP). Detect this situation by checking the superclass.
-            Class superClass = cls.getSuperclass();
+            Class<?> superClass = cls.getSuperclass();
             if (superClass == XMLOutputFactory.class || superClass.getName().startsWith("com.sun.")) {
                 // Check if the implementation has the bug fixed here:
                 // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5

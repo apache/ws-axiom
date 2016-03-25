@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -33,7 +34,7 @@ public class TestGetNamespacesInScopeWithMaskedDefaultNamespace extends AxiomTes
     protected void runTest() throws Throwable {
         OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
                 "<a xmlns='urn:test'><b xmlns=''/></a>");
-        Iterator it = element.getFirstElement().getNamespacesInScope();
+        Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
         assertFalse(it.hasNext());
     }
 }

@@ -35,8 +35,8 @@ public class WriteCommentScenario implements PushOMDataSourceScenario {
         testCase.addTestParameter("scenario", "writeComment");
     }
 
-    public Map getNamespaceContext() {
-        return Collections.EMPTY_MAP;
+    public Map<String,String> getNamespaceContext() {
+        return Collections.emptyMap();
     }
 
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {

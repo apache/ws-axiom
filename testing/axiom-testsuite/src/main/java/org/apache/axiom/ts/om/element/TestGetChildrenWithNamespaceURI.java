@@ -38,11 +38,11 @@ public class TestGetChildrenWithNamespaceURI extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMElement element = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new StringReader(
                 "<root><a xmlns='urn:ns1'/><b xmlns='urn:ns2'/><c xmlns='urn:ns1'/></root>")).getDocumentElement();
-        Iterator it = element.getChildrenWithNamespaceURI("urn:ns1");
+        Iterator<OMElement> it = element.getChildrenWithNamespaceURI("urn:ns1");
         assertTrue(it.hasNext());
-        assertEquals("a", ((OMElement)it.next()).getLocalName());
+        assertEquals("a", it.next().getLocalName());
         assertTrue(it.hasNext());
-        assertEquals("c", ((OMElement)it.next()).getLocalName());
+        assertEquals("c", it.next().getLocalName());
         assertFalse(it.hasNext());
     }
 }

@@ -121,7 +121,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
-        Set idSet = attachments.getContentIDSet();
+        Set<String> idSet = attachments.getContentIDSet();
         assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
         assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
         assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
@@ -133,7 +133,7 @@ public class AttachmentsTest extends AbstractTestCase {
         attachments.addDataHandler("id2@apache.org", new DataHandler("content2", "text/plain"));
         attachments.addDataHandler("id3@apache.org", new DataHandler("content3", "text/plain"));
         
-        Set idSet = attachments.getContentIDSet();
+        Set<String> idSet = attachments.getContentIDSet();
         assertTrue(idSet.contains("id1@apache.org"));
         assertTrue(idSet.contains("id2@apache.org"));
         assertTrue(idSet.contains("id3@apache.org"));
@@ -368,7 +368,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         attachments.removeDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
 
-        List list2 = attachments.getContentIDList();
+        List<String> list2 = attachments.getContentIDList();
         assertEquals(2, list2.size());
         assertEquals(2, attachments.getMap().size());
 
@@ -384,7 +384,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
         attachments.removeDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-        Set idSet = attachments.getContentIDSet();
+        Set<String> idSet = attachments.getContentIDSet();
         assertEquals(2, idSet.size());
         assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
         assertFalse(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));

@@ -20,6 +20,7 @@
 package org.apache.axiom.om;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.axiom.mime.MultipartWriterFactory;
 import org.apache.axiom.mime.impl.axiom.AxiomMultipartWriterFactory;
@@ -103,7 +104,7 @@ public class OMOutputFormat {
         Boolean.TRUE;
     
     
-    private HashMap map;  // Map of generic properties
+    private Map<String,Object> map;  // Map of generic properties
 
 
     public OMOutputFormat() {
@@ -135,7 +136,7 @@ public class OMOutputFormat {
         writerConfiguration = format.writerConfiguration;
         multipartWriterFactory = format.multipartWriterFactory;
         if (format.map != null) {
-            map = new HashMap(format.map);
+            map = new HashMap<String,Object>(format.map);
         }
     }
     
@@ -157,7 +158,7 @@ public class OMOutputFormat {
      */
     public Object setProperty(String key, Object value) {
         if (map == null) {
-            map = new HashMap();
+            map = new HashMap<String,Object>();
         }
         return map.put(key, value);
     }

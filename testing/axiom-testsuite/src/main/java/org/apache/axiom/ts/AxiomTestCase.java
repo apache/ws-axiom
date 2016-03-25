@@ -60,7 +60,7 @@ public abstract class AxiomTestCase extends MatrixTestCase {
         assertTrue(isConsumed);
     }
 
-    protected static int getChildrenCount(Iterator childrenIter) {
+    protected static int getChildrenCount(Iterator<?> childrenIter) {
         int childCount = 0;
         while (childrenIter.hasNext()) {
             childrenIter.next();

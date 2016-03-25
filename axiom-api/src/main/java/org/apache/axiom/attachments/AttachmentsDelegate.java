@@ -56,7 +56,7 @@ abstract class AttachmentsDelegate {
     abstract String getRootPartContentID();
     abstract String getRootPartContentType();
     abstract IncomingAttachmentStreams getIncomingAttachmentStreams();
-    abstract Set getContentIDs(boolean fetchAll);
-    abstract Map getMap();
+    abstract Set<String> getContentIDs(boolean fetchAll);
+    abstract Map<String,DataHandler> getMap();
     abstract long getContentLength() throws IOException;
 }

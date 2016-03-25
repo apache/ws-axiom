@@ -35,7 +35,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     private static final Log log = LogFactory.getLog(LifecycleManagerImpl.class);
 
     //Hashtable to store file accessors.
-    private static Hashtable table = new Hashtable();
+    private static Hashtable<String,FileAccessor> table = new Hashtable<String,FileAccessor>();
     private VMShutdownHook hook = null;
     public LifecycleManagerImpl() {
         super(); 
@@ -160,8 +160,8 @@ public class LifecycleManagerImpl implements LifecycleManager {
             log.debug("Start RegisterVMShutdownHook()");
         }
         try{
-            hook = (VMShutdownHook)AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                public Object run() throws SecurityException, IllegalStateException, IllegalArgumentException {
+            hook = AccessController.doPrivileged(new PrivilegedExceptionAction<VMShutdownHook>() {
+                public VMShutdownHook run() throws SecurityException, IllegalStateException, IllegalArgumentException {
                     VMShutdownHook hook = VMShutdownHook.hook();
                     if(!hook.isRegistered()){
                         Runtime.getRuntime().addShutdownHook(hook);
@@ -210,7 +210,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     }
 
 	public FileAccessor getFileAccessor(String fileName) throws IOException {		
-		return (FileAccessor)table.get(fileName);
+		return table.get(fileName);
 	}
 
 }

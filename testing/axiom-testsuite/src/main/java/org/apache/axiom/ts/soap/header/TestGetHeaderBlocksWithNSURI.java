@@ -40,7 +40,7 @@ public class TestGetHeaderBlocksWithNSURI extends SOAPTestCase {
         soapHeader.addHeaderBlock("echoOk1", namespace);
         soapHeader.addHeaderBlock("echoOk2",
                                     soapFactory.createOMNamespace("http://www.test1.org", "test1"));
-        ArrayList arrayList = soapHeader.getHeaderBlocksWithNSURI(
+        ArrayList<SOAPHeaderBlock> arrayList = soapHeader.getHeaderBlocksWithNSURI(
                 "http://www.test1.org");
         assertEquals(
                 "SOAP Header Test : - getHeaderBlocksWithNSURI returns an arrayList of incorrect size",
@@ -48,6 +48,6 @@ public class TestGetHeaderBlocksWithNSURI extends SOAPTestCase {
         assertEquals(
                 "SOAP Header Test : - headerBlock of given namespace uri mismatch",
                 "http://www.test1.org",
-                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI());
+                arrayList.get(0).getNamespace().getNamespaceURI());
     }
 }

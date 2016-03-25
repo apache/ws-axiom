@@ -56,7 +56,7 @@ public class PdfAttachmentStreamingTest extends AbstractTestCase {
 		// reading the message again, getting second attachment using datahandlers
 		inStream = getTestResource(inputFile);
 		attachments = new Attachments(inStream, contentType);
-		DataHandler h = attachments.getDataHandler((String)attachments.getAllContentIDs()[1]);
+		DataHandler h = attachments.getDataHandler(attachments.getAllContentIDs()[1]);
 
 		ByteArrayOutputStream input = new ByteArrayOutputStream();
 		copy(h.getInputStream(), input);

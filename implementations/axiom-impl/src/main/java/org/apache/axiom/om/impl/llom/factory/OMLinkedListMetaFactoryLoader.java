@@ -24,7 +24,7 @@ import org.apache.axiom.locator.loader.OMMetaFactoryLoader;
 import org.apache.axiom.om.OMMetaFactory;
 
 public class OMLinkedListMetaFactoryLoader implements OMMetaFactoryLoader {
-    public OMMetaFactory load(Map properties) {
+    public OMMetaFactory load(Map<String,Object> properties) {
         return OMLinkedListMetaFactory.INSTANCE;
     }
 }

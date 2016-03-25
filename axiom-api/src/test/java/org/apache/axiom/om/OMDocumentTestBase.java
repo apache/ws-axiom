@@ -66,9 +66,9 @@ public class OMDocumentTestBase extends AbstractTestCase {
         // check for the comment and the PI
         boolean commentFound = false;
         boolean piFound = false;
-        Iterator children = document.getChildren();
+        Iterator<OMNode> children = document.getChildren();
         while (children.hasNext()) {
-            OMNode omNode = (OMNode) children.next();
+            OMNode omNode = children.next();
             if (omNode instanceof OMComment) {
                 commentFound = true;
             } else if (omNode instanceof OMProcessingInstruction) {

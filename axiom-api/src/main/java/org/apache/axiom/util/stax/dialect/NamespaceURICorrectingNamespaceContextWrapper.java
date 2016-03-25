@@ -46,7 +46,7 @@ class NamespaceURICorrectingNamespaceContextWrapper implements NamespaceContext 
         return parent.getPrefix(namespaceURI);
     }
 
-    public Iterator getPrefixes(String namespaceURI) {
+    public Iterator<?> getPrefixes(String namespaceURI) {
         return parent.getPrefixes(namespaceURI);
     }
 }

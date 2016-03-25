@@ -36,10 +36,10 @@ public class TestGetNamespacesInScope extends AxiomTestCase {
                 "<a xmlns:ns1='urn:ns1'><b xmlns:ns2='urn:ns2'/></a>");
         boolean ns1seen = false;
         boolean ns2seen = false;
-        Iterator it = element.getFirstElement().getNamespacesInScope();
+        Iterator<OMNamespace> it = element.getFirstElement().getNamespacesInScope();
         int count = 0;
         while (it.hasNext()) {
-            OMNamespace ns = (OMNamespace)it.next();
+            OMNamespace ns = it.next();
             count++;
             if (ns.getPrefix().equals("ns1")) {
                 ns1seen = true;

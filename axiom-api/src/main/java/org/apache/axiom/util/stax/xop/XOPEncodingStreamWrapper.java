@@ -33,7 +33,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
  * Base class for {@link XOPEncodingStreamReader} and {@link XOPEncodingStreamWriter}.
  */
 public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
-    private final Map dataHandlerObjects = new LinkedHashMap();
+    private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
 
@@ -77,7 +77,7 @@ public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
      *         <tt>xop:Include</tt> element information items have been produced yet, an empty
      *         set will be returned.
      */
-    public Set/*<String>*/ getContentIDs() {
+    public Set<String> getContentIDs() {
         return Collections.unmodifiableSet(dataHandlerObjects.keySet());
     }
 

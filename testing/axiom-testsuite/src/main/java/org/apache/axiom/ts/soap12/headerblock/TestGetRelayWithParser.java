@@ -31,9 +31,9 @@ public class TestGetRelayWithParser extends SOAPTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Iterator iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
-        assertFalse(((SOAPHeaderBlock) iterator.next()).getRelay());
-        assertTrue(((SOAPHeaderBlock) iterator.next()).getRelay());
-        assertFalse(((SOAPHeaderBlock) iterator.next()).getRelay());
+        Iterator<SOAPHeaderBlock> iterator = getTestMessage(MESSAGE).getHeader().examineAllHeaderBlocks();
+        assertFalse(iterator.next().getRelay());
+        assertTrue(iterator.next().getRelay());
+        assertFalse(iterator.next().getRelay());
     }
 }

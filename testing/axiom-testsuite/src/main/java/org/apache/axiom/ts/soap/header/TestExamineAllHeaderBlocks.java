@@ -39,9 +39,9 @@ public class TestExamineAllHeaderBlocks extends SOAPTestCase {
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
         soapHeader.addHeaderBlock("echoOk1", namespace);
         soapHeader.addHeaderBlock("echoOk2", namespace);
-        Iterator iterator = soapHeader.examineAllHeaderBlocks();
+        Iterator<SOAPHeaderBlock> iterator = soapHeader.examineAllHeaderBlocks();
         iterator.hasNext();
-        SOAPHeaderBlock headerBlock1 = (SOAPHeaderBlock) iterator.next();
+        SOAPHeaderBlock headerBlock1 = iterator.next();
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns empty iterator",
                 headerBlock1);
@@ -52,7 +52,7 @@ public class TestExamineAllHeaderBlocks extends SOAPTestCase {
                 "http://www.example.org", headerBlock1.getNamespace().getNamespaceURI());
 
         assertTrue(iterator.hasNext());
-        SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
+        SOAPHeaderBlock headerBlock2 = iterator.next();
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns an iterator with only one object",
                 headerBlock2);

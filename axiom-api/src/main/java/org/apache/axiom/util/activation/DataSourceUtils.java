@@ -31,10 +31,10 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
  * Contains utility methods to work with {@link DataSource} objects.
  */
 public class DataSourceUtils {
-    private static final Class byteArrayDataSourceClass;
+    private static final Class<?> byteArrayDataSourceClass;
     
     static {
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = Class.forName("javax.mail.util.ByteArrayDataSource");
         } catch (ClassNotFoundException e) {

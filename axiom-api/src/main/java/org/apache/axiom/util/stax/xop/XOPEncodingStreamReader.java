@@ -57,7 +57,7 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
      * Wrapper that adds the XOP namespace to another namespace context.
      */
     private static class NamespaceContextWrapper implements NamespaceContext {
-        private static final List xopPrefixList = Arrays.asList(new String[] {
+        private static final List<String> xopPrefixList = Arrays.asList(new String[] {
                 XOPConstants.DEFAULT_PREFIX });
         
         private final NamespaceContext parent;
@@ -78,16 +78,16 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
                     : parent.getPrefix(namespaceURI);
         }
 
-        public Iterator getPrefixes(String namespaceURI) {
-            Iterator prefixes = parent.getPrefixes(namespaceURI);
+        public Iterator<?> getPrefixes(String namespaceURI) {
+            Iterator<?> prefixes = parent.getPrefixes(namespaceURI);
             if (XOPConstants.NAMESPACE_URI.equals(namespaceURI)) {
                 if (!prefixes.hasNext()) {
                     return xopPrefixList.iterator();
                 } else {
                     // This case is very unusual
-                    List prefixList = new ArrayList();
+                    List<String> prefixList = new ArrayList<String>();
                     do {
-                        prefixList.add(prefixes.next());
+                        prefixList.add((String)prefixes.next());
                     } while (prefixes.hasNext());
                     prefixList.add(XOPConstants.DEFAULT_PREFIX);
                     return prefixList.iterator();

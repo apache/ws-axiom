@@ -44,11 +44,11 @@ public class TestAddChild2 extends AxiomTestCase {
 
         elem.addChild(childElem);
 
-        Iterator it = elem.getChildrenWithName(new QName(namespace, childLocalName));
+        Iterator<OMElement> it = elem.getChildrenWithName(new QName(namespace, childLocalName));
 
         int count = 0;
         while (it.hasNext()) {
-            OMElement child = (OMElement) it.next();
+            OMElement child = it.next();
             assertEquals("Child local name mismatch", childLocalName, child.getLocalName());
             assertEquals("Child namespace mismatch", namespace,
                          child.getNamespace().getNamespaceURI());

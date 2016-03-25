@@ -27,7 +27,6 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -71,7 +70,7 @@ final class MultipartAttachmentStreams extends IncomingAttachmentStreams {
                 throw new IllegalStateException();
             }
             
-            List fields = new ArrayList();
+            List<Field> fields = new ArrayList<Field>();
             while (parser.next() == EntityState.T_FIELD) {
                 fields.add(parser.getField());
             }
@@ -82,8 +81,7 @@ final class MultipartAttachmentStreams extends IncomingAttachmentStreams {
             
             stream = new IncomingAttachmentInputStream(parser.getInputStream(), this);
     
-            for (Iterator it = fields.iterator(); it.hasNext(); ) {
-                Field field = (Field)it.next();
+            for (Field field : fields) {
                 String name = field.getName();
                 String value = field.getBody();
                 if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)

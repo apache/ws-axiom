@@ -45,7 +45,7 @@ public class TestGetChildrenWithNameNextWithoutHasNext extends AxiomTestCase {
         OMElement element = factory.createOMElement(new QName("root"));
         factory.createOMElement(new QName("child1"), element);
         OMElement child2 = factory.createOMElement(new QName("child2"), element);
-        Iterator it = element.getChildrenWithName(new QName("child2"));
+        Iterator<OMElement> it = element.getChildrenWithName(new QName("child2"));
         assertSame(child2, it.next());
     }
 }

@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -42,12 +41,12 @@ public class TestGetChildrenWithName3 extends AxiomTestCase {
         OMNamespace testNamespace = factory.createOMNamespace("http://test.ws.org", "test");
         OMElement documentElement = factory.createOMElement("Employees", testNamespace);
         documentElement.declareNamespace(testNamespace);
-        OMText txt = factory.createOMText(documentElement, " ");
+        factory.createOMText(documentElement, " ");
         OMElement e = factory.createOMElement("Employee", testNamespace, documentElement);
         e.setText("Apache Developer");
 
-        Iterator childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
-        OMElement employee = (OMElement) childrenIter.next(); // should walk past OMText
+        Iterator<OMElement> childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
+        OMElement employee = childrenIter.next(); // should walk past OMText
         assertEquals("Employee test was incorrect", employee.getText(), "Apache Developer");
     }
 }

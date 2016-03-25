@@ -22,7 +22,6 @@ package org.apache.axiom.attachments.lifecycle.impl;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
 public class VMShutdownHook extends Thread {
     private static final Log log = LogFactory.getLog(VMShutdownHook.class);
     private static VMShutdownHook instance = null;
-    private static Set files = Collections.synchronizedSet(new HashSet());
+    private static Set<File> files = Collections.synchronizedSet(new HashSet<File>());
     private boolean isRegistered = false;
 
     static VMShutdownHook hook() {
@@ -75,9 +74,7 @@ public class VMShutdownHook extends Thread {
         if(log.isDebugEnabled()){
             log.debug("JVM running VM Shutdown Hook");
         }       
-        Iterator iter = files.iterator();
-        while(iter.hasNext()){
-            File file = (File)iter.next();
+        for (File file : files){
             if(log.isDebugEnabled()){
                 log.debug("Deleting File from Shutdown Hook Collection"+file.getAbsolutePath());
             }    		

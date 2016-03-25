@@ -95,8 +95,8 @@ public final class UIDGenerator {
      * class. Note that we use a simple array here (instead of our own class)
      * to avoid class loader leaks (see AXIOM-354).
      */
-    private static final ThreadLocal/*<long[]>*/ triplet = new ThreadLocal() {
-        protected Object initialValue() {
+    private static final ThreadLocal<long[]> triplet = new ThreadLocal<long[]>() {
+        protected long[] initialValue() {
             long[] values = new long[3];
             values[0] = Thread.currentThread().getId() ^ threadIdXorOperand;
             values[1] = System.currentTimeMillis() ^ startTimeXorOperand;
@@ -126,7 +126,7 @@ public final class UIDGenerator {
      * @param buffer
      */
     private static void generateHex(StringBuilder buffer) {
-        long[] values = (long[])triplet.get();
+        long[] values = triplet.get();
         writeReverseLongHex(values[2]++ ^ seqXorOperand, buffer);
         writeReverseLongHex(values[1], buffer);
         writeReverseLongHex(values[0], buffer);

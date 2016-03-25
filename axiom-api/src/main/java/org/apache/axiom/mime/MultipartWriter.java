@@ -89,7 +89,7 @@ public interface MultipartWriter {
      *             if an I/O error occurs when writing to the underlying stream
      */
     OutputStream writePart(String contentType, String contentTransferEncoding,
-            String contentID, List/*<Header>*/ extraHeaders) throws IOException;
+            String contentID, List<Header> extraHeaders) throws IOException;
     
     /**
      * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
@@ -127,7 +127,7 @@ public interface MultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     void writePart(DataHandler dataHandler, String contentTransferEncoding,
-            String contentID, List/*<Header>*/ extraHeaders) throws IOException;
+            String contentID, List<Header> extraHeaders) throws IOException;
     
     /**
      * Complete writing of the MIME multipart package. This method does <b>not</b> close the

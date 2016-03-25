@@ -21,8 +21,6 @@ package org.apache.axiom.ts.soap12.envelope;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.activation.DataHandler;
-
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;

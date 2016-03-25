@@ -33,10 +33,10 @@ import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
 import junit.framework.TestCase;
 
 public class ScopedNamespaceContextTest extends TestCase {
-    private static Set getPrefixes(NamespaceContext nc, String namespaceURI) {
-        Set result = new HashSet();
-        for (Iterator it = nc.getPrefixes(namespaceURI); it.hasNext(); ) {
-            result.add(it.next());
+    private static Set<String> getPrefixes(NamespaceContext nc, String namespaceURI) {
+        Set<String> result = new HashSet<String>();
+        for (Iterator<?> it = nc.getPrefixes(namespaceURI); it.hasNext(); ) {
+            result.add((String)it.next());
         }
         return result;
     }
@@ -64,7 +64,7 @@ public class ScopedNamespaceContextTest extends TestCase {
         nc.setPrefix("b", "urn:ns1");
         String prefix = nc.getPrefix("urn:ns1");
         assertTrue(prefix.equals("") || prefix.equals("b"));
-        assertEquals(new HashSet(Arrays.asList(new String[] { "", "b" })),
+        assertEquals(new HashSet<String>(Arrays.asList("", "b")),
                      getPrefixes(nc, "urn:ns1"));
     }
     

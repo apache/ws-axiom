@@ -36,15 +36,15 @@ import org.apache.commons.logging.LogFactory;
 final class JBossFactoryUnwrapper {
     private static final Log log = LogFactory.getLog(JBossFactoryUnwrapper.class);
     
-    private final Class wrapperClass;
+    private final Class<?> wrapperClass;
     private final Field actual;
     
-    private JBossFactoryUnwrapper(Class factoryType) throws Exception {
+    private JBossFactoryUnwrapper(Class<?> factoryType) throws Exception {
         wrapperClass = Class.forName("__redirected.__" + factoryType.getSimpleName());
         try {
             actual = wrapperClass.getDeclaredField("actual");
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
+            AccessController.doPrivileged(new PrivilegedAction<Void>() {
+                public Void run() {
                     actual.setAccessible(true);
                     return null;
                 }
@@ -63,7 +63,7 @@ final class JBossFactoryUnwrapper {
      * @return the unwrapper, or <code>null</code> if the unwrapper could not be created (which
      *         usually means that the code is not executed inside JBoss)
      */
-    static JBossFactoryUnwrapper create(Class factoryType) {
+    static JBossFactoryUnwrapper create(Class<?> factoryType) {
         try {
             return new JBossFactoryUnwrapper(factoryType);
         } catch (Exception ex) {

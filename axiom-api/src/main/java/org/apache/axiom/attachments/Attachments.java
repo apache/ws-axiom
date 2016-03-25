@@ -345,8 +345,8 @@ public class Attachments {
      * @return an array with the content IDs in order of appearance in the message
      */
     public String[] getAllContentIDs() {
-        Set cids = delegate.getContentIDs(true);
-        return (String[]) cids.toArray(new String[cids.size()]);
+        Set<String> cids = delegate.getContentIDs(true);
+        return cids.toArray(new String[cids.size()]);
     }
 
     /**
@@ -357,7 +357,7 @@ public class Attachments {
      * 
      * @return the set of content IDs
      */
-    public Set getContentIDSet() {
+    public Set<String> getContentIDSet() {
         return delegate.getContentIDs(true);
     }
     
@@ -369,7 +369,7 @@ public class Attachments {
      * @return A map of all MIME parts in the message, with content IDs as keys and
      *         {@link DataHandler} objects as values.
      */
-    public Map getMap() {
+    public Map<String,DataHandler> getMap() {
         return delegate.getMap();
     }
 
@@ -383,8 +383,8 @@ public class Attachments {
      * 
      * @return List of content IDs in order of appearance in message
      */
-    public List getContentIDList() {
-        return new ArrayList(delegate.getContentIDs(false));
+    public List<String> getContentIDList() {
+        return new ArrayList<String>(delegate.getContentIDs(false));
     }
     
     /**

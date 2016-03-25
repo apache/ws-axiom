@@ -72,7 +72,7 @@ public final class DOMConfigurationImpl implements DOMConfiguration {
             | DATATYPE_NORMALIZATION | ELEMENT_CONTENT_WHITESPACE | ENTITIES | NAMESPACE_DECLARATIONS
             | NORMALIZE_CHARACTERS | VALIDATE | VALIDATE_IF_SCHEMA;
     
-    private static final Map/*<String,Integer>*/ paramMap = new HashMap();
+    private static final Map<String,Integer> paramMap = new HashMap<String,Integer>();
     
     static {
         paramMap.put(CANONICAL_FORM_PARAM, Integer.valueOf(CANONICAL_FORM));

@@ -34,7 +34,7 @@ public class OMOutputFormatTest extends TestCase {
         Method m = OMOutputFormat.class.getMethod("getProperty", new Class[] {String.class});
         assertTrue(m != null);
         
-        Class returnType = m.getReturnType();
+        Class<?> returnType = m.getReturnType();
         assertTrue(returnType == Object.class);
     }
     
@@ -42,7 +42,7 @@ public class OMOutputFormatTest extends TestCase {
         Method m = OMOutputFormat.class.getMethod("setProperty", new Class[] {String.class, Object.class});
         assertTrue(m != null);
         
-        Class returnType = m.getReturnType();
+        Class<?> returnType = m.getReturnType();
         assertTrue(returnType == Object.class);
     }
     

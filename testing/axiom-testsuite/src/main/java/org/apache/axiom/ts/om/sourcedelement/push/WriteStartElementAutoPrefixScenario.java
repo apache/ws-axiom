@@ -37,8 +37,8 @@ public class WriteStartElementAutoPrefixScenario implements PushOMDataSourceScen
         testCase.addTestParameter("scenario", "writeStartElementAutoPrefix");
     }
 
-    public Map getNamespaceContext() {
-        return Collections.EMPTY_MAP;
+    public Map<String,String> getNamespaceContext() {
+        return Collections.emptyMap();
     }
 
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {

@@ -65,13 +65,13 @@ public class TestPushOMDataSourceExpansion extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         PushOMDataSource ds = new PushOMDataSource();
         OMElement element = factory.createOMElement(ds);
-        Iterator it = scenario.getNamespaceContext().entrySet().iterator();
+        Iterator<Map.Entry<String,String>> it = scenario.getNamespaceContext().entrySet().iterator();
         if (it.hasNext()) {
-            Map.Entry binding = (Map.Entry)it.next();
-            OMElement parent = factory.createOMElement("parent", factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
+            Map.Entry<String,String> binding = it.next();
+            OMElement parent = factory.createOMElement("parent", factory.createOMNamespace(binding.getValue(), binding.getKey()));
             while (it.hasNext()) {
-                binding = (Map.Entry)it.next();
-                parent.declareNamespace(factory.createOMNamespace((String)binding.getValue(), (String)binding.getKey()));
+                binding = it.next();
+                parent.declareNamespace(factory.createOMNamespace(binding.getValue(), binding.getKey()));
             }
             parent.addChild(element);
         }

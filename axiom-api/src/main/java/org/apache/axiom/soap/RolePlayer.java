@@ -34,7 +34,7 @@ public interface RolePlayer {
      *
      * @return a List containing URI Strings, one per custom role supported, or null
      */
-    List getRoles();
+    List<String> getRoles();
 
     /**
      * Are we the ultimate destination?

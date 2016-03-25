@@ -83,9 +83,9 @@ public class CopyUtils {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         try {
             OMDocument omDocument = builder.getDocument();
-            Iterator it = omDocument.getChildren();
+            Iterator<OMNode> it = omDocument.getChildren();
             while (it.hasNext()) {
-                OMNode omNode = (OMNode) it.next();
+                OMNode omNode = it.next();
                 omNode.serializeAndConsume(writer);
             }
         } finally {

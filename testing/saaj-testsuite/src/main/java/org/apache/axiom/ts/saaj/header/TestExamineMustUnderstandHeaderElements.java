@@ -54,7 +54,7 @@ public class TestExamineMustUnderstandHeaderElements extends SAAJTestCase {
         try {
             SOAPMessage message = messageFactory.createMessage(mimeHeaders, in);
             SOAPHeader header = message.getSOAPHeader();
-            Iterator it = header.examineMustUnderstandHeaderElements(null);
+            Iterator<?> it = header.examineMustUnderstandHeaderElements(null);
             assertTrue(it.hasNext());
             assertTrue(it.next() instanceof SOAPHeaderElement);
             assertFalse(it.hasNext());

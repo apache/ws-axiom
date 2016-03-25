@@ -74,7 +74,7 @@ class MIMEMessage extends AttachmentsDelegate {
      * Stores the Data Handlers of the already parsed Mime Body Parts in the order that the attachments
      * occur in the message. This map is keyed using the content-ID's.
      */
-    private final Map attachmentsMap = new LinkedHashMap();
+    private final Map<String,DataHandler> attachmentsMap = new LinkedHashMap<String,DataHandler>();
 
     /** <code>partIndex</code>- Number of Mime parts parsed */
     private int partIndex = 0;
@@ -153,7 +153,7 @@ class MIMEMessage extends AttachmentsDelegate {
 
     DataHandler getDataHandler(String contentID) {
         do {
-            DataHandler dataHandler = (DataHandler)attachmentsMap.get(contentID);
+            DataHandler dataHandler = attachmentsMap.get(contentID);
             if (dataHandler != null) {
                 return dataHandler;
             }
@@ -258,14 +258,14 @@ class MIMEMessage extends AttachmentsDelegate {
         }
     }
 
-    Set getContentIDs(boolean fetchAll) {
+    Set<String> getContentIDs(boolean fetchAll) {
         if (fetchAll) {
             fetchAllParts();
         }
         return attachmentsMap.keySet();
     }
     
-    Map getMap() {
+    Map<String,DataHandler> getMap() {
         fetchAllParts();
         return Collections.unmodifiableMap(attachmentsMap);
     }
@@ -341,7 +341,7 @@ class MIMEMessage extends AttachmentsDelegate {
         boolean isRootPart = (partIndex == 0);
 
         try {
-            List headers = readHeaders();
+            List<Header> headers = readHeaders();
             
             partIndex++;
             currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
@@ -353,14 +353,14 @@ class MIMEMessage extends AttachmentsDelegate {
         }
     }
     
-    private List readHeaders() throws IOException, MimeException {
+    private List<Header> readHeaders() throws IOException, MimeException {
         if(log.isDebugEnabled()){
             log.debug("readHeaders");
         }
         
         checkParserState(parser.next(), EntityState.T_START_HEADER);
         
-        List headers = new ArrayList();
+        List<Header> headers = new ArrayList<Header>();
         while (parser.next() == EntityState.T_FIELD) {
             Field field = parser.getField();
             String name = field.getName();

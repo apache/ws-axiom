@@ -46,7 +46,8 @@ class ImplicitNamespaceContextWrapper extends AbstractNamespaceContext {
         return parent.getPrefix(namespaceURI);
     }
 
-    protected Iterator doGetPrefixes(String namespaceURI) {
+    @SuppressWarnings("unchecked")
+    protected Iterator<String> doGetPrefixes(String namespaceURI) {
         return parent.getPrefixes(namespaceURI);
     }
 }

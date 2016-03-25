@@ -64,7 +64,7 @@ public interface PushOMDataSourceScenario extends Dimension {
      * 
      * @return the namespace context
      */
-    Map getNamespaceContext();
+    Map<String,String> getNamespaceContext();
     
     /**
      * Write the StAX events to the given {@link XMLStreamWriter}.

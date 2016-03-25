@@ -42,7 +42,7 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
     private static boolean IS_ADV_DEBUG_ENABLED = false;  // Turn this on to trace every event
     
     private boolean throwExceptions = false;   // Indicates whether OMException should be thrown if errors are disovered
-    private Stack stack = new Stack();         // Stack keeps track of the nested element QName
+    private Stack<QName> stack = new Stack<QName>(); // Stack keeps track of the nested element QName
     
 
     /**
@@ -89,7 +89,7 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
                 reportError("An END_ELEMENT event for " + delegateQName + 
                         " was encountered, but the START_ELEMENT stack is empty.");
             } else {
-                QName expectedQName = (QName) stack.pop();
+                QName expectedQName = stack.pop();
                 
                 if (!expectedQName.equals(delegateQName)) {
                     reportError("An END_ELEMENT event for " + delegateQName + 

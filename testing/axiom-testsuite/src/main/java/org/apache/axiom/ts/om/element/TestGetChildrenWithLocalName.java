@@ -38,9 +38,9 @@ public class TestGetChildrenWithLocalName extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMElement elt = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 XMLSample.SIMPLE.getInputStream()).getDocumentElement().getFirstElement();
-        Iterator it = elt.getChildrenWithLocalName("subelement");
+        Iterator<OMElement> it = elt.getChildrenWithLocalName("subelement");
         assertThat(it.hasNext()).isTrue();
-        OMElement child = (OMElement)it.next();
+        OMElement child = it.next();
         assertThat(child.getQName()).isEqualTo(new QName("urn:ns2", "subelement"));
         assertThat(it.hasNext()).isFalse();
         elt.close(false);
