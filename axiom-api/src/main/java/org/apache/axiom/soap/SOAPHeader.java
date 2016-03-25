@@ -104,7 +104,7 @@ public interface SOAPHeader extends OMElement {
      *         role
      * @see #examineHeaderBlocks(String)
      */
-    Iterator extractHeaderBlocks(String role);
+    Iterator<SOAPHeaderBlock> extractHeaderBlocks(String role);
 
     /**
      * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}
@@ -134,15 +134,18 @@ public interface SOAPHeader extends OMElement {
      * @return an iterator over all the {@link SOAPHeaderBlock} objects contained by this
      *         {@link SOAPHeader}
      */
-    Iterator extractAllHeaderBlocks();
+    Iterator<SOAPHeaderBlock> extractAllHeaderBlocks();
 
     /**
      * Return all the Headers that has the Namespace URI to given NS URI.
      *
      * @param nsURI
      * @return Returns ArrayList.
+     * @deprecated Use {@link #getHeaderBlocksWithNamespaceURI(String)} instead.
      */
-    ArrayList getHeaderBlocksWithNSURI(String nsURI);
+    ArrayList<SOAPHeaderBlock> getHeaderBlocksWithNSURI(String nsURI);
+
+    Iterator<SOAPHeaderBlock> getHeaderBlocksWithNamespaceURI(String uri);
 
     /**
      * Get the appropriate set of headers for a RolePlayer and a particular namespace.

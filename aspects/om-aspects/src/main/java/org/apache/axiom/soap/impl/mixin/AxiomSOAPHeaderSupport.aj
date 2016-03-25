@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.ElementMatcher;
@@ -60,5 +62,36 @@ public aspect AxiomSOAPHeaderSupport {
     public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
         return coreGetElements(Axis.CHILDREN, AxiomElement.class, new RolePlayerChecker(getSOAPHelper(), rolePlayer, namespace), null, null,
                 SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
+    }
+
+    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.getHeaderBlocksWithNamespaceURI(String uri) {
+        return coreGetElements(Axis.CHILDREN, AxiomElement.class, ElementMatcher.BY_NAMESPACE_URI, uri, null,
+                SOAPHeaderBlockMapper.INSTANCE, AxiomSemantics.INSTANCE);
+    }
+
+    public final ArrayList<SOAPHeaderBlock> AxiomSOAPHeader.getHeaderBlocksWithNSURI(String nsURI) {
+        ArrayList<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
+        for (Iterator<SOAPHeaderBlock> it = getHeaderBlocksWithNamespaceURI(nsURI); it.hasNext(); ) {
+            result.add(it.next());
+        }
+        return result;
+    }
+
+    private Iterator<SOAPHeaderBlock> AxiomSOAPHeader.extract(Iterator<SOAPHeaderBlock> it) {
+        List<SOAPHeaderBlock> result = new ArrayList<SOAPHeaderBlock>();
+        while (it.hasNext()) {
+            SOAPHeaderBlock headerBlock = it.next();
+            it.remove();
+            result.add(headerBlock);
+        }
+        return result.iterator();
+    }
+
+    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.extractHeaderBlocks(String role) {
+        return extract(examineHeaderBlocks(role));
+    }
+
+    public final Iterator<SOAPHeaderBlock> AxiomSOAPHeader.extractAllHeaderBlocks() {
+        return extract(examineAllHeaderBlocks());
     }
 }

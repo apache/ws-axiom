@@ -19,16 +19,10 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -59,51 +53,5 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements AxiomSOAPHea
 
     public SOAPHeaderBlock addHeaderBlock(QName qname) throws OMException {
         return addHeaderBlock(qname.getLocalPart(), getOMFactory().createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
-    }
-
-    public abstract Iterator extractHeaderBlocks(String role);
-
-    public Iterator extractAllHeaderBlocks() {
-        List result = new ArrayList();
-        for (Iterator iter = getChildElements(); iter.hasNext();) {
-            OMElement headerBlock = (OMElement) iter.next();
-            iter.remove();
-            result.add(headerBlock);
-        }
-        return result.iterator();
-    }
-
-    public ArrayList getHeaderBlocksWithNSURI(String nsURI) {
-        ArrayList headers = null;
-        OMNode node;
-        OMElement header = this.getFirstElement();
-
-        if (header != null) {
-            headers = new ArrayList();
-        }
-
-        node = header;
-
-        while (node != null) {
-            if (node.getType() == OMNode.ELEMENT_NODE) {
-                header = (OMElement) node;
-                OMNamespace namespace = header.getNamespace();
-                if (nsURI == null) {
-                    if (namespace == null) {
-                        headers.add(header);
-                    }
-                } else {
-                    if (namespace != null) {
-                        if (nsURI.equals(namespace.getNamespaceURI())) {
-                            headers.add(header);
-                        }
-                    }
-                }
-            }
-            node = node.getNextOMSibling();
-
-        }
-        return headers;
-
     }
 }

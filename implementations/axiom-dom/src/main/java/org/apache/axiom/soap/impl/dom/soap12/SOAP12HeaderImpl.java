@@ -19,22 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderImpl;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12Header;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl implements AxiomSOAP12Header {
-    public Iterator extractHeaderBlocks(String role) {
-        return new OMChildrenWithSpecificAttributeIterator(getFirstOMChild(),
-                                                           new QName(
-                                                                   SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                                                                   SOAP12Constants.SOAP_ROLE),
-                                                           role,
-                                                           true);
-    }
+
 }
