@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMNode;
 
 /**
  * Abstract base class for iterators over sets of OM nodes.
+ * 
+ * @deprecated
  */
 public abstract class OMAbstractIterator implements Iterator {
     private OMNode currentNode;

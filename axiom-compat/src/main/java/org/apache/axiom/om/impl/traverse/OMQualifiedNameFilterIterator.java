@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMNode;
 /**
  * Iterator that selects elements based on prefix and local name.
  * Note that namespace URIs are not taken into account by the filter.
+ * 
+ * @deprecated
  */
 public class OMQualifiedNameFilterIterator extends OMFilterIterator {
     private final String prefix;

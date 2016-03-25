@@ -21,7 +21,9 @@ package org.apache.axiom.om.impl.traverse;
 
 import org.apache.axiom.om.OMNode;
 
-/** Class OMChildrenIterator */
+/**
+ * @deprecated
+ */
 public class OMChildrenIterator extends OMAbstractIterator {
     /**
      * Constructor OMChildrenIterator.

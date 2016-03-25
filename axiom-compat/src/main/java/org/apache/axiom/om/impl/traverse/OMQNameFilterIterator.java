@@ -30,6 +30,8 @@ import org.apache.axiom.om.OMNode;
  * Iterator that selects elements based on {@link QName} equality,
  * i.e. namespace URI and local name.
  * Namespace prefixes are not taken into account by the filter.
+ * 
+ * @deprecated
  */
 public class OMQNameFilterIterator extends OMFilterIterator {
     private final QName qname;

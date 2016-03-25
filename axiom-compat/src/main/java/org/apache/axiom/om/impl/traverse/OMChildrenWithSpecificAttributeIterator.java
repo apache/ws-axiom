@@ -25,7 +25,9 @@ import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
-/** Class OMChildrenWithSpecificAttributeIterator */
+/**
+ * @deprecated
+ */
 public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
     /** Field attributeName */
     private QName attributeName;
