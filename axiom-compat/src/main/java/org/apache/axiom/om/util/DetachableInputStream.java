@@ -43,6 +43,7 @@ import java.io.InputStream;
  * buffered.  Currently they are buffered incore (this
  * could be improved to buffer in a file).
  * 
+ * @deprecated
  */
 public class DetachableInputStream extends FilterInputStream {
 
