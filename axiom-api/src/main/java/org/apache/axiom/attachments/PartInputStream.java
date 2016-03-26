@@ -21,17 +21,44 @@ package org.apache.axiom.attachments;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Input stream wrapper that automatically calls {@link PartImpl#releaseContent()} when the content
- * has been consumed.
- */
-class ReadOnceInputStreamWrapper extends InputStream {
-    private final PartImpl part;
+import org.apache.axiom.blob.MemoryBlob;
+import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.WritableBlobFactory;
+
+final class PartInputStream extends InputStream {
+    private WritableBlob content;
     private InputStream in;
+    private WritableBlobFactory blobFactory;
     
-    ReadOnceInputStreamWrapper(PartImpl part, InputStream in) {
-        this.part = part;
+    PartInputStream(WritableBlob content) throws IOException {
+        this.content = content;
+        in = getInputStream(content);
+    }
+    
+    PartInputStream(InputStream in, WritableBlobFactory blobFactory) {
         this.in = in;
+        this.blobFactory = blobFactory;
+    }
+    
+    private static InputStream getInputStream(WritableBlob content) throws IOException {
+        if (content instanceof MemoryBlob) {
+            return ((MemoryBlob)content).readOnce();
+        } else {
+            return content.getInputStream();
+        }
+    }
+    
+    void detach() throws IOException {
+        if (blobFactory == null) {
+            throw new IllegalStateException();
+        }
+        if (in != null) {
+            WritableBlob content = blobFactory.createBlob();
+            content.readFrom(in);
+            this.content = content;
+            in = getInputStream(content);
+        }
+        blobFactory = null;
     }
     
     public int available() throws IOException {
@@ -81,8 +108,11 @@ class ReadOnceInputStreamWrapper extends InputStream {
     public void close() throws IOException {
         if (in != null) {
             in.close();
-            part.releaseContent();
             in = null;
+        }
+        if (content != null) {
+            content.release();
+            content = null;
         }
     }
 }

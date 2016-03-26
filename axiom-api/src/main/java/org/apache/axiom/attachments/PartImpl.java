@@ -20,14 +20,12 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
-import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -90,7 +88,7 @@ final class PartImpl implements Part {
     
     private final DataHandler dataHandler;
     
-    private DetachableInputStream detachableInputStream;
+    private PartInputStream partInputStream;
     
     /**
      * The actual parts are constructed with the PartFactory.
@@ -209,11 +207,11 @@ final class PartImpl implements Part {
             case STATE_STREAMING:
                 // If the stream is still open, buffer the remaining content
                 try {
-                    detachableInputStream.detach();
+                    partInputStream.detach();
                 } catch (IOException ex) {
                     throw new OMException(ex);
                 }
-                detachableInputStream = null;
+                partInputStream = null;
                 moveToNextPart();
                 state = STATE_DISCARDED;
         }
@@ -242,16 +240,14 @@ final class PartImpl implements Part {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
             state = STATE_STREAMING;
-            detachableInputStream = new DetachableInputStream(getDecodedInputStream());
-            return detachableInputStream;
+            partInputStream = new PartInputStream(getDecodedInputStream(), blobFactory);
+            return partInputStream;
         } else {
             WritableBlob content = getContent();
             if (preserve) {
                 return content.getInputStream();
-            } else if (content instanceof MemoryBlob) {
-                return ((MemoryBlob)content).readOnce();
             } else {
-                return new ReadOnceInputStreamWrapper(this, content.getInputStream());
+                return new PartInputStream(content);
             }
         }
     }

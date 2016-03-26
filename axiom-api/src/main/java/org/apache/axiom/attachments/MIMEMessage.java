@@ -37,7 +37,6 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +65,7 @@ class MIMEMessage extends AttachmentsDelegate {
     
     private final int contentLength; // Content Length
 
-    private final DetachableInputStream filterIS;
+    private final CountingInputStream filterIS;
 
     private final MimeTokenStream parser;
     
@@ -116,7 +115,7 @@ class MIMEMessage extends AttachmentsDelegate {
         // so that we can retrieve it later.
         InputStream is = inStream;
         if (contentLength <= 0) {
-            filterIS = new DetachableInputStream(inStream);
+            filterIS = new CountingInputStream(inStream);
             is = filterIS;
         } else {
             filterIS = null;
@@ -277,7 +276,7 @@ class MIMEMessage extends AttachmentsDelegate {
             // Ensure all parts are read
             fetchAllParts();
             // Now get the count from the filter
-            return filterIS.length();
+            return filterIS.getCount();
         }
     }
     
