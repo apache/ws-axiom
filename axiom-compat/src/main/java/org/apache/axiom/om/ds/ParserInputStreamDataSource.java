@@ -42,6 +42,8 @@ import org.apache.commons.logging.LogFactory;
 /**
  * A DataSource that is backed by an InputStream (read from a parser).
  * The Data in this Data source owns the payload inputStream. 
+ * 
+ * @deprecated
  */
 public class ParserInputStreamDataSource extends OMDataSourceExtBase {
     private static final Log log = 

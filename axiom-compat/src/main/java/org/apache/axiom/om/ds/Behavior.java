@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.ds;
 
+/**
+ * @deprecated
+ */
 public class Behavior {
     // An OMDataSource must communicate whether the data source is
     // can be queried without destruction.  OM makes decisions about
