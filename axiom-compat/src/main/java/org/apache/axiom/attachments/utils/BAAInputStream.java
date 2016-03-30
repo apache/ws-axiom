@@ -31,6 +31,8 @@ import java.util.ArrayList;
  * BAAInputStream stores the backing data in a Array of 
  * byte[].  Using several non-contiguous chunks reduces 
  * memory copy and resizing.
+ * 
+ * @deprecated
  */
 public class BAAInputStream extends InputStream {
 

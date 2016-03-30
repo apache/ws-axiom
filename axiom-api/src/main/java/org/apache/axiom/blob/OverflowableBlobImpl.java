@@ -25,6 +25,7 @@ import java.io.OutputStream;
 
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
+import org.apache.axiom.util.io.IOUtils;
 
 final class OverflowableBlobImpl implements OverflowableBlob {
     class OutputStreamImpl extends OutputStream implements ReadFromSupport {
@@ -305,7 +306,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
                     } catch (IOException ex) {
                         throw new StreamCopyException(StreamCopyException.WRITE, ex);
                     }
-                    read += IOUtil.copy(in, out, toRead);
+                    read += IOUtils.copy(in, out, toRead);
                     try {
                         out.close();
                     } catch (IOException ex) {

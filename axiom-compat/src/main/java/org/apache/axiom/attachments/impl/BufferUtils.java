@@ -38,6 +38,8 @@ import org.apache.commons.logging.LogFactory;
  * Attachment processing uses a lot of buffers.
  * The BufferUtils class attempts to reuse buffers to prevent 
  * excessive GarbageCollection
+ * 
+ * @deprecated
  */
 public class BufferUtils {
     private static final Log log = LogFactory.getLog(BufferUtils.class);

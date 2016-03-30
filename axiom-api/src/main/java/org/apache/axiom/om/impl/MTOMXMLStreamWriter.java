@@ -30,7 +30,6 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
@@ -40,6 +39,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
+import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
@@ -248,7 +248,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                         multipartWriter.writePart(dataHandler, contentID);
                     } else {
                         OutputStream out = multipartWriter.writePart(dataHandler.getContentType(), contentID);
-                        BufferUtils.inputStream2OutputStream(((DataHandlerExt)dataHandler).readOnce(), out);
+                        IOUtils.copy(((DataHandlerExt)dataHandler).readOnce(), out, -1);
                         out.close();
                     }
                 }

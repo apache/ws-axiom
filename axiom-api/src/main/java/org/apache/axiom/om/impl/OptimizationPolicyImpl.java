@@ -23,9 +23,9 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.util.activation.DataHandlerUtils;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,28 +45,20 @@ class OptimizationPolicyImpl implements OptimizationPolicy {
         this.format = format;
     }
 
-    private final static int UNSUPPORTED = -1;
-    private final static int EXCEED_LIMIT = 1;
-    
     public boolean isOptimized(DataHandler dataHandler, boolean optimize) {
         if (!optimize) {
             return false;
         }
-        
-        // TODO: this needs review and cleanup
-        // ** START **  code from MTOMXMLStreamWriter#isOptimizedThreshold
-        log.debug("Start MTOMXMLStreamWriter.isOptimizedThreshold()");
-        int optimized = UNSUPPORTED;
-        if(dataHandler!=null){
-            log.debug("DataHandler fetched, starting optimized Threshold processing");
-            optimized= BufferUtils.doesDataHandlerExceedLimit(dataHandler, format.getOptimizedThreshold());
-        }
-        if(optimized == UNSUPPORTED || optimized == EXCEED_LIMIT){
-            log.debug("node should be added to binart NodeList for optimization");
+        int threshold = format.getOptimizedThreshold();
+        if (threshold == 0) {
             return true;
         }
-        return false;
-        // ** END **  code from MTOMXMLStreamWriter#isOptimizedThreshold
+        try {
+            return DataHandlerUtils.isLargerThan(dataHandler, threshold);
+        } catch (IOException ex) {
+            log.warn("DataHandler.writeTo(OutputStream) threw IOException", ex);
+            return true;
+        }
     }
 
     public boolean isOptimized(DataHandlerProvider dataHandlerProvider, boolean optimize)

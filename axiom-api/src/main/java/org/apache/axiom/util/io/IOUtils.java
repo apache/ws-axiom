@@ -16,8 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.blob;
+package org.apache.axiom.util.io;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,10 +26,24 @@ import java.io.OutputStream;
 import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 
-final class IOUtil {
-    private IOUtil() {}
+public final class IOUtils {
+    private IOUtils() {}
     
-    static long copy(InputStream in, OutputStream out, long length) throws StreamCopyException {
+    /**
+     * Copy bytes between streams. This method supports the {@link ReadFromSupport} interface. It
+     * will not call {@link Closeable#close()} on either of the two streams.
+     * 
+     * @param in
+     *            the stream to read bytes from
+     * @param out
+     *            the stream to write bytes to
+     * @param length
+     *            the maximum number of bytes to copy, or -1 to copy an unlimited number of bytes
+     * @return the number of bytes copied
+     * @throws StreamCopyException
+     *             if a read/write operation on one of the streams triggered an {@link IOException}
+     */
+    public static long copy(InputStream in, OutputStream out, long length) throws StreamCopyException {
         if (out instanceof ReadFromSupport) {
             return ((ReadFromSupport)out).readFrom(in, length);
         } else {

@@ -33,6 +33,8 @@ import java.util.ArrayList;
  * BAAOutputStream stores the backing data in a Array of 
  * byte[].  Using several non-contiguous chunks reduces 
  * memory copy and resizing.
+ * 
+ * @deprecated
  */
 public class BAAOutputStream extends OutputStream implements ReadFromSupport {
 

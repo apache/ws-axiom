@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.ext.io.StreamCopyException;
+import org.apache.axiom.util.io.IOUtils;
 
 /**
  * Partial implementation of the {@link WritableBlob} interface that implements
@@ -38,7 +39,7 @@ public abstract class AbstractWritableBlob implements WritableBlob {
             throw new StreamCopyException(StreamCopyException.WRITE, ex);
         }
         try {
-            return IOUtil.copy(in, out, -1);
+            return IOUtils.copy(in, out, -1);
         } finally {
             try {
                 out.close();
@@ -56,7 +57,7 @@ public abstract class AbstractWritableBlob implements WritableBlob {
             throw new StreamCopyException(StreamCopyException.READ, ex);
         }
         try {
-            IOUtil.copy(in, out, -1);
+            IOUtils.copy(in, out, -1);
         } finally {
             try {
                 in.close();
