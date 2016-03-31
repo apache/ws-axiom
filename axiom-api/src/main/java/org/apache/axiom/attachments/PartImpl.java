@@ -90,11 +90,6 @@ final class PartImpl implements Part {
     
     private PartInputStream partInputStream;
     
-    /**
-     * The actual parts are constructed with the PartFactory.
-     * @see org.apache.axiom.attachments.PartContentFactory
-     * @param headers
-     */
     PartImpl(WritableBlobFactory blobFactory, List<Header> headers, MimeTokenStream parser) {
         this.blobFactory = blobFactory;;
         this.headers = headers;
