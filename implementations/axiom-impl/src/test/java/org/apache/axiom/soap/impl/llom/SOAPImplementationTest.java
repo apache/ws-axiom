@@ -23,14 +23,10 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
-import org.apache.axiom.ts.soap.envelope.TestClone;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(OMLinkedListMetaFactory.INSTANCE, true);
-        
-        // TODO
-        builder.exclude(TestClone.class, "(message=soap/soap11/soapfault2.xml)");
         
         return builder.build();
     }

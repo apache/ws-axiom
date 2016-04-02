@@ -28,14 +28,6 @@ public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(OMDOMMetaFactory.INSTANCE, false);
         
-        // TODO: currently broken; need a better solution for parent checks
-        builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent1.class);
-        builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent2.class);
-        builder.exclude(org.apache.axiom.ts.soap.fault.TestWrongParent3.class);
-        builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent1.class);
-        builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent2.class);
-        builder.exclude(org.apache.axiom.ts.soap.headerblock.TestWrongParent3.class);
-        
         return builder.build();
     }
 }
