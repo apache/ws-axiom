@@ -35,6 +35,10 @@ import org.apache.axiom.util.blob.BlobDataSource;
 import org.apache.axiom.util.blob.MemoryBlob;
 import org.apache.axiom.util.blob.WritableBlob;
 
+/**
+ * @deprecated
+ */
+@SuppressWarnings("rawtypes")
 class MultipartWriterImpl implements MultipartWriter {
     private static final byte[] DASH_DASH = { '-', '-' };
     private static final byte[] CR_LF = { 13, 10 };

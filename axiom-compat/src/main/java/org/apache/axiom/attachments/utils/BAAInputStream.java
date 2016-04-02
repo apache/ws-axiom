@@ -34,6 +34,7 @@ import java.util.ArrayList;
  * 
  * @deprecated
  */
+@SuppressWarnings("rawtypes")
 public class BAAInputStream extends InputStream {
 
     ArrayList data = new ArrayList();

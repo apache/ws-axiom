@@ -163,19 +163,16 @@ public class BufferUtils {
             // Read directly into the ByteBuffer array
             int bytesRead = is.read(bb.array());
             while (bytesRead != -1) {
-                int written = 0;
-                
-                
                 if (bytesRead < BUFFER_LEN) {
                     // If the ByteBuffer is not full, allocate a new one
                     ByteBuffer temp = ByteBuffer.allocate(bytesRead);
                     temp.put(bb.array(), 0, bytesRead);
                     temp.position(0);
-                    written = channel.write(temp);
+                    channel.write(temp);
                 } else {
                     // Write to channel
                     bb.position(0);
-                    written = channel.write(bb);
+                    channel.write(bb);
                     bb.clear();
                 }
                 

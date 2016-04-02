@@ -36,6 +36,7 @@ import java.util.ArrayList;
  * 
  * @deprecated
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class BAAOutputStream extends OutputStream implements ReadFromSupport {
 
     ArrayList data = new ArrayList();

@@ -40,6 +40,7 @@ import junit.framework.TestCase;
 /**
  * Validate TextHelper code
  */
+@SuppressWarnings("deprecation")
 public class TextHelperTest extends TestCase {
     private File tempDir;
     private File file;

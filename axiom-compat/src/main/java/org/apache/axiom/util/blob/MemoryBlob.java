@@ -32,6 +32,7 @@ import org.apache.axiom.ext.io.StreamCopyException;
  * 
  * @deprecated Use {@link org.apache.axiom.blob.MemoryBlob} instead.
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MemoryBlob implements WritableBlob {
     // TODO: this should be configurable
     final static int BUFFER_SIZE = 4096;

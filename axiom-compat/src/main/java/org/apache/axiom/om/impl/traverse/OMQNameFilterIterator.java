@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMNode;
  * 
  * @deprecated
  */
+@SuppressWarnings("rawtypes")
 public class OMQNameFilterIterator extends OMFilterIterator {
     private final QName qname;
 

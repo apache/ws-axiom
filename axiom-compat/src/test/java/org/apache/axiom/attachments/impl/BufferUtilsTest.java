@@ -36,6 +36,7 @@ import junit.framework.TestCase;
 /**
  * Simple test for the BufferUtils copying code
  */
+@SuppressWarnings("deprecation")
 public class BufferUtilsTest extends TestCase {
 
     byte[] bytes;
@@ -67,10 +68,14 @@ public class BufferUtilsTest extends TestCase {
             }
             fos.close();
             FileInputStream fis = new FileInputStream(file);
-            byte[] buffer = new byte[20];
-            fis.read(buffer);
-            for (int i = 0; i < buffer.length; i++) {
-                assertTrue(buffer[i] == (byte) i);
+            try {
+                byte[] buffer = new byte[20];
+                fis.read(buffer);
+                for (int i = 0; i < buffer.length; i++) {
+                    assertTrue(buffer[i] == (byte) i);
+                }
+            } finally {
+                fis.close();
             }
         } finally {
             file.delete();

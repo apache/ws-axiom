@@ -34,6 +34,7 @@ import java.util.Vector;
 /**
  * @deprecated This class is no longer maintained. Please use XmlUnit to compare XML documents.
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class XMLComparator {
     private static final Log log = LogFactory.getLog(XMLComparator.class);
 

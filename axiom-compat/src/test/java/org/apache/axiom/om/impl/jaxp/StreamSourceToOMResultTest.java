@@ -38,6 +38,7 @@ import org.apache.axiom.ts.jaxp.XSLTImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.xml.sax.InputSource;
 
+@SuppressWarnings({"rawtypes", "deprecation"})
 public class StreamSourceToOMResultTest extends MatrixTestCase {
     private static final String[] axiomImplementations = { "default", "dom" };
     

@@ -23,6 +23,7 @@ import javax.xml.stream.XMLStreamException;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("deprecation")
 public class AXIOMUtilTest extends TestCase {
 	public void testStringToOM() throws XMLStreamException {
 		String testString = "\u00e0 peine arriv\u00e9s nous entr\u00e2mes dans sa chambre";

@@ -50,6 +50,7 @@ import org.apache.commons.logging.LogFactory;
  *             has as cleaner API and supports streaming of individual MIME parts, in particular the
  *             SOAP part.
  */
+@SuppressWarnings("rawtypes")
 public class MIMEOutputUtils {
     
     private static final Log log = LogFactory.getLog(MIMEOutputUtils.class);

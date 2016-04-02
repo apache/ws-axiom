@@ -26,6 +26,7 @@ import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 /**
  * @deprecated Use {@link MapBasedNamespaceContext} instead.
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class NamespaceContextImpl extends MapBasedNamespaceContext {
     public NamespaceContextImpl(Map map) {
         super(map);

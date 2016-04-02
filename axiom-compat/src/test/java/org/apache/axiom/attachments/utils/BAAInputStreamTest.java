@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
 public final class BAAInputStreamTest extends TestCase {
     
     public void testRead() throws Exception {
@@ -39,6 +40,7 @@ public final class BAAInputStreamTest extends TestCase {
         assertEquals(expected.read(), in.read());
         assertEquals(expected.read(), in.read());
         assertEquals(expected.read(), in.read());
+        in.close();
     }
     
 }

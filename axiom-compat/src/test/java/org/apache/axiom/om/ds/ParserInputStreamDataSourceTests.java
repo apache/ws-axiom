@@ -43,6 +43,7 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
 
+@SuppressWarnings({"rawtypes", "deprecation"})
 public class ParserInputStreamDataSourceTests extends TestCase {
 	private SOAPModelBuilder builder = null;
 	private XMLStreamReader parser = null;
@@ -188,7 +189,7 @@ public class ParserInputStreamDataSourceTests extends TestCase {
     
     public void testDestructiveMarkableSAC_SAC() throws Exception {
         try {
-            int numReads = _testPEDS(Behavior.DESTRUCTIVE, true, Scenario.SAC_SAC);
+            _testPEDS(Behavior.DESTRUCTIVE, true, Scenario.SAC_SAC);
             fail();
         } catch (OMException e) {
             // OMException is expected..you can't call serialize and consume twice ..ever
@@ -268,7 +269,7 @@ public class ParserInputStreamDataSourceTests extends TestCase {
     
     public void testOneUseNotMarkableSER_SER() throws Exception {
         try {
-            int numReads = _testPEDS(Behavior.ONE_USE_UNSAFE, false, Scenario.SER_SER);
+            _testPEDS(Behavior.ONE_USE_UNSAFE, false, Scenario.SER_SER);
             fail();
         } catch (OMException e) {
             // OMException is expected..you can't serialize twice in this mode
@@ -282,7 +283,7 @@ public class ParserInputStreamDataSourceTests extends TestCase {
     
     public void testOneUseNotMarkableSER_SAC() throws Exception {
         try {
-            int numReads = _testPEDS(Behavior.ONE_USE_UNSAFE, false, Scenario.SER_SAC);
+            _testPEDS(Behavior.ONE_USE_UNSAFE, false, Scenario.SER_SAC);
             fail();
         } catch (OMException e) {
             // OMException is expected..you can't serialize twice in this mode
@@ -291,7 +292,7 @@ public class ParserInputStreamDataSourceTests extends TestCase {
     
     public void testOneUseNotMarkableSAC_SAC() throws Exception {
         try {
-            int numReads = _testPEDS(Behavior.ONE_USE_UNSAFE, false, Scenario.SAC_SAC);
+            _testPEDS(Behavior.ONE_USE_UNSAFE, false, Scenario.SAC_SAC);
             fail();
         } catch (OMException e) {
             // OMException is expected..you can't call serialize and consume twice ..ever

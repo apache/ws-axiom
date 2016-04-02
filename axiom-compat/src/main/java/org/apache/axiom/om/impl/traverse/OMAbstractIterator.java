@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
  * 
  * @deprecated
  */
+@SuppressWarnings("rawtypes")
 public abstract class OMAbstractIterator implements Iterator {
     private OMNode currentNode;
     

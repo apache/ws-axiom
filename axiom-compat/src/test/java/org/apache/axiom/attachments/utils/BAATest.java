@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 /**
  * UnitTest for the BAAInputStream and BAAOutputStream classes.
  */
+@SuppressWarnings("deprecation")
 public class BAATest extends TestCase {
 
     static final int  INPUT_SIZE = 100 * 1024;
@@ -54,11 +55,7 @@ public class BAATest extends TestCase {
     }
     
     public void normal() throws Exception {
-        long time = System.currentTimeMillis();
         for (int i=0; i<ITERATIONS+PRIME; i++) {
-            if (i == PRIME) {
-                time = System.currentTimeMillis();
-            }
             inputBAIS.reset();
             ByteArrayOutputStream baos = new ByteArrayOutputStream(BAOS_SIZE);
             BufferUtils.inputStream2OutputStream(inputBAIS, baos);
@@ -73,16 +70,10 @@ public class BAATest extends TestCase {
             BufferUtils.inputStream2OutputStream(bais, baos);
             assertTrue(baos.toByteArray().length == INPUT_SIZE);
         }
-        // Uncomment the follow
-        //System.out.println("Normal time = " + (System.currentTimeMillis()-time));
     }
     
     public void enhanced() throws Exception {
-        long time = System.currentTimeMillis();
         for (int i=0; i<ITERATIONS+PRIME; i++) {
-            if (i == PRIME) {
-                time = System.currentTimeMillis();
-            }
             inputBAIS.reset();
             BAAOutputStream baaos = new BAAOutputStream();
             BufferUtils.inputStream2OutputStream(inputBAIS, baaos);
@@ -99,7 +90,6 @@ public class BAATest extends TestCase {
             BufferUtils.inputStream2OutputStream(baais, baaos);
             assertTrue("" + baaos.length() + " " + INPUT_SIZE, baaos.length() == INPUT_SIZE);
         }
-        //System.out.println("Enhanced time = " + (System.currentTimeMillis()-time));
     }
     
 }

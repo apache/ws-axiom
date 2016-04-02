@@ -30,6 +30,7 @@ import java.util.Iterator;
  *             {@link OMElement#getChildElements()}, and this class should never be referenced
  *             directly. It will be removed in Axiom 1.3.
  */
+@SuppressWarnings("rawtypes")
 public class OMChildElementIterator implements Iterator {
 
     /** Field currentChild */

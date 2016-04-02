@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import javax.xml.namespace.QName;
 import java.util.Iterator;
 
+@SuppressWarnings({"rawtypes", "deprecation"})
 public class OMChildrenWithSpecificAttributeIteratorTest extends TestCase {
     public void testChildrenRetrievalWithDetaching() {
 

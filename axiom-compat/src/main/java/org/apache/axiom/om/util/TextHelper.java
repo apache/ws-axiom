@@ -180,18 +180,7 @@ public class TextHelper {
      * @deprecated
      */
     private static LifecycleManager getLifecycleManager(OMFactory factory) {
-        LifecycleManager lm = null;
-        
-        /* TODO Support access to lifecycle manager from the factory
-        if (factory.getProperty(LIFECYCLE_MANAGER)) {
-            ...
-        }
-        */
-        if (lm == null) {
-            return new LifecycleManagerImpl();
-        }
-        return lm;
-        
+        return new LifecycleManagerImpl();
     }
     
     /**

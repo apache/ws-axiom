@@ -32,6 +32,7 @@ import java.io.StringWriter;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings("deprecation")
 public class AttachmentsTest extends TestCase {
     public void testSWAWriteWithIncomingOrder() throws Exception {
 
@@ -40,7 +41,7 @@ public class AttachmentsTest extends TestCase {
         Attachments attachments = new Attachments(inStream, SwASample.SAMPLE1.getContentType());
 
         // Get the contentIDs to force the reading
-        String[] contentIDs = attachments.getAllContentIDs();
+        attachments.getAllContentIDs();
         
         // Get the root
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments.getRootPartInputStream(), "UTF-8");

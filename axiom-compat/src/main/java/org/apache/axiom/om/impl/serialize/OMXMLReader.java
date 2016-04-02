@@ -78,6 +78,7 @@ import org.xml.sax.ext.LexicalHandler;
  * {@link SAXSource#getXMLReader()} on the {@link SAXSource} returned by
  * {@link OMContainer#getSAXSource(boolean)}.
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class OMXMLReader extends AbstractXMLReader {
     private final OMContainer root;
     private final AttributesAdapter attributesAdapter = new AttributesAdapter();

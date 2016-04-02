@@ -20,6 +20,7 @@ package org.apache.axiom.mime.impl.javamail;
 
 import org.apache.axiom.mime.AbstractMultipartWriterTest;
 
+@SuppressWarnings("deprecation")
 public class MultipartWriterTest extends AbstractMultipartWriterTest {
     public MultipartWriterTest() {
         super(JavaMailMultipartWriterFactory.INSTANCE);

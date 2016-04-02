@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
  * 
  * @deprecated
  */
+@SuppressWarnings("rawtypes")
 public class OMQualifiedNameFilterIterator extends OMFilterIterator {
     private final String prefix;
     private final String localName;
