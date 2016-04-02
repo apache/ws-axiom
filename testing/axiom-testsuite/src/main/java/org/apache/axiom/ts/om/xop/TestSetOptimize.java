@@ -34,6 +34,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -56,8 +57,8 @@ public class TestSetOptimize extends AxiomTestCase {
                     metaFactory.getOMFactory(),
                     StAXParserConfiguration.DEFAULT,
                     new Attachments(in, XOP_SPEC_SAMPLE.getContentType())).getDocument();
-            for (Iterator it = document.getDescendants(false); it.hasNext(); ) {
-                OMNode node = (OMNode)it.next();
+            for (Iterator<OMSerializable> it = document.getDescendants(false); it.hasNext(); ) {
+                OMSerializable node = it.next();
                 if (node instanceof OMText) {
                     OMText text = (OMText)node;
                     if (text.isBinary()) {

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -51,7 +52,7 @@ public class TestGetDescendants extends AxiomTestCase {
         OMText child2 = factory.createOMText(root, "text", OMNode.CDATA_SECTION_NODE);
         OMText grandchild1 = factory.createOMText(child1, "text");
         OMComment grandchild2 = factory.createOMComment(child1, "text");
-        Iterator it = root.getDescendants(includeSelf);
+        Iterator<? extends OMSerializable> it = root.getDescendants(includeSelf);
         if (includeSelf) {
             assertThat(it.hasNext()).isTrue();
             assertThat(it.next()).isEqualTo(root);

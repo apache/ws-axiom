@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om;
 
+import java.util.Iterator;
+
 public interface OMDocument extends OMContainer {
 
     /** Field XML_10 XML Version 1.0 */
@@ -109,4 +111,9 @@ public interface OMDocument extends OMContainer {
     String isStandalone();
 
     void setStandalone(String isStandalone);
+
+    /**
+     * {@inheritDoc}
+     */
+    Iterator<OMSerializable> getDescendants(boolean includeSelf);
 }

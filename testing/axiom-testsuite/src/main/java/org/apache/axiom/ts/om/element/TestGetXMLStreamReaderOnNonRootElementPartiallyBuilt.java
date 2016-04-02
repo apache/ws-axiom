@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.util.stax.debug.XMLStreamReaderValidator;
@@ -53,7 +54,7 @@ public class TestGetXMLStreamReaderOnNonRootElementPartiallyBuilt extends AxiomT
         
         // Partially build the tree
         if (build > 0) {
-            Iterator it = root.getDescendants(false);
+            Iterator<OMNode> it = root.getDescendants(false);
             for (int i=0; i<build; i++) {
                 it.next();
             }

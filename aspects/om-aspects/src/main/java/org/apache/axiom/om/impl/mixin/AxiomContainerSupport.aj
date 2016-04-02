@@ -195,10 +195,6 @@ public aspect AxiomContainerSupport {
                 Mappers.<OMElement>identity(), AxiomSemantics.INSTANCE);
     }
     
-    public Iterator<OMSerializable> AxiomContainer.getDescendants(boolean includeSelf) {
-        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomSerializable.class, Mappers.<OMSerializable>identity(), AxiomSemantics.INSTANCE);
-    }
-
     public final OMElement AxiomContainer.getFirstChildWithName(QName name) throws OMException {
         try {
             CoreChildNode child = coreGetFirstChild();

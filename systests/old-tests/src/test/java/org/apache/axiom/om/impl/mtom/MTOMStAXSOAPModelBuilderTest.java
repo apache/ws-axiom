@@ -22,8 +22,8 @@ package org.apache.axiom.om.impl.mtom;
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -111,9 +111,9 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments);
         OMDocument doc = builder.getDocument();
         // Find all the binary nodes
-        List/*<OMText>*/ binaryNodes = new ArrayList();
-        for (Iterator it = doc.getDescendants(false); it.hasNext(); ) {
-            OMNode node = (OMNode)it.next();
+        List<OMText> binaryNodes = new ArrayList<>();
+        for (Iterator<OMSerializable> it = doc.getDescendants(false); it.hasNext(); ) {
+            OMSerializable node = it.next();
             if (node instanceof OMText) {
                 OMText text = (OMText)node;
                 if (text.isBinary()) {
@@ -124,10 +124,10 @@ public class MTOMStAXSOAPModelBuilderTest extends TestCase {
         assertFalse(binaryNodes.isEmpty());
         // At this moment only the SOAP part should have been loaded
         assertEquals(1, attachments.getContentIDList().size());
-        for (Iterator it = binaryNodes.iterator(); it.hasNext(); ) {
+        for (OMText node : binaryNodes) {
             // Request the DataHandler and do something with it to make sure
             // the part is loaded
-            ((OMText)it.next()).getDataHandler().getInputStream().close();
+            node.getDataHandler().getInputStream().close();
         }
         assertEquals(binaryNodes.size() + 1, attachments.getContentIDList().size());
     }

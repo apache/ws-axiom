@@ -51,8 +51,8 @@ public class TestBuilderDetach extends AxiomTestCase {
         ASSERT.that(in.getCount()).isGreaterThan(countBeforeDetach);
         ASSERT.that(in.isClosed()).isFalse();
         int binaryCount = 0;
-        for (Iterator it = envelope.getDescendants(false); it.hasNext(); ) {
-            OMNode node = (OMNode)it.next();
+        for (Iterator<OMNode> it = envelope.getDescendants(false); it.hasNext(); ) {
+            OMNode node = it.next();
             if (node instanceof OMText) {
                 OMText text = (OMText)node;
                 if (text.isBinary()) {

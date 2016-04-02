@@ -714,4 +714,9 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     //       warning when using the method on an OMElement.
     void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
+
+    /**
+     * {@inheritDoc}
+     */
+    Iterator<OMNode> getDescendants(boolean includeSelf);
 }

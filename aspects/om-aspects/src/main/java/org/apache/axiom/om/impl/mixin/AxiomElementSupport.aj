@@ -60,6 +60,7 @@ import org.apache.axiom.om.impl.common.NamespaceDeclarationMapper;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomAttribute;
+import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamespaceDeclaration;
 import org.apache.axiom.om.impl.intf.Sequence;
@@ -569,5 +570,9 @@ public aspect AxiomElementSupport {
     public final CoreElement AxiomElement.getContextElement() {
         CoreParentNode parent = coreGetParent();
         return parent instanceof CoreElement ? (CoreElement)parent : null;
+    }
+
+    public Iterator<OMNode> AxiomElement.getDescendants(boolean includeSelf) {
+        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomChildNode.class, Mappers.<OMNode>identity(), AxiomSemantics.INSTANCE);
     }
 }

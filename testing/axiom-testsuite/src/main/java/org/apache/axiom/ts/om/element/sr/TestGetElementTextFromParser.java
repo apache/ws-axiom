@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.dimension.BuilderFactory;
@@ -65,7 +66,7 @@ public class TestGetElementTextFromParser extends AxiomTestCase {
         // Build a certain number of descendants. This is used to test scenarios where the XMLStreamReader
         // needs to switch to pull through mode in the middle of the element from which we attempt to
         // get the text.
-        Iterator it = element.getDescendants(true);
+        Iterator<OMNode> it = element.getDescendants(true);
         for (int i=0; i<build; i++) {
             it.next();
         }

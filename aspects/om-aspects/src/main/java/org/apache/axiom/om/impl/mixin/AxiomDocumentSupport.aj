@@ -18,15 +18,21 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import java.util.Iterator;
+
+import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.Mappers;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.apache.axiom.om.impl.intf.AxiomElement;
+import org.apache.axiom.om.impl.intf.AxiomSerializable;
 
 public aspect AxiomDocumentSupport {
     public final OMElement AxiomDocument.getOMDocumentElement() {
@@ -101,5 +107,9 @@ public aspect AxiomDocumentSupport {
 
     public final CoreElement AxiomDocument.getContextElement() {
         return null;
+    }
+
+    public Iterator<OMSerializable> AxiomDocument.getDescendants(boolean includeSelf) {
+        return coreGetNodes(includeSelf ? Axis.DESCENDANTS_OR_SELF : Axis.DESCENDANTS, AxiomSerializable.class, Mappers.<OMSerializable>identity(), AxiomSemantics.INSTANCE);
     }
 }

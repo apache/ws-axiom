@@ -121,7 +121,7 @@ public interface OMContainer extends OMSerializable {
      *            child of the container
      * @return an iterator over the descendants of this container
      */
-    Iterator<OMSerializable> getDescendants(boolean includeSelf);
+    Iterator<? extends OMSerializable> getDescendants(boolean includeSelf);
 
     /**
      * Gets the first child.
