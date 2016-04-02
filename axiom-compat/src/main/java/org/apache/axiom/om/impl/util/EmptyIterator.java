@@ -22,6 +22,10 @@ package org.apache.axiom.om.impl.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * @deprecated
+ */
+@SuppressWarnings("rawtypes")
 public class EmptyIterator implements Iterator {
     public void remove() {
         throw new UnsupportedOperationException();
