@@ -19,18 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP11FaultReason {
-    public void addSOAPText(SOAPFaultText soapFaultText)
-            throws SOAPProcessingException {
-        throw new UnsupportedOperationException("addSOAPText() not allowed for SOAP 1.1!");
-    }
 
-    public SOAPFaultText getFirstSOAPText() {
-        throw new UnsupportedOperationException("getFirstSOAPText() not allowed for SOAP 1.1!");
-    }
 }

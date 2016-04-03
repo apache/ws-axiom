@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPFaultText;
@@ -34,5 +38,27 @@ public aspect AxiomSOAP12FaultReasonSupport {
     
     public final void AxiomSOAP12FaultReason.addSOAPText(SOAPFaultText soapFaultText) {
         addChild(soapFaultText);
+    }
+
+    public final SOAPFaultText AxiomSOAP12FaultReason.getFirstSOAPText() {
+        return (SOAPFaultText)getFirstElement();
+    }
+
+    public final List<SOAPFaultText> AxiomSOAP12FaultReason.getAllSoapTexts() {
+        List<SOAPFaultText> faultTexts = new ArrayList<SOAPFaultText>();
+        for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
+            faultTexts.add((SOAPFaultText)it.next());
+        }
+        return faultTexts;
+    }
+
+    public final SOAPFaultText AxiomSOAP12FaultReason.getSOAPFaultText(String language) {
+        for (Iterator<OMElement> it = getChildElements(); it.hasNext(); ) {
+            SOAPFaultText text = (SOAPFaultText)it.next();
+            if (language == null || language.equals(text.getLang())) {
+                return text;
+            }
+        }
+        return null;
     }
 }

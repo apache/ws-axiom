@@ -19,17 +19,10 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultReason;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl implements AxiomSOAP12FaultReason {
-    public SOAPFaultText getFirstSOAPText() {
-        return (SOAPFaultText)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_TEXT);
-    }
-
-
     /**
      * getText() is overridden here in order to provide a uniform way for SOAP 1.1
      * and SOAP 1.2 to get the "default" reason string.

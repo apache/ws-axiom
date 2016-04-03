@@ -18,8 +18,12 @@
  */
 package org.apache.axiom.soap.impl.mixin;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAP11FaultReason;
 
 public aspect AxiomSOAP11FaultReasonSupport {
@@ -29,5 +33,21 @@ public aspect AxiomSOAP11FaultReasonSupport {
 
     public final boolean AxiomSOAP11FaultReason.isChildElementAllowed(OMElement child) {
         return false;
+    }
+
+    public final void AxiomSOAP11FaultReason.addSOAPText(SOAPFaultText soapFaultText) {
+        throw new UnsupportedOperationException("addSOAPText() not allowed for SOAP 1.1!");
+    }
+
+    public final SOAPFaultText AxiomSOAP11FaultReason.getFirstSOAPText() {
+        throw new UnsupportedOperationException("getFirstSOAPText() not allowed for SOAP 1.1!");
+    }
+
+    public final List<SOAPFaultText> AxiomSOAP11FaultReason.getAllSoapTexts() {
+        return Collections.emptyList();
+    }
+
+    public final SOAPFaultText AxiomSOAP11FaultReason.getSOAPFaultText(String language) {
+        return null;
     }
 }

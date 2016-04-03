@@ -19,31 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPFaultReason;
 
-public abstract class SOAPFaultReasonImpl extends SOAPElement implements
-        AxiomSOAPFaultReason {
-    public List getAllSoapTexts() {
-        //TODO Ruchith check
-        List faultTexts = new ArrayList();
-        Iterator childrenIter = this.getChildren();
-        while (childrenIter.hasNext()) {
-            OMNode node = (OMNode) childrenIter.next();
-            if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultText)) {
-                faultTexts.add(((SOAPFaultText) node));
-            }
-        }
-        return faultTexts;
-    }
+public abstract class SOAPFaultReasonImpl extends SOAPElement implements AxiomSOAPFaultReason {
 
-    public SOAPFaultText getSOAPFaultText(String language) {
-        //TODO Ruchith
-        throw new UnsupportedOperationException();
-    }
 }

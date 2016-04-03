@@ -28,7 +28,7 @@ public interface SOAPFaultReason extends OMElement {
 
     SOAPFaultText getFirstSOAPText();
 
-    List getAllSoapTexts();
+    List<SOAPFaultText> getAllSoapTexts();
 
     SOAPFaultText getSOAPFaultText(String language);
 }
