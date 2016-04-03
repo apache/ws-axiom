@@ -155,8 +155,7 @@ public aspect AxiomElementSupport {
         }
     }
     
-    // Note: must not be final because it is (incorrectly) overridden in the SOAPFaultCode implementation for SOAP 1.2
-    public QName AxiomElement.getTextAsQName() {
+    public final QName AxiomElement.getTextAsQName() {
         String childText = getText().trim();
         return childText.length() == 0 ? null : resolveQName(childText);
     }

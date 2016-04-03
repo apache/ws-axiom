@@ -19,14 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultCode;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl implements AxiomSOAP12FaultCode {
-    // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
-    public QName getTextAsQName() {
-        return getValueAsQName();
-    }
+
 }
