@@ -28,7 +28,6 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -360,7 +359,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
         Attachments attachments = new Attachments(inStream, MTOMSample.SAMPLE1.getContentType());
 
-        Collection list = attachments.getContentIDSet();
+        Set<String> list = attachments.getContentIDSet();
         assertEquals(3, list.size());
         
         assertTrue(list.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
