@@ -20,16 +20,14 @@ package org.apache.axiom.blob.suite;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.testutils.io.InstrumentedOutputStream;
 
-public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
-    public TestWriteTo(WritableBlobFactory factory, int size) {
+public class TestWriteToWithReadFromSupport extends SizeSensitiveWritableBlobTestCase {
+    public TestWriteToWithReadFromSupport(WritableBlobFactory factory, int size) {
         super(factory, State.NEW, size);
     }
 
@@ -41,10 +39,9 @@ public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
         OutputStream out = blob.getOutputStream();
         out.write(data);
         out.close();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InstrumentedOutputStream closeSensor = new InstrumentedOutputStream(baos);
-        blob.writeTo(closeSensor);
-        assertThat(closeSensor.isClosed()).isFalse();
+        ByteArrayOutputStreamWithReadFromSupport baos = new ByteArrayOutputStreamWithReadFromSupport();
+        blob.writeTo(baos);
         assertThat(baos.toByteArray()).isEqualTo(data);
+        assertThat(baos.isReadFromCalled()).isTrue();
     }
 }
