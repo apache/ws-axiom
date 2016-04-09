@@ -41,8 +41,6 @@ public class ConfigurableDataHandler extends DataHandler {
 
     private String contentType;
 
-    private String contentID;
-
     public ConfigurableDataHandler(DataSource ds) {
         super(ds);
     }
