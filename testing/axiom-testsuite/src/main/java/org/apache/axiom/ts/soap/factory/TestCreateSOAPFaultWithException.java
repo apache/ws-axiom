@@ -52,9 +52,9 @@ public class TestCreateSOAPFaultWithException extends SOAPTestCase {
         assertThat(fault.isComplete()).isTrue();
         SOAPFaultDetail detail = fault.getDetail();
         assertThat(detail).isNotNull();
-        Iterator it = detail.getAllDetailEntries();
+        Iterator<OMElement> it = detail.getAllDetailEntries();
         assertThat(it.hasNext()).isTrue();
-        OMElement entry = (OMElement)it.next();
+        OMElement entry = it.next();
         assertThat(entry.getQName()).isEqualTo(new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
         assertThat(entry.getText()).contains("Testing soap fault");
     }

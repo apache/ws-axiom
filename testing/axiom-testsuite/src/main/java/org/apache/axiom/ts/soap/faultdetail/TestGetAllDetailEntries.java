@@ -41,14 +41,14 @@ public class TestGetAllDetailEntries extends SOAPTestCase {
         SOAPFault fault = soapFactory.createSOAPFault(body);
         SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail(fault);
         OMNamespace omNamespace = soapFactory.createOMNamespace("http://www.test.org", "test");
-        Iterator iterator = soapFaultDetail.getAllDetailEntries();
+        Iterator<OMElement> iterator = soapFaultDetail.getAllDetailEntries();
         assertFalse(
                 "SOAP Fault Detail Test : - After creating SOAP11FaultDetail element, it has DetailEntries",
                 iterator.hasNext());
         soapFaultDetail.addDetailEntry(
                 soapFactory.createOMElement("DetailEntry", omNamespace));
         iterator = soapFaultDetail.getAllDetailEntries();
-        OMElement detailEntry = (OMElement) iterator.next();
+        OMElement detailEntry = iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method, getAllDetailEntries method returns empty iterator",
                 detailEntry);

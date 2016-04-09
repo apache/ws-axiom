@@ -33,7 +33,7 @@ public aspect AxiomSOAPFaultDetailSupport {
         addChild(detailElement);
     }
 
-    public final Iterator AxiomSOAPFaultDetail.getAllDetailEntries() {
+    public final Iterator<OMElement> AxiomSOAPFaultDetail.getAllDetailEntries() {
         return getChildElements();
     }
 }

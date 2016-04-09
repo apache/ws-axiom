@@ -35,6 +35,6 @@ import java.util.Iterator;
 public interface SOAPFaultDetail extends OMElement {
     void addDetailEntry(OMElement detailElement);
 
-    Iterator getAllDetailEntries();
+    Iterator<OMElement> getAllDetailEntries();
 
 }

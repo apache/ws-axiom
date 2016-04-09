@@ -46,8 +46,8 @@ public class TestAddDetailEntry extends SOAPTestCase {
                 soapFactory.createOMElement("DetailEntry1", omNamespace));
         soapFaultDetail.addDetailEntry(
                 soapFactory.createOMElement("DetailEntry2", omNamespace));
-        Iterator iterator = soapFaultDetail.getAllDetailEntries();
-        OMElement detailEntry1 = (OMElement) iterator.next();
+        Iterator<OMElement> iterator = soapFaultDetail.getAllDetailEntries();
+        OMElement detailEntry1 = iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns empty iterator",
                 detailEntry1);
@@ -57,7 +57,7 @@ public class TestAddDetailEntry extends SOAPTestCase {
         assertEquals(
                 "SOAP Fault Detail Test : - detailEntry1 namespace uri mismatch",
                 "http://www.test.org", detailEntry1.getNamespace().getNamespaceURI());
-        OMElement detailEntry2 = (OMElement) iterator.next();
+        OMElement detailEntry2 = iterator.next();
         assertNotNull(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with only one object",
                 detailEntry2);

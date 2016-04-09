@@ -39,9 +39,9 @@ public class TestSetException extends SOAPTestCase {
         fault.setException(exception);
         SOAPFaultDetail detail = fault.getDetail();
         assertNotNull(detail);
-        Iterator it = detail.getAllDetailEntries();
+        Iterator<OMElement> it = detail.getAllDetailEntries();
         assertTrue(it.hasNext());
-        OMElement entry = (OMElement)it.next();
+        OMElement entry = it.next();
         assertNotNull(entry);
         assertEquals(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, entry.getLocalName());
         assertNull(entry.getNamespace());
