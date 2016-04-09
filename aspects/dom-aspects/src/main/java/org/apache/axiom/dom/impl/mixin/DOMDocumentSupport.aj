@@ -20,6 +20,7 @@ package org.apache.axiom.dom.impl.mixin;
 
 import javax.xml.XMLConstants;
 
+import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMCDATASection;
@@ -51,6 +52,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.NamedNodeMap;
@@ -333,6 +335,24 @@ public aspect DOMDocumentSupport {
                 throw new UnsupportedOperationException();
             default:
                 throw new IllegalStateException();
+        }
+    }
+
+    public final DocumentType DOMDocument.getDoctype() {
+        try {
+            CoreChildNode child = coreGetFirstChild();
+            while (child != null) {
+                if (child instanceof DocumentType) {
+                    return (DocumentType)child;
+                } else if (child instanceof Element) {
+                    // A doctype declaration can only appear before the root element. Stop here.
+                    return null;
+                }
+                child = child.coreGetNextSibling();
+            }
+            return null;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
 }

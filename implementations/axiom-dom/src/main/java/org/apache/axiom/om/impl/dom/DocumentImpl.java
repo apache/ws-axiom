@@ -23,7 +23,6 @@ import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.axiom.core.CoreChildNode;
@@ -32,7 +31,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -43,23 +41,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
 
     protected Hashtable identifiers;
     
-    // /org.w3c.dom.Document methods
-    // /
-
-    public DocumentType getDoctype() {
-        Iterator it = getChildren();
-        while (it.hasNext()) {
-            Object child = it.next();
-            if (child instanceof DocumentType) {
-                return (DocumentType)child;
-            } else if (child instanceof Element) {
-                // A doctype declaration can only appear before the root element. Stop here.
-                return null;
-            }
-        }
-        return null;
-    }
-
     public Element getElementById(String elementId) {
 
         //If there are no id attrs
