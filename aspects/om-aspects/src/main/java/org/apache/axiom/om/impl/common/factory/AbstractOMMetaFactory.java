@@ -40,6 +40,7 @@ import org.apache.axiom.core.impl.builder.Model;
 import org.apache.axiom.core.impl.builder.PlainXMLModel;
 import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.XmlInput;
+import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -248,7 +249,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node,
             boolean expandEntityReferences) {
         return createOMBuilder(
-                new StAXPullInput(new DOMXMLStreamReader(node, expandEntityReferences), true, null),
+                new DOMInput(node, expandEntityReferences),
                 nodeFactory, PlainXMLModel.INSTANCE, null, true, null);
     }
 
@@ -283,7 +284,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
             // TODO: supporting this will require some refactoring of the builders
             throw new UnsupportedOperationException();
         } else if (source instanceof DOMSource) {
-            return createSOAPModelBuilder(new StAXPullInput(new DOMXMLStreamReader(((DOMSource)source).getNode(), true), true, null), nodeFactory, true, null);
+            return createSOAPModelBuilder(new DOMInput(((DOMSource)source).getNode(), true), nodeFactory, true, null);
         } else if (source instanceof StreamSource) {
             return createSOAPModelBuilder(StAXParserConfiguration.SOAP,
                     toInputSource((StreamSource)source));

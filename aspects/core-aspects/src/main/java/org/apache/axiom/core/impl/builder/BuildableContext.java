@@ -158,8 +158,7 @@ final class BuildableContext extends Context implements InputContext {
 
     @Override
     void startFragment() {
-        // TODO
-        throw new UnsupportedOperationException();
+        startDocument(null, "1.0", null, true);
     }
 
     void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
