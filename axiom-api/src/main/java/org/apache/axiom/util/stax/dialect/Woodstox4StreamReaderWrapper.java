@@ -26,10 +26,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.CharacterDataReader;
-import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.codehaus.stax2.XMLStreamReader2;
 
-class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements DelegatingXMLStreamReader, CharacterDataReader {
+class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements CharacterDataReader {
     public Woodstox4StreamReaderWrapper(XMLStreamReader reader) {
         super(reader);
     }
@@ -114,10 +113,6 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements D
 
     public NamespaceContext getNamespaceContext() {
         return new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext());
-    }
-
-    public XMLStreamReader getParent() {
-        return super.getParent();
     }
 
     public Object getProperty(String name) throws IllegalArgumentException {

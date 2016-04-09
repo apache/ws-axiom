@@ -25,10 +25,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.DTDReader;
-import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
     public SJSXPStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
@@ -158,9 +157,5 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper implements Delegat
 
     public NamespaceContext getNamespaceContext() {
         return new SJSXPNamespaceContextWrapper(super.getNamespaceContext());
-    }
-
-    public XMLStreamReader getParent() {
-        return super.getParent();
     }
 }

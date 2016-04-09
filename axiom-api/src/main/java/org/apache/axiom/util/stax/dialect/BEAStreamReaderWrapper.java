@@ -23,10 +23,9 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class BEAStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
     /**
      * The character set encoding as inferred from the start bytes of the stream.
      */
@@ -142,9 +141,5 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper implements Delegatin
         // correctly
         return new ImplicitNamespaceContextWrapper(
                 new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext()));
-    }
-
-    public XMLStreamReader getParent() {
-        return super.getParent();
     }
 }

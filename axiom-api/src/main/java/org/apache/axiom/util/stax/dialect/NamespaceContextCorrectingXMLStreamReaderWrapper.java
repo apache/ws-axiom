@@ -23,7 +23,6 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
@@ -36,7 +35,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
  * {@link XMLStreamReader#getNamespaceContext()} and {@link XMLStreamReader#getNamespaceURI(String)}
  * methods. Invocations of these two methods will therefore never reach the underlying reader.
  */
-class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
     private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
 
     /**
@@ -85,9 +84,5 @@ class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWr
     public String getNamespaceURI(String prefix) {
         String uri = namespaceContext.getNamespaceURI(prefix);
         return uri.length() == 0 ? null : uri;
-    }
-
-    public XMLStreamReader getParent() {
-        return super.getParent();
     }
 }

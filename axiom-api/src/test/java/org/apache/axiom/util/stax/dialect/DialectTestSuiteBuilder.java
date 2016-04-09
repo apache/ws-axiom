@@ -175,7 +175,6 @@ public class DialectTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new TestNextAfterEndDocument(staxImpl));
         addTest(new TestSetPrefixScope(staxImpl));
         addTest(new TestStandaloneSet(staxImpl));
-        addTest(new TestGetOriginalXMLStreamReader(staxImpl));
         addTest(new TestWriteStartDocumentWithNullEncoding(staxImpl));
     }
 }

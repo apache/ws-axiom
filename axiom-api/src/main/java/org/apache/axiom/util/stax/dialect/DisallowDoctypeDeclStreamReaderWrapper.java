@@ -22,10 +22,9 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class DisallowDoctypeDeclStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class DisallowDoctypeDeclStreamReaderWrapper extends XMLStreamReaderWrapper {
     public DisallowDoctypeDeclStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
@@ -36,9 +35,5 @@ class DisallowDoctypeDeclStreamReaderWrapper extends XMLStreamReaderWrapper impl
             throw new XMLStreamException("DOCTYPE is not allowed");
         }
         return event;
-    }
-
-    public XMLStreamReader getParent() {
-        return super.getParent();
     }
 }
