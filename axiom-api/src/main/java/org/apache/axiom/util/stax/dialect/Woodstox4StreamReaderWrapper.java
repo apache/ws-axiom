@@ -27,7 +27,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.codehaus.stax2.XMLStreamReader2;
 
 class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements DelegatingXMLStreamReader, CharacterDataReader {
@@ -131,6 +130,6 @@ class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements D
 
     public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
         // Allow efficient access to character data, even if coalescing is enabled
-        ((XMLStreamReader2)XMLStreamReaderUtils.getOriginalXMLStreamReader(this)).getText(writer, false);
+        ((XMLStreamReader2)getParent()).getText(writer, false);
     }
 }
