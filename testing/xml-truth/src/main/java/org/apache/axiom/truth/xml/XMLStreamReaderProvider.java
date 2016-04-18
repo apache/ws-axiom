@@ -19,29 +19,8 @@
 package org.apache.axiom.truth.xml;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.truth.xml.spi.Traverser;
-import org.apache.axiom.truth.xml.spi.TraverserException;
-import org.apache.axiom.truth.xml.spi.XML;
-
-final class StAXXML implements XML {
-    private XMLStreamReaderProvider xmlStreamReaderProvider;
-    
-    StAXXML(XMLStreamReaderProvider xmlStreamReaderProvider) {
-        this.xmlStreamReaderProvider = xmlStreamReaderProvider;
-    }
-
-    @Override
-    public boolean isReportingElementContentWhitespace() {
-        return true;
-    }
-
-    @Override
-    public Traverser createTraverser(boolean expandEntityReferences) throws TraverserException {
-        try {
-            return new StAXTraverser(xmlStreamReaderProvider.getXMLStreamReader(expandEntityReferences));
-        } catch (XMLStreamException ex) {
-            throw new TraverserException(ex);
-        }
-    }
+abstract class XMLStreamReaderProvider {
+    abstract XMLStreamReader getXMLStreamReader(boolean expandEntityReferences) throws XMLStreamException;
 }

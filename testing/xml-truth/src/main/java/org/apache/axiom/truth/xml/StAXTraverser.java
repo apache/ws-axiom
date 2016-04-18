@@ -34,41 +34,67 @@ import com.google.common.base.Strings;
 
 final class StAXTraverser implements Traverser {
     private final XMLStreamReader reader;
+    private int depth;
+    private boolean atStart;
 
     StAXTraverser(XMLStreamReader reader) {
         this.reader = reader;
+        switch (reader.getEventType()) {
+            case XMLStreamReader.START_DOCUMENT:
+                depth = -1;
+                break;
+            case XMLStreamReader.START_ELEMENT:
+                depth = 0;
+                atStart = true;
+                break;
+            default:
+                throw new IllegalStateException("The reader must be positioned at a START_DOCUMENT or START_ELEMENT event");
+        }
     }
     
     @Override
     public Event next() throws TraverserException {
         try {
-            if (reader.hasNext()) {
-                switch (reader.next()) {
-                    case XMLStreamReader.DTD:
-                        return Event.DOCUMENT_TYPE;
-                    case XMLStreamReader.START_ELEMENT:
-                        return Event.START_ELEMENT;
-                    case XMLStreamReader.END_ELEMENT:
-                        return Event.END_ELEMENT;
-                    case XMLStreamReader.CHARACTERS:
-                        return Event.TEXT;
-                    case XMLStreamReader.SPACE:
-                        return Event.WHITESPACE;
-                    case XMLStreamReader.ENTITY_REFERENCE:
-                        return Event.ENTITY_REFERENCE;
-                    case XMLStreamReader.COMMENT:
-                        return Event.COMMENT;
-                    case XMLStreamReader.CDATA:
-                        return Event.CDATA_SECTION;
-                    case XMLStreamReader.PROCESSING_INSTRUCTION:
-                        return Event.PROCESSING_INSTRUCTION;
-                    case XMLStreamReader.END_DOCUMENT:
-                        return null;
-                    default:
-                        throw new IllegalStateException();
+            int event;
+            if (depth == 0) {
+                if (atStart) {
+                    atStart = false;
+                    event = XMLStreamReader.START_ELEMENT;
+                } else {
+                    event = XMLStreamReader.END_DOCUMENT;
                 }
             } else {
-                return null;
+                event = reader.hasNext() ? reader.next() : XMLStreamReader.END_DOCUMENT;
+            }
+            switch (event) {
+                case XMLStreamReader.DTD:
+                    return Event.DOCUMENT_TYPE;
+                case XMLStreamReader.START_ELEMENT:
+                    if (depth != -1) {
+                        depth++;
+                    }
+                    return Event.START_ELEMENT;
+                case XMLStreamReader.END_ELEMENT:
+                    if (depth != -1) {
+                        depth--;
+                    }
+                    return Event.END_ELEMENT;
+                case XMLStreamReader.CHARACTERS:
+                    return Event.TEXT;
+                case XMLStreamReader.SPACE:
+                    return Event.WHITESPACE;
+                case XMLStreamReader.ENTITY_REFERENCE:
+                    return Event.ENTITY_REFERENCE;
+                case XMLStreamReader.COMMENT:
+                    return Event.COMMENT;
+                case XMLStreamReader.CDATA:
+                    return Event.CDATA_SECTION;
+                case XMLStreamReader.PROCESSING_INSTRUCTION:
+                    return Event.PROCESSING_INSTRUCTION;
+                case XMLStreamReader.END_DOCUMENT:
+                    return null;
+                default:
+                    throw new IllegalStateException();
             }
         } catch (XMLStreamException ex) {
             throw new TraverserException(ex);
