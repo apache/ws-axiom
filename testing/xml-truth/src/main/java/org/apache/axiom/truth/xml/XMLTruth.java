@@ -78,12 +78,12 @@ public final class XMLTruth {
 
             @Override
             public XML createXML(final InputStream in) {
-                return new StAXXML() {
+                return new StAXXML(new Parsable() {
                     @Override
                     XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException {
                         return factory.createXMLStreamReader(in);
                     }
-                };
+                });
             }
         });
         factories.add(new XMLFactory<Reader>() {
@@ -94,12 +94,12 @@ public final class XMLTruth {
 
             @Override
             public XML createXML(final Reader reader) {
-                return new StAXXML() {
+                return new StAXXML(new Parsable() {
                     @Override
                     XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException {
                         return factory.createXMLStreamReader(reader);
                     }
-                };
+                });
             }
         });
         factories.add(new XMLFactory<StreamSource>() {
@@ -110,12 +110,12 @@ public final class XMLTruth {
 
             @Override
             public XML createXML(final StreamSource source) {
-                return new StAXXML() {
+                return new StAXXML(new Parsable() {
                     @Override
                     XMLStreamReader createXMLStreamReader(XMLInputFactory factory) throws XMLStreamException {
                         return factory.createXMLStreamReader(source);
                     }
-                };
+                });
             }
         });
         factories.add(new XMLFactory<InputSource>() {
@@ -189,6 +189,25 @@ public final class XMLTruth {
                 return new DOMXML(element);
             }
         });
+        factories.add(new XMLFactory<XMLStreamReader>() {
+            @Override
+            public Class<XMLStreamReader> getExpectedType() {
+                return XMLStreamReader.class;
+            }
+
+            @Override
+            public XML createXML(final XMLStreamReader source) {
+                return new StAXXML(new XMLStreamReaderProvider() {
+                    @Override
+                    XMLStreamReader getXMLStreamReader(boolean expandEntityReferences) throws XMLStreamException {
+                        if (expandEntityReferences) {
+                            throw new UnsupportedOperationException("Can't expand entity references on a user supplied XMLStreamReader");
+                        }
+                        return source;
+                    }
+                });
+            }
+        });
         for (XMLFactory<?> factory : ServiceLoader.load(
                 XMLFactory.class, XMLTruth.class.getClassLoader())) {
             factories.add(factory);
@@ -235,7 +254,7 @@ public final class XMLTruth {
             }
         }
         if (factory == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No XMLFactory found for type " + object.getClass().getName());
         } else {
             return createXML0(factory, object);
         }

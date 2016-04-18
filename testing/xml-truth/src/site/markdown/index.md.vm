@@ -42,6 +42,8 @@ supported:
 
 *   `java.net.URL`
 
+*   `javax.xml.stream.XMLStreamReader`
+
 By default, comparison is strict. E.g. the following assertion would fail:
 
     assertAbout(xml()).that("<p:a xmlns:p='urn:ns'/>").hasSameContentAs("<a xmlns='urn:ns'/>");
