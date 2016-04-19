@@ -23,11 +23,5 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAP12FaultNode;
 import org.apache.axiom.soap.impl.llom.SOAPElement;
 
 public class SOAP12FaultNodeImpl extends SOAPElement implements AxiomSOAP12FaultNode {
-    public void setFaultNodeValue(String uri) {
-        this.setText(uri);
-    }
 
-    public String getFaultNodeValue() {
-        return this.getText();
-    }
 }

@@ -30,4 +30,12 @@ public aspect AxiomSOAP12FaultNodeSupport {
     public final boolean AxiomSOAP12FaultNode.isChildElementAllowed(OMElement child) {
         return false;
     }
+
+    public final void AxiomSOAP12FaultNode.setFaultNodeValue(String uri) {
+        setText(uri);
+    }
+
+    public final String AxiomSOAP12FaultNode.getFaultNodeValue() {
+        return getText();
+    }
 }
