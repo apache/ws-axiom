@@ -18,10 +18,7 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
-import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMComment;
-import org.apache.axiom.dom.DOMExceptionUtil;
-import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.Node;
 
 public aspect DOMCommentSupport {
@@ -31,21 +28,5 @@ public aspect DOMCommentSupport {
 
     public final short DOMComment.getNodeType() {
         return Node.COMMENT_NODE;
-    }
-
-    public final String DOMComment.getData() {
-        try {
-            return coreGetCharacterData().toString();
-        } catch (CoreModelException ex) {
-            throw DOMExceptionUtil.toUncheckedException(ex);
-        }
-    }
-
-    public final void DOMComment.setData(String data) {
-        try {
-            coreSetCharacterData(data, DOMSemantics.INSTANCE);
-        } catch (CoreModelException ex) {
-            throw DOMExceptionUtil.toUncheckedException(ex);
-        }
     }
 }

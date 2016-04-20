@@ -18,10 +18,7 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
-import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMCDATASection;
-import org.apache.axiom.dom.DOMExceptionUtil;
-import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.Node;
 
 public aspect DOMCDATASectionSupport {
@@ -31,13 +28,5 @@ public aspect DOMCDATASectionSupport {
 
     public final String DOMCDATASection.getNodeName() {
         return "#cdata-section";
-    }
-
-    public final void DOMCDATASection.setData(String data) {
-        try {
-            coreSetCharacterData(data, DOMSemantics.INSTANCE);
-        } catch (CoreModelException ex) {
-            throw DOMExceptionUtil.toUncheckedException(ex);
-        }
     }
 }

@@ -60,14 +60,6 @@ public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, Axio
         }
     }
 
-    // /
-    // /OMNode methods
-    // /
-
-    public String getData() throws DOMException {
-        return this.getText();
-    }
-
     /*
     * DOM-Level 3 methods
     */

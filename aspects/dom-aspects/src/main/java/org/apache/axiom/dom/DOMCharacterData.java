@@ -18,8 +18,9 @@
  */
 package org.apache.axiom.dom;
 
+import org.apache.axiom.core.CoreCharacterDataContainer;
 import org.w3c.dom.CharacterData;
 
-public interface DOMCharacterData extends DOMLeafNode, CharacterData {
+public interface DOMCharacterData extends DOMLeafNode, CharacterData, CoreCharacterDataContainer {
 
 }

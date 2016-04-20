@@ -29,8 +29,4 @@ public aspect DOMTextSupport {
     public final short DOMText.getNodeType() {
         return Node.TEXT_NODE;
     }
-
-    public final void DOMText.setData(String data) {
-        coreSetCharacterData(data);
-    }
 }
