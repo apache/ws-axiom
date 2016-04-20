@@ -30,13 +30,4 @@ public final class FOMComment extends FOMLeafNode implements AbderaComment, Axio
         setValue(text);
         return this;
     }
-
-    public String toString() {
-        java.io.CharArrayWriter w = new java.io.CharArrayWriter();
-        try {
-            super.serialize(w);
-        } catch (Exception e) {
-        }
-        return w.toString();
-    }
 }

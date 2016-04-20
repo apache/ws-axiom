@@ -20,9 +20,6 @@
 package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import java.io.OutputStream;
-import java.io.Writer;
 
 /**
  * Defines the base interface used by most of the XML object model within Axis.
@@ -170,59 +167,6 @@ public interface OMNode extends OMSerializable {
      * @return Returns node.
      */
     OMNode getPreviousOMSibling();
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serialize(OutputStream output) throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serialize(Writer writer) throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serialize(Writer writer, OMOutputFormat format)
-            throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serializeAndConsume(OutputStream output)
-            throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serializeAndConsume(Writer writer) throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException;
-
-    /**
-     * @deprecated This method is not meaningful on a node in general, but only on an
-     *             {@link OMElement}.
-     */
-    void serializeAndConsume(Writer writer, OMOutputFormat format)
-            throws XMLStreamException;
 
     /**
      * Builds itself with the OMText binary content. AXIOM supports two levels of deffered building.

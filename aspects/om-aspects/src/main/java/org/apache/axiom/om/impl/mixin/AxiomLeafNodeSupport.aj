@@ -18,48 +18,10 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
-import java.io.OutputStream;
-import java.io.Writer;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomLeafNode;
 
 public aspect AxiomLeafNodeSupport {
-    public final void AxiomLeafNode.serialize(OutputStream output) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serialize(Writer writer) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serializeAndConsume(OutputStream output) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serializeAndConsume(Writer writer) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
-    public final void AxiomLeafNode.serializeAndConsume(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        throw new UnsupportedOperationException("Only supported on OMContainer instances");
-    }
-
     public final void AxiomLeafNode.setComplete(boolean state) {
         if (state != true) {
             throw new IllegalStateException();

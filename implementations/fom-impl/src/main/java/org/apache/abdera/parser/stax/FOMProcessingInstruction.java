@@ -21,12 +21,5 @@ import org.apache.axiom.fom.AbderaProcessingInstruction;
 import org.apache.axiom.om.impl.intf.AxiomProcessingInstruction;
 
 public final class FOMProcessingInstruction extends FOMLeafNode implements AbderaProcessingInstruction, AxiomProcessingInstruction {
-    public String toString() {
-        java.io.CharArrayWriter w = new java.io.CharArrayWriter();
-        try {
-            super.serialize(w);
-        } catch (Exception e) {
-        }
-        return w.toString();
-    }
+
 }
