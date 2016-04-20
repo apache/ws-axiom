@@ -41,5 +41,6 @@ public class TestSplitTextWithoutParent extends DOMTestCase {
         Text newText = text.splitText(2);
         assertThat(text.getData()).isEqualTo("AB");
         assertThat(newText.getData()).isEqualTo("CD");
+        assertThat(newText.getOwnerDocument()).isSameAs(document);
     }
 }

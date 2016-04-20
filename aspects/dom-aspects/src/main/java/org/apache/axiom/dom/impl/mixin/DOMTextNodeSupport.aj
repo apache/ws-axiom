@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMExceptionUtil;
@@ -104,6 +106,27 @@ public aspect DOMTextNodeSupport {
                     current.coreDetach(DOMSemantics.INSTANCE);
                     current = next;
                 } while (next != null);
+            }
+            return newText;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
+    }
+
+    public final Text DOMTextNode.splitText(int offset) throws DOMException {
+        try {
+            String value = getData();
+            if (offset < 0 || offset > value.length()) {
+                throw newDOMException(DOMException.INDEX_SIZE_ERR);
+            }
+            String newValue = value.substring(offset);
+            deleteData(offset, value.length());
+            DOMText newText = coreCreateNode(DOMText.class);
+            newText.coreSetCharacterData(newValue);
+            if (coreHasParent()) {
+                coreInsertSiblingAfter(newText);
+            } else {
+                newText.coreSetOwnerDocument(coreGetOwnerDocument(true));
             }
             return newText;
         } catch (CoreModelException ex) {
