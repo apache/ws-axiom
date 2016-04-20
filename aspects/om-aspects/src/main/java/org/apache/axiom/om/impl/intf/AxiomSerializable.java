@@ -21,5 +21,5 @@ package org.apache.axiom.om.impl.intf;
 import org.apache.axiom.om.OMSerializable;
 
 public interface AxiomSerializable extends OMSerializable, AxiomInformationItem {
-    void setComplete(boolean state);
+
 }

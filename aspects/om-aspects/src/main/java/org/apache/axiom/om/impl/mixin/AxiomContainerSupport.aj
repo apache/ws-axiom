@@ -322,9 +322,4 @@ public aspect AxiomContainerSupport {
             builder.close();
         }
     }
-
-    // TODO: overridden in AxiomSourcedElementSupport
-    public void AxiomContainer.setComplete(boolean complete) {
-        coreSetState(complete ? COMPLETE : INCOMPLETE);
-    }
 }

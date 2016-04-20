@@ -22,12 +22,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.intf.AxiomLeafNode;
 
 public aspect AxiomLeafNodeSupport {
-    public final void AxiomLeafNode.setComplete(boolean state) {
-        if (state != true) {
-            throw new IllegalStateException();
-        }
-    }
-
     public final void AxiomLeafNode.discard() throws OMException {
         detach();
     }

@@ -441,7 +441,7 @@ public aspect AxiomSourcedElementSupport {
                 it.remove();
             }
             this.dataSource = dataSource;
-            setComplete(false);
+            coreSetState(INCOMPLETE);
             isExpanded = false;
             coreSetInputContext(null);
             return oldDS;
