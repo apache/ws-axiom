@@ -29,18 +29,6 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 public class NSAwareElement extends ElementImpl implements DOMNSAwareElement, AxiomElement,
         OMConstants {
     
-    /**
-     * Returns the namespace uri, given the prefix. If it is not found at this element, searches the
-     * parent.
-     *
-     * @param prefix
-     * @return Returns namespace.
-     */
-    public String getNamespaceURI(String prefix) {
-        OMNamespace ns = this.findNamespaceURI(prefix);
-        return (ns != null) ? ns.getNamespaceURI() : null;
-    }
-
     public void normalize(DOMConfigurationImpl config) {
         if (config.isEnabled(DOMConfigurationImpl.NAMESPACES)) {
             OMNamespace namespace = getNamespace();

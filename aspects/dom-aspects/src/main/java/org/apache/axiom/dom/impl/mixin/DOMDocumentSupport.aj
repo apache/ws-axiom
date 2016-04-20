@@ -23,6 +23,7 @@ import javax.xml.XMLConstants;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMCDATASection;
 import org.apache.axiom.dom.DOMComment;
 import org.apache.axiom.dom.DOMConfigurationImpl;
@@ -85,6 +86,10 @@ public aspect DOMDocumentSupport {
 
     public final String DOMDocument.getPrefix() {
         return null;
+    }
+
+    public final void DOMDocument.setPrefix(String prefix) throws DOMException {
+        throw DOMExceptionUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 
     public final String DOMDocument.getNamespaceURI() {
@@ -353,6 +358,23 @@ public aspect DOMDocumentSupport {
             return null;
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
+        }
+    }
+
+    public final Node DOMDocument.adoptNode(Node node) throws DOMException {
+        if (node instanceof DOMNode) {
+            DOMNode childNode = (DOMNode)node;
+            if (childNode instanceof CoreChildNode) {
+                ((CoreChildNode)childNode).coreDetach(this);
+            } else {
+                childNode.coreSetOwnerDocument(this);
+            }
+            if (node instanceof DOMAttribute) {
+                ((DOMAttribute)node).coreSetSpecified(true);
+            }
+            return childNode;
+        } else {
+            return null;
         }
     }
 }

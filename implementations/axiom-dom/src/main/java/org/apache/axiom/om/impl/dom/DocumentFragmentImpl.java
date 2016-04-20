@@ -22,7 +22,5 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.dom.DOMDocumentFragment;
 
 public class DocumentFragmentImpl extends ParentNode implements DOMDocumentFragment {
-    public final void build() {
-        // TODO
-    }
+
 }

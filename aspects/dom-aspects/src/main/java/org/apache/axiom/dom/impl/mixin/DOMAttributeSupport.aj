@@ -25,8 +25,10 @@ import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.TypeInfo;
 
 public aspect DOMAttributeSupport {
     public final Document DOMAttribute.getOwnerDocument() {
@@ -83,5 +85,18 @@ public aspect DOMAttributeSupport {
     
     public final CoreElement DOMAttribute.getNamespaceContext() {
         return coreGetOwnerElement();
+    }
+
+    public final Element DOMAttribute.getOwnerElement() {
+        return (Element)coreGetOwnerElement();
+    }
+
+    public final boolean DOMAttribute.getSpecified() {
+        return coreGetSpecified();
+    }
+
+    public final TypeInfo DOMAttribute.getSchemaTypeInfo() {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 }

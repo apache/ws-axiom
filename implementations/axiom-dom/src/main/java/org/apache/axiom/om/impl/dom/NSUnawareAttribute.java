@@ -21,7 +21,5 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.dom.DOMNSUnawareAttribute;
 
 public class NSUnawareAttribute extends AttrImpl implements DOMNSUnawareAttribute {
-    public final void build() {
-        // TODO
-    }
+
 }

@@ -27,6 +27,7 @@ import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.DetachPolicy;
 import org.apache.axiom.core.NoParentException;
 import org.apache.axiom.core.NodeConsumedException;
 import org.apache.axiom.core.NodeFilter;
@@ -206,10 +207,15 @@ public aspect CoreChildNodeSupport {
     }
     
     public final void CoreChildNode.coreDetach(Semantics semantics) {
-        internalDetach(semantics, null);
+        internalDetach(semantics.getDetachPolicy(), null);
     }
     
-    final void CoreChildNode.internalDetach(Semantics semantics, CoreParentNode newParent) {
+    public final void CoreChildNode.coreDetach(CoreDocument newOwnerDocument) {
+        internalDetach(DetachPolicy.NEW_DOCUMENT, null);
+        owner = newOwnerDocument;
+    }
+    
+    final void CoreChildNode.internalDetach(DetachPolicy detachPolicy, CoreParentNode newParent) {
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
             if (previousSibling == null) {
@@ -225,7 +231,7 @@ public aspect CoreChildNodeSupport {
             nextSibling = null;
             previousSibling = null;
             if (newParent == null) {
-                internalUnsetParent(semantics.getDetachPolicy().getNewOwnerDocument(parent));
+                internalUnsetParent(detachPolicy.getNewOwnerDocument(parent));
             }
         }
         if (newParent != null) {

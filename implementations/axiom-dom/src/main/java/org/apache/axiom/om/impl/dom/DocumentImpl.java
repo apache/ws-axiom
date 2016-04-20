@@ -25,9 +25,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.dom.DOMDocument;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -167,22 +165,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
     * DOM-Level 3 methods
     */
 
-    public Node adoptNode(Node node) throws DOMException {
-        if (node instanceof NodeImpl) {
-            NodeImpl childNode = (NodeImpl)node;
-            if (childNode instanceof CoreChildNode && ((CoreChildNode)childNode).coreHasParent()) {
-                ((OMNode)childNode).detach();
-            }
-            childNode.coreSetOwnerDocument(this);
-            if (node instanceof AttrImpl) {
-                ((AttrImpl)node).coreSetSpecified(true);
-            }
-            return childNode;
-        } else {
-            return null;
-        }
-    }
-
     public String getDocumentURI() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
@@ -201,9 +183,5 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
     public void setStrictErrorChecking(boolean strictErrorChecking) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
-    }
-
-    public final void setPrefix(String prefix) throws DOMException {
-        throw newDOMException(DOMException.NAMESPACE_ERR);
     }
 }

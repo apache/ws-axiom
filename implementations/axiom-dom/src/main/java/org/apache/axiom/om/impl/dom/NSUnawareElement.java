@@ -21,7 +21,5 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.dom.DOMNSUnawareElement;
 
 public class NSUnawareElement extends ElementImpl implements DOMNSUnawareElement {
-    public void build() {
-        // Do nothing: the builder never creates NS unaware elements
-    }
+
 }

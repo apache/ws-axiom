@@ -20,42 +20,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.dom.DOMAttribute;
-import org.w3c.dom.Element;
-import org.w3c.dom.TypeInfo;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public abstract class AttrImpl extends ParentNode implements DOMAttribute {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
-
-    // /
-    // /org.w3c.dom.Attr methods
-    // /
-
-    /**
-     * Returns the owner element.
-     *
-     * @see org.w3c.dom.Attr#getOwnerElement()
-     */
-    public Element getOwnerElement() {
-        return (Element)coreGetOwnerElement();
-    }
-
-    public boolean getSpecified() {
-        return coreGetSpecified();
-    }
-
-    public final void coreSetValue(String value) {
-        setValue(value);
-    }
-
-    /*
-     * DOM-Level 3 methods
-     */
-    public TypeInfo getSchemaTypeInfo() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
 
     public boolean isId() {
         return isId;
