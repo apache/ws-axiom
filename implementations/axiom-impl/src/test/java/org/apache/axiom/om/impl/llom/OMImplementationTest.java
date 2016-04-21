@@ -24,16 +24,11 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.document.TestDigest;
-import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
-import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
         OMTestSuiteBuilder builder = new OMTestSuiteBuilder(OMLinkedListMetaFactory.INSTANCE);
-        // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
-        builder.exclude(TestInsertSiblingAfterOnChild.class);
-        builder.exclude(TestInsertSiblingBeforeOnChild.class);
         
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");

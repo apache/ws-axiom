@@ -34,6 +34,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.CoreParentNode;
+import org.apache.axiom.core.CyclicRelationshipException;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.core.ElementMatcher;
 import org.apache.axiom.core.InputContext;
@@ -181,7 +182,23 @@ public aspect CoreParentNodeSupport {
         return child;
     }
     
+    final void CoreParentNode.internalCheckNewChild(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
+        // Check that the new node is not an ancestor of this node
+        CoreParentNode current = this;
+        do {
+            if (current == newChild) {
+                throw new CyclicRelationshipException();
+            }
+            if (current instanceof CoreChildNode) {
+                current = ((CoreChildNode)current).coreGetParent();
+            } else {
+                break;
+            }
+        } while (current != null);
+    }
+    
     public final void CoreParentNode.coreAppendChild(CoreChildNode child) throws CoreModelException {
+        internalCheckNewChild(child, null);
         forceExpand();
         coreBuild();
         internalAppendChildWithoutBuild(child);

@@ -25,17 +25,11 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
-import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
-import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 import org.apache.axiom.ts.om.sourcedelement.TestGetSAXSourceWithPushOMDataSource;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
         OMTestSuiteBuilder builder = new OMTestSuiteBuilder(OMDOMMetaFactory.INSTANCE);
-        
-        // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
-        builder.exclude(TestInsertSiblingAfterOnChild.class);
-        builder.exclude(TestInsertSiblingBeforeOnChild.class);
         
         // TODO: investigate why this is not working with DOOM
         builder.exclude(TestGetChildrenWithName4.class);

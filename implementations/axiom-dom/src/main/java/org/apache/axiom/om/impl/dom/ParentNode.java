@@ -59,10 +59,6 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
             
             checkSameOwnerDocument(newDomChild);
     
-            if (isAncestorOrSelf(newChild)) {
-                throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
-            }
-    
             if (this instanceof Document) {
                 if (newDomChild instanceof ElementImpl) {
                     if (!(replacedChild instanceof Element) && ((DocumentImpl) this).coreGetDocumentElement() != null) {
@@ -140,23 +136,5 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
-    }
-
-    /**
-     * Checks if the given node is an ancestor (or identical) to this node.
-     * 
-     * @param node
-     *            the node to check
-     * @return <code>true</code> if the node is an ancestor or indentical to this node
-     */
-    private boolean isAncestorOrSelf(Node node) {
-        Node currentNode = this;
-        do {
-            if (currentNode == node) {
-                return true;
-            }
-            currentNode = currentNode.getParentNode();
-        } while (currentNode != null);
-        return false;
     }
 }

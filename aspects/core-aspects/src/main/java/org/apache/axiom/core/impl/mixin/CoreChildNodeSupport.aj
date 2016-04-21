@@ -151,6 +151,7 @@ public aspect CoreChildNodeSupport {
         } else if (this == sibling) {
             throw new SelfRelationshipException("Inserting self as the sibling is not allowed");
         }
+        parent.internalCheckNewChild(sibling, null);
         sibling.internalDetach(null, parent);
         CoreChildNode nextSibling = coreGetNextSibling();
         sibling.previousSibling = this;
@@ -170,6 +171,7 @@ public aspect CoreChildNodeSupport {
         } else if (this == sibling) {
             throw new SelfRelationshipException("Inserting self as the sibling is not allowed");
         }
+        parent.internalCheckNewChild(sibling, null);
         sibling.internalDetach(null, parent);
         sibling.nextSibling = this;
         if (previousSibling == null) {
