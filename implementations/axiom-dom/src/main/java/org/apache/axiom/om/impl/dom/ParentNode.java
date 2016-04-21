@@ -115,15 +115,11 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
                 throw newDOMException(DOMException.NOT_FOUND_ERR);
             }
             checkNewChild(newChild, _oldChild);
-            CoreChildNode nextSibling = oldChild.coreGetNextSibling();
-            oldChild.coreDetach(DOMSemantics.INSTANCE);
             if (newChild instanceof CoreChildNode) {
-                if (nextSibling == null) {
-                    coreAppendChild((CoreChildNode)newChild);
-                } else {
-                    nextSibling.coreInsertSiblingBefore((CoreChildNode)newChild);
-                }
+                oldChild.coreReplaceWith(((CoreChildNode)newChild), DOMSemantics.INSTANCE);
             } else if (newChild instanceof CoreDocumentFragment) {
+                CoreChildNode nextSibling = oldChild.coreGetNextSibling();
+                oldChild.coreDetach(DOMSemantics.INSTANCE);
                 if (nextSibling == null) {
                     coreAppendChildren((CoreDocumentFragment)newChild);
                 } else {

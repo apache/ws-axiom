@@ -23,11 +23,13 @@ import java.util.ArrayList;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.impl.builder.BuilderListener;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
+import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.intf.AxiomElement;
@@ -119,7 +121,11 @@ final class CustomBuilderManager implements BuilderListener {
                                 }
                                 AxiomSourcedElement newElement = element.coreCreateNode(type);
                                 newElement.init(localName, new OMNamespaceImpl(namespaceURI, null), dataSource);
-                                element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);
+                                try {
+                                    element.coreReplaceWith(newElement, AxiomSemantics.INSTANCE);
+                                } catch (CoreModelException ex) {
+                                    throw AxiomExceptionTranslator.translate(ex);
+                                }
                             }
                         };
                     }

@@ -241,12 +241,13 @@ public aspect CoreChildNodeSupport {
         }
     }
 
-    public final void CoreChildNode.coreReplaceWith(CoreChildNode newNode, Semantics semantics) {
+    public final void CoreChildNode.coreReplaceWith(CoreChildNode newNode, Semantics semantics) throws CoreModelException {
         if (newNode == this) {
             return;
         }
         CoreParentNode parent = coreGetParent();
         if (parent != null) {
+            parent.internalCheckNewChild(newNode, this);
             newNode.internalDetach(null, parent);
             if (previousSibling == null) {
                 parent.getContent(true).firstChild = newNode;
