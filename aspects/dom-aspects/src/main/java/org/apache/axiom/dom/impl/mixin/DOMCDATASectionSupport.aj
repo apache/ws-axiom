@@ -29,4 +29,8 @@ public aspect DOMCDATASectionSupport {
     public final String DOMCDATASection.getNodeName() {
         return "#cdata-section";
     }
+
+    public final boolean DOMCDATASection.isElementContentWhitespace() {
+        return false;
+    }
 }

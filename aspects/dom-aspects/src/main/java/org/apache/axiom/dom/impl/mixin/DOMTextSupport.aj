@@ -29,4 +29,8 @@ public aspect DOMTextSupport {
     public final short DOMText.getNodeType() {
         return Node.TEXT_NODE;
     }
+
+    public final boolean DOMText.isElementContentWhitespace() {
+        return coreIsIgnorable();
+    }
 }

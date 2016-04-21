@@ -23,15 +23,6 @@ import org.apache.axiom.dom.DOMTextNode;
 import org.apache.axiom.om.impl.intf.AxiomText;
 
 public abstract class TextNodeImpl extends LeafNode implements DOMTextNode, AxiomText {
-    /*
-    * DOM-Level 3 methods
-    */
-
-    public boolean isElementContentWhitespace() {
-        // TODO TODO
-        return false;
-    }
-
     public String toString() {
         String value = getData();
         return value != null ? value : "";
