@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import org.apache.axiom.core.CoreCharacterDataNode;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreModelException;
@@ -29,7 +30,6 @@ import org.apache.axiom.dom.DOMParentNode;
 import org.apache.axiom.dom.DOMSemantics;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public abstract class ParentNode extends NodeImpl implements DOMParentNode {
@@ -54,26 +54,12 @@ public abstract class ParentNode extends NodeImpl implements DOMParentNode {
     }
 
     private void checkNewChild(Node newChild, Node replacedChild) {
-        try {
-            NodeImpl newDomChild = (NodeImpl) newChild;
-            
-            checkSameOwnerDocument(newDomChild);
-    
-            if (this instanceof Document) {
-                if (newDomChild instanceof ElementImpl) {
-                    if (!(replacedChild instanceof Element) && ((DocumentImpl) this).coreGetDocumentElement() != null) {
-                        // Throw exception since there cannot be two document elements
-                        throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
-                    }
-                } else if (!(newDomChild instanceof CommentImpl
-                        || newDomChild instanceof ProcessingInstructionImpl
-                        || newDomChild instanceof DocumentFragmentImpl
-                        || newDomChild instanceof DocumentTypeImpl)) {
-                    throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
-                }
-            }
-        } catch (CoreModelException ex) {
-            throw DOMExceptionUtil.toUncheckedException(ex);
+        NodeImpl newDomChild = (NodeImpl) newChild;
+        
+        checkSameOwnerDocument(newDomChild);
+
+        if (this instanceof Document && newDomChild instanceof CoreCharacterDataNode) {
+            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
     }
     

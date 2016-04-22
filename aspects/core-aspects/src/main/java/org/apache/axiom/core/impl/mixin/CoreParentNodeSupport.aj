@@ -21,6 +21,7 @@ package org.apache.axiom.core.impl.mixin;
 import org.apache.axiom.core.Axis;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.CharacterData;
+import org.apache.axiom.core.ChildNotAllowedException;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.Content;
 import org.apache.axiom.core.CoreCDATASection;
@@ -195,6 +196,13 @@ public aspect CoreParentNodeSupport {
                 break;
             }
         } while (current != null);
+        if (!coreGetNodeType().isChildTypeAllowed(newChild.coreGetNodeType())) {
+            throw new ChildNotAllowedException();
+        }
+        internalCheckNewChild0(newChild, replacedChild);
+    }
+    
+    void CoreParentNode.internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
     }
     
     public final void CoreParentNode.coreAppendChild(CoreChildNode child) throws CoreModelException {

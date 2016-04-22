@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.core.impl.mixin;
 
+import org.apache.axiom.core.ChildNotAllowedException;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreDocument;
@@ -105,5 +106,11 @@ public aspect CoreDocumentSupport {
     
     public final void CoreDocument.serializeEndEvent(XmlHandler handler) throws StreamException {
         handler.completed();
+    }
+
+    final void CoreDocument.internalCheckNewChild0(CoreChildNode newChild, CoreChildNode replacedChild) throws CoreModelException {
+        if (newChild instanceof CoreElement && !(replacedChild instanceof CoreElement) && coreGetDocumentElement() != null) {
+            throw new ChildNotAllowedException();
+        }
     }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.core;
 
+import java.util.EnumSet;
+
 public enum NodeType {
     /**
      * The node is a {@link CoreDocument}.
@@ -84,7 +86,21 @@ public enum NodeType {
      */
     ENTITY_REFERENCE(CoreEntityReference.class);
 
+    static {
+        COMMENT.allowedChildTypes = EnumSet.of(CHARACTER_DATA);
+        DOCUMENT.allowedChildTypes = EnumSet.of(CHARACTER_DATA, COMMENT, DOCUMENT_TYPE_DECLARATION, NS_AWARE_ELEMENT, NS_UNAWARE_ELEMENT, PROCESSING_INSTRUCTION);
+        DOCUMENT_FRAGMENT.allowedChildTypes = EnumSet.allOf(NodeType.class);
+        EnumSet<NodeType> s = EnumSet.of(CHARACTER_DATA, ENTITY_REFERENCE);
+        NS_AWARE_ATTRIBUTE.allowedChildTypes = s;
+        NS_UNAWARE_ATTRIBUTE.allowedChildTypes = s;
+        NAMESPACE_DECLARATION.allowedChildTypes = s;
+        s = EnumSet.of(CDATA_SECTION, CHARACTER_DATA, COMMENT, ENTITY_REFERENCE, NS_AWARE_ELEMENT, NS_UNAWARE_ELEMENT, PROCESSING_INSTRUCTION);
+        NS_AWARE_ELEMENT.allowedChildTypes = s;
+        NS_UNAWARE_ELEMENT.allowedChildTypes = s;
+    }
+
     private final Class<? extends CoreNode> iface;
+    private EnumSet<NodeType> allowedChildTypes;
     
     private NodeType(Class<? extends CoreNode> iface) {
         this.iface = iface;
@@ -92,5 +108,12 @@ public enum NodeType {
     
     public Class<? extends CoreNode> getInterface() {
         return iface;
+    }
+    
+    public boolean isChildTypeAllowed(NodeType childType) {
+        if (allowedChildTypes == null) {
+            throw new UnsupportedOperationException();
+        }
+        return allowedChildTypes.contains(childType);
     }
 }
