@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.CoreChildNode;
@@ -375,6 +377,12 @@ public aspect DOMDocumentSupport {
             return childNode;
         } else {
             return null;
+        }
+    }
+
+    final void DOMDocument.checkNewChild0(DOMNode newChild) {
+        if (newChild instanceof DOMText) {
+            throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
     }
 }

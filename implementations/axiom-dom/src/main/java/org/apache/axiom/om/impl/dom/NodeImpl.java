@@ -292,10 +292,4 @@ public abstract class NodeImpl implements DOMNode {
     final DocumentImpl ownerDocument() {
         return (DocumentImpl)coreGetOwnerDocument(true);
     }
-    
-    void checkSameOwnerDocument(Node otherNode) {
-        if (!(otherNode instanceof NodeImpl && coreHasSameOwnerDocument((NodeImpl)otherNode))) {
-            throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
-        }
-    }
 }

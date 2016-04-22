@@ -18,7 +18,10 @@
  */
 package org.apache.axiom.dom.impl.mixin;
 
+import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
+
 import org.apache.axiom.core.CoreChildNode;
+import org.apache.axiom.core.CoreDocumentFragment;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMExceptionUtil;
@@ -95,6 +98,90 @@ public aspect DOMParentNodeSupport {
                 ((DOMNode)child).normalize(config);
                 child = child.coreGetNextSibling();
             }
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
+    }
+
+    private void DOMParentNode.checkNewChild(Node newChild) {
+        if (newChild instanceof DOMNode) {
+            DOMNode newDomChild = (DOMNode)newChild;
+            if (!coreHasSameOwnerDocument(newDomChild)) {
+                throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+            }
+            checkNewChild0((DOMNode)newChild);
+        } else {
+            throw newDOMException(DOMException.WRONG_DOCUMENT_ERR);
+        }
+    }
+    
+    void DOMParentNode.checkNewChild0(DOMNode newChild) {
+    }
+
+    public final Node DOMParentNode.appendChild(Node newChild) {
+        try {
+            checkNewChild(newChild);
+            if (newChild instanceof CoreChildNode) {
+                coreAppendChild((CoreChildNode)newChild);
+            } else if (newChild instanceof CoreDocumentFragment) {
+                coreAppendChildren((CoreDocumentFragment)newChild);
+            } else {
+                throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            }
+            return newChild;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
+    }
+    
+    // TODO: should be final
+    public Node DOMParentNode.insertBefore(Node newChild, Node refChild) {
+        try {
+            if (refChild == null) {
+                return appendChild(newChild);
+            } else {
+                if (!(refChild instanceof CoreChildNode && ((CoreChildNode)refChild).coreGetParent() == this)) {
+                    throw newDOMException(DOMException.NOT_FOUND_ERR);
+                }
+                checkNewChild(newChild);
+                if (newChild instanceof CoreChildNode) {
+                    ((CoreChildNode)refChild).coreInsertSiblingBefore((CoreChildNode)newChild);
+                } else if (newChild instanceof CoreDocumentFragment) {
+                    ((CoreChildNode)refChild).coreInsertSiblingsBefore((CoreDocumentFragment)newChild);
+                } else {
+                    throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+                }
+                return newChild;
+            }
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
+        }
+    }
+
+    public final Node DOMParentNode.replaceChild(Node newChild, Node _oldChild) {
+        try {
+            if (!(_oldChild instanceof CoreChildNode)) {
+                throw newDOMException(DOMException.NOT_FOUND_ERR);
+            }
+            CoreChildNode oldChild = (CoreChildNode)_oldChild;
+            if (oldChild.coreGetParent() != this) {
+                throw newDOMException(DOMException.NOT_FOUND_ERR);
+            }
+            checkNewChild(newChild);
+            if (newChild instanceof CoreChildNode) {
+                oldChild.coreReplaceWith(((CoreChildNode)newChild), DOMSemantics.INSTANCE);
+            } else if (newChild instanceof CoreDocumentFragment) {
+                CoreChildNode nextSibling = oldChild.coreGetNextSibling();
+                oldChild.coreDetach(DOMSemantics.INSTANCE);
+                if (nextSibling == null) {
+                    coreAppendChildren((CoreDocumentFragment)newChild);
+                } else {
+                    nextSibling.coreInsertSiblingsBefore((CoreDocumentFragment)newChild);
+                }
+            } else {
+                throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+            }
+            return _oldChild;
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }

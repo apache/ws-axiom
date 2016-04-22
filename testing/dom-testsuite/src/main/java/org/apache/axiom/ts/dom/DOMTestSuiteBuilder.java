@@ -84,6 +84,7 @@ public final class DOMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeToSameDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeWithParent(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestAppendChildForeignImplementation(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAppendChildWrongDocument(dbf));
         for (XMLSample file : getInstances(XMLSample.class)) {
             addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, file));
