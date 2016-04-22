@@ -52,4 +52,8 @@ public aspect DOMNamespaceDeclarationSupport {
             return XMLConstants.XMLNS_ATTRIBUTE + ":" + declaredPrefix;
         }
     }
+
+    public final boolean DOMNamespaceDeclaration.isId() {
+        return false;
+    }
 }

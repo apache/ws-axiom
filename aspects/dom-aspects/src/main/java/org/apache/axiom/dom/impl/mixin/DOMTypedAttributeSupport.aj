@@ -24,4 +24,8 @@ public aspect DOMTypedAttributeSupport {
     public final String DOMTypedAttribute.getName() {
         return internalGetName();
     }
+
+    public final boolean DOMTypedAttribute.isId() {
+        return "ID".equals(coreGetType());
+    }
 }

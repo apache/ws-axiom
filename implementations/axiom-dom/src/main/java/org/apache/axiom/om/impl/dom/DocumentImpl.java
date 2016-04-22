@@ -21,9 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.impl.intf.AxiomDocument;
@@ -35,29 +33,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
 public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocument {
-    private Vector idAttrs;
-
     protected Hashtable identifiers;
     
-    public Element getElementById(String elementId) {
-
-        //If there are no id attrs
-        if (this.idAttrs == null) {
-            return null;
-        }
-
-        Enumeration attrEnum = this.idAttrs.elements();
-        while (attrEnum.hasMoreElements()) {
-            Attr tempAttr = (Attr) attrEnum.nextElement();
-            if (tempAttr.getValue().equals(elementId)) {
-                return tempAttr.getOwnerElement();
-            }
-        }
-
-        //If we reach this point then, there's no such attr 
-        return null;
-    }
-
     public Node importNode(Node importedNode, boolean deep) throws DOMException {
 
         short type = importedNode.getNodeType();
@@ -144,20 +121,6 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         }
 
         return newNode;
-
-    }
-
-    protected void addIdAttr(Attr attr) {
-        if (this.idAttrs == null) {
-            this.idAttrs = new Vector();
-        }
-        this.idAttrs.add(attr);
-    }
-
-    protected void removeIdAttr(Attr attr) {
-        if (this.idAttrs != null) {
-            this.idAttrs.remove(attr);
-        }
 
     }
 

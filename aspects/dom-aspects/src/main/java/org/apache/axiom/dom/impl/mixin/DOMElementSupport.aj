@@ -21,10 +21,12 @@ package org.apache.axiom.dom.impl.mixin;
 import javax.xml.XMLConstants;
 
 import org.apache.axiom.core.AttributeMatcher;
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
+import org.apache.axiom.core.CoreTypedAttribute;
 import org.apache.axiom.core.ElementAction;
 import org.apache.axiom.dom.AttributesNamedNodeMap;
 import org.apache.axiom.dom.DOMAttribute;
@@ -228,5 +230,32 @@ public aspect DOMElementSupport {
 
     public final NodeList DOMElement.getElementsByTagNameNS(String namespaceURI, String localName) {
         return new ElementsByTagNameNS(this, namespaceURI, localName);
+    }
+
+    public final void DOMElement.setIdAttribute(String name, boolean isId) throws DOMException {
+        CoreAttribute attr = coreGetAttribute(DOMSemantics.DOM1_ATTRIBUTE_MATCHER, null, name);
+        if (attr == null) {
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+        } else {
+            ((CoreTypedAttribute)attr).coreSetType(isId ? "ID" : "CDATA");
+        }
+    }
+
+    public final void DOMElement.setIdAttributeNS(String namespaceURI, String localName, boolean isId) throws DOMException {
+        // Here, we assume that a namespace declaration can never be an ID attribute
+        CoreAttribute attr = coreGetAttribute(DOMSemantics.DOM2_ATTRIBUTE_MATCHER, NSUtil.normalizeNamespaceURI(namespaceURI), localName);
+        if (attr == null) {
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+        } else {
+            ((CoreTypedAttribute)attr).coreSetType(isId ? "ID" : "CDATA");
+        }
+    }
+
+    public final void DOMElement.setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
+        if (idAttr.getOwnerElement() != this) {
+            throw DOMExceptionUtil.newDOMException(DOMException.NOT_FOUND_ERR);
+        } else {
+            ((CoreTypedAttribute)idAttr).coreSetType(isId ? "ID" : "CDATA");
+        }
     }
 }

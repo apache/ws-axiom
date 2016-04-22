@@ -19,61 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
-
-import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMElement;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
 
 public abstract class ElementImpl extends ParentNode implements DOMElement {
-    /*
-     * DOM-Level 3 methods
-     */
 
-    public final void setIdAttribute(String name, boolean isId) throws DOMException {
-        //find the attr
-        AttrImpl tempAttr = (AttrImpl) this.getAttributeNode(name);
-        if (tempAttr == null) {
-            throw newDOMException(DOMException.NOT_FOUND_ERR);
-        }
-
-        this.updateIsId(isId, tempAttr);
-    }
-
-    public final void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
-            throws DOMException {
-        //find the attr
-        AttrImpl tempAttr = (AttrImpl) this.getAttributeNodeNS(namespaceURI, localName);
-        if (tempAttr == null) {
-            throw newDOMException(DOMException.NOT_FOUND_ERR);
-        }
-
-        this.updateIsId(isId, tempAttr);
-    }
-
-    public final void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
-        //find the attr
-        if (((DOMAttribute)idAttr).coreGetOwnerElement() != this) {
-            throw newDOMException(DOMException.NOT_FOUND_ERR);
-        }
-        this.updateIsId(isId, (AttrImpl)idAttr);
-    }
-
-    /**
-     * Updates the id state of the attr and notifies the document
-     *
-     * @param isId
-     * @param tempAttr
-     */
-    private void updateIsId(boolean isId, AttrImpl tempAttr) {
-        if (tempAttr.isId != isId) {
-            tempAttr.isId = isId;
-            if (isId) {
-                ownerDocument().addIdAttr(tempAttr);
-            } else {
-                ownerDocument().removeIdAttr(tempAttr);
-            }
-        }
-    }
 }

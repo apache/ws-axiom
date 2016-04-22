@@ -20,17 +20,23 @@ package org.apache.axiom.dom.impl.mixin;
 
 import static org.apache.axiom.dom.DOMExceptionUtil.newDOMException;
 
+import java.util.Iterator;
+
 import javax.xml.XMLConstants;
 
+import org.apache.axiom.core.Axis;
+import org.apache.axiom.core.CoreAttribute;
 import org.apache.axiom.core.CoreChildNode;
 import org.apache.axiom.core.CoreElement;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.Mappers;
 import org.apache.axiom.dom.DOMAttribute;
 import org.apache.axiom.dom.DOMCDATASection;
 import org.apache.axiom.dom.DOMComment;
 import org.apache.axiom.dom.DOMConfigurationImpl;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.dom.DOMDocumentFragment;
+import org.apache.axiom.dom.DOMElement;
 import org.apache.axiom.dom.DOMEntityReference;
 import org.apache.axiom.dom.DOMExceptionUtil;
 import org.apache.axiom.dom.DOMNSAwareAttribute;
@@ -383,6 +389,22 @@ public aspect DOMDocumentSupport {
     final void DOMDocument.checkNewChild0(DOMNode newChild) {
         if (newChild instanceof DOMText) {
             throw newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
+        }
+    }
+
+    public final Element DOMDocument.getElementById(String elementId) {
+        try {
+            for (Iterator<DOMElement> it = coreGetNodes(Axis.DESCENDANTS, DOMElement.class, Mappers.<DOMElement>identity(), DOMSemantics.INSTANCE); it.hasNext(); ) {
+                DOMElement element = it.next();
+                for (CoreAttribute attr = element.coreGetFirstAttribute(); attr != null; attr = attr.coreGetNextAttribute()) {
+                    if (((DOMAttribute)attr).isId() && elementId.equals(attr.coreGetCharacterData().toString())) {
+                        return element;
+                    }
+                }
+            }
+            return null;
+        } catch (CoreModelException ex) {
+            throw DOMExceptionUtil.toUncheckedException(ex);
         }
     }
 }

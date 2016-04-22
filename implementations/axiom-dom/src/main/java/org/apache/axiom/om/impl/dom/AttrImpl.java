@@ -23,10 +23,5 @@ import org.apache.axiom.dom.DOMAttribute;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public abstract class AttrImpl extends ParentNode implements DOMAttribute {
-    /** Flag used to mark an attribute as per the DOM Level 3 specification */
-    protected boolean isId;
 
-    public boolean isId() {
-        return isId;
-    }
 }

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.dom;
 
-public interface DOMTypedAttribute extends DOMAttribute, DOMNamedNode{
+import org.apache.axiom.core.CoreTypedAttribute;
+
+public interface DOMTypedAttribute extends DOMAttribute, DOMNamedNode, CoreTypedAttribute {
 
 }
