@@ -123,28 +123,4 @@ public class DocumentImpl extends ParentNode implements DOMDocument, AxiomDocume
         return newNode;
 
     }
-
-    /*
-    * DOM-Level 3 methods
-    */
-
-    public String getDocumentURI() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public boolean getStrictErrorChecking() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void setDocumentURI(String documentURI) {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void setStrictErrorChecking(boolean strictErrorChecking) {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
 }

@@ -73,6 +73,9 @@ import org.w3c.dom.Text;
 public aspect DOMDocumentSupport {
     private final DOMConfigurationImpl DOMDocument.domConfig = new DOMConfigurationImpl();
 
+    private String DOMDocument.documentURI;
+    private boolean DOMDocument.strictErrorChecking = true;
+
     public final Document DOMDocument.getOwnerDocument() {
         return null;
     }
@@ -406,5 +409,21 @@ public aspect DOMDocumentSupport {
         } catch (CoreModelException ex) {
             throw DOMExceptionUtil.toUncheckedException(ex);
         }
+    }
+
+    public final String DOMDocument.getDocumentURI() {
+        return documentURI;
+    }
+
+    public final void DOMDocument.setDocumentURI(String documentURI) {
+        this.documentURI = documentURI;
+    }
+
+    public final boolean DOMDocument.getStrictErrorChecking() {
+        return strictErrorChecking;
+    }
+
+    public final void DOMDocument.setStrictErrorChecking(boolean strictErrorChecking) {
+        this.strictErrorChecking = strictErrorChecking;
     }
 }
