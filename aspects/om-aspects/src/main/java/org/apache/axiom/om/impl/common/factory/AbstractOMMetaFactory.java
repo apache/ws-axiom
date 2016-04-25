@@ -183,7 +183,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return new OMXMLParserWrapperImpl(new BuilderImpl(input, nodeFactory, model, root, repairNamespaces), detachable);
     }
     
-    private SOAPModelBuilder createSOAPModelBuilder(XmlInput input, NodeFactory nodeFactory,
+    private SOAPModelBuilder createSOAPModelBuilder(XmlInput input,
             boolean repairNamespaces, Detachable detachable) {
         BuilderImpl builder = new BuilderImpl(new FilteredXmlInput(input, SOAPFilter.INSTANCE), nodeFactory, new SOAPModel(), null, true);
         // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
@@ -269,14 +269,14 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     }
 
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
-        return createSOAPModelBuilder(new StAXPullInput(getXMLStreamReader(parser), false, null), nodeFactory, true, null);
+        return createSOAPModelBuilder(new StAXPullInput(getXMLStreamReader(parser), false, null), true, null);
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, is, true);
         return createSOAPModelBuilder(
                 new StAXPullInput(sourceInfo.getReader(), true, sourceInfo.getCloseable()),
-                nodeFactory, false, sourceInfo.getDetachable());
+                false, sourceInfo.getDetachable());
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(Source source) {
@@ -284,13 +284,13 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
             // TODO: supporting this will require some refactoring of the builders
             throw new UnsupportedOperationException();
         } else if (source instanceof DOMSource) {
-            return createSOAPModelBuilder(new DOMInput(((DOMSource)source).getNode(), true), nodeFactory, true, null);
+            return createSOAPModelBuilder(new DOMInput(((DOMSource)source).getNode(), true), true, null);
         } else if (source instanceof StreamSource) {
             return createSOAPModelBuilder(StAXParserConfiguration.SOAP,
                     toInputSource((StreamSource)source));
         } else {
             try {
-                return createSOAPModelBuilder(new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), true, null), nodeFactory, true, null);
+                return createSOAPModelBuilder(new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), true, null), true, null);
             } catch (XMLStreamException ex) {
                 throw new OMException(ex);
             }
@@ -302,7 +302,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
         SOAPModelBuilder builder = createSOAPModelBuilder(
                 new StAXPullInput(new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider), true, sourceInfo.getCloseable()),
-                nodeFactory, false,
+                false,
                 mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null);
         if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
             throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
