@@ -176,7 +176,7 @@ public class ElementHelper {
             return omElement;
         } else {
             OMElement documentElement = omFactory.getMetaFactory().createStAXOMBuilder(
-                    omFactory, omElement.getXMLStreamReader()).getDocumentElement();
+                    omElement.getXMLStreamReader()).getDocumentElement();
             documentElement.build();
             return documentElement;
         }

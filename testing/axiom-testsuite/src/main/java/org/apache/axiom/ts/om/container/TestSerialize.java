@@ -50,8 +50,8 @@ public class TestSerialize extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
-                TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString()));
+        OMXMLParserWrapper builder = metaFactory.createOMBuilder(TEST_PARSER_CONFIGURATION,
+                new InputSource(file.getUrl().toString()));
         try {
             OMContainer container = containerExtractor.getContainer(builder);
             // We need to clone the InputSource objects so that we can dump their contents

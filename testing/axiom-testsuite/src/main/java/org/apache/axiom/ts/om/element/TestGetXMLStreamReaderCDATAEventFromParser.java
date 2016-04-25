@@ -43,7 +43,7 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
         // reported). This is not the default for Woodstox (see WSTX-140).
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
         
-        OMElement element = metaFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader).getDocumentElement();
+        OMElement element = metaFactory.createStAXOMBuilder(reader).getDocumentElement();
         
         // Build the element so we have a full StAX tree
         element.build();

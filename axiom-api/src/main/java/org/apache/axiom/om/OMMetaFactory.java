@@ -70,60 +70,36 @@ public interface OMMetaFactory {
      * The implementation must perform namespace repairing, i.e. it must add appropriate namespace
      * declarations if undeclared namespaces appear in the StAX stream.
      * 
-     * @param omFactory
-     *            The object model factory to use. This factory must be obtained from the same
-     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
-     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
-     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
-     *            never produce a SOAP infoset.
      * @param parser
      *            the stream reader to read the XML data from
      * @return the builder
      */
-    OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser);
+    OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser);
     
     /**
      * Create an object model builder for plain XML that reads a document from the provided input
      * source.
      * 
-     * @param omFactory
-     *            The object model factory to use. This factory must be obtained from the same
-     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
-     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
-     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
-     *            never produce a SOAP infoset.
      * @param configuration
      *            the parser configuration to use
      * @param is
      *            the source of the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is);
+    OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is);
     
     /**
      * Create an object model builder for plain XML that gets its input from a {@link Source}.
      * 
-     * @param omFactory
-     *            The object model factory to use. This factory must be obtained from the same
-     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
-     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
-     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
-     *            never produce a SOAP infoset.
      * @param source
      *            the source of the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source);
+    OMXMLParserWrapper createOMBuilder(Source source);
     
     /**
      * Create an object model builder for plain XML that gets its input from a DOM tree.
      * 
-     * @param omFactory
-     *            The object model factory to use. This factory must be obtained from the same
-     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
-     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
-     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
-     *            never produce a SOAP infoset.
      * @param node
      *            the DOM node; must be a {@link Node#DOCUMENT_NODE} or {@link Node#ELEMENT_NODE}
      * @param expandEntityReferences
@@ -138,17 +114,13 @@ public interface OMMetaFactory {
      *            </ul>
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node, boolean expandEntityReferences);
+    OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences);
     
     /**
      * Create an object model builder for plain XML that gets its input from a {@link SAXSource}.
      * 
-     * @param omFactory
-     *            The object model factory to use. This factory must be obtained from the same
-     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
-     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
-     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
-     *            never produce a SOAP infoset.
+     * @param source
+     *            the source of the XML document
      * @param expandEntityReferences
      *            Determines how entity references (i.e. {@link LexicalHandler#startEntity(String)}
      *            and {@link LexicalHandler#endEntity(String)} events) are handled:
@@ -163,20 +135,15 @@ public interface OMMetaFactory {
      *            between {@link LexicalHandler#startEntity(String)} and
      *            {@link LexicalHandler#endEntity(String)} are processed normally.
      *            </ul>
-     * @param source
-     *            the source of the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source, boolean expandEntityReferences);
+    OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences);
     
     /**
      * Create an XOP aware object model builder.
      * 
      * @param configuration
      *            the parser configuration to use
-     * @param omFactory
-     *            The object model factory to use. This factory must be obtained from the same
-     *            {@link OMMetaFactory} instance as the one used to invoke this method.
      * @param rootPart
      *            the source of the root part of the XOP message
      * @param mimePartProvider
@@ -184,7 +151,7 @@ public interface OMMetaFactory {
      * @return the builder
      */
     OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
-            OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider);
+            InputSource rootPart, MimePartProvider mimePartProvider);
     
     /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader. The

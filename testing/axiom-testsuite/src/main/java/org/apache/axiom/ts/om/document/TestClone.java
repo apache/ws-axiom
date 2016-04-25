@@ -34,8 +34,8 @@ public class TestClone extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMDocument original = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
-                TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString())).getDocument();
+        OMDocument original = metaFactory.createOMBuilder(TEST_PARSER_CONFIGURATION,
+                new InputSource(file.getUrl().toString())).getDocument();
         OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
         assertAbout(xml())
                 .that(xml(OMDocument.class, clone))

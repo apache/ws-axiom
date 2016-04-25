@@ -24,14 +24,13 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMMetaFactory#createStAXOMBuilder(OMFactory, XMLStreamReader)} correctly
+ * Tests that {@link OMMetaFactory#createStAXOMBuilder(XMLStreamReader)} correctly
  * performs namespace repairing in cases where a namespace declaration of the form <tt>xmlns=""</tt>
  * is required. This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-408">AXIOM-408</a>.
@@ -44,8 +43,7 @@ public class TestCreateStAXOMBuilderNamespaceRepairing2 extends AxiomTestCase {
     protected void runTest() throws Throwable {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader(
                 "<test xmlns='urn:test'><arg0 xmlns=''>dGVzdA==</arg0></test>"));
-        OMElement element = metaFactory.createStAXOMBuilder(metaFactory.getOMFactory(),
-                new NamespaceDeclarationFilter(reader)).getDocumentElement();
+        OMElement element = metaFactory.createStAXOMBuilder(new NamespaceDeclarationFilter(reader)).getDocumentElement();
         
         Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());

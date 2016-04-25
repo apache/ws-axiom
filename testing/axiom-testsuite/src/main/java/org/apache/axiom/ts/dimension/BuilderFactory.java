@@ -54,8 +54,8 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
         }
 
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
-            return metaFactory.createOMBuilder(metaFactory.getOMFactory(),
-                    AxiomTestCase.TEST_PARSER_CONFIGURATION, inputSource);
+            return metaFactory.createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION,
+                    inputSource);
         }
     };
 

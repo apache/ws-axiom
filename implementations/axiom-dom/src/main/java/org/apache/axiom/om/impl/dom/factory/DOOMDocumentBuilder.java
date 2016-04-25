@@ -96,8 +96,8 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
     }
 
     public Document parse(InputSource inputSource) throws SAXException, IOException {
-        OMDocument document = factory.getMetaFactory().createOMBuilder(factory,
-                parserConfiguration, inputSource).getDocument();
+        OMDocument document = factory.getMetaFactory().createOMBuilder(parserConfiguration,
+                inputSource).getDocument();
         document.close(true);
         return (Document)document;
     }

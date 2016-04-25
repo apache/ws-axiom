@@ -41,7 +41,6 @@ import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Detachable;
@@ -202,13 +201,13 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return new SOAPModelBuilderImpl(builder, detachable);
     }
     
-    public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
+    public OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         return createOMBuilder(
                 new StAXPullInput(getXMLStreamReader(parser), false, null),
                 true, null);
     }
 
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
+    public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, is, true);
         return createOMBuilder(
                 new StAXPullInput(sourceInfo.getReader(), true, sourceInfo.getCloseable()),
@@ -224,14 +223,13 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return is;
     }
     
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
+    public OMXMLParserWrapper createOMBuilder(Source source) {
         if (source instanceof SAXSource) {
-            return createOMBuilder(omFactory, (SAXSource)source, true);
+            return createOMBuilder((SAXSource)source, true);
         } else if (source instanceof DOMSource) {
-            return createOMBuilder(omFactory, ((DOMSource)source).getNode(), true);
+            return createOMBuilder(((DOMSource)source).getNode(), true);
         } else if (source instanceof StreamSource) {
-            return createOMBuilder(omFactory, StAXParserConfiguration.DEFAULT,
-                    toInputSource((StreamSource)source));
+            return createOMBuilder(StAXParserConfiguration.DEFAULT, toInputSource((StreamSource)source));
         } else {
             try {
                 return createOMBuilder(
@@ -243,21 +241,18 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         }
     }
 
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node,
-            boolean expandEntityReferences) {
+    public OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
         return createOMBuilder(
                 new DOMInput(node, expandEntityReferences),
                 true, null);
     }
 
-    // TODO: don't need the omFactory argument anymore
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
-            boolean expandEntityReferences) {
+    public OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
         return createOMBuilder(new SAXInput(source, expandEntityReferences), true, null);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
-            OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
+            InputSource rootPart, MimePartProvider mimePartProvider) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
         return createOMBuilder(
                 new StAXPullInput(new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider), true, sourceInfo.getCloseable()), 
