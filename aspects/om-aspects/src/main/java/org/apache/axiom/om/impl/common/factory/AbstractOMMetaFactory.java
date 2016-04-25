@@ -31,12 +31,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.core.impl.builder.BuilderListener;
-import org.apache.axiom.core.impl.builder.Model;
 import org.apache.axiom.core.impl.builder.PlainXMLModel;
 import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.XmlInput;
@@ -178,9 +176,8 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         }
     }
     
-    private OMXMLParserWrapper createOMBuilder(XmlInput input, NodeFactory nodeFactory, Model model,
-            CoreNSAwareElement root, boolean repairNamespaces, Detachable detachable) {
-        return new OMXMLParserWrapperImpl(new BuilderImpl(input, nodeFactory, model, root, repairNamespaces), detachable);
+    private OMXMLParserWrapper createOMBuilder(XmlInput input, boolean repairNamespaces, Detachable detachable) {
+        return new OMXMLParserWrapperImpl(new BuilderImpl(input, nodeFactory, PlainXMLModel.INSTANCE, null, repairNamespaces), detachable);
     }
     
     private SOAPModelBuilder createSOAPModelBuilder(XmlInput input,
@@ -208,14 +205,14 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
         return createOMBuilder(
                 new StAXPullInput(getXMLStreamReader(parser), false, null),
-                nodeFactory, PlainXMLModel.INSTANCE, null, true, null);
+                true, null);
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, is, true);
         return createOMBuilder(
                 new StAXPullInput(sourceInfo.getReader(), true, sourceInfo.getCloseable()),
-                nodeFactory, PlainXMLModel.INSTANCE, null, false, sourceInfo.getDetachable());
+                false, sourceInfo.getDetachable());
     }
     
     private static InputSource toInputSource(StreamSource source) {
@@ -239,7 +236,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
             try {
                 return createOMBuilder(
                         new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), true, null),
-                        nodeFactory, PlainXMLModel.INSTANCE, null, true, null);
+                        true, null);
             } catch (XMLStreamException ex) {
                 throw new OMException(ex);
             }
@@ -250,13 +247,13 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
             boolean expandEntityReferences) {
         return createOMBuilder(
                 new DOMInput(node, expandEntityReferences),
-                nodeFactory, PlainXMLModel.INSTANCE, null, true, null);
+                true, null);
     }
 
     // TODO: don't need the omFactory argument anymore
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
             boolean expandEntityReferences) {
-        return createOMBuilder(new SAXInput(source, expandEntityReferences), nodeFactory, PlainXMLModel.INSTANCE, null, true, null);
+        return createOMBuilder(new SAXInput(source, expandEntityReferences), true, null);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
@@ -264,8 +261,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
         return createOMBuilder(
                 new StAXPullInput(new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider), true, sourceInfo.getCloseable()), 
-                nodeFactory, PlainXMLModel.INSTANCE, null, false,
-                mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null);
+                false, mimePartProvider instanceof Detachable ? (Detachable)mimePartProvider : null);
     }
 
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
