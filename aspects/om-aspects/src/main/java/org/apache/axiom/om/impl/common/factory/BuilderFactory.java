@@ -45,6 +45,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.OMXMLParserWrapperImpl;
 import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
+import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPFactory;
@@ -57,7 +58,6 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
-import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -245,9 +245,9 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
             InputSource rootPart, MimePartProvider mimePartProvider) {
         SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
         return createBuilder(nodeFactory,
-                new StAXPullInput(
-                        new XOPDecodingStreamReader(sourceInfo.getReader(), mimePartProvider), true,
-                        sourceInfo.getCloseable()),
+                new FilteredXmlInput(
+                        new StAXPullInput(sourceInfo.getReader(), true, sourceInfo.getCloseable()),
+                        new XOPDecodingFilter(mimePartProvider)),
                 false,
                 mimePartProvider instanceof Detachable ? (Detachable) mimePartProvider : null);
     }
