@@ -64,26 +64,20 @@ import org.xml.sax.InputSource;
 
 abstract class BuilderFactory<T extends OMXMLParserWrapper> {
     private final static class SourceInfo {
-        private final XMLStreamReader reader;
+        private final XmlInput input;
         private final Detachable detachable;
-        private final Closeable closeable;
         
-        SourceInfo(XMLStreamReader reader, Detachable detachable, Closeable closeable) {
-            this.reader = reader;
+        SourceInfo(XmlInput input, Detachable detachable) {
+            this.input = input;
             this.detachable = detachable;
-            this.closeable = closeable;
         }
 
-        XMLStreamReader getReader() {
-            return reader;
+        XmlInput getInput() {
+            return input;
         }
 
         Detachable getDetachable() {
             return detachable;
-        }
-
-        Closeable getCloseable() {
-            return closeable;
         }
     }
     
@@ -121,7 +115,7 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
         }
     };
 
-    private static SourceInfo createXMLStreamReader(StAXParserConfiguration configuration,
+    private static SourceInfo createSourceInfo(StAXParserConfiguration configuration,
             InputSource is, boolean makeDetachable) {
         XMLStreamReader reader;
         Detachable detachable;
@@ -181,7 +175,7 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
         } catch (IOException ex) {
             throw new OMException(ex);
         }
-        return new SourceInfo(reader, detachable, closeable);
+        return new SourceInfo(new StAXPullInput(reader, true, closeable), detachable);
     }
     
     abstract T createBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable);
@@ -211,9 +205,9 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
 
     final T createBuilder(NodeFactory nodeFactory, StAXParserConfiguration configuration,
             InputSource is) {
-        SourceInfo sourceInfo = createXMLStreamReader(configuration, is, true);
+        SourceInfo sourceInfo = createSourceInfo(configuration, is, true);
         return createBuilder(nodeFactory,
-                new StAXPullInput(sourceInfo.getReader(), true, sourceInfo.getCloseable()), false,
+                sourceInfo.getInput(), false,
                 sourceInfo.getDetachable());
     }
 
@@ -251,10 +245,10 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
 
     final T createBuilder(NodeFactory nodeFactory, StAXParserConfiguration configuration,
             InputSource rootPart, MimePartProvider mimePartProvider) {
-        SourceInfo sourceInfo = createXMLStreamReader(configuration, rootPart, false);
+        SourceInfo sourceInfo = createSourceInfo(configuration, rootPart, false);
         return createBuilder(nodeFactory,
                 new FilteredXmlInput(
-                        new StAXPullInput(sourceInfo.getReader(), true, sourceInfo.getCloseable()),
+                        sourceInfo.getInput(),
                         new XOPDecodingFilter(mimePartProvider)),
                 false,
                 mimePartProvider instanceof Detachable ? (Detachable) mimePartProvider : null);
