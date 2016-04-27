@@ -29,6 +29,6 @@ public class SwASample extends MIMESample {
             "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"");
 
     private SwASample(String name, String contentType) {
-        super(MessageContent.fromClasspath(SwASample.class, "swa/" + name), contentType);
+        super(MessageContent.fromClasspath(SwASample.class, "swa/" + name), name, contentType);
     }
 }

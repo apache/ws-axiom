@@ -49,6 +49,6 @@ public class MTOMSample extends XOPSample {
             "boundary=\"----=_Part_542_1447667749.1430736561148\"");
     
     private MTOMSample(String name, String contentType) {
-        super(MessageContent.fromClasspath(MTOMSample.class, "mtom/" + name), contentType);
+        super(MessageContent.fromClasspath(MTOMSample.class, "mtom/" + name), name, contentType);
     }
 }

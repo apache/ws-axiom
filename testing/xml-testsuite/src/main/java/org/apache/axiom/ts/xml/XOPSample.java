@@ -45,12 +45,12 @@ public class XOPSample extends MIMESample {
             "start=\"<mymessage.xml@example.org>\"; " +
             "start-info=\"text/xml\"");
     
-    protected XOPSample(MessageContent content, String contentType) {
-        super(content, contentType);
+    protected XOPSample(MessageContent content, String name, String contentType) {
+        super(content, name, contentType);
     }
 
     private XOPSample(String name, String contentType) {
-        super(MessageContent.fromClasspath(XOPSample.class, "xop/" + name), contentType);
+        super(MessageContent.fromClasspath(XOPSample.class, "xop/" + name), name, contentType);
     }
 
     public final InputStream getInlinedMessage() {

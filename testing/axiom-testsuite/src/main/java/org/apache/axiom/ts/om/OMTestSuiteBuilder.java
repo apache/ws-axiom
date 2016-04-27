@@ -47,6 +47,7 @@ import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 import org.apache.axiom.ts.xml.StreamType;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.apache.axiom.ts.xml.XOPSample;
 
 public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
     private static final QName[] qnames = {
@@ -117,6 +118,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMElement(metaFactory));
+        for (XOPSample sample : getInstances(XOPSample.class)) {
+            addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderXOP(metaFactory, sample, false));
+            addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderXOP(metaFactory, sample, true));
+        }
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderFromFragment(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderIncorrectState(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing(metaFactory));

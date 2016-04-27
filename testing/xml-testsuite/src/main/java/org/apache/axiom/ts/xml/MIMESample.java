@@ -33,8 +33,8 @@ public abstract class MIMESample extends MessageSample {
     private final String contentType;
     private MimeMultipart multipart;
     
-    protected MIMESample(MessageContent content, String contentType) {
-        super(content);
+    protected MIMESample(MessageContent content, String name, String contentType) {
+        super(content, name);
         this.contentType = contentType;
     }
 

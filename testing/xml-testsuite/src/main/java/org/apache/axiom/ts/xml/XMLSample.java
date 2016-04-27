@@ -63,26 +63,15 @@ public class XMLSample extends MessageSample {
         }
     }
     
-    private final String name;
     private XMLSampleProperties properties;
     
     protected XMLSample(MessageContent content, String name) {
-        super(content);
-        this.name = name;
+        super(content, name);
     }
     
     private XMLSample(String relativeResourceName) {
         this(MessageContent.fromClasspath(XMLSample.class, relativeResourceName),
                 relativeResourceName.substring(relativeResourceName.lastIndexOf('/')+1));
-    }
-
-    /**
-     * Get the name of this message (for use in test case naming e.g.).
-     * 
-     * @return the name of this test message
-     */
-    public final String getName() {
-        return name;
     }
 
     private synchronized XMLSampleProperties getProperties() {

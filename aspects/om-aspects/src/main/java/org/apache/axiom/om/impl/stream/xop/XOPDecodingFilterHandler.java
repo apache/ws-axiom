@@ -137,6 +137,14 @@ final class XOPDecodingFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
+    public void processNamespaceDeclaration(String prefix, String namespaceURI)
+            throws StreamException {
+        if (state != State.IN_XOP_INCLUDE) {
+            super.processNamespaceDeclaration(prefix, namespaceURI);
+        }
+    }
+
+    @Override
     public void attributesCompleted() throws StreamException {
         if (state != State.IN_XOP_INCLUDE) {
             super.attributesCompleted();

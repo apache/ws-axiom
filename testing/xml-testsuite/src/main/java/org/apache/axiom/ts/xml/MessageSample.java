@@ -24,13 +24,24 @@ import java.net.URL;
 import org.apache.axiom.testing.multiton.Multiton;
 
 public abstract class MessageSample extends Multiton {
+    private final String name;
     private final MessageContent content;
 
-    public MessageSample(MessageContent content) {
+    public MessageSample(MessageContent content, String name) {
         this.content = content;
+        this.name = name;
     }
 
     public abstract String getContentType();
+
+    /**
+     * Get the name of this message (for use in test case naming e.g.).
+     * 
+     * @return the name of this test message
+     */
+    public final String getName() {
+        return name;
+    }
 
     /**
      * Get the content of this message.
