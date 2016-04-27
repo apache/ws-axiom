@@ -179,14 +179,6 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
     }
     
     abstract T createBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable);
-
-    final T createBuilder(NodeFactory nodeFactory, XmlInput input, boolean repairNamespaces,
-            Detachable detachable) {
-        return createBuilder(
-                nodeFactory,
-                repairNamespaces ? new FilteredXmlInput(input, NamespaceRepairingFilter.DEFAULT) : input,
-                detachable);
-    }
     
     final T createBuilder(NodeFactory nodeFactory, XMLStreamReader reader) {
         int eventType = reader.getEventType();
@@ -200,14 +192,14 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
                 throw new OMException("The supplied XMLStreamReader is in an unexpected state ("
                         + XMLEventUtils.getEventTypeString(eventType) + ")");
         }
-        return createBuilder(nodeFactory, new StAXPullInput(reader, false, null), true, null);
+        return createBuilder(nodeFactory, new FilteredXmlInput(new StAXPullInput(reader, false, null), NamespaceRepairingFilter.DEFAULT), null);
     }
 
     final T createBuilder(NodeFactory nodeFactory, StAXParserConfiguration configuration,
             InputSource is) {
         SourceInfo sourceInfo = createSourceInfo(configuration, is, true);
         return createBuilder(nodeFactory,
-                sourceInfo.getInput(), false,
+                sourceInfo.getInput(),
                 sourceInfo.getDetachable());
     }
 
@@ -227,8 +219,10 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
         } else {
             try {
                 return createBuilder(nodeFactory,
-                        new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), true, null),
-                        true, null);
+                        new FilteredXmlInput(
+                                new StAXPullInput(StAXUtils.getXMLInputFactory().createXMLStreamReader(source), true, null),
+                                NamespaceRepairingFilter.DEFAULT),
+                        null);
             } catch (XMLStreamException ex) {
                 throw new OMException(ex);
             }
@@ -236,11 +230,11 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
     }
 
     final T createBuilder(NodeFactory nodeFactory, Node node, boolean expandEntityReferences) {
-        return createBuilder(nodeFactory, new DOMInput(node, expandEntityReferences), true, null);
+        return createBuilder(nodeFactory, new FilteredXmlInput(new DOMInput(node, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
     }
 
     final T createBuilder(NodeFactory nodeFactory, SAXSource source, boolean expandEntityReferences) {
-        return createBuilder(nodeFactory, new SAXInput(source, expandEntityReferences), true, null);
+        return createBuilder(nodeFactory, new FilteredXmlInput(new SAXInput(source, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
     }
 
     final T createBuilder(NodeFactory nodeFactory, StAXParserConfiguration configuration,
@@ -250,7 +244,6 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
                 new FilteredXmlInput(
                         sourceInfo.getInput(),
                         new XOPDecodingFilter(mimePartProvider)),
-                false,
                 mimePartProvider instanceof Detachable ? (Detachable) mimePartProvider : null);
     }
 }
