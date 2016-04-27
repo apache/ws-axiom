@@ -23,7 +23,6 @@ import org.apache.axiom.core.CoreDocument;
 import org.apache.axiom.core.CoreNSAwareElement;
 import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.NodeFactory;
-import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
@@ -34,9 +33,9 @@ public final class BuilderImpl implements Builder {
     private Object facade;
 
     public BuilderImpl(XmlInput input, NodeFactory nodeFactory, Model model,
-            CoreNSAwareElement root, boolean repairNamespaces) {
+            CoreNSAwareElement root) {
         builderHandler = new BuilderHandler(nodeFactory, model, root, this);
-        reader = input.createReader(repairNamespaces ? new NamespaceRepairingFilterHandler(builderHandler, null, false) : builderHandler);
+        reader = input.createReader(builderHandler);
     }
 
     public void addListener(BuilderListener listener) {

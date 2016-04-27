@@ -25,6 +25,8 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.core.impl.builder.PlainXMLModel;
+import org.apache.axiom.core.stream.FilteredXmlInput;
+import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.om.OMCloneOptions;
@@ -197,7 +199,7 @@ public aspect AxiomSourcedElementSupport {
             if (OMDataSourceUtil.isPushDataSource(dataSource)) {
                 // Disable namespace repairing because the OMDataSource is required to produce well formed
                 // XML with respect to namespaces.
-                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, false);
+                builder = new BuilderImpl(new PushOMDataSourceInput(this, dataSource), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this);
             } else {
                 // Get the XMLStreamReader
                 XMLStreamReader readerFromDS;
@@ -206,7 +208,7 @@ public aspect AxiomSourcedElementSupport {
                 } catch (XMLStreamException ex) {
                     throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                builder = new BuilderImpl(new StAXPullInput(readerFromDS), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this, true);
+                builder = new BuilderImpl(new FilteredXmlInput(new StAXPullInput(readerFromDS), NamespaceRepairingFilter.DEFAULT), coreGetNodeFactory(), PlainXMLModel.INSTANCE, this);
             }
             isExpanded = true;
             coreSetState(ATTRIBUTES_PENDING);

@@ -37,6 +37,7 @@ import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.core.impl.builder.BuilderListener;
 import org.apache.axiom.core.impl.builder.PlainXMLModel;
 import org.apache.axiom.core.stream.FilteredXmlInput;
+import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
@@ -89,17 +90,17 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
     final static BuilderFactory<OMXMLParserWrapper> OM = new BuilderFactory<OMXMLParserWrapper>() {
         @Override
         OMXMLParserWrapper createBuilder(NodeFactory nodeFactory, XmlInput input,
-                boolean repairNamespaces, Detachable detachable) {
+                Detachable detachable) {
             return new OMXMLParserWrapperImpl(new BuilderImpl(input, nodeFactory,
-                    PlainXMLModel.INSTANCE, null, repairNamespaces), detachable);
+                    PlainXMLModel.INSTANCE, null), detachable);
         }
     };
 
     final static BuilderFactory<SOAPModelBuilder> SOAP = new BuilderFactory<SOAPModelBuilder>() {
         @Override
         SOAPModelBuilder createBuilder(NodeFactory nodeFactory, XmlInput input,
-                boolean repairNamespaces, Detachable detachable) {
-            BuilderImpl builder = new BuilderImpl(new FilteredXmlInput(input, SOAPFilter.INSTANCE), nodeFactory, new SOAPModel(), null, true);
+                Detachable detachable) {
+            BuilderImpl builder = new BuilderImpl(new FilteredXmlInput(input, SOAPFilter.INSTANCE), nodeFactory, new SOAPModel(), null);
             // The SOAPFactory instance linked to the SOAPMessage is unknown until we reach the
             // SOAPEnvelope. Register a post-processor that does the necessary updates on the
             // SOAPMessage.
@@ -183,9 +184,16 @@ abstract class BuilderFactory<T extends OMXMLParserWrapper> {
         return new SourceInfo(reader, detachable, closeable);
     }
     
-    abstract T createBuilder(NodeFactory nodeFactory, XmlInput input, boolean repairNamespaces,
-            Detachable detachable);
+    abstract T createBuilder(NodeFactory nodeFactory, XmlInput input, Detachable detachable);
 
+    final T createBuilder(NodeFactory nodeFactory, XmlInput input, boolean repairNamespaces,
+            Detachable detachable) {
+        return createBuilder(
+                nodeFactory,
+                repairNamespaces ? new FilteredXmlInput(input, NamespaceRepairingFilter.DEFAULT) : input,
+                detachable);
+    }
+    
     final T createBuilder(NodeFactory nodeFactory, XMLStreamReader reader) {
         int eventType = reader.getEventType();
         switch (eventType) {

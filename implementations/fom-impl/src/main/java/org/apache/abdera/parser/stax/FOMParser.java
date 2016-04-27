@@ -41,6 +41,8 @@ import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.core.impl.builder.BuilderListener;
+import org.apache.axiom.core.stream.FilteredXmlInput;
+import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
@@ -181,8 +183,12 @@ public class FOMParser extends AbstractParser implements Parser {
         throws ParseException {
         try {
             final FOMFactory factory = getFomFactory(options);
-            BuilderImpl builder = new BuilderImpl(new StAXPullInput(new FOMStAXFilter(reader, options), false, null), FOMNodeFactory.INSTANCE,
-                    factory, null, true); // TODO: probably we can use repairNamespaces=false here
+            // TODO: we probably don't need namespace repairing here
+            BuilderImpl builder = new BuilderImpl(
+                    new FilteredXmlInput(
+                            new StAXPullInput(new FOMStAXFilter(reader, options), false, null),
+                            NamespaceRepairingFilter.DEFAULT),
+                    FOMNodeFactory.INSTANCE, factory, null);
             builder.addListener(new BuilderListener() {
                 @Override
                 public Runnable nodeAdded(CoreNode node, int depth) {
