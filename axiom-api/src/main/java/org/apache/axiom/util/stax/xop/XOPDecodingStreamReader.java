@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;

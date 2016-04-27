@@ -29,8 +29,8 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.stax.xop.MimePartProvider;
 
 final class XOPDecodingFilterHandler extends XmlHandlerWrapper {
     private static class DataHandlerProviderImpl implements DataHandlerProvider {

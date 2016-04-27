@@ -20,7 +20,7 @@ package org.apache.axiom.om.impl.stream.xop;
 
 import org.apache.axiom.core.stream.XmlFilter;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.apache.axiom.mime.MimePartProvider;
 
 public final class XOPDecodingFilter implements XmlFilter {
     private final MimePartProvider mimePartProvider;

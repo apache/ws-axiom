@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 /**

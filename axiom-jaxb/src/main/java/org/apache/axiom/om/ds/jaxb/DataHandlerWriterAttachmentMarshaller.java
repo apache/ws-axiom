@@ -24,8 +24,8 @@ import java.util.Map;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.util.UIDGenerator;
-import org.apache.axiom.util.stax.xop.MimePartProvider;
 
 final class DataHandlerWriterAttachmentMarshaller extends AttachmentMarshallerBase implements MimePartProvider {
     private final Map<String,DataHandler> dataHandlers = new HashMap<String,DataHandler>();

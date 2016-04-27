@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.apache.axiom.mime.MimePartProvider;
 
 final class DummyMimePartProvider implements MimePartProvider {
     private final String contentID;

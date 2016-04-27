@@ -23,10 +23,10 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;

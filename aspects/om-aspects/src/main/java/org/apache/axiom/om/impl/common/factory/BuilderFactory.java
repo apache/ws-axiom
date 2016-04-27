@@ -40,6 +40,7 @@ import org.apache.axiom.core.stream.FilteredXmlInput;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.Detachable;
@@ -57,7 +58,6 @@ import org.apache.axiom.soap.impl.intf.AxiomSOAPEnvelope;
 import org.apache.axiom.soap.impl.intf.AxiomSOAPMessage;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
-import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 

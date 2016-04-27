@@ -23,7 +23,7 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentUnmarshaller;
 
-import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {

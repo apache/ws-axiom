@@ -17,15 +17,14 @@
  * under the License.
  */
 
-package org.apache.axiom.util.stax.xop;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 
 import javax.activation.DataHandler;
 
 /**
- * Interface used by {@link XOPDecodingStreamReader} to load MIME parts referenced by
- * <tt>xop:Include</tt> elements.
+ * Interface to look up MIME parts.
  */
 public interface MimePartProvider {
     /**

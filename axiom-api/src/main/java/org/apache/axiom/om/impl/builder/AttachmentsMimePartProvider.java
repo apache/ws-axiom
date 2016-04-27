@@ -24,7 +24,7 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.apache.axiom.mime.MimePartProvider;
 
 /**
  * Adapts an {@link Attachments} instance to the {@link MimePartProvider} interface.
