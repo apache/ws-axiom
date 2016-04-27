@@ -77,6 +77,17 @@ public class NoPackageCyclesEnforcerRule implements EnforcerRule {
                 }
                 throw new EnforcerRuleException(buffer.toString());
             }
+            Set<Reference> unusedIgnoredClassReferences = referenceCollector.getUnusedIgnoredClassReferences();
+            if (!unusedIgnoredClassReferences.isEmpty()) {
+                StringBuilder buffer = new StringBuilder("Found unused ignored class references:");
+                for (Reference reference : unusedIgnoredClassReferences) {
+                    buffer.append("\n  ");
+                    buffer.append(reference.getFrom());
+                    buffer.append(" -> ");
+                    buffer.append(reference.getTo());
+                }
+                throw new EnforcerRuleException(buffer.toString());
+            }
         } catch (ExpressionEvaluationException ex) {
             throw new EnforcerRuleException("Failed to evaluate expression: " + ex.getMessage(), ex);
         }

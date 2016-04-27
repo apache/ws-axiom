@@ -31,11 +31,13 @@ import org.jgrapht.graph.DirectedSubgraph;
 
 final class ReferenceCollector {
     private final Set<Reference> ignoredClassReferences;
+    private final Set<Reference> unusedIgnoredClassReferences;
     private final Set<Reference> packageReferences = new HashSet<>();
     private final Map<Reference,Reference> classReferenceSamples = new HashMap<>();
     
     ReferenceCollector(Set<Reference> ignoredClassReferences) {
         this.ignoredClassReferences = ignoredClassReferences;
+        unusedIgnoredClassReferences = new HashSet<>(ignoredClassReferences);
     }
 
     private static String getPackageName(String className) {
@@ -44,7 +46,9 @@ final class ReferenceCollector {
     
     void collectClassReference(String from, String to) {
         Reference classReference = new Reference(from, to);
-        if (!ignoredClassReferences.contains(classReference)) {
+        if (ignoredClassReferences.contains(classReference)) {
+            unusedIgnoredClassReferences.remove(classReference);
+        } else {
             String fromPackage = getPackageName(from);
             String toPackage = getPackageName(to);
             if (!fromPackage.equals(toPackage)) {
@@ -74,5 +78,9 @@ final class ReferenceCollector {
             }
         }
         return null;
+    }
+
+    Set<Reference> getUnusedIgnoredClassReferences() {
+        return unusedIgnoredClassReferences;
     }
 }

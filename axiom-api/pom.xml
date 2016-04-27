@@ -267,16 +267,13 @@
                                 <noPackageCycles implementation="org.apache.axiom.buildutils.enforcer.NoPackageCyclesEnforcerRule">
                                     <ignore>
                                         <!-- o.a.a.attachments shouldn't depend on o.a.a.om -->
-                                        org.apache.axiom.attachments.Attachments -> org.apache.axiom.om.OMAttachmentAccessor,
                                         org.apache.axiom.attachments.Attachments -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.AttachmentsDelegate -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.AttachmentSet -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.IncomingAttachmentStreams -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.MIMEMessage -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.MIMEMessage -> org.apache.axiom.om.util.DetachableInputStream,
                                         org.apache.axiom.attachments.MultipartAttachmentStreams -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.PartImpl -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.PartImpl -> org.apache.axiom.om.util.DetachableInputStream,
                                         <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
                                         org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                         <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
@@ -301,12 +298,9 @@
                                         org.apache.axiom.om.ds.ByteArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
                                         org.apache.axiom.om.ds.CharArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
                                         org.apache.axiom.om.ds.InputStreamDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                        org.apache.axiom.om.ds.ParserInputStreamDataSource -> org.apache.axiom.om.util.StAXUtils,
                                         org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXUtils,
                                         <!-- This should go away in a redesign of the OMDataSource API -->
                                         org.apache.axiom.om.ds.AbstractPullOMDataSource -> org.apache.axiom.om.impl.serialize.StreamingOMSerializer,
-                                        <!-- ParserInputStreamDataSource will be deprecated -->
-                                        org.apache.axiom.om.ds.ParserInputStreamDataSource$Data -> org.apache.axiom.om.util.CommonUtils,
                                         <!-- TODO: Detachable should go to om-aspects -->
                                         org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
                                         <!-- TODO -->
