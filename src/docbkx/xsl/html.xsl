@@ -21,17 +21,7 @@
                 version="1.0">
     <xsl:import href="urn:docbkx:stylesheet"/>
 
-    <xsl:template match="@*|node()" mode="copy-head">
-        <xsl:copy>
-            <xsl:apply-templates select="@*|node()" mode="copy-head"/>
-        </xsl:copy>
-    </xsl:template>
-
     <xsl:template name="user.head.content">
-        <xsl:for-each select="document('../../site/site.xml')/project/body/head/*">
-            <xsl:copy>
-                <xsl:apply-templates select="@*|node()" mode="copy-head"/>
-            </xsl:copy>
-        </xsl:for-each>
+        <xsl:value-of select="document('../../site/site.xml')/project/body/head/text()" disable-output-escaping="yes"/>
     </xsl:template>
 </xsl:stylesheet>
