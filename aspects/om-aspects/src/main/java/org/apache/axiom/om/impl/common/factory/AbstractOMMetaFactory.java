@@ -49,45 +49,45 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     }
     
     public OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
-        return OM.createBuilder(nodeFactory, parser);
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
-        return OM.createBuilder(nodeFactory, configuration, is);
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, is));
     }
     
     public OMXMLParserWrapper createOMBuilder(Source source) {
-        return OM.createBuilder(nodeFactory, StAXParserConfiguration.DEFAULT, source);
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, source));
     }
 
     public OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
-        return OM.createBuilder(nodeFactory, node, expandEntityReferences);
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(node, expandEntityReferences));
     }
 
     public OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
-        return OM.createBuilder(nodeFactory, source, expandEntityReferences);
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(source, expandEntityReferences));
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
             InputSource rootPart, MimePartProvider mimePartProvider) {
-        return OM.createBuilder(nodeFactory, configuration, rootPart, mimePartProvider);
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
     }
 
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
-        return SOAP.createBuilder(nodeFactory, parser);
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
-        return SOAP.createBuilder(nodeFactory, configuration, is);
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, is));
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(Source source) {
-        return SOAP.createBuilder(nodeFactory, StAXParserConfiguration.SOAP, source);
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, source));
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
-        SOAPModelBuilder builder = SOAP.createBuilder(nodeFactory, configuration, rootPart, mimePartProvider);
+        SOAPModelBuilder builder = SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
         if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
             throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
                     "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
