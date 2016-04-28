@@ -31,6 +31,7 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -92,7 +93,11 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     InputStream getRootPartInputStream(boolean preserve) {
-        return message.getRootPartInputStream(preserve);
+        try {
+            return message.getRootPart().getInputStream(preserve);
+        } catch (IOException ex) {
+            throw new OMException("Problem fetching the root part", ex);
+        }
     }
 
     @Override

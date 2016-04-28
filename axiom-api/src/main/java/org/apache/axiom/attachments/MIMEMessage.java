@@ -30,7 +30,6 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
@@ -86,6 +85,7 @@ class MIMEMessage {
     private boolean partsRequested;
 
     private PartImpl firstPart;
+    private PartImpl rootPart;
 
     private final WritableBlobFactory attachmentBlobFactory;
     
@@ -142,23 +142,14 @@ class MIMEMessage {
         return null;
     }
 
-    InputStream getRootPartInputStream(boolean preserve) throws OMException {
-        DataHandler dh;
-        try {
-            dh = getDataHandler(getRootPartContentID());
-            if (dh == null) {
-                throw new OMException(
-                        "Mandatory root MIME part is missing");
+    Part getRootPart() {
+        do {
+            if (rootPart != null) {
+                return rootPart;
             }
-            if (!preserve && dh instanceof DataHandlerExt) {
-                return ((DataHandlerExt)dh).readOnce();
-            } else {
-                return dh.getInputStream();
-            }
-        } catch (IOException e) {
-            throw new OMException(
-                    "Problem with DataHandler of the Root Mime Part. ", e);
-        }
+        } while (getNextPart() != null);
+        throw new OMException(
+                "Mandatory root MIME part is missing");
     }
 
     String getRootPartContentID() {
@@ -288,6 +279,9 @@ class MIMEMessage {
                         "Two MIME parts with the same Content-ID not allowed.");
             }
             partMap.put(partContentID, currentPart);
+            if (isRootPart) {
+                rootPart = currentPart;
+            }
             return currentPart;
         }
     }

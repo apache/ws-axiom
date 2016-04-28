@@ -233,7 +233,7 @@ final class PartImpl implements Part {
         parser = null;
     }
     
-    InputStream getInputStream(boolean preserve) throws IOException {
+    public InputStream getInputStream(boolean preserve) throws IOException {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
             state = STATE_STREAMING;

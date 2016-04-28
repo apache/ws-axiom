@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.attachments;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.activation.DataHandler;
 
 /**
@@ -54,4 +57,16 @@ public interface Part {
      * @return value or null
      */
     public String getHeader(String name);
+
+    /**
+     * Get the content of this part.
+     * 
+     * @param preserve
+     *            {@code true} if the content should be preserved so that it can be read multiple
+     *            times, {@code false} to discard the content when it is read
+     * @return the content of the part
+     * @throws IOException
+     *             if the content couldn't be read
+     */
+    public InputStream getInputStream(boolean preserve) throws IOException;
 }
