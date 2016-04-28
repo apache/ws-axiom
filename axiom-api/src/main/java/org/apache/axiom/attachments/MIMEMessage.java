@@ -62,7 +62,7 @@ class MIMEMessage {
 
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
-    
+    private final String rootPartContentID;
     private final MimeTokenStream parser;
     
     /**
@@ -99,6 +99,9 @@ class MIMEMessage {
                     "Invalid Content Type Field in the Mime Message"
                     , e);
         }
+
+        String start = contentType.getParameter("start");
+        rootPartContentID = start == null ? null : Util.normalizeContentID(start);
 
         MimeConfig config = new MimeConfig();
         config.setStrictParsing(true);
@@ -159,19 +162,14 @@ class MIMEMessage {
     }
 
     String getRootPartContentID() {
-        String rootContentID = contentType.getParameter("start");
-        if (log.isDebugEnabled()) {
-            log.debug("getRootPartContentID rootContentID=" + rootContentID);
-        }
-
         // to handle the Start parameter not mentioned situation
-        if (rootContentID == null) {
+        if (rootPartContentID == null) {
             if (attachmentsMap.isEmpty()) {
                 getNextPartDataHandler();
             }
             return firstPartId;
         } else {
-            return Util.normalizeContentID(rootContentID);
+            return rootPartContentID;
         }
     }
     
@@ -237,7 +235,8 @@ class MIMEMessage {
         if (parser.getState() == EntityState.T_END_MULTIPART) {
             return null;
         } else {
-            boolean isRootPart = attachmentsMap.isEmpty();
+            String partContentID = null;
+            boolean isRootPart;
 
             try {
                 checkParserState(parser.next(), EntityState.T_START_HEADER);
@@ -252,9 +251,23 @@ class MIMEMessage {
                         log.debug("addHeader: (" + name + ") value=(" + value +")");
                     }
                     headers.add(new Header(name, value));
+                    if (partContentID == null && name.equalsIgnoreCase("Content-ID")) {
+                        partContentID = Util.normalizeContentID(value);
+                    }
                 }
                 
                 checkParserState(parser.next(), EntityState.T_BODY);
+                
+                if (rootPartContentID == null) {
+                    isRootPart = attachmentsMap.isEmpty();
+                } else {
+                    isRootPart = rootPartContentID.equals(partContentID);
+                }
+                
+                if (!isRootPart && partContentID == null) {
+                    throw new OMException(
+                            "Part content ID cannot be blank for non root MIME parts");
+                }
                 
                 currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
             } catch (IOException ex) {
@@ -263,7 +276,6 @@ class MIMEMessage {
                 throw new OMException(ex);
             }
 
-            String partContentID = currentPart.getContentID();
             if (partContentID == null & attachmentsMap.isEmpty()) {
                 String id = "firstPart_" + UIDGenerator.generateContentId();
                 firstPartId = id;
@@ -271,11 +283,6 @@ class MIMEMessage {
                 attachmentsMap.put(id, dataHandler);
                 return dataHandler;
             }
-            if (partContentID == null) {
-                throw new OMException(
-                        "Part content ID cannot be blank for non root MIME parts");
-            }
-            partContentID = Util.normalizeContentID(partContentID);
             if (attachmentsMap.isEmpty()) {
                 firstPartId = partContentID;
             }
