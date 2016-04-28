@@ -51,7 +51,7 @@ import org.apache.james.mime4j.stream.RecursionMode;
  * {@link AttachmentsDelegate} implementation that represents a MIME multipart message read from a
  * stream.
  */
-class MIMEMessage extends AttachmentsDelegate {
+class MIMEMessage {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
     private static final WritableBlobFactory rootPartBlobFactory = new WritableBlobFactory() {
