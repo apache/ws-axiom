@@ -169,22 +169,10 @@ class MIMEMessage {
             if (attachmentsMap.isEmpty()) {
                 getNextPartDataHandler();
             }
-            rootContentID = firstPartId;
+            return firstPartId;
         } else {
-            rootContentID = rootContentID.trim();
-
-            if ((rootContentID.indexOf("<") > -1)
-                    & (rootContentID.indexOf(">") > -1)) {
-                rootContentID = rootContentID.substring(1, (rootContentID
-                        .length() - 1));
-            }
+            return Util.normalizeContentID(rootContentID);
         }
-        // Strips off the "cid:" part from content-id
-        if (rootContentID.length() > 4
-                && "cid:".equalsIgnoreCase(rootContentID.substring(0, 4))) {
-            rootContentID = rootContentID.substring(4);
-        }
-        return rootContentID;
     }
     
     String getRootPartContentType() {
@@ -287,12 +275,7 @@ class MIMEMessage {
                 throw new OMException(
                         "Part content ID cannot be blank for non root MIME parts");
             }
-            if ((partContentID.indexOf("<") > -1)
-                    & (partContentID.indexOf(">") > -1)) {
-                partContentID = partContentID.substring(1, (partContentID
-                        .length() - 1));
-
-            }
+            partContentID = Util.normalizeContentID(partContentID);
             if (attachmentsMap.isEmpty()) {
                 firstPartId = partContentID;
             }
