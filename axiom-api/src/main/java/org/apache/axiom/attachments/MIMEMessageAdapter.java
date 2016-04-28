@@ -120,8 +120,13 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     Map<String,DataHandler> getMap() {
-        Map<String,DataHandler> result = new LinkedHashMap<String,DataHandler>(message.getMap());
-        result.keySet().removeAll(removedDataHandlers);
+        Map<String,DataHandler> result = new LinkedHashMap<String,DataHandler>();
+        for (Map.Entry<String,Part> entry : message.getMap().entrySet()) {
+            String contentID = entry.getKey();
+            if (!removedDataHandlers.contains(contentID)) {
+                result.put(contentID, entry.getValue().getDataHandler());
+            }
+        }
         result.putAll(addedDataHandlers);
         return Collections.unmodifiableMap(result);
     }

@@ -66,10 +66,10 @@ class MIMEMessage {
     private final MimeTokenStream parser;
     
     /**
-     * Stores the Data Handlers of the already parsed Mime Body Parts in the order that the attachments
+     * Stores the already parsed Mime Body Parts in the order that the attachments
      * occur in the message. This map is keyed using the content-ID's.
      */
-    private final Map<String,DataHandler> attachmentsMap = new LinkedHashMap<String,DataHandler>();
+    private final Map<String,PartImpl> partMap = new LinkedHashMap<String,PartImpl>();
 
     /**
      * The MIME part currently being processed.
@@ -134,11 +134,11 @@ class MIMEMessage {
 
     DataHandler getDataHandler(String contentID) {
         do {
-            DataHandler dataHandler = attachmentsMap.get(contentID);
-            if (dataHandler != null) {
-                return dataHandler;
+            PartImpl part = partMap.get(contentID);
+            if (part != null) {
+                return part.getDataHandler();
             }
-        } while (getNextPartDataHandler() != null);
+        } while (getNextPart() != null);
         return null;
     }
 
@@ -164,8 +164,8 @@ class MIMEMessage {
     String getRootPartContentID() {
         // to handle the Start parameter not mentioned situation
         if (rootPartContentID == null) {
-            if (attachmentsMap.isEmpty()) {
-                getNextPartDataHandler();
+            if (partMap.isEmpty()) {
+                getNextPart();
             }
             return firstPartId;
         } else {
@@ -205,7 +205,7 @@ class MIMEMessage {
      * Force reading of all attachments.
      */
     void fetchAllParts() {
-        while (getNextPartDataHandler() != null) {
+        while (getNextPart() != null) {
             // Just loop until getNextPartDataHandler returns null
         }
     }
@@ -214,15 +214,15 @@ class MIMEMessage {
         if (fetchAll) {
             fetchAllParts();
         }
-        return attachmentsMap.keySet();
+        return partMap.keySet();
     }
     
-    Map<String,DataHandler> getMap() {
+    Map<String,Part> getMap() {
         fetchAllParts();
-        return Collections.unmodifiableMap(attachmentsMap);
+        return Collections.<String,Part>unmodifiableMap(partMap);
     }
     
-    private DataHandler getNextPartDataHandler() throws OMException {
+    private PartImpl getNextPart() throws OMException {
         if (streamsRequested) {
             throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
@@ -259,7 +259,7 @@ class MIMEMessage {
                 checkParserState(parser.next(), EntityState.T_BODY);
                 
                 if (rootPartContentID == null) {
-                    isRootPart = attachmentsMap.isEmpty();
+                    isRootPart = partMap.isEmpty();
                 } else {
                     isRootPart = rootPartContentID.equals(partContentID);
                 }
@@ -280,16 +280,15 @@ class MIMEMessage {
                 // We only get here if isRootPart is true
                 partContentID = "firstPart_" + UIDGenerator.generateContentId();
             }
-            if (attachmentsMap.isEmpty()) {
+            if (partMap.isEmpty()) {
                 firstPartId = partContentID;
             }
-            if (attachmentsMap.containsKey(partContentID)) {
+            if (partMap.containsKey(partContentID)) {
                 throw new OMException(
                         "Two MIME parts with the same Content-ID not allowed.");
             }
-            DataHandler dataHandler = currentPart.getDataHandler();
-            attachmentsMap.put(partContentID, dataHandler);
-            return dataHandler;
+            partMap.put(partContentID, currentPart);
+            return currentPart;
         }
     }
 
