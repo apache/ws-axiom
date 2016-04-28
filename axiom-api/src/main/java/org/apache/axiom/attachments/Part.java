@@ -41,7 +41,10 @@ public interface Part {
     public String getContentType();
 
     /**
-     * @return content id of the part
+     * Get the content ID of this part, i.e. the value of the {@code Content-ID} header with the
+     * enclosing brackets removed.
+     * 
+     * @return the content ID of the part or {@code null} if the part doesn't have a content ID
      */
     public String getContentID();
 

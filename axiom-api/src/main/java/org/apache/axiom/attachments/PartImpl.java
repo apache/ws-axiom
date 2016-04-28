@@ -71,6 +71,7 @@ final class PartImpl implements Part {
     
     private final WritableBlobFactory blobFactory;
     
+    private final String contentID;
     private List<Header> headers;
     
     private int state = STATE_UNREAD;
@@ -90,8 +91,9 @@ final class PartImpl implements Part {
     
     private PartInputStream partInputStream;
     
-    PartImpl(WritableBlobFactory blobFactory, List<Header> headers, MimeTokenStream parser) {
-        this.blobFactory = blobFactory;;
+    PartImpl(WritableBlobFactory blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
+        this.blobFactory = blobFactory;
+        this.contentID = contentID;
         this.headers = headers;
         this.parser = parser;
         this.dataHandler = new PartDataHandler(this);
@@ -113,7 +115,7 @@ final class PartImpl implements Part {
     }
 
     public String getContentID() {
-        return getHeader("content-id");
+        return contentID;
     }
 
     public String getContentType() {

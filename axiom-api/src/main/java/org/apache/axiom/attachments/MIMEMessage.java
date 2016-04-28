@@ -85,7 +85,7 @@ class MIMEMessage {
     /** <code>boolean</code> Indicating if any data handlers have been directly requested */
     private boolean partsRequested;
 
-    private String firstPartId;
+    private PartImpl firstPart;
 
     private final WritableBlobFactory attachmentBlobFactory;
     
@@ -167,7 +167,7 @@ class MIMEMessage {
             if (partMap.isEmpty()) {
                 getNextPart();
             }
-            return firstPartId;
+            return firstPart == null ? null : firstPart.getContentID();
         } else {
             return rootPartContentID;
         }
@@ -269,7 +269,7 @@ class MIMEMessage {
                             "Part content ID cannot be blank for non root MIME parts");
                 }
                 
-                currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
+                currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, partContentID, headers, parser);
             } catch (IOException ex) {
                 throw new OMException(ex);
             } catch (MimeException ex) {
@@ -281,7 +281,7 @@ class MIMEMessage {
                 partContentID = "firstPart_" + UIDGenerator.generateContentId();
             }
             if (partMap.isEmpty()) {
-                firstPartId = partContentID;
+                firstPart = currentPart;
             }
             if (partMap.containsKey(partContentID)) {
                 throw new OMException(
