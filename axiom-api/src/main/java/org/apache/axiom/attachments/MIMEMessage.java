@@ -160,18 +160,6 @@ class MIMEMessage {
         return null;
     }
 
-    void addDataHandler(String contentID, DataHandler dataHandler) {
-        attachmentsMap.put(contentID, dataHandler);
-    }
-    
-    void removeDataHandler(String blobContentID) {
-        do {
-            if (attachmentsMap.remove(blobContentID) != null) {
-                return;
-            }
-        } while (getNextPartDataHandler() != null);
-    }
-
     InputStream getRootPartInputStream(boolean preserve) throws OMException {
         DataHandler dh;
         try {
@@ -299,7 +287,7 @@ class MIMEMessage {
                 String id = "firstPart_" + UIDGenerator.generateContentId();
                 firstPartId = id;
                 DataHandler dataHandler = nextPart.getDataHandler();
-                addDataHandler(id, dataHandler);
+                attachmentsMap.put(id, dataHandler);
                 return dataHandler;
             }
             if (partContentID == null) {
@@ -320,7 +308,7 @@ class MIMEMessage {
                         "Two MIME parts with the same Content-ID not allowed.");
             }
             DataHandler dataHandler = nextPart.getDataHandler();
-            addDataHandler(partContentID, dataHandler);
+            attachmentsMap.put(partContentID, dataHandler);
             return dataHandler;
         }
     }

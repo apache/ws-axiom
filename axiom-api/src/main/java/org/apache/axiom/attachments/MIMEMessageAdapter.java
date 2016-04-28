@@ -20,6 +20,10 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +33,8 @@ import org.apache.axiom.mime.ContentType;
 
 final class MIMEMessageAdapter extends AttachmentsDelegate {
     private final MIMEMessage message;
+    private final Map<String,DataHandler> addedDataHandlers = new LinkedHashMap<String,DataHandler>();
+    private final Set<String> removedDataHandlers = new HashSet<String>();
 
     MIMEMessageAdapter(MIMEMessage message) {
         this.message = message;
@@ -41,17 +47,26 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     DataHandler getDataHandler(String contentID) {
-        return message.getDataHandler(contentID);
+        DataHandler dh = addedDataHandlers.get(contentID);
+        if (dh != null) {
+            return dh;
+        } else if (removedDataHandlers.contains(contentID)) {
+            return null;
+        } else {
+            return message.getDataHandler(contentID);
+        }
     }
 
     @Override
     void addDataHandler(String contentID, DataHandler dataHandler) {
-        message.addDataHandler(contentID, dataHandler);
+        addedDataHandlers.put(contentID, dataHandler);
     }
 
     @Override
     void removeDataHandler(String blobContentID) {
-        message.removeDataHandler(blobContentID);
+        if (addedDataHandlers.remove(blobContentID) == null) {
+            removedDataHandlers.add(blobContentID);
+        }
     }
 
     @Override
@@ -76,12 +91,18 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     Set<String> getContentIDs(boolean fetchAll) {
-        return message.getContentIDs(fetchAll);
+        Set<String> result = new LinkedHashSet<String>(message.getContentIDs(fetchAll));
+        result.removeAll(removedDataHandlers);
+        result.addAll(addedDataHandlers.keySet());
+        return result;
     }
 
     @Override
-    Map<String, DataHandler> getMap() {
-        return message.getMap();
+    Map<String,DataHandler> getMap() {
+        Map<String,DataHandler> result = new LinkedHashMap<String,DataHandler>(message.getMap());
+        result.keySet().removeAll(removedDataHandlers);
+        result.putAll(addedDataHandlers);
+        return Collections.unmodifiableMap(result);
     }
 
     @Override
