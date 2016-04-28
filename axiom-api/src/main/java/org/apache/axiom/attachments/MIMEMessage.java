@@ -71,9 +71,6 @@ class MIMEMessage {
      */
     private final Map<String,DataHandler> attachmentsMap = new LinkedHashMap<String,DataHandler>();
 
-    /** <code>partIndex</code>- Number of Mime parts parsed */
-    private int partIndex = 0;
-
     /**
      * The MIME part currently being processed.
      */
@@ -169,7 +166,7 @@ class MIMEMessage {
 
         // to handle the Start parameter not mentioned situation
         if (rootContentID == null) {
-            if (partIndex == 0) {
+            if (attachmentsMap.isEmpty()) {
                 getNextPartDataHandler();
             }
             rootContentID = firstPartId;
@@ -254,7 +251,7 @@ class MIMEMessage {
         } else {
             Part nextPart = getPart();
             String partContentID = nextPart.getContentID();
-            if (partContentID == null & partIndex == 1) {
+            if (partContentID == null & attachmentsMap.isEmpty()) {
                 String id = "firstPart_" + UIDGenerator.generateContentId();
                 firstPartId = id;
                 DataHandler dataHandler = nextPart.getDataHandler();
@@ -271,7 +268,7 @@ class MIMEMessage {
                         .length() - 1));
 
             }
-            if (partIndex == 1) {
+            if (attachmentsMap.isEmpty()) {
                 firstPartId = partContentID;
             }
             if (attachmentsMap.containsKey(partContentID)) {
@@ -296,12 +293,11 @@ class MIMEMessage {
 
         partsRequested = true;
 
-        boolean isRootPart = (partIndex == 0);
+        boolean isRootPart = attachmentsMap.isEmpty();
 
         try {
             List<Header> headers = readHeaders();
             
-            partIndex++;
             currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
             return currentPart;
         } catch (IOException ex) {
