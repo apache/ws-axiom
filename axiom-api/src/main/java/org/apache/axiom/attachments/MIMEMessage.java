@@ -164,18 +164,6 @@ class MIMEMessage {
         }
     }
     
-    String getRootPartContentType() {
-        String rootPartContentID = getRootPartContentID();
-        if (rootPartContentID == null) {
-            throw new OMException("Unable to determine the content ID of the root part");
-        }
-        DataHandler rootPart = getDataHandler(rootPartContentID);
-        if (rootPart == null) {
-            throw new OMException("Unable to locate the root part; content ID was " + rootPartContentID);
-        }
-        return rootPart.getContentType();
-    }
-    
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
         if (partsRequested) {
             throw new IllegalStateException(

@@ -107,7 +107,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     String getRootPartContentType() {
-        return message.getRootPartContentType();
+        return message.getRootPart().getContentType();
     }
 
     @Override
