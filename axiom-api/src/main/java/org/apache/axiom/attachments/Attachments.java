@@ -119,8 +119,8 @@ public class Attachments {
             };
         }
         
-        delegate = new MIMEMessageAdapter(new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory,
-                contentLength));
+        delegate = new MIMEMessageAdapter(inStream, contentTypeString, attachmentBlobFactory,
+                contentLength);
     }
 
     /**

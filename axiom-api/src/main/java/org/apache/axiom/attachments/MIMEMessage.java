@@ -63,10 +63,6 @@ class MIMEMessage {
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
     
-    private final int contentLength; // Content Length
-
-    private final CountingInputStream filterIS;
-
     private final MimeTokenStream parser;
     
     /**
@@ -97,12 +93,8 @@ class MIMEMessage {
     private final WritableBlobFactory attachmentBlobFactory;
     
     MIMEMessage(InputStream inStream, String contentTypeString,
-            WritableBlobFactory attachmentBlobFactory, int contentLength) throws OMException {
-        this.contentLength = contentLength;
+            WritableBlobFactory attachmentBlobFactory) throws OMException {
         this.attachmentBlobFactory = attachmentBlobFactory;
-        if (log.isDebugEnabled()) {
-            log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
-        }
         try {
             contentType = new ContentType(contentTypeString);
         } catch (ParseException e) {
@@ -111,21 +103,11 @@ class MIMEMessage {
                     , e);
         }
 
-        // If the length is not known, install a TeeInputStream
-        // so that we can retrieve it later.
-        InputStream is = inStream;
-        if (contentLength <= 0) {
-            filterIS = new CountingInputStream(inStream);
-            is = filterIS;
-        } else {
-            filterIS = null;
-        }
-        
         MimeConfig config = new MimeConfig();
         config.setStrictParsing(true);
         parser = new MimeTokenStream(config);
         parser.setRecursionMode(RecursionMode.M_NO_RECURSE);
-        parser.parseHeadless(is, contentTypeString);
+        parser.parseHeadless(inStream, contentTypeString);
         
         // Move the parser to the beginning of the first part
         while (parser.getState() != EntityState.T_START_BODYPART) {
@@ -239,7 +221,7 @@ class MIMEMessage {
     /**
      * Force reading of all attachments.
      */
-    private void fetchAllParts() {
+    void fetchAllParts() {
         while (getNextPartDataHandler() != null) {
             // Just loop until getNextPartDataHandler returns null
         }
@@ -255,17 +237,6 @@ class MIMEMessage {
     Map<String,DataHandler> getMap() {
         fetchAllParts();
         return Collections.unmodifiableMap(attachmentsMap);
-    }
-    
-    long getContentLength() throws IOException {
-        if (contentLength > 0) {
-            return contentLength;
-        } else {
-            // Ensure all parts are read
-            fetchAllParts();
-            // Now get the count from the filter
-            return filterIS.getCount();
-        }
     }
     
     /**

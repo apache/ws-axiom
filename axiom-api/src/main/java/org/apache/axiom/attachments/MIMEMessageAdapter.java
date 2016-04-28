@@ -29,15 +29,36 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 final class MIMEMessageAdapter extends AttachmentsDelegate {
+    private static final Log log = LogFactory.getLog(MIMEMessageAdapter.class);
+
     private final MIMEMessage message;
     private final Map<String,DataHandler> addedDataHandlers = new LinkedHashMap<String,DataHandler>();
     private final Set<String> removedDataHandlers = new HashSet<String>();
+    private final int contentLength;
+    private final CountingInputStream filterIS;
 
-    MIMEMessageAdapter(MIMEMessage message) {
-        this.message = message;
+    MIMEMessageAdapter(InputStream inStream, String contentTypeString,
+            WritableBlobFactory attachmentBlobFactory, int contentLength) {
+        this.contentLength = contentLength;
+        if (log.isDebugEnabled()) {
+            log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
+        }
+
+        // If the length is not known, install a filter so that we can retrieve it later.
+        if (contentLength <= 0) {
+            filterIS = new CountingInputStream(inStream);
+            inStream = filterIS;
+        } else {
+            filterIS = null;
+        }
+
+        this.message = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory);
     }
 
     @Override
@@ -107,6 +128,13 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     long getContentLength() throws IOException {
-        return message.getContentLength();
+        if (contentLength > 0) {
+            return contentLength;
+        } else {
+            // Ensure all parts are read
+            message.fetchAllParts();
+            // Now get the count from the filter
+            return filterIS.getCount();
+        }
     }
 }
