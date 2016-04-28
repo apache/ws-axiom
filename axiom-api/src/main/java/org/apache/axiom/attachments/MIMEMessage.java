@@ -236,12 +236,12 @@ class MIMEMessage {
         return Collections.unmodifiableMap(attachmentsMap);
     }
     
-    /**
-     * @return the Next valid MIME part + store the Part in the Parts List
-     * @throws OMException throw if content id is null or if two MIME parts contain the same
-     *                     content-ID & the exceptions throws by getPart()
-     */
     private DataHandler getNextPartDataHandler() throws OMException {
+        if (streamsRequested) {
+            throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+        }
+        partsRequested = true;
+        
         if (currentPart != null) {
             currentPart.fetch();
             currentPart = null;
@@ -249,12 +249,37 @@ class MIMEMessage {
         if (parser.getState() == EntityState.T_END_MULTIPART) {
             return null;
         } else {
-            Part nextPart = getPart();
-            String partContentID = nextPart.getContentID();
+            boolean isRootPart = attachmentsMap.isEmpty();
+
+            try {
+                checkParserState(parser.next(), EntityState.T_START_HEADER);
+                
+                List<Header> headers = new ArrayList<Header>();
+                while (parser.next() == EntityState.T_FIELD) {
+                    Field field = parser.getField();
+                    String name = field.getName();
+                    String value = field.getBody();
+                    
+                    if (log.isDebugEnabled()){
+                        log.debug("addHeader: (" + name + ") value=(" + value +")");
+                    }
+                    headers.add(new Header(name, value));
+                }
+                
+                checkParserState(parser.next(), EntityState.T_BODY);
+                
+                currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            } catch (MimeException ex) {
+                throw new OMException(ex);
+            }
+
+            String partContentID = currentPart.getContentID();
             if (partContentID == null & attachmentsMap.isEmpty()) {
                 String id = "firstPart_" + UIDGenerator.generateContentId();
                 firstPartId = id;
-                DataHandler dataHandler = nextPart.getDataHandler();
+                DataHandler dataHandler = currentPart.getDataHandler();
                 attachmentsMap.put(id, dataHandler);
                 return dataHandler;
             }
@@ -275,62 +300,12 @@ class MIMEMessage {
                 throw new OMException(
                         "Two MIME parts with the same Content-ID not allowed.");
             }
-            DataHandler dataHandler = nextPart.getDataHandler();
+            DataHandler dataHandler = currentPart.getDataHandler();
             attachmentsMap.put(partContentID, dataHandler);
             return dataHandler;
         }
     }
 
-    /**
-     * @return This will return the next available MIME part in the stream.
-     * @throws OMException if Stream ends while reading the next part...
-     */
-    private Part getPart() throws OMException {
-
-        if (streamsRequested) {
-            throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
-        }
-
-        partsRequested = true;
-
-        boolean isRootPart = attachmentsMap.isEmpty();
-
-        try {
-            List<Header> headers = readHeaders();
-            
-            currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, headers, parser);
-            return currentPart;
-        } catch (IOException ex) {
-            throw new OMException(ex);
-        } catch (MimeException ex) {
-            throw new OMException(ex);
-        }
-    }
-    
-    private List<Header> readHeaders() throws IOException, MimeException {
-        if(log.isDebugEnabled()){
-            log.debug("readHeaders");
-        }
-        
-        checkParserState(parser.next(), EntityState.T_START_HEADER);
-        
-        List<Header> headers = new ArrayList<Header>();
-        while (parser.next() == EntityState.T_FIELD) {
-            Field field = parser.getField();
-            String name = field.getName();
-            String value = field.getBody();
-            
-            if (log.isDebugEnabled()){
-                log.debug("addHeader: (" + name + ") value=(" + value +")");
-            }
-            headers.add(new Header(name, value));
-        }
-        
-        checkParserState(parser.next(), EntityState.T_BODY);
-        
-        return headers;
-    }
-    
     private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
         if (expected != state) {
             throw new IllegalStateException("Internal error: expected parser to be in state "
