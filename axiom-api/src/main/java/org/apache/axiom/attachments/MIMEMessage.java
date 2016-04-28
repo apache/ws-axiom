@@ -276,12 +276,9 @@ class MIMEMessage {
                 throw new OMException(ex);
             }
 
-            if (partContentID == null & attachmentsMap.isEmpty()) {
-                String id = "firstPart_" + UIDGenerator.generateContentId();
-                firstPartId = id;
-                DataHandler dataHandler = currentPart.getDataHandler();
-                attachmentsMap.put(id, dataHandler);
-                return dataHandler;
+            if (partContentID == null) {
+                // We only get here if isRootPart is true
+                partContentID = "firstPart_" + UIDGenerator.generateContentId();
             }
             if (attachmentsMap.isEmpty()) {
                 firstPartId = partContentID;
