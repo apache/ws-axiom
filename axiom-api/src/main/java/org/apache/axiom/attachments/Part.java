@@ -23,6 +23,8 @@ import java.io.InputStream;
 
 import javax.activation.DataHandler;
 
+import org.apache.axiom.blob.Blob;
+
 /**
  * Interface representing a MIME part. A part can be the SOAP part (or more generally the root part
  * for non-MTOM XOP encoded messages) or an attachment part.
@@ -33,11 +35,6 @@ public interface Part {
      */
     public DataHandler getDataHandler();
     
-    /**
-     * @return size
-     */
-    public long getSize();
-
     /**
      * @return content type of the part
      */
@@ -57,6 +54,13 @@ public interface Part {
      * @return value or null
      */
     public String getHeader(String name);
+
+    /**
+     * Get the content of this part.
+     * 
+     * @return the content of this part
+     */
+    public Blob getBlob();
 
     /**
      * Get the content of this part.

@@ -53,6 +53,6 @@ class PartDataSource implements SizeAwareDataSource {
     }
 
     public long getSize() {
-        return part.getSize();
+        return part.getBlob().getSize();
     }
 }

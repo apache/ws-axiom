@@ -20,6 +20,7 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
@@ -137,10 +138,6 @@ final class PartImpl implements Part {
         return dataHandler;
     }
 
-    public long getSize() {
-        return getContent().getSize();
-    }
-
     private WritableBlob getContent() {
         switch (state) {
             case STATE_UNREAD:
@@ -153,6 +150,18 @@ final class PartImpl implements Part {
         }
     }
     
+    @Override
+    public Blob getBlob() {
+        WritableBlob blob = getContent();
+        if (blob instanceof OverflowableBlob) {
+            WritableBlob overflowBlob = ((OverflowableBlob)blob).getOverflowBlob();
+            if (overflowBlob != null) {
+                blob = overflowBlob;
+            }
+        }
+        return blob;
+    }
+
     private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
         if (expected != state) {
             throw new IllegalStateException("Internal error: expected parser to be in state "
