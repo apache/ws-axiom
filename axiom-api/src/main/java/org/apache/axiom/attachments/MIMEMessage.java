@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ import org.apache.james.mime4j.stream.RecursionMode;
  * {@link AttachmentsDelegate} implementation that represents a MIME multipart message read from a
  * stream.
  */
-class MIMEMessage {
+class MIMEMessage implements Iterable<Part> {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
     /** <code>ContentType</code> of the MIME message */
@@ -68,15 +69,6 @@ class MIMEMessage {
      */
     private PartImpl currentPart;
     
-    /** Container to hold streams for direct access */
-    private IncomingAttachmentStreams streams;
-
-    /** <code>boolean</code> Indicating if any streams have been directly requested */
-    private boolean streamsRequested;
-
-    /** <code>boolean</code> Indicating if any data handlers have been directly requested */
-    private boolean partsRequested;
-
     private PartImpl firstPart;
     private PartImpl rootPart;
 
@@ -112,13 +104,6 @@ class MIMEMessage {
                 throw new OMException(ex);
             }
         }
-
-        // Read the root part and cache it
-        getDataHandler(getRootPartContentID());
-
-        // Now reset partsRequested. The root part is a special case which is always 
-        // read beforehand, regardless of request.
-        partsRequested = false;
     }
 
     ContentType getContentType() {
@@ -135,6 +120,13 @@ class MIMEMessage {
         return null;
     }
 
+    PartImpl getFirstPart() {
+        if (firstPart == null) {
+            getNextPart();
+        }
+        return firstPart;
+    }
+
     Part getRootPart() {
         do {
             if (rootPart != null) {
@@ -148,31 +140,13 @@ class MIMEMessage {
     String getRootPartContentID() {
         // to handle the Start parameter not mentioned situation
         if (rootPartContentID == null) {
-            if (partMap.isEmpty()) {
-                getNextPart();
-            }
+            Part firstPart = getFirstPart();
             return firstPart == null ? null : firstPart.getContentID();
         } else {
             return rootPartContentID;
         }
     }
     
-    IncomingAttachmentStreams getIncomingAttachmentStreams() {
-        if (partsRequested) {
-            throw new IllegalStateException(
-                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
-                            "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
-        }
-        
-        streamsRequested = true;
-        
-        if (this.streams == null) {
-            this.streams = new IncomingAttachmentStreams(parser);
-        }
-        
-        return this.streams;
-    }
-
     /**
      * Force reading of all attachments.
      */
@@ -194,18 +168,12 @@ class MIMEMessage {
         return Collections.<String,Part>unmodifiableMap(partMap);
     }
     
-    private PartImpl getNextPart() throws OMException {
-        if (streamsRequested) {
-            throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
-        }
-        partsRequested = true;
-        
+    PartImpl getNextPart() throws OMException {
         if (currentPart != null) {
             currentPart.fetch();
-            currentPart = null;
         }
         if (parser.getState() == EntityState.T_END_MULTIPART) {
-            return null;
+            currentPart = null;
         } else {
             String partContentID = null;
             boolean isRootPart;
@@ -241,7 +209,13 @@ class MIMEMessage {
                             "Part content ID cannot be blank for non root MIME parts");
                 }
                 
-                currentPart = new PartImpl(isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory, partContentID, headers, parser);
+                PartImpl part = new PartImpl(this, isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory, partContentID, headers, parser);
+                if (currentPart == null) {
+                    firstPart = part;
+                } else {
+                    currentPart.setNextPart(part);
+                }
+                currentPart = part;
             } catch (IOException ex) {
                 throw new OMException(ex);
             } catch (MimeException ex) {
@@ -252,9 +226,6 @@ class MIMEMessage {
                 // We only get here if isRootPart is true
                 partContentID = "firstPart_" + UIDGenerator.generateContentId();
             }
-            if (partMap.isEmpty()) {
-                firstPart = currentPart;
-            }
             if (partMap.containsKey(partContentID)) {
                 throw new OMException(
                         "Two MIME parts with the same Content-ID not allowed.");
@@ -263,8 +234,8 @@ class MIMEMessage {
             if (isRootPart) {
                 rootPart = currentPart;
             }
-            return currentPart;
         }
+        return currentPart;
     }
 
     private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
@@ -272,5 +243,10 @@ class MIMEMessage {
             throw new IllegalStateException("Internal error: expected parser to be in state "
                     + expected + ", but got " + state);
         }
+    }
+
+    @Override
+    public Iterator<Part> iterator() {
+        return new PartIterator(this);
     }
 }

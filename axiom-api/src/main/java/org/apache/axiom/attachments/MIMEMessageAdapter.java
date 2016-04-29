@@ -44,6 +44,15 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     private final int contentLength;
     private final CountingInputStream filterIS;
 
+    /** <code>boolean</code> Indicating if any streams have been directly requested */
+    private boolean streamsRequested;
+
+    /** <code>boolean</code> Indicating if any data handlers have been directly requested */
+    private boolean partsRequested;
+
+    /** Container to hold streams for direct access */
+    private IncomingAttachmentStreams streams;
+
     MIMEMessageAdapter(InputStream inStream, String contentTypeString,
             WritableBlobFactory<?> attachmentBlobFactory, int contentLength) {
         this.contentLength = contentLength;
@@ -62,6 +71,13 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
         this.message = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory);
     }
 
+    private void requestParts() {
+        if (streamsRequested) {
+            throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+        }
+        partsRequested = true;
+    }
+
     @Override
     ContentType getContentType() {
         return message.getContentType();
@@ -69,6 +85,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     DataHandler getDataHandler(String contentID) {
+        requestParts();
         DataHandler dh = addedDataHandlers.get(contentID);
         if (dh != null) {
             return dh;
@@ -81,11 +98,13 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     void addDataHandler(String contentID, DataHandler dataHandler) {
+        requestParts();
         addedDataHandlers.put(contentID, dataHandler);
     }
 
     @Override
     void removeDataHandler(String blobContentID) {
+        requestParts();
         if (addedDataHandlers.remove(blobContentID) == null) {
             removedDataHandlers.add(blobContentID);
         }
@@ -112,11 +131,25 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
-        return message.getIncomingAttachmentStreams();
+        if (partsRequested) {
+            throw new IllegalStateException(
+                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
+                            "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+        }
+        
+        streamsRequested = true;
+        
+        if (streams == null) {
+            streams = new IncomingAttachmentStreams(message);
+        }
+        
+        return streams;
     }
+
 
     @Override
     Set<String> getContentIDs(boolean fetchAll) {
+        requestParts();
         Set<String> result = new LinkedHashSet<String>(message.getContentIDs(fetchAll));
         result.removeAll(removedDataHandlers);
         result.addAll(addedDataHandlers.keySet());
@@ -125,6 +158,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     Map<String,DataHandler> getMap() {
+        requestParts();
         Map<String,DataHandler> result = new LinkedHashMap<String,DataHandler>();
         for (Map.Entry<String,Part> entry : message.getMap().entrySet()) {
             String contentID = entry.getKey();
@@ -141,6 +175,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
         if (contentLength > 0) {
             return contentLength;
         } else {
+            requestParts();
             // Ensure all parts are read
             message.fetchAllParts();
             // Now get the count from the filter

@@ -68,6 +68,7 @@ final class PartImpl implements Part {
 
     private static final Log log = LogFactory.getLog(PartImpl.class);
     
+    private final MIMEMessage message;
     private final WritableBlobFactory<?> blobFactory;
     
     private final String contentID;
@@ -90,7 +91,10 @@ final class PartImpl implements Part {
     
     private PartInputStream partInputStream;
     
-    PartImpl(WritableBlobFactory<?> blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
+    private PartImpl nextPart;
+    
+    PartImpl(MIMEMessage message, WritableBlobFactory<?> blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
+        this.message = message;
         this.blobFactory = blobFactory;
         this.contentID = contentID;
         this.headers = headers;
@@ -112,6 +116,10 @@ final class PartImpl implements Part {
             log.debug("getHeader name=(" + name + ") value=(" + value +")");
         }
         return value;
+    }
+
+    public List<Header> getHeaders() {
+        return headers;
     }
 
     public String getContentID() {
@@ -262,5 +270,16 @@ final class PartImpl implements Part {
             case STATE_BUFFERED:
                 content.release();
         }
+    }
+    
+    PartImpl getNextPart() {
+        if (nextPart == null) {
+            message.getNextPart();
+        }
+        return nextPart;
+    }
+
+    void setNextPart(PartImpl nextPart) {
+        this.nextPart = nextPart;
     }
 }

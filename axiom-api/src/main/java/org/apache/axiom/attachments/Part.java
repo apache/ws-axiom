@@ -20,10 +20,12 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.mime.Header;
 
 /**
  * Interface representing a MIME part. A part can be the SOAP part (or more generally the root part
@@ -75,4 +77,6 @@ public interface Part {
     public InputStream getInputStream(boolean preserve) throws IOException;
     
     public void releaseContent() throws IOException;
+    
+    List<Header> getHeaders();
 }

@@ -20,14 +20,10 @@
 package org.apache.axiom.attachments;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
+import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
-import org.apache.james.mime4j.MimeException;
-import org.apache.james.mime4j.stream.EntityState;
-import org.apache.james.mime4j.stream.Field;
-import org.apache.james.mime4j.stream.MimeTokenStream;
 
 /**
  * Container for AttachmentStream s. This class provides an SwA like access mechanism, allowing
@@ -35,7 +31,8 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
  * like (stream access), or MTOM like (part/data handler access via blob id), not both.
  */
 public final class IncomingAttachmentStreams {
-    private final MimeTokenStream parser;
+    private final Part rootPart;
+    private final Iterator<Part> partIterator;
 
     /**
      * Boolean indicating weather or not the next stream can be read (next stream cannot be read until
@@ -43,8 +40,9 @@ public final class IncomingAttachmentStreams {
      */
     private boolean readyToGetNextStream = true;
 
-    IncomingAttachmentStreams(MimeTokenStream parser) {
-        this.parser = parser;
+    IncomingAttachmentStreams(MIMEMessage message) {
+        rootPart = message.getRootPart();
+        partIterator = message.iterator();
     }
 
     /** @return True if the next stream can be read, false otherwise. */
@@ -67,42 +65,31 @@ public final class IncomingAttachmentStreams {
      * @return The next stream or null if no additional streams are left.
      */
     public IncomingAttachmentInputStream getNextStream() throws OMException {
-        IncomingAttachmentInputStream stream;
-
         if (!readyToGetNextStream) {
             throw new IllegalStateException("nextStreamNotReady");
         }
 
-        try {
-            if (parser.getState() == EntityState.T_BODY) {
-                if (parser.next() != EntityState.T_END_BODYPART) {
-                    throw new IllegalStateException();
-                }
-                parser.next();
+        Part part = null;
+        while (part == null && partIterator.hasNext()) {
+            part = partIterator.next();
+            // Skip the root part
+            if (part == rootPart) {
+                part = null;
             }
-            
-            if (parser.getState() != EntityState.T_START_BODYPART) {
-                return null;
+        }
+
+        if (part != null) {
+            IncomingAttachmentInputStream stream;
+
+            try {
+                stream = new IncomingAttachmentInputStream(part.getInputStream(false), this);
+            } catch (IOException ex) {
+                throw new OMException(ex);
             }
-            
-            if (parser.next() != EntityState.T_START_HEADER) {
-                throw new IllegalStateException();
-            }
-            
-            List<Field> fields = new ArrayList<Field>();
-            while (parser.next() == EntityState.T_FIELD) {
-                fields.add(parser.getField());
-            }
-            
-            if (parser.next() != EntityState.T_BODY) {
-                throw new IllegalStateException();
-            }
-            
-            stream = new IncomingAttachmentInputStream(parser.getInputStream(), this);
     
-            for (Field field : fields) {
-                String name = field.getName();
-                String value = field.getBody();
+            for (Header header : part.getHeaders()) {
+                String name = header.getName();
+                String value = header.getValue();
                 if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)
                         || IncomingAttachmentInputStream.HEADER_CONTENT_TYPE.equals(name)
                         || IncomingAttachmentInputStream.HEADER_CONTENT_LOCATION.equals(name)) {
@@ -110,13 +97,11 @@ public final class IncomingAttachmentStreams {
                 }
                 stream.addHeader(name, value);
             }
-        } catch (MimeException ex) {
-            throw new OMException(ex);
-        } catch (IOException ex) {
-            throw new OMException(ex);
+            
+            readyToGetNextStream = false;
+            return stream;
+        } else {
+            return null;
         }
-
-        readyToGetNextStream = false;
-        return stream;
     }
 }
