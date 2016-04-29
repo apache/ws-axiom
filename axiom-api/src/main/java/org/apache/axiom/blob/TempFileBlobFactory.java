@@ -21,7 +21,7 @@ package org.apache.axiom.blob;
 import java.io.File;
 import java.io.IOException;
 
-final class TempFileBlobFactory implements WritableBlobFactory {
+final class TempFileBlobFactory implements WritableBlobFactory<WritableBlob> {
     private final String tempPrefix;
     private final String tempSuffix;
     private final File tempDirectory;

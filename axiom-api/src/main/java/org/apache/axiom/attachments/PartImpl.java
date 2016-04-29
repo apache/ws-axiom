@@ -68,7 +68,7 @@ final class PartImpl implements Part {
 
     private static final Log log = LogFactory.getLog(PartImpl.class);
     
-    private final WritableBlobFactory blobFactory;
+    private final WritableBlobFactory<?> blobFactory;
     
     private final String contentID;
     private List<Header> headers;
@@ -90,7 +90,7 @@ final class PartImpl implements Part {
     
     private PartInputStream partInputStream;
     
-    PartImpl(WritableBlobFactory blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
+    PartImpl(WritableBlobFactory<?> blobFactory, String contentID, List<Header> headers, MimeTokenStream parser) {
         this.blobFactory = blobFactory;
         this.contentID = contentID;
         this.headers = headers;

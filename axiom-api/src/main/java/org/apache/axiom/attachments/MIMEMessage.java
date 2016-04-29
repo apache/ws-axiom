@@ -31,7 +31,7 @@ import java.util.Set;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.Blobs;
-import org.apache.axiom.blob.WritableBlob;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
@@ -53,8 +53,8 @@ import org.apache.james.mime4j.stream.RecursionMode;
 class MIMEMessage {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
-    private static final WritableBlobFactory rootPartBlobFactory = new WritableBlobFactory() {
-        public WritableBlob createBlob() {
+    private static final WritableBlobFactory<MemoryBlob> rootPartBlobFactory = new WritableBlobFactory<MemoryBlob>() {
+        public MemoryBlob createBlob() {
             return Blobs.createMemoryBlob();
         }
     };
@@ -87,10 +87,10 @@ class MIMEMessage {
     private PartImpl firstPart;
     private PartImpl rootPart;
 
-    private final WritableBlobFactory attachmentBlobFactory;
+    private final WritableBlobFactory<?> attachmentBlobFactory;
     
     MIMEMessage(InputStream inStream, String contentTypeString,
-            WritableBlobFactory attachmentBlobFactory) throws OMException {
+            WritableBlobFactory<?> attachmentBlobFactory) throws OMException {
         this.attachmentBlobFactory = attachmentBlobFactory;
         try {
             contentType = new ContentType(contentTypeString);

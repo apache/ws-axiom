@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 
 public class TestReadEOF extends WritableBlobTestCase {
-    public TestReadEOF(WritableBlobFactory factory) {
+    public TestReadEOF(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

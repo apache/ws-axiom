@@ -45,7 +45,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     private final CountingInputStream filterIS;
 
     MIMEMessageAdapter(InputStream inStream, String contentTypeString,
-            WritableBlobFactory attachmentBlobFactory, int contentLength) {
+            WritableBlobFactory<?> attachmentBlobFactory, int contentLength) {
         this.contentLength = contentLength;
         if (log.isDebugEnabled()) {
             log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);

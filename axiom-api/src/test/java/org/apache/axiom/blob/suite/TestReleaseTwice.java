@@ -22,7 +22,7 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
 public class TestReleaseTwice extends WritableBlobTestCase {
-    public TestReleaseTwice(WritableBlobFactory factory) {
+    public TestReleaseTwice(WritableBlobFactory<?> factory) {
         super(factory, State.RELEASED);
     }
 

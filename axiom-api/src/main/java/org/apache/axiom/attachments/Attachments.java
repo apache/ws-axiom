@@ -23,6 +23,7 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
@@ -99,11 +100,11 @@ public class Attachments {
         } else {
             fileStorageThreshold = 0;
         }
-        WritableBlobFactory attachmentBlobFactory;
+        WritableBlobFactory<?> attachmentBlobFactory;
         if (fileCacheEnable) {
-            final WritableBlobFactory tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
+            final WritableBlobFactory<?> tempFileBlobFactory = new LegacyTempFileBlobFactory(this, attachmentRepoDir);
             if (fileStorageThreshold > 0) {
-                attachmentBlobFactory = new WritableBlobFactory() {
+                attachmentBlobFactory = new WritableBlobFactory<WritableBlob>() {
                     public WritableBlob createBlob() {
                         return Blobs.createOverflowableBlob(fileStorageThreshold, tempFileBlobFactory);
                     }
@@ -112,8 +113,8 @@ public class Attachments {
                 attachmentBlobFactory = tempFileBlobFactory;
             }
         } else {
-            attachmentBlobFactory = new WritableBlobFactory() {
-                public WritableBlob createBlob() {
+            attachmentBlobFactory = new WritableBlobFactory<MemoryBlob>() {
+                public MemoryBlob createBlob() {
                     return Blobs.createMemoryBlob();
                 }
             };

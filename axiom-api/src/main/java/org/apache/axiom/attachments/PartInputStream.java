@@ -28,14 +28,14 @@ import org.apache.axiom.blob.WritableBlobFactory;
 final class PartInputStream extends InputStream {
     private WritableBlob content;
     private InputStream in;
-    private WritableBlobFactory blobFactory;
+    private WritableBlobFactory<?> blobFactory;
     
     PartInputStream(WritableBlob content) throws IOException {
         this.content = content;
         in = getInputStream(content);
     }
     
-    PartInputStream(InputStream in, WritableBlobFactory blobFactory) {
+    PartInputStream(InputStream in, WritableBlobFactory<?> blobFactory) {
         this.in = in;
         this.blobFactory = blobFactory;
     }

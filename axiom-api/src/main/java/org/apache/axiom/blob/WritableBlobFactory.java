@@ -23,11 +23,11 @@ import org.apache.axiom.blob.WritableBlob;
 /**
  * A factory for {@link WritableBlob} instances.
  */
-public interface WritableBlobFactory {
+public interface WritableBlobFactory<T extends WritableBlob> {
     /**
      * Create a new {@link WritableBlob} instance.
      * 
      * @return the newly created instance
      */
-    WritableBlob createBlob();
+    T createBlob();
 }

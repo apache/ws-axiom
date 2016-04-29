@@ -23,10 +23,10 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 
 public abstract class WritableBlobTestCase extends MatrixTestCase {
-    private final WritableBlobFactory factory;
+    private final WritableBlobFactory<?> factory;
     private final State initialState;
 
-    public WritableBlobTestCase(WritableBlobFactory factory, State initialState) {
+    public WritableBlobTestCase(WritableBlobFactory<?> factory, State initialState) {
         this.factory = factory;
         this.initialState = initialState;
     }

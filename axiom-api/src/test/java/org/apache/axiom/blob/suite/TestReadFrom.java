@@ -30,7 +30,7 @@ import org.apache.axiom.testutils.io.InstrumentedInputStream;
 import org.apache.commons.io.IOUtils;
 
 public class TestReadFrom extends SizeSensitiveWritableBlobTestCase {
-    public TestReadFrom(WritableBlobFactory factory, int size) {
+    public TestReadFrom(WritableBlobFactory<?> factory, int size) {
         super(factory, State.NEW, size);
     }
 

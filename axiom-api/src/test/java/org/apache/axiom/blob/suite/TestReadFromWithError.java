@@ -27,7 +27,7 @@ import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.commons.io.input.NullInputStream;
 
 public class TestReadFromWithError extends WritableBlobTestCase {
-    public TestReadFromWithError(WritableBlobFactory factory) {
+    public TestReadFromWithError(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 
 public class TestReadZeroLength extends WritableBlobTestCase {
-    public TestReadZeroLength(WritableBlobFactory factory) {
+    public TestReadZeroLength(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

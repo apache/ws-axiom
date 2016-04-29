@@ -30,7 +30,7 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import com.google.common.collect.Range;
 
 public class TestRandomReadWrite extends SizeSensitiveWritableBlobTestCase {
-    public TestRandomReadWrite(WritableBlobFactory factory, int size) {
+    public TestRandomReadWrite(WritableBlobFactory<?> factory, int size) {
         super(factory, State.NEW, size);
     }
 

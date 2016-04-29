@@ -28,7 +28,7 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
 
 public class TestSkip extends WritableBlobTestCase {
-    public TestSkip(WritableBlobFactory factory) {
+    public TestSkip(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

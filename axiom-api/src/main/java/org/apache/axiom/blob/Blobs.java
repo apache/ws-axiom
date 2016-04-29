@@ -44,7 +44,7 @@ public final class Blobs {
      *            the factory that will be used to create the overflow blob
      * @return the blob
      */
-    public static OverflowableBlob createOverflowableBlob(int threshold, WritableBlobFactory overflowBlobFactory) {
+    public static OverflowableBlob createOverflowableBlob(int threshold, WritableBlobFactory<?> overflowBlobFactory) {
         int numberOfChunks = Math.max(16, Math.min(1, threshold/4096));
         int chunkSize = threshold/numberOfChunks;
         return new OverflowableBlobImpl(numberOfChunks, chunkSize, overflowBlobFactory);

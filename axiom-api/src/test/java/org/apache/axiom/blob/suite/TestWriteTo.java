@@ -29,7 +29,7 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.testutils.io.InstrumentedOutputStream;
 
 public class TestWriteTo extends SizeSensitiveWritableBlobTestCase {
-    public TestWriteTo(WritableBlobFactory factory, int size) {
+    public TestWriteTo(WritableBlobFactory<?> factory, int size) {
         super(factory, State.NEW, size);
     }
 

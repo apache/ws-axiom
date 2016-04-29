@@ -27,7 +27,7 @@ import org.apache.axiom.testutils.io.ExceptionOutputStream;
 import org.apache.commons.io.input.NullInputStream;
 
 public class TestWriteToWithError extends SizeSensitiveWritableBlobTestCase {
-    public TestWriteToWithError(WritableBlobFactory factory, int size) {
+    public TestWriteToWithError(WritableBlobFactory<?> factory, int size) {
         super(factory, State.NEW, size);
     }
 

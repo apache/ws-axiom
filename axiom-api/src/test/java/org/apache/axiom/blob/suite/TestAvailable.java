@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 
 public class TestAvailable extends WritableBlobTestCase {
-    public TestAvailable(WritableBlobFactory factory) {
+    public TestAvailable(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

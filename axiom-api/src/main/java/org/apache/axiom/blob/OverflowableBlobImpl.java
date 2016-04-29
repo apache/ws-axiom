@@ -184,7 +184,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
      */
     final int chunkSize;
     
-    final WritableBlobFactory overflowBlobFactory;
+    final WritableBlobFactory<?> overflowBlobFactory;
     
     /**
      * Array of <code>byte[]</code> representing the chunks of the buffer.
@@ -215,7 +215,7 @@ final class OverflowableBlobImpl implements OverflowableBlob {
      */
     State state = State.NEW;
     
-    OverflowableBlobImpl(int numberOfChunks, int chunkSize, WritableBlobFactory overflowBlobFactory) {
+    OverflowableBlobImpl(int numberOfChunks, int chunkSize, WritableBlobFactory<?> overflowBlobFactory) {
         this.chunkSize = chunkSize;
         this.overflowBlobFactory = overflowBlobFactory;
         chunks = new byte[numberOfChunks][];

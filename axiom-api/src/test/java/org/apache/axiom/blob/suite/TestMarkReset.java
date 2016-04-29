@@ -29,7 +29,7 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.commons.io.IOUtils;
 
 public class TestMarkReset extends SizeSensitiveWritableBlobTestCase {
-    public TestMarkReset(WritableBlobFactory factory, int size) {
+    public TestMarkReset(WritableBlobFactory<?> factory, int size) {
         super(factory, State.NEW, size);
     }
 

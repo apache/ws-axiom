@@ -30,7 +30,7 @@ import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.IOUtils;
 
 public class TestReadFromSupport extends WritableBlobTestCase {
-    public TestReadFromSupport(WritableBlobFactory factory) {
+    public TestReadFromSupport(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

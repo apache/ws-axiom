@@ -27,7 +27,7 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
 public class TestWriteToWithReadFromSupport extends SizeSensitiveWritableBlobTestCase {
-    public TestWriteToWithReadFromSupport(WritableBlobFactory factory, int size) {
+    public TestWriteToWithReadFromSupport(WritableBlobFactory<?> factory, int size) {
         super(factory, State.NEW, size);
     }
 

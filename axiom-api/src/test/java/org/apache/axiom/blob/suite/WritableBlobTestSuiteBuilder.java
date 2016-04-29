@@ -22,12 +22,12 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 
 public class WritableBlobTestSuiteBuilder extends MatrixTestSuiteBuilder {
-    private final WritableBlobFactory factory;
+    private final WritableBlobFactory<?> factory;
     private final int[] sizes;
     private final boolean outputStreamHasReadFromSupport;
     private final boolean writeToUsesReadFromSupport;
 
-    public WritableBlobTestSuiteBuilder(WritableBlobFactory factory, int[] sizes,
+    public WritableBlobTestSuiteBuilder(WritableBlobFactory<?> factory, int[] sizes,
             boolean outputStreamHasReadFromSupport, boolean writeToUsesReadFromSupport) {
         this.factory = factory;
         this.sizes = sizes;

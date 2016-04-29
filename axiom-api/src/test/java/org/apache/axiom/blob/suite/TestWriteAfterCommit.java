@@ -27,7 +27,7 @@ import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.commons.io.input.NullInputStream;
 
 public class TestWriteAfterCommit extends WritableBlobTestCase {
-    public TestWriteAfterCommit(WritableBlobFactory factory) {
+    public TestWriteAfterCommit(WritableBlobFactory<?> factory) {
         super(factory, State.NEW);
     }
 

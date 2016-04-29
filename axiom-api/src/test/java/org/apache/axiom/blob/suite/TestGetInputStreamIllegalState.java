@@ -22,7 +22,7 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
 public class TestGetInputStreamIllegalState extends WritableBlobTestCase {
-    public TestGetInputStreamIllegalState(WritableBlobFactory factory, State state) {
+    public TestGetInputStreamIllegalState(WritableBlobFactory<?> factory, State state) {
         super(factory, state);
         state.addTestParameters(this);
     }

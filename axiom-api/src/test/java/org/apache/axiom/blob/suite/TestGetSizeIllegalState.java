@@ -22,7 +22,7 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
 public class TestGetSizeIllegalState extends WritableBlobTestCase {
-    public TestGetSizeIllegalState(WritableBlobFactory factory, State state) {
+    public TestGetSizeIllegalState(WritableBlobFactory<?> factory, State state) {
         super(factory, state);
         state.addTestParameters(this);
     }

@@ -18,10 +18,9 @@
  */
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 
-final class LegacyTempFileBlobFactory implements WritableBlobFactory {
+final class LegacyTempFileBlobFactory implements WritableBlobFactory<LegacyTempFileBlob> {
     private final Attachments attachments;
     private final String attachmentDir;
 
@@ -30,7 +29,7 @@ final class LegacyTempFileBlobFactory implements WritableBlobFactory {
         this.attachmentDir = attachmentDir;
     }
 
-    public WritableBlob createBlob() {
+    public LegacyTempFileBlob createBlob() {
         return new LegacyTempFileBlob(attachments.getLifecycleManager(), attachmentDir);
     }
 }
