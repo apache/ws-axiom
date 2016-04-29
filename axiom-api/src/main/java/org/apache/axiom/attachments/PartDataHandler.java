@@ -28,10 +28,10 @@ import javax.activation.DataSource;
  * {@link DataHandler} implementation for MIME parts read from a stream.
  */
 class PartDataHandler extends DataHandler {
-    private final PartImpl part;
+    private final Part part;
     private DataSource dataSource;
 
-    public PartDataHandler(PartImpl part) {
+    public PartDataHandler(Part part) {
         // We can't call PartImpl#getDataSource() here because it would fetch the content of the
         // part and therefore disable streaming. We can't pass null here either because Geronimo's
         // DataHandler implementation would throw a NullPointerException. Therefore we create the
@@ -42,13 +42,13 @@ class PartDataHandler extends DataHandler {
         this.part = part;
     }
 
-    public PartImpl getPart() {
+    public Part getPart() {
         return part;
     }
 
     public DataSource getDataSource() {
         if (dataSource == null) {
-            dataSource = createDataSource(part, part.getDataSourceContentType());
+            dataSource = createDataSource(part, Util.getDataSourceContentType(part));
             if (dataSource == null) {
                 // We get here if there is no DataSource implementation specific to the buffering
                 // strategy being used. In this case we use super.getDataSource() to get the
@@ -79,6 +79,6 @@ class PartDataHandler extends DataHandler {
         // The PartContent may have an implementation of writeTo that is more efficient than the default
         // DataHandler#writeTo method (which requests an input stream and then copies it to the output
         // stream).
-        part.writeTo(os);
+        part.getBlob().writeTo(os);
     }
 }

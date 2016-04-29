@@ -30,14 +30,14 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
  * if {@link PartContent#getDataSource(String)} returns <code>null</code>.
  */
 class PartDataSource implements SizeAwareDataSource {
-    private final PartImpl part;
+    private final Part part;
 
-    public PartDataSource(PartImpl part) {
+    public PartDataSource(Part part) {
         this.part = part;
     }
 
     public String getContentType() {
-        return part.getDataSourceContentType();
+        return Util.getDataSourceContentType(part);
     }
 
     public InputStream getInputStream() throws IOException {

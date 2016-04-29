@@ -73,4 +73,6 @@ public interface Part {
      *             if the content couldn't be read
      */
     public InputStream getInputStream(boolean preserve) throws IOException;
+    
+    public void releaseContent() throws IOException;
 }

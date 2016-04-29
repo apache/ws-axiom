@@ -27,7 +27,7 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.blob.Blob;
 
 final class LegacyPartDataHandler extends PartDataHandler implements DataHandlerExt {
-    public LegacyPartDataHandler(PartImpl part) {
+    public LegacyPartDataHandler(Part part) {
         super(part);
     }
 

@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.attachments;
 
+import javax.activation.DataSource;
+
 final class Util {
     private Util() {}
 
@@ -33,5 +35,18 @@ final class Util {
             contentID = contentID.substring(4);
         }
         return contentID;
+    }
+
+    /**
+     * Get the content type that should be reported by {@link DataSource} instances created for a
+     * given part.
+     * 
+     * @param Part
+     *            the part
+     * @return the content type
+     */
+    static String getDataSourceContentType(Part part) {
+        String ct = part.getContentType();
+        return ct == null ? "application/octet-stream" : ct;
     }
 }

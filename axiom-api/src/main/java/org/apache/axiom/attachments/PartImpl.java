@@ -34,11 +34,9 @@ import org.apache.james.mime4j.stream.EntityState;
 import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -122,17 +120,6 @@ final class PartImpl implements Part {
 
     public String getContentType() {
         return getHeader("content-type");
-    }
-    
-    /**
-     * Get the content type that should be reported by {@link DataSource} instances created for this
-     * part.
-     * 
-     * @return the content type
-     */
-    String getDataSourceContentType() {
-        String ct = getContentType();
-        return ct == null ? "application/octet-stream" : ct;
     }
     
     public DataHandler getDataHandler() {
@@ -259,11 +246,7 @@ final class PartImpl implements Part {
         }
     }
     
-    void writeTo(OutputStream out) throws IOException {
-        getContent().writeTo(out);
-    }
-
-    void releaseContent() throws IOException {
+    public void releaseContent() throws IOException {
         switch (state) {
             case STATE_UNREAD:
                 try {
