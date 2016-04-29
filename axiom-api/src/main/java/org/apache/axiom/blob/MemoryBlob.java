@@ -29,9 +29,16 @@ import java.io.OutputStream;
  * {@link IOException}. Also note that since data is stored in memory, calling
  * {@link WritableBlob#release()} is not required.
  * <p>
- * Instances are created with {@link Blobs#createMemoryBlob()}.
+ * Instances are created with {@link Blobs#createMemoryBlob()} or using {@link #FACTORY}.
  */
 public interface MemoryBlob extends WritableBlob {
+    WritableBlobFactory<MemoryBlob> FACTORY = new WritableBlobFactory<MemoryBlob>() {
+        @Override
+        public MemoryBlob createBlob() {
+            return new MemoryBlobImpl();
+        }
+    };
+
     InputStream getInputStream();
     OutputStream getOutputStream();
     long getSize();

@@ -30,7 +30,6 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
@@ -53,12 +52,6 @@ import org.apache.james.mime4j.stream.RecursionMode;
 class MIMEMessage {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
-    private static final WritableBlobFactory<MemoryBlob> rootPartBlobFactory = new WritableBlobFactory<MemoryBlob>() {
-        public MemoryBlob createBlob() {
-            return Blobs.createMemoryBlob();
-        }
-    };
-
     /** <code>ContentType</code> of the MIME message */
     private final ContentType contentType;
     private final String rootPartContentID;
@@ -248,7 +241,7 @@ class MIMEMessage {
                             "Part content ID cannot be blank for non root MIME parts");
                 }
                 
-                currentPart = new PartImpl(isRootPart ? rootPartBlobFactory : attachmentBlobFactory, partContentID, headers, parser);
+                currentPart = new PartImpl(isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory, partContentID, headers, parser);
             } catch (IOException ex) {
                 throw new OMException(ex);
             } catch (MimeException ex) {

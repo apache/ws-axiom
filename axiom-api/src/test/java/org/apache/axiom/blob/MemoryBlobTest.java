@@ -25,10 +25,6 @@ import junit.framework.TestSuite;
 
 public class MemoryBlobTest extends TestCase {
     public static TestSuite suite() {
-        return new WritableBlobTestSuiteBuilder(new WritableBlobFactory<MemoryBlob>() {
-            public MemoryBlob createBlob() {
-                return Blobs.createMemoryBlob();
-            }
-        }, new int[] { 10000 }, true, false).build();
+        return new WritableBlobTestSuiteBuilder(MemoryBlob.FACTORY, new int[] { 10000 }, true, false).build();
     }
 }

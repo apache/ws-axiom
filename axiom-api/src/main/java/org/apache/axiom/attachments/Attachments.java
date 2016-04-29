@@ -113,11 +113,7 @@ public class Attachments {
                 attachmentBlobFactory = tempFileBlobFactory;
             }
         } else {
-            attachmentBlobFactory = new WritableBlobFactory<MemoryBlob>() {
-                public MemoryBlob createBlob() {
-                    return Blobs.createMemoryBlob();
-                }
-            };
+            attachmentBlobFactory = MemoryBlob.FACTORY;
         }
         
         delegate = new MIMEMessageAdapter(inStream, contentTypeString, attachmentBlobFactory,
