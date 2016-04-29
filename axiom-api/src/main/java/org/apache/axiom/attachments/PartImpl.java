@@ -97,7 +97,8 @@ final class PartImpl implements Part {
         this.contentID = contentID;
         this.headers = headers;
         this.parser = parser;
-        this.dataHandler = new PartDataHandler(this);
+        // TODO: use factory here
+        this.dataHandler = new LegacyPartDataHandler(this);
     }
     
     public String getHeader(String name) {
@@ -258,21 +259,6 @@ final class PartImpl implements Part {
         }
     }
     
-    DataSource getDataSource() {
-        WritableBlob blob = getContent();
-        if (blob instanceof OverflowableBlob) {
-            WritableBlob overflowBlob = ((OverflowableBlob)blob).getOverflowBlob();
-            if (overflowBlob != null) {
-                blob = overflowBlob;
-            }
-        }
-        if (blob instanceof LegacyTempFileBlob) {
-            return ((LegacyTempFileBlob)blob).getDataSource(getDataSourceContentType());
-        } else {
-            return null;
-        }
-    }
-
     void writeTo(OutputStream out) throws IOException {
         getContent().writeTo(out);
     }

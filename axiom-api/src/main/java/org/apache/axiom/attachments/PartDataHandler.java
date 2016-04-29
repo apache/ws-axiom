@@ -19,18 +19,15 @@
 package org.apache.axiom.attachments;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
-
 /**
  * {@link DataHandler} implementation for MIME parts read from a stream.
  */
-class PartDataHandler extends DataHandler implements DataHandlerExt {
+class PartDataHandler extends DataHandler {
     private final PartImpl part;
     private DataSource dataSource;
 
@@ -45,9 +42,13 @@ class PartDataHandler extends DataHandler implements DataHandlerExt {
         this.part = part;
     }
 
+    public PartImpl getPart() {
+        return part;
+    }
+
     public DataSource getDataSource() {
         if (dataSource == null) {
-            dataSource = part.getDataSource();
+            dataSource = createDataSource(part, part.getDataSourceContentType());
             if (dataSource == null) {
                 // We get here if there is no DataSource implementation specific to the buffering
                 // strategy being used. In this case we use super.getDataSource() to get the
@@ -58,24 +59,26 @@ class PartDataHandler extends DataHandler implements DataHandlerExt {
         return dataSource;
     }
 
+    /**
+     * Create the {@link DataSource} to be returned by {@link #getDataSource()}. This method may be
+     * overridden by subclasses to support custom {@link DataSource} implementation.
+     * 
+     * @param part
+     *            the {@link Part} backing this data handler
+     * @param contentType
+     *            the content type expected to be returned by {@link DataSource#getContentType()};
+     *            defaults to {@code application/octet-stream} if {@link Part#getContentType()}
+     *            returns {@code null}
+     * @return the {@link DataSource} instance, or {@code null} to use the default implementation
+     */
+    protected DataSource createDataSource(Part part, String contentType) {
+        return null;
+    }
+
     public void writeTo(OutputStream os) throws IOException {
         // The PartContent may have an implementation of writeTo that is more efficient than the default
         // DataHandler#writeTo method (which requests an input stream and then copies it to the output
         // stream).
         part.writeTo(os);
-    }
-
-    public InputStream readOnce() throws IOException {
-        return part.getInputStream(false);
-    }
-
-    public void purgeDataSource() throws IOException {
-        part.releaseContent();
-    }
-
-    public void deleteWhenReadOnce() throws IOException {
-        // As shown in AXIOM-381, in all released versions of Axiom, deleteWhenReadOnce
-        // always has the same effect as purgeDataSource
-        purgeDataSource();
     }
 }
