@@ -44,9 +44,6 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     private final int contentLength;
     private final CountingInputStream filterIS;
 
-    /** <code>boolean</code> Indicating if any streams have been directly requested */
-    private boolean streamsRequested;
-
     /** <code>boolean</code> Indicating if any data handlers have been directly requested */
     private boolean partsRequested;
 
@@ -72,7 +69,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     }
 
     private void requestParts() {
-        if (streamsRequested) {
+        if (streams != null) {
             throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
         partsRequested = true;
@@ -136,8 +133,6 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
                     "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
                             "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
-        
-        streamsRequested = true;
         
         if (streams == null) {
             streams = new IncomingAttachmentStreams(message);
