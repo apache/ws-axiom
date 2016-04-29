@@ -174,7 +174,7 @@ class MIMEMessage {
         streamsRequested = true;
         
         if (this.streams == null) {
-            this.streams = new MultipartAttachmentStreams(parser);
+            this.streams = new IncomingAttachmentStreams(parser);
         }
         
         return this.streams;

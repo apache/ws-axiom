@@ -273,7 +273,6 @@
                                         org.apache.axiom.attachments.IncomingAttachmentStreams -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.MIMEMessage -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.MIMEMessageAdapter -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.MultipartAttachmentStreams -> org.apache.axiom.om.OMException,
                                         org.apache.axiom.attachments.PartImpl -> org.apache.axiom.om.OMException,
                                         <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
                                         org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
