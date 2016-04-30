@@ -150,7 +150,7 @@ class MIMEMessage implements Iterable<Part> {
     /**
      * Force reading of all attachments.
      */
-    void fetchAllParts() {
+    private void fetchAllParts() {
         while (getNextPart() != null) {
             // Just loop until getNextPartDataHandler returns null
         }

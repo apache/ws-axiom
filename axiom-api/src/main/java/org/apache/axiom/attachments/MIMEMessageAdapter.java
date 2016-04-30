@@ -21,9 +21,8 @@ package org.apache.axiom.attachments;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +31,7 @@ import javax.activation.DataHandler;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,13 +39,12 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     private static final Log log = LogFactory.getLog(MIMEMessageAdapter.class);
 
     private final MIMEMessage message;
-    private final Map<String,DataHandler> addedDataHandlers = new LinkedHashMap<String,DataHandler>();
-    private final Set<String> removedDataHandlers = new HashSet<String>();
+    private final Map<String,DataHandler> map = new LinkedHashMap<String,DataHandler>();
     private final int contentLength;
     private final CountingInputStream filterIS;
+    private final Part rootPart;
 
-    /** <code>boolean</code> Indicating if any data handlers have been directly requested */
-    private boolean partsRequested;
+    private Iterator<Part> partIterator;
 
     /** Container to hold streams for direct access */
     private IncomingAttachmentStreams streams;
@@ -66,13 +65,42 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
         }
 
         this.message = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory);
+
+        rootPart = message.getRootPart();
+        String rootPartContentID = rootPart.getContentID();
+        if (rootPartContentID == null) {
+            rootPartContentID = "firstPart_" + UIDGenerator.generateContentId();
+        }
+        map.put(rootPartContentID, rootPart.getDataHandler());
     }
 
-    private void requestParts() {
+    private boolean fetchNext() {
         if (streams != null) {
             throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
-        partsRequested = true;
+        if (partIterator == null) {
+            partIterator = message.iterator();
+        }
+        if (partIterator.hasNext()) {
+            Part part = partIterator.next();
+            if (part != rootPart) {
+                String contentID = part.getContentID();
+                if (contentID == null) {
+                    throw new OMException(
+                            "Part content ID cannot be blank for non root MIME parts");
+                }
+                map.put(contentID, part.getDataHandler());
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void fetchAll() {
+        while (fetchNext()) {
+            // Just loop
+        }
     }
 
     @Override
@@ -82,29 +110,28 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     DataHandler getDataHandler(String contentID) {
-        requestParts();
-        DataHandler dh = addedDataHandlers.get(contentID);
-        if (dh != null) {
-            return dh;
-        } else if (removedDataHandlers.contains(contentID)) {
-            return null;
-        } else {
-            return message.getDataHandler(contentID);
-        }
+        do {
+            DataHandler dataHandler = map.get(contentID);
+            if (dataHandler != null) {
+                return dataHandler;
+            }
+        } while (fetchNext());
+        return null;
     }
 
     @Override
     void addDataHandler(String contentID, DataHandler dataHandler) {
-        requestParts();
-        addedDataHandlers.put(contentID, dataHandler);
+        fetchAll();
+        map.put(contentID, dataHandler);
     }
 
     @Override
-    void removeDataHandler(String blobContentID) {
-        requestParts();
-        if (addedDataHandlers.remove(blobContentID) == null) {
-            removedDataHandlers.add(blobContentID);
-        }
+    void removeDataHandler(String contentID) {
+        do {
+            if (map.remove(contentID) != null) {
+                return;
+            }
+        } while (fetchNext());
     }
 
     @Override
@@ -128,7 +155,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
-        if (partsRequested) {
+        if (partIterator != null) {
             throw new IllegalStateException(
                     "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
                             "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
@@ -144,25 +171,16 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     Set<String> getContentIDs(boolean fetchAll) {
-        requestParts();
-        Set<String> result = new LinkedHashSet<String>(message.getContentIDs(fetchAll));
-        result.removeAll(removedDataHandlers);
-        result.addAll(addedDataHandlers.keySet());
-        return result;
+        if (fetchAll) {
+            fetchAll();
+        }
+        return map.keySet();
     }
 
     @Override
     Map<String,DataHandler> getMap() {
-        requestParts();
-        Map<String,DataHandler> result = new LinkedHashMap<String,DataHandler>();
-        for (Map.Entry<String,Part> entry : message.getMap().entrySet()) {
-            String contentID = entry.getKey();
-            if (!removedDataHandlers.contains(contentID)) {
-                result.put(contentID, entry.getValue().getDataHandler());
-            }
-        }
-        result.putAll(addedDataHandlers);
-        return Collections.unmodifiableMap(result);
+        fetchAll();
+        return Collections.unmodifiableMap(map);
     }
 
     @Override
@@ -170,9 +188,8 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
         if (contentLength > 0) {
             return contentLength;
         } else {
-            requestParts();
             // Ensure all parts are read
-            message.fetchAllParts();
+            fetchAll();
             // Now get the count from the filter
             return filterIS.getCount();
         }
