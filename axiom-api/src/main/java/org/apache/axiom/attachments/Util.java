@@ -26,20 +26,6 @@ import org.apache.axiom.mime.Part;
 final class Util {
     private Util() {}
 
-    static String normalizeContentID(String contentID) {
-        contentID = contentID.trim();
-        if (contentID.length() >= 2 && contentID.charAt(0) == '<'
-                && contentID.charAt(contentID.length()-1) == '>') {
-            contentID = contentID.substring(1, contentID.length()-1);
-        }
-        // There is some evidence that some broken MIME implementations add
-        // a "cid:" prefix to the Content-ID; remove it if necessary.
-        if (contentID.length() > 4 && contentID.startsWith("cid:")) {
-            contentID = contentID.substring(4);
-        }
-        return contentID;
-    }
-
     /**
      * Get the content type that should be reported by {@link DataSource} instances created for a
      * given part.

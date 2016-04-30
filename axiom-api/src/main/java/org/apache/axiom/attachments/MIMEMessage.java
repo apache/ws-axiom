@@ -83,7 +83,7 @@ class MIMEMessage implements Iterable<Part> {
         }
 
         String start = contentType.getParameter("start");
-        rootPartContentID = start == null ? null : Util.normalizeContentID(start);
+        rootPartContentID = start == null ? null : normalizeContentID(start);
 
         MimeConfig config = new MimeConfig();
         config.setStrictParsing(true);
@@ -101,6 +101,20 @@ class MIMEMessage implements Iterable<Part> {
                 throw new OMException(ex);
             }
         }
+    }
+
+    private static String normalizeContentID(String contentID) {
+        contentID = contentID.trim();
+        if (contentID.length() >= 2 && contentID.charAt(0) == '<'
+                && contentID.charAt(contentID.length()-1) == '>') {
+            contentID = contentID.substring(1, contentID.length()-1);
+        }
+        // There is some evidence that some broken MIME implementations add
+        // a "cid:" prefix to the Content-ID; remove it if necessary.
+        if (contentID.length() > 4 && contentID.startsWith("cid:")) {
+            contentID = contentID.substring(4);
+        }
+        return contentID;
     }
 
     ContentType getContentType() {
@@ -158,7 +172,7 @@ class MIMEMessage implements Iterable<Part> {
                     }
                     headers.add(new Header(name, value));
                     if (partContentID == null && name.equalsIgnoreCase("Content-ID")) {
-                        partContentID = Util.normalizeContentID(value);
+                        partContentID = normalizeContentID(value);
                     }
                 }
                 
