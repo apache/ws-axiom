@@ -43,6 +43,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     private final int contentLength;
     private final CountingInputStream filterIS;
     private final Part rootPart;
+    private final String rootPartContentID;
 
     private Iterator<Part> partIterator;
 
@@ -71,6 +72,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
         if (rootPartContentID == null) {
             rootPartContentID = "firstPart_" + UIDGenerator.generateContentId();
         }
+        this.rootPartContentID = rootPartContentID;
         map.put(rootPartContentID, rootPart.getDataHandler());
     }
 
@@ -137,7 +139,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
     @Override
     InputStream getRootPartInputStream(boolean preserve) {
         try {
-            return message.getRootPart().getInputStream(preserve);
+            return rootPart.getInputStream(preserve);
         } catch (IOException ex) {
             throw new OMException("Problem fetching the root part", ex);
         }
@@ -145,12 +147,12 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     String getRootPartContentID() {
-        return message.getRootPartContentID();
+        return rootPartContentID;
     }
 
     @Override
     String getRootPartContentType() {
-        return message.getRootPart().getContentType();
+        return rootPart.getContentType();
     }
 
     @Override
