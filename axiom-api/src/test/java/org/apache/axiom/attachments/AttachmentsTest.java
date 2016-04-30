@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Arrays;
@@ -42,7 +43,10 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.axiom.mime.ContentTypeBuilder;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
@@ -162,11 +166,24 @@ public class AttachmentsTest extends AbstractTestCase {
 
     private void testGetRootPartContentID(String contentTypeStartParam, String contentId)
             throws Exception {
-        // It doesn't actually matter what the stream *is* it just needs to exist
-        String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
-                "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
-        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
-        Attachments attachments = new Attachments(inStream, contentType);
+        MimeMessage message = new MimeMessage((Session)null);
+        MimeMultipart mp = new MimeMultipart("related");
+        MimeBodyPart rootPart = new MimeBodyPart();
+        rootPart.setText("<root/>", "utf-8", "xml");
+        rootPart.addHeader("Content-Transfer-Encoding", "binary");
+        rootPart.addHeader("Content-ID", "<" + contentId + ">");
+        mp.addBodyPart(rootPart);
+        message.setContent(mp);
+        message.saveChanges();
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
+        mp.writeTo(out);
+        out.close();
+
+        ContentTypeBuilder contentType = new ContentTypeBuilder(message.getContentType());
+        contentType.setParameter("start", contentTypeStartParam);
+        
+        Attachments attachments = new Attachments(blob.getInputStream(), contentType.toString());
         assertEquals("Did not obtain correct content ID", contentId,
                 attachments.getRootPartContentID());
     }
@@ -209,8 +226,8 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testGetRootPartContentTypeWithContentIDMismatch() {
         String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
                 "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
-        Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
         try {
+            Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
             attachments.getRootPartContentType();
             fail("Expected OMException");
         } catch (OMException ex) {
