@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.attachments;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Arrays;
@@ -43,7 +46,10 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.axiom.mime.ContentTypeBuilder;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
@@ -163,11 +169,24 @@ public class AttachmentsTest extends AbstractTestCase {
 
     private void testGetRootPartContentID(String contentTypeStartParam, String contentId)
             throws Exception {
-        // It doesn't actually matter what the stream *is* it just needs to exist
-        String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
-                "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
-        InputStream inStream = MTOMSample.SAMPLE1.getInputStream();
-        Attachments attachments = new Attachments(inStream, contentType);
+        MimeMessage message = new MimeMessage((Session)null);
+        MimeMultipart mp = new MimeMultipart("related");
+        MimeBodyPart rootPart = new MimeBodyPart();
+        rootPart.setText("<root/>", "utf-8", "xml");
+        rootPart.addHeader("Content-Transfer-Encoding", "binary");
+        rootPart.addHeader("Content-ID", "<" + contentId + ">");
+        mp.addBodyPart(rootPart);
+        message.setContent(mp);
+        message.saveChanges();
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
+        mp.writeTo(out);
+        out.close();
+
+        ContentTypeBuilder contentType = new ContentTypeBuilder(message.getContentType());
+        contentType.setParameter("start", contentTypeStartParam);
+        
+        Attachments attachments = new Attachments(blob.getInputStream(), contentType.toString());
         assertEquals("Did not obtain correct content ID", contentId,
                 attachments.getRootPartContentID());
     }
@@ -210,8 +229,8 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testGetRootPartContentTypeWithContentIDMismatch() {
         String contentType = "multipart/related; boundary=\"" + MTOMSample.SAMPLE1.getBoundary() +
                 "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
-        Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
         try {
+            Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
             attachments.getRootPartContentType();
             fail("Expected OMException");
         } catch (OMException ex) {
@@ -766,5 +785,41 @@ public class AttachmentsTest extends AbstractTestCase {
         IOTestUtils.compareStreams(
                 MTOMSample.QUOTED_PRINTABLE.getPart(1),
                 dh.getInputStream());
+    }
+
+    /**
+     * Tests access to a root part that doesn't have a content ID. In this case, the
+     * {@link Attachments} API generates a fake content ID.
+     * 
+     * @throws Exception
+     */
+    public void testFakeRootPartContentID() throws Exception {
+        MimeMessage message = new MimeMessage((Session)null);
+        MimeMultipart mp = new MimeMultipart("related");
+        
+        MimeBodyPart bp1 = new MimeBodyPart();
+        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.addHeader("Content-Transfer-Encoding", "binary");
+        mp.addBodyPart(bp1);
+        
+        MimeBodyPart bp2 = new MimeBodyPart();
+        bp2.setDataHandler(new DataHandler("Test", "text/plain"));
+        bp2.addHeader("Content-Transfer-Encoding", "binary");
+        mp.addBodyPart(bp2);
+        
+        message.setContent(mp);
+        message.saveChanges();
+        
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
+        mp.writeTo(out);
+        out.close();
+        String contentType = message.getContentType();
+        
+        Attachments attachments = new Attachments(blob.getInputStream(), contentType);
+        String rootPartContentID = attachments.getRootPartContentID();
+        assertThat(rootPartContentID).isNotNull();
+        DataHandler rootPart = attachments.getDataHandler(rootPartContentID);
+        assertThat(rootPart.getContent()).isEqualTo("<root/>");
     }
 }
