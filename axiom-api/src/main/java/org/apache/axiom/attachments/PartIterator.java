@@ -21,6 +21,8 @@ package org.apache.axiom.attachments;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.axiom.mime.Part;
+
 final class PartIterator implements Iterator<Part> {
     private final MIMEMessage message;
     private PartImpl part;

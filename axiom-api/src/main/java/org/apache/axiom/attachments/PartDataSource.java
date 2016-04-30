@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
+import org.apache.axiom.mime.Part;
 
 /**
  * Default {@link DataSource} implementation for MIME parts. This implementation will be used if

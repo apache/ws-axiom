@@ -20,6 +20,9 @@ package org.apache.axiom.attachments;
 
 import javax.activation.DataSource;
 
+import org.apache.axiom.mime.Header;
+import org.apache.axiom.mime.Part;
+
 final class Util {
     private Util() {}
 
@@ -46,7 +49,7 @@ final class Util {
      * @return the content type
      */
     static String getDataSourceContentType(Part part) {
-        String ct = part.getContentType();
+        String ct = part.getHeader(Header.CONTENT_TYPE);
         return ct == null ? "application/octet-stream" : ct;
     }
 }

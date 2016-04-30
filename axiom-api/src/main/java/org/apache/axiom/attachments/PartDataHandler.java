@@ -24,6 +24,8 @@ import java.io.OutputStream;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
+import org.apache.axiom.mime.Part;
+
 /**
  * {@link DataHandler} implementation for MIME parts read from a stream.
  */

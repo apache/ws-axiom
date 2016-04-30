@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,22 +25,28 @@ import java.util.List;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.Blob;
-import org.apache.axiom.mime.Header;
 
 /**
- * Interface representing a MIME part. A part can be the SOAP part (or more generally the root part
- * for non-MTOM XOP encoded messages) or an attachment part.
+ * A MIME part.
  */
 public interface Part {
     /**
-     * @return DataHandler representing this part
+     * Get the headers of this part.
+     * 
+     * @return the headers
      */
-    public DataHandler getDataHandler();
-    
+    List<Header> getHeaders();
+
     /**
-     * @return content type of the part
+     * Get the value of a specific header. If there are multiple headers with the same name, only
+     * the first value is returned.
+     * 
+     * @param name
+     *            the header name
+     * @return the value of the header, or {@code null} if the part doesn't have a header with the
+     *         given name
      */
-    public String getContentType();
+    String getHeader(String name);
 
     /**
      * Get the content ID of this part, i.e. the value of the {@code Content-ID} header with the
@@ -48,24 +54,17 @@ public interface Part {
      * 
      * @return the content ID of the part or {@code null} if the part doesn't have a content ID
      */
-    public String getContentID();
+    String getContentID();
 
     /**
-     * Get the value of a specific header
-     * @param name
-     * @return value or null
-     */
-    public String getHeader(String name);
-
-    /**
-     * Get the content of this part.
+     * Get the content of this part as a {@link Blob}.
      * 
      * @return the content of this part
      */
-    public Blob getBlob();
+    Blob getBlob();
 
     /**
-     * Get the content of this part.
+     * Get the content of this part as an {@link InputStream}.
      * 
      * @param preserve
      *            {@code true} if the content should be preserved so that it can be read multiple
@@ -74,9 +73,17 @@ public interface Part {
      * @throws IOException
      *             if the content couldn't be read
      */
-    public InputStream getInputStream(boolean preserve) throws IOException;
-    
-    public void releaseContent() throws IOException;
-    
-    List<Header> getHeaders();
+    InputStream getInputStream(boolean preserve) throws IOException;
+
+    /**
+     * Get the content of this part as a {@link DataHandler}.
+     * 
+     * @return the content of this part
+     */
+    DataHandler getDataHandler();
+
+    /**
+     * Discard the content of this part.
+     */
+    void discard();
 }

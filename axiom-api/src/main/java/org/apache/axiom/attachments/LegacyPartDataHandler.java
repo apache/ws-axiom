@@ -25,6 +25,7 @@ import javax.activation.DataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.mime.Part;
 
 final class LegacyPartDataHandler extends PartDataHandler implements DataHandlerExt {
     public LegacyPartDataHandler(Part part) {
@@ -46,7 +47,7 @@ final class LegacyPartDataHandler extends PartDataHandler implements DataHandler
     }
 
     public void purgeDataSource() throws IOException {
-        getPart().releaseContent();
+        getPart().discard();
     }
 
     public void deleteWhenReadOnce() throws IOException {

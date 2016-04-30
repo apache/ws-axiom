@@ -30,6 +30,8 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.Header;
+import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
@@ -152,7 +154,7 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
 
     @Override
     String getRootPartContentType() {
-        return rootPart.getContentType();
+        return rootPart.getHeader(Header.CONTENT_TYPE);
     }
 
     @Override

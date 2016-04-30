@@ -22,6 +22,16 @@ package org.apache.axiom.mime;
  * A MIME header.
  */
 public final class Header {
+    /**
+     * The name of the {@code Content-Type} header.
+     */
+    public static final String CONTENT_TYPE = "Content-Type";
+
+    /**
+     * The name of the {@code Content-ID} header.
+     */
+    public static final String CONTENT_ID = "Content-ID";
+
     private final String name;
     private final String value;
 

@@ -19,13 +19,13 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.attachments.Part;
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.mime.Header;
+import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,6 +37,7 @@ import javax.activation.DataHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -119,7 +120,7 @@ final class PartImpl implements Part {
     }
 
     public List<Header> getHeaders() {
-        return headers;
+        return Collections.unmodifiableList(headers);
     }
 
     public String getContentID() {
@@ -254,21 +255,23 @@ final class PartImpl implements Part {
         }
     }
     
-    public void releaseContent() throws IOException {
-        switch (state) {
-            case STATE_UNREAD:
-                try {
-                    EntityState state;
+    public void discard() {
+        try {
+            switch (state) {
+                case STATE_UNREAD:
+                    EntityState parserState;
                     do {
-                        state = parser.next();
-                    } while (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART);
-                } catch (MimeException ex) {
-                    throw new OMException(ex);
-                }
-                state = STATE_DISCARDED;
-                break;
-            case STATE_BUFFERED:
-                content.release();
+                        parserState = parser.next();
+                    } while (parserState != EntityState.T_START_BODYPART && parserState != EntityState.T_END_MULTIPART);
+                    state = STATE_DISCARDED;
+                    break;
+                case STATE_BUFFERED:
+                    content.release();
+            }
+        } catch (MimeException ex) {
+            throw new OMException(ex);
+        } catch (IOException ex) {
+            throw new OMException(ex);
         }
     }
     
