@@ -22,12 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.activation.DataHandler;
 
@@ -36,7 +34,6 @@ import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -59,10 +56,9 @@ class MIMEMessage implements Iterable<Part> {
     private final MimeTokenStream parser;
     
     /**
-     * Stores the already parsed Mime Body Parts in the order that the attachments
-     * occur in the message. This map is keyed using the content-ID's.
+     * Stores the already parsed MIME parts by Content IDs.
      */
-    private final Map<String,PartImpl> partMap = new LinkedHashMap<String,PartImpl>();
+    private final Map<String,PartImpl> partMap = new HashMap<String,PartImpl>();
 
     /**
      * The MIME part currently being processed.
@@ -137,37 +133,6 @@ class MIMEMessage implements Iterable<Part> {
                 "Mandatory root MIME part is missing");
     }
 
-    String getRootPartContentID() {
-        // to handle the Start parameter not mentioned situation
-        if (rootPartContentID == null) {
-            Part firstPart = getFirstPart();
-            return firstPart == null ? null : firstPart.getContentID();
-        } else {
-            return rootPartContentID;
-        }
-    }
-    
-    /**
-     * Force reading of all attachments.
-     */
-    private void fetchAllParts() {
-        while (getNextPart() != null) {
-            // Just loop until getNextPartDataHandler returns null
-        }
-    }
-
-    Set<String> getContentIDs(boolean fetchAll) {
-        if (fetchAll) {
-            fetchAllParts();
-        }
-        return partMap.keySet();
-    }
-    
-    Map<String,Part> getMap() {
-        fetchAllParts();
-        return Collections.<String,Part>unmodifiableMap(partMap);
-    }
-    
     PartImpl getNextPart() throws OMException {
         if (currentPart != null) {
             currentPart.fetch();
@@ -199,14 +164,9 @@ class MIMEMessage implements Iterable<Part> {
                 checkParserState(parser.next(), EntityState.T_BODY);
                 
                 if (rootPartContentID == null) {
-                    isRootPart = partMap.isEmpty();
+                    isRootPart = firstPart == null;
                 } else {
                     isRootPart = rootPartContentID.equals(partContentID);
-                }
-                
-                if (!isRootPart && partContentID == null) {
-                    throw new OMException(
-                            "Part content ID cannot be blank for non root MIME parts");
                 }
                 
                 PartImpl part = new PartImpl(this, isRootPart ? MemoryBlob.FACTORY : attachmentBlobFactory, partContentID, headers, parser);
@@ -222,15 +182,13 @@ class MIMEMessage implements Iterable<Part> {
                 throw new OMException(ex);
             }
 
-            if (partContentID == null) {
-                // We only get here if isRootPart is true
-                partContentID = "firstPart_" + UIDGenerator.generateContentId();
+            if (partContentID != null) {
+                if (partMap.containsKey(partContentID)) {
+                    throw new OMException(
+                            "Two MIME parts with the same Content-ID not allowed.");
+                }
+                partMap.put(partContentID, currentPart);
             }
-            if (partMap.containsKey(partContentID)) {
-                throw new OMException(
-                        "Two MIME parts with the same Content-ID not allowed.");
-            }
-            partMap.put(partContentID, currentPart);
             if (isRootPart) {
                 rootPart = currentPart;
             }
