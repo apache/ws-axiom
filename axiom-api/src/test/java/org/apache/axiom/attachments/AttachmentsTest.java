@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.attachments;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -782,5 +784,41 @@ public class AttachmentsTest extends AbstractTestCase {
         IOTestUtils.compareStreams(
                 MTOMSample.QUOTED_PRINTABLE.getPart(1),
                 dh.getInputStream());
+    }
+
+    /**
+     * Tests access to a root part that doesn't have a content ID. In this case, the
+     * {@link Attachments} API generates a fake content ID.
+     * 
+     * @throws Exception
+     */
+    public void testFakeRootPartContentID() throws Exception {
+        MimeMessage message = new MimeMessage((Session)null);
+        MimeMultipart mp = new MimeMultipart("related");
+        
+        MimeBodyPart bp1 = new MimeBodyPart();
+        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.addHeader("Content-Transfer-Encoding", "binary");
+        mp.addBodyPart(bp1);
+        
+        MimeBodyPart bp2 = new MimeBodyPart();
+        bp2.setDataHandler(new DataHandler("Test", "text/plain"));
+        bp2.addHeader("Content-Transfer-Encoding", "binary");
+        mp.addBodyPart(bp2);
+        
+        message.setContent(mp);
+        message.saveChanges();
+        
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
+        mp.writeTo(out);
+        out.close();
+        String contentType = message.getContentType();
+        
+        Attachments attachments = new Attachments(blob.getInputStream(), contentType);
+        String rootPartContentID = attachments.getRootPartContentID();
+        assertThat(rootPartContentID).isNotNull();
+        DataHandler rootPart = attachments.getDataHandler(rootPartContentID);
+        assertThat(rootPart.getContent()).isEqualTo("<root/>");
     }
 }
