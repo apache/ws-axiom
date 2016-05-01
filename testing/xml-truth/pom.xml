@@ -57,7 +57,7 @@
         <plugins>
             <plugin>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>javadoc-postprocessor-plugin</artifactId>
+                <artifactId>javadoc-postprocessor-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>

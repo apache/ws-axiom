@@ -36,7 +36,7 @@
         <module>jar-resource-bundle</module>
         <module>shade-axiom-xml</module>
         <module>shade-osgi</module>
-        <module>javadoc-postprocessor-plugin</module>
+        <module>javadoc-postprocessor-maven-plugin</module>
         <module>no-package-cycles-enforcer-rule</module>
     </modules>
 
