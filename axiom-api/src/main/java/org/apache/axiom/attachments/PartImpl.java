@@ -88,7 +88,7 @@ final class PartImpl implements Part {
      */
     private WritableBlob content;
     
-    private final DataHandler dataHandler;
+    private DataHandler dataHandler;
     
     private PartInputStream partInputStream;
     
@@ -100,8 +100,6 @@ final class PartImpl implements Part {
         this.contentID = contentID;
         this.headers = headers;
         this.parser = parser;
-        // TODO: use factory here
-        this.dataHandler = new LegacyPartDataHandler(this);
     }
     
     public String getHeader(String name) {
@@ -132,6 +130,9 @@ final class PartImpl implements Part {
     }
     
     public DataHandler getDataHandler() {
+        if (dataHandler == null) {
+            dataHandler = message.getDataHandlerFactory().createDataHandler(this);
+        }
         return dataHandler;
     }
 

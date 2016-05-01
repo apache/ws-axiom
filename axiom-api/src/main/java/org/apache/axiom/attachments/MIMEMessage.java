@@ -32,6 +32,7 @@ import javax.activation.DataHandler;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.DataHandlerFactory;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
@@ -70,10 +71,13 @@ class MIMEMessage implements Iterable<Part> {
     private PartImpl rootPart;
 
     private final WritableBlobFactory<?> attachmentBlobFactory;
+    private final DataHandlerFactory dataHandlerFactory;
     
     MIMEMessage(InputStream inStream, String contentTypeString,
-            WritableBlobFactory<?> attachmentBlobFactory) throws OMException {
+            WritableBlobFactory<?> attachmentBlobFactory,
+            DataHandlerFactory dataHandlerFactory) throws OMException {
         this.attachmentBlobFactory = attachmentBlobFactory;
+        this.dataHandlerFactory = dataHandlerFactory;
         try {
             contentType = new ContentType(contentTypeString);
         } catch (ParseException e) {
@@ -115,6 +119,10 @@ class MIMEMessage implements Iterable<Part> {
             contentID = contentID.substring(4);
         }
         return contentID;
+    }
+
+    DataHandlerFactory getDataHandlerFactory() {
+        return dataHandlerFactory;
     }
 
     ContentType getContentType() {

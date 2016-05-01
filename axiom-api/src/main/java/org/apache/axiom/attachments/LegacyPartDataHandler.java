@@ -29,7 +29,7 @@ import org.apache.axiom.mime.Part;
 import org.apache.axiom.mime.PartDataHandler;
 
 final class LegacyPartDataHandler extends PartDataHandler implements DataHandlerExt {
-    public LegacyPartDataHandler(Part part) {
+    LegacyPartDataHandler(Part part) {
         super(part);
     }
 

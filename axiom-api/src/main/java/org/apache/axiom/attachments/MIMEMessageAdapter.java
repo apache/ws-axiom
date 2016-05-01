@@ -30,6 +30,7 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.DataHandlerFactory;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
@@ -67,7 +68,12 @@ final class MIMEMessageAdapter extends AttachmentsDelegate {
             filterIS = null;
         }
 
-        this.message = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory);
+        this.message = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory, new DataHandlerFactory() {
+            @Override
+            public DataHandler createDataHandler(Part part) {
+                return new LegacyPartDataHandler(part);
+            }
+        });
 
         rootPart = message.getRootPart();
         String rootPartContentID = rootPart.getContentID();
