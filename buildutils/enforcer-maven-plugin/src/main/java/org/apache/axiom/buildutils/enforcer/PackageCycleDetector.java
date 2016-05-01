@@ -31,33 +31,33 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DirectedSubgraph;
 
 final class PackageCycleDetector extends ReferenceCollector {
-    private final Set<Reference<Package>> packageReferences = new HashSet<>();
+    private final DirectedGraph<Package,Reference<Package>> packageGraph;
     private final Map<Reference<Package>,Reference<Clazz>> classReferenceSamples = new HashMap<>();
     
+    PackageCycleDetector() {
+        packageGraph = new DefaultDirectedGraph<>(new EdgeFactory<Package,Reference<Package>>() {
+            @Override
+            public Reference<Package> createEdge(Package sourceVertex, Package targetVertex) {
+                return new Reference<Package>(sourceVertex, targetVertex);
+            }
+        });
+    }
+
     void collectClassReference(Reference<Clazz> classReference) {
         Package fromPackage = classReference.getFrom().getPackage();
         Package toPackage = classReference.getTo().getPackage();
         if (!fromPackage.equals(toPackage)) {
-            Reference<Package> packageReference = new Reference<Package>(fromPackage, toPackage);
-            if (packageReferences.add(packageReference)) {
+            packageGraph.addVertex(fromPackage);
+            packageGraph.addVertex(toPackage);
+            Reference<Package> packageReference = packageGraph.addEdge(fromPackage, toPackage);
+            if (packageReference != null) {
                 classReferenceSamples.put(packageReference, classReference);
             }
         }
     }
     
     Set<Reference<Clazz>> getClassReferencesForPackageCycle() {
-        DirectedGraph<Package,Reference<Package>> graph = new DefaultDirectedGraph<>(new EdgeFactory<Package,Reference<Package>>() {
-            @Override
-            public Reference<Package> createEdge(Package sourceVertex, Package targetVertex) {
-                return new Reference<Package>(sourceVertex, targetVertex);
-            }
-        });
-        for (Reference<Package> reference : packageReferences) {
-            graph.addVertex(reference.getFrom());
-            graph.addVertex(reference.getTo());
-            graph.addEdge(reference.getFrom(), reference.getTo(), reference);
-        }
-        List<DirectedSubgraph<Package,Reference<Package>>> cycles = new StrongConnectivityInspector<Package,Reference<Package>>(graph).stronglyConnectedSubgraphs();
+        List<DirectedSubgraph<Package,Reference<Package>>> cycles = new StrongConnectivityInspector<>(packageGraph).stronglyConnectedSubgraphs();
         for (DirectedSubgraph<Package,Reference<Package>> cycle : cycles) {
             if (cycle.vertexSet().size() > 1) {
                 Set<Reference<Clazz>> classReferences = new HashSet<>();
