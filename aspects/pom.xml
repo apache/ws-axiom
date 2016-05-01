@@ -84,28 +84,16 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>enforcer-maven-plugin</artifactId>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
-                        <id>enforce-no-package-cycles</id>
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <rules>
-                                <noPackageCycles implementation="org.apache.axiom.buildutils.enforcer.NoPackageCyclesEnforcerRule" />
-                            </rules>
-                        </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>no-package-cycles-enforcer-rule</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

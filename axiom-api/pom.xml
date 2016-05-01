@@ -254,71 +254,60 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>enforcer-maven-plugin</artifactId>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
-                        <id>enforce-no-package-cycles</id>
                         <goals>
                             <goal>enforce</goal>
                         </goals>
-                        <phase>process-classes</phase>
                         <configuration>
-                            <rules>
-                                <noPackageCycles implementation="org.apache.axiom.buildutils.enforcer.NoPackageCyclesEnforcerRule">
-                                    <ignore>
-                                        <!-- o.a.a.attachments shouldn't depend on o.a.a.om -->
-                                        org.apache.axiom.attachments.Attachments -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.AttachmentsDelegate -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.AttachmentSet -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.IncomingAttachmentStreams -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.MIMEMessage -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.MIMEMessageAdapter -> org.apache.axiom.om.OMException,
-                                        org.apache.axiom.attachments.PartImpl -> org.apache.axiom.om.OMException,
-                                        <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
-                                        org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
-                                        <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
-                                        org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
-                                        org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
-                                        org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPModelBuilder,
-                                        org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPFactory,
-                                        org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPModelBuilder,
-                                        <!-- This should eventually be deprecated/removed -->
-                                        org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPFactory,
-                                        org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPHeaderBlock,
-                                        <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
-                                        org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
-                                        org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
-                                        org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.StAXWriterConfiguration,
-                                        org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXWriterConfiguration,
-                                        org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.XMLStreamWriterFilter,
-                                        org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.XMLStreamWriterFilter,
-                                        <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
-                                        org.apache.axiom.om.ds.AbstractOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                        org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                        org.apache.axiom.om.ds.ByteArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                        org.apache.axiom.om.ds.CharArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                        org.apache.axiom.om.ds.InputStreamDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                        org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXUtils,
-                                        <!-- This should go away in a redesign of the OMDataSource API -->
-                                        org.apache.axiom.om.ds.AbstractPullOMDataSource -> org.apache.axiom.om.impl.serialize.StreamingOMSerializer,
-                                        <!-- TODO: Detachable should go to om-aspects -->
-                                        org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
-                                        <!-- TODO -->
-                                        org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.CommonUtils,
-                                        org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils
-                                    </ignore>
-                                </noPackageCycles>
-                            </rules>
+                            <ignore>
+                                <!-- o.a.a.attachments shouldn't depend on o.a.a.om -->
+                                org.apache.axiom.attachments.Attachments -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.attachments.AttachmentsDelegate -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.attachments.AttachmentSet -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.attachments.IncomingAttachmentStreams -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.attachments.MIMEMessage -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.attachments.MIMEMessageAdapter -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.attachments.PartImpl -> org.apache.axiom.om.OMException,
+                                <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
+                                org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
+                                <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
+                                org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPModelBuilder,
+                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPModelBuilder,
+                                <!-- This should eventually be deprecated/removed -->
+                                org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPHeaderBlock,
+                                <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
+                                org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
+                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
+                                org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.StAXWriterConfiguration,
+                                org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXWriterConfiguration,
+                                org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.XMLStreamWriterFilter,
+                                org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.XMLStreamWriterFilter,
+                                <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
+                                org.apache.axiom.om.ds.AbstractOMDataSource -> org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.ByteArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.CharArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.ds.InputStreamDataSource -> org.apache.axiom.om.util.StAXUtils,
+                                org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXUtils,
+                                <!-- This should go away in a redesign of the OMDataSource API -->
+                                org.apache.axiom.om.ds.AbstractPullOMDataSource -> org.apache.axiom.om.impl.serialize.StreamingOMSerializer,
+                                <!-- TODO: Detachable should go to om-aspects -->
+                                org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
+                                <!-- TODO -->
+                                org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.CommonUtils,
+                                org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils
+                            </ignore>
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>no-package-cycles-enforcer-rule</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

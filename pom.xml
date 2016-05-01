@@ -259,7 +259,6 @@
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
         <shade.plugin.version>2.3</shade.plugin.version>
-        <enforcer.plugin.version>1.4.1</enforcer.plugin.version>
         <jacoco.version>0.7.5.201505241946</jacoco.version>
         <spring.version>4.2.1.RELEASE</spring.version>
         <springws.version>2.2.4.RELEASE</springws.version>
@@ -694,7 +693,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${enforcer.plugin.version}</version>
+                    <version>1.4.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -710,10 +709,6 @@
                 <plugin>
                     <artifactId>maven-invoker-plugin</artifactId>
                     <version>2.0.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-plugin-plugin</artifactId>
-                    <version>3.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jvnet.jaxb2.maven2</groupId>
