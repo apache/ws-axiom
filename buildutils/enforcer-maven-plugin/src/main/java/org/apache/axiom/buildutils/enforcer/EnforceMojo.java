@@ -58,7 +58,8 @@ public class EnforceMojo extends AbstractMojo {
         ds.setIncludes(new String[] { "**/*.class" });
         ds.setBasedir(classesDir);
         ds.scan();
-        ReferenceCollector referenceCollector = new ReferenceCollector(ignoredClassReferences);
+        PackageCycleDetector packageCycleDetector = new PackageCycleDetector();
+        ReferenceFilter referenceCollector = new ReferenceFilter(new PackageCycleDetector(), ignoredClassReferences);
         for (String relativePath : ds.getIncludedFiles()) {
             try {
                 InputStream in = new FileInputStream(new File(classesDir, relativePath));
@@ -71,7 +72,7 @@ public class EnforceMojo extends AbstractMojo {
                 throw new MojoExecutionException("Failed to read " + relativePath + ": " + ex.getMessage(), ex);
             }
         }
-        Set<Reference<Clazz>> references = referenceCollector.getClassReferencesForPackageCycle();
+        Set<Reference<Clazz>> references = packageCycleDetector.getClassReferencesForPackageCycle();
         if (references != null) {
             StringBuilder buffer = new StringBuilder("Package cycle detected. Classes involved:");
             for (Reference<Clazz> reference : references) {
