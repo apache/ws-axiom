@@ -73,8 +73,8 @@ public class PartDataHandler extends DataHandler {
      *            the {@link Part} backing this data handler
      * @param contentType
      *            the content type expected to be returned by {@link DataSource#getContentType()};
-     *            defaults to {@code application/octet-stream} if {@link Part#getContentType()}
-     *            returns {@code null}
+     *            defaults to {@code application/octet-stream} if the part doesn't specify a content
+     *            type
      * @return the {@link DataSource} instance, or {@code null} to use the default implementation
      */
     protected DataSource createDataSource(Part part, String contentType) {
