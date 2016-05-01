@@ -16,12 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import javax.activation.DataSource;
-
-import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.Part;
 
 final class Util {
     private Util() {}

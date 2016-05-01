@@ -32,6 +32,11 @@ public final class Header {
      */
     public static final String CONTENT_ID = "Content-ID";
 
+    /**
+     * The name of the {@code Content-Transfer-Encoding} header.
+     */
+    public static final String CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
+
     private final String name;
     private final String value;
 

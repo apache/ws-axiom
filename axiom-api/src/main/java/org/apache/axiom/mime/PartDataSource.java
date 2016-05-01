@@ -16,14 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
-import org.apache.axiom.mime.Part;
 
 /**
  * Default {@link DataSource} implementation for MIME parts. This implementation will be used if

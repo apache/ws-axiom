@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,16 +24,14 @@ import java.io.OutputStream;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-import org.apache.axiom.mime.Part;
-
 /**
  * {@link DataHandler} implementation for MIME parts read from a stream.
  */
-class PartDataHandler extends DataHandler {
+public class PartDataHandler extends DataHandler {
     private final Part part;
     private DataSource dataSource;
 
-    public PartDataHandler(Part part) {
+    protected PartDataHandler(Part part) {
         // We can't call PartImpl#getDataSource() here because it would fetch the content of the
         // part and therefore disable streaming. We can't pass null here either because Geronimo's
         // DataHandler implementation would throw a NullPointerException. Therefore we create the
@@ -44,11 +42,17 @@ class PartDataHandler extends DataHandler {
         this.part = part;
     }
 
-    public Part getPart() {
+    /**
+     * Get the MIME part linked to this data handler.
+     * 
+     * @return the MIME part
+     */
+    public final Part getPart() {
         return part;
     }
 
-    public DataSource getDataSource() {
+    @Override
+    public final DataSource getDataSource() {
         if (dataSource == null) {
             dataSource = createDataSource(part, Util.getDataSourceContentType(part));
             if (dataSource == null) {
@@ -77,7 +81,8 @@ class PartDataHandler extends DataHandler {
         return null;
     }
 
-    public void writeTo(OutputStream os) throws IOException {
+    @Override
+    public final void writeTo(OutputStream os) throws IOException {
         // The PartContent may have an implementation of writeTo that is more efficient than the default
         // DataHandler#writeTo method (which requests an input stream and then copies it to the output
         // stream).
