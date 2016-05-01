@@ -34,15 +34,19 @@ final class ClassProcessor extends ClassVisitor {
         this.referenceCollector = referenceCollector;
     }
 
+    private static boolean isPublic(int access) {
+        return (access & (Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED)) != 0;
+    }
+
     @Override
     public void visit(int version, int access, String name, String signature, String superName,
             String[] interfaces) {
         deprecated = (access & Opcodes.ACC_DEPRECATED) != 0;
         if (!deprecated) {
-            referenceProcessor = new ReferenceProcessor(referenceCollector, new Clazz(Type.getObjectType(name).getClassName()));
-            referenceProcessor.processType(Type.getObjectType(superName));
+            referenceProcessor = new ReferenceProcessor(referenceCollector, new Clazz(Type.getObjectType(name).getClassName()), isPublic(access));
+            referenceProcessor.processType(Type.getObjectType(superName), true);
             for (String iface : interfaces) {
-                referenceProcessor.processType(Type.getObjectType(iface));
+                referenceProcessor.processType(Type.getObjectType(iface), true);
             }
         }
     }
@@ -51,7 +55,7 @@ final class ClassProcessor extends ClassVisitor {
     public FieldVisitor visitField(int access, String name, String desc, String signature,
             Object value) {
         if (!deprecated) {
-            referenceProcessor.processType(Type.getType(desc));
+            referenceProcessor.processType(Type.getType(desc), isPublic(access));
         }
         return null;
     }
@@ -60,10 +64,11 @@ final class ClassProcessor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String desc, String signature,
             String[] exceptions) {
         if (!deprecated && (access & Opcodes.ACC_DEPRECATED) == 0) {
-            referenceProcessor.processType(Type.getMethodType(desc));
+            boolean isPublic = isPublic(access);
+            referenceProcessor.processType(Type.getMethodType(desc), isPublic);
             if (exceptions != null) {
                 for (String exception : exceptions) {
-                    referenceProcessor.processType(Type.getObjectType(exception));
+                    referenceProcessor.processType(Type.getObjectType(exception), isPublic);
                 }
             }
             return new MethodProcessor(referenceProcessor);

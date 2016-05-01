@@ -42,11 +42,15 @@ public class EnforceMojo extends AbstractMojo {
     @Parameter
     private String ignore;
 
+    @Parameter
+    private LayeringRuleBuilder[] layers;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!classesDir.exists()) {
             return;
         }
+        ReferenceCollectorSet referenceCollectors = new ReferenceCollectorSet();
         Set<Reference<Clazz>> ignoredClassReferences = new HashSet<>();
         if (ignore != null) {
             for (String ignoreRule : ignore.split(",")) {
@@ -54,12 +58,27 @@ public class EnforceMojo extends AbstractMojo {
                 ignoredClassReferences.add(new Reference<Clazz>(new Clazz(s[0].trim()), new Clazz(s[1].trim())));
             }
         }
+        ReferenceFilter referenceCollector = new ReferenceFilter(referenceCollectors, ignoredClassReferences);
+        
+        PackageCycleDetector packageCycleDetector = new PackageCycleDetector();
+        referenceCollectors.addReferenceCollector(packageCycleDetector);
+        
+        LayeringChecker layeringChecker;
+        if (layers == null) {
+            layeringChecker = null;
+        } else {
+            LayeringRule[] layeringRules = new LayeringRule[layers.length];
+            for (int i=0; i<layers.length; i++) {
+                layeringRules[i] = layers[i].build();
+            }
+            layeringChecker = new LayeringChecker(layeringRules);
+            referenceCollectors.addReferenceCollector(layeringChecker);
+        }
+        
         DirectoryScanner ds = new DirectoryScanner();
         ds.setIncludes(new String[] { "**/*.class" });
         ds.setBasedir(classesDir);
         ds.scan();
-        PackageCycleDetector packageCycleDetector = new PackageCycleDetector();
-        ReferenceFilter referenceCollector = new ReferenceFilter(new PackageCycleDetector(), ignoredClassReferences);
         for (String relativePath : ds.getIncludedFiles()) {
             try {
                 InputStream in = new FileInputStream(new File(classesDir, relativePath));
@@ -72,6 +91,7 @@ public class EnforceMojo extends AbstractMojo {
                 throw new MojoExecutionException("Failed to read " + relativePath + ": " + ex.getMessage(), ex);
             }
         }
+        
         Set<Reference<Clazz>> references = packageCycleDetector.getClassReferencesForPackageCycle();
         if (references != null) {
             StringBuilder buffer = new StringBuilder("Package cycle detected. Classes involved:");
@@ -83,6 +103,21 @@ public class EnforceMojo extends AbstractMojo {
             }
             throw new MojoFailureException(buffer.toString());
         }
+        
+        if (layeringChecker != null) {
+            Set<Reference<Clazz>> violatingReferences = layeringChecker.getViolatingReferences();
+            if (!violatingReferences.isEmpty()) {
+                StringBuilder buffer = new StringBuilder("Layering violation detected. Classes involved:");
+                for (Reference<Clazz> reference : violatingReferences) {
+                    buffer.append("\n  ");
+                    buffer.append(reference.getFrom());
+                    buffer.append(" -> ");
+                    buffer.append(reference.getTo());
+                }
+                throw new MojoFailureException(buffer.toString());
+            }
+        }
+        
         Set<Reference<Clazz>> unusedIgnoredClassReferences = referenceCollector.getUnusedIgnoredClassReferences();
         if (!unusedIgnoredClassReferences.isEmpty()) {
             StringBuilder buffer = new StringBuilder("Found unused ignored class references:");

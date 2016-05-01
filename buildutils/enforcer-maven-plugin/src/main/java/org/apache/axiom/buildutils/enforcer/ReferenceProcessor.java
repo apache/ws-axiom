@@ -23,24 +23,26 @@ import org.objectweb.asm.Type;
 final class ReferenceProcessor {
     private final ReferenceCollector referenceCollector;
     private final Clazz origin;
+    private final boolean isPublic;
     
-    ReferenceProcessor(ReferenceCollector referenceCollector, Clazz origin) {
+    ReferenceProcessor(ReferenceCollector referenceCollector, Clazz origin, boolean isPublic) {
         this.referenceCollector = referenceCollector;
         this.origin = origin;
+        this.isPublic = isPublic;
     }
 
-    public void processType(Type type) {
+    public void processType(Type type, boolean isPublic) {
         switch (type.getSort()) {
             case Type.OBJECT:
-                referenceCollector.collectClassReference(new Reference<Clazz>(origin, new Clazz(type.getClassName())));
+                referenceCollector.collectClassReference(new Reference<Clazz>(origin, new Clazz(type.getClassName())), this.isPublic && isPublic);
                 break;
             case Type.ARRAY:
-                processType(type.getElementType());
+                processType(type.getElementType(), isPublic);
                 break;
             case Type.METHOD:
-                processType(type.getReturnType());
+                processType(type.getReturnType(), isPublic);
                 for (Type argumentType : type.getArgumentTypes()) {
-                    processType(argumentType);
+                    processType(argumentType, isPublic);
                 }
         }
     }

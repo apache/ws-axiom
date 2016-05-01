@@ -18,6 +18,25 @@
  */
 package org.apache.axiom.buildutils.enforcer;
 
-abstract class ReferenceCollector {
-    abstract void collectClassReference(Reference<Clazz> classReference, boolean isPublic);
+final class LayeringRule {
+    private final PackageMatcher packageMatcher;
+    private final VisibilityRule[] visibilityRules;
+
+    LayeringRule(PackageMatcher packageMatcher, VisibilityRule[] visibilityRules) {
+        this.packageMatcher = packageMatcher;
+        this.visibilityRules = visibilityRules;
+    }
+
+    boolean isSatisfied(Reference<Package> reference, boolean isPublic) {
+        if (packageMatcher.matches(reference.getTo()) && !packageMatcher.matches(reference.getFrom())) {
+            for (VisibilityRule visibilityRule : visibilityRules) {
+                if (visibilityRule.isSatisfied(reference.getFrom(), isPublic)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

@@ -18,6 +18,20 @@
  */
 package org.apache.axiom.buildutils.enforcer;
 
-abstract class ReferenceCollector {
-    abstract void collectClassReference(Reference<Clazz> classReference, boolean isPublic);
+import java.util.ArrayList;
+import java.util.List;
+
+final class ReferenceCollectorSet extends ReferenceCollector {
+    private final List<ReferenceCollector> collectors = new ArrayList<>();
+
+    void addReferenceCollector(ReferenceCollector collector) {
+        collectors.add(collector);
+    }
+
+    @Override
+    void collectClassReference(Reference<Clazz> classReference, boolean isPublic) {
+        for (ReferenceCollector collector : collectors) {
+            collector.collectClassReference(classReference, isPublic);
+        }
+    }
 }

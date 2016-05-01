@@ -43,7 +43,8 @@ final class PackageCycleDetector extends ReferenceCollector {
         });
     }
 
-    void collectClassReference(Reference<Clazz> classReference) {
+    @Override
+    void collectClassReference(Reference<Clazz> classReference, boolean isPublic) {
         Package fromPackage = classReference.getFrom().getPackage();
         Package toPackage = classReference.getTo().getPackage();
         if (!fromPackage.equals(toPackage)) {

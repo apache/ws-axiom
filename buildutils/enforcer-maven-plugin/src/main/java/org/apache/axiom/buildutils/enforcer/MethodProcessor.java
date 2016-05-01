@@ -34,18 +34,18 @@ final class MethodProcessor extends MethodVisitor {
     @Override
     public void visitLocalVariable(String name, String desc, String signature, Label start,
             Label end, int index) {
-        referenceProcessor.processType(Type.getType(desc));
+        referenceProcessor.processType(Type.getType(desc), false);
     }
 
     @Override
     public void visitTypeInsn(int opcode, String type) {
-        referenceProcessor.processType(Type.getObjectType(type));
+        referenceProcessor.processType(Type.getObjectType(type), false);
     }
 
     @Override
     public void visitFieldInsn(int opcode, String owner, String name, String desc) {
-        referenceProcessor.processType(Type.getObjectType(owner));
-        referenceProcessor.processType(Type.getMethodType(desc));
+        referenceProcessor.processType(Type.getObjectType(owner), false);
+        referenceProcessor.processType(Type.getMethodType(desc), false);
     }
 
     @Override
@@ -53,15 +53,15 @@ final class MethodProcessor extends MethodVisitor {
         // AspectJ inter-method dispatch methods are defined on the aspect and the first argument
         // is "this". We need to ignore the reference to the aspect here.
         if (!name.startsWith("ajc$interMethodDispatch")) {
-            referenceProcessor.processType(Type.getObjectType(owner));
+            referenceProcessor.processType(Type.getObjectType(owner), false);
         }
-        referenceProcessor.processType(Type.getMethodType(desc));
+        referenceProcessor.processType(Type.getMethodType(desc), false);
     }
 
     @Override
     public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
         if (type != null) {
-            referenceProcessor.processType(Type.getObjectType(type));
+            referenceProcessor.processType(Type.getObjectType(type), false);
         }
     }
 }

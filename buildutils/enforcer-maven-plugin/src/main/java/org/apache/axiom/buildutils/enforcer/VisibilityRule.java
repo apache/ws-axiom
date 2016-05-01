@@ -18,6 +18,16 @@
  */
 package org.apache.axiom.buildutils.enforcer;
 
-abstract class ReferenceCollector {
-    abstract void collectClassReference(Reference<Clazz> classReference, boolean isPublic);
+final class VisibilityRule {
+    private final PackageMatcher packageMatcher;
+    private final boolean allowPublicUsage;
+
+    VisibilityRule(PackageMatcher packageMatcher, boolean allowPublicUsage) {
+        this.packageMatcher = packageMatcher;
+        this.allowPublicUsage = allowPublicUsage;
+    }
+
+    boolean isSatisfied(Package pkg, boolean isPublicUsage) {
+        return packageMatcher.matches(pkg) && (allowPublicUsage || !isPublicUsage);
+    }
 }

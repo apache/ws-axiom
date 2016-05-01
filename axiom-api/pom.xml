@@ -263,6 +263,36 @@
                             <goal>enforce</goal>
                         </goals>
                         <configuration>
+                            <layers>
+                                <layer>
+                                    <packages>
+                                        <value>org.apache.james.mime4j</value>
+                                    </packages>
+                                    <visibilityRules>
+                                        <value>
+                                            <packages>
+                                                <value>org.apache.axiom.attachments</value>
+                                            </packages>
+                                            <allowPublicUsage>false</allowPublicUsage>
+                                        </value>
+                                    </visibilityRules>
+                                </layer>
+                                <!-- layer>
+                                    <packages>
+                                        <value>org.apache.axiom.attachments</value>
+                                    </packages>
+                                </layer -->
+                                <layer>
+                                    <packages>
+                                        <value>org.apache.axiom.util</value>
+                                    </packages>
+                                    <visibilityRules>
+                                        <value>
+                                            <allowPublicUsage>false</allowPublicUsage>
+                                        </value>
+                                    </visibilityRules>
+                                </layer>
+                            </layers>
                             <ignore>
                                 <!-- o.a.a.attachments shouldn't depend on o.a.a.om -->
                                 org.apache.axiom.attachments.Attachments -> org.apache.axiom.om.OMException,
@@ -303,7 +333,10 @@
                                 org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
                                 <!-- TODO -->
                                 org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.CommonUtils,
-                                org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils
+                                org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils,
+                                <!-- Incorrect layering -->
+                                org.apache.axiom.om.util.StAXWriterConfiguration -> org.apache.axiom.util.stax.dialect.StAXDialect,
+                                org.apache.axiom.om.util.StAXParserConfiguration -> org.apache.axiom.util.stax.dialect.StAXDialect
                             </ignore>
                         </configuration>
                     </execution>

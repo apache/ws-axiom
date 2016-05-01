@@ -21,27 +21,25 @@ package org.apache.axiom.buildutils.enforcer;
 import java.util.HashSet;
 import java.util.Set;
 
-final class ReferenceFilter extends ReferenceCollector {
-    private final ReferenceCollector parent;
-    private final Set<Reference<Clazz>> ignoredClassReferences;
-    private final Set<Reference<Clazz>> unusedIgnoredClassReferences;
-    
-    ReferenceFilter(ReferenceCollector parent, Set<Reference<Clazz>> ignoredClassReferences) {
-        this.parent = parent;
-        this.ignoredClassReferences = ignoredClassReferences;
-        unusedIgnoredClassReferences = new HashSet<>(ignoredClassReferences);
+final class LayeringChecker extends ReferenceCollector {
+    private final LayeringRule[] layeringRules;
+    private final Set<Reference<Clazz>> violatingReferences = new HashSet<>();
+
+    LayeringChecker(LayeringRule[] layeringRules) {
+        this.layeringRules = layeringRules;
     }
 
     @Override
     void collectClassReference(Reference<Clazz> classReference, boolean isPublic) {
-        if (ignoredClassReferences.contains(classReference)) {
-            unusedIgnoredClassReferences.remove(classReference);
-        } else {
-            parent.collectClassReference(classReference, isPublic);
+        Reference<Package> packageReference = new Reference<Package>(classReference.getFrom().getPackage(), classReference.getTo().getPackage());
+        for (LayeringRule layeringRule : layeringRules) {
+            if (!layeringRule.isSatisfied(packageReference, isPublic)) {
+                violatingReferences.add(classReference);
+            }
         }
     }
 
-    Set<Reference<Clazz>> getUnusedIgnoredClassReferences() {
-        return unusedIgnoredClassReferences;
+    Set<Reference<Clazz>> getViolatingReferences() {
+        return violatingReferences;
     }
 }
