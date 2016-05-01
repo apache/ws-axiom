@@ -18,35 +18,29 @@
  */
 package org.apache.axiom.buildutils.enforcer;
 
-final class Reference<T> {
-    private final T from;
-    private final T to;
-    
-    Reference(T from, T to) {
-        this.from = from;
-        this.to = to;
+final class Package {
+    private final String name;
+
+    Package(String name) {
+        this.name = name;
     }
 
-    public T getFrom() {
-        return from;
-    }
-
-    public T getTo() {
-        return to;
+    String getName() {
+        return name;
     }
 
     @Override
     public int hashCode() {
-        return 31 * from.hashCode() + to.hashCode();
+        return name.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Reference) {
-            Reference<?> other = (Reference<?>)obj;
-            return from.equals(other.from) && to.equals(other.to);
-        } else {
-            return false;
-        }
+        return obj instanceof Package && ((Package)obj).name.equals(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

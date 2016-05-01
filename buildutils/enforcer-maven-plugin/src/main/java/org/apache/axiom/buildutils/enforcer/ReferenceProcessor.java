@@ -22,9 +22,9 @@ import org.objectweb.asm.Type;
 
 final class ReferenceProcessor {
     private final ReferenceCollector referenceCollector;
-    private final String origin;
+    private final Clazz origin;
     
-    ReferenceProcessor(ReferenceCollector referenceCollector, String origin) {
+    ReferenceProcessor(ReferenceCollector referenceCollector, Clazz origin) {
         this.referenceCollector = referenceCollector;
         this.origin = origin;
     }
@@ -32,7 +32,7 @@ final class ReferenceProcessor {
     public void processType(Type type) {
         switch (type.getSort()) {
             case Type.OBJECT:
-                referenceCollector.collectClassReference(origin, type.getClassName());
+                referenceCollector.collectClassReference(new Reference<Clazz>(origin, new Clazz(type.getClassName())));
                 break;
             case Type.ARRAY:
                 processType(type.getElementType());

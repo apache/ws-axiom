@@ -47,11 +47,11 @@ public class EnforceMojo extends AbstractMojo {
         if (!classesDir.exists()) {
             return;
         }
-        Set<Reference> ignoredClassReferences = new HashSet<Reference>();
+        Set<Reference<Clazz>> ignoredClassReferences = new HashSet<>();
         if (ignore != null) {
             for (String ignoreRule : ignore.split(",")) {
                 String[] s = ignoreRule.split("->");
-                ignoredClassReferences.add(new Reference(s[0].trim(), s[1].trim()));
+                ignoredClassReferences.add(new Reference<Clazz>(new Clazz(s[0].trim()), new Clazz(s[1].trim())));
             }
         }
         DirectoryScanner ds = new DirectoryScanner();
@@ -71,10 +71,10 @@ public class EnforceMojo extends AbstractMojo {
                 throw new MojoExecutionException("Failed to read " + relativePath + ": " + ex.getMessage(), ex);
             }
         }
-        Set<Reference> references = referenceCollector.getClassReferencesForPackageCycle();
+        Set<Reference<Clazz>> references = referenceCollector.getClassReferencesForPackageCycle();
         if (references != null) {
             StringBuilder buffer = new StringBuilder("Package cycle detected. Classes involved:");
-            for (Reference reference : references) {
+            for (Reference<Clazz> reference : references) {
                 buffer.append("\n  ");
                 buffer.append(reference.getFrom());
                 buffer.append(" -> ");
@@ -82,10 +82,10 @@ public class EnforceMojo extends AbstractMojo {
             }
             throw new MojoFailureException(buffer.toString());
         }
-        Set<Reference> unusedIgnoredClassReferences = referenceCollector.getUnusedIgnoredClassReferences();
+        Set<Reference<Clazz>> unusedIgnoredClassReferences = referenceCollector.getUnusedIgnoredClassReferences();
         if (!unusedIgnoredClassReferences.isEmpty()) {
             StringBuilder buffer = new StringBuilder("Found unused ignored class references:");
-            for (Reference reference : unusedIgnoredClassReferences) {
+            for (Reference<Clazz> reference : unusedIgnoredClassReferences) {
                 buffer.append("\n  ");
                 buffer.append(reference.getFrom());
                 buffer.append(" -> ");

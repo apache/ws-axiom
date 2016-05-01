@@ -39,7 +39,7 @@ final class ClassProcessor extends ClassVisitor {
             String[] interfaces) {
         deprecated = (access & Opcodes.ACC_DEPRECATED) != 0;
         if (!deprecated) {
-            referenceProcessor = new ReferenceProcessor(referenceCollector, Type.getObjectType(name).getClassName());
+            referenceProcessor = new ReferenceProcessor(referenceCollector, new Clazz(Type.getObjectType(name).getClassName()));
             referenceProcessor.processType(Type.getObjectType(superName));
             for (String iface : interfaces) {
                 referenceProcessor.processType(Type.getObjectType(iface));

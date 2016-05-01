@@ -25,34 +25,30 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.EdgeFactory;
 import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DirectedSubgraph;
 
 final class ReferenceCollector {
-    private final Set<Reference> ignoredClassReferences;
-    private final Set<Reference> unusedIgnoredClassReferences;
-    private final Set<Reference> packageReferences = new HashSet<>();
-    private final Map<Reference,Reference> classReferenceSamples = new HashMap<>();
+    private final Set<Reference<Clazz>> ignoredClassReferences;
+    private final Set<Reference<Clazz>> unusedIgnoredClassReferences;
+    private final Set<Reference<Package>> packageReferences = new HashSet<>();
+    private final Map<Reference<Package>,Reference<Clazz>> classReferenceSamples = new HashMap<>();
     
-    ReferenceCollector(Set<Reference> ignoredClassReferences) {
+    ReferenceCollector(Set<Reference<Clazz>> ignoredClassReferences) {
         this.ignoredClassReferences = ignoredClassReferences;
         unusedIgnoredClassReferences = new HashSet<>(ignoredClassReferences);
     }
 
-    private static String getPackageName(String className) {
-        return className.substring(0, className.lastIndexOf('.'));
-    }
-    
-    void collectClassReference(String from, String to) {
-        Reference classReference = new Reference(from, to);
+    void collectClassReference(Reference<Clazz> classReference) {
         if (ignoredClassReferences.contains(classReference)) {
             unusedIgnoredClassReferences.remove(classReference);
         } else {
-            String fromPackage = getPackageName(from);
-            String toPackage = getPackageName(to);
+            Package fromPackage = classReference.getFrom().getPackage();
+            Package toPackage = classReference.getTo().getPackage();
             if (!fromPackage.equals(toPackage)) {
-                Reference packageReference = new Reference(fromPackage, toPackage);
+                Reference<Package> packageReference = new Reference<Package>(fromPackage, toPackage);
                 if (packageReferences.add(packageReference)) {
                     classReferenceSamples.put(packageReference, classReference);
                 }
@@ -60,18 +56,23 @@ final class ReferenceCollector {
         }
     }
     
-    Set<Reference> getClassReferencesForPackageCycle() {
-        DirectedGraph<String,Reference> graph = new DefaultDirectedGraph<>(Reference.class);
-        for (Reference reference : packageReferences) {
+    Set<Reference<Clazz>> getClassReferencesForPackageCycle() {
+        DirectedGraph<Package,Reference<Package>> graph = new DefaultDirectedGraph<>(new EdgeFactory<Package,Reference<Package>>() {
+            @Override
+            public Reference<Package> createEdge(Package sourceVertex, Package targetVertex) {
+                return new Reference<Package>(sourceVertex, targetVertex);
+            }
+        });
+        for (Reference<Package> reference : packageReferences) {
             graph.addVertex(reference.getFrom());
             graph.addVertex(reference.getTo());
             graph.addEdge(reference.getFrom(), reference.getTo(), reference);
         }
-        List<DirectedSubgraph<String,Reference>> cycles = new StrongConnectivityInspector<String,Reference>(graph).stronglyConnectedSubgraphs();
-        for (DirectedSubgraph<String,Reference> cycle : cycles) {
+        List<DirectedSubgraph<Package,Reference<Package>>> cycles = new StrongConnectivityInspector<Package,Reference<Package>>(graph).stronglyConnectedSubgraphs();
+        for (DirectedSubgraph<Package,Reference<Package>> cycle : cycles) {
             if (cycle.vertexSet().size() > 1) {
-                Set<Reference> classReferences = new HashSet<>();
-                for (Reference packageReference : cycle.edgeSet()) {
+                Set<Reference<Clazz>> classReferences = new HashSet<>();
+                for (Reference<Package> packageReference : cycle.edgeSet()) {
                     classReferences.add(classReferenceSamples.get(packageReference));
                 }
                 return classReferences;
@@ -80,7 +81,7 @@ final class ReferenceCollector {
         return null;
     }
 
-    Set<Reference> getUnusedIgnoredClassReferences() {
+    Set<Reference<Clazz>> getUnusedIgnoredClassReferences() {
         return unusedIgnoredClassReferences;
     }
 }
