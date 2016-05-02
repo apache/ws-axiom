@@ -39,11 +39,6 @@ public class TestSetDataSource extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void testOMSEReplacement() throws Exception {
         String ENCODING = "utf-8";
         String payload1 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         String payload2 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload Two</tns:myPayload>";

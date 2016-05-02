@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.mixin;
 import org.apache.axiom.core.Builder;
 import org.apache.axiom.core.ClonePolicy;
 import org.apache.axiom.core.CoreElement;
+import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.DeferredParsingException;
 import org.apache.axiom.core.impl.builder.BuilderImpl;
@@ -34,10 +35,10 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
+import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.DeferredNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
@@ -50,8 +51,6 @@ import org.apache.commons.logging.LogFactory;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import java.util.Iterator;
 
 /**
  * <p>Element backed by an arbitrary data source. When necessary, this element will be expanded by
@@ -429,24 +428,23 @@ public aspect AxiomSourcedElementSupport {
      * setOMDataSource
      */
     public OMDataSource AxiomSourcedElement.setDataSource(OMDataSource dataSource) {
-        if (!isExpanded()) {
-            OMDataSource oldDS = this.dataSource;
-            this.dataSource = dataSource;
-            return oldDS;  // Caller is responsible for closing the data source
-        } else {
-            // TODO
-            // Remove the entire subtree and replace with 
-            // new datasource.  There maybe a more performant way to do this.
-            OMDataSource oldDS = this.dataSource;
-            for (Iterator<OMNode> it = getChildren(); it.hasNext(); ) {
-                it.next();
-                it.remove();
+        // TODO: the semantics of this method are not clear; is the assumption that the name of the element remains unchanged?
+        try {
+            if (!isExpanded()) {
+                OMDataSource oldDS = this.dataSource;
+                this.dataSource = dataSource;
+                return oldDS;  // Caller is responsible for closing the data source
+            } else {
+                OMDataSource oldDS = this.dataSource;
+                coreSetInputContext(null);
+                // TODO: remove attributes?
+                coreRemoveChildren(AxiomSemantics.INSTANCE);
+                isExpanded = false;
+                this.dataSource = dataSource;
+                return oldDS;
             }
-            this.dataSource = dataSource;
-            coreSetState(INCOMPLETE);
-            isExpanded = false;
-            coreSetInputContext(null);
-            return oldDS;
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
         }
     }
 
