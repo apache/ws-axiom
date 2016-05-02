@@ -33,6 +33,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 /**
  * Verifies that a OMDataSource can be replaced with another one
  */
+@SuppressWarnings("deprecation")
 public class TestSetDataSource extends AxiomTestCase {
     public TestSetDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
