@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -38,23 +39,21 @@ public class TestCloneWithSourcedElement2 extends CloneTestCase {
         SOAPEnvelope sourceEnv = soapFactory.getDefaultEnvelope();
         SOAPBody body = sourceEnv.getBody();
         SOAPHeader header = sourceEnv.getHeader();
-        String encoding = "UTF-8";
         
         // Create a header OMSE
-        String hdrText = "<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>";
-        ByteArrayDataSource badsHdr = 
-            new ByteArrayDataSource(hdrText.getBytes(encoding), encoding);
+        OMDataSource dsHdr = new StringOMDataSource(
+                "<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>");
         OMNamespace hdrNS = header.getOMFactory().createOMNamespace("urn://test", "hdr");
         SOAPFactory sf = (SOAPFactory) header.getOMFactory();
-        SOAPHeaderBlock shb = sf.createSOAPHeaderBlock("myheader", hdrNS, badsHdr);
+        SOAPHeaderBlock shb = sf.createSOAPHeaderBlock("myheader", hdrNS, dsHdr);
         shb.setProcessed();  // test setting processing flag
         header.addChild(shb);
         
         // Create a payload
-        String text = "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>";
-        ByteArrayDataSource bads = new ByteArrayDataSource(text.getBytes(encoding), encoding);
+        OMDataSource ds = new StringOMDataSource(
+                "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
-        OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
+        OMSourcedElement omse =body.getOMFactory().createOMElement(ds, "payload", ns);
         body.addChild(omse);
         
         copyAndCheck(sourceEnv);

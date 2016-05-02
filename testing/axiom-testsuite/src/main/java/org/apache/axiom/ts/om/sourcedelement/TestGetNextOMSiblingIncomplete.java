@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -38,7 +38,7 @@ public class TestGetNextOMSiblingIncomplete extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement omse = factory.createOMElement(new ByteArrayDataSource("<sourcedelement/>".getBytes("utf-8"), "utf-8"));
+        OMSourcedElement omse = factory.createOMElement(new StringOMDataSource("<sourcedelement/>"));
         OMElement parent = factory.createOMElement(new QName("parent"));
         parent.addChild(omse);
         // Cause expansion of the sourced element without building it completely

@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.ds.CharArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends AxiomTestCase {
@@ -34,7 +34,7 @@ public class TestSerializeModifiedOMSEWithNonDestructiveDataSource extends Axiom
     }
 
     protected void runTest() throws Throwable {
-        OMDataSourceExt ds = new CharArrayDataSource("<element><child/></element>".toCharArray());
+        OMDataSourceExt ds = new StringOMDataSource("<element><child/></element>");
         assertFalse(ds.isDestructiveWrite());
         
         OMFactory f = metaFactory.getOMFactory();

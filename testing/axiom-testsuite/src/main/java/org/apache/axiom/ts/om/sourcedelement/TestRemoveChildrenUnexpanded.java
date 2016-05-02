@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -40,8 +40,8 @@ public class TestRemoveChildrenUnexpanded extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(new ByteArrayDataSource(
-                "<element attr='value'><a/></element>".getBytes("utf-8"), "utf-8"));
+        OMSourcedElement element = factory.createOMElement(new StringOMDataSource(
+                "<element attr='value'><a/></element>"));
         element.removeChildren();
         // Check that the attribute has been added
         Iterator<OMAttribute> it = element.getAllAttributes();

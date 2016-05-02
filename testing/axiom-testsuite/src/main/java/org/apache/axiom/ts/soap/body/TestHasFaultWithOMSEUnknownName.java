@@ -20,7 +20,7 @@ package org.apache.axiom.ts.soap.body;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -38,8 +38,8 @@ public class TestHasFaultWithOMSEUnknownName extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPBody body = envelope.getBody();
-        OMSourcedElement element = soapFactory.createOMElement(new ByteArrayDataSource(
-                "<ns:root xmlns:ns='urn:ns'/>".getBytes("utf-8"), "utf-8"));
+        OMSourcedElement element = soapFactory.createOMElement(new StringOMDataSource(
+                "<ns:root xmlns:ns='urn:ns'/>"));
         body.addChild(element);
         assertFalse(body.hasFault());
         assertFalse(element.isExpanded());

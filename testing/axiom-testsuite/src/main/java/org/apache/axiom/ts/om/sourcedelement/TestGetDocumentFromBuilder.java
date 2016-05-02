@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -38,7 +38,7 @@ public class TestGetDocumentFromBuilder extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDataSource ds = new ByteArrayDataSource("<root><a/></root>".getBytes("utf-8"), "utf-8");
+        OMDataSource ds = new StringOMDataSource("<root><a/></root>");
         OMSourcedElement element = factory.createOMElement(ds);
         // Force expansion
         element.getFirstOMChild();

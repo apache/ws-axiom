@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
@@ -36,9 +37,7 @@ public class TestCloneWithSourcedElement1 extends CloneTestCase {
         SOAPBody body = sourceEnv.getBody();
         
         // Create a payload
-        String text = "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>";
-        String encoding = "UTF-8";
-        ByteArrayDataSource bads = new ByteArrayDataSource(text.getBytes(encoding), encoding);
+        OMDataSource bads = new StringOMDataSource("<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>");
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
         OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);

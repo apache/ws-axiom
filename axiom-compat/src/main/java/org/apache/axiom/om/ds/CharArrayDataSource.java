@@ -31,10 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 /**
- * CharArrayDataSource is an example implementation of OMDataSourceExt.
- * Use it to insert a char[] into an OM Tree.
- * This data source is useful for placing characters into an OM
- * tree, instead of having a deeply nested tree.
+ * @deprecated Use {@link StringOMDataSource} instead.
  */
 public class CharArrayDataSource extends OMDataSourceExtBase {
 

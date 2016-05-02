@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.CharArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -43,8 +43,8 @@ public class TestGetNamespaceNormalized extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns = factory.createOMNamespace("", "");
-        OMSourcedElement element = factory.createOMElement(new CharArrayDataSource(
-                "<element>content</element>".toCharArray()), "element", ns);
+        OMSourcedElement element = factory.createOMElement(new StringOMDataSource(
+                "<element>content</element>"), "element", ns);
         // This actually returns the "declared" namespace because the sourced element is not
         // expanded yet. Nevertheless the value should have been normalized to null.
         assertNull(element.getNamespace());

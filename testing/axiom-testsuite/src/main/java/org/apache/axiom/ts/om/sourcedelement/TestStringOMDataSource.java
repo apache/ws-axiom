@@ -18,25 +18,26 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.io.ByteArrayOutputStream;
+import static com.google.common.truth.Truth.assertThat;
+
+import java.io.StringWriter;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.CharArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests functionality of ByteArrayDataSource
  */
-public class TestCharArrayDS extends AxiomTestCase {
-    public TestCharArrayDS(OMMetaFactory metaFactory) {
+public class TestStringOMDataSource extends AxiomTestCase {
+    public TestStringOMDataSource(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
@@ -44,45 +45,39 @@ public class TestCharArrayDS extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         
         String localName = "myPayload";
-        String encoding = "utf-8";
         String payload1 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         OMNamespace ns = factory.createOMNamespace("urn://test", "tns");
-        CharArrayDataSource cads = new CharArrayDataSource(payload1.toCharArray());
+        StringOMDataSource somds = new StringOMDataSource(payload1);
 
         OMElement parent = factory.createOMElement("root", null);
-        OMSourcedElement omse = factory.createOMElement(cads, localName, ns);
+        OMSourcedElement omse = factory.createOMElement(somds, localName, ns);
         parent.addChild(omse);
         OMNode firstChild = parent.getFirstOMChild();
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertTrue("OMSourcedElement should be backed by a ByteArrayDataSource",
-                   child.getDataSource() instanceof CharArrayDataSource);
+        assertThat(child.getDataSource()).isInstanceOf(StringOMDataSource.class);
         
-        // A CharArrayDataSource does not consume the backing object when read.
-        // Thus getting the XMLStreamReader of the CharArrayDataSource should not 
+        // A StringOMDataSource does not consume the backing object when read.
+        // Thus getting the XMLStreamReader of the StringOMDataSource should not 
         // cause expansion of the OMSourcedElement.
         XMLStreamReader reader = child.getXMLStreamReader();
         reader.next();
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         
-        // Likewise, a CharArrayDataSource does not consume the backing object when 
+        // Likewise, a StringOMDataSource does not consume the backing object when 
         // written.  Thus serializing the OMSourcedElement should not cause the expansion
         // of the OMSourcedElement.
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        parent.serialize(baos);
-        String output = baos.toString(encoding);
+        StringWriter out = new StringWriter();
+        parent.serialize(out);
 //        System.out.println(output);
         assertTrue("The payload was not present in the output",
-                   output.indexOf(payload1) > 0);
+                   out.toString().indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         
-        // Test getting the raw bytes from the ByteArrayDataSource.
-        OMDataSourceExt ds = (OMDataSourceExt) child.getDataSource();
-        char[] chars = (char[]) ds.getObject();  // Get the chars
-        String payload = new String(chars);
-        assertTrue("The obtained chars did not match the payload",
-                   payload1.equals(payload));
+        // Test getting the raw content from the StringOMDataSource.
+        StringOMDataSource ds = (StringOMDataSource) child.getDataSource();
+        assertThat(ds.getObject()).isEqualTo(payload1);
         
         // Validate close
         ds.close();

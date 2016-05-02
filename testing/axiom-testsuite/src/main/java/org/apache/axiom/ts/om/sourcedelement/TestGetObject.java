@@ -27,7 +27,7 @@ import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.CharArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -42,7 +42,7 @@ public class TestGetObject extends AxiomTestCase {
         DataSource ds = new ByteArrayDataSource("test".getBytes("utf-8"), "text/plain; charset=utf-8");
         OMSourcedElement element = factory.createOMElement(new WrappedTextNodeOMDataSourceFromDataSource(new QName("wrapper"), ds, Charset.forName("utf-8")));
         // getObject returns null if the data source is not of the expected type
-        assertNull(element.getObject(CharArrayDataSource.class));
+        assertNull(element.getObject(StringOMDataSource.class));
         // Test with the right data source type
         assertSame(ds, element.getObject(WrappedTextNodeOMDataSourceFromDataSource.class));
         assertSame(ds, element.getObject(WrappedTextNodeOMDataSource.class));

@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.CharArrayDataSource;
+import org.apache.axiom.om.ds.StringOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -43,8 +43,8 @@ public class TestGetNamespaceNormalized2 extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(new CharArrayDataSource(
-                "<element>content</element>".toCharArray()), new QName("element"));
+        OMSourcedElement element = factory.createOMElement(new StringOMDataSource(
+                "<element>content</element>"), new QName("element"));
         assertNull(element.getNamespace());
         // Expand the element
         element.getFirstOMChild();
