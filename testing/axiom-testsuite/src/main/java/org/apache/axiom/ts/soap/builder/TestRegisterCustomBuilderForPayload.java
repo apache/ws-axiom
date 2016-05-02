@@ -54,16 +54,7 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new ByteArrayCustomBuilder("utf-8") {
-            @Override
-            public OMDataSource create(XMLStreamReader reader) throws OMException {
-                if (reader.getName().equals(message.getSOAPSpec().getFaultQName())) {
-                    return null;
-                } else {
-                    return super.create(reader);
-                }
-            }
-        });
+        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new ByteArrayCustomBuilder("utf-8"));
         OMElement payload = builder.getSOAPEnvelope().getBody().getFirstElement();
         if (message.getPayload() == null) {
             assertNull(payload);
