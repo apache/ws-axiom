@@ -21,18 +21,12 @@ package org.apache.axiom.ts.soap.builder;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import java.io.ByteArrayInputStream;
-
-import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
-import org.apache.axiom.om.ds.ByteArrayDataSource.ByteArray;
-import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
+import org.apache.axiom.om.ds.BlobOMDataSource;
+import org.apache.axiom.om.ds.custombuilder.BlobOMDataSourceCustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPFault;
@@ -54,7 +48,9 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
     @Override
     protected void runTest() throws Throwable {
         SOAPModelBuilder builder = message.getAdapter(SOAPSampleAdapter.class).getBuilder(metaFactory);
-        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new ByteArrayCustomBuilder("utf-8"));
+        ((CustomBuilderSupport)builder).registerCustomBuilder(
+                CustomBuilder.Selector.PAYLOAD,
+                new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         OMElement payload = builder.getSOAPEnvelope().getBody().getFirstElement();
         if (message.getPayload() == null) {
             assertNull(payload);
@@ -62,10 +58,10 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
             assertTrue(payload instanceof SOAPFault);
         } else {
             assertTrue(payload instanceof OMSourcedElement);
-            ByteArray byteArray = (ByteArray)((OMSourcedElement)payload).getObject(ByteArrayDataSource.class);
-            assertNotNull(byteArray);
-            InputSource is = new InputSource(new ByteArrayInputStream(byteArray.bytes));
-            is.setEncoding(byteArray.encoding);
+            BlobOMDataSource.Data data = (BlobOMDataSource.Data)((OMSourcedElement)payload).getObject(BlobOMDataSource.class);
+            assertNotNull(data);
+            InputSource is = new InputSource(data.getBlob().getInputStream());
+            is.setEncoding(data.getEncoding());
             assertAbout(xml())
                     .that(is)
                     .ignoringNamespaceDeclarations()

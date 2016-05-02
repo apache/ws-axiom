@@ -18,10 +18,11 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.BlobOMDataSourceCustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPBody;
@@ -52,7 +53,9 @@ public class TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck extends Samp
 
         // Do the registration here...this simulates when it could occure in the engine
         // (After the fault check and during phase processing...probably dispatch phase)
-        ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new ByteArrayCustomBuilder("utf-8"));
+        ((CustomBuilderSupport)builder).registerCustomBuilder(
+                CustomBuilder.Selector.PAYLOAD,
+                new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         
         OMElement bodyElement = envelope.getBody().getFirstElement();
         assertTrue(bodyElement instanceof OMSourcedElement);

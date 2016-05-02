@@ -33,11 +33,7 @@ import java.io.ByteArrayOutputStream;
 
 
 /**
- * CustomBuilder that creates an OMSourcedElement backed by a ByteArrayDataSource.
- * If you have a payload or header that will consume a lot of space, it 
- * may be beneficial to plug in this CustomBuilder.
- * 
- * Use this CustomBuilder as a pattern for other CustomBuilders.
+ * @deprecated Use {@link BlobOMDataSourceCustomBuilder} instead.
  */
 public class ByteArrayCustomBuilder implements CustomBuilder {
     private String encoding = null;

@@ -20,9 +20,10 @@ package org.apache.axiom.ts.soap.builder;
 
 import java.util.ArrayList;
 
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.BlobOMDataSourceCustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.soap.SOAPHeader;
@@ -50,7 +51,7 @@ public class TestRegisterCustomBuilder extends SOAPTestCase {
                                 && localName.equals("To");
                     }
                 },
-                new ByteArrayCustomBuilder("utf-8"));
+                new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         SOAPHeader header = builder.getSOAPEnvelope().getHeader();
         ArrayList al = header.getHeaderBlocksWithNSURI("http://www.w3.org/2005/08/addressing");
         assertEquals(al.size(), 4);

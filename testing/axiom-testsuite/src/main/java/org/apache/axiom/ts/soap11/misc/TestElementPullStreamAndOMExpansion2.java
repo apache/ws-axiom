@@ -22,12 +22,13 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
+import org.apache.axiom.om.ds.custombuilder.BlobOMDataSourceCustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
@@ -56,7 +57,7 @@ public class TestElementPullStreamAndOMExpansion2 extends AxiomTestCase {
                 AbstractTestCase.getTestResource("soap/soapmessageWithXSI.xml"), null);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
-        ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
+        BlobOMDataSourceCustomBuilder customBuilder = new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8");
         
         // Register the custom builder on the builder so that they body payload is stored as bytes
         ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, customBuilder);
