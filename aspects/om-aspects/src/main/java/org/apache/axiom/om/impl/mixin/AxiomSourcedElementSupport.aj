@@ -428,7 +428,6 @@ public aspect AxiomSourcedElementSupport {
      * setOMDataSource
      */
     public OMDataSource AxiomSourcedElement.setDataSource(OMDataSource dataSource) {
-        // TODO: the semantics of this method are not clear; is the assumption that the name of the element remains unchanged?
         try {
             if (!isExpanded()) {
                 OMDataSource oldDS = this.dataSource;

@@ -52,9 +52,9 @@ public interface OMSourcedElement extends OMElement {
     OMDataSource getDataSource();
     
     /**
-     * Replace an existing OMDataSource with a new one. 
-     * @param dataSource new OMDataSource
-     * @return null or old OMDataSource
+     * @deprecated This method is deprecated because its semantics are not clearly defined. In
+     *             particular it is unspecified whether the name of the element may change as a
+     *             result of an invocation of this method.
      */
     OMDataSource setDataSource(OMDataSource dataSource);
     

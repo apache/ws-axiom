@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
+@SuppressWarnings("deprecation")
 public class TestSetDataSourceOnAlreadyExpandedElement extends AxiomTestCase {
     public TestSetDataSourceOnAlreadyExpandedElement(OMMetaFactory metaFactory) {
         super(metaFactory);
