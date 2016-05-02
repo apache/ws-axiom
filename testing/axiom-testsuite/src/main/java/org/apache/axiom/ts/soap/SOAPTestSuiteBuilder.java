@@ -257,7 +257,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
         }
         if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.headerblock.TestByteArrayDS(metaFactory, spec));
+            addTest(new org.apache.axiom.ts.soap.headerblock.TestBlobOMDataSource(metaFactory, spec));
         }
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.TRUE));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.FALSE));

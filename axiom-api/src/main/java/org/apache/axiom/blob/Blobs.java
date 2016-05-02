@@ -27,6 +27,16 @@ public final class Blobs {
     private Blobs() {}
     
     /**
+     * Create a blob from a byte array.
+     * 
+     * @param data the byte array
+     * @return the blob
+     */
+    public static Blob createBlob(byte[] data) {
+        return new ByteArrayBlob(data);
+    }
+    
+    /**
      * Create a {@link MemoryBlob} instance.
      * 
      * @return the blob

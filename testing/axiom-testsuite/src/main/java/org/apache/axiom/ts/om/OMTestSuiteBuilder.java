@@ -540,7 +540,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         for (AddAttributeStrategy strategy : getInstances(AddAttributeStrategy.class)) {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestAddAttribute(metaFactory, strategy));
         }
-        addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.TestBlobOMDataSource(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestStringOMDataSource(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, false));
