@@ -24,6 +24,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.blob.Blob;
+import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.util.StAXUtils;
 
@@ -51,6 +52,16 @@ public final class BlobOMDataSource extends AbstractPullOMDataSource {
 
     private Data data;
 
+    /**
+     * Constructor.
+     * 
+     * @param blob
+     *            the blob to read from
+     * @param encoding
+     *            the encoding of the data in the blob
+     * 
+     * @see Blobs
+     */
     public BlobOMDataSource(Blob blob, String encoding) {
         data = new Data(blob, encoding);
     }

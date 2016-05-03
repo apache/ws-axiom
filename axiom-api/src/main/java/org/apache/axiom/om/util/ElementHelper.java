@@ -19,13 +19,15 @@
 
 package org.apache.axiom.om.util;
 
+import org.apache.axiom.blob.Blobs;
+import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.util.stax.xop.XOPUtils;
@@ -34,8 +36,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
@@ -197,10 +199,12 @@ public class ElementHelper {
         QName name = omElement.getQName();
         String localName = name.getLocalPart();
         OMNamespace namespace = factory.createOMNamespace(name.getNamespaceURI(), name.getPrefix());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        omElement.serialize(baos);
-        ByteArrayDataSource bads = new ByteArrayDataSource(baos.toByteArray(), "utf-8");
-        SOAPHeaderBlock block = factory.createSOAPHeaderBlock(localName, namespace, bads);
+        MemoryBlob blob = Blobs.createMemoryBlob();
+        OutputStream out = blob.getOutputStream();
+        omElement.serialize(out);
+        out.close();
+        BlobOMDataSource ds = new BlobOMDataSource(blob, "utf-8");
+        SOAPHeaderBlock block = factory.createSOAPHeaderBlock(localName, namespace, ds);
         
         return block;
     }

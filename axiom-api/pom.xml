@@ -324,8 +324,6 @@
                                 org.apache.axiom.om.ds.AbstractOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.BlobOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                org.apache.axiom.om.ds.ByteArrayDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                org.apache.axiom.om.ds.InputStreamDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.StringOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXUtils,
                                 <!-- This should go away in a redesign of the OMDataSource API -->

@@ -18,17 +18,18 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import static com.google.common.truth.Truth.assertThat;
 
+import java.io.StringWriter;
+
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.ByteArrayDataSource;
-import org.apache.axiom.om.ds.InputStreamDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.sourcedelement.util.PullOMDataSource;
 
 /**
  * Verifies that a OMDataSource can be replaced with another one
@@ -40,29 +41,27 @@ public class TestSetDataSource extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        String ENCODING = "utf-8";
         String payload1 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload One</tns:myPayload>";
         String payload2 = "<tns:myPayload xmlns:tns=\"urn://test\">Payload Two</tns:myPayload>";
-        ByteArrayDataSource bads1 = new ByteArrayDataSource(payload1.getBytes(ENCODING), ENCODING);
-        ByteArrayDataSource bads2 = new ByteArrayDataSource(payload2.getBytes(ENCODING), ENCODING);
-        InputStreamDataSource isds1 = new InputStreamDataSource(new ByteArrayInputStream(payload1.getBytes(ENCODING)), ENCODING);
-        InputStreamDataSource isds2 = new InputStreamDataSource(new ByteArrayInputStream(payload2.getBytes(ENCODING)), ENCODING);
+        OMDataSource nonDestructiveOMDataSource1 = new PullOMDataSource(payload1, false);
+        OMDataSource nonDestructiveOMDataSource2 = new PullOMDataSource(payload2, false);
+        OMDataSource destructiveOMDataSource1 = new PullOMDataSource(payload1, true);
+        OMDataSource destructiveOMDataSource2 = new PullOMDataSource(payload2, true);
         
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", null);
-        OMSourcedElement omse = factory.createOMElement(bads1, "myPayload", factory.createOMNamespace("urn://test", "tns"));
+        OMSourcedElement omse = factory.createOMElement(nonDestructiveOMDataSource1, "myPayload", factory.createOMNamespace("urn://test", "tns"));
         parent.addChild(omse);
         OMNode firstChild = parent.getFirstOMChild();
         assertTrue("Expected OMSourcedElement child", firstChild instanceof OMSourcedElement);
         OMSourcedElement child = (OMSourcedElement) firstChild;
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
-        assertTrue("OMSourcedElement should be backed by a ByteArrayDataSource",
-                   child.getDataSource() instanceof ByteArrayDataSource);
+        assertThat(child.getDataSource()).isSameAs(nonDestructiveOMDataSource1);
         
         // Write out the body
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        parent.serialize(baos);
-        String output = baos.toString(ENCODING);
+        StringWriter sw = new StringWriter();
+        parent.serialize(sw);
+        String output = sw.toString();
 //        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
@@ -71,32 +70,32 @@ public class TestSetDataSource extends AxiomTestCase {
         // Replace with payload2.  
         // Important note, it is legal to replace the OMDataSource, but
         // the namespace and local name of the OMSourcedElement cannot be changed.
-        child.setDataSource(bads2);
+        child.setDataSource(nonDestructiveOMDataSource2);
         
         // Write out the body
-        baos = new ByteArrayOutputStream();
-        parent.serialize(baos);
-        output = baos.toString(ENCODING);
+        sw = new StringWriter();
+        parent.serialize(sw);
+        output = sw.toString();
 //        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload2) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         
-        // Now Replace with payload1 from an InputStreamDataSource
-        child.setDataSource(isds1);
-        baos = new ByteArrayOutputStream();
-        parent.serialize(baos);
-        output = baos.toString(ENCODING);
+        // Now Replace with payload1 from an destructiveOMDataSource1
+        child.setDataSource(destructiveOMDataSource1);
+        sw = new StringWriter();
+        parent.serialize(sw);
+        output = sw.toString();
 //        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
         
-        // Now Replace with payload2 from an InputStreamDataSource.
+        // Now Replace with payload2 from an destructiveOMDataSource2.
         // Note at this point, the child's tree is expanded.
-        child.setDataSource(isds2);
-        baos = new ByteArrayOutputStream();
-        parent.serialize(baos);
-        output = baos.toString(ENCODING);
+        child.setDataSource(destructiveOMDataSource2);
+        sw = new StringWriter();
+        parent.serialize(sw);
+        output = sw.toString();
 //        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload2) > 0);

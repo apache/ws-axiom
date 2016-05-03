@@ -31,10 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
- * ByteArrayDataSource is an example implementation of OMDataSourceExt.
- * Use it to insert a (byte[], encoding) into an OM Tree.
- * This data source is useful for placing bytes into an OM
- * tree, instead of having a deeply nested tree.
+ * @deprecated Use {@link BlobOMDataSource} instead.
  */
 public class ByteArrayDataSource extends OMDataSourceExtBase {
 

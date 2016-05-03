@@ -21,6 +21,8 @@ package org.apache.axiom.om.ds;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -35,10 +37,12 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
- * InputStream is an example OMDataSourceExt.
- * Use it to insert a (InputStream, encoding) into an OM Tree.
- * This data source is useful for placing an InputStream into an OM
- * tree, instead of having a deeply nested tree.
+ * @deprecated This class has been deprecated without replacement. Generally there is no need for
+ *             {@link OMDataSource} instances that are pull based (i.e. use an
+ *             {@link XMLStreamReader}) and that are destructive. For these scenarios, simply use
+ *             {@link OMXMLBuilderFactory} to create an {@link OMElement} and add it to the tree.
+ *             Since this operation will not expand the element (in Axiom 1.3.x), the result will be
+ *             the same as using an {@link OMSourcedElement} with a destructive {@link OMDataSource}.
  */
 public class InputStreamDataSource extends OMDataSourceExtBase {
 
