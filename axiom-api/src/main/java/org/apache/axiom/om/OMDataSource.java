@@ -29,6 +29,8 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.ds.AbstractOMDataSource;
+import org.apache.axiom.om.ds.AbstractPullOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -40,6 +42,9 @@ import java.io.Writer;
 /**
  * Interface to arbitrary source of XML element data. This provides the hook for using a general
  * data source (such as data binding frameworks) as the backing source of data for an element.
+ * This interface should not be implemented directly; instead create a subclass of
+ * {@link AbstractOMDataSource}, {@link AbstractPullOMDataSource} or
+ * {@link AbstractPushOMDataSource}.
  */
 public interface OMDataSource {
     /**
@@ -56,6 +61,8 @@ public interface OMDataSource {
      *            the correct character set encoding when writing to the output stream. This
      *            parameter must not be null.
      * @throws XMLStreamException
+     * 
+     * @deprecated
      */
     void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
 
@@ -72,6 +79,8 @@ public interface OMDataSource {
      *            output format information (<code>null</code> if none; may be ignored if not
      *            supported by data binding even if supplied)
      * @throws XMLStreamException
+     * 
+     * @deprecated
      */
     void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException;
 

@@ -72,6 +72,8 @@ public interface OMDataSourceExt extends OMDataSource {
      * Returns a InputStream representing the xml data
      * @param encoding String encoding of InputStream
      * @return InputStream
+     * 
+     * @deprecated
      */
     InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException;
     
@@ -80,6 +82,8 @@ public interface OMDataSourceExt extends OMDataSource {
      * @param encoding String encoding of InputStream
      * @return byte[]
      * @see #getXMLInputStream(String)
+     * 
+     * @deprecated
      */
     byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException;
     
