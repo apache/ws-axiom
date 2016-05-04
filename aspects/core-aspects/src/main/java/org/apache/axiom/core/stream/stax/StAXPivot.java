@@ -748,6 +748,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
+                // TODO: Woodstox seems to return an empty string instead of null
                 return emptyToNull(namespaceStack[2*(scopeStack[depth]+index)+1]);
             default:
                 throw new IllegalStateException();

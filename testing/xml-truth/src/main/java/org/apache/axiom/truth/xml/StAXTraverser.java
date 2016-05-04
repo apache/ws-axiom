@@ -143,7 +143,7 @@ final class StAXTraverser implements Traverser {
         } else {
             Map<String,String> namespaces = new HashMap<>();
             for (int i=0; i<namespaceCount; i++) {
-                namespaces.put(Strings.nullToEmpty(reader.getNamespacePrefix(i)), reader.getNamespaceURI(i));
+                namespaces.put(Strings.nullToEmpty(reader.getNamespacePrefix(i)), Strings.nullToEmpty(reader.getNamespaceURI(i)));
             }
             return namespaces;
         }

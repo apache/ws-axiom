@@ -335,11 +335,6 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetTextWithCDATA(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetMustUnderstandWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.headerblock.TestGetRoleWithParser(metaFactory));
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion(metaFactory));
-            addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion2(metaFactory));
-            addTest(new org.apache.axiom.ts.soap11.misc.TestElementPullStreamAndOMExpansion3(metaFactory));
-        }
         addTest(new org.apache.axiom.ts.soap12.builder.TestBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming(metaFactory, true));

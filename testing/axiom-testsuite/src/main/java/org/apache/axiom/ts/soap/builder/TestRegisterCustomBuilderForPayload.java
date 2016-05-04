@@ -30,6 +30,7 @@ import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.om.ds.custombuilder.BlobOMDataSourceCustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilderSupport;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -52,7 +53,8 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
         ((CustomBuilderSupport)builder).registerCustomBuilder(
                 CustomBuilder.Selector.PAYLOAD,
                 new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
-        OMElement payload = builder.getSOAPEnvelope().getBody().getFirstElement();
+        SOAPEnvelope envelope = builder.getSOAPEnvelope();
+        OMElement payload = envelope.getBody().getFirstElement();
         if (message.getPayload() == null) {
             assertThat(payload).isNull();
         } else if (message.getPayload().getLocalName().equals("Fault")) {
@@ -67,6 +69,13 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
                     .that(is)
                     .ignoringNamespaceDeclarations()
                     .hasSameContentAs(message.getPayloadInputSource());
+        }
+        assertAbout(xml())
+                .that(envelope.getXMLStreamReader(false))
+                .ignoringPrologAndEpilog()
+                .hasSameContentAs(message.getInputStream());
+        if (payload instanceof OMSourcedElement) {
+            assertThat(((OMSourcedElement)payload).isExpanded()).isFalse();
         }
     }
 }
