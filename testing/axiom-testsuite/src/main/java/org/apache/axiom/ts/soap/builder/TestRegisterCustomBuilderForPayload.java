@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.soap.builder;
 
 import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import org.apache.axiom.blob.MemoryBlob;
@@ -53,13 +54,13 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
                 new BlobOMDataSourceCustomBuilder(MemoryBlob.FACTORY, "utf-8"));
         OMElement payload = builder.getSOAPEnvelope().getBody().getFirstElement();
         if (message.getPayload() == null) {
-            assertNull(payload);
+            assertThat(payload).isNull();
         } else if (message.getPayload().getLocalName().equals("Fault")) {
-            assertTrue(payload instanceof SOAPFault);
+            assertThat(payload).isInstanceOf(SOAPFault.class);
         } else {
-            assertTrue(payload instanceof OMSourcedElement);
+            assertThat(payload).isInstanceOf(OMSourcedElement.class);
             BlobOMDataSource.Data data = (BlobOMDataSource.Data)((OMSourcedElement)payload).getObject(BlobOMDataSource.class);
-            assertNotNull(data);
+            assertThat(data).isNotNull();
             InputSource is = new InputSource(data.getBlob().getInputStream());
             is.setEncoding(data.getEncoding());
             assertAbout(xml())
