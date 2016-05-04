@@ -27,7 +27,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -80,18 +79,14 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX) };
     
     private final OMMetaFactory metaFactory;
-    private final boolean supportsOMSourcedElement;
     
     /**
      * Constructor.
      * 
      * @param metaFactory
-     * @param supportsOMSourcedElement
-     *            indicates whether the implementation supports {@link OMSourcedElement}
      */
-    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement) {
+    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
-        this.supportsOMSourcedElement = supportsOMSourcedElement;
     }
     
     private void addTests(SOAPSpec spec) {
@@ -123,9 +118,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultAfterReplace(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultFakeFault(metaFactory, spec));
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithOMSEUnknownName(metaFactory, spec));
-        }
+        addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithOMSEUnknownName(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInEpilog(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInProlog(metaFactory, spec));
@@ -133,18 +126,14 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.builder.TestCreateSOAPModelBuilderFromSAXSource(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCreateSOAPModelBuilderMTOMContentTypeMismatch(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestDTD(metaFactory, spec));
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilder(metaFactory, spec));
-            addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
-        }
+        addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilder(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddElementAfterBody(metaFactory, spec, false));
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddElementAfterBody(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, spec));
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.envelope.TestCloneWithSourcedElement1(metaFactory, spec));
-            addTest(new org.apache.axiom.ts.soap.envelope.TestCloneWithSourcedElement2(metaFactory, spec));
-        }
+        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneWithSourcedElement1(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneWithSourcedElement2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestDetach(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEmptyEnvelope(metaFactory, spec));
@@ -163,9 +152,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetXMLStreamReaderWithoutCachingWithPartiallyBuiltHeaderBlock(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFaultWithParser(metaFactory, spec));
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAndConsumeWithOMSEInBody(metaFactory, spec));
-        }
+        addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAndConsumeWithOMSEInBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAsChild(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateDefaultSOAPMessage(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
@@ -256,9 +243,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
                 }
             }
         }
-        if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.headerblock.TestBlobOMDataSource(metaFactory, spec));
-        }
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestBlobOMDataSource(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.TRUE));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, Boolean.FALSE));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestClone(metaFactory, spec, null));
@@ -313,9 +298,7 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         }
         for (SOAPSample msg : goodSOAPFiles) {
             addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, msg));
-            if (supportsOMSourcedElement) {
-                addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayload(metaFactory, msg));
-            }
+            addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayload(metaFactory, msg));
             addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, msg));
             for (ExpansionStrategy expansionStrategy : getInstances(ExpansionStrategy.class)) {
                 for (SerializationStrategy serializationStrategy : getInstances(SerializationStrategy.class)) {
