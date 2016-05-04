@@ -70,6 +70,12 @@ public final class SOAPSampleSet extends Multiton {
      */
     public static final SOAPSampleSet HEADERS = new SOAPSampleSet("headers");
     
+    /**
+     * A SOAP request with an {@code xsi:type} attribute in the payload and a corresponding
+     * namespace declaration on the SOAP envelope (rather than in the payload).
+     */
+    public static final SOAPSampleSet XSI_TYPE = new SOAPSampleSet("xsi-type");
+    
     private final SOAPSample soap11Message;
     private final SOAPSample soap12Message;
     

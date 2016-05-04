@@ -126,6 +126,7 @@ public aspect AxiomContainerSupport {
                     OMNamespace ns = it.next();
                     pivot.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
+                handler = new XsiTypeFilterHandler(handler, contextElement);
             }
         }
         try {

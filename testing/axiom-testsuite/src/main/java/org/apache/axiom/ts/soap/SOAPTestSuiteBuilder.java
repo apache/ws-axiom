@@ -120,6 +120,9 @@ public class SOAPTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultFakeFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithOMSEUnknownName(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
+        for (SerializationStrategy serializationStrategy : getInstances(SerializationStrategy.class)) {
+            addTest(new org.apache.axiom.ts.soap.body.TestSerializeWithXSITypeAttribute(metaFactory, spec, serializationStrategy));
+        }
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInEpilog(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInProlog(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCreateSOAPModelBuilderFromDOMSource(metaFactory, spec));

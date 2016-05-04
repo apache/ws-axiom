@@ -41,7 +41,10 @@ public class ValidationTest extends TestCase {
     public static TestSuite suite() {
         TestSuite suite = new TestSuite();
         for (SOAPSample message : getInstances(SOAPSample.class)) {
-            suite.addTest(new ValidationTest(message));
+            if (message != SOAPSampleSet.XSI_TYPE.getMessage(SOAPSpec.SOAP11)
+                    && message != SOAPSampleSet.XSI_TYPE.getMessage(SOAPSpec.SOAP12)) {
+                suite.addTest(new ValidationTest(message));
+            }
         }
         return suite;
     }

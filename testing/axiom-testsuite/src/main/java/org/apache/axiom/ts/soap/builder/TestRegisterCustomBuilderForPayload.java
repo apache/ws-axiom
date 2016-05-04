@@ -70,9 +70,12 @@ public class TestRegisterCustomBuilderForPayload extends AxiomTestCase {
                     .ignoringNamespaceDeclarations()
                     .hasSameContentAs(message.getPayloadInputSource());
         }
+        // We need to ignore redundant namespace declarations because the custom builder needs
+        // to preserve the namespace context when serializing to the blob.
         assertAbout(xml())
                 .that(envelope.getXMLStreamReader(false))
                 .ignoringPrologAndEpilog()
+                .ignoringRedundantNamespaceDeclarations()
                 .hasSameContentAs(message.getInputStream());
         if (payload instanceof OMSourcedElement) {
             assertThat(((OMSourcedElement)payload).isExpanded()).isFalse();

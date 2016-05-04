@@ -1,4 +1,4 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:usr="http://ws.apache.org/axis2/user">
