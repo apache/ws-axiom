@@ -20,16 +20,12 @@
 package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPSampleSet;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -38,66 +34,6 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 
 public class OMSerializerTest extends AbstractTestCase {
-    public void testElementPullStream1() throws Exception {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-
-        serializer.serialize(env.getXMLStreamReaderWithoutCaching(), writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
-    }
-
-    public void testElementPullStream1WithCacheOff() throws Exception {
-
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
-                OMConstants.DEFAULT_CHAR_SET_ENCODING);
-
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
-        env.serializeAndConsume(writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
-
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
-                OMConstants.DEFAULT_CHAR_SET_ENCODING);
-
-        //now we should not be able to serilaize anything ! this should throw
-        //an error
-        try {
-            env.serializeAndConsume(writer);
-            fail("Expected NodeUnavailableException");
-        } catch (NodeUnavailableException ex) {
-            // Expected
-        }
-    }
-
-    public void testElementPullStream2() throws Exception {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                SOAPSampleSet.WSA.getMessage(SOAPSpec.SOAP11).getInputStream(), null);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
-        SOAPBody body = env.getBody();
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(body.getXMLStreamReaderWithoutCaching(),
-                             writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
-    }
-    
     public void testXSITypePullStream() throws Exception {
         
         // Read the SOAP Message that defines prefix "usr" on the envelope and only uses it within an xsi:type
