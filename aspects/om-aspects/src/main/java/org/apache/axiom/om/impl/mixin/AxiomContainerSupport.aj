@@ -68,6 +68,7 @@ import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomSerializable;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
 import org.apache.axiom.om.impl.stream.stax.AxiomXMLStreamReaderExtensionFactory;
+import org.apache.axiom.om.impl.stream.stax.MTOMXMLStreamWriterImpl;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -244,7 +245,7 @@ public aspect AxiomContainerSupport {
         // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
         MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
                 (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
+                    new MTOMXMLStreamWriterImpl(xmlWriter);
         try {
             internalSerialize(createSerializer(writer, true), cache);
         } catch (CoreModelException ex) {
@@ -270,15 +271,15 @@ public aspect AxiomContainerSupport {
     }
     
     private void AxiomContainer.serialize(Writer writer, boolean cache) throws XMLStreamException {
-        serialize(new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer)), cache);
+        serialize(new MTOMXMLStreamWriterImpl(StAXUtils.createXMLStreamWriter(writer)), cache);
     }
 
     private void AxiomContainer.serialize(OutputStream output, OMOutputFormat format, boolean cache) throws XMLStreamException {
-        serialize(new MTOMXMLStreamWriter(output, format, cache), cache);
+        serialize(new MTOMXMLStreamWriterImpl(output, format, cache), cache);
     }
 
     private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
-        serialize(new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer), format), cache);
+        serialize(new MTOMXMLStreamWriterImpl(StAXUtils.createXMLStreamWriter(writer), format), cache);
     }
 
     public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl;
+package org.apache.axiom.om.impl.stream.stax;
 
 import java.io.IOException;
 
