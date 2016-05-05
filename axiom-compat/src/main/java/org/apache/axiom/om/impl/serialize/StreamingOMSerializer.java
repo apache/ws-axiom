@@ -22,8 +22,11 @@ package org.apache.axiom.om.impl.serialize;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMSerializer;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -40,7 +43,12 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/** Class StreamingOMSerializer */
+/**
+ * @deprecated To copy events from an {@link XMLStreamReader} to an {@link XMLStreamWriter}, use
+ *             {@link OMXMLBuilderFactory#createStAXOMBuilder(XMLStreamReader)} to create an
+ *             {@link OMDocument}, then serialize it using
+ *             {@link OMContainer#serializeAndConsume(XMLStreamWriter)}.
+ */
 public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     
     private static final Log log = LogFactory.getLog(StreamingOMSerializer.class);

@@ -23,15 +23,13 @@ import java.io.OutputStream;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.BlobOMDataSource;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * {@link CustomBuilder} implementation that creates a {@link BlobOMDataSource}.
@@ -55,13 +53,10 @@ public final class BlobOMDataSourceCustomBuilder implements CustomBuilder {
 
     public OMDataSource create(XMLStreamReader reader) throws OMException {
         try {
-            StreamingOMSerializer serializer = new StreamingOMSerializer();
             WritableBlob blob = blobFactory.createBlob();
             OutputStream out = blob.getOutputStream();
             try {
-                XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(out, encoding);
-                serializer.serialize(reader, writer, false);
-                writer.flush();
+                OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocument().serializeAndConsume(out);
             } finally {
                 out.close();
             }

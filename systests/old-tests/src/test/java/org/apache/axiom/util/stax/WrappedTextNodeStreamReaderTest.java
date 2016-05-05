@@ -27,14 +27,11 @@ import java.io.StringWriter;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 public class WrappedTextNodeStreamReaderTest extends TestCase {
@@ -81,53 +78,6 @@ public class WrappedTextNodeStreamReaderTest extends TestCase {
                 new QName("urn:test", "bar", "foo"),
                 "This is a test string for WrappedTextNodeStreamReader",
                 4096);
-    }
-    
-    //
-    // Test that serialize the stream of XML events to plain XML and compare
-    // with the expected result.
-    //
-    
-    private void testUsingSerializer(QName wrapperElementName,
-                                     String testString,
-                                     int chunkSize,
-                                     String expectedXML) throws Exception {
-        StringReader reader = new StringReader(testString);
-        XMLStreamReader xmlStreamReader
-            = new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
-        StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        new StreamingOMSerializer().serialize(xmlStreamReader, xmlStreamWriter);
-        xmlStreamWriter.flush();
-        assertAbout(xml())
-                .that(writer.toString())
-                .hasSameContentAs(expectedXML);
-    }
-
-    public void testShortStringUsingSerializer() throws Exception {
-        String testString = "This is a test string for WrappedTextNodeStreamReader";
-        testUsingSerializer(
-                new QName("urn:test", "test"),
-                testString,
-                4096,
-                "<test xmlns=\"urn:test\">" + testString + "</test>");
-    }
-
-    public void testLongStringUsingSerializer() throws Exception {
-        String testString = "This is a test string for WrappedTextNodeStreamReader";
-        testUsingSerializer(
-                new QName("urn:test", "test"),
-                testString,
-                10,
-                "<test xmlns=\"urn:test\">" + testString + "</test>");
-    }
-
-    public void testStringWithAmpersandUsingSerializer() throws Exception {
-        testUsingSerializer(
-                new QName("urn:test", "test"),
-                "String containing ampersand (&)",
-                4096,
-                "<test xmlns=\"urn:test\">String containing ampersand (&amp;)</test>");
     }
     
     //

@@ -22,8 +22,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 /**
  * Base class for {@link OMDataSourceExt} implementations that can easily produce the content as an
@@ -37,13 +37,8 @@ public abstract class AbstractPullOMDataSource extends AbstractOMDataSource {
         return isDestructiveRead();
     }
 
+    // Note: this method is never executed by Axiom itself
     public final void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        XMLStreamReader reader = getReader();
-        try {
-            serializer.serialize(reader, xmlWriter);
-        } finally {
-            reader.close();
-        }
+        OMAbstractFactory.getOMFactory().createOMElement(this).serialize(xmlWriter, false);
     }
 }

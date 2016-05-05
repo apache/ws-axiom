@@ -326,8 +326,6 @@
                                 org.apache.axiom.om.ds.BlobOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.StringOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.StAXUtils,
-                                <!-- This should go away in a redesign of the OMDataSource API -->
-                                org.apache.axiom.om.ds.AbstractPullOMDataSource -> org.apache.axiom.om.impl.serialize.StreamingOMSerializer,
                                 <!-- TODO: Detachable should go to om-aspects -->
                                 org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
                                 <!-- TODO -->

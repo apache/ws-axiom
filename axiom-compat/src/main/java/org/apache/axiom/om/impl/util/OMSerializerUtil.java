@@ -37,6 +37,9 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * @deprecated
+ */
 public class OMSerializerUtil {
     private static final Log log = LogFactory.getLog(OMSerializerUtil.class);
     private static boolean ADV_DEBUG_ENABLED = true;
