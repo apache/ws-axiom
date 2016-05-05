@@ -321,7 +321,6 @@
                                 org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.XMLStreamWriterFilter,
                                 org.apache.axiom.om.impl.MTOMXMLStreamWriter -> org.apache.axiom.om.util.XMLStreamWriterFilter,
                                 <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
-                                org.apache.axiom.om.ds.AbstractOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.BlobOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.StringOMDataSource -> org.apache.axiom.om.util.StAXUtils,

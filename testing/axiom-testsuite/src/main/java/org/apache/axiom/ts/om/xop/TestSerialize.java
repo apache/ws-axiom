@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
@@ -59,12 +58,11 @@ public class TestSerialize extends AxiomTestCase {
         
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(baos, oof);
         
         OMXMLParserWrapper builder =
             OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments);
         OMElement om = builder.getDocumentElement();
-        om.serialize(writer);
+        om.serialize(baos, oof);
         om.close(false);
         String out = baos.toString();
         

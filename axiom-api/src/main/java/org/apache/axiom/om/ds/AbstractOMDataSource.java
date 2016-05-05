@@ -31,12 +31,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * Base class for {@link OMDataSourceExt} implementations. This class should only be used by data
@@ -62,18 +61,14 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
         return properties.put(key, value);
     }
 
+    // Note: this method is never executed by Axiom itself
     public final void serialize(OutputStream out, OMOutputFormat format) throws XMLStreamException {
-        XMLStreamWriter writer = new MTOMXMLStreamWriter(out, format);
-        serialize(writer);
-        writer.flush();
+        OMAbstractFactory.getOMFactory().createOMElement(this).serializeAndConsume(out, format);
     }
 
+    // Note: this method is never executed by Axiom itself
     public final void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter xmlWriter =
-            new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer));
-        xmlWriter.setOutputFormat(format);
-        serialize(xmlWriter);
-        xmlWriter.flush();
+        OMAbstractFactory.getOMFactory().createOMElement(this).serializeAndConsume(writer, format);
     }
 
     public final byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
