@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMDataSource;
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
  * public API.
+ * 
+ * @deprecated
  */
 public interface OMXMLStreamReaderEx extends XMLStreamReader {
     // *** Methods used by StreamingOMSerializer
