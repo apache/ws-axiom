@@ -27,7 +27,6 @@ import java.io.StringWriter;
 
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.dom.DOMInput;
-import org.apache.axiom.core.stream.sax.ContentHandlerXmlHandler;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.testutils.suite.MatrixTestSuiteBuilder;
 import org.apache.axiom.ts.xml.XMLSample;
@@ -47,11 +46,11 @@ public class SerializerTest extends MatrixTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = sample.getDocument();
-        SerializationHandler serializer = new ToXMLStream();
+        ToXMLStream serializer = new ToXMLStream();
         StringWriter sw = new StringWriter();
         serializer.setWriter(sw);
         XmlReader reader = new DOMInput(document, false).createReader(
-                new ContentHandlerXmlHandler(serializer, serializer));
+                new SerializerXmlHandler(serializer));
         while (!reader.proceed()) {
             // Just loop
         }
