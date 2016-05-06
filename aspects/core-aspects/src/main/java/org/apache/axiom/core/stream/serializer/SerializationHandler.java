@@ -25,7 +25,6 @@ import java.io.IOException;
 import javax.xml.transform.Transformer;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.DeclHandler;
 
 /**
  * This interface is the one that a serializer implements. It is a group of
@@ -42,8 +41,6 @@ public interface SerializationHandler
         ExtendedContentHandler,
         ExtendedLexicalHandler,
         XSLOutputAttributes,
-        DeclHandler,
-        org.xml.sax.DTDHandler,
         Serializer
 {
     public void close();

@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * This interface is intended to be used by a serializer.
  * @xsl.usage internal
  */
-public interface ExtendedLexicalHandler extends org.xml.sax.ext.LexicalHandler
+public interface ExtendedLexicalHandler
 {
     /**
      * This method is used to notify of a comment
@@ -36,4 +36,8 @@ public interface ExtendedLexicalHandler extends org.xml.sax.ext.LexicalHandler
      * @throws SAXException
      */
     public void comment(String comment) throws SAXException;
+
+    public void comment(char ch[], int start, int length) throws SAXException;
+
+    public void startEntity(String name) throws SAXException;
 }
