@@ -41,7 +41,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -1829,8 +1828,6 @@ abstract public class ToStream extends SerializerBase
      * @param atts The attributes attached to the element, if any.
      * @throws org.xml.sax.SAXException Any SAX exception, possibly
      *            wrapping another exception.
-     * @see org.xml.sax.ContentHandler#startElement
-     * @see org.xml.sax.ContentHandler#endElement
      * @see org.xml.sax.AttributeList
      *
      * @throws org.xml.sax.SAXException
@@ -1915,8 +1912,6 @@ abstract public class ToStream extends SerializerBase
       * @param elementName The element type name.
       * @throws org.xml.sax.SAXException Any SAX exception, possibly
       *            wrapping another exception.
-      * @see org.xml.sax.ContentHandler#startElement
-      * @see org.xml.sax.ContentHandler#endElement
       * @see org.xml.sax.AttributeList
       *
       * @throws org.xml.sax.SAXException
@@ -2149,7 +2144,7 @@ abstract public class ToStream extends SerializerBase
 
         // namespaces declared at the current depth are no longer valid
         // so get rid of them    
-        m_prefixMap.popNamespaces(m_elemContext.m_currentElemDepth, null);
+        m_prefixMap.popNamespaces(m_elemContext.m_currentElemDepth);
 
         try
         {
@@ -2216,8 +2211,6 @@ abstract public class ToStream extends SerializerBase
      * just before another element is about to start.
      * This call will close any open tags so that the prefix mapping
      * will not apply to the current element, but the up comming child.
-     * 
-     * @see org.xml.sax.ContentHandler#startPrefixMapping
      * 
      * @param prefix The Namespace prefix being declared.
      * @param uri The Namespace URI the prefix is mapped to.
@@ -2440,7 +2433,6 @@ abstract public class ToStream extends SerializerBase
 
     /**
      * End the scope of a prefix-URI Namespace mapping.
-     * @see org.xml.sax.ContentHandler#endPrefixMapping
      * 
      * @param prefix The prefix that was being mapping.
      * @throws org.xml.sax.SAXException The client may throw
@@ -2475,7 +2467,6 @@ abstract public class ToStream extends SerializerBase
 
     /**
      * Receive notification of a skipped entity.
-     * @see org.xml.sax.ContentHandler#skippedEntity
      * 
      * @param name The name of the skipped entity.  If it is a
      *       parameter                   entity, the name will begin with '%',
@@ -2907,13 +2898,6 @@ abstract public class ToStream extends SerializerBase
                     // what? me worry?
                 }
             }
-    }
-
-    public void setContentHandler(ContentHandler ch)
-    {
-        // this method is really only useful in the ToSAXHandler classes but it is
-        // in the interface.  If the method defined here is ever called
-        // we are probably in trouble.
     }
 
     /**

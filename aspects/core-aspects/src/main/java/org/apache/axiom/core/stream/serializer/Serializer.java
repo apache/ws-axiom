@@ -24,14 +24,11 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Properties;
 
-import org.xml.sax.ContentHandler;
-
 /**
  * The Serializer interface is implemented by a serializer to enable users to:
  * <ul>
  * <li>get and set streams or writers
  * <li>configure the serializer with key/value properties
- * <li>get an org.xml.sax.ContentHandler or a DOMSerializer to provide input to
  * </ul>
  *
  * <p>
@@ -84,7 +81,6 @@ import org.xml.sax.ContentHandler;
  * @see OutputPropertiesFactory
  * @see SerializerFactory
  * @see DOMSerializer
- * @see ContentHandler
  * 
  * @xsl.usage general
  */
@@ -174,22 +170,6 @@ public interface Serializer {
      * @return The output format key/value pairs in use.
      */
     public Properties getOutputFormat();
-
-    /**
-     * Return a {@link ContentHandler} interface to provide SAX input to.
-     * Through the returned object the document to be serailized,
-     * as a series of SAX events, can be provided to the serialzier.
-     * If the serializer does not support the {@link ContentHandler}
-     * interface, it will return null.
-     * <p>
-     * In principle only one of asDOMSerializer() or asContentHander() 
-     * should be called.
-     *
-     * @return A {@link ContentHandler} interface into this serializer,
-     *  or null if the serializer is not SAX 2 capable
-     * @throws IOException An I/O exception occured
-     */
-    public ContentHandler asContentHandler() throws IOException;
 
     /**
      * This method resets the serializer. 

@@ -23,7 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -259,10 +258,9 @@ public class NamespaceMappings
      * declared at the given element depth, or deepter.
      * @param elemDepth the element depth for which mappings declared at this
      * depth or deeper will no longer be valid
-     * @param saxHandler The ContentHandler to notify of any endPrefixMapping()
      * calls.  This parameter can be null.
      */
-    void popNamespaces(int elemDepth, ContentHandler saxHandler)
+    void popNamespaces(int elemDepth)
     {
         while (true)
         {
@@ -298,17 +296,6 @@ public class NamespaceMappings
                 // not been optimized away.
                 // 
                 prefixStack.pop();
-                if (saxHandler != null)
-                {
-                    try
-                    {
-                        saxHandler.endPrefixMapping(prefix);
-                    }
-                    catch (SAXException e)
-                    {
-                        // not much we can do if they aren't willing to listen
-                    }
-                }
             }
 
         }

@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * </pre>
  * @xsl.usage internal
  */
-public interface ExtendedContentHandler extends org.xml.sax.ContentHandler
+public interface ExtendedContentHandler
 {
     /**
      * Add at attribute to the current element
@@ -268,4 +268,7 @@ public interface ExtendedContentHandler extends org.xml.sax.ContentHandler
         String type,
         String value)
         throws SAXException;
+
+    public void characters(char chars[], int start, int length)
+            throws org.xml.sax.SAXException;
 }

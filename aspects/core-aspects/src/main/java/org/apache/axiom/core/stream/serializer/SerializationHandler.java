@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import javax.xml.transform.Transformer;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DeclHandler;
@@ -49,15 +48,6 @@ public interface SerializationHandler
         ErrorHandler,
         Serializer
 {
-    /**
-     * Set the SAX Content handler that the serializer sends its output to. This
-     * method only applies to a ToSAXHandler, not to a ToStream serializer.
-     * 
-     * @see Serializer#asContentHandler()
-     * @see ToSAXHandler
-     */
-    public void setContentHandler(ContentHandler ch);
-    
     public void close();
 
     /**

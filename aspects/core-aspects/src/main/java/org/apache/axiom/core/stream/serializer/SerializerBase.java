@@ -31,7 +31,6 @@ import javax.xml.transform.Transformer;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -463,20 +462,6 @@ public abstract class SerializerBase
                 false);
 
         }
-    }
-
-    /**
-     * Return a {@link ContentHandler} interface into this serializer.
-     * If the serializer does not support the {@link ContentHandler}
-     * interface, it should return null.
-     *
-     * @return A {@link ContentHandler} interface into this serializer,
-     *  or null if the serializer is not SAX 2 capable
-     * @throws IOException An I/O exception occured
-     */
-    public ContentHandler asContentHandler() throws IOException
-    {
-        return this;
     }
 
     /**

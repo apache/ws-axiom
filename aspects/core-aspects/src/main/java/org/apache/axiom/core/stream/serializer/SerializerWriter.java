@@ -21,23 +21,22 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 /**
- * {@link Writer} that writes character data as {@link ContentHandler#characters(char[], int, int)}
- * to a {@link ContentHandler}.
+ * {@link Writer} that writes character data as {@link ToXMLStream#characters(char[], int, int)}
+ * to a {@link ToXMLStream}.
  */
 final class SerializerWriter extends Writer {
-    private final ContentHandler contentHandler;
+    private final ToXMLStream serializer;
 
-    public SerializerWriter(ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
+    public SerializerWriter(ToXMLStream serializer) {
+        this.serializer = serializer;
     }
 
     public void write(char[] cbuf, int off, int len) throws IOException {
         try {
-            contentHandler.characters(cbuf, off, len);
+            serializer.characters(cbuf, off, len);
         } catch (SAXException ex) {
             IOException ioException = new IOException();
             ioException.initCause(ex);
