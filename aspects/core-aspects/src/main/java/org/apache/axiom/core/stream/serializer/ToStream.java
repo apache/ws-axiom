@@ -40,8 +40,6 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.apache.axiom.core.stream.serializer.utils.WrappedRuntimeException;
-import org.w3c.dom.Node;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -633,21 +631,6 @@ abstract public class ToStream extends SerializerBase
 
         m_writer_set_by_user = setByUser;
         m_writer = writer;
-        // if we are tracing events we need to trace what
-        // characters are written to the output writer.
-        if (m_tracer != null) {
-            boolean noTracerYet = true;
-            Writer w2 = m_writer;
-            while (w2 instanceof WriterChain) {
-                if (w2 instanceof SerializerTraceWriter) {
-                    noTracerYet = false;
-                    break;
-                }
-                w2 = ((WriterChain)w2).getWriter();
-            }
-            if (noTracerYet)
-                m_writer = new SerializerTraceWriter(m_writer, m_tracer);
-        }
     }
     
     /**
@@ -1281,10 +1264,6 @@ abstract public class ToStream extends SerializerBase
                 if (ch[start + length - 1] == ']')
                     closeCDATA();
             }
-
-            // time to fire off CDATA event
-            if (m_tracer != null)
-                super.fireCDATAEvent(ch, old_start, length);
         }
         catch (IOException ioe)
         {
@@ -1407,11 +1386,6 @@ abstract public class ToStream extends SerializerBase
         if (m_disableOutputEscapingStates.peekOrFalse() || (!m_escaping))
         {
             charactersRaw(chars, start, length);
-
-            // time to fire off characters generation event
-            if (m_tracer != null)
-                super.fireCharEvent(chars, start, length);
-
             return;
         }
 
@@ -1607,10 +1581,6 @@ abstract public class ToStream extends SerializerBase
         {
             throw new SAXException(e);
         }
-
-        // time to fire off characters generation event
-        if (m_tracer != null)
-            super.fireCharEvent(chars, start, length);
     }
 
 	private int processLineFeed(final char[] chars, int i, int lastProcessed, final Writer writer) throws IOException {
@@ -1931,9 +1901,6 @@ abstract public class ToStream extends SerializerBase
             
         m_elemContext = m_elemContext.push(namespaceURI,localName,name);
         m_isprevtext = false;
-
-        if (m_tracer != null)
-            firePseudoAttributes();
     }
 
     /**
@@ -2192,8 +2159,6 @@ abstract public class ToStream extends SerializerBase
             final java.io.Writer writer = m_writer;
             if (m_elemContext.m_startTagOpen)
             {
-                if (m_tracer != null)
-                    super.fireStartElem(m_elemContext.m_elementName);
                 int nAttrs = m_attributes.getLength();
                 if (nAttrs > 0)
                 {
@@ -2235,10 +2200,6 @@ abstract public class ToStream extends SerializerBase
         }
 
         m_isprevtext = false;
-
-        // fire off the end element event
-        if (m_tracer != null)
-            super.fireEndElem(name);
         m_elemContext = m_elemContext.m_prev;
     }
 
@@ -2434,9 +2395,6 @@ abstract public class ToStream extends SerializerBase
          * the indentation at the start of the next line.
          */ 
         m_startNewLine = true;
-        // time to generate comment event
-        if (m_tracer != null)
-            super.fireCommentEvent(ch, start_old,length);
     }
 
     /**
@@ -2591,8 +2549,6 @@ abstract public class ToStream extends SerializerBase
 
             try
             {
-                if (m_tracer != null)
-                    super.fireStartElem(m_elemContext.m_elementName);
                 int nAttrs = m_attributes.getLength();
                 if (nAttrs > 0)
                 {
@@ -3000,23 +2956,12 @@ abstract public class ToStream extends SerializerBase
 
         if (index >= 0)
         {
-            String old_value = null;
-            if (m_tracer != null)
-            {
-                old_value = m_attributes.getValue(index);
-                if (value.equals(old_value))
-                    old_value = null;
-            }
-
             /* We've seen the attribute before.
              * We may have a null uri or localName, but all we really
              * want to re-set is the value anyway.
              */
             m_attributes.setValue(index, value);
             was_added = false;
-            if (old_value != null)
-                firePseudoAttributes();
-
         }
         else
         {
@@ -3099,62 +3044,8 @@ abstract public class ToStream extends SerializerBase
             }
             m_attributes.addAttribute(uri, localName, rawName, type, value);
             was_added = true;
-            if (m_tracer != null)
-                firePseudoAttributes();
         }
         return was_added;
-    }
-
-    /**
-     * To fire off the pseudo characters of attributes, as they currently
-     * exist. This method should be called everytime an attribute is added,
-     * or when an attribute value is changed, or an element is created.
-     */
-
-    protected void firePseudoAttributes()
-    {
-        if (m_tracer != null)
-        {
-            try
-            {
-                // flush out the "<elemName" if not already flushed
-                m_writer.flush();
-                
-                // make a StringBuffer to write the name="value" pairs to.
-                StringBuffer sb = new StringBuffer();
-                int nAttrs = m_attributes.getLength();
-                if (nAttrs > 0)
-                {
-                    // make a writer that internally appends to the same
-                    // StringBuffer
-                    java.io.Writer writer =
-                        new ToStream.WritertoStringBuffer(sb);
-
-                    processAttributes(writer, nAttrs);
-                    // Don't clear the attributes! 
-                    // We only want to see what would be written out
-                    // at this point, we don't want to loose them.
-                }
-                sb.append('>');  // the potential > after the attributes.
-                // convert the StringBuffer to a char array and
-                // emit the trace event that these characters "might"
-                // be written                
-                char ch[] = sb.toString().toCharArray();
-                m_tracer.fireGenerateEvent(
-                    SerializerTrace.EVENTTYPE_OUTPUT_PSEUDO_CHARACTERS,
-                    ch,
-                    0,
-                    ch.length);                
-            }
-            catch (IOException ioe)
-            {
-                // ignore ?
-            }
-            catch (SAXException se)
-            {
-                // ignore ?
-            }
-        }
     }
 
     /**
@@ -3202,17 +3093,6 @@ abstract public class ToStream extends SerializerBase
         }
     }
 
-    /**
-     * @see SerializationHandler#setTransformer(Transformer)
-     */
-    public void setTransformer(Transformer transformer) {
-        super.setTransformer(transformer);
-        if (m_tracer != null
-         && !(m_writer instanceof SerializerTraceWriter)  )
-            setWriterInternal(new SerializerTraceWriter(m_writer, m_tracer), false);        
-        
-        
-    }
     /**
      * Try's to reset the super class and reset this class for 
      * re-use, so that you don't need to create a new serializer 

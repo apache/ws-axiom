@@ -197,9 +197,6 @@ public class ToXMLStream extends ToStream
         }
 
         flushWriter();
-        
-        if (m_tracer != null)
-            super.fireEndDoc();
     }
 
     /**
@@ -329,9 +326,6 @@ public class ToXMLStream extends ToStream
                 throw new SAXException(e);
             }
         }
-        
-        if (m_tracer != null)
-            super.fireEscapingEvent(target, data);  
     }
 
     /**
@@ -363,9 +357,6 @@ public class ToXMLStream extends ToStream
         {
             throw new SAXException(e);
         }
-        
-        if (m_tracer != null)
-            super.fireEntityReference(name);            
     }
 
     /**
