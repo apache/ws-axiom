@@ -20,7 +20,6 @@ package org.apache.axiom.ts.xml;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,12 +103,7 @@ public class XMLSample extends MessageSample {
 
     public final Document getDocument() {
         try {
-            InputStream in = getInputStream();
-            try {
-                return documentBuilder.parse(in);
-            } finally {
-                in.close();
-            }
+            return documentBuilder.parse(getUrl().toString());
         } catch (Exception ex) {
             throw new Error(ex);
         }
