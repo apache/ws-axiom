@@ -882,28 +882,6 @@ public abstract class SerializerBase
     
 
     /**
-     * @see org.xml.sax.ErrorHandler#error(SAXParseException)
-     */
-    public void error(SAXParseException exc) throws SAXException {
-    }
-
-    /**
-     * @see org.xml.sax.ErrorHandler#fatalError(SAXParseException)
-     */
-    public void fatalError(SAXParseException exc) throws SAXException {
-        
-      m_elemContext.m_startTagOpen = false;
-
-    }
-
-    /**
-     * @see org.xml.sax.ErrorHandler#warning(SAXParseException)
-     */
-    public void warning(SAXParseException exc) throws SAXException 
-    {
-    }
-
-    /**
      * Report the characters event
      * @param chars  content of characters
      * @param start  starting index of characters to output

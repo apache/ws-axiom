@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import javax.xml.transform.Transformer;
 
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DeclHandler;
 
@@ -45,7 +44,6 @@ public interface SerializationHandler
         XSLOutputAttributes,
         DeclHandler,
         org.xml.sax.DTDHandler,
-        ErrorHandler,
         Serializer
 {
     public void close();
