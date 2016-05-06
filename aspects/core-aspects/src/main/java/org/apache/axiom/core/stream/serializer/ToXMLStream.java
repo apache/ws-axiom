@@ -48,7 +48,7 @@ public class ToXMLStream extends ToStream
      *  provides character to entity name lookup.
      */
     private CharInfo m_xmlcharInfo =
-        CharInfo.getCharInfo(CharInfo.XML_ENTITIES_RESOURCE, Method.XML);
+        CharInfo.getCharInfo(CharInfo.XML_ENTITIES_RESOURCE);
 
     /**
      * Default constructor.

@@ -28,8 +28,6 @@ import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.xml.transform.OutputKeys;
-
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.apache.axiom.core.stream.serializer.utils.WrappedRuntimeException;
@@ -238,18 +236,11 @@ public final class OutputPropertiesFactory
 
     /**
      * Creates an empty OutputProperties with the property key/value defaults specified by
-     * a property file.  The method argument is used to construct a string of
-     * the form output_[method].properties (for instance, output_html.properties).
-     * The output_xml.properties file is always used as the base.
+     * a property file.
      * 
-     * <p>Anything other than 'text', 'xml', and 'html', will
-     * use the output_xml.properties file.</p>
-     *
-     * @param   method non-null reference to method name.
-     *
      * @return Properties object that holds the defaults for the given method.
      */
-    static public final Properties getDefaultMethodProperties(String method)
+    static public final Properties getDefaultMethodProperties()
     {
         String fileName = null;
         Properties defaultProperties = null;
@@ -266,63 +257,14 @@ public final class OutputPropertiesFactory
                 }
             }
 
-            if (method.equals(Method.XML))
-            {
-                defaultProperties = m_xml_properties;
-            }
-            else if (method.equals(Method.HTML))
-            {
-                if (null == m_html_properties) // double check
-                {
-                    fileName = PROP_FILE_HTML;
-                    m_html_properties =
-                        loadPropertiesFile(fileName, m_xml_properties);
-                }
-
-                defaultProperties = m_html_properties;
-            }
-            else if (method.equals(Method.TEXT))
-            {
-                if (null == m_text_properties) // double check
-                {
-                    fileName = PROP_FILE_TEXT;
-                    m_text_properties =
-                        loadPropertiesFile(fileName, m_xml_properties);
-                    if (null
-                        == m_text_properties.getProperty(OutputKeys.ENCODING))
-                    {
-                        String mimeEncoding = Encodings.getMimeEncoding(null);
-                        m_text_properties.put(
-                            OutputKeys.ENCODING,
-                            mimeEncoding);
-                    }
-                }
-
-                defaultProperties = m_text_properties;
-            }
-            else if (method.equals(Method.UNKNOWN))
-            {
-                if (null == m_unknown_properties) // double check
-                {
-                    fileName = PROP_FILE_UNKNOWN;
-                    m_unknown_properties =
-                        loadPropertiesFile(fileName, m_xml_properties);
-                }
-
-                defaultProperties = m_unknown_properties;
-            }
-            else
-            {
-                // TODO: Calculate res file from name.
-                defaultProperties = m_xml_properties;
-            }
+            defaultProperties = m_xml_properties;
         }
         catch (IOException ioe)
         {
             throw new WrappedRuntimeException(
                 Utils.messages.createMessage(
                     MsgKey.ER_COULD_NOT_LOAD_METHOD_PROPERTY,
-                    new Object[] { fileName, method }),
+                    new Object[] { fileName, "xml" }),
                 ioe);
         }
         // wrap these cached defaultProperties in a new Property object just so

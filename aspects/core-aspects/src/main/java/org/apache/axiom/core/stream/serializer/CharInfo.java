@@ -163,7 +163,7 @@ final class CharInfo
     	return;
     }
     
-    private CharInfo(String entitiesResource, String method, boolean internal)
+    private CharInfo(String entitiesResource, boolean internal)
     {
     	// call the default constructor to create the fields
     	this();
@@ -319,21 +319,9 @@ final class CharInfo
          * if it has an entity defined for it.
          * This is the reason for this delay.
          */
-        if (Method.XML.equals(method)) 
-        {       
-            // We choose not to escape the quotation mark as &quot; in text nodes
-            shouldMapTextChar_ASCII[S_QUOTE] = false;
-        }
         
-        if (Method.HTML.equals(method)) {
-        	// The XSLT 1.0 recommendation says 
-        	// "The html output method should not escape < characters occurring in attribute values."
-        	// So we don't escape '<' in an attribute for HTML
-        	shouldMapAttrChar_ASCII['<'] = false;    
-        	
-        	// We choose not to escape the quotation mark as &quot; in text nodes.
-            shouldMapTextChar_ASCII[S_QUOTE] = false;
-        }
+        // We choose not to escape the quotation mark as &quot; in text nodes
+        shouldMapTextChar_ASCII[S_QUOTE] = false;
     }
 
     /**
@@ -450,13 +438,13 @@ final class CharInfo
 
      
     private static CharInfo getCharInfoBasedOnPrivilege(
-        final String entitiesFileName, final String method, 
+        final String entitiesFileName,
         final boolean internal){
             return (CharInfo) AccessController.doPrivileged(
                 new PrivilegedAction() {
                         public Object run() {
                             return new CharInfo(entitiesFileName, 
-                              method, internal);}
+                              internal);}
             });            
     }
      
@@ -475,11 +463,10 @@ final class CharInfo
      *
      * @param entitiesResource Name of entities resource file that should
      * be loaded, which describes that mapping of characters to entity references.
-     * @param method the output method type, which should be one of "xml", "html", "text"...
      * 
      * @xsl.usage internal
      */
-    static CharInfo getCharInfo(String entitiesFileName, String method)
+    static CharInfo getCharInfo(String entitiesFileName)
     {
         CharInfo charInfo = (CharInfo) m_getCharInfoCache.get(entitiesFileName);
         if (charInfo != null) {
@@ -489,7 +476,7 @@ final class CharInfo
         // try to load it internally - cache
         try {
             charInfo = getCharInfoBasedOnPrivilege(entitiesFileName, 
-                                        method, true);
+                                        true);
             // Put the common copy of charInfo in the cache, but return
             // a copy of it.
             m_getCharInfoCache.put(entitiesFileName, charInfo);
@@ -499,7 +486,7 @@ final class CharInfo
         // try to load it externally - do not cache
         try {
             return getCharInfoBasedOnPrivilege(entitiesFileName, 
-                                method, false);
+                                false);
         } catch (Exception e) {}
 
         String absoluteEntitiesFileName;
@@ -517,7 +504,7 @@ final class CharInfo
         }
 
         return getCharInfoBasedOnPrivilege(entitiesFileName, 
-                                method, false);
+                                false);
     }
 
     /**

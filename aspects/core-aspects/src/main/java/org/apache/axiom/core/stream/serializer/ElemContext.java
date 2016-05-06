@@ -59,9 +59,6 @@ final class ElemContext
      */
     final int m_currentElemDepth;
 
-    /** HTML field, the element description of the HTML element */
-    ElemDesc m_elementDesc = null;
-
     /**
      * The local name of the element.
      */
