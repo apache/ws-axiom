@@ -20,8 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import java.util.Vector;
-
 /**
  * This interface has methods associated with the XSLT xsl:output attribues
  * specified in the stylesheet that effect the format of the document output.
@@ -102,27 +100,6 @@ interface XSLOutputAttributes
      * @return the version of the output format.
      */    
     public String getVersion();
-
-
-
-
-
-
-    /**
-     * Sets the value coming from the xsl:output cdata-section-elements
-     * stylesheet property.
-     * 
-     * This sets the elements whose text elements are to be output as CDATA
-     * sections.
-     * @param URI_and_localNames pairs of namespace URI and local names that
-     * identify elements whose text elements are to be output as CDATA sections.
-     * The namespace of the local element must be the given URI to match. The
-     * qName is not given because the prefix does not matter, only the namespace
-     * URI to which that prefix would map matters, so the prefix itself is not
-     * relevant in specifying which elements have their text to be output as
-     * CDATA sections.
-     */
-    public void setCdataSectionElements(Vector URI_and_localNames);
 
     /** Set the value coming from the xsl:output doctype-public and doctype-system stylesheet properties
      * @param system the system identifier to be used in the DOCTYPE declaration

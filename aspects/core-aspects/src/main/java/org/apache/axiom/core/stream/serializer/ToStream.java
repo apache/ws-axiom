@@ -30,8 +30,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.OutputKeys;
@@ -361,12 +359,6 @@ abstract public class ToStream extends SerializerBase
 
             char first = getFirstCharLocName(name);
             switch (first) {
-            case 'c':
-                if (OutputKeys.CDATA_SECTION_ELEMENTS.equals(name)) {
-                    String cdataSectionNames = val;
-                    addCdataSectionElements(cdataSectionNames);
-                }
-                break;
             case 'd':
                 if (OutputKeys.DOCTYPE_SYSTEM.equals(name)) {
                     this.m_doctypeSystem = val;
@@ -1366,7 +1358,7 @@ abstract public class ToStream extends SerializerBase
             startDocumentInternal();
         }
 
-        if (m_cdataStartCalled || m_elemContext.m_isCdataSection)
+        if (m_cdataStartCalled)
         {
             /* either due to startCDATA() being called or due to 
              * cdata-section-elements atribute, we need this as cdata
@@ -2551,13 +2543,6 @@ abstract public class ToStream extends SerializerBase
                 throw new SAXException(e);
             }
 
-            /* whether Xalan or XSLTC, we have the prefix mappings now, so
-             * lets determine if the current element is specified in the cdata-
-             * section-elements list.
-             */
-            if (m_CdataElems != null)
-                m_elemContext.m_isCdataSection = isCdataSection();
-
             if (m_doIndent)
             {
                 m_isprevtext = false;
@@ -2621,141 +2606,6 @@ abstract public class ToStream extends SerializerBase
     protected boolean shouldIndent()
     {
         return m_doIndent && (!m_ispreserve && !m_isprevtext) && m_elemContext.m_currentElemDepth > 0;
-    }
-
-    /**
-     * Searches for the list of qname properties with the specified key in the
-     * property list. If the key is not found in this property list, the default
-     * property list, and its defaults, recursively, are then checked. The
-     * method returns <code>null</code> if the property is not found.
-     *
-     * @param   key   the property key.
-     * @param props the list of properties to search in.
-     * 
-     * Sets the vector of local-name/URI pairs of the cdata section elements
-     * specified in the cdata-section-elements property.
-     * 
-     * This method is essentially a copy of getQNameProperties() from
-     * OutputProperties. Eventually this method should go away and a call
-     * to setCdataSectionElements(Vector v) should be made directly.
-     */
-    private void setCdataSectionElements(String key, Properties props)
-    {
-
-        String s = props.getProperty(key);
-
-        if (null != s)
-        {
-            // Vector of URI/LocalName pairs
-            Vector v = new Vector();
-            int l = s.length();
-            boolean inCurly = false;
-            StringBuffer buf = new StringBuffer();
-
-            // parse through string, breaking on whitespaces.  I do this instead
-            // of a tokenizer so I can track whitespace inside of curly brackets,
-            // which theoretically shouldn't happen if they contain legal URLs.
-            for (int i = 0; i < l; i++)
-            {
-                char c = s.charAt(i);
-
-                if (Character.isWhitespace(c))
-                {
-                    if (!inCurly)
-                    {
-                        if (buf.length() > 0)
-                        {
-                            addCdataSectionElement(buf.toString(), v);
-                            buf.setLength(0);
-                        }
-                        continue;
-                    }
-                }
-                else if ('{' == c)
-                    inCurly = true;
-                else if ('}' == c)
-                    inCurly = false;
-
-                buf.append(c);
-            }
-
-            if (buf.length() > 0)
-            {
-                addCdataSectionElement(buf.toString(), v);
-                buf.setLength(0);
-            }
-            // call the official, public method to set the collected names
-            setCdataSectionElements(v);
-        }
-
-    }
-
-    /**
-     * Adds a URI/LocalName pair of strings to the list.
-     *
-     * @param URI_and_localName String of the form "{uri}local" or "local" 
-     * 
-     * @return a QName object
-     */
-    private void addCdataSectionElement(String URI_and_localName, Vector v)
-    {
-
-        StringTokenizer tokenizer =
-            new StringTokenizer(URI_and_localName, "{}", false);
-        String s1 = tokenizer.nextToken();
-        String s2 = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
-
-        if (null == s2)
-        {
-            // add null URI and the local name
-            v.addElement(null);
-            v.addElement(s1);
-        }
-        else
-        {
-            // add URI, then local name
-            v.addElement(s1);
-            v.addElement(s2);
-        }
-    }
-
-    /**
-     * Remembers the cdata sections specified in the cdata-section-elements.
-     * The "official way to set URI and localName pairs. 
-     * This method should be used by both Xalan and XSLTC.
-     * 
-     * @param URI_and_localNames a vector of pairs of Strings (URI/local)
-     */
-    public void setCdataSectionElements(Vector URI_and_localNames)
-    {
-        // convert to the new way.
-        if (URI_and_localNames != null)
-        {
-            final int len = URI_and_localNames.size() - 1;
-            if (len > 0)
-            {
-                final StringBuffer sb = new StringBuffer();
-                for (int i = 0; i < len; i += 2)
-                {
-                    // whitspace separated "{uri1}local1 {uri2}local2 ..."
-                    if (i != 0)
-                        sb.append(' ');
-                    final String uri = (String) URI_and_localNames.elementAt(i);
-                    final String localName =
-                        (String) URI_and_localNames.elementAt(i + 1);
-                    if (uri != null)
-                    {
-                        // If there is no URI don't put this in, just the localName then.
-                        sb.append('{');
-                        sb.append(uri);
-                        sb.append('}');
-                    }
-                    sb.append(localName);
-                }
-                m_StringOfCDATASections = sb.toString();
-            }
-        }
-        initCdataElems(m_StringOfCDATASections);
     }
 
     /**
@@ -3414,25 +3264,5 @@ abstract public class ToStream extends SerializerBase
     public void setNewLine (char[] eolChars) {
         m_lineSep = eolChars;
         m_lineSepLen = eolChars.length;
-    }
-
-    /**
-     * Remembers the cdata sections specified in the cdata-section-elements by appending the given
-     * cdata section elements to the list. This method can be called multiple times, but once an
-     * element is put in the list of cdata section elements it can not be removed.
-     * This method should be used by both Xalan and XSLTC.
-     * 
-     * @param URI_and_localNames a whitespace separated list of element names, each element
-     * is a URI in curly braces (optional) and a local name. An example of such a parameter is:
-     * "{http://company.com}price {myURI2}book chapter"
-     */
-    public void addCdataSectionElements(String URI_and_localNames)
-    {
-        if (URI_and_localNames != null)
-            initCdataElems(URI_and_localNames);
-        if (m_StringOfCDATASections == null)
-            m_StringOfCDATASections = URI_and_localNames;
-        else
-            m_StringOfCDATASections += (" " + URI_and_localNames);
     }
 }

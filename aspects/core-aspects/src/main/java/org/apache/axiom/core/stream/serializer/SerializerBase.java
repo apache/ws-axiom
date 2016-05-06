@@ -33,8 +33,6 @@ import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
 
 /**
  * This class acts as a base class for the XML "serializers"
@@ -997,7 +995,6 @@ public abstract class SerializerBase
     private void resetSerializerBase()
     {
     	this.m_attributes.clear();
-        this.m_CdataElems = null;
         this.m_cdataTagOpen = false;
         this.m_docIsEmpty = true;
     	this.m_doctypePublic = null;
@@ -1020,7 +1017,6 @@ public abstract class SerializerBase
     	this.m_sourceLocator = null;
     	this.m_standalone = null;
     	this.m_standaloneWasSpecified = false;
-        this.m_StringOfCDATASections = null;
     	this.m_transformer = null;
     	this.m_version = null;
     	// don't set writer to null, so that it might be re-used
@@ -1090,105 +1086,7 @@ public abstract class SerializerBase
     }
  
 
-    /** 
-     * The CDATA section names stored in a whitespace separateed list with
-     * each element being a word of the form "{uri}localName" This list
-     * comes from the cdata-section-elements attribute.
-     * 
-     * This field replaces m_cdataSectionElements Vector.
-     */
-    protected String m_StringOfCDATASections = null; 
-    
     boolean m_docIsEmpty = true;
-    void initCdataElems(String s)
-    {
-        if (s != null)
-        {            
-            int max = s.length();
-
-            // true if we are in the middle of a pair of curly braces that delimit a URI
-            boolean inCurly = false;
-
-            // true if we found a URI but haven't yet processed the local name 
-            boolean foundURI = false;
-
-            StringBuffer buf = new StringBuffer();
-            String uri = null;
-            String localName = null;
-
-            // parse through string, breaking on whitespaces.  I do this instead
-            // of a tokenizer so I can track whitespace inside of curly brackets,
-            // which theoretically shouldn't happen if they contain legal URLs.
-
-
-            for (int i = 0; i < max; i++)
-            {
-
-                char c = s.charAt(i);
-
-                if (Character.isWhitespace(c))
-                {
-                    if (!inCurly)
-                    {
-                        if (buf.length() > 0)
-                        {
-                            localName = buf.toString();
-                            if (!foundURI)
-                                uri = "";
-                            addCDATAElement(uri,localName);
-                            buf.setLength(0);
-                            foundURI = false;
-                        }
-                        continue;
-                    }
-                    else
-                        buf.append(c); // add whitespace to the URI
-                }
-                else if ('{' == c) // starting a URI
-                    inCurly = true;
-                else if ('}' == c)
-                {
-                    // we just ended a URI, add the URI to the vector
-                    foundURI = true;
-                    uri = buf.toString();
-                    buf.setLength(0);
-                    inCurly = false;
-                }
-                else
-                {
-                    // append non-whitespace, non-curly to current URI or localName being gathered.                    
-                    buf.append(c);
-                }
-
-            }
-
-            if (buf.length() > 0)
-            {
-                // We have one last localName to process.
-                localName = buf.toString();
-                if (!foundURI)
-                    uri = "";
-                addCDATAElement(uri,localName);
-            }
-        }
-    }
-    protected java.util.Hashtable m_CdataElems = null;
-    private void addCDATAElement(String uri, String localName) 
-    {
-        if (m_CdataElems == null) {
-            m_CdataElems = new java.util.Hashtable();
-        }
-        
-        java.util.Hashtable h = (java.util.Hashtable) m_CdataElems.get(localName);
-        if (h == null) {
-            h = new java.util.Hashtable();
-            m_CdataElems.put(localName,h);
-        }
-        h.put(uri,uri);
-        
-    }
-    
-    
     /**
      * Return true if nothing has been sent to this result tree yet.
      * <p>
@@ -1200,60 +1098,6 @@ public abstract class SerializerBase
         // If we haven't called startDocument() yet, then this document is empty
         return m_docIsEmpty && (m_elemContext.m_currentElemDepth == 0);
     }    
-    
-    /**
-     * Return true if the current element in m_elemContext
-     * is a CDATA section.
-     * CDATA sections are specified in the <xsl:output> attribute
-     * cdata-section-names or in the JAXP equivalent property.
-     * In any case the format of the value of such a property is:
-     * <pre>
-     * "{uri1}localName1 {uri2}localName2 . . . "
-     * </pre>
-     * 
-     * <p>
-     * This method is not a public API, but is only used internally by the serializer.
-     */
-    protected boolean isCdataSection()
-    {
-
-        boolean b = false;
-
-        if (null != m_StringOfCDATASections)
-        {
-            if (m_elemContext.m_elementLocalName == null) 
-            {
-                String localName =  getLocalName(m_elemContext.m_elementName); 
-                m_elemContext.m_elementLocalName = localName;                   
-            }
-            
-            if ( m_elemContext.m_elementURI == null) {
-                
-                m_elemContext.m_elementURI = getElementURI();
-            }
-            else if ( m_elemContext.m_elementURI.length() == 0) {
-                if ( m_elemContext.m_elementName == null) {
-                    m_elemContext.m_elementName = m_elemContext.m_elementLocalName;    
-                    // leave URI as "", meaning in no namespace
-                }
-                else if (m_elemContext.m_elementLocalName.length() < m_elemContext.m_elementName.length()){
-                    // We were told the URI was "", yet the name has a prefix since the name is longer than the localname.
-                    // So we will fix that incorrect information here.
-                    m_elemContext.m_elementURI = getElementURI();  
-                }
-            }
-
-            java.util.Hashtable h = (java.util.Hashtable) m_CdataElems.get(m_elemContext.m_elementLocalName);
-            if (h != null) 
-            {
-                Object obj = h.get(m_elemContext.m_elementURI);
-                if (obj != null)
-                    b = true; 
-            }
-
-        }
-        return b;
-    }
     
     /**
      * Before this call m_elementContext.m_elementURI is null,
@@ -1395,19 +1239,7 @@ public abstract class SerializerBase
         if (defaultVal)
             m_OutputPropsDefault.put(name,val);
         else {
-            if (OutputKeys.CDATA_SECTION_ELEMENTS.equals(name) && val != null) {
-                initCdataElems(val);
-                String oldVal = (String) m_OutputProps.get(name);
-                String newVal;
-                if (oldVal == null)
-                    newVal = oldVal + ' ' + val;
-                else
-                    newVal = val;
-                m_OutputProps.put(name,newVal);
-            }
-            else {
-                m_OutputProps.put(name,val);
-            }
+            m_OutputProps.put(name,val);
         }
         
 

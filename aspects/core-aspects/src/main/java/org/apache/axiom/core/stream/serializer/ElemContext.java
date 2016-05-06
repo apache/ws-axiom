@@ -77,12 +77,6 @@ final class ElemContext
      */
     String m_elementURI = null;
 
-    /** If the element is in the cdata-section-names list
-     * then the value is true. If it is true the text children of the element
-     * should be output in CDATA section blocks. 
-     */
-    boolean m_isCdataSection;
-
     /** True if the current element has output escaping disabled.
      * This is true for SCRIPT and STYLE elements. 
      */
@@ -209,7 +203,6 @@ final class ElemContext
         frame.m_elementName = qName;
         frame.m_elementLocalName = localName;
         frame.m_elementURI = uri;
-        frame.m_isCdataSection = false;
         frame.m_startTagOpen = true;
 
         // is_Raw is already set in the HTML startElement() method
