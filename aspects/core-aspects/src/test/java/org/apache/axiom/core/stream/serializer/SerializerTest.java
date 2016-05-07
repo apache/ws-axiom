@@ -32,6 +32,6 @@ public class SerializerTest {
         handler.startElement("", "test", "");
         handler.attributesCompleted();
         handler.endElement();
-        assertThat(sw.toString()).containsMatch("<test ?/>");
+        assertThat(sw.toString()).matches("<test ?/>");
     }
 }

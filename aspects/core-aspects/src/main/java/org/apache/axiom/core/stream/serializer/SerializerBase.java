@@ -82,13 +82,6 @@ public abstract class SerializerBase
         PKG_PATH = sb.toString();
     }
 
-    
-
-    /**
-     * true if we still need to call startDocumentInternal() 
-	 */
-    protected boolean m_needToCallStartDocument = true; 
-
     /** True if a trailing "]]>" still needs to be written to be
      * written out. Used to merge adjacent CDATA sections
      */
@@ -769,7 +762,6 @@ public abstract class SerializerBase
 
         // if we do get called with startDocument(), handle it right away       
         startDocumentInternal();
-        m_needToCallStartDocument = false;
         return;
     }   
     
@@ -837,7 +829,6 @@ public abstract class SerializerBase
     	this.m_inEntityRef = false;
     	this.m_inExternalDTD = false;
     	this.m_mediatype = null;
-    	this.m_needToCallStartDocument = true;
     	this.m_needToOutputDocTypeDecl = false;
         if (m_OutputProps != null)
             this.m_OutputProps.clear();

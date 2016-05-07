@@ -107,69 +107,64 @@ public class ToXMLStream extends ToStream
      */
     public void startDocumentInternal() throws StreamException
     {
+        super.startDocumentInternal();
 
-        if (m_needToCallStartDocument)
-        { 
-            super.startDocumentInternal();
-            m_needToCallStartDocument = false;
+        if (m_inEntityRef)
+            return;
 
-            if (m_inEntityRef)
-                return;
+        m_needToOutputDocTypeDecl = true;
+        m_startNewLine = false;
+        /* The call to getXMLVersion() might emit an error message
+         * and we should emit this message regardless of if we are 
+         * writing out an XML header or not.
+         */ 
+        final String version = getXMLVersion();
+        if (getOmitXMLDeclaration() == false)
+        {
+            String encoding = Encodings.getMimeEncoding(getEncoding());
+            String standalone;
 
-            m_needToOutputDocTypeDecl = true;
-            m_startNewLine = false;
-            /* The call to getXMLVersion() might emit an error message
-             * and we should emit this message regardless of if we are 
-             * writing out an XML header or not.
-             */ 
-            final String version = getXMLVersion();
-            if (getOmitXMLDeclaration() == false)
+            if (m_standaloneWasSpecified)
             {
-                String encoding = Encodings.getMimeEncoding(getEncoding());
-                String standalone;
-
-                if (m_standaloneWasSpecified)
-                {
-                    standalone = " standalone=\"" + getStandalone() + "\"";
-                }
-                else
-                {
-                    standalone = "";
-                }
-
-                try
-                {
-                    final java.io.Writer writer = m_writer;
-                    writer.write("<?xml version=\"");
-                    writer.write(version);
-                    writer.write("\" encoding=\"");
-                    writer.write(encoding);
-                    writer.write('\"');
-                    writer.write(standalone);
-                    writer.write("?>");
-                    if (m_doIndent) {
-                        if (m_standaloneWasSpecified
-                                || getDoctypePublic() != null
-                                || getDoctypeSystem() != null) {
-                            // We almost never put a newline after the XML
-                            // header because this XML could be used as
-                            // an extenal general parsed entity
-                            // and we don't know the context into which it
-                            // will be used in the future.  Only when
-                            // standalone, or a doctype system or public is
-                            // specified are we free to insert a new line
-                            // after the header.  Is it even worth bothering
-                            // in these rare cases?                           
-                            writer.write(m_lineSep, 0, m_lineSepLen);
-                        }
-                    }
-                } 
-                catch(IOException e)
-                {
-                    throw new StreamException(e);
-                }
-
+                standalone = " standalone=\"" + getStandalone() + "\"";
             }
+            else
+            {
+                standalone = "";
+            }
+
+            try
+            {
+                final java.io.Writer writer = m_writer;
+                writer.write("<?xml version=\"");
+                writer.write(version);
+                writer.write("\" encoding=\"");
+                writer.write(encoding);
+                writer.write('\"');
+                writer.write(standalone);
+                writer.write("?>");
+                if (m_doIndent) {
+                    if (m_standaloneWasSpecified
+                            || getDoctypePublic() != null
+                            || getDoctypeSystem() != null) {
+                        // We almost never put a newline after the XML
+                        // header because this XML could be used as
+                        // an extenal general parsed entity
+                        // and we don't know the context into which it
+                        // will be used in the future.  Only when
+                        // standalone, or a doctype system or public is
+                        // specified are we free to insert a new line
+                        // after the header.  Is it even worth bothering
+                        // in these rare cases?                           
+                        writer.write(m_lineSep, 0, m_lineSepLen);
+                    }
+                }
+            } 
+            catch(IOException e)
+            {
+                throw new StreamException(e);
+            }
+
         }
     }
 
@@ -265,9 +260,6 @@ public class ToXMLStream extends ToStream
         {
             try
             {
-                if (m_needToCallStartDocument)
-                    startDocumentInternal();                
-
                 if (shouldIndent())
                     indent();
 

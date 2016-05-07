@@ -1336,11 +1336,6 @@ abstract public class ToStream extends SerializerBase
             
         m_docIsEmpty = false;
         
-        if (m_needToCallStartDocument)
-        {
-            startDocumentInternal();
-        }
-
         if (m_cdataStartCalled)
         {
             /* either due to startCDATA() being called or due to 
@@ -1809,13 +1804,7 @@ abstract public class ToStream extends SerializerBase
         if (m_inEntityRef)
             return;
 
-        if (m_needToCallStartDocument)
-        {
-            startDocumentInternal();
-            m_needToCallStartDocument = false;
-            m_docIsEmpty = false;
-        }
-        else if (m_cdataTagOpen)
+        if (m_cdataTagOpen)
             closeCDATA();
         try
         {
@@ -2119,11 +2108,6 @@ abstract public class ToStream extends SerializerBase
         int start_old = start;
         if (m_inEntityRef)
             return;
-        if (m_needToCallStartDocument)
-        {
-            startDocumentInternal();
-            m_needToCallStartDocument = false;
-        }
 
         try
         {
@@ -2409,12 +2393,6 @@ abstract public class ToStream extends SerializerBase
      */
     public void flushPending() throws StreamException
     {
-            if (m_needToCallStartDocument)
-            {
-                startDocumentInternal();
-                m_needToCallStartDocument = false;
-            }
-
             if (m_cdataTagOpen)
             {
                 closeCDATA();
