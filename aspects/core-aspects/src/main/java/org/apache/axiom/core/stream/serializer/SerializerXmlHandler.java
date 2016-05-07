@@ -25,21 +25,15 @@ import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
-import org.xml.sax.helpers.AttributesImpl;
 
 public class SerializerXmlHandler implements XmlHandler {
     private enum CharacterDataMode { PASS_THROUGH, BUFFER, SKIP, ACCUMULATE };
     
     private final ToXMLStream serializer;
-    private String[] prefixStack = new String[16];
-    private int bindings;
-    private int[] scopeStack = new int[8];
-    private int depth;
     private Stack<String> elementNameStack = new Stack<String>();
     private String elementURI;
     private String elementLocalName;
     private String elementQName;
-    private final AttributesImpl attributes = new AttributesImpl();
     private CharacterDataMode characterDataMode = CharacterDataMode.PASS_THROUGH;
     private char[] buffer = new char[4096];
     private int bufferPos;
@@ -78,38 +72,28 @@ public class SerializerXmlHandler implements XmlHandler {
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
-        if (depth == scopeStack.length) {
-            int[] newScopeStack = new int[scopeStack.length*2];
-            System.arraycopy(scopeStack, 0, newScopeStack, 0, scopeStack.length);
-            scopeStack = newScopeStack;
-        }
-        scopeStack[depth++] = bindings;
+        serializer.startElement(elementURI, elementLocalName, elementQName, null);
     }
 
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
-        if (bindings == prefixStack.length) {
-            String[] newPrefixStack = new String[prefixStack.length*2];
-            System.arraycopy(prefixStack, 0, newPrefixStack, 0, prefixStack.length);
-            prefixStack = newPrefixStack;
+        if (prefix.isEmpty()) {
+            serializer.writeAttribute("", "xmlns", namespaceURI);
+        } else {
+            serializer.writeAttribute("xmlns", prefix, namespaceURI);
         }
-        prefixStack[bindings++] = prefix;
-        serializer.startPrefixMapping(prefix, namespaceURI);
-        // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
 
     public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
-        attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
+        serializer.writeAttribute(prefix, localName, value);
     }
 
     public void attributesCompleted() throws StreamException {
-        serializer.startElement(elementURI, elementLocalName, elementQName, attributes);
         elementNameStack.push(elementURI);
         elementNameStack.push(elementLocalName);
         elementNameStack.push(elementQName);
         elementURI = null;
         elementLocalName = null;
         elementQName = null;
-        attributes.clear();
         serializer.closeStartTag();
     }
 
@@ -118,10 +102,6 @@ public class SerializerXmlHandler implements XmlHandler {
         String elementLocalName = elementNameStack.pop();
         String elementURI = elementNameStack.pop();
         serializer.endElement(elementURI, elementLocalName, elementQName);
-        for (int i=bindings-1; i>=scopeStack[depth-1]; i--) {
-            serializer.endPrefixMapping(prefixStack[i]);
-        }
-        bindings = scopeStack[--depth];
     }
 
     private void writeToBuffer(String data) {

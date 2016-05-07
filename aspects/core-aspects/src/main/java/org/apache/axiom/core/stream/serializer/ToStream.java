@@ -1972,6 +1972,23 @@ abstract public class ToStream extends SerializerBase
             }
     }
 
+    public void writeAttribute(String prefix, String localName, String value) throws StreamException {
+        try {
+            final Writer writer = m_writer;
+            writer.write(' ');
+            if (!prefix.isEmpty()) {
+                writer.write(prefix);
+                writer.write(':');
+            }
+            writer.write(localName);
+            writer.write("=\"");
+            writeAttrString(writer, value);
+            writer.write('\"');
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
+    }
+
     /**
      * Returns the specified <var>string</var> after substituting <VAR>specials</VAR>,
      * and UTF-16 surrogates for chracter references <CODE>&amp;#xnn</CODE>.
