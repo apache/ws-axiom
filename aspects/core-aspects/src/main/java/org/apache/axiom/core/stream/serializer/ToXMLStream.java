@@ -387,7 +387,7 @@ public class ToXMLStream extends ToStream
                     writer.write(' ');
                     writer.write(patchedName);
                     writer.write("=\"");
-                    writeAttrString(writer, value, this.getEncoding());
+                    writeAttrString(writer, value);
                     writer.write('"');
                 }
             } catch (IOException e) {

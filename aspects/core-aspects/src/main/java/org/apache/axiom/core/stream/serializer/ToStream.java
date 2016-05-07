@@ -1962,7 +1962,6 @@ abstract public class ToStream extends SerializerBase
              * accumulated over a series of calls to attribute(name,value)
              */
 
-            String encoding = getEncoding();
             for (int i = 0; i < nAttrs; i++)
             {
                 // elementAt is JDK 1.1.8
@@ -1971,7 +1970,7 @@ abstract public class ToStream extends SerializerBase
                 writer.write(' ');
                 writer.write(name);
                 writer.write("=\"");
-                writeAttrString(writer, value, encoding);
+                writeAttrString(writer, value);
                 writer.write('\"');
             }
     }
@@ -1981,14 +1980,12 @@ abstract public class ToStream extends SerializerBase
      * and UTF-16 surrogates for chracter references <CODE>&amp;#xnn</CODE>.
      *
      * @param   string      String to convert to XML format.
-     * @param   encoding    CURRENTLY NOT IMPLEMENTED.
      *
      * @throws java.io.IOException
      */
     public void writeAttrString(
         Writer writer,
-        String string,
-        String encoding)
+        String string)
         throws IOException
     {
         final int len = string.length();
