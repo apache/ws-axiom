@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.mixin;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Iterator;
@@ -42,6 +43,7 @@ import org.apache.axiom.core.stream.NamespaceURIInterningFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
+import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
 import org.apache.axiom.core.stream.stax.StAXPivot;
 import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.om.OMElement;
@@ -279,7 +281,24 @@ public aspect AxiomContainerSupport {
     }
 
     private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
-        serialize(new MTOMXMLStreamWriterImpl(StAXUtils.createXMLStreamWriter(writer), format), cache);
+        XmlHandler handler = new XmlDeclarationRewriterHandler(new SerializerXmlHandler(writer), format);
+        CoreElement contextElement = getContextElement();
+        if (contextElement != null) {
+            handler = new XsiTypeFilterHandler(handler, contextElement);
+        }
+        try {
+            internalSerialize(new NamespaceRepairingFilterHandler(handler, null, true), cache);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        } catch (StreamException ex) {
+            throw AxiomExceptionTranslator.toXMLStreamException(ex);
+        }
+        try {
+            // TODO: the Abdera code depends on this
+            writer.flush();
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {

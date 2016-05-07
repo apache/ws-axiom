@@ -2343,6 +2343,15 @@ abstract public class ToStream extends SerializerBase
         m_inDoctype = true;
     }
 
+    public void writeInternalSubset(String internalSubset) throws StreamException {
+        try {
+            DTDprolog();
+            m_writer.write(internalSubset);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
+    }
+
     /**
      * Returns the m_indentAmount.
      * @return int

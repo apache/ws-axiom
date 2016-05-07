@@ -67,6 +67,9 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         serializer.startDTD(rootName, publicId, systemId);
+        if (internalSubset != null) {
+            serializer.writeInternalSubset(internalSubset);
+        }
         serializer.endDTD();
     }
 
