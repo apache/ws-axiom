@@ -271,7 +271,7 @@ public aspect AxiomContainerSupport {
     }
     
     private void AxiomContainer.serialize(Writer writer, boolean cache) throws XMLStreamException {
-        serialize(new MTOMXMLStreamWriterImpl(StAXUtils.createXMLStreamWriter(writer)), cache);
+        serialize(writer, new OMOutputFormat(), cache);
     }
 
     private void AxiomContainer.serialize(OutputStream output, OMOutputFormat format, boolean cache) throws XMLStreamException {
