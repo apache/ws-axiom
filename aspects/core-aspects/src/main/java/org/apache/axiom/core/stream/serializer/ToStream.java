@@ -2242,20 +2242,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     /**
-     * Receive notification of a skipped entity.
-     * 
-     * @param name The name of the skipped entity.  If it is a
-     *       parameter                   entity, the name will begin with '%',
-     * and if it is the external DTD subset, it will be the string
-     * "[dtd]".
-     * @throws StreamException Any SAX exception, possibly wrapping
-     * another exception.
-     */
-    public void skippedEntity(String name) throws StreamException
-    { // TODO: Should handle
-    }
-
-    /**
      * Report the start of a CDATA section.
      * 
      * @throws StreamException The application may raise an exception.

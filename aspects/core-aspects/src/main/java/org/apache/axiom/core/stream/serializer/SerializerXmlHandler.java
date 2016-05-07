@@ -200,7 +200,7 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public void processEntityReference(String name, String replacementText) throws StreamException {
         serializer.closeStartTag();
-        serializer.skippedEntity(name);
+        serializer.entityReference(name);
     }
 
     public void completed() throws StreamException {

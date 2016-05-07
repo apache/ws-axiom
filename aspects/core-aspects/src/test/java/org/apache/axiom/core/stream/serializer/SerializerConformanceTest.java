@@ -25,6 +25,8 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
@@ -45,7 +47,10 @@ public class SerializerConformanceTest extends MatrixTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        Document document = sample.getDocument();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setExpandEntityReferences(false);
+        Document document = factory.newDocumentBuilder().parse(sample.getUrl().toString());
         StringWriter sw = new StringWriter();
         XmlReader reader = new DOMInput(document, false).createReader(new SerializerXmlHandler(sw));
         while (!reader.proceed()) {
