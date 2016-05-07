@@ -421,30 +421,6 @@ public class ToXMLStream extends ToStream
             boolean was_added = addAttributeAlways(uri, localName, rawName, type, value, xslAttribute);
             
 
-            /*
-             * We don't run this block of code if:
-             * 1. The attribute value was only replaced (was_added is false).
-             * 2. The attribute is from an xsl:attribute element (that is handled
-             *    in the addAttributeAlways() call just above.
-             * 3. The name starts with "xmlns", i.e. it is a namespace declaration.
-             */
-            if (was_added && !xslAttribute && !rawName.startsWith("xmlns"))
-            {
-                String prefixUsed =
-                    ensureAttributesNamespaceIsDeclared(
-                        uri,
-                        localName,
-                        rawName);
-                if (prefixUsed != null
-                    && rawName != null
-                    && !rawName.startsWith(prefixUsed))
-                {
-                    // use a different raw name, with the prefix used in the
-                    // generated namespace declaration
-                    rawName = prefixUsed + ":" + localName;
-
-                }
-            }
             addAttributeAlways(uri, localName, rawName, type, value, xslAttribute);
         }
         else

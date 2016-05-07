@@ -1828,9 +1828,6 @@ abstract public class ToStream extends SerializerBase
                 m_needToOutputDocTypeDecl = false;
             }
         
-            if (namespaceURI != null)
-                ensurePrefixIsDeclared(namespaceURI, name);
-                
             m_ispreserve = false;
 
             if (shouldIndent() && m_startNewLine)
@@ -2571,116 +2568,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     /**
-     * Makes sure that the namespace URI for the given qualified attribute name
-     * is declared.
-     * @param ns the namespace URI
-     * @param rawName the qualified name 
-     * @return returns null if no action is taken, otherwise it returns the
-     * prefix used in declaring the namespace. 
-     * @throws StreamException
-     */
-    protected String ensureAttributesNamespaceIsDeclared(
-        String ns,
-        String localName,
-        String rawName)
-        throws StreamException
-    {
-
-        if (ns != null && ns.length() > 0)
-        {
-
-            // extract the prefix in front of the raw name
-            int index = 0;
-            String prefixFromRawName =
-                (index = rawName.indexOf(":")) < 0
-                    ? ""
-                    : rawName.substring(0, index);
-
-            if (index > 0)
-            {
-                // we have a prefix, lets see if it maps to a namespace 
-                String uri = m_prefixMap.lookupNamespace(prefixFromRawName);
-                if (uri != null && uri.equals(ns))
-                {
-                    // the prefix in the raw name is already maps to the given namespace uri
-                    // so we don't need to do anything
-                    return null;
-                }
-                else
-                {
-                    // The uri does not map to the prefix in the raw name,
-                    // so lets make the mapping.
-                    this.startPrefixMapping(prefixFromRawName, ns, false);
-                    this.addAttribute(
-                        "http://www.w3.org/2000/xmlns/",
-                        prefixFromRawName,
-                        "xmlns:" + prefixFromRawName,
-                        "CDATA",
-                        ns, false);
-                    return prefixFromRawName;
-                }
-            }
-            else
-            {
-                // we don't have a prefix in the raw name.
-                // Does the URI map to a prefix already?
-                String prefix = m_prefixMap.lookupPrefix(ns);
-                if (prefix == null)
-                {
-                    // uri is not associated with a prefix,
-                    // so lets generate a new prefix to use
-                    prefix = m_prefixMap.generateNextPrefix();
-                    this.startPrefixMapping(prefix, ns, false);
-                    this.addAttribute(
-                        "http://www.w3.org/2000/xmlns/",
-                        prefix,
-                        "xmlns:" + prefix,
-                        "CDATA",
-                        ns, false);
-                }
-
-                return prefix;
-
-            }
-        }
-        return null;
-    }
-
-    void ensurePrefixIsDeclared(String ns, String rawName)
-        throws StreamException
-    {
-
-        if (ns != null && ns.length() > 0)
-        {
-            int index;
-            final boolean no_prefix = ((index = rawName.indexOf(":")) < 0);
-            String prefix = (no_prefix) ? "" : rawName.substring(0, index);
-
-            if (null != prefix)
-            {
-                String foundURI = m_prefixMap.lookupNamespace(prefix);
-
-                if ((null == foundURI) || !foundURI.equals(ns))
-                {
-                    this.startPrefixMapping(prefix, ns);
-
-                    // Bugzilla1133: Generate attribute as well as namespace event.
-                    // SAX does expect both.
-
-                    this.addAttributeAlways(
-                        "http://www.w3.org/2000/xmlns/",
-                        no_prefix ? "xmlns" : prefix,  // local name
-                        no_prefix ? "xmlns" : ("xmlns:"+ prefix), // qname
-                        "CDATA",
-                        ns,
-                        false);
-                }
-
-            }
-        }
-    }
-
-    /**
      * This method flushes any pending events, which can be startDocument()
      * closing the opening tag of an element, or closing an open CDATA section.
      */
@@ -2811,24 +2698,6 @@ abstract public class ToStream extends SerializerBase
                     }
                 }
 
-                try
-                {
-                    /* This is our last chance to make sure the namespace for this
-                     * attribute is declared, especially if we just generated an alternate
-                     * prefix to avoid a collision (the new prefix/rawName will go out of scope
-                     * soon and be lost ...  last chance here.
-                     */
-                    String prefixUsed =
-                        ensureAttributesNamespaceIsDeclared(
-                            uri,
-                            localName,
-                            rawName);
-                }
-                catch (StreamException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
             }
             m_attributes.addAttribute(uri, localName, rawName, type, value);
             was_added = true;
