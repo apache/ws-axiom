@@ -1207,11 +1207,6 @@ abstract public class ToStream extends SerializerBase
         try
         {
             final int old_start = start;
-            if (m_elemContext.m_startTagOpen)
-            {
-                closeStartTag();
-                m_elemContext.m_startTagOpen = false;
-            }
             m_ispreserve = true;
 
             if (shouldIndent())
@@ -1292,12 +1287,6 @@ abstract public class ToStream extends SerializerBase
             return;
         try
         {
-            if (m_elemContext.m_startTagOpen)
-            {
-                closeStartTag();
-                m_elemContext.m_startTagOpen = false;
-            }
-
             m_ispreserve = true;
 
             m_writer.write(ch, start, length);
@@ -1348,12 +1337,7 @@ abstract public class ToStream extends SerializerBase
             
         m_docIsEmpty = false;
         
-        if (m_elemContext.m_startTagOpen)
-        {
-            closeStartTag();
-            m_elemContext.m_startTagOpen = false;
-        }
-        else if (m_needToCallStartDocument)
+        if (m_needToCallStartDocument)
         {
             startDocumentInternal();
         }
@@ -1377,13 +1361,6 @@ abstract public class ToStream extends SerializerBase
             return;
         }
 
-        if (m_elemContext.m_startTagOpen)
-        {
-            closeStartTag();
-            m_elemContext.m_startTagOpen = false;
-        }
-
-        
         try
         {
             int i;
@@ -1851,15 +1828,6 @@ abstract public class ToStream extends SerializerBase
                 m_needToOutputDocTypeDecl = false;
             }
         
-            /* before we over-write the current elementLocalName etc.
-             * lets close out the old one (if we still need to)
-             */
-            if (m_elemContext.m_startTagOpen)
-            {
-                closeStartTag();
-                m_elemContext.m_startTagOpen = false;
-            }
-
             if (namespaceURI != null)
                 ensurePrefixIsDeclared(namespaceURI, name);
                 
@@ -2314,12 +2282,7 @@ abstract public class ToStream extends SerializerBase
         int start_old = start;
         if (m_inEntityRef)
             return;
-        if (m_elemContext.m_startTagOpen)
-        {
-            closeStartTag();
-            m_elemContext.m_startTagOpen = false;
-        }
-        else if (m_needToCallStartDocument)
+        if (m_needToCallStartDocument)
         {
             startDocumentInternal();
             m_needToCallStartDocument = false;
@@ -2548,6 +2511,8 @@ abstract public class ToStream extends SerializerBase
                 m_isprevtext = false;
                 m_preserves.push(m_ispreserve);
             }
+
+            m_elemContext.m_startTagOpen = false;
         }
 
     }
@@ -2728,11 +2693,6 @@ abstract public class ToStream extends SerializerBase
             {
                 startDocumentInternal();
                 m_needToCallStartDocument = false;
-            }
-            if (m_elemContext.m_startTagOpen)
-            {
-                closeStartTag();
-                m_elemContext.m_startTagOpen = false;
             }
 
             if (m_cdataTagOpen)

@@ -265,12 +265,7 @@ public class ToXMLStream extends ToStream
         {
             try
             {
-                if (m_elemContext.m_startTagOpen)
-                {
-                    closeStartTag();
-                    m_elemContext.m_startTagOpen = false;
-                }
-                else if (m_needToCallStartDocument)
+                if (m_needToCallStartDocument)
                     startDocumentInternal();                
 
                 if (shouldIndent())
@@ -337,12 +332,6 @@ public class ToXMLStream extends ToStream
      */
     public void entityReference(String name) throws StreamException
     {
-        if (m_elemContext.m_startTagOpen)
-        {
-            closeStartTag();
-            m_elemContext.m_startTagOpen = false;
-        }
-
         try
         {
             if (shouldIndent())

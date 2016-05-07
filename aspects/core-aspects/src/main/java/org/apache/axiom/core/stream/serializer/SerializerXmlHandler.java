@@ -110,6 +110,7 @@ public class SerializerXmlHandler implements XmlHandler {
         elementLocalName = null;
         elementQName = null;
         attributes.clear();
+        serializer.closeStartTag();
     }
 
     public void endElement() throws StreamException {
