@@ -35,10 +35,10 @@ import org.xml.sax.InputSource;
 
 import junit.framework.TestSuite;
 
-public class SerializerTest extends MatrixTestCase {
+public class SerializerConformanceTest extends MatrixTestCase {
     private final XMLSample sample;
 
-    public SerializerTest(XMLSample sample) {
+    public SerializerConformanceTest(XMLSample sample) {
         this.sample = sample;
         addTestParameter("sample", sample.getName());
     }
@@ -68,7 +68,7 @@ public class SerializerTest extends MatrixTestCase {
             @Override
             protected void addTests() {
                 for (XMLSample sample : getInstances(XMLSample.class)) {
-                    addTest(new SerializerTest(sample));
+                    addTest(new SerializerConformanceTest(sample));
                 }
             }
         }.build();
