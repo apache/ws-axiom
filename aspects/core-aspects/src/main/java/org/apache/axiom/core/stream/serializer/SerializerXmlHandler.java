@@ -72,7 +72,7 @@ public class SerializerXmlHandler implements XmlHandler {
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
-        serializer.startElement(elementURI, elementLocalName, elementQName, null);
+        serializer.startElement(elementURI, elementLocalName, elementQName);
     }
 
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {

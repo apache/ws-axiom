@@ -47,40 +47,6 @@ import org.apache.axiom.core.stream.StreamException;
 public interface ExtendedContentHandler
 {
     /**
-     * Add at attribute to the current element
-     * @param uri the namespace URI of the attribute name
-     * @param localName the local name of the attribute (without prefix)
-     * @param rawName the qualified name of the attribute
-     * @param type the attribute type typically character data (CDATA)
-     * @param value the value of the attribute
-     * @param XSLAttribute true if the added attribute is coming from an xsl:attribute element
-     * @throws StreamException
-     */
-    public void addAttribute(
-        String uri,
-        String localName,
-        String rawName,
-        String type,
-        String value,
-        boolean XSLAttribute)
-        throws StreamException;
-    /**
-     * Add attributes to the current element
-     * @param atts the attributes to add.
-     * @throws StreamException
-     */
-    public void addAttributes(org.xml.sax.Attributes atts)
-        throws StreamException;
-    /**
-     * Add an attribute to the current element. The namespace URI of the
-     * attribute will be calculated from the prefix of qName. The local name
-     * will be derived from qName and the type will be assumed to be "CDATA".
-     * @param qName
-     * @param value
-     */
-    public void addAttribute(String qName, String value);
-    
-    /**
      * This method is used to notify of a character event, but passing the data
      * as a character String rather than the standard character array.
      * @param chars the character data
@@ -153,24 +119,6 @@ public interface ExtendedContentHandler
         throws StreamException;
 
     /**
-     * This method is used to notify that a prefix maping is to start, which can
-     * be for the current element, or for the one to come.
-     * @param prefix the prefix that maps to the given URI
-     * @param uri the namespace URI of the given prefix
-     * @param shouldFlush if true this call is like the SAX
-     * startPrefixMapping(prefix,uri) call and the mapping applies to the
-     * element to come.  If false the mapping applies to the current element.
-     * @return boolean false if the prefix mapping was already in effect (in
-     * other words we are just re-declaring), true if this is a new, never
-     * before seen mapping for the element.
-     * @throws StreamException
-     */
-    public boolean startPrefixMapping(
-        String prefix,
-        String uri,
-        boolean shouldFlush)
-        throws StreamException;
-    /**
      * Notify of an entity reference.
      * @param entityName the name of the entity
      * @throws StreamException
@@ -228,46 +176,6 @@ public interface ExtendedContentHandler
     
     // An HTML URL attribute
     public static final int HTML_ATTRURL = 0x4;
-
-    /**
-     * Add a unique attribute to the current element.
-     * The attribute is guaranteed to be unique here. The serializer can write
-     * it out immediately without saving it in a table first. The integer
-     * flag contains information about the attribute, which helps the serializer
-     * to decide whether a particular processing is needed.
-     *
-     * @param qName the fully qualified attribute name.
-     * @param value the attribute value
-     * @param flags a bitwise flag
-     */
-    public void addUniqueAttribute(String qName, String value, int flags)
-        throws StreamException;
-    
-    /**
-     * Add an attribute from an xsl:attribute element.
-     * @param qName the qualified attribute name (prefix:localName)
-     * @param value the attributes value
-     * @param uri the uri that the prefix of the qName is mapped to.
-     */    
-    public void addXSLAttribute(String qName, final String value, final String uri);
-    
-    /**
-     * Add at attribute to the current element, not from an xsl:attribute
-     * element.
-     * @param uri the namespace URI of the attribute name
-     * @param localName the local name of the attribute (without prefix)
-     * @param rawName the qualified name of the attribute
-     * @param type the attribute type typically character data (CDATA)
-     * @param value the value of the attribute
-     * @throws StreamException
-     */
-    public void addAttribute(
-        String uri,
-        String localName,
-        String rawName,
-        String type,
-        String value)
-        throws StreamException;
 
     public void characters(char chars[], int start, int length)
             throws StreamException;

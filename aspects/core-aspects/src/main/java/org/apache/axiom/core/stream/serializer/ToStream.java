@@ -39,7 +39,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.xml.sax.Attributes;
 
 /**
  * This abstract class is a base class for other stream 
@@ -1804,8 +1803,7 @@ abstract public class ToStream extends SerializerBase
     public void startElement(
         String namespaceURI,
         String localName,
-        String name,
-        Attributes atts)
+        String name)
         throws StreamException
     {
         if (m_inEntityRef)
@@ -1846,45 +1844,13 @@ abstract public class ToStream extends SerializerBase
             throw new StreamException(e);
         }
 
-        // process the attributes now, because after this SAX call they might be gone
-        if (atts != null)
-            addAttributes(atts);
-            
         m_elemContext = m_elemContext.push(namespaceURI,localName,name);
         m_isprevtext = false;
     }
 
-    /**
-      * Receive notification of the beginning of an element, additional
-      * namespace or attribute information can occur before or after this call,
-      * that is associated with this element.
-      *
-      *
-      * @param elementNamespaceURI The Namespace URI, or the empty string if the
-      *        element has no Namespace URI or if Namespace
-      *        processing is not being performed.
-      * @param elementLocalName The local name (without prefix), or the
-      *        empty string if Namespace processing is not being
-      *        performed.
-      * @param elementName The element type name.
-      * @throws StreamException Any SAX exception, possibly
-      *            wrapping another exception.
-      * @see org.xml.sax.AttributeList
-      *
-      * @throws StreamException
-      */
-    public void startElement(
-        String elementNamespaceURI,
-        String elementLocalName,
-        String elementName)
-        throws StreamException
-    {
-        startElement(elementNamespaceURI, elementLocalName, elementName, null);
-    }
-
     public void startElement(String elementName) throws StreamException
     {
-        startElement(null, null, elementName, null);
+        startElement(null, null, elementName);
     }
 
     /**
@@ -1937,39 +1903,6 @@ abstract public class ToStream extends SerializerBase
         {
             throw new StreamException(e);
         }
-    }
-
-    /**
-     * Process the attributes, which means to write out the currently
-     * collected attributes to the writer. The attributes are not
-     * cleared by this method
-     * 
-     * @param writer the writer to write processed attributes to.
-     * @param nAttrs the number of attributes in m_attributes 
-     * to be processed
-     *
-     * @throws java.io.IOException
-     * @throws StreamException
-     */
-    public void processAttributes(java.io.Writer writer, int nAttrs) throws IOException, StreamException
-    {
-            /* real SAX attributes are not passed in, so process the 
-             * attributes that were collected after the startElement call.
-             * _attribVector is a "cheap" list for Stream serializer output
-             * accumulated over a series of calls to attribute(name,value)
-             */
-
-            for (int i = 0; i < nAttrs; i++)
-            {
-                // elementAt is JDK 1.1.8
-                final String name = m_attributes.getQName(i);
-                final String value = m_attributes.getValue(i);
-                writer.write(' ');
-                writer.write(name);
-                writer.write("=\"");
-                writeAttrString(writer, value);
-                writer.write('\"');
-            }
     }
 
     public void writeAttribute(String prefix, String localName, String value) throws StreamException {
@@ -2122,13 +2055,6 @@ abstract public class ToStream extends SerializerBase
             final java.io.Writer writer = m_writer;
             if (m_elemContext.m_startTagOpen)
             {
-                int nAttrs = m_attributes.getLength();
-                if (nAttrs > 0)
-                {
-                    processAttributes(m_writer, nAttrs);
-                    // clear attributes object for re-use with next element
-                    m_attributes.clear();
-                }
                 if (m_spaceBeforeClose)
                     writer.write(" />");
                 else
@@ -2175,106 +2101,6 @@ abstract public class ToStream extends SerializerBase
     public void endElement(String name) throws StreamException
     {
         endElement(null, null, name);
-    }
-
-    /**
-     * Begin the scope of a prefix-URI Namespace mapping
-     * just before another element is about to start.
-     * This call will close any open tags so that the prefix mapping
-     * will not apply to the current element, but the up comming child.
-     * 
-     * @param prefix The Namespace prefix being declared.
-     * @param uri The Namespace URI the prefix is mapped to.
-     * 
-     * @throws StreamException The client may throw
-     *            an exception during processing.
-     * 
-     */
-    public void startPrefixMapping(String prefix, String uri)
-        throws StreamException
-    {
-        // the "true" causes the flush of any open tags
-        startPrefixMapping(prefix, uri, true);
-    }
-
-    /**
-     * Handle a prefix/uri mapping, which is associated with a startElement()
-     * that is soon to follow. Need to close any open start tag to make
-     * sure than any name space attributes due to this event are associated wih
-     * the up comming element, not the current one.
-     * @see ExtendedContentHandler#startPrefixMapping
-     *
-     * @param prefix The Namespace prefix being declared.
-     * @param uri The Namespace URI the prefix is mapped to.
-     * @param shouldFlush true if any open tags need to be closed first, this
-     * will impact which element the mapping applies to (open parent, or its up
-     * comming child)
-     * @return returns true if the call made a change to the current 
-     * namespace information, false if it did not change anything, e.g. if the
-     * prefix/namespace mapping was already in scope from before.
-     * 
-     * @throws StreamException The client may throw
-     *            an exception during processing.
-     *
-     *
-     */
-    public boolean startPrefixMapping(
-        String prefix,
-        String uri,
-        boolean shouldFlush)
-        throws StreamException
-    {
-
-        /* Remember the mapping, and at what depth it was declared
-         * This is one greater than the current depth because these
-         * mappings will apply to the next depth. This is in
-         * consideration that startElement() will soon be called
-         */
-
-        boolean pushed;
-        int pushDepth;
-        if (shouldFlush)
-        {
-            flushPending();
-            // the prefix mapping applies to the child element (one deeper)
-            pushDepth = m_elemContext.m_currentElemDepth + 1;
-        }
-        else
-        {
-            // the prefix mapping applies to the current element
-            pushDepth = m_elemContext.m_currentElemDepth;
-        }
-        pushed = m_prefixMap.pushNamespace(prefix, uri, pushDepth);
-
-        if (pushed)
-        {
-            /* Brian M.: don't know if we really needto do this. The
-             * callers of this object should have injected both
-             * startPrefixMapping and the attributes.  We are 
-             * just covering our butt here.
-             */
-            String name;
-            if (EMPTYSTRING.equals(prefix))
-            {
-                name = "xmlns";
-                addAttributeAlways(XMLNS_URI, name, name, "CDATA", uri, false);
-            }
-            else
-            {
-                if (!EMPTYSTRING.equals(uri))
-                    // hack for XSLTC attribset16 test
-                { // that maps ns1 prefix to "" URI
-                    name = "xmlns:" + prefix;
-
-                    /* for something like xmlns:abc="w3.pretend.org"
-                     *  the      uri is the value, that is why we pass it in the
-                     * value, or 5th slot of addAttributeAlways()
-                     */
-                    addAttributeAlways(XMLNS_URI, prefix, name, "CDATA", uri, false);
-                }
-            }
-        }
-        return pushed;
     }
 
     /**
@@ -2503,13 +2329,6 @@ abstract public class ToStream extends SerializerBase
 
             try
             {
-                int nAttrs = m_attributes.getLength();
-                if (nAttrs > 0)
-                {
-                    processAttributes(m_writer, nAttrs);
-                    // clear attributes object for re-use with next element
-                    m_attributes.clear();
-                }
                 m_writer.write('>');
             }
             catch (IOException e)
@@ -2609,117 +2428,6 @@ abstract public class ToStream extends SerializerBase
                     // what? me worry?
                 }
             }
-    }
-
-    /**
-     * Adds the given attribute to the set of attributes, even if there is
-     * no currently open element. This is useful if a SAX startPrefixMapping()
-     * should need to add an attribute before the element name is seen.
-     * 
-     * This method is a copy of its super classes method, except that some
-     * tracing of events is done.  This is so the tracing is only done for
-     * stream serializers, not for SAX ones.
-     *
-     * @param uri the URI of the attribute
-     * @param localName the local name of the attribute
-     * @param rawName   the qualified name of the attribute
-     * @param type the type of the attribute (probably CDATA)
-     * @param value the value of the attribute
-     * @param xslAttribute true if this attribute is coming from an xsl:attribute element.
-     * @return true if the attribute value was added, 
-     * false if the attribute already existed and the value was
-     * replaced with the new value.
-     */
-    public boolean addAttributeAlways(
-        String uri,
-        String localName,
-        String rawName,
-        String type,
-        String value,
-        boolean xslAttribute)
-    {
-        boolean was_added;
-        int index;
-        if (uri == null || localName == null || uri.length() == 0)
-            index = m_attributes.getIndex(rawName);
-        else {
-            index = m_attributes.getIndex(uri, localName);
-        }
-
-        if (index >= 0)
-        {
-            /* We've seen the attribute before.
-             * We may have a null uri or localName, but all we really
-             * want to re-set is the value anyway.
-             */
-            m_attributes.setValue(index, value);
-            was_added = false;
-        }
-        else
-        {
-            // the attribute doesn't exist yet, create it
-            if (xslAttribute)
-            {
-                /*
-                 * This attribute is from an xsl:attribute element so we take some care in
-                 * adding it, e.g.
-                 *   <elem1  foo:attr1="1" xmlns:foo="uri1">
-                 *       <xsl:attribute name="foo:attr2">2</xsl:attribute>
-                 *   </elem1>
-                 * 
-                 * We are adding attr1 and attr2 both as attributes of elem1,
-                 * and this code is adding attr2 (the xsl:attribute ).
-                 * We could have a collision with the prefix like in the example above.
-                 */
-
-                // In the example above, is there a prefix like foo ?
-                final int colonIndex = rawName.indexOf(':');
-                if (colonIndex > 0)
-                {
-                    String prefix = rawName.substring(0,colonIndex);
-                    NamespaceMappings.MappingRecord existing_mapping = m_prefixMap.getMappingFromPrefix(prefix);
-
-                    /* Before adding this attribute (foo:attr2),
-                     * is the prefix for it (foo) already mapped at the current depth?
-                     */
-                    if (existing_mapping != null 
-                    && existing_mapping.m_declarationDepth == m_elemContext.m_currentElemDepth
-                    && !existing_mapping.m_uri.equals(uri))
-                    {
-                        /*
-                         * There is an existing mapping of this prefix,
-                         * it differs from the one we need,
-                         * and unfortunately it is at the current depth so we 
-                         * can not over-ride it.
-                         */
-
-                        /*
-                         * Are we lucky enough that an existing other prefix maps to this URI ?
-                         */
-                        prefix = m_prefixMap.lookupPrefix(uri);
-                        if (prefix == null)
-                        {
-                            /* Unfortunately there is no existing prefix that happens to map to ours,
-                             * so to avoid a prefix collision we must generated a new prefix to use. 
-                             * This is OK because the prefix URI mapping
-                             * defined in the xsl:attribute is short in scope, 
-                             * just the xsl:attribute element itself, 
-                             * and at this point in serialization the body of the
-                             * xsl:attribute, if any, is just a String. Right?
-                             *   . . . I sure hope so - Brian M. 
-                             */
-                            prefix = m_prefixMap.generateNextPrefix();
-                        }
-
-                        rawName = prefix + ':' + localName;
-                    }
-                }
-
-            }
-            m_attributes.addAttribute(uri, localName, rawName, type, value);
-            was_added = true;
-        }
-        return was_added;
     }
 
     /**

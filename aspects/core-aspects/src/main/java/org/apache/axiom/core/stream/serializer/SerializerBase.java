@@ -31,7 +31,6 @@ import javax.xml.transform.Transformer;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 
 /**
@@ -94,13 +93,6 @@ public abstract class SerializerBase
      * written out. Used to merge adjacent CDATA sections
      */
     protected boolean m_cdataTagOpen = false;
-
-    /**
-     * All the attributes of the current element, collected from
-     * startPrefixMapping() calls, or addAddtribute() calls, or 
-     * from the SAX attributes in a startElement() call.
-     */
-    protected AttributesImplSerializer m_attributes = new AttributesImplSerializer();
 
     /**
      * Tells if we're in an EntityRef event.
@@ -301,165 +293,6 @@ public abstract class SerializerBase
         return;
 
         // I don't do anything with this yet.
-    }
-
-    /**
-     * Adds the given attribute to the set of collected attributes , but only if
-     * there is a currently open element.
-     * 
-     * An element is currently open if a startElement() notification has
-     * occured but the start of the element has not yet been written to the
-     * output.  In the stream case this means that we have not yet been forced
-     * to close the elements opening tag by another notification, such as a
-     * character notification.
-     * 
-     * @param uri the URI of the attribute
-     * @param localName the local name of the attribute
-     * @param rawName    the qualified name of the attribute
-     * @param type the type of the attribute (probably CDATA)
-     * @param value the value of the attribute
-     * @param XSLAttribute true if this attribute is coming from an xsl:attriute element
-     * @see ExtendedContentHandler#addAttribute(String, String, String, String, String)
-     */
-    public void addAttribute(
-        String uri,
-        String localName,
-        String rawName,
-        String type,
-        String value,
-        boolean XSLAttribute)
-        throws StreamException
-    {
-        if (m_elemContext.m_startTagOpen)
-        {
-            addAttributeAlways(uri, localName, rawName, type, value, XSLAttribute);
-        }
-
-    }
-    
-    /**
-     * Adds the given attribute to the set of attributes, even if there is
-     * no currently open element. This is useful if a SAX startPrefixMapping()
-     * should need to add an attribute before the element name is seen.
-     * 
-     * @param uri the URI of the attribute
-     * @param localName the local name of the attribute
-     * @param rawName   the qualified name of the attribute
-     * @param type the type of the attribute (probably CDATA)
-     * @param value the value of the attribute
-     * @param XSLAttribute true if this attribute is coming from an xsl:attribute element
-     * @return true if the attribute was added, 
-     * false if an existing value was replaced.
-     */
-    public boolean addAttributeAlways(
-        String uri,
-        String localName,
-        String rawName,
-        String type,
-        String value,
-        boolean XSLAttribute)
-    {
-        boolean was_added;
-//            final int index =
-//                (localName == null || uri == null) ?
-//                m_attributes.getIndex(rawName):m_attributes.getIndex(uri, localName);        
-            int index;
-//            if (localName == null || uri == null){
-//                index = m_attributes.getIndex(rawName);
-//            }
-//            else {
-//                index = m_attributes.getIndex(uri, localName);
-//            }
-            if (localName == null || uri == null || uri.length() == 0)
-                index = m_attributes.getIndex(rawName);
-            else {
-                index = m_attributes.getIndex(uri,localName);
-            }
-            if (index >= 0)
-            {
-                /* We've seen the attribute before.
-                 * We may have a null uri or localName, but all
-                 * we really want to re-set is the value anyway.
-                 */
-                m_attributes.setValue(index,value);
-                was_added = false;
-            }
-            else
-            {
-                // the attribute doesn't exist yet, create it
-                m_attributes.addAttribute(uri, localName, rawName, type, value);
-                was_added = true;
-            }
-            return was_added;
-        
-    }
-  
-
-    /**
-     *  Adds  the given attribute to the set of collected attributes, 
-     * but only if there is a currently open element.
-     *
-     * @param name the attribute's qualified name
-     * @param value the value of the attribute
-     */
-    public void addAttribute(String name, final String value)
-    {
-        if (m_elemContext.m_startTagOpen)
-        {
-            final String patchedName = patchName(name);
-            final String localName = getLocalName(patchedName);
-            final String uri = getNamespaceURI(patchedName, false);
-
-            addAttributeAlways(uri,localName, patchedName, "CDATA", value, false);
-         }
-    }    
-
-    /**
-     * Adds the given xsl:attribute to the set of collected attributes, 
-     * but only if there is a currently open element.
-     *
-     * @param name the attribute's qualified name (prefix:localName)
-     * @param value the value of the attribute
-     * @param uri the URI that the prefix of the name points to
-     */
-    public void addXSLAttribute(String name, final String value, final String uri)
-    {
-        if (m_elemContext.m_startTagOpen)
-        {
-            final String patchedName = patchName(name);
-            final String localName = getLocalName(patchedName);
-
-            addAttributeAlways(uri,localName, patchedName, "CDATA", value, true);
-         }
-    } 
-
-    /**
-     * Add the given attributes to the currently collected ones. These
-     * attributes are always added, regardless of whether on not an element
-     * is currently open.
-     * @param atts List of attributes to add to this list
-     */
-    public void addAttributes(Attributes atts) throws StreamException
-    {
-
-        int nAtts = atts.getLength();
-
-        for (int i = 0; i < nAtts; i++)
-        {
-            String uri = atts.getURI(i);
-
-            if (null == uri)
-                uri = "";
-
-            addAttributeAlways(
-                uri,
-                atts.getLocalName(i),
-                atts.getQName(i),
-                atts.getType(i),
-                atts.getValue(i),
-                false);
-
-        }
     }
 
     /**
@@ -994,7 +827,6 @@ public abstract class SerializerBase
      */
     private void resetSerializerBase()
     {
-    	this.m_attributes.clear();
         this.m_cdataTagOpen = false;
         this.m_docIsEmpty = true;
     	this.m_doctypePublic = null;
@@ -1039,19 +871,6 @@ public abstract class SerializerBase
          */ 
         return (getEncoding() == null);
         
-    }
-    
-    /**
-     * This method adds an attribute the the current element,
-     * but should not be used for an xsl:attribute child.
-     * @see ExtendedContentHandler#addAttribute(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
-    public void addAttribute(String uri, String localName, String rawName, String type, String value) throws StreamException 
-    {
-        if (m_elemContext.m_startTagOpen)
-        {
-            addAttributeAlways(uri, localName, rawName, type, value, false);
-        }
     }
     
     /**
