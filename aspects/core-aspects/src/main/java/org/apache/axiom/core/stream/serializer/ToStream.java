@@ -2431,51 +2431,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     /**
-     * This inner class is used only to collect attribute values
-     * written by the method writeAttrString() into a string buffer.
-     * In this manner trace events, and the real writing of attributes will use
-     * the same code.
-     */
-    private static class WritertoStringBuffer extends java.io.Writer
-    {
-        final private StringBuffer m_stringbuf;
-        /**
-         * @see java.io.Writer#write(char[], int, int)
-         */
-        WritertoStringBuffer(StringBuffer sb)
-        {
-            m_stringbuf = sb;
-        }
-
-        public void write(char[] arg0, int arg1, int arg2) throws IOException
-        {
-            m_stringbuf.append(arg0, arg1, arg2);
-        }
-        /**
-         * @see java.io.Writer#flush()
-         */
-        public void flush() throws IOException
-        {
-        }
-        /**
-         * @see java.io.Writer#close()
-         */
-        public void close() throws IOException
-        {
-        }
-
-        public void write(int i)
-        {
-            m_stringbuf.append((char) i);
-        }
-        
-        public void write(String s)
-        {
-            m_stringbuf.append(s);
-        }
-    }
-
-    /**
      * Try's to reset the super class and reset this class for 
      * re-use, so that you don't need to create a new serializer 
      * (mostly for performance reasons).
