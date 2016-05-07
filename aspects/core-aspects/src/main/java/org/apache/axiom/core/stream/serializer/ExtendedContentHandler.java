@@ -126,39 +126,6 @@ public interface ExtendedContentHandler
     public void entityReference(String entityName) throws StreamException;
 
     /**
-     * This method returns an object that has the current namespace mappings in
-     * effect.
-     * 
-     * @return NamespaceMappings an object that has the current namespace
-     * mappings in effect.
-     */
-    public NamespaceMappings getNamespaceMappings();
-    /**
-     * This method returns the prefix that currently maps to the given namespace
-     * URI.
-     * @param uri the namespace URI
-     * @return String the prefix that currently maps to the given URI.
-     */
-    public String getPrefix(String uri);
-    /**
-     * This method gets the prefix associated with a current element or
-     * attribute name.
-     * @param name the qualified name of an element, or attribute
-     * @param isElement true if it is an element name, false if it is an
-     * atttribute name
-     * @return String the namespace URI associated with the element or
-     * attribute.
-     */
-    public String getNamespaceURI(String name, boolean isElement);
-    /**
-     * This method returns the namespace URI currently associated with the
-     * prefix.
-     * @param prefix a prefix of an element or attribute.
-     * @return String the namespace URI currently associated with the prefix.
-     */
-    public String getNamespaceURIFromPrefix(String prefix);
-
-    /**
      * This method is used to set the source locator, which might be used to
      * generated an error message.
      * @param locator the source locator

@@ -29,8 +29,6 @@ import javax.xml.transform.SourceLocator;
 import javax.xml.transform.Transformer;
 
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.serializer.utils.MsgKey;
-import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.xml.sax.Locator;
 
 /**
@@ -151,13 +149,6 @@ public abstract class SerializerBase
      */
     private Transformer m_transformer;
 
-    /**
-     * Namespace support, that keeps track of currently defined 
-     * prefix/uri mappings. As processed elements come and go, so do
-     * the associated mappings for that element.
-     */
-    protected NamespaceMappings m_prefixMap;
-    
     protected SourceLocator m_sourceLocator;
     
 
@@ -208,39 +199,6 @@ public abstract class SerializerBase
         }
         data.getChars(0, length, m_charsBuff, 0);
         comment(m_charsBuff, 0, length);
-    }
-
-    /**
-     * If at runtime, when the qname of the attribute is
-     * known, another prefix is specified for the attribute, then we can
-     * patch or hack the name with this method. For
-     * a qname of the form "ns?:otherprefix:name", this function patches the
-     * qname by simply ignoring "otherprefix".
-     * TODO: This method is a HACK! We do not have access to the
-     * XML file, it sometimes generates a NS prefix of the form "ns?" for
-     * an attribute.
-     */
-    protected String patchName(String qname)
-    {
-
-        
-        final int lastColon = qname.lastIndexOf(':');
-
-        if (lastColon > 0) {
-            final int firstColon = qname.indexOf(':');
-            final String prefix = qname.substring(0, firstColon);
-            final String localName = qname.substring(lastColon + 1);
-
-        // If uri is "" then ignore prefix
-            final String uri = m_prefixMap.lookupNamespace(prefix);
-            if (uri != null && uri.length() == 0) {
-                return localName;
-            }
-            else if (firstColon != lastColon) {
-                return prefix + ':' + localName;
-            }
-        }
-        return qname;        
     }
 
     /**
@@ -579,74 +537,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Some users of the serializer may need the current namespace mappings
-     * @return the current namespace mappings (prefix/uri)
-     * @see ExtendedContentHandler#getNamespaceMappings()
-     */
-    public NamespaceMappings getNamespaceMappings()
-    {
-        return m_prefixMap;
-    }
-
-    /**
-     * Returns the prefix currently pointing to the given URI (if any).
-     * @param namespaceURI the uri of the namespace in question
-     * @return a prefix pointing to the given URI (if any).
-     * @see ExtendedContentHandler#getPrefix(String)
-     */
-    public String getPrefix(String namespaceURI)
-    {
-        String prefix = m_prefixMap.lookupPrefix(namespaceURI);
-        return prefix;
-    }
-
-    /**
-     * Returns the URI of an element or attribute. Note that default namespaces
-     * do not apply directly to attributes.
-     * @param qname a qualified name
-     * @param isElement true if the qualified name is the name of 
-     * an element.
-     * @return returns the namespace URI associated with the qualified name.
-     */
-    public String getNamespaceURI(String qname, boolean isElement)
-    {
-        String uri = EMPTYSTRING;
-        int col = qname.lastIndexOf(':');
-        final String prefix = (col > 0) ? qname.substring(0, col) : EMPTYSTRING;
-
-        if (!EMPTYSTRING.equals(prefix) || isElement)
-        {
-            if (m_prefixMap != null)
-            {
-                uri = m_prefixMap.lookupNamespace(prefix);
-                if (uri == null && !prefix.equals(XMLNS_PREFIX))
-                {
-                    throw new RuntimeException(
-                        Utils.messages.createMessage(
-                            MsgKey.ER_NAMESPACE_PREFIX,
-                            new Object[] { qname.substring(0, col) }  ));
-                }
-            }
-        }
-        return uri;
-    }
-
-    /**
-     * Returns the URI of prefix (if any)
-     * 
-	 * @param prefix the prefix whose URI is searched for
-     * @return the namespace URI currently associated with the
-     * prefix, null if the prefix is undefined.
-     */
-    public String getNamespaceURIFromPrefix(String prefix)
-    {
-        String uri = null;
-        if (m_prefixMap != null)
-            uri = m_prefixMap.lookupNamespace(prefix);
-        return uri;
-    }
-
-    /**
      * Entity reference event.
      *
      * @param name Name of entity
@@ -797,16 +687,6 @@ public abstract class SerializerBase
     }
 
     
-    /** 
-     * Used only by TransformerSnapshotImpl to restore the serialization 
-     * to a previous state. 
-     * 
-     * @param mappings NamespaceMappings
-     */
-    public void setNamespaceMappings(NamespaceMappings mappings) {
-        m_prefixMap = mappings;
-    }
-    
     public boolean reset()
     {
     	resetSerializerBase();
@@ -834,8 +714,6 @@ public abstract class SerializerBase
             this.m_OutputProps.clear();
         if (m_OutputPropsDefault != null)
             this.m_OutputPropsDefault.clear();
-        if (this.m_prefixMap != null)
-    	    this.m_prefixMap.reset();
     	this.m_shouldNotWriteXMLHeader = false;
     	this.m_sourceLocator = null;
     	this.m_standalone = null;
@@ -909,41 +787,6 @@ public abstract class SerializerBase
         return m_docIsEmpty && (m_elemContext.m_currentElemDepth == 0);
     }    
     
-    /**
-     * Before this call m_elementContext.m_elementURI is null,
-     * which means it is not yet known. After this call it
-     * is non-null, but possibly "" meaning that it is in the
-     * default namespace.
-     * 
-     * @return The URI of the element, never null, but possibly "".
-     */
-    private String getElementURI() {
-        String uri = null;
-        // At this point in processing we have received all the
-        // namespace mappings
-        // As we still don't know the elements namespace,
-        // we now figure it out.
-
-        String prefix = getPrefixPart(m_elemContext.m_elementName);
-
-        if (prefix == null) {
-            // no prefix so lookup the URI of the default namespace
-            uri = m_prefixMap.lookupNamespace("");
-        } else {
-            uri = m_prefixMap.lookupNamespace(prefix);
-        }
-        if (uri == null) {
-            // We didn't find the namespace for the
-            // prefix ... ouch, that shouldn't happen.
-            // This is a hack, we really don't know
-            // the namespace
-            uri = EMPTYSTRING;
-        }
-
-        return uri;
-    }
-    
-
     /**
      * Get the value of an output property,
      * the explicit value, if any, otherwise the

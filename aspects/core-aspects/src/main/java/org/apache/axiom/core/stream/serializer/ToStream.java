@@ -2035,10 +2035,6 @@ abstract public class ToStream extends SerializerBase
         if (m_inEntityRef)
             return;
 
-        // namespaces declared at the current depth are no longer valid
-        // so get rid of them    
-        m_prefixMap.popNamespaces(m_elemContext.m_currentElemDepth);
-
         try
         {
             final java.io.Writer writer = m_writer;

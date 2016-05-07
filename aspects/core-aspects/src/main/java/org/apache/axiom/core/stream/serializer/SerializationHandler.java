@@ -74,14 +74,6 @@ public interface SerializationHandler
      */
     public Transformer getTransformer();
 
-    /** 
-     * Used only by TransformerSnapshotImpl to restore the serialization 
-     * to a previous state. 
-     * 
-     * @param mappings NamespaceMappings
-     */
-    public void setNamespaceMappings(NamespaceMappings mappings);
-
     /**
      * A SerializationHandler accepts SAX-like events, so
      * it can accumulate attributes or namespace nodes after

@@ -58,9 +58,6 @@ public class ToXMLStream extends ToStream
         m_charInfo = m_xmlcharInfo;
 
         initCDATA();
-        // initialize namespaces
-        m_prefixMap = new NamespaceMappings();
-
     }
 
     /**
