@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import javax.xml.transform.Transformer;
 
-import org.xml.sax.SAXException;
+import org.apache.axiom.core.stream.StreamException;
 
 /**
  * This interface is the one that a serializer implements. It is a group of
@@ -54,7 +54,7 @@ public interface SerializationHandler
      * 
      * @param escape true if escaping is to be set on.
      */
-    public boolean setEscaping(boolean escape) throws SAXException;
+    public boolean setEscaping(boolean escape) throws StreamException;
 
     /**
      * Set the number of spaces to indent for each indentation level.
@@ -107,7 +107,7 @@ public interface SerializationHandler
      * For performance reasons this method should not be called
      * very often. 
      */
-    public void flushPending() throws SAXException;
+    public void flushPending() throws StreamException;
     
     /**
      * Default behavior is to expand DTD entities,

@@ -27,9 +27,9 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.xml.sax.SAXException;
 
 /**
  * This class converts SAX or SAX-like calls to a 
@@ -100,12 +100,12 @@ public class ToXMLStream extends ToStream
     /**
      * Receive notification of the beginning of a document.
      *
-     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     * @throws StreamException Any SAX exception, possibly
      *            wrapping another exception.
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void startDocumentInternal() throws org.xml.sax.SAXException
+    public void startDocumentInternal() throws StreamException
     {
 
         if (m_needToCallStartDocument)
@@ -166,7 +166,7 @@ public class ToXMLStream extends ToStream
                 } 
                 catch(IOException e)
                 {
-                    throw new SAXException(e);
+                    throw new StreamException(e);
                 }
 
             }
@@ -176,12 +176,12 @@ public class ToXMLStream extends ToStream
     /**
      * Receive notification of the end of a document.
      *
-     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     * @throws StreamException Any SAX exception, possibly
      *            wrapping another exception.
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void endDocument() throws org.xml.sax.SAXException
+    public void endDocument() throws StreamException
     {
         flushPending();
         if (m_doIndent && !m_isprevtext)
@@ -192,7 +192,7 @@ public class ToXMLStream extends ToStream
             }
             catch(IOException e)
             {
-                throw new SAXException(e);
+                throw new StreamException(e);
             }
         }
 
@@ -209,9 +209,9 @@ public class ToXMLStream extends ToStream
      * The contents of the whitespace preserving section will be delivered
      * through the regular <tt>characters</tt> event.
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void startPreserving() throws org.xml.sax.SAXException
+    public void startPreserving() throws StreamException
     {
 
         // Not sure this is really what we want.  -sb
@@ -225,9 +225,9 @@ public class ToXMLStream extends ToStream
      *
      * @see #startPreserving
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void endPreserving() throws org.xml.sax.SAXException
+    public void endPreserving() throws StreamException
     {
 
         // Not sure this is really what we want.  -sb
@@ -240,13 +240,13 @@ public class ToXMLStream extends ToStream
      * @param target The processing instruction target.
      * @param data The processing instruction data, or null if
      *        none was supplied.
-     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     * @throws StreamException Any SAX exception, possibly
      *            wrapping another exception.
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
     public void processingInstruction(String target, String data)
-        throws org.xml.sax.SAXException
+        throws StreamException
     {
         if (m_inEntityRef)
             return;
@@ -323,7 +323,7 @@ public class ToXMLStream extends ToStream
             }
             catch(IOException e)
             {
-                throw new SAXException(e);
+                throw new StreamException(e);
             }
         }
     }
@@ -333,9 +333,9 @@ public class ToXMLStream extends ToStream
      *
      * @param name The name of the entity.
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void entityReference(String name) throws org.xml.sax.SAXException
+    public void entityReference(String name) throws StreamException
     {
         if (m_elemContext.m_startTagOpen)
         {
@@ -355,7 +355,7 @@ public class ToXMLStream extends ToStream
         }
         catch(IOException e)
         {
-            throw new SAXException(e);
+            throw new StreamException(e);
         }
     }
 
@@ -370,7 +370,7 @@ public class ToXMLStream extends ToStream
      * @param flags the bit values of this integer give optimization information.
      */
     public void addUniqueAttribute(String name, String value, int flags)
-        throws SAXException
+        throws StreamException
     {
         if (m_elemContext.m_startTagOpen)
         {
@@ -402,7 +402,7 @@ public class ToXMLStream extends ToStream
                     writer.write('"');
                 }
             } catch (IOException e) {
-                throw new SAXException(e);
+                throw new StreamException(e);
             }
         }
     }
@@ -416,7 +416,7 @@ public class ToXMLStream extends ToStream
      * @param value the value of the attribute
      * @param xslAttribute true if this attribute is from an xsl:attribute,
      * false if declared within the elements opening tag.
-     * @throws SAXException
+     * @throws StreamException
      */
     public void addAttribute(
         String uri,
@@ -425,7 +425,7 @@ public class ToXMLStream extends ToStream
         String type,
         String value,
         boolean xslAttribute)
-        throws SAXException
+        throws StreamException
     {
         if (m_elemContext.m_startTagOpen)
         {
@@ -492,10 +492,10 @@ public class ToXMLStream extends ToStream
             catch (TransformerException e){
                 // A user defined error handler, errHandler, may throw
                 // a TransformerException if it chooses to, and if it does
-                // we will wrap it with a SAXException and re-throw.
+                // we will wrap it with a StreamException and re-throw.
                 // Of course if the handler throws another type of
                 // exception, like a RuntimeException, then that is OK too.
-                SAXException se = new SAXException(e);
+                StreamException se = new StreamException(e);
                 throw se;                
             }             
         }
@@ -504,7 +504,7 @@ public class ToXMLStream extends ToStream
     /**
      * @see ExtendedContentHandler#endElement(String)
      */
-    public void endElement(String elemName) throws SAXException
+    public void endElement(String elemName) throws StreamException
     {
         endElement(null, null, elemName);
     }
@@ -519,7 +519,7 @@ public class ToXMLStream extends ToStream
     public void namespaceAfterStartElement(
         final String prefix,
         final String uri)
-        throws SAXException
+        throws StreamException
     {
 
         // hack for XSLTC with finding URI for default namespace
@@ -556,7 +556,7 @@ public class ToXMLStream extends ToStream
                 return true;
             }
         }
-        catch (SAXException e)
+        catch (StreamException e)
         {
             // falls through
         }

@@ -20,7 +20,7 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import org.xml.sax.SAXException;
+import org.apache.axiom.core.stream.StreamException;
 
 /**
  * This interface has extensions to the standard SAX LexicalHandler interface.
@@ -35,9 +35,9 @@ public interface ExtendedLexicalHandler
      * method takes a String rather than a character array.
      * @throws SAXException
      */
-    public void comment(String comment) throws SAXException;
+    public void comment(String comment) throws StreamException;
 
-    public void comment(char ch[], int start, int length) throws SAXException;
+    public void comment(char ch[], int start, int length) throws StreamException;
 
-    public void startEntity(String name) throws SAXException;
+    public void startEntity(String name) throws StreamException;
 }

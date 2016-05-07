@@ -21,7 +21,7 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.xml.sax.SAXException;
+import org.apache.axiom.core.stream.StreamException;
 
 /**
  * {@link Writer} that writes character data as {@link ToXMLStream#characters(char[], int, int)}
@@ -37,7 +37,7 @@ final class SerializerWriter extends Writer {
     public void write(char[] cbuf, int off, int len) throws IOException {
         try {
             serializer.characters(cbuf, off, len);
-        } catch (SAXException ex) {
+        } catch (StreamException ex) {
             IOException ioException = new IOException();
             ioException.initCause(ex);
             throw ioException;

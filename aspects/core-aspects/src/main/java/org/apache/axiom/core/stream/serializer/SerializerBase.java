@@ -28,11 +28,11 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.SourceLocator;
 import javax.xml.transform.Transformer;
 
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 
 /**
  * This class acts as a base class for the XML "serializers"
@@ -212,7 +212,7 @@ public abstract class SerializerBase
      * 
      * @see ExtendedLexicalHandler#comment(String)
      */
-    public void comment(String data) throws SAXException
+    public void comment(String data) throws StreamException
     {
         m_docIsEmpty = false;
         
@@ -328,7 +328,7 @@ public abstract class SerializerBase
         String type,
         String value,
         boolean XSLAttribute)
-        throws SAXException
+        throws StreamException
     {
         if (m_elemContext.m_startTagOpen)
         {
@@ -439,7 +439,7 @@ public abstract class SerializerBase
      * is currently open.
      * @param atts List of attributes to add to this list
      */
-    public void addAttributes(Attributes atts) throws SAXException
+    public void addAttributes(Attributes atts) throws StreamException
     {
 
         int nAtts = atts.getLength();
@@ -466,10 +466,10 @@ public abstract class SerializerBase
      * Report the end of an entity.
      *
      * @param name The name of the entity that is ending.
-     * @throws org.xml.sax.SAXException The application may raise an exception.
+     * @throws StreamException The application may raise an exception.
      * @see #startEntity
      */
-    public void endEntity(String name) throws org.xml.sax.SAXException
+    public void endEntity(String name) throws StreamException
     {
         if (name.equals("[dtd]"))
             m_inExternalDTD = false;
@@ -718,7 +718,7 @@ public abstract class SerializerBase
      * @see ExtendedContentHandler#namespaceAfterStartElement(String, String)
      */
     public void namespaceAfterStartElement(String uri, String prefix)
-        throws SAXException
+        throws StreamException
     {
         // default behavior is to do nothing
     }
@@ -825,9 +825,9 @@ public abstract class SerializerBase
      *
      * @param name Name of entity
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void entityReference(String name) throws org.xml.sax.SAXException
+    public void entityReference(String name) throws StreamException
     {
 
         flushPending();
@@ -859,10 +859,10 @@ public abstract class SerializerBase
      * This method gets the nodes value as a String and uses that String as if
      * it were an input character notification.
      * @param node the Node to serialize
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
     public void characters(org.w3c.dom.Node node)
-        throws org.xml.sax.SAXException
+        throws StreamException
     {
         flushPending();
         String data = node.getNodeValue();
@@ -886,7 +886,7 @@ public abstract class SerializerBase
      * @param length  number of characters to output
      */
 //    protected void fireCharEvent(char[] chars, int start, int length)
-//        throws org.xml.sax.SAXException
+//        throws StreamException
 //    {
 //        if (m_tracer != null)
 //            m_tracer.fireGenerateEvent(SerializerTrace.EVENTTYPE_CHARACTERS, chars, start,length);     	        	    	
@@ -926,12 +926,12 @@ public abstract class SerializerBase
      * other methods in this interface or in DTDHandler (except for
      * setDocumentLocator).</p>
      *
-     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     * @throws StreamException Any SAX exception, possibly
      *            wrapping another exception.
      *
-     * @throws org.xml.sax.SAXException
+     * @throws StreamException
      */
-    public void startDocument() throws org.xml.sax.SAXException
+    public void startDocument() throws StreamException
     {
 
         // if we do get called with startDocument(), handle it right away       
@@ -954,9 +954,9 @@ public abstract class SerializerBase
      * called from an external caller, which in principle is just a matter of
      * style.
      * 
-     * @throws SAXException
+     * @throws StreamException
      */
-    protected void startDocumentInternal() throws org.xml.sax.SAXException
+    protected void startDocumentInternal() throws StreamException
     {
     } 
     /**
@@ -1046,7 +1046,7 @@ public abstract class SerializerBase
      * but should not be used for an xsl:attribute child.
      * @see ExtendedContentHandler#addAttribute(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public void addAttribute(String uri, String localName, String rawName, String type, String value) throws SAXException 
+    public void addAttribute(String uri, String localName, String rawName, String type, String value) throws StreamException 
     {
         if (m_elemContext.m_startTagOpen)
         {
@@ -1058,7 +1058,7 @@ public abstract class SerializerBase
      * @see org.xml.sax.DTDHandler#notationDecl(java.lang.String, java.lang.String, java.lang.String)
      */
     public void notationDecl(String arg0, String arg1, String arg2)
-        throws SAXException {
+        throws StreamException {
         // This method just provides a definition to satisfy the interface
         // A particular sub-class of SerializerBase provides the implementation (if desired)        
     }
@@ -1071,7 +1071,7 @@ public abstract class SerializerBase
         String arg1,
         String arg2,
         String arg3)
-        throws SAXException {
+        throws StreamException {
         // This method just provides a definition to satisfy the interface
         // A particular sub-class of SerializerBase provides the implementation (if desired)        
     }

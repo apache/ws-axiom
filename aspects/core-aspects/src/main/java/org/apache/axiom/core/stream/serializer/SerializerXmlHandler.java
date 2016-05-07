@@ -25,7 +25,6 @@ import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 public class SerializerXmlHandler implements XmlHandler {
@@ -62,29 +61,17 @@ public class SerializerXmlHandler implements XmlHandler {
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             boolean standalone) throws StreamException {
-        try {
-            serializer.startDocument();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.startDocument();
     }
     
     @Override
     public void startFragment() throws StreamException {
-        try {
-            serializer.startDocument();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.startDocument();
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
-        try {
-            serializer.startDTD(rootName, publicId, systemId);
-            serializer.endDTD();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.startDTD(rootName, publicId, systemId);
+        serializer.endDTD();
     }
 
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
@@ -106,11 +93,7 @@ public class SerializerXmlHandler implements XmlHandler {
             prefixStack = newPrefixStack;
         }
         prefixStack[bindings++] = prefix;
-        try {
-            serializer.startPrefixMapping(prefix, namespaceURI);
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.startPrefixMapping(prefix, namespaceURI);
         // TODO: depending on the http://xml.org/sax/features/xmlns-uris feature, we also need to add an attribute
     }
 
@@ -119,33 +102,25 @@ public class SerializerXmlHandler implements XmlHandler {
     }
 
     public void attributesCompleted() throws StreamException {
-        try {
-            serializer.startElement(elementURI, elementLocalName, elementQName, attributes);
-            elementNameStack.push(elementURI);
-            elementNameStack.push(elementLocalName);
-            elementNameStack.push(elementQName);
-            elementURI = null;
-            elementLocalName = null;
-            elementQName = null;
-            attributes.clear();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.startElement(elementURI, elementLocalName, elementQName, attributes);
+        elementNameStack.push(elementURI);
+        elementNameStack.push(elementLocalName);
+        elementNameStack.push(elementQName);
+        elementURI = null;
+        elementLocalName = null;
+        elementQName = null;
+        attributes.clear();
     }
 
     public void endElement() throws StreamException {
-        try {
-            String elementQName = elementNameStack.pop();
-            String elementLocalName = elementNameStack.pop();
-            String elementURI = elementNameStack.pop();
-            serializer.endElement(elementURI, elementLocalName, elementQName);
-            for (int i=bindings-1; i>=scopeStack[depth-1]; i--) {
-                serializer.endPrefixMapping(prefixStack[i]);
-            }
-            bindings = scopeStack[--depth];
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
+        String elementQName = elementNameStack.pop();
+        String elementLocalName = elementNameStack.pop();
+        String elementURI = elementNameStack.pop();
+        serializer.endElement(elementURI, elementLocalName, elementQName);
+        for (int i=bindings-1; i>=scopeStack[depth-1]; i--) {
+            serializer.endPrefixMapping(prefixStack[i]);
         }
+        bindings = scopeStack[--depth];
     }
 
     private void writeToBuffer(String data) {
@@ -164,61 +139,47 @@ public class SerializerXmlHandler implements XmlHandler {
     }
 
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
-        try {
-            switch (characterDataMode) {
-                case PASS_THROUGH:
-                    if (ignorable) {
-                        writeToBuffer(data.toString());
-                        serializer.ignorableWhitespace(buffer, 0, bufferPos);
-                        bufferPos = 0;
-                    } else if (data instanceof CharacterData) {
-                        try {
-                            ((CharacterData)data).writeTo(new SerializerWriter(serializer));
-                        } catch (IOException ex) {
-                            Throwable cause = ex.getCause();
-                            SAXException saxException;
-                            if (cause instanceof SAXException) {
-                                saxException = (SAXException)cause;
-                            } else {
-                                saxException = new SAXException(ex);
-                            }
-                            throw new StreamException(saxException);
-                        }
-                    } else {
-                        writeToBuffer(data.toString());
-                        serializer.characters(buffer, 0, bufferPos);
-                        bufferPos = 0;
-                    }
-                    break;
-                case BUFFER:
+        switch (characterDataMode) {
+            case PASS_THROUGH:
+                if (ignorable) {
                     writeToBuffer(data.toString());
-                    break;
-                case ACCUMULATE:
-                    accumulator.append(data);
-                    break;
-                case SKIP:
-            }
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
+                    serializer.ignorableWhitespace(buffer, 0, bufferPos);
+                    bufferPos = 0;
+                } else if (data instanceof CharacterData) {
+                    try {
+                        ((CharacterData)data).writeTo(new SerializerWriter(serializer));
+                    } catch (IOException ex) {
+                        Throwable cause = ex.getCause();
+                        if (cause instanceof StreamException) {
+                            throw (StreamException)cause;
+                        } else {
+                            throw new StreamException(ex);
+                        }
+                    }
+                } else {
+                    writeToBuffer(data.toString());
+                    serializer.characters(buffer, 0, bufferPos);
+                    bufferPos = 0;
+                }
+                break;
+            case BUFFER:
+                writeToBuffer(data.toString());
+                break;
+            case ACCUMULATE:
+                accumulator.append(data);
+                break;
+            case SKIP:
         }
     }
     
     @Override
     public void startCDATASection() throws StreamException {
-        try {
-            serializer.startCDATA();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.startCDATA();
     }
 
     @Override
     public void endCDATASection() throws StreamException {
-        try {
-            serializer.endCDATA();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.endCDATA();
     }
 
     @Override
@@ -228,12 +189,8 @@ public class SerializerXmlHandler implements XmlHandler {
 
     @Override
     public void endComment() throws StreamException {
-        try {
-            serializer.comment(buffer, 0, bufferPos);
-            bufferPos = 0;
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.comment(buffer, 0, bufferPos);
+        bufferPos = 0;
         characterDataMode = CharacterDataMode.PASS_THROUGH;
     }
 
@@ -248,29 +205,17 @@ public class SerializerXmlHandler implements XmlHandler {
 
     @Override
     public void endProcessingInstruction() throws StreamException {
-        try {
-            serializer.processingInstruction(piTarget, accumulator.toString());
-            accumulator.clear();
-            piTarget = null;
-            characterDataMode = CharacterDataMode.PASS_THROUGH;
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.processingInstruction(piTarget, accumulator.toString());
+        accumulator.clear();
+        piTarget = null;
+        characterDataMode = CharacterDataMode.PASS_THROUGH;
     }
 
     public void processEntityReference(String name, String replacementText) throws StreamException {
-        try {
-            serializer.skippedEntity(name);
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.skippedEntity(name);
     }
 
     public void completed() throws StreamException {
-        try {
-            serializer.endDocument();
-        } catch (SAXException ex) {
-            throw new StreamException(ex);
-        }
+        serializer.endDocument();
     }
 }

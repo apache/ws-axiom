@@ -22,7 +22,7 @@ package org.apache.axiom.core.stream.serializer;
 
 import javax.xml.transform.SourceLocator;
 
-import org.xml.sax.SAXException;
+import org.apache.axiom.core.stream.StreamException;
 
 /**
  * This interface describes extensions to the SAX ContentHandler interface.
@@ -54,7 +54,7 @@ public interface ExtendedContentHandler
      * @param type the attribute type typically character data (CDATA)
      * @param value the value of the attribute
      * @param XSLAttribute true if the added attribute is coming from an xsl:attribute element
-     * @throws SAXException
+     * @throws StreamException
      */
     public void addAttribute(
         String uri,
@@ -63,14 +63,14 @@ public interface ExtendedContentHandler
         String type,
         String value,
         boolean XSLAttribute)
-        throws SAXException;
+        throws StreamException;
     /**
      * Add attributes to the current element
      * @param atts the attributes to add.
-     * @throws SAXException
+     * @throws StreamException
      */
     public void addAttributes(org.xml.sax.Attributes atts)
-        throws org.xml.sax.SAXException;
+        throws StreamException;
     /**
      * Add an attribute to the current element. The namespace URI of the
      * attribute will be calculated from the prefix of qName. The local name
@@ -84,17 +84,17 @@ public interface ExtendedContentHandler
      * This method is used to notify of a character event, but passing the data
      * as a character String rather than the standard character array.
      * @param chars the character data
-     * @throws SAXException
+     * @throws StreamException
      */
-    public void characters(String chars) throws SAXException;
+    public void characters(String chars) throws StreamException;
     
     /**
      * This method is used to notify of a character event, but passing the data
      * as a DOM Node rather than the standard character array.
      * @param node a DOM Node containing text.
-     * @throws SAXException
+     * @throws StreamException
      */    
-    public void characters(org.w3c.dom.Node node) throws org.xml.sax.SAXException;
+    public void characters(org.w3c.dom.Node node) throws StreamException;
     /**
      * This method is used to notify that an element has ended. Unlike the
      * standard SAX method
@@ -105,9 +105,9 @@ public interface ExtendedContentHandler
      * the localName from the qualified name and derive the namespaceURI from
      * its implementation.
      * @param elemName the fully qualified element name.
-     * @throws SAXException
+     * @throws StreamException
      */
-    public void endElement(String elemName) throws SAXException;
+    public void endElement(String elemName) throws StreamException;
 
     /**
      * This method is used to notify that an element is starting.
@@ -120,17 +120,17 @@ public interface ExtendedContentHandler
      * @param localName the local name (without prefix) of the element
      * @param qName the qualified name of the element
      * 
-     * @throws SAXException
+     * @throws StreamException
      */
     public void startElement(String uri, String localName, String qName)
-        throws org.xml.sax.SAXException;
+        throws StreamException;
 
     /**
      * This method is used to notify of the start of an element
      * @param qName the fully qualified name of the element
-     * @throws SAXException
+     * @throws StreamException
      */
-    public void startElement(String qName) throws SAXException;
+    public void startElement(String qName) throws StreamException;
     /**
      * This method is used to notify that a prefix mapping is to start, but
      * after an element is started. The SAX method call
@@ -147,10 +147,10 @@ public interface ExtendedContentHandler
      * 
      * @param uri the namespace URI being declared
      * @param prefix the prefix that maps to the given namespace
-     * @throws SAXException
+     * @throws StreamException
      */
     public void namespaceAfterStartElement(String uri, String prefix)
-        throws SAXException;
+        throws StreamException;
 
     /**
      * This method is used to notify that a prefix maping is to start, which can
@@ -163,19 +163,19 @@ public interface ExtendedContentHandler
      * @return boolean false if the prefix mapping was already in effect (in
      * other words we are just re-declaring), true if this is a new, never
      * before seen mapping for the element.
-     * @throws SAXException
+     * @throws StreamException
      */
     public boolean startPrefixMapping(
         String prefix,
         String uri,
         boolean shouldFlush)
-        throws SAXException;
+        throws StreamException;
     /**
      * Notify of an entity reference.
      * @param entityName the name of the entity
-     * @throws SAXException
+     * @throws StreamException
      */
-    public void entityReference(String entityName) throws SAXException;
+    public void entityReference(String entityName) throws StreamException;
 
     /**
      * This method returns an object that has the current namespace mappings in
@@ -241,7 +241,7 @@ public interface ExtendedContentHandler
      * @param flags a bitwise flag
      */
     public void addUniqueAttribute(String qName, String value, int flags)
-        throws SAXException;
+        throws StreamException;
     
     /**
      * Add an attribute from an xsl:attribute element.
@@ -259,7 +259,7 @@ public interface ExtendedContentHandler
      * @param rawName the qualified name of the attribute
      * @param type the attribute type typically character data (CDATA)
      * @param value the value of the attribute
-     * @throws SAXException
+     * @throws StreamException
      */
     public void addAttribute(
         String uri,
@@ -267,8 +267,8 @@ public interface ExtendedContentHandler
         String rawName,
         String type,
         String value)
-        throws SAXException;
+        throws StreamException;
 
     public void characters(char chars[], int start, int length)
-            throws org.xml.sax.SAXException;
+            throws StreamException;
 }
