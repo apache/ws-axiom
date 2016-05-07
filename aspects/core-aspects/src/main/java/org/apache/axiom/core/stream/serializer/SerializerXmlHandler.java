@@ -19,6 +19,7 @@
 package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.axiom.core.CharacterData;
@@ -40,8 +41,9 @@ public class SerializerXmlHandler implements XmlHandler {
     private CharacterDataAccumulator accumulator;
     private String piTarget;
     
-    public SerializerXmlHandler(ToXMLStream serializer) {
-        this.serializer = serializer;
+    public SerializerXmlHandler(Writer writer) {
+        this.serializer = new ToXMLStream();
+        serializer.setWriter(writer);
     }
 
     private static String getQName(String prefix, String localName) {
@@ -69,6 +71,7 @@ public class SerializerXmlHandler implements XmlHandler {
     }
 
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        serializer.closeStartTag();
         elementURI = namespaceURI;
         elementLocalName = localName;
         elementQName = getQName(prefix, localName);
@@ -94,7 +97,6 @@ public class SerializerXmlHandler implements XmlHandler {
         elementURI = null;
         elementLocalName = null;
         elementQName = null;
-        serializer.closeStartTag();
     }
 
     public void endElement() throws StreamException {
@@ -120,6 +122,7 @@ public class SerializerXmlHandler implements XmlHandler {
     }
 
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+        serializer.closeStartTag();
         switch (characterDataMode) {
             case PASS_THROUGH:
                 if (ignorable) {
@@ -155,6 +158,7 @@ public class SerializerXmlHandler implements XmlHandler {
     
     @Override
     public void startCDATASection() throws StreamException {
+        serializer.closeStartTag();
         serializer.startCDATA();
     }
 
@@ -165,6 +169,7 @@ public class SerializerXmlHandler implements XmlHandler {
 
     @Override
     public void startComment() throws StreamException {
+        serializer.closeStartTag();
         characterDataMode = CharacterDataMode.BUFFER;
     }
 
@@ -177,6 +182,7 @@ public class SerializerXmlHandler implements XmlHandler {
 
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
+        serializer.closeStartTag();
         if (accumulator == null) {
             accumulator = new CharacterDataAccumulator();
         }
@@ -193,6 +199,7 @@ public class SerializerXmlHandler implements XmlHandler {
     }
 
     public void processEntityReference(String name, String replacementText) throws StreamException {
+        serializer.closeStartTag();
         serializer.skippedEntity(name);
     }
 

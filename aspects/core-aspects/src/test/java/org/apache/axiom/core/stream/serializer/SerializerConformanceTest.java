@@ -46,11 +46,8 @@ public class SerializerConformanceTest extends MatrixTestCase {
     @Override
     protected void runTest() throws Throwable {
         Document document = sample.getDocument();
-        ToXMLStream serializer = new ToXMLStream();
         StringWriter sw = new StringWriter();
-        serializer.setWriter(sw);
-        XmlReader reader = new DOMInput(document, false).createReader(
-                new SerializerXmlHandler(serializer));
+        XmlReader reader = new DOMInput(document, false).createReader(new SerializerXmlHandler(sw));
         while (!reader.proceed()) {
             // Just loop
         }
