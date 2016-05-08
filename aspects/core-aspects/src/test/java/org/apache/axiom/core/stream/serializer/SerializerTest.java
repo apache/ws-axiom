@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 
+import org.apache.commons.io.output.NullOutputStream;
 import org.junit.Test;
 
 public class SerializerTest {
@@ -51,5 +52,27 @@ public class SerializerTest {
         handler.endElement();
         handler.completed();
         assertThat(new String(baos.toByteArray(), "iso-8859-15")).isEqualTo("<test>a&#931;\u20AC</test>");
+    }
+
+    @Test
+    // TODO: this should throw an exception
+    public void testUnmappableCharacterInComment() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "iso-8859-1");
+        handler.startFragment();
+        handler.startComment();
+        handler.processCharacterData("\u20AC", false);
+        handler.endComment();
+        handler.completed();
+    }
+
+    @Test
+    // TODO: this must throw an exception!
+    public void testUnmappableCharacterInName() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "iso-8859-15");
+        handler.startFragment();
+        handler.startElement("", "\u0370", "");
+        handler.attributesCompleted();
+        handler.endElement();
+        handler.completed();
     }
 }
