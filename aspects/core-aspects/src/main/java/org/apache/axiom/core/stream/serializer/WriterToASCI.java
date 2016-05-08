@@ -36,7 +36,7 @@ import java.io.Writer;
  * 
  * @xsl.usage internal
  */
-class WriterToASCI extends Writer implements WriterChain
+class WriterToASCI extends Writer
 {
 
   /** The byte stream to write to.  */
@@ -132,24 +132,5 @@ class WriterToASCI extends Writer implements WriterChain
   public void close() throws java.io.IOException
   {
     m_os.close();
-  }
-
-  /**
-   * Get the output stream where the events will be serialized to.
-   *
-   * @return reference to the result stream, or null of only a writer was
-   * set.
-   */
-  public OutputStream getOutputStream()
-  {
-    return m_os;
-  }
-
-  /**
-   * Get the writer that this writer directly chains to.
-   */
-  public Writer getWriter()
-  {
-      return null;
   }
 }
