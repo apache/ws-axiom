@@ -19,6 +19,7 @@
 package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Stack;
 
@@ -44,6 +45,12 @@ public class SerializerXmlHandler implements XmlHandler {
     public SerializerXmlHandler(Writer writer) {
         this.serializer = new ToXMLStream();
         serializer.setWriter(writer);
+    }
+
+    public SerializerXmlHandler(OutputStream out, String encoding) {
+        this.serializer = new ToXMLStream();
+        serializer.setOutputStream(out);
+        serializer.setEncoding(encoding);
     }
 
     private static String getQName(String prefix, String localName) {

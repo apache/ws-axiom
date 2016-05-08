@@ -20,6 +20,7 @@ package org.apache.axiom.core.stream.serializer;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 
 import org.junit.Test;
@@ -33,5 +34,22 @@ public class SerializerTest {
         handler.attributesCompleted();
         handler.endElement();
         assertThat(sw.toString()).matches("<test ?/>");
+    }
+
+    /**
+     * Test that characters are converted to entities only when necessary.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testISO_8859_15() throws Exception {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        SerializerXmlHandler handler = new SerializerXmlHandler(baos, "iso-8859-15");
+        handler.startElement("", "test", "");
+        handler.attributesCompleted();
+        handler.processCharacterData("a\u03A3\u20AC", false);  // 20AC = Euro sign
+        handler.endElement();
+        handler.completed();
+        assertThat(new String(baos.toByteArray(), "iso-8859-15")).isEqualTo("<test>a&#931;\u20AC</test>");
     }
 }
