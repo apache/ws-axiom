@@ -128,7 +128,7 @@ final class WriterToUTF8Buffered extends XmlWriter
    * @param c  int specifying a character to be written.
    * @exception  IOException  If an I/O error occurs
    */
-  void write(final int c) throws IOException
+  void write(final char c) throws IOException
   {
     
     /* If we are close to the end of the buffer then flush it.

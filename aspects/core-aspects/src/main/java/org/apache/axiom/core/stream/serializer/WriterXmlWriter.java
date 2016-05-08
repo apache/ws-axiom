@@ -29,7 +29,7 @@ final class WriterXmlWriter extends XmlWriter {
     }
 
     @Override
-    void write(int c) throws IOException {
+    void write(char c) throws IOException {
         out.write(c);
     }
 

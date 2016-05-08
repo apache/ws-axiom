@@ -21,7 +21,7 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 
 abstract class XmlWriter {
-    abstract void write(int c) throws IOException;
+    abstract void write(char c) throws IOException;
     abstract void write(String s) throws IOException;
     abstract void write(char chars[], int start, int length) throws IOException;
     abstract void flush() throws IOException;

@@ -86,7 +86,7 @@ final class WriterToASCI extends XmlWriter
    * @param c  int specifying a character to be written.
    * @exception  IOException  If an I/O error occurs
    */
-  void write(int c) throws IOException
+  void write(char c) throws IOException
   {
     m_os.write(c);
   }
