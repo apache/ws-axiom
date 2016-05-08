@@ -401,18 +401,7 @@ public class ToXMLStream extends ToStream
         {
             String msg = Utils.messages.createMessage(
                                MsgKey.ER_XML_VERSION_NOT_SUPPORTED,new Object[]{ xmlVersion });
-            try 
-            {
-                // Prepare to issue the warning message
-                Transformer tran = super.getTransformer();
-                ErrorListener errHandler = tran.getErrorListener();
-                // Issue the warning message
-                if (null != errHandler && m_sourceLocator != null)
-                    errHandler.warning(new TransformerException(msg, m_sourceLocator));
-                else
-                    System.out.println(msg);
-            }
-            catch (Exception e){}
+            System.out.println(msg);
             xmlVersion = XMLVERSION10;								
         }
         return xmlVersion;

@@ -31,10 +31,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.xml.transform.ErrorListener;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
@@ -396,31 +393,8 @@ abstract public class ToStream extends SerializerBase
                         final String msg2 = 
                             "Warning: encoding \"" + newEncoding + "\" not supported, using "
                                    + Encodings.DEFAULT_MIME_ENCODING;
-                        try {
-                                // Prepare to issue the warning message
-                                final Transformer tran = super.getTransformer();
-                                if (tran != null) {
-                                    final ErrorListener errHandler = tran
-                                            .getErrorListener();
-                                    // Issue the warning message
-                                    if (null != errHandler
-                                            && m_sourceLocator != null) {
-                                        errHandler
-                                                .warning(new TransformerException(
-                                                        msg, m_sourceLocator));
-                                        errHandler
-                                                .warning(new TransformerException(
-                                                        msg2, m_sourceLocator));
-                                    } else {
-                                        System.out.println(msg);
-                                        System.out.println(msg2);
-                                    }
-                                } else {
-                                    System.out.println(msg);
-                                    System.out.println(msg2);
-                                }
-                            } catch (Exception e) {
-                            }
+                        System.out.println(msg);
+                        System.out.println(msg2);
 
                             // We said we are using UTF-8, so use it
                             newEncoding = Encodings.DEFAULT_MIME_ENCODING;

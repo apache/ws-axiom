@@ -20,10 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import java.io.IOException;
-
-import javax.xml.transform.Transformer;
-
 import org.apache.axiom.core.stream.StreamException;
 
 /**
@@ -61,18 +57,6 @@ public interface SerializationHandler
      * @param spaces the number of spaces to indent for each indentation level.
      */
     public void setIndentAmount(int spaces);
-
-    /**
-     * Set the transformer associated with the serializer.
-     * @param transformer the transformer associated with the serializer.
-     */
-    public void setTransformer(Transformer transformer);
-    
-    /**
-     * Get the transformer associated with the serializer.
-     * @return Transformer the transformer associated with the serializer.
-     */
-    public Transformer getTransformer();
 
     /**
      * A SerializationHandler accepts SAX-like events, so

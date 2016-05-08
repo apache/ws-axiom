@@ -26,7 +26,6 @@ import java.util.Set;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.SourceLocator;
-import javax.xml.transform.Transformer;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.xml.sax.Locator;
@@ -142,12 +141,6 @@ public abstract class SerializerBase
      * The mediatype.  Not used right now.
      */
     protected String m_mediatype;
-
-    /**
-     * The transformer that was around when this output handler was created (if
-     * any).
-     */
-    private Transformer m_transformer;
 
     protected SourceLocator m_sourceLocator;
     
@@ -553,25 +546,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Sets the transformer associated with this serializer
-     * @param t the transformer associated with this serializer.
-     * @see SerializationHandler#setTransformer(Transformer)
-     */
-    public void setTransformer(Transformer t)
-    {
-        m_transformer = t;
-    }
-    /**
-     * Gets the transformer associated with this serializer
-     * @return returns the transformer associated with this serializer.
-     * @see SerializationHandler#getTransformer()
-     */
-    public Transformer getTransformer()
-    {
-        return m_transformer;
-    }
-    
-    /**
      * This method gets the nodes value as a String and uses that String as if
      * it were an input character notification.
      * @param node the Node to serialize
@@ -718,7 +692,6 @@ public abstract class SerializerBase
     	this.m_sourceLocator = null;
     	this.m_standalone = null;
     	this.m_standaloneWasSpecified = false;
-    	this.m_transformer = null;
     	this.m_version = null;
     	// don't set writer to null, so that it might be re-used
     	//this.m_writer = null;
