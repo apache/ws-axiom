@@ -943,10 +943,7 @@ abstract public class ToStream extends SerializerBase
                   */
                 codePoint = Encodings.toCodePoint(high, low);
                 // not in the encoding, so write out a character reference
-                writer.write('&');
-                writer.write('#');
-                writer.write(Integer.toString(codePoint));
-                writer.write(';');
+                writer.writeCharacterReference(codePoint);
             } else {
                 /* The output encoding is not known,
                  * so just write it out as-is.
@@ -1057,12 +1054,7 @@ abstract public class ToStream extends SerializerBase
                 }
                 else
                 {
-                    writer.write("&#");
-
-                    String intStr = Integer.toString((int) c);
-
-                    writer.write(intStr);
-                    writer.write(';');
+                    writer.writeCharacterReference(c);
                 }
 
                 //                if ((i != 0) && (i < (end - 1)))
@@ -1107,12 +1099,7 @@ abstract public class ToStream extends SerializerBase
                 {
                     if (m_cdataTagOpen)
                         closeCDATA();
-                    writer.write("&#");
-
-                    String intStr = Integer.toString((int) c);
-
-                    writer.write(intStr);
-                    writer.write(';');
+                    writer.writeCharacterReference(c);
                 }
             }
         }
@@ -1449,9 +1436,7 @@ abstract public class ToStream extends SerializerBase
                             break;
                         default:
                             writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                            writer.write("&#");
-                            writer.write(Integer.toString(ch));
-                            writer.write(';');
+                            writer.writeCharacterReference(ch);
                             lastDirtyCharProcessed = i;
                             break;
 
@@ -1467,9 +1452,7 @@ abstract public class ToStream extends SerializerBase
                         // Range 0x7F through 0x9F inclusive
                         // More control characters, including NEL (0x85)
                         writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        writer.write("&#");
-                        writer.write(Integer.toString(ch));
-                        writer.write(';');
+                        writer.writeCharacterReference(ch);
                         lastDirtyCharProcessed = i;
                     }
                     else if (ch == CharInfo.S_LINE_SEPARATOR) {
@@ -1490,9 +1473,7 @@ abstract public class ToStream extends SerializerBase
                         // (i.e. isn't in the encoding, etc.) then what
                         // should we do?  We choose to write out an entity
                         writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        writer.write("&#");
-                        writer.write(Integer.toString(ch));
-                        writer.write(';');
+                        writer.writeCharacterReference(ch);
                         lastDirtyCharProcessed = i;
                     }
                 }
@@ -1711,9 +1692,7 @@ abstract public class ToStream extends SerializerBase
                     codePoint = Encodings.toCodePoint(ch,next);
                 }
 
-                writer.write("&#");
-                writer.write(Integer.toString(codePoint));
-                writer.write(';');
+                writer.writeCharacterReference(codePoint);
                 pos += 2; // count the two characters that went into writing out this entity
             }
             else
@@ -1725,18 +1704,14 @@ abstract public class ToStream extends SerializerBase
                  */ 
                 if (isCharacterInC0orC1Range(ch) || isNELorLSEPCharacter(ch))
                 {
-                    writer.write("&#");
-                    writer.write(Integer.toString(ch));
-                    writer.write(';');
+                    writer.writeCharacterReference(ch);
                 }
                 else if ((!escapingNotNeeded(ch) || 
                     (  (fromTextNode && m_charInfo.shouldMapTextChar(ch))
                      || (!fromTextNode && m_charInfo.shouldMapAttrChar(ch)))) 
                 && m_elemContext.m_currentElemDepth > 0)
                 {
-                    writer.write("&#");
-                    writer.write(Integer.toString(ch));
-                    writer.write(';');
+                    writer.writeCharacterReference(ch);
                 }
                 else
                 {
@@ -1944,9 +1919,7 @@ abstract public class ToStream extends SerializerBase
                         writer.write("&#13;");
                         break;
                     default:
-                        writer.write("&#");
-                        writer.write(Integer.toString(ch));
-                        writer.write(';');
+                        writer.writeCharacterReference(ch);
                         break;
 
                     }
@@ -1959,9 +1932,7 @@ abstract public class ToStream extends SerializerBase
                 else if (ch <= 0x9F){
                     // Range 0x7F through 0x9F inclusive
                     // More control characters
-                    writer.write("&#");
-                    writer.write(Integer.toString(ch));
-                    writer.write(';');
+                    writer.writeCharacterReference(ch);
                 }
                 else if (ch == CharInfo.S_LINE_SEPARATOR) {
                     // LINE SEPARATOR
@@ -1978,9 +1949,7 @@ abstract public class ToStream extends SerializerBase
                     // but if the character wasn't previously handled
                     // (i.e. isn't in the encoding, etc.) then what
                     // should we do?  We choose to write out a character ref
-                    writer.write("&#");
-                    writer.write(Integer.toString(ch));
-                    writer.write(';');
+                    writer.writeCharacterReference(ch);
                 }
                     
             }

@@ -25,4 +25,11 @@ abstract class XmlWriter {
     abstract void write(String s) throws IOException;
     abstract void write(final char chars[], final int start, final int length) throws IOException;
     abstract void flush() throws IOException;
+    
+    final void writeCharacterReference(int codePoint) throws IOException {
+        write("&#");
+        // TODO: optimize this
+        write(Integer.toString(codePoint));
+        write(';');
+    }
 }
