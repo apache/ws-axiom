@@ -23,7 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 
 /**
@@ -36,7 +35,7 @@ import java.io.Writer;
  * 
  * @xsl.usage internal
  */
-final class WriterToUTF8Buffered extends Writer
+final class WriterToUTF8Buffered extends XmlWriter
 {
     
   /** number of bytes that the byte buffer can hold.
@@ -78,7 +77,7 @@ final class WriterToUTF8Buffered extends Writer
    *
    * @throws UnsupportedEncodingException
    */
-  public WriterToUTF8Buffered(OutputStream out)
+  WriterToUTF8Buffered(OutputStream out)
   {
       m_os = out;
       // get 3 extra bytes to make buffer overflow checking simpler and faster
@@ -129,7 +128,7 @@ final class WriterToUTF8Buffered extends Writer
    * @param c  int specifying a character to be written.
    * @exception  IOException  If an I/O error occurs
    */
-  public void write(final int c) throws IOException
+  void write(final int c) throws IOException
   {
     
     /* If we are close to the end of the buffer then flush it.
@@ -175,7 +174,7 @@ final class WriterToUTF8Buffered extends Writer
    *
    * @throws java.io.IOException
    */
-  public void write(final char chars[], final int start, final int length)
+  void write(final char chars[], final int start, final int length)
           throws java.io.IOException
   {
 
@@ -313,7 +312,7 @@ final class WriterToUTF8Buffered extends Writer
    *
    * @exception  IOException  If an I/O error occurs
    */
-  public void write(final String s) throws IOException
+  void write(final String s) throws IOException
   {
 
     // We multiply the length by three since this is the maximum length
@@ -439,7 +438,7 @@ final class WriterToUTF8Buffered extends Writer
    *
    * @throws IOException
    */
-  public void flushBuffer() throws IOException
+  void flushBuffer() throws IOException
   {
 
     if (count > 0)
@@ -461,24 +460,9 @@ final class WriterToUTF8Buffered extends Writer
    *
    * @throws java.io.IOException
    */
-  public void flush() throws java.io.IOException
+  void flush() throws java.io.IOException
   {
     flushBuffer();
     m_os.flush();
-  }
-
-  /**
-   * Close the stream, flushing it first.  Once a stream has been closed,
-   * further write() or flush() invocations will cause an IOException to be
-   * thrown.  Closing a previously-closed stream, however, has no effect.
-   *
-   * @exception  IOException  If an I/O error occurs
-   *
-   * @throws java.io.IOException
-   */
-  public void close() throws java.io.IOException
-  {
-    flushBuffer();
-    m_os.close();
   }
 }

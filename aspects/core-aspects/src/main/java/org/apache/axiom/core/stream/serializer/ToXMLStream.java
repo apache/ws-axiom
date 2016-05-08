@@ -22,10 +22,7 @@ package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
 
-import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
@@ -68,7 +65,7 @@ public class ToXMLStream extends ToStream
     public void CopyFrom(ToXMLStream xmlListener)
     {
 
-        setWriter(xmlListener.m_writer);
+        setWriterInternal(xmlListener.m_writer, m_writer_set_by_user);
 
 
         // m_outputStream = xmlListener.m_outputStream;
@@ -132,7 +129,7 @@ public class ToXMLStream extends ToStream
 
             try
             {
-                final java.io.Writer writer = m_writer;
+                final XmlWriter writer = m_writer;
                 writer.write("<?xml version=\"");
                 writer.write(version);
                 writer.write("\" encoding=\"");
@@ -260,7 +257,7 @@ public class ToXMLStream extends ToStream
                 if (shouldIndent())
                     indent();
 
-                final java.io.Writer writer = m_writer;
+                final XmlWriter writer = m_writer;
                 writer.write("<?");
                 writer.write(target);
 
@@ -326,7 +323,7 @@ public class ToXMLStream extends ToStream
             if (shouldIndent())
                 indent();
 
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             writer.write('&');
             writer.write(name);
             writer.write(';');

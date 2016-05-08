@@ -22,7 +22,6 @@ package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 
 
 
@@ -36,7 +35,7 @@ import java.io.Writer;
  * 
  * @xsl.usage internal
  */
-class WriterToASCI extends Writer
+final class WriterToASCI extends XmlWriter
 {
 
   /** The byte stream to write to.  */
@@ -48,7 +47,7 @@ class WriterToASCI extends Writer
    *
    * @param os The byte stream to write to.
    */
-  public WriterToASCI(OutputStream os)
+  WriterToASCI(OutputStream os)
   {
     m_os = os;
   }
@@ -64,7 +63,7 @@ class WriterToASCI extends Writer
    *
    * @throws java.io.IOException
    */
-  public void write(char chars[], int start, int length)
+  void write(char chars[], int start, int length)
           throws java.io.IOException
   {
 
@@ -87,7 +86,7 @@ class WriterToASCI extends Writer
    * @param c  int specifying a character to be written.
    * @exception  IOException  If an I/O error occurs
    */
-  public void write(int c) throws IOException
+  void write(int c) throws IOException
   {
     m_os.write(c);
   }
@@ -99,7 +98,7 @@ class WriterToASCI extends Writer
    *
    * @exception  IOException  If an I/O error occurs
    */
-  public void write(String s) throws IOException
+  void write(String s) throws IOException
   {
     int n = s.length();
     for (int i = 0; i < n; i++)
@@ -117,20 +116,8 @@ class WriterToASCI extends Writer
    *
    * @exception  IOException  If an I/O error occurs
    */
-  public void flush() throws java.io.IOException
+  void flush() throws java.io.IOException
   {
     m_os.flush();
-  }
-
-  /**
-   * Close the stream, flushing it first.  Once a stream has been closed,
-   * further write() or flush() invocations will cause an IOException to be
-   * thrown.  Closing a previously-closed stream, however, has no effect.
-   *
-   * @exception  IOException  If an I/O error occurs
-   */
-  public void close() throws java.io.IOException
-  {
-    m_os.close();
   }
 }

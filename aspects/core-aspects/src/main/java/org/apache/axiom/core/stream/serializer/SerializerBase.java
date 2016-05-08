@@ -150,7 +150,7 @@ public abstract class SerializerBase
      * serializers, but exists here just so that the fireStartDoc() and
      * other fire... methods can flush this writer when tracing.
      */
-    protected java.io.Writer m_writer = null;
+    protected XmlWriter m_writer = null;
     
     /**
      * A reference to "stack frame" corresponding to

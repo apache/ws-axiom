@@ -129,7 +129,7 @@ public interface Serializer {
      *
      * @return Reference to the result Writer, or null.
      */
-    public Writer getWriter();
+    public XmlWriter getWriter();
 
     /**
      * Specifies an output format for this serializer. It the

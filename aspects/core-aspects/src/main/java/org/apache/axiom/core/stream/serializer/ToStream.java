@@ -205,7 +205,7 @@ abstract public class ToStream extends SerializerBase
      */
     protected final void flushWriter() throws StreamException
     {
-        final java.io.Writer writer = m_writer;
+        final XmlWriter writer = m_writer;
         if (null != writer)
         {
             try
@@ -271,7 +271,7 @@ abstract public class ToStream extends SerializerBase
             return;
         try
         {
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             DTDprolog();
 
             writer.write("<!ELEMENT ");
@@ -329,7 +329,7 @@ abstract public class ToStream extends SerializerBase
      */
     void outputEntityDecl(String name, String value) throws IOException
     {
-        final java.io.Writer writer = m_writer;
+        final XmlWriter writer = m_writer;
         writer.write("<!ENTITY ");
         writer.write(name);
         writer.write(" \"");
@@ -416,7 +416,7 @@ abstract public class ToStream extends SerializerBase
                            // if there was a previously set OutputStream
                            OutputStream os = getOutputStream();
                            if (os != null) {
-                               Writer w = getWriter();
+                               XmlWriter w = getWriter();
                                
                                // If the writer was previously set, but
                                // set by the user, or if the new encoding is the same
@@ -584,11 +584,11 @@ abstract public class ToStream extends SerializerBase
      */
     public void setWriter(Writer writer)
     {        
-        setWriterInternal(writer, true);
+        setWriterInternal(new WriterXmlWriter(writer), true);
     }
     
-    private boolean m_writer_set_by_user;
-    private void setWriterInternal(Writer writer, boolean setByUser) {
+    protected boolean m_writer_set_by_user;
+    protected void setWriterInternal(XmlWriter writer, boolean setByUser) {
 
         m_writer_set_by_user = setByUser;
         m_writer = writer;
@@ -674,12 +674,12 @@ abstract public class ToStream extends SerializerBase
                     e.printStackTrace();
                 }
             }
-            setWriterInternal(osw,false);
+            setWriterInternal(new WriterXmlWriter(osw), false);
         }
         else {
             // don't have any encoding, but we have an OutputStream
             Writer osw = new OutputStreamWriter(output);
-            setWriterInternal(osw,false);
+            setWriterInternal(new WriterXmlWriter(osw), false);
         }
     }
 
@@ -733,7 +733,7 @@ abstract public class ToStream extends SerializerBase
      */
     private void printSpace(int n) throws IOException
     {
-        final java.io.Writer writer = m_writer;
+        final XmlWriter writer = m_writer;
         for (int i = 0; i < n; i++)
         {
             writer.write(' ');
@@ -773,7 +773,7 @@ abstract public class ToStream extends SerializerBase
             return;
         try
         {
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             DTDprolog();
 
             writer.write("<!ATTLIST ");
@@ -805,7 +805,7 @@ abstract public class ToStream extends SerializerBase
      *
      * @return Reference to the result Writer, or null.
      */
-    public Writer getWriter()
+    public XmlWriter getWriter()
     {
         return m_writer;
     }
@@ -924,7 +924,7 @@ abstract public class ToStream extends SerializerBase
                             + Integer.toHexString(low)}));
         }
 
-        final java.io.Writer writer = m_writer;
+        final XmlWriter writer = m_writer;
                 
         // If we make it to here we have a valid high, low surrogate pair
         if (m_encodingInfo.isInEncoding(c,low)) {
@@ -975,7 +975,7 @@ abstract public class ToStream extends SerializerBase
      * @throws java.io.IOException
      */
     int accumDefaultEntity(
-        java.io.Writer writer,
+        XmlWriter writer,
         char ch,
         int i,
         char[] chars,
@@ -1032,7 +1032,7 @@ abstract public class ToStream extends SerializerBase
         boolean useSystemLineSeparator)
         throws IOException, StreamException
     {
-        final java.io.Writer writer = m_writer;
+        final XmlWriter writer = m_writer;
         int end = start + length;
 
         for (int i = start; i < end; i++)
@@ -1340,7 +1340,7 @@ abstract public class ToStream extends SerializerBase
             final int end = start + length;
             int lastDirtyCharProcessed = start - 1; // last non-clean character that was processed
 													// that was processed
-            final Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             boolean isAllWhitespace = true;
 
             // process any leading whitspace
@@ -1516,7 +1516,7 @@ abstract public class ToStream extends SerializerBase
         }
     }
 
-	private int processLineFeed(final char[] chars, int i, int lastProcessed, final Writer writer) throws IOException {
+	private int processLineFeed(final char[] chars, int i, int lastProcessed, final XmlWriter writer) throws IOException {
 		if (!m_lineSepUse 
 		|| (m_lineSepLen ==1 && m_lineSep[0] == CharInfo.S_LINEFEED)){
 		    // We are leaving the new-line alone, and it is just
@@ -1660,7 +1660,7 @@ abstract public class ToStream extends SerializerBase
      * @throws StreamException
      */
     private int accumDefaultEscape(
-        Writer writer,
+        XmlWriter writer,
         char ch,
         int i,
         char[] chars,
@@ -1798,7 +1798,7 @@ abstract public class ToStream extends SerializerBase
 
             m_startNewLine = true;
 
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             writer.write('<');
             writer.write(name);
         }
@@ -1830,7 +1830,7 @@ abstract public class ToStream extends SerializerBase
             closeCDATA();
         try
         {
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             writer.write("<!DOCTYPE ");
             writer.write(name);
 
@@ -1870,7 +1870,7 @@ abstract public class ToStream extends SerializerBase
 
     public void writeAttribute(String prefix, String localName, String value) throws StreamException {
         try {
-            final Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             writer.write(' ');
             if (!prefix.isEmpty()) {
                 writer.write(prefix);
@@ -1894,7 +1894,7 @@ abstract public class ToStream extends SerializerBase
      * @throws java.io.IOException
      */
     public void writeAttrString(
-        Writer writer,
+        XmlWriter writer,
         String string)
         throws IOException
     {
@@ -2011,7 +2011,7 @@ abstract public class ToStream extends SerializerBase
 
         try
         {
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             if (m_elemContext.m_startTagOpen)
             {
                 if (m_spaceBeforeClose)
@@ -2089,7 +2089,7 @@ abstract public class ToStream extends SerializerBase
             if (shouldIndent())
                 indent();
             
-            final java.io.Writer writer = m_writer;    
+            final XmlWriter writer = m_writer;    
             writer.write(COMMENT_BEGIN);
             // Detect occurrences of two consecutive dashes, handle as necessary.
             for (int i = start; i < limit; i++)
@@ -2160,7 +2160,7 @@ abstract public class ToStream extends SerializerBase
                 outputDocTypeDecl(m_elemContext.m_elementName, false);
                 m_needToOutputDocTypeDecl = false;
             }
-            final java.io.Writer writer = m_writer;
+            final XmlWriter writer = m_writer;
             if (!m_inDoctype)
                 writer.write("]>");
             else
@@ -2684,7 +2684,7 @@ abstract public class ToStream extends SerializerBase
      * @throws IOException
      */
     private void DTDprolog() throws StreamException, IOException {
-        final java.io.Writer writer = m_writer;
+        final XmlWriter writer = m_writer;
         if (m_needToOutputDocTypeDecl)
         {
             outputDocTypeDecl(m_elemContext.m_elementName, false);
