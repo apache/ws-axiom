@@ -20,7 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -582,30 +581,6 @@ public abstract class SerializerBase
 //            m_tracer.fireGenerateEvent(SerializerTrace.EVENTTYPE_CHARACTERS, chars, start,length);     	        	    	
 //    }
 //        
-
-    /**
-     * This method is only used internally when flushing the writer from the
-     * various fire...() trace events.  Due to the writer being wrapped with 
-     * SerializerTraceWriter it may cause the flush of these trace events:
-     * EVENTTYPE_OUTPUT_PSEUDO_CHARACTERS 
-     * EVENTTYPE_OUTPUT_CHARACTERS
-     * which trace the output written to the output stream.
-     * 
-     */
-    private void flushMyWriter()
-    {
-        if (m_writer != null)
-        {
-            try
-            {
-                m_writer.flush();
-            }
-            catch(IOException ioe)
-            {
-            
-            }
-        }
-    }
 
     /**
      * Receive notification of the beginning of a document.

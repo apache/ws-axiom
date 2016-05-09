@@ -23,9 +23,11 @@ import java.io.Writer;
 
 final class WriterXmlWriter extends XmlWriter {
     private final Writer out;
+    private final boolean flushWriter;
 
-    WriterXmlWriter(Writer out) {
+    WriterXmlWriter(Writer out, boolean flushWriter) {
         this.out = out;
+        this.flushWriter = flushWriter;
     }
 
     @Override
@@ -44,7 +46,9 @@ final class WriterXmlWriter extends XmlWriter {
     }
 
     @Override
-    void flush() throws IOException {
-        out.flush();
+    void flushBuffer() throws IOException {
+        if (flushWriter) {
+            out.flush();
+        }
     }
 }

@@ -185,7 +185,11 @@ public class ToXMLStream extends ToStream
             }
         }
 
-        flushWriter();
+        try {
+            m_writer.flushBuffer();
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
     }
 
     /**

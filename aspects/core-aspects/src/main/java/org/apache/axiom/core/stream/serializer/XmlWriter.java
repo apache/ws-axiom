@@ -24,7 +24,13 @@ abstract class XmlWriter {
     abstract void write(char c) throws IOException;
     abstract void write(String s) throws IOException;
     abstract void write(char chars[], int start, int length) throws IOException;
-    abstract void flush() throws IOException;
+
+    /**
+     * Write any pending data to the underlying stream, without flushing the stream itself.
+     * 
+     * @throws IOException
+     */
+    abstract void flushBuffer() throws IOException;
     
     final void writeCharacterReference(int codePoint) throws IOException {
         write("&#");

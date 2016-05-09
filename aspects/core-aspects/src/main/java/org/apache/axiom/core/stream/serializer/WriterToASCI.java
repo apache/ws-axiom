@@ -107,17 +107,6 @@ final class WriterToASCI extends XmlWriter
     }
   }
 
-  /**
-   * Flush the stream.  If the stream has saved any characters from the
-   * various write() methods in a buffer, write them immediately to their
-   * intended destination.  Then, if that destination is another character or
-   * byte stream, flush it.  Thus one flush() invocation will flush all the
-   * buffers in a chain of Writers and OutputStreams.
-   *
-   * @exception  IOException  If an I/O error occurs
-   */
-  void flush() throws java.io.IOException
-  {
-    m_os.flush();
+  void flushBuffer() {
   }
 }

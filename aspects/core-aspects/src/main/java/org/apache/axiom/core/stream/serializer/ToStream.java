@@ -128,9 +128,6 @@ abstract public class ToStream extends SerializerBase
      */
     protected CharInfo m_charInfo;
 
-    /** True if we control the buffer, and we should flush the output on endDocument. */
-    boolean m_shouldFlush = true;
-
     /**
      * Add space before '/>' for XHTML.
      */
@@ -197,45 +194,6 @@ abstract public class ToStream extends SerializerBase
      * Taken from XSLTC 
      */
     protected boolean m_escaping = true;
-
-    /**
-     * Flush the formatter's result stream.
-     *
-     * @throws StreamException
-     */
-    protected final void flushWriter() throws StreamException
-    {
-        final XmlWriter writer = m_writer;
-        if (null != writer)
-        {
-            try
-            {
-                if (writer instanceof WriterToUTF8Buffered)
-                {
-                    if (m_shouldFlush)
-                         ((WriterToUTF8Buffered) writer).flush();
-                    else
-                         ((WriterToUTF8Buffered) writer).flushBuffer();
-                }
-                if (writer instanceof WriterToASCI)
-                {
-                    if (m_shouldFlush)
-                        writer.flush();
-                }
-                else
-                {
-                    // Flush always. 
-                    // Not a great thing if the writer was created 
-                    // by this class, but don't have a choice.
-                    writer.flush();
-                }
-            }
-            catch (IOException ioe)
-            {
-                throw new StreamException(ioe);
-            }
-        }
-    }
 
     OutputStream m_outputStream;
     /**
@@ -498,9 +456,6 @@ abstract public class ToStream extends SerializerBase
      */
     public void setOutputFormat(Properties format)
     {
-
-        boolean shouldFlush = m_shouldFlush;
-        
         if (format != null)
         {
             // Set the default values first,
@@ -537,11 +492,6 @@ abstract public class ToStream extends SerializerBase
 
             m_charInfo = CharInfo.getCharInfo(entitiesFileName);
         }
-
-
-         
-
-        m_shouldFlush = shouldFlush;
     }
 
     /**
@@ -584,7 +534,7 @@ abstract public class ToStream extends SerializerBase
      */
     public void setWriter(Writer writer)
     {        
-        setWriterInternal(new WriterXmlWriter(writer), true);
+        setWriterInternal(new WriterXmlWriter(writer, false), true);
     }
     
     protected boolean m_writer_set_by_user;
@@ -674,12 +624,12 @@ abstract public class ToStream extends SerializerBase
                     e.printStackTrace();
                 }
             }
-            setWriterInternal(new WriterXmlWriter(osw), false);
+            setWriterInternal(new WriterXmlWriter(osw, true), false);
         }
         else {
             // don't have any encoding, but we have an OutputStream
             Writer osw = new OutputStreamWriter(output);
-            setWriterInternal(new WriterXmlWriter(osw), false);
+            setWriterInternal(new WriterXmlWriter(osw, true), false);
         }
     }
 
@@ -2334,7 +2284,7 @@ abstract public class ToStream extends SerializerBase
             }
             if (m_writer != null) {
                 try {
-                    m_writer.flush();
+                    m_writer.flushBuffer();
                 }
                 catch(IOException e) {
                     // what? me worry?
@@ -2390,7 +2340,6 @@ abstract public class ToStream extends SerializerBase
          this.m_lineSepUse = true;
          // this.m_outputStream = null; // Don't reset it may be re-used
          this.m_preserves.clear();
-         this.m_shouldFlush = true;
          this.m_spaceBeforeClose = false;
          this.m_startNewLine = false;
          this.m_writer_set_by_user = false;

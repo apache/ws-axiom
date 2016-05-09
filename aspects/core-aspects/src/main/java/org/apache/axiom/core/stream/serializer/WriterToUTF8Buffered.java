@@ -433,11 +433,6 @@ final class WriterToUTF8Buffered extends XmlWriter
 
   }
 
-  /**
-   * Flush the internal buffer
-   *
-   * @throws IOException
-   */
   void flushBuffer() throws IOException
   {
 
@@ -447,22 +442,5 @@ final class WriterToUTF8Buffered extends XmlWriter
 
       count = 0;
     }
-  }
-
-  /**
-   * Flush the stream.  If the stream has saved any characters from the
-   * various write() methods in a buffer, write them immediately to their
-   * intended destination.  Then, if that destination is another character or
-   * byte stream, flush it.  Thus one flush() invocation will flush all the
-   * buffers in a chain of Writers and OutputStreams.
-   *
-   * @exception  IOException  If an I/O error occurs
-   *
-   * @throws java.io.IOException
-   */
-  void flush() throws java.io.IOException
-  {
-    flushBuffer();
-    m_os.flush();
   }
 }
