@@ -26,6 +26,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.axiom.testing.multiton.Multiton;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -84,10 +87,35 @@ public abstract class DOMImplementation extends Multiton {
         DocumentBuilderFactory factory = newDocumentBuilderFactory();
         factory.setNamespaceAware(true);
         factory.setExpandEntityReferences(expandEntityReferences);
+        Document document;
         try {
-            return factory.newDocumentBuilder().parse(is);
+            document = factory.newDocumentBuilder().parse(is);
         } catch (ParserConfigurationException ex) {
             throw new Error("Unexpected exception", ex);
+        }
+        if (!expandEntityReferences) {
+            // Crimson creates EntityReference nodes for predefined entities (such as &lt;);
+            // expand them.
+            expandPredefinedEntityReferences(document.getDocumentElement());
+        }
+        return document;
+    }
+    
+    private void expandPredefinedEntityReferences(Element element) {
+        Node child = element.getFirstChild();
+        while (child != null) {
+            switch (child.getNodeType()) {
+                case Node.ELEMENT_NODE:
+                    expandPredefinedEntityReferences((Element)child);
+                    break;
+                case Node.ENTITY_REFERENCE_NODE:
+                    if (child.getNodeName().equals("lt")) {
+                        Text content = (Text)child.getFirstChild().cloneNode(false);
+                        element.replaceChild(content, child);
+                        child = content;
+                    }
+            }
+            child = child.getNextSibling();
         }
     }
     
