@@ -159,11 +159,6 @@ abstract public class ToStream extends SerializerBase
         }
     }
 
-    /**
-     * Taken from XSLTC 
-     */
-    protected boolean m_escaping = true;
-
     OutputStream m_outputStream;
     /**
      * Get the output stream where the events will be serialized to.
@@ -592,18 +587,6 @@ abstract public class ToStream extends SerializerBase
             setWriterInternal(new WriterXmlWriter(osw, true), false);
         }
     }
-
-    /**
-     * @see SerializationHandler#setEscaping(boolean)
-     */
-    public boolean setEscaping(boolean escape)
-    {
-        final boolean temp = m_escaping;
-        m_escaping = escape;
-        return temp;
-
-    }
-
 
     /**
      * Report an attribute type declaration.
@@ -1168,7 +1151,7 @@ abstract public class ToStream extends SerializerBase
         if (m_cdataTagOpen)
             closeCDATA();
         
-        if (m_disableOutputEscapingStates.peekOrFalse() || (!m_escaping))
+        if (m_disableOutputEscapingStates.peekOrFalse())
         {
             charactersRaw(chars, start, length);
             return;
@@ -2170,7 +2153,6 @@ abstract public class ToStream extends SerializerBase
          this.m_disableOutputEscapingStates.clear();
          // this.m_encodingInfo = null; // don't set to null
          
-         this.m_escaping = true;
          // Leave m_format alone for now - Brian M.
          // this.m_format = null;
          this.m_expandDTDEntities = true; 

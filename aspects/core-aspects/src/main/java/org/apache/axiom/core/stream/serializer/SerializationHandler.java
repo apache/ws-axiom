@@ -42,17 +42,6 @@ public interface SerializationHandler
     public void close();
 
     /**
-     * Turns special character escaping on/off. 
-     * 
-     * Note that characters will
-     * never, even if this option is set to 'true', be escaped within
-     * CDATA sections in output XML documents.
-     * 
-     * @param escape true if escaping is to be set on.
-     */
-    public boolean setEscaping(boolean escape) throws StreamException;
-
-    /**
      * A SerializationHandler accepts SAX-like events, so
      * it can accumulate attributes or namespace nodes after
      * a startElement().
