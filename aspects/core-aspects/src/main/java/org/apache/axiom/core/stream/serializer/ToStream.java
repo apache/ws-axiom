@@ -1333,7 +1333,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     public void startProcessingInstruction(String target) throws StreamException {
-        flushPending();
         switchContext(Context.TAG);
         try {
             m_writer.write("<?");
@@ -1389,20 +1388,12 @@ abstract public class ToStream extends SerializerBase
         }
     }
 
-    /**
-     * This method flushes any pending events, which can be startDocument()
-     * closing the opening tag of an element, or closing an open CDATA section.
-     */
-    public void flushPending() throws StreamException
-    {
-            if (m_writer != null) {
-                try {
-                    m_writer.flushBuffer();
-                }
-                catch(IOException e) {
-                    // what? me worry?
-                }
-            }
+    public void flushBuffer() throws StreamException {
+        try {
+            m_writer.flushBuffer();
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
     }
 
     /**

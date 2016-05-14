@@ -117,13 +117,7 @@ public class ToXMLStream extends ToStream
      */
     public void endDocument() throws StreamException
     {
-        flushPending();
-
-        try {
-            m_writer.flushBuffer();
-        } catch (IOException ex) {
-            throw new StreamException(ex);
-        }
+        flushBuffer();
     }
 
     /**

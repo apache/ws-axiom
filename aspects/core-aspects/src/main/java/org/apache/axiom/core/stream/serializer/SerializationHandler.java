@@ -20,8 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import org.apache.axiom.core.stream.StreamException;
-
 /**
  * This interface is the one that a serializer implements. It is a group of
  * other interfaces, such as ExtendedContentHandler, ExtendedLexicalHandler etc.
@@ -38,35 +36,6 @@ public interface SerializationHandler
         XSLOutputAttributes,
         Serializer
 {
-    public void close();
-
-    /**
-     * A SerializationHandler accepts SAX-like events, so
-     * it can accumulate attributes or namespace nodes after
-     * a startElement().
-     * <p>
-     * If the SerializationHandler has a Writer or OutputStream, 
-     * a call to this method will flush such accumulated 
-     * events as a closed start tag for an element.
-     * <p>
-     * If the SerializationHandler wraps a ContentHandler,
-     * a call to this method will flush such accumulated
-     * events as a SAX (not SAX-like) calls to
-     * startPrefixMapping() and startElement().
-     * <p>
-     * If one calls endDocument() then one need not call
-     * this method since a call to endDocument() will
-     * do what this method does. However, in some
-     * circumstances, such as with document fragments,
-     * endDocument() is not called and it may be
-     * necessary to call this method to flush
-     * any pending events.
-     * <p> 
-     * For performance reasons this method should not be called
-     * very often. 
-     */
-    public void flushPending() throws StreamException;
-    
     /**
      * Default behavior is to expand DTD entities,
      * that is the initall default value is true.

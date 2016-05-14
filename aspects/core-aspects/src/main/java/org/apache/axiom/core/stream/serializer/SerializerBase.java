@@ -200,16 +200,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Flush and close the underlying java.io.Writer. This method applies to
-     * ToStream serializers, not ToSAXHandler serializers.
-     * @see ToStream
-     */
-    public void close()
-    {
-        // do nothing (base behavior)
-    }
-
-    /**
      * Initialize global variables
      */
     protected void initCDATA()
