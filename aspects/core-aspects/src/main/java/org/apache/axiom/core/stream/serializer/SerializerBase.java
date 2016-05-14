@@ -438,30 +438,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * This method gets the nodes value as a String and uses that String as if
-     * it were an input character notification.
-     * @param node the Node to serialize
-     * @throws StreamException
-     */
-    public void characters(org.w3c.dom.Node node)
-        throws StreamException
-    {
-        flushPending();
-        String data = node.getNodeValue();
-        if (data != null)
-        {
-            final int length = data.length();
-            if (length > m_charsBuff.length)
-            {
-                m_charsBuff = new char[length * 2 + 1];
-            }
-            data.getChars(0, length, m_charsBuff, 0);
-            characters(m_charsBuff, 0, length);
-        }
-    }
-    
-
-    /**
      * Report the characters event
      * @param chars  content of characters
      * @param start  starting index of characters to output

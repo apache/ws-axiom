@@ -55,13 +55,6 @@ public interface ExtendedContentHandler
     public void characters(String chars) throws StreamException;
     
     /**
-     * This method is used to notify of a character event, but passing the data
-     * as a DOM Node rather than the standard character array.
-     * @param node a DOM Node containing text.
-     * @throws StreamException
-     */    
-    public void characters(org.w3c.dom.Node node) throws StreamException;
-    /**
      * This method is used to notify that an element has ended. Unlike the
      * standard SAX method
      * <pre>
