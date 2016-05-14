@@ -125,13 +125,6 @@ abstract public class ToStream extends SerializerBase
      * remembers if we are in between the startCDATA() and endCDATA() callbacks
      */
     protected boolean m_cdataStartCalled = false;
-    
-    /**
-     * If this flag is true DTD entity references are not left as-is,
-     * which is exiting older behavior.
-     */
-    private boolean m_expandDTDEntities = true;
-  
 
     /**
      * Default constructor
@@ -188,9 +181,6 @@ abstract public class ToStream extends SerializerBase
      */
     public void elementDecl(String name, String model) throws StreamException
     {
-        // Do not inline external DTD
-        if (m_inExternalDTD)
-            return;
         try
         {
             final XmlWriter writer = m_writer;
@@ -226,9 +216,6 @@ abstract public class ToStream extends SerializerBase
     public void internalEntityDecl(String name, String value)
         throws StreamException
     {
-        // Do not inline external DTD
-        if (m_inExternalDTD)
-            return;
         try
         {
             DTDprolog();
@@ -615,9 +602,6 @@ abstract public class ToStream extends SerializerBase
         String value)
         throws StreamException
     {
-        // Do not inline external DTD
-        if (m_inExternalDTD)
-            return;
         try
         {
             final XmlWriter writer = m_writer;
@@ -1085,9 +1069,6 @@ abstract public class ToStream extends SerializerBase
     protected void charactersRaw(char ch[], int start, int length)
         throws StreamException
     {
-
-        if (m_inEntityRef)
-            return;
         try
         {
             m_writer.write(ch, start, length);
@@ -1133,7 +1114,7 @@ abstract public class ToStream extends SerializerBase
         // characters to read from array is 0.
         // Section 7.6.1 of XSLT 1.0 (http://www.w3.org/TR/xslt#value-of) suggest no text node
         // is created if string is empty.	
-        if (length == 0 || (m_inEntityRef && !m_expandDTDEntities))
+        if (length == 0)
             return;
             
         m_docIsEmpty = false;
@@ -1443,8 +1424,6 @@ abstract public class ToStream extends SerializerBase
      */
     public void characters(String s) throws StreamException
     {
-        if (m_inEntityRef && !m_expandDTDEntities)
-            return;
         final int length = s.length();
         if (length > m_charsBuff.length)
         {
@@ -1581,9 +1560,6 @@ abstract public class ToStream extends SerializerBase
         String name)
         throws StreamException
     {
-        if (m_inEntityRef)
-            return;
-
         if (m_cdataTagOpen)
             closeCDATA();
         try
@@ -1798,9 +1774,6 @@ abstract public class ToStream extends SerializerBase
     public void endElement(String namespaceURI, String localName, String name)
         throws StreamException
     {
-        if (m_inEntityRef)
-            return;
-
         try
         {
             final XmlWriter writer = m_writer;
@@ -1860,8 +1833,6 @@ abstract public class ToStream extends SerializerBase
     {
 
         int start_old = start;
-        if (m_inEntityRef)
-            return;
 
         try
         {
@@ -2004,39 +1975,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     /**
-     * Report the beginning of an entity.
-     * 
-     * The start and end of the document entity are not reported.
-     * The start and end of the external DTD subset are reported
-     * using the pseudo-name "[dtd]".  All other events must be
-     * properly nested within start/end entity events.
-     * 
-     * @param name The name of the entity.  If it is a parameter
-     *        entity, the name will begin with '%'.
-     * @throws StreamException The application may raise an exception.
-     * @see #endEntity
-     * @see org.xml.sax.ext.DeclHandler#internalEntityDecl
-     * @see org.xml.sax.ext.DeclHandler#externalEntityDecl
-     */
-    public void startEntity(String name) throws StreamException
-    {
-        if (name.equals("[dtd]"))
-            m_inExternalDTD = true;
-
-        if (!m_expandDTDEntities && !m_inExternalDTD) {
-            /* Only leave the entity as-is if
-             * we've been told not to expand them
-             * and this is not the magic [dtd] name.
-             */
-            startNonEscaping();
-            characters("&" + name + ';');
-            endNonEscaping();
-        }
-
-        m_inEntityRef = true;
-    }
-
-    /**
      * For the enclosing elements starting tag write out
      * out any attributes followed by ">"
      *
@@ -2155,7 +2093,6 @@ abstract public class ToStream extends SerializerBase
          
          // Leave m_format alone for now - Brian M.
          // this.m_format = null;
-         this.m_expandDTDEntities = true; 
          this.m_inDoctype = false;
          this.m_isUTF8 = false; //  ?? used anywhere ??
          this.m_lineSep = s_systemLineSep;
@@ -2438,14 +2375,6 @@ abstract public class ToStream extends SerializerBase
         }
     }
     
-    /**
-     * If set to false the serializer does not expand DTD entities,
-     * but leaves them as is, the default value is true;
-     */
-    public void setDTDEntityExpansion(boolean expand) { 
-        m_expandDTDEntities = expand;     
-    }
-        
     /**
      * Sets the end of line characters to be used during serialization
      * @param eolChars A character array corresponding to the characters to be used.

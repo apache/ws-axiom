@@ -84,14 +84,6 @@ public abstract class SerializerBase
     protected boolean m_cdataTagOpen = false;
 
     /**
-     * Tells if we're in an EntityRef event.
-     */
-    protected boolean m_inEntityRef = false;
-
-    /** This flag is set while receiving events from the external DTD */
-    protected boolean m_inExternalDTD = false;
-
-    /**
      * The System ID for the doc type.
      */
     protected String m_doctypeSystem;
@@ -227,20 +219,6 @@ public abstract class SerializerBase
         return;
 
         // I don't do anything with this yet.
-    }
-
-    /**
-     * Report the end of an entity.
-     *
-     * @param name The name of the entity that is ending.
-     * @throws StreamException The application may raise an exception.
-     * @see #startEntity
-     */
-    public void endEntity(String name) throws StreamException
-    {
-        if (name.equals("[dtd]"))
-            m_inExternalDTD = false;
-        m_inEntityRef = false;
     }
 
     /**
@@ -482,22 +460,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Entity reference event.
-     *
-     * @param name Name of entity
-     *
-     * @throws StreamException
-     */
-    public void entityReference(String name) throws StreamException
-    {
-
-        flushPending();
-
-        startEntity(name);
-        endEntity(name);
-    }
-
-    /**
      * This method gets the nodes value as a String and uses that String as if
      * it were an input character notification.
      * @param node the Node to serialize
@@ -606,8 +568,6 @@ public abstract class SerializerBase
     	this.m_doctypePublic = null;
     	this.m_doctypeSystem = null;
         this.m_elemContext = new ElemContext();
-    	this.m_inEntityRef = false;
-    	this.m_inExternalDTD = false;
     	this.m_mediatype = null;
     	this.m_needToOutputDocTypeDecl = false;
         if (m_OutputProps != null)

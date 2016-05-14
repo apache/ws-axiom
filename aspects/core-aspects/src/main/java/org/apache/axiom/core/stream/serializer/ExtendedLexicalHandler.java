@@ -38,6 +38,4 @@ public interface ExtendedLexicalHandler
     public void comment(String comment) throws StreamException;
 
     public void comment(char ch[], int start, int length) throws StreamException;
-
-    public void startEntity(String name) throws StreamException;
 }

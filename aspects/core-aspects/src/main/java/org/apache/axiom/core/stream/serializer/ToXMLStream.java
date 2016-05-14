@@ -98,9 +98,6 @@ public class ToXMLStream extends ToStream
     {
         super.startDocumentInternal();
 
-        if (m_inEntityRef)
-            return;
-
         m_needToOutputDocTypeDecl = true;
         m_startNewLine = false;
         /* The call to getXMLVersion() might emit an error message
@@ -174,9 +171,6 @@ public class ToXMLStream extends ToStream
     public void processingInstruction(String target, String data)
         throws StreamException
     {
-        if (m_inEntityRef)
-            return;
-        
         flushPending();   
 
         if (target.equals(Result.PI_DISABLE_OUTPUT_ESCAPING))
