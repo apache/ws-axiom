@@ -27,9 +27,10 @@ import org.junit.Test;
 
 public class OutputStreamXmlWriterTest {
     @Test
-    public void test() throws Exception {
+    public void testUnmappableCharacterToCharacterReference() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         XmlWriter writer = new OutputStreamXmlWriter(baos, Charset.forName("iso-8859-1"));
+        writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
         writer.write("abc\u20ACdef");
         writer.flushBuffer();
         assertThat(baos.toString("iso-8859-1")).isEqualTo("abc&#8364;def");

@@ -93,6 +93,11 @@ final class WriterToUTF8Buffered extends XmlWriter
 //      this(out, 8*1024);
   }
 
+    @Override
+    void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
+        // There are no unmappable characters in UTF-8
+    }
+
   /**
    * Create an buffered UTF-8 writer to write data to the
    * specified underlying output stream with the specified buffer

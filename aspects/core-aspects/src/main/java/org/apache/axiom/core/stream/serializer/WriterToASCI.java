@@ -52,6 +52,12 @@ final class WriterToASCI extends XmlWriter
     m_os = os;
   }
 
+    @Override
+    void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
   /**
    * Write a portion of an array of characters.
    *

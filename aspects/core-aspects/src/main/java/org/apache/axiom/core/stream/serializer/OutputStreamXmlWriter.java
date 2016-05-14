@@ -31,6 +31,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     private final CharBuffer encoderIn;
     private final ByteBuffer encoderOut;
     private final CharsetEncoder encoder;
+    private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
     private boolean processingUnmappableCharacter;
     private CharBuffer encoderInAlt;
 
@@ -74,7 +75,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
                 try {
                     switch (coderResult.length()) {
                         case 1:
-                            writeCharacterReference(encoderIn.get());
+                            unmappableCharacterHandler.processUnmappableCharacter(encoderIn.get(), this);
                             break;
                         case 2:
                             throw new UnsupportedOperationException("TODO");
@@ -88,6 +89,14 @@ final class OutputStreamXmlWriter extends XmlWriter {
             } else {
                 throw new IOException("Malformed character sequence");
             }
+        }
+    }
+
+    @Override
+    void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException {
+        if (unmappableCharacterHandler != this.unmappableCharacterHandler) {
+            flush(encoderIn);
+            this.unmappableCharacterHandler = unmappableCharacterHandler;
         }
     }
 
