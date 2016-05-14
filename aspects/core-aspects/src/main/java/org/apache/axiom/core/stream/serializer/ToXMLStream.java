@@ -57,34 +57,6 @@ public class ToXMLStream extends ToStream
     }
 
     /**
-     * Copy properties from another SerializerToXML.
-     *
-     * @param xmlListener non-null reference to a SerializerToXML object.
-     */
-    public void CopyFrom(ToXMLStream xmlListener)
-    {
-
-        setWriterInternal(xmlListener.m_writer, m_writer_set_by_user);
-
-
-        // m_outputStream = xmlListener.m_outputStream;
-        String encoding = xmlListener.getEncoding();
-        setEncoding(encoding);
-
-        setOmitXMLDeclaration(xmlListener.getOmitXMLDeclaration());
-
-        m_needToOutputDocTypeDecl = xmlListener.m_needToOutputDocTypeDecl;
-        setDoctypeSystem(xmlListener.getDoctypeSystem());
-        setDoctypePublic(xmlListener.getDoctypePublic());        
-        setStandalone(xmlListener.getStandalone());
-        setMediaType(xmlListener.getMediaType());
-        m_encodingInfo = xmlListener.m_encodingInfo;
-        m_spaceBeforeClose = xmlListener.m_spaceBeforeClose;
-        m_cdataStartCalled = xmlListener.m_cdataStartCalled;
-
-    }
-
-    /**
      * Receive notification of the beginning of a document.
      *
      * @throws StreamException Any SAX exception, possibly
@@ -241,38 +213,6 @@ public class ToXMLStream extends ToStream
     {
         endElement(null, null, elemName);
     }
-
-    /**
-     * Try's to reset the super class and reset this class for 
-     * re-use, so that you don't need to create a new serializer 
-     * (mostly for performance reasons).
-     * 
-     * @return true if the class was successfuly reset.
-     */
-    public boolean reset()
-    {
-        boolean wasReset = false;
-        if (super.reset())
-        {
-            // Make this call when resetToXMLStream does
-            // something.
-            // resetToXMLStream();
-            wasReset = true;
-        }
-        return wasReset;
-    }
-    
-    /**
-     * Reset all of the fields owned by ToStream class
-     *
-     */
-    private void resetToXMLStream()
-    {
-        // This is an empty method, but is kept for future use
-        // as a place holder for a location to reset fields
-        // defined within this class
-        return;
-    }  
 
     /**
      * This method checks for the XML version of output document.

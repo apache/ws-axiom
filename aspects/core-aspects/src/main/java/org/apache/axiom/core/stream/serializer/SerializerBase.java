@@ -552,38 +552,6 @@ public abstract class SerializerBase
     }
 
     
-    public boolean reset()
-    {
-    	resetSerializerBase();
-    	return true;
-    }
-    
-    /**
-     * Reset all of the fields owned by SerializerBase
-     *
-     */
-    private void resetSerializerBase()
-    {
-        this.m_cdataTagOpen = false;
-        this.m_docIsEmpty = true;
-    	this.m_doctypePublic = null;
-    	this.m_doctypeSystem = null;
-        this.m_elemContext = new ElemContext();
-    	this.m_mediatype = null;
-    	this.m_needToOutputDocTypeDecl = false;
-        if (m_OutputProps != null)
-            this.m_OutputProps.clear();
-        if (m_OutputPropsDefault != null)
-            this.m_OutputPropsDefault.clear();
-    	this.m_shouldNotWriteXMLHeader = false;
-    	this.m_sourceLocator = null;
-    	this.m_standalone = null;
-    	this.m_standaloneWasSpecified = false;
-    	this.m_version = null;
-    	// don't set writer to null, so that it might be re-used
-    	//this.m_writer = null;
-    }
-    
     /**
      * Returns true if the serializer is used for temporary output rather than
      * final output.

@@ -1894,52 +1894,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     /**
-     * Try's to reset the super class and reset this class for 
-     * re-use, so that you don't need to create a new serializer 
-     * (mostly for performance reasons).
-     * 
-     * @return true if the class was successfuly reset.
-     */
-    public boolean reset()
-    {
-        boolean wasReset = false;
-        if (super.reset())
-        {
-            resetToStream();
-            wasReset = true;
-        }
-        return wasReset;
-    }
-    
-    /**
-     * Reset all of the fields owned by ToStream class
-     *
-     */
-    private void resetToStream()
-    {
-         this.m_cdataStartCalled = false;
-         /* The stream is being reset. It is one of
-          * ToXMLStream, ToHTMLStream ... and this type can't be changed
-          * so neither should m_charInfo which is associated with the
-          * type of Stream. Just leave m_charInfo as-is for the next re-use.
-          * 
-          */
-         // this.m_charInfo = null; // don't set to null 
-         // this.m_encodingInfo = null; // don't set to null
-         
-         // Leave m_format alone for now - Brian M.
-         // this.m_format = null;
-         this.m_inDoctype = false;
-         this.m_isUTF8 = false; //  ?? used anywhere ??
-         this.m_lineSep = s_systemLineSep;
-         this.m_lineSepLen = s_systemLineSep.length;
-         this.m_lineSepUse = true;
-         // this.m_outputStream = null; // Don't reset it may be re-used
-         this.m_spaceBeforeClose = false;
-         this.m_writer_set_by_user = false;
-    }        
-    
-    /**
       * Sets the character encoding coming from the xsl:output encoding stylesheet attribute.
       * @param encoding the character encoding
       */

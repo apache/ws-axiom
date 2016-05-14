@@ -19,7 +19,7 @@
  * $Id$
  */
 package org.apache.axiom.core.stream.serializer;
-import java.io.IOException;
+
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Properties;
@@ -172,17 +172,5 @@ public interface Serializer {
      * @return The output format key/value pairs in use.
      */
     public Properties getOutputFormat();
-
-    /**
-     * This method resets the serializer. 
-     * If this method returns true, the
-     * serializer may be used for subsequent serialization of new
-     * documents. It is possible to change the output format and
-     * output stream prior to serializing, or to reuse the existing
-     * output format and output stream or writer.
-     *
-     * @return True if serializer has been reset and can be reused
-     */
-    public boolean reset();
 }
 
