@@ -529,13 +529,13 @@ abstract public class ToStream extends SerializerBase
         {
             // We wrap the OutputStream with a writer, but
             // not one set by the user
-            setWriterInternal(new WriterToUTF8Buffered(output), false);
+            setWriterInternal(new UTF8XmlWriter(output), false);
         } else if (
                 "WINDOWS-1250".equals(encoding)
                 || "US-ASCII".equals(encoding)
                 || "ASCII".equals(encoding))
         {
-            setWriterInternal(new WriterToASCI(output), false);
+            setWriterInternal(new Latin1XmlWriter(output, 127), false);
         } else if (encoding != null) {
             Writer osw = null;
                 try
