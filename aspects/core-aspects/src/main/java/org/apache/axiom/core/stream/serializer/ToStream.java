@@ -99,14 +99,6 @@ abstract public class ToStream extends SerializerBase
     protected boolean m_spaceBeforeClose = false;
 
     /**
-     * Flag to signal that a newline should be added.
-     * 
-     * Used only in indent() which is called only if m_doIndent is true.
-     * If m_doIndent is false this flag has no impact.
-     */
-    boolean m_startNewLine;
-
-    /**
      * Tells if we're in an internal document type subset.
      */
     protected boolean m_inDoctype = false;
@@ -1434,8 +1426,6 @@ abstract public class ToStream extends SerializerBase
                 m_needToOutputDocTypeDecl = false;
             }
         
-            m_startNewLine = true;
-
             final XmlWriter writer = m_writer;
             writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
             writer.write('<');
@@ -1729,17 +1719,6 @@ abstract public class ToStream extends SerializerBase
         {
             throw new StreamException(e);
         }
-
-        /*
-         * Don't write out any indentation whitespace now,
-         * because there may be non-whitespace text after this.
-         * 
-         * Simply mark that at this point if we do decide
-         * to indent that we should 
-         * add a newline on the end of the current line before
-         * the indentation at the start of the next line.
-         */ 
-        m_startNewLine = true;
     }
 
     /**
@@ -1957,7 +1936,6 @@ abstract public class ToStream extends SerializerBase
          this.m_lineSepUse = true;
          // this.m_outputStream = null; // Don't reset it may be re-used
          this.m_spaceBeforeClose = false;
-         this.m_startNewLine = false;
          this.m_writer_set_by_user = false;
     }        
     

@@ -73,7 +73,6 @@ public class ToXMLStream extends ToStream
 
         setOmitXMLDeclaration(xmlListener.getOmitXMLDeclaration());
 
-        m_startNewLine = xmlListener.m_startNewLine;
         m_needToOutputDocTypeDecl = xmlListener.m_needToOutputDocTypeDecl;
         setDoctypeSystem(xmlListener.getDoctypeSystem());
         setDoctypePublic(xmlListener.getDoctypePublic());        
@@ -98,7 +97,6 @@ public class ToXMLStream extends ToStream
         super.startDocumentInternal();
 
         m_needToOutputDocTypeDecl = true;
-        m_startNewLine = false;
         /* The call to getXMLVersion() might emit an error message
          * and we should emit this message regardless of if we are 
          * writing out an XML header or not.
@@ -207,17 +205,6 @@ public class ToXMLStream extends ToStream
 
             writer.write('?');
             writer.write('>');
-            
-            /*
-             * Don't write out any indentation whitespace now,
-             * because there may be non-whitespace text after this.
-             * 
-             * Simply mark that at this point if we do decide
-             * to indent that we should 
-             * add a newline on the end of the current line before
-             * the indentation at the start of the next line.
-             */ 
-            m_startNewLine = true;
         }
         catch(IOException e)
         {
