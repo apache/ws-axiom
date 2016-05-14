@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMConstants;
@@ -223,12 +224,18 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         doWriteProcessingInstruction(target, "");
     }
 
-    public void flush() {
-        // Do nothing
+    public void flush() throws XMLStreamException {
+        if (handler instanceof SerializerXmlHandler) {
+            try {
+                ((SerializerXmlHandler)handler).flushBuffer();
+            } catch (StreamException ex) {
+                throw toXMLStreamException(ex);
+            }
+        }
     }
 
     public void close() throws XMLStreamException {
-        // Do nothing
+        flush();
     }
 
     public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)

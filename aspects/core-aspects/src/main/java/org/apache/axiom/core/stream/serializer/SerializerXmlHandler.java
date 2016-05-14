@@ -190,4 +190,8 @@ public class SerializerXmlHandler implements XmlHandler {
     public void completed() throws StreamException {
         serializer.endDocument();
     }
+
+    public void flushBuffer() throws StreamException {
+        serializer.flushBuffer();
+    }
 }
