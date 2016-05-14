@@ -79,11 +79,6 @@ public abstract class SerializerBase
         PKG_PATH = sb.toString();
     }
 
-    /** True if a trailing "]]>" still needs to be written to be
-     * written out. Used to merge adjacent CDATA sections
-     */
-    protected boolean m_cdataTagOpen = false;
-
     /**
      * The System ID for the doc type.
      */

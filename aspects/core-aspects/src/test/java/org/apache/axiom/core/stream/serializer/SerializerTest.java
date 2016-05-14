@@ -95,8 +95,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test
-    // TODO: this should throw an exception
+    @Test(expected=StreamException.class)
     public void testUnmappableCharacterInCDATASection() throws Exception {
         SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "ascii");
         handler.startFragment();

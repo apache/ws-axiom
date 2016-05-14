@@ -127,25 +127,6 @@ abstract public class ToStream extends SerializerBase
         matchedIllegalCharacters = 0;
     }
 
-    /**
-     * This helper method to writes out "]]>" when closing a CDATA section.
-     *
-     * @throws StreamException
-     */
-    protected void closeCDATA() throws StreamException
-    {
-        try
-        {
-            m_writer.write(CDATA_DELIMITER_CLOSE);
-            // write out a CDATA section closing "]]>"
-            m_cdataTagOpen = false; // Remember that we have done so.
-        }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
-        }
-    }
-
     OutputStream m_outputStream;
     /**
      * Get the output stream where the events will be serialized to.
@@ -787,181 +768,6 @@ abstract public class ToStream extends SerializerBase
 
     }
     /**
-     * Normalize the characters, but don't escape.
-     *
-     * @param ch The characters from the XML document.
-     * @param start The start position in the array.
-     * @param length The number of characters to read from the array.
-     * @param isCData true if a CDATA block should be built around the characters.
-     * @param useSystemLineSeparator true if the operating systems 
-     * end-of-line separator should be output rather than a new-line character.
-     *
-     * @throws IOException
-     * @throws StreamException
-     */
-    void writeNormalizedChars(
-        char ch[],
-        int start,
-        int length,
-        boolean isCData,
-        boolean useSystemLineSeparator)
-        throws IOException, StreamException
-    {
-        final XmlWriter writer = m_writer;
-        int end = start + length;
-
-        for (int i = start; i < end; i++)
-        {
-            char c = ch[i];
-
-            if (CharInfo.S_LINEFEED == c && useSystemLineSeparator)
-            {
-                writer.write(m_lineSep, 0, m_lineSepLen);
-            }
-            else if (isCData && (!escapingNotNeeded(c)))
-            {
-                //                if (i != 0)
-                if (m_cdataTagOpen)
-                    closeCDATA();
-
-                // This needs to go into a function... 
-                if (Encodings.isHighUTF16Surrogate(c))
-                {
-                    writeUTF16Surrogate(c, ch, i, end);
-                    i++ ; // process two input characters
-                }
-                else
-                {
-                    writer.writeCharacterReference(c);
-                }
-
-                //                if ((i != 0) && (i < (end - 1)))
-                //                if (!m_cdataTagOpen && (i < (end - 1)))
-                //                {
-                //                    writer.write(CDATA_DELIMITER_OPEN);
-                //                    m_cdataTagOpen = true;
-                //                }
-            }
-            else if (
-                isCData
-                    && ((i < (end - 2))
-                        && (']' == c)
-                        && (']' == ch[i + 1])
-                        && ('>' == ch[i + 2])))
-            {
-                writer.write(CDATA_CONTINUE);
-
-                i += 2;
-            }
-            else
-            {
-                if (escapingNotNeeded(c))
-                {
-                    if (isCData && !m_cdataTagOpen)
-                    {
-                        writer.write(CDATA_DELIMITER_OPEN);
-                        m_cdataTagOpen = true;
-                    }
-                    writer.write(c);
-                }
-
-                // This needs to go into a function... 
-                else if (Encodings.isHighUTF16Surrogate(c))
-                {
-                    if (m_cdataTagOpen)
-                        closeCDATA();
-                    writeUTF16Surrogate(c, ch, i, end);
-                    i++; // process two input characters
-                }
-                else
-                {
-                    if (m_cdataTagOpen)
-                        closeCDATA();
-                    writer.writeCharacterReference(c);
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Receive notification of cdata.
-     *
-     * <p>The Parser will call this method to report each chunk of
-     * character data.  SAX parsers may return all contiguous character
-     * data in a single chunk, or they may split it into several
-     * chunks; however, all of the characters in any single event
-     * must come from the same external entity, so that the Locator
-     * provides useful information.</p>
-     *
-     * <p>The application must not attempt to read from the array
-     * outside of the specified range.</p>
-     *
-     * <p>Note that some parsers will report whitespace using the
-     * ignorableWhitespace() method rather than this one (validating
-     * parsers must do so).</p>
-     *
-     * @param ch The characters from the XML document.
-     * @param start The start position in the array.
-     * @param length The number of characters to read from the array.
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @see #ignorableWhitespace
-     * @see org.xml.sax.Locator
-     *
-     * @throws StreamException
-     */
-    protected void cdata(char ch[], int start, final int length)
-        throws StreamException
-    {
-
-        try
-        {
-            final int old_start = start;
-
-            boolean writeCDataBrackets =
-                (((length >= 1) && escapingNotNeeded(ch[start])));
-
-            /* Write out the CDATA opening delimiter only if
-             * we are supposed to, and if we are not already in
-             * the middle of a CDATA section  
-             */
-            if (writeCDataBrackets && !m_cdataTagOpen)
-            {
-                m_writer.write(CDATA_DELIMITER_OPEN);
-                m_cdataTagOpen = true;
-            }
-
-            // writer.write(ch, start, length);
-            writeNormalizedChars(ch, start, length, true, m_lineSepUse);
-
-            /* used to always write out CDATA closing delimiter here,
-             * but now we delay, so that we can merge CDATA sections on output.    
-             * need to write closing delimiter later
-             */
-            if (writeCDataBrackets)
-            {
-                /* if the CDATA section ends with ] don't leave it open
-                 * as there is a chance that an adjacent CDATA sections
-                 * starts with ]>.  
-                 * We don't want to merge ]] with > , or ] with ]> 
-                 */
-                if (ch[start + length - 1] == ']')
-                    closeCDATA();
-            }
-        }
-        catch (IOException ioe)
-        {
-            throw new StreamException(
-                Utils.messages.createMessage(
-                    MsgKey.ER_OIERROR,
-                    null),
-                ioe);
-            //"IO error", ioe);
-        }
-    }
-
-    /**
      * Receive notification of character data.
      *
      * <p>The Parser will call this method to report each chunk of
@@ -1030,15 +836,7 @@ abstract public class ToStream extends SerializerBase
             this.matchedIllegalCharacters = matchedIllegalCharacters;
         }
         
-        if (context == Context.CDATA_SECTION)
-        {
-            /* either due to startCDATA() being called or due to 
-             * cdata-section-elements atribute, we need this as cdata
-             */
-            cdata(chars, start, length);
-
-            return;
-        } else if (context == Context.COMMENT || context == Context.PROCESSING_INSTRUCTION) {
+        if (context == Context.CDATA_SECTION || context == Context.COMMENT || context == Context.PROCESSING_INSTRUCTION) {
             // TODO: this doesn't take care of illegal characters
             try {
                 m_writer.write(chars, start, length);
@@ -1047,10 +845,6 @@ abstract public class ToStream extends SerializerBase
             }
             return;
         }
-
-        if (m_cdataTagOpen)
-            closeCDATA();
-        
 
         try
         {
@@ -1459,8 +1253,6 @@ abstract public class ToStream extends SerializerBase
         String name)
         throws StreamException
     {
-        if (m_cdataTagOpen)
-            closeCDATA();
         try
         {
             if (m_needToOutputDocTypeDecl) {
@@ -1498,8 +1290,6 @@ abstract public class ToStream extends SerializerBase
      */
     void outputDocTypeDecl(String name, boolean closeDecl) throws StreamException
     {
-        if (m_cdataTagOpen)
-            closeCDATA();
         try
         {
             final XmlWriter writer = m_writer;
@@ -1680,9 +1470,6 @@ abstract public class ToStream extends SerializerBase
             }
             else
             {
-                if (m_cdataTagOpen)
-                    closeCDATA();
-
                 switchContext(Context.TAG);
                 writer.write('<');
                 writer.write('/');
@@ -1736,8 +1523,11 @@ abstract public class ToStream extends SerializerBase
      */
     public void endCDATA() throws StreamException
     {
-        if (m_cdataTagOpen)
-            closeCDATA();
+        try {
+            m_writer.write(CDATA_DELIMITER_CLOSE);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
         switchContext(Context.MIXED_CONTENT);
     }
 
@@ -1814,6 +1604,11 @@ abstract public class ToStream extends SerializerBase
      */
     public void startCDATA() throws StreamException
     {
+        try {
+            m_writer.write(CDATA_DELIMITER_OPEN);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
         switchContext(Context.CDATA_SECTION);
     }
 
@@ -1907,11 +1702,6 @@ abstract public class ToStream extends SerializerBase
      */
     public void flushPending() throws StreamException
     {
-            if (m_cdataTagOpen)
-            {
-                closeCDATA();
-                m_cdataTagOpen = false;
-            }
             if (m_writer != null) {
                 try {
                     m_writer.flushBuffer();
