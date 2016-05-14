@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<root>
+    <elem1 attr="abc&quot;def"/>
+    <elem2 attr='abc&apos;def'/>
+    <elem3>123&lt;456</elem3>
+    <elem4>A&#9;B&#13;C</elem4>
+    <elem5 attr="A&#9;B&#13;C&#10;D"/>
+    <elem6 attr="&#x85;"/>
+</root>
