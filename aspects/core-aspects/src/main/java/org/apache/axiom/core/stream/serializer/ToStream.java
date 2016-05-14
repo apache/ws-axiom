@@ -33,7 +33,6 @@ import javax.xml.transform.OutputKeys;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
@@ -108,17 +107,22 @@ abstract public class ToStream extends SerializerBase
        */
     boolean m_isUTF8 = false;
 
-
-    /**
-     * remembers if we are in between the startCDATA() and endCDATA() callbacks
-     */
-    protected boolean m_cdataStartCalled = false;
+    protected Context context = Context.MIXED_CONTENT;
 
     /**
      * Default constructor
      */
     public ToStream()
     {
+    }
+
+    protected void switchContext(Context context) throws StreamException {
+        this.context = context;
+        try {
+            m_writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
     }
 
     /**
@@ -994,7 +998,7 @@ abstract public class ToStream extends SerializerBase
             
         m_docIsEmpty = false;
         
-        if (m_cdataStartCalled)
+        if (context == Context.CDATA_SECTION)
         {
             /* either due to startCDATA() being called or due to 
              * cdata-section-elements atribute, we need this as cdata
@@ -1427,7 +1431,7 @@ abstract public class ToStream extends SerializerBase
             }
         
             final XmlWriter writer = m_writer;
-            writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
+            switchContext(Context.TAG);
             writer.write('<');
             writer.write(name);
         }
@@ -1524,9 +1528,9 @@ abstract public class ToStream extends SerializerBase
     public void writeAttrString(
         XmlWriter writer,
         String string)
-        throws IOException
+        throws IOException, StreamException
     {
-        writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
+        switchContext(Context.ATTRIBUTE_VALUE);
         final int len = string.length();
         if (len > m_attrBuff.length)
         {
@@ -1597,7 +1601,7 @@ abstract public class ToStream extends SerializerBase
                 }
             }
         }
-        writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
+        switchContext(Context.TAG);
     }
 
     /**
@@ -1639,12 +1643,12 @@ abstract public class ToStream extends SerializerBase
                 if (m_cdataTagOpen)
                     closeCDATA();
 
-                writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
+                switchContext(Context.TAG);
                 writer.write('<');
                 writer.write('/');
                 writer.write(name);
                 writer.write('>');
-                writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
+                switchContext(Context.MIXED_CONTENT);
             }
         }
         catch (IOException e)
@@ -1731,7 +1735,7 @@ abstract public class ToStream extends SerializerBase
     {
         if (m_cdataTagOpen)
             closeCDATA();
-        m_cdataStartCalled = false;
+        switchContext(Context.MIXED_CONTENT);
     }
 
     /**
@@ -1807,7 +1811,7 @@ abstract public class ToStream extends SerializerBase
      */
     public void startCDATA() throws StreamException
     {
-        m_cdataStartCalled = true;
+        switchContext(Context.CDATA_SECTION);
     }
 
     /**
@@ -1825,7 +1829,7 @@ abstract public class ToStream extends SerializerBase
             try
             {
                 m_writer.write('>');
-                m_writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
+                switchContext(Context.MIXED_CONTENT);
             }
             catch (IOException e)
             {
