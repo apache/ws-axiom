@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 
+import org.apache.axiom.core.stream.StreamException;
 import org.apache.commons.io.output.NullOutputStream;
 import org.junit.Test;
 
@@ -66,8 +67,7 @@ public class SerializerTest {
         assertThat(new String(baos.toByteArray(), "ascii")).isEqualTo("<test attr=\"n&#233;ant\"/>");
     }
 
-    @Test
-    // TODO: this should throw an exception
+    @Test(expected=StreamException.class)
     public void testUnmappableCharacterInComment() throws Exception {
         SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "iso-8859-1");
         handler.startFragment();
@@ -88,8 +88,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test
-    // TODO: this should throw an exception
+    @Test(expected=StreamException.class)
     public void testUnmappableCharacterInProcessingInstruction() throws Exception {
         SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "ascii");
         handler.startFragment();
@@ -99,8 +98,7 @@ public class SerializerTest {
         handler.completed();
     }
 
-    @Test
-    // TODO: this must throw an exception!
+    @Test(expected=StreamException.class)
     public void testUnmappableCharacterInName() throws Exception {
         SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "iso-8859-15");
         handler.startFragment();

@@ -49,8 +49,8 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public SerializerXmlHandler(OutputStream out, String encoding) {
         this.serializer = new ToXMLStream();
-        serializer.setOutputStream(out);
         serializer.setEncoding(encoding);
+        serializer.setOutputStream(out);
     }
 
     private static String getQName(String prefix, String localName) {

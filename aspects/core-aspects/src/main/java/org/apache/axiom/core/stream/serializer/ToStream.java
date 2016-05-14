@@ -22,8 +22,6 @@ package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
@@ -36,8 +34,6 @@ import javax.xml.transform.OutputKeys;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.apache.axiom.core.stream.serializer.writer.Latin1XmlWriter;
-import org.apache.axiom.core.stream.serializer.writer.UTF8XmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
@@ -529,54 +525,7 @@ abstract public class ToStream extends SerializerBase
     {
         m_outputStream = output;
         String encoding = getOutputProperty(OutputKeys.ENCODING);        
-        if (Encodings.DEFAULT_MIME_ENCODING.equalsIgnoreCase(encoding))
-        {
-            // We wrap the OutputStream with a writer, but
-            // not one set by the user
-            setWriterInternal(new UTF8XmlWriter(output), false);
-        } else if (
-                "WINDOWS-1250".equals(encoding)
-                || "US-ASCII".equals(encoding)
-                || "ASCII".equals(encoding))
-        {
-            setWriterInternal(new Latin1XmlWriter(output, 127), false);
-        } else if (encoding != null) {
-            Writer osw = null;
-                try
-                {
-                    osw = Encodings.getWriter(output, encoding);
-                }
-                catch (UnsupportedEncodingException uee)
-                {
-                    osw = null;
-                }
-
-            
-            if (osw == null) {
-                System.out.println(
-                    "Warning: encoding \""
-                        + encoding
-                        + "\" not supported"
-                        + ", using "
-                        + Encodings.DEFAULT_MIME_ENCODING);
-
-                encoding = Encodings.DEFAULT_MIME_ENCODING;
-                setEncoding(encoding);
-                try {
-                    osw = Encodings.getWriter(output, encoding);
-                } catch (UnsupportedEncodingException e) {
-                    // We can't really get here, UTF-8 is always supported
-                    // This try-catch exists to make the compiler happy
-                    e.printStackTrace();
-                }
-            }
-            setWriterInternal(new WriterXmlWriter(osw, true), false);
-        }
-        else {
-            // don't have any encoding, but we have an OutputStream
-            Writer osw = new OutputStreamWriter(output);
-            setWriterInternal(new WriterXmlWriter(osw, true), false);
-        }
+        setWriterInternal(XmlWriter.create(output, encoding), false);
     }
 
     /**

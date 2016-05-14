@@ -21,8 +21,8 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public final class UTF8XmlWriter extends AbstractXmlWriter {
-    public UTF8XmlWriter(OutputStream out) {
+final class UTF8XmlWriter extends AbstractXmlWriter {
+    UTF8XmlWriter(OutputStream out) {
         super(out);
     }
 

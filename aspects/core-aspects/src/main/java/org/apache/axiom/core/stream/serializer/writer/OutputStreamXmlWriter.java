@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 
-public final class OutputStreamXmlWriter extends XmlWriter {
+final class OutputStreamXmlWriter extends XmlWriter {
     private final OutputStream out;
     private final CharBuffer encoderIn;
     private final ByteBuffer encoderOut;
@@ -35,7 +35,7 @@ public final class OutputStreamXmlWriter extends XmlWriter {
     private boolean processingUnmappableCharacter;
     private CharBuffer encoderInAlt;
 
-    public OutputStreamXmlWriter(OutputStream out, Charset charset) {
+    OutputStreamXmlWriter(OutputStream out, Charset charset) {
         this.out = out;
         encoderIn = CharBuffer.allocate(4096);
         encoderOut = ByteBuffer.allocate(4096);

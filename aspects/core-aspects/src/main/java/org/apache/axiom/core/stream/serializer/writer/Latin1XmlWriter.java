@@ -21,11 +21,11 @@ package org.apache.axiom.core.stream.serializer.writer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public final class Latin1XmlWriter extends AbstractXmlWriter {
+final class Latin1XmlWriter extends AbstractXmlWriter {
     private final int maxChar;
     private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
 
-    public Latin1XmlWriter(OutputStream out, int maxChar) {
+    Latin1XmlWriter(OutputStream out, int maxChar) {
         super(out);
         this.maxChar = maxChar;
     }

@@ -19,8 +19,24 @@
 package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 public abstract class XmlWriter {
+    public static XmlWriter create(OutputStream out, String encoding) {
+        Charset charset = Charset.forName(encoding);
+        String name = charset.name();
+        if (name.equals("UTF-8")) {
+            return new UTF8XmlWriter(out);
+        } else if (name.equals("US-ASCII")) {
+            return new Latin1XmlWriter(out, 127);
+        } else if (name.equals("ISO-8859-1")) {
+            return new Latin1XmlWriter(out, 255);
+        } else {
+            return new OutputStreamXmlWriter(out, charset);
+        }
+    }
+
     public abstract void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException;
     public abstract void write(char c) throws IOException;
     public abstract void write(String s) throws IOException;
