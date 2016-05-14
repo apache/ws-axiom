@@ -458,37 +458,6 @@ public final class Encodings extends Object
         return codePoint;
     }
     
-    /**
-     * Characters with values at or below the high code point are
-     * in the encoding. Code point values above this one may or may
-     * not be in the encoding, but lower ones certainly are.
-     * <p>
-     * This is for performance.
-     *
-     * @param encoding The encoding
-     * @return The code point for which characters at or below this code point
-     * are in the encoding. Characters with higher code point may or may not be
-     * in the encoding. A value of zero is returned if the high code point is unknown.
-     * <p>
-     * This method is not a public API.
-     * @xsl.usage internal
-     */
-    static public char getHighChar(String encoding)
-    {
-        final char highCodePoint;
-        EncodingInfo ei;
-
-        String normalizedEncoding = toUpperCaseFast(encoding);
-        ei = (EncodingInfo) _encodingTableKeyJava.get(normalizedEncoding);
-        if (ei == null)
-            ei = (EncodingInfo) _encodingTableKeyMime.get(normalizedEncoding);
-        if (ei != null)
-            highCodePoint =  ei.getHighChar();
-        else
-            highCodePoint = 0;
-        return highCodePoint;
-    }
-
     private static final Hashtable _encodingTableKeyJava = new Hashtable();
     private static final Hashtable _encodingTableKeyMime = new Hashtable();
     private static final EncodingInfo[] _encodings = loadEncodingInfo();
