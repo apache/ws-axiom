@@ -31,7 +31,8 @@ final class OutputStreamXmlWriter extends XmlWriter {
     private final CharBuffer encoderIn;
     private final ByteBuffer encoderOut;
     private final CharsetEncoder encoder;
-    private CharBuffer characterReferenceBuffer;
+    private boolean processingUnmappableCharacter;
+    private CharBuffer encoderInAlt;
 
     OutputStreamXmlWriter(OutputStream out, Charset charset) {
         this.out = out;
@@ -45,71 +46,69 @@ final class OutputStreamXmlWriter extends XmlWriter {
         encoderOut.clear();
     }
 
-    private void flushEncodingIn(boolean force) throws IOException {
-        if (force || !encoderIn.hasRemaining()) {
-            encoderIn.flip();
-            while (true) {
-                CoderResult coderResult = encoder.encode(encoderIn, encoderOut, false);
-                if (coderResult.isUnderflow()) {
-                    encoderIn.compact();
-                    break;
-                } else if (coderResult.isOverflow()) {
-                    flushEncodingOut();
-                } else if (coderResult.isUnmappable()) {
-                    // Note that we can't use writeCharacterReference here because we are still
-                    // processing the encoderIn buffer
+    private CharBuffer getEncoderIn() throws IOException {
+        if (processingUnmappableCharacter) {
+            if (encoderInAlt == null) {
+                encoderInAlt = CharBuffer.allocate(64);
+            }
+            return encoderInAlt;
+        } else {
+            return encoderIn;
+        }
+    }
+
+    private void flush(CharBuffer encoderIn) throws IOException {
+        encoderIn.flip();
+        while (true) {
+            CoderResult coderResult = encoder.encode(encoderIn, encoderOut, false);
+            if (coderResult.isUnderflow()) {
+                encoderIn.compact();
+                break;
+            } else if (coderResult.isOverflow()) {
+                flushEncodingOut();
+            } else if (coderResult.isUnmappable()) {
+                if (processingUnmappableCharacter) {
+                    throw new IllegalStateException();
+                }
+                processingUnmappableCharacter = true;
+                try {
                     switch (coderResult.length()) {
                         case 1:
-                            insertCharacterReference(encoderIn.get());
+                            writeCharacterReference(encoderIn.get());
                             break;
                         case 2:
                             throw new UnsupportedOperationException("TODO");
                         default:
                             throw new IllegalStateException();
                     }
-                } else {
-                    throw new IOException("Malformed character sequence");
+                    flush(encoderInAlt);
+                } finally {
+                    processingUnmappableCharacter = false;
                 }
-            }
-        }
-    }
-
-    private void insertCharacterReference(int codePoint) throws IOException {
-        CharBuffer buffer = characterReferenceBuffer;
-        if (characterReferenceBuffer == null) {
-            buffer = characterReferenceBuffer = CharBuffer.allocate(16);
-        } else {
-            buffer.clear();
-        }
-        buffer.put("&#");
-        // TODO: optimize this
-        buffer.put(Integer.toString(codePoint));
-        buffer.put(';');
-        buffer.flip();
-        while (true) {
-            CoderResult coderResult = encoder.encode(buffer, encoderOut, false);
-            if (coderResult.isUnderflow()) {
-                break;
-            } else if (coderResult.isOverflow()) {
-                flushEncodingOut();
             } else {
-                throw new IllegalStateException();
+                throw new IOException("Malformed character sequence");
             }
         }
     }
 
     @Override
     void write(char c) throws IOException {
-        flushEncodingIn(false);
+        CharBuffer encoderIn = getEncoderIn();
+        if (!encoderIn.hasRemaining()) {
+            flush(encoderIn);
+        }
         encoderIn.put(c);
     }
 
     @Override
     void write(String src) throws IOException {
+        CharBuffer encoderIn = getEncoderIn();
         int offset = 0;
         int length = src.length();
         while (length > 0) {
-            flushEncodingIn(false);
+            if (!encoderIn.hasRemaining()) {
+                flush(encoderIn);
+            }
             int c = Math.min(length, encoderIn.remaining());
             encoderIn.put(src, offset, length);
             offset += c;
@@ -119,8 +118,11 @@ final class OutputStreamXmlWriter extends XmlWriter {
 
     @Override
     void write(char[] src, int offset, int length) throws IOException {
+        CharBuffer encoderIn = getEncoderIn();
         while (length > 0) {
-            flushEncodingIn(false);
+            if (!encoderIn.hasRemaining()) {
+                flush(encoderIn);
+            }
             int c = Math.min(length, encoderIn.remaining());
             encoderIn.put(src, offset, length);
             offset += c;
@@ -130,7 +132,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
 
     @Override
     void flushBuffer() throws IOException {
-        flushEncodingIn(true);
+        flush(encoderIn);
         flushEncodingOut();
     }
 }
