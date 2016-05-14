@@ -34,6 +34,7 @@ import javax.xml.transform.OutputKeys;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
+import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
@@ -1229,21 +1230,6 @@ abstract public class ToStream extends SerializerBase
                         writer.write("&#8232;");
                         lastDirtyCharProcessed = i;
                     }
-                    else if (m_encodingInfo.isInEncoding(ch)) {
-                        // If the character is in the encoding, and
-                        // not in the normal ASCII range, we also
-                        // just leave it get added on to the clean characters
-                        
-                    }
-                    else {
-                        // This is a fallback plan, we should never get here
-                        // but if the character wasn't previously handled
-                        // (i.e. isn't in the encoding, etc.) then what
-                        // should we do?  We choose to write out an entity
-                        writeOutCleanChars(chars, i, lastDirtyCharProcessed);
-                        writer.writeCharacterReference(ch);
-                        lastDirtyCharProcessed = i;
-                    }
                 }
             }
             
@@ -1527,6 +1513,7 @@ abstract public class ToStream extends SerializerBase
             m_startNewLine = true;
 
             final XmlWriter writer = m_writer;
+            writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
             writer.write('<');
             writer.write(name);
         }
@@ -1625,6 +1612,7 @@ abstract public class ToStream extends SerializerBase
         String string)
         throws IOException
     {
+        writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
         final int len = string.length();
         if (len > m_attrBuff.length)
         {
@@ -1690,22 +1678,12 @@ abstract public class ToStream extends SerializerBase
                     // LINE SEPARATOR
                     writer.write("&#8232;");
                 }
-                else if (m_encodingInfo.isInEncoding(ch)) {
-                    // If the character is in the encoding, and
-                    // not in the normal ASCII range, we also
-                    // just write it out
+                else {
                     writer.write(ch);
                 }
-                else {
-                    // This is a fallback plan, we should never get here
-                    // but if the character wasn't previously handled
-                    // (i.e. isn't in the encoding, etc.) then what
-                    // should we do?  We choose to write out a character ref
-                    writer.writeCharacterReference(ch);
-                }
-                    
             }
         }
+        writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
     }
 
     /**
@@ -1747,10 +1725,12 @@ abstract public class ToStream extends SerializerBase
                 if (m_cdataTagOpen)
                     closeCDATA();
 
+                writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.THROW_EXCEPTION);
                 writer.write('<');
                 writer.write('/');
                 writer.write(name);
                 writer.write('>');
+                writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
             }
         }
         catch (IOException e)
@@ -1942,6 +1922,7 @@ abstract public class ToStream extends SerializerBase
             try
             {
                 m_writer.write('>');
+                m_writer.setUnmappableCharacterHandler(UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
             }
             catch (IOException e)
             {

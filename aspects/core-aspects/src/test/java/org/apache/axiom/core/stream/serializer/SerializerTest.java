@@ -67,6 +67,23 @@ public class SerializerTest {
         assertThat(new String(baos.toByteArray(), "ascii")).isEqualTo("<test attr=\"n&#233;ant\"/>");
     }
 
+    /**
+     * Tests the scenario described in XALANJ-2593.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testUnmappableSurrogatePairInAttributeValue() throws Exception {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        SerializerXmlHandler handler = new SerializerXmlHandler(baos, "ascii");
+        handler.startElement("", "x", "");
+        handler.processAttribute("", "y", "", "\uD84C\uDFB4 - \uD841\uDE28", "CDATA", true);
+        handler.attributesCompleted();
+        handler.endElement();
+        handler.completed();
+        assertThat(new String(baos.toByteArray(), "ascii")).isEqualTo("<x y=\"&#144308; - &#132648;\"/>");
+    }
+
     @Test(expected=StreamException.class)
     public void testUnmappableCharacterInComment() throws Exception {
         SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "iso-8859-1");

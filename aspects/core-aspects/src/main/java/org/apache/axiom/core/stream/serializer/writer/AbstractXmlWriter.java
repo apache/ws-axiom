@@ -44,11 +44,17 @@ abstract class AbstractXmlWriter extends XmlWriter {
     public final void write(char c) throws IOException {
         if (highSurrogate != 0) {
             if (Character.isLowSurrogate(c)) {
-                writeCharacter(Character.toCodePoint(highSurrogate, c));
+                int codePoint = Character.toCodePoint(highSurrogate, c);
+                // Need to reset highSurrogate before writing because the character
+                // may be unmappable, resulting in a character reference being written
+                // (which means that this method must be reentrant).
                 highSurrogate = 0;
+                writeCharacter(codePoint);
             } else {
                 throw new IOException("Invalid surrogate pair");
             }
+        } else if (Character.isHighSurrogate(c)) {
+            highSurrogate = c;
         } else if (Character.isLowSurrogate(c)) {
             throw new IOException("Invalid surrogate pair");
         } else {
