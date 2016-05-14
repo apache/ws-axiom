@@ -26,21 +26,15 @@ import java.util.Stack;
 import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 
 public class SerializerXmlHandler implements XmlHandler {
-    private enum CharacterDataMode { PASS_THROUGH, BUFFER, SKIP, ACCUMULATE };
-    
     private final ToXMLStream serializer;
     private Stack<String> elementNameStack = new Stack<String>();
     private String elementURI;
     private String elementLocalName;
     private String elementQName;
-    private CharacterDataMode characterDataMode = CharacterDataMode.PASS_THROUGH;
     private char[] buffer = new char[4096];
     private int bufferPos;
-    private CharacterDataAccumulator accumulator;
-    private String piTarget;
     
     public SerializerXmlHandler(Writer writer) {
         this.serializer = new ToXMLStream();
@@ -133,36 +127,25 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         serializer.closeStartTag();
-        switch (characterDataMode) {
-            case PASS_THROUGH:
-                if (ignorable) {
-                    writeToBuffer(data.toString());
-                    serializer.ignorableWhitespace(buffer, 0, bufferPos);
-                    bufferPos = 0;
-                } else if (data instanceof CharacterData) {
-                    try {
-                        ((CharacterData)data).writeTo(new SerializerWriter(serializer));
-                    } catch (IOException ex) {
-                        Throwable cause = ex.getCause();
-                        if (cause instanceof StreamException) {
-                            throw (StreamException)cause;
-                        } else {
-                            throw new StreamException(ex);
-                        }
-                    }
+        if (ignorable) {
+            writeToBuffer(data.toString());
+            serializer.ignorableWhitespace(buffer, 0, bufferPos);
+            bufferPos = 0;
+        } else if (data instanceof CharacterData) {
+            try {
+                ((CharacterData)data).writeTo(new SerializerWriter(serializer));
+            } catch (IOException ex) {
+                Throwable cause = ex.getCause();
+                if (cause instanceof StreamException) {
+                    throw (StreamException)cause;
                 } else {
-                    writeToBuffer(data.toString());
-                    serializer.characters(buffer, 0, bufferPos);
-                    bufferPos = 0;
+                    throw new StreamException(ex);
                 }
-                break;
-            case BUFFER:
-                writeToBuffer(data.toString());
-                break;
-            case ACCUMULATE:
-                accumulator.append(data);
-                break;
-            case SKIP:
+            }
+        } else {
+            writeToBuffer(data.toString());
+            serializer.characters(buffer, 0, bufferPos);
+            bufferPos = 0;
         }
     }
     
@@ -180,32 +163,23 @@ public class SerializerXmlHandler implements XmlHandler {
     @Override
     public void startComment() throws StreamException {
         serializer.closeStartTag();
-        characterDataMode = CharacterDataMode.BUFFER;
+        serializer.startComment();
     }
 
     @Override
     public void endComment() throws StreamException {
-        serializer.comment(buffer, 0, bufferPos);
-        bufferPos = 0;
-        characterDataMode = CharacterDataMode.PASS_THROUGH;
+        serializer.endComment();
     }
 
     @Override
     public void startProcessingInstruction(String target) throws StreamException {
         serializer.closeStartTag();
-        if (accumulator == null) {
-            accumulator = new CharacterDataAccumulator();
-        }
-        piTarget = target;
-        characterDataMode = CharacterDataMode.ACCUMULATE;
+        serializer.startProcessingInstruction(target);
     }
 
     @Override
     public void endProcessingInstruction() throws StreamException {
-        serializer.processingInstruction(piTarget, accumulator.toString());
-        accumulator.clear();
-        piTarget = null;
-        characterDataMode = CharacterDataMode.PASS_THROUGH;
+        serializer.endProcessingInstruction();
     }
 
     public void processEntityReference(String name, String replacementText) throws StreamException {

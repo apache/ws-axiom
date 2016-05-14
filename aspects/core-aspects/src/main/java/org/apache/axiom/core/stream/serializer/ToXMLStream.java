@@ -127,64 +127,6 @@ public class ToXMLStream extends ToStream
     }
 
     /**
-     * Receive notification of a processing instruction.
-     *
-     * @param target The processing instruction target.
-     * @param data The processing instruction data, or null if
-     *        none was supplied.
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     *
-     * @throws StreamException
-     */
-    public void processingInstruction(String target, String data)
-        throws StreamException
-    {
-        flushPending();   
-
-        try
-        {
-            final XmlWriter writer = m_writer;
-            writer.write("<?");
-            writer.write(target);
-
-            if (data.length() > 0
-                && !Character.isSpaceChar(data.charAt(0)))
-                writer.write(' ');
-
-            int indexOfQLT = data.indexOf("?>");
-
-            if (indexOfQLT >= 0)
-            {
-
-                // See XSLT spec on error recovery of "?>" in PIs.
-                if (indexOfQLT > 0)
-                {
-                    writer.write(data.substring(0, indexOfQLT));
-                }
-
-                writer.write("? >"); // add space between.
-
-                if ((indexOfQLT + 2) < data.length())
-                {
-                    writer.write(data.substring(indexOfQLT + 2));
-                }
-            }
-            else
-            {
-                writer.write(data);
-            }
-
-            writer.write('?');
-            writer.write('>');
-        }
-        catch(IOException e)
-        {
-            throw new StreamException(e);
-        }
-    }
-
-    /**
      * Receive notivication of a entityReference.
      *
      * @param name The name of the entity.

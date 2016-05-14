@@ -35,7 +35,6 @@ import org.apache.axiom.core.stream.StreamException;
 public interface SerializationHandler
     extends
         ExtendedContentHandler,
-        ExtendedLexicalHandler,
         XSLOutputAttributes,
         Serializer
 {

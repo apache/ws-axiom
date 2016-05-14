@@ -108,6 +108,7 @@ abstract public class ToStream extends SerializerBase
     boolean m_isUTF8 = false;
 
     protected Context context = Context.MIXED_CONTENT;
+    private int matchedIllegalCharacters;
 
     /**
      * Default constructor
@@ -123,6 +124,7 @@ abstract public class ToStream extends SerializerBase
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
+        matchedIllegalCharacters = 0;
     }
 
     /**
@@ -998,6 +1000,36 @@ abstract public class ToStream extends SerializerBase
             
         m_docIsEmpty = false;
         
+        String illegalCharacterSequence = context.getIllegalCharacterSequence();
+        if (illegalCharacterSequence != null) {
+            int matchedIllegalCharacters = this.matchedIllegalCharacters;
+            for (int i = 0; i < length; i++) {
+                while (true) {
+                    if (chars[start+i] == illegalCharacterSequence.charAt(matchedIllegalCharacters)) {
+                        if (++matchedIllegalCharacters == illegalCharacterSequence.length()) {
+                            throw new IllegalCharacterSequenceException(context);
+                        }
+                        break;
+                    } else if (matchedIllegalCharacters > 0) {
+                        int offset = 1;
+                        loop: while (offset < matchedIllegalCharacters) {
+                            for (int j = 0; j < matchedIllegalCharacters - offset; j++) {
+                                if (illegalCharacterSequence.charAt(j) != illegalCharacterSequence.charAt(j+offset)) {
+                                    offset++;
+                                    continue loop;
+                                }
+                            }
+                            break;
+                        }
+                        matchedIllegalCharacters -= offset;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            this.matchedIllegalCharacters = matchedIllegalCharacters;
+        }
+        
         if (context == Context.CDATA_SECTION)
         {
             /* either due to startCDATA() being called or due to 
@@ -1005,6 +1037,14 @@ abstract public class ToStream extends SerializerBase
              */
             cdata(chars, start, length);
 
+            return;
+        } else if (context == Context.COMMENT || context == Context.PROCESSING_INSTRUCTION) {
+            // TODO: this doesn't take care of illegal characters
+            try {
+                m_writer.write(chars, start, length);
+            } catch (IOException ex) {
+                throw new StreamException(ex);
+            }
             return;
         }
 
@@ -1670,59 +1710,22 @@ abstract public class ToStream extends SerializerBase
         endElement(null, null, name);
     }
 
-    /**
-     * Receive notification of an XML comment anywhere in the document. This
-     * callback will be used for comments inside or outside the document
-     * element, including comments in the external DTD subset (if read).
-     * @param ch An array holding the characters in the comment.
-     * @param start The starting position in the array.
-     * @param length The number of characters to use from the array.
-     * @throws StreamException The application may raise an exception.
-     */
-    public void comment(char ch[], int start, int length)
-        throws StreamException
-    {
-
-        int start_old = start;
-
-        try
-        {
-            final int limit = start + length;
-            boolean wasDash = false;
-            if (m_cdataTagOpen)
-                closeCDATA();
-            
-            final XmlWriter writer = m_writer;    
-            writer.write(COMMENT_BEGIN);
-            // Detect occurrences of two consecutive dashes, handle as necessary.
-            for (int i = start; i < limit; i++)
-            {
-                if (wasDash && ch[i] == '-')
-                {
-                    writer.write(ch, start, i - start);
-                    writer.write(" -");
-                    start = i + 1;
-                }
-                wasDash = (ch[i] == '-');
-            }
-
-            // if we have some chars in the comment
-            if (length > 0)
-            {
-                // Output the remaining characters (if any)
-                final int remainingChars = (limit - start);
-                if (remainingChars > 0)
-                    writer.write(ch, start, remainingChars);
-                // Protect comment end from a single trailing dash
-                if (ch[limit - 1] == '-')
-                    writer.write(' ');
-            }
-            writer.write(COMMENT_END);
+    public void startComment() throws StreamException {
+        try {
+            m_writer.write(COMMENT_BEGIN);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
+        switchContext(Context.COMMENT);
+    }
+
+    public void endComment() throws StreamException {
+        try {
+            m_writer.write(COMMENT_END);
+        } catch (IOException ex) {
+            throw new StreamException(ex);
         }
+        switchContext(Context.MIXED_CONTENT);
     }
 
     /**
@@ -1839,6 +1842,28 @@ abstract public class ToStream extends SerializerBase
             m_elemContext.m_startTagOpen = false;
         }
 
+    }
+
+    public void startProcessingInstruction(String target) throws StreamException {
+        flushPending();
+        switchContext(Context.TAG);
+        try {
+            m_writer.write("<?");
+            m_writer.write(target);
+            m_writer.write(' ');
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
+        switchContext(Context.PROCESSING_INSTRUCTION);
+    }
+
+    public void endProcessingInstruction() throws StreamException {
+        try {
+            m_writer.write("?>");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
+        switchContext(Context.MIXED_CONTENT);
     }
 
     /**

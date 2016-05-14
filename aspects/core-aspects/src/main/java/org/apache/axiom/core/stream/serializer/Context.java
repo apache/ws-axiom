@@ -28,16 +28,16 @@ enum Context {
     PROCESSING_INSTRUCTION("?>", UnmappableCharacterHandler.THROW_EXCEPTION),
     CDATA_SECTION("]]>", UnmappableCharacterHandler.THROW_EXCEPTION);
     
-    private final String invalidCharacterSequence;
+    private final String illegalCharacterSequence;
     private final UnmappableCharacterHandler unmappableCharacterHandler;
     
-    private Context(String invalidCharacterSequence, UnmappableCharacterHandler unmappableCharacterHandler) {
-        this.invalidCharacterSequence = invalidCharacterSequence;
+    private Context(String illegalCharacterSequence, UnmappableCharacterHandler unmappableCharacterHandler) {
+        this.illegalCharacterSequence = illegalCharacterSequence;
         this.unmappableCharacterHandler = unmappableCharacterHandler;
     }
 
-    String getInvalidCharacterSequence() {
-        return invalidCharacterSequence;
+    String getIllegalCharacterSequence() {
+        return illegalCharacterSequence;
     }
 
     UnmappableCharacterHandler getUnmappableCharacterHandler() {

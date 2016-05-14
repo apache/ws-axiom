@@ -25,6 +25,7 @@ import java.io.StringWriter;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.commons.io.output.NullOutputStream;
+import org.apache.commons.io.output.NullWriter;
 import org.junit.Test;
 
 public class SerializerTest {
@@ -122,6 +123,37 @@ public class SerializerTest {
         handler.startElement("", "\u0370", "");
         handler.attributesCompleted();
         handler.endElement();
+        handler.completed();
+    }
+
+    @Test(expected=IllegalCharacterSequenceException.class)
+    public void testIllegalCharacterSequenceInComment() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullWriter());
+        handler.startFragment();
+        handler.startComment();
+        handler.processCharacterData("abc--def", false);
+        handler.endComment();
+        handler.completed();
+    }
+
+    @Test(expected=IllegalCharacterSequenceException.class)
+    public void testIllegalCharacterSequenceInProcessingInstruction() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullWriter());
+        handler.startFragment();
+        handler.startProcessingInstruction("test");
+        handler.processCharacterData("aaa???>bbb", false);
+        handler.endProcessingInstruction();
+        handler.completed();
+    }
+
+    @Test(expected=IllegalCharacterSequenceException.class)
+    public void testIllegalCharacterSequenceInCDATASection() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullWriter());
+        handler.startFragment();
+        handler.startCDATASection();
+        handler.processCharacterData("xxx]]]", false);
+        handler.processCharacterData(">yyy", false);
+        handler.endCDATASection();
         handler.completed();
     }
 }

@@ -160,24 +160,6 @@ public abstract class SerializerBase
     protected char[] m_attrBuff = new char[30];    
 
     /**
-     * Receive notification of a comment.
-     * 
-     * @see ExtendedLexicalHandler#comment(String)
-     */
-    public void comment(String data) throws StreamException
-    {
-        m_docIsEmpty = false;
-        
-        final int length = data.length();
-        if (length > m_charsBuff.length)
-        {
-            m_charsBuff = new char[length * 2 + 1];
-        }
-        data.getChars(0, length, m_charsBuff, 0);
-        comment(m_charsBuff, 0, length);
-    }
-
-    /**
      * Returns the local name of a qualified name. If the name has no prefix,
      * then it works as the identity (SAX2).
      * @param qname the qualified name 
