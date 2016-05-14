@@ -74,7 +74,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private XMLStreamWriter xmlWriter;
     private List<Part> otherParts = new LinkedList<Part>();
-    private OMMultipartWriter multipartWriter;
+    private final OMMultipartWriter multipartWriter;
     private final OutputStream rootPartOutputStream;
     private OMOutputFormat format;
     private final OptimizationPolicy optimizationPolicy;
@@ -96,6 +96,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         this.format = format;
         optimizationPolicy = new OptimizationPolicyImpl(format);
         preserveAttachments = true;
+        multipartWriter = null;
         rootPartOutputStream = null;
     }
 
@@ -150,19 +151,24 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             } catch (IOException ex) {
                 throw new XMLStreamException(ex);
             }
+        } else {
+            multipartWriter = null;
+            rootPartOutputStream = outStream;
+        }
+        
+        xmlWriter = StAXUtils.createXMLStreamWriter(format.getStAXWriterConfiguration(),
+                rootPartOutputStream, encoding);
+
+        if (format.isOptimized()) {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
                 public String generateContentID(String existingContentID) {
                     return existingContentID != null ? existingContentID : getNextContentId();
                 }
             };
-            xmlWriter = new XOPEncodingStreamWriter(StAXUtils.createXMLStreamWriter(
-                    format.getStAXWriterConfiguration(), rootPartOutputStream, encoding),
+            xmlWriter = new XOPEncodingStreamWriter(xmlWriter,
                     contentIDGenerator, optimizationPolicy);
-        } else {
-            rootPartOutputStream = outStream;
-            xmlWriter = StAXUtils.createXMLStreamWriter(format.getStAXWriterConfiguration(),
-                    outStream, format.getCharSetEncoding());
         }
+        
         xmlStreamWriterFilter = format.getXmlStreamWriterFilter();
         if (xmlStreamWriterFilter != null) {
             if (log.isDebugEnabled()) {
