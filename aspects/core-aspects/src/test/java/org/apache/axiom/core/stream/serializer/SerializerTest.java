@@ -43,7 +43,7 @@ public class SerializerTest {
      * @throws Exception
      */
     @Test
-    public void testISO_8859_15() throws Exception {
+    public void testUnmappableCharacterInCharacterData() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializerXmlHandler handler = new SerializerXmlHandler(baos, "iso-8859-15");
         handler.startElement("", "test", "");
@@ -55,6 +55,18 @@ public class SerializerTest {
     }
 
     @Test
+    public void testUnmappableCharacterInAttributeValue() throws Exception {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        SerializerXmlHandler handler = new SerializerXmlHandler(baos, "ascii");
+        handler.startElement("", "test", "");
+        handler.processAttribute("", "attr", "", "néant", "CDATA", true);
+        handler.attributesCompleted();
+        handler.endElement();
+        handler.completed();
+        assertThat(new String(baos.toByteArray(), "ascii")).isEqualTo("<test attr=\"n&#233;ant\"/>");
+    }
+
+    @Test
     // TODO: this should throw an exception
     public void testUnmappableCharacterInComment() throws Exception {
         SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "iso-8859-1");
@@ -62,6 +74,28 @@ public class SerializerTest {
         handler.startComment();
         handler.processCharacterData("\u20AC", false);
         handler.endComment();
+        handler.completed();
+    }
+
+    @Test
+    // TODO: this should throw an exception
+    public void testUnmappableCharacterInCDATASection() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "ascii");
+        handler.startFragment();
+        handler.startCDATASection();
+        handler.processCharacterData("c'est la fête!", false);
+        handler.endCDATASection();
+        handler.completed();
+    }
+
+    @Test
+    // TODO: this should throw an exception
+    public void testUnmappableCharacterInProcessingInstruction() throws Exception {
+        SerializerXmlHandler handler = new SerializerXmlHandler(new NullOutputStream(), "ascii");
+        handler.startFragment();
+        handler.startProcessingInstruction("test");
+        handler.processCharacterData("c'est la fête!", false);
+        handler.endProcessingInstruction();
         handler.completed();
     }
 
