@@ -73,10 +73,9 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private XMLStreamWriter xmlWriter;
-    private OutputStream outStream;
     private List<Part> otherParts = new LinkedList<Part>();
     private OMMultipartWriter multipartWriter;
-    private OutputStream rootPartOutputStream;
+    private final OutputStream rootPartOutputStream;
     private OMOutputFormat format;
     private final OptimizationPolicy optimizationPolicy;
     private final boolean preserveAttachments;
@@ -97,6 +96,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         this.format = format;
         optimizationPolicy = new OptimizationPolicyImpl(format);
         preserveAttachments = true;
+        rootPartOutputStream = null;
     }
 
     public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter) {
@@ -134,7 +134,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
-        this.outStream = outStream;
         this.preserveAttachments = preserveAttachments;
 
         String encoding = format.getCharSetEncoding();
@@ -160,6 +159,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
                     format.getStAXWriterConfiguration(), rootPartOutputStream, encoding),
                     contentIDGenerator, optimizationPolicy);
         } else {
+            rootPartOutputStream = outStream;
             xmlWriter = StAXUtils.createXMLStreamWriter(format.getStAXWriterConfiguration(),
                     outStream, format.getCharSetEncoding());
         }
@@ -555,31 +555,22 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             return null;
         }
         
-        OutputStream os = null;
-        if (rootPartOutputStream != null) {
-            os = rootPartOutputStream;
-        } else {
-            os = outStream;
-        }
-        
         if (log.isDebugEnabled()) {
-            if (os == null) {
+            if (rootPartOutputStream == null) {
                 log.debug("Direct access to the output stream is not available.");
-            } else if (rootPartOutputStream != null) {
-                log.debug("Returning access to the buffered xml stream: " + rootPartOutputStream);
             } else {
-                log.debug("Returning access to the original output stream: " + os);
+                log.debug("Returning access to the output stream: " + rootPartOutputStream);
             }
         }
        
-        if (os != null) {
+        if (rootPartOutputStream != null) {
             // Flush the state of the writer..Many times the 
             // write defers the writing of tag characters (>)
             // until the next write.  Flush out this character
             this.writeCharacters(""); 
             this.flush();
         }
-        return os;
+        return rootPartOutputStream;
     }
     
     public void setFilter(XMLStreamWriterFilter filter) {
