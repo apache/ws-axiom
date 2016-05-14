@@ -34,7 +34,7 @@ public abstract class SAXImplementation extends Multiton {
     public static final SAXImplementation CRIMSON = new SAXImplementation("crimson", false) {
         @Override
         public SAXParserFactory newSAXParserFactory() {
-            return new org.apache.crimson.jaxp.SAXParserFactoryImpl();
+            return new CrimsonSAXParserFactoryWrapper(new org.apache.crimson.jaxp.SAXParserFactoryImpl());
         }
     };
     
