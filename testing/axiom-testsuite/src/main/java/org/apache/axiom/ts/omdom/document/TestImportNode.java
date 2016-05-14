@@ -22,8 +22,6 @@ package org.apache.axiom.ts.omdom.document;
 import static com.google.common.truth.Truth.assertAbout;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
@@ -33,6 +31,7 @@ import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 public class TestImportNode extends ConformanceTestCase {
     public TestImportNode(OMMetaFactory metaFactory, XMLSample file) {
@@ -40,9 +39,7 @@ public class TestImportNode extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory dbf = DOMImplementation.XERCES.newDocumentBuilderFactory();
-        dbf.setNamespaceAware(true);
-        Document doc = dbf.newDocumentBuilder().parse(file.getUrl().toString());
+        Document doc = DOMImplementation.XERCES.parse(new InputSource(file.getUrl().toString()));
         Document doc2 = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
         Node n = doc2.importNode(doc.getDocumentElement(), true);
         assertAbout(xml())

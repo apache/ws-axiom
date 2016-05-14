@@ -34,6 +34,7 @@ import org.apache.axiom.ts.soap.SOAPSampleSet;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 public class TestCreateSOAPModelBuilderFromDOMSource extends SOAPTestCase {
     public TestCreateSOAPModelBuilderFromDOMSource(OMMetaFactory metaFactory, SOAPSpec spec) {
@@ -42,9 +43,7 @@ public class TestCreateSOAPModelBuilderFromDOMSource extends SOAPTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory dbf = DOMImplementation.XERCES.newDocumentBuilderFactory();
-        dbf.setNamespaceAware(true);
-        Document document = dbf.newDocumentBuilder().parse(SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getUrl().toString());
+        Document document = DOMImplementation.XERCES.parse(new InputSource(SOAPSampleSet.SIMPLE_FAULT.getMessage(spec).getUrl().toString()));
         SOAPMessage message = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new DOMSource(document)).getSOAPMessage();
         assertAbout(xml())
                 .that(xml(OMDocument.class, message))

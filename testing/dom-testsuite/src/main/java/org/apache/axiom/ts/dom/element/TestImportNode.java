@@ -28,6 +28,7 @@ import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 public class TestImportNode extends DOMTestCase {
     private final XMLSample file;
@@ -43,9 +44,7 @@ public class TestImportNode extends DOMTestCase {
 
     @Override
     protected void runTest() throws Throwable {
-        DocumentBuilderFactory foreignFactory = from.newDocumentBuilderFactory();
-        foreignFactory.setNamespaceAware(true);
-        Element orgElement = foreignFactory.newDocumentBuilder().parse(file.getUrl().toString()).getDocumentElement();
+        Element orgElement = from.parse(new InputSource(file.getUrl().toString())).getDocumentElement();
         Document doc = dbf.newDocumentBuilder().newDocument();
         assertAbout(xml())
                 .that(xml(Element.class, (Element)doc.importNode(orgElement, true)))

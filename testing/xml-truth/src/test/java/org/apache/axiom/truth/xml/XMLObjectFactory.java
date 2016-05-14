@@ -21,12 +21,11 @@ package org.apache.axiom.truth.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
 import org.apache.axiom.ts.jaxp.DOMImplementation;
 import org.apache.axiom.ts.xml.XMLSample;
+import org.xml.sax.InputSource;
 
 public abstract class XMLObjectFactory extends Multiton {
     public static final XMLObjectFactory DEFAULT = new XMLObjectFactory("url") {
@@ -55,10 +54,7 @@ public abstract class XMLObjectFactory extends Multiton {
             instances.add(new XMLObjectFactory(impl.getName() + "-dom") {
                 @Override
                 public Object toXMLObject(XMLSample sample) throws Exception {
-                    DocumentBuilderFactory factory = impl.newDocumentBuilderFactory();
-                    factory.setNamespaceAware(true);
-                    factory.setExpandEntityReferences(false);
-                    return factory.newDocumentBuilder().parse(sample.getUrl().toString());
+                    return impl.parse(new InputSource(sample.getUrl().toString()), false);
                 }
             });
         }

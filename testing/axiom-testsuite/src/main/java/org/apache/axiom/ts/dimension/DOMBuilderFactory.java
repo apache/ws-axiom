@@ -18,15 +18,12 @@
  */
 package org.apache.axiom.ts.dimension;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.testutils.suite.MatrixTestCase;
 import org.apache.axiom.ts.jaxp.DOMImplementation;
-import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 /**
@@ -62,10 +59,9 @@ final class DOMBuilderFactory extends BuilderFactory {
     }
 
     public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
-        DocumentBuilderFactory dbf = implementation.newDocumentBuilderFactory();
-        dbf.setNamespaceAware(true);
-        dbf.setExpandEntityReferences(false);
-        Document document = dbf.newDocumentBuilder().parse(inputSource);
-        return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), document, false);
+        return OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(),
+                implementation.parse(inputSource, false),
+                false);
     }
 }

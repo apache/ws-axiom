@@ -32,14 +32,14 @@ import org.xml.sax.SAXException;
 public abstract class DOMImplementation extends Multiton {
     public static final DOMImplementation XERCES = new DOMImplementation("xerces", true, true) {
         @Override
-        public DocumentBuilderFactory newDocumentBuilderFactory() {
+        protected DocumentBuilderFactory newDocumentBuilderFactory() {
             return new org.apache.xerces.jaxp.DocumentBuilderFactoryImpl();
         }
     };
     
     public static final DOMImplementation CRIMSON = new DOMImplementation("crimson", false, false) {
         @Override
-        public DocumentBuilderFactory newDocumentBuilderFactory() {
+        protected DocumentBuilderFactory newDocumentBuilderFactory() {
             return new org.apache.crimson.jaxp.DocumentBuilderFactoryImpl();
         }
     };
@@ -66,7 +66,7 @@ public abstract class DOMImplementation extends Multiton {
         return internalSubset;
     }
     
-    public abstract DocumentBuilderFactory newDocumentBuilderFactory();
+    protected abstract DocumentBuilderFactory newDocumentBuilderFactory();
     
     public final Document newDocument() {
         try {
@@ -77,8 +77,13 @@ public abstract class DOMImplementation extends Multiton {
     }
     
     public final Document parse(InputSource is) throws SAXException, IOException {
+        return parse(is, true);
+    }
+
+    public final Document parse(InputSource is, boolean expandEntityReferences) throws SAXException, IOException {
         DocumentBuilderFactory factory = newDocumentBuilderFactory();
         factory.setNamespaceAware(true);
+        factory.setExpandEntityReferences(expandEntityReferences);
         try {
             return factory.newDocumentBuilder().parse(is);
         } catch (ParserConfigurationException ex) {

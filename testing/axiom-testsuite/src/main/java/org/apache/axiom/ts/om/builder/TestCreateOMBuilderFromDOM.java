@@ -24,8 +24,6 @@ import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.om.OMMetaFactory;
@@ -53,11 +51,7 @@ public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     }
 
     private Document loadDocument(boolean expandEntityReferences) throws Exception {
-        DocumentBuilderFactory factory = implementation.newDocumentBuilderFactory();
-        factory.setNamespaceAware(true);
-        factory.setExpandEntityReferences(expandEntityReferences);
-        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        return documentBuilder.parse(file.getUrl().toString());
+        return implementation.parse(new InputSource(file.getUrl().toString()), expandEntityReferences);
     }
     
     protected void runTest() throws Throwable {
