@@ -16,31 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.serializer;
+package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-final class Latin1XmlWriter extends AbstractXmlWriter {
-    private final int maxChar;
-    private UnmappableCharacterHandler unmappableCharacterHandler = UnmappableCharacterHandler.THROW_EXCEPTION;
-
-    Latin1XmlWriter(OutputStream out, int maxChar) {
+public final class UTF8XmlWriter extends AbstractXmlWriter {
+    public UTF8XmlWriter(OutputStream out) {
         super(out);
-        this.maxChar = maxChar;
     }
 
     @Override
-    void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException {
-        this.unmappableCharacterHandler = unmappableCharacterHandler;
+    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
+        // There are no unmappable characters in UTF-8
     }
 
     @Override
     protected void writeCharacter(int codePoint) throws IOException {
-        if (codePoint > maxChar) {
-            unmappableCharacterHandler.processUnmappableCharacter(codePoint, this);
-        } else {
+        if (codePoint < 0x80) {
             writeByte((byte)codePoint);
+        } else if (codePoint < 0x800) {
+            writeByte((byte)(0xc0 + (codePoint >> 6)));
+            writeByte((byte)(0x80 + (codePoint & 0x3f)));
+        } else if (codePoint < 0x10000) {
+            writeByte((byte)(0xe0 + (codePoint >> 12)));
+            writeByte((byte)(0x80 + ((codePoint >> 6) & 0x3f)));
+            writeByte((byte)(0x80 + (codePoint & 0x3f)));
+        } else {
+            writeByte((byte)(0xf0 + (codePoint >> 18)));
+            writeByte((byte)(0x80 + ((codePoint >> 12) & 0x3f)));
+            writeByte((byte)(0x80 + ((codePoint >> 6) & 0x3f)));
+            writeByte((byte)(0x80 + (codePoint & 0x3f)));
         }
     }
 }

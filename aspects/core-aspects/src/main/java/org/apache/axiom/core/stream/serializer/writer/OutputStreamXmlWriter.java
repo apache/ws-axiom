@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.serializer;
+package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 
-final class OutputStreamXmlWriter extends XmlWriter {
+public final class OutputStreamXmlWriter extends XmlWriter {
     private final OutputStream out;
     private final CharBuffer encoderIn;
     private final ByteBuffer encoderOut;
@@ -35,7 +35,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     private boolean processingUnmappableCharacter;
     private CharBuffer encoderInAlt;
 
-    OutputStreamXmlWriter(OutputStream out, Charset charset) {
+    public OutputStreamXmlWriter(OutputStream out, Charset charset) {
         this.out = out;
         encoderIn = CharBuffer.allocate(4096);
         encoderOut = ByteBuffer.allocate(4096);
@@ -93,7 +93,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     @Override
-    void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException {
+    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException {
         if (unmappableCharacterHandler != this.unmappableCharacterHandler) {
             flush(encoderIn);
             this.unmappableCharacterHandler = unmappableCharacterHandler;
@@ -101,7 +101,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     @Override
-    void write(char c) throws IOException {
+    public void write(char c) throws IOException {
         CharBuffer encoderIn = getEncoderIn();
         if (!encoderIn.hasRemaining()) {
             flush(encoderIn);
@@ -110,7 +110,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     @Override
-    void write(String src) throws IOException {
+    public void write(String src) throws IOException {
         CharBuffer encoderIn = getEncoderIn();
         int offset = 0;
         int length = src.length();
@@ -126,7 +126,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     @Override
-    void write(char[] src, int offset, int length) throws IOException {
+    public void write(char[] src, int offset, int length) throws IOException {
         CharBuffer encoderIn = getEncoderIn();
         while (length > 0) {
             if (!encoderIn.hasRemaining()) {
@@ -140,7 +140,7 @@ final class OutputStreamXmlWriter extends XmlWriter {
     }
 
     @Override
-    void flushBuffer() throws IOException {
+    public void flushBuffer() throws IOException {
         flush(encoderIn);
         flushEncodingOut();
     }

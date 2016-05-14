@@ -16,41 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.serializer;
+package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 import java.io.Writer;
 
-final class WriterXmlWriter extends XmlWriter {
+public final class WriterXmlWriter extends XmlWriter {
     private final Writer out;
     private final boolean flushWriter;
 
-    WriterXmlWriter(Writer out, boolean flushWriter) {
+    public WriterXmlWriter(Writer out, boolean flushWriter) {
         this.out = out;
         this.flushWriter = flushWriter;
     }
 
     @Override
-    void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
+    public void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) {
     }
 
     @Override
-    void write(char c) throws IOException {
+    public void write(char c) throws IOException {
         out.write(c);
     }
 
     @Override
-    void write(String s) throws IOException {
+    public void write(String s) throws IOException {
         out.write(s);
     }
 
     @Override
-    void write(char[] chars, int start, int length) throws IOException {
+    public void write(char[] chars, int start, int length) throws IOException {
         out.write(chars, start, length);
     }
 
     @Override
-    void flushBuffer() throws IOException {
+    public void flushBuffer() throws IOException {
         if (flushWriter) {
             out.flush();
         }

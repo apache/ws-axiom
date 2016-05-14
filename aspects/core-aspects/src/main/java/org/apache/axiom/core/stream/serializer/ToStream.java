@@ -36,6 +36,10 @@ import javax.xml.transform.OutputKeys;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
+import org.apache.axiom.core.stream.serializer.writer.Latin1XmlWriter;
+import org.apache.axiom.core.stream.serializer.writer.UTF8XmlWriter;
+import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
+import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
 /**
  * This abstract class is a base class for other stream 

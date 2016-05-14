@@ -16,13 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.serializer;
+package org.apache.axiom.core.stream.serializer.writer;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
 
+import org.apache.axiom.core.stream.serializer.writer.OutputStreamXmlWriter;
+import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
+import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 import org.junit.Test;
 
 public class OutputStreamXmlWriterTest {

@@ -24,6 +24,8 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Properties;
 
+import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
+
 /**
  * The Serializer interface is implemented by a serializer to enable users to:
  * <ul>

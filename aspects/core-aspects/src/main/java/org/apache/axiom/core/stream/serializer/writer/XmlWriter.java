@@ -16,24 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.serializer;
+package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 
-abstract class XmlWriter {
-    abstract void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException;
-    abstract void write(char c) throws IOException;
-    abstract void write(String s) throws IOException;
-    abstract void write(char chars[], int start, int length) throws IOException;
+public abstract class XmlWriter {
+    public abstract void setUnmappableCharacterHandler(UnmappableCharacterHandler unmappableCharacterHandler) throws IOException;
+    public abstract void write(char c) throws IOException;
+    public abstract void write(String s) throws IOException;
+    public abstract void write(char chars[], int start, int length) throws IOException;
 
     /**
      * Write any pending data to the underlying stream, without flushing the stream itself.
      * 
      * @throws IOException
      */
-    abstract void flushBuffer() throws IOException;
+    public abstract void flushBuffer() throws IOException;
     
-    final void writeCharacterReference(int codePoint) throws IOException {
+    public final void writeCharacterReference(int codePoint) throws IOException {
         write("&#");
         // TODO: optimize this
         write(Integer.toString(codePoint));

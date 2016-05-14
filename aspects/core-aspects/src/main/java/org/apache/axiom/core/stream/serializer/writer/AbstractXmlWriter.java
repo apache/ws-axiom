@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.serializer;
+package org.apache.axiom.core.stream.serializer.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,7 +41,7 @@ abstract class AbstractXmlWriter extends XmlWriter {
     }
 
     @Override
-    final void write(char c) throws IOException {
+    public final void write(char c) throws IOException {
         if (highSurrogate != 0) {
             if (Character.isLowSurrogate(c)) {
                 writeCharacter(Character.toCodePoint(highSurrogate, c));
@@ -57,21 +57,21 @@ abstract class AbstractXmlWriter extends XmlWriter {
     }
 
     @Override
-    final void write(String s) throws IOException {
+    public final void write(String s) throws IOException {
         for (int i=0, len=s.length(); i<len; i++) {
             write(s.charAt(i));
         }
     }
 
     @Override
-    final void write(char[] chars, int start, int length) throws IOException {
+    public final void write(char[] chars, int start, int length) throws IOException {
         for (int i=0; i<length; i++) {
             write(chars[i]);
         }
     }
 
     @Override
-    final void flushBuffer() throws IOException {
+    public final void flushBuffer() throws IOException {
         out.write(buffer, 0, len);
         len = 0;
     }

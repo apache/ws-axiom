@@ -27,6 +27,7 @@ import javax.xml.transform.Result;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
+import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
 /**
  * This class converts SAX or SAX-like calls to a 

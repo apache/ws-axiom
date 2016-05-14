@@ -27,6 +27,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.SourceLocator;
 
 import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 import org.xml.sax.Locator;
 
 /**
