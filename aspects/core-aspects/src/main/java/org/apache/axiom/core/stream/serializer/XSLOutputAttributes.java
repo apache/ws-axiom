@@ -72,16 +72,6 @@ interface XSLOutputAttributes
      */    
     public String getEncoding();
     /**
-	 * @return true if the output document should be indented to visually
-	 * indicate its structure.
-     */    
-    public boolean getIndent();
-    
-    /**
-     * @return the number of spaces to indent for each indentation level.
-     */
-    public int getIndentAmount();
-    /**
      * @return the mediatype the media-type or MIME type associated with the
      * output document.
      */    
@@ -124,13 +114,6 @@ interface XSLOutputAttributes
      * @param encoding the character encoding
      */
     public void setEncoding(String encoding);
-    /**
-     * Sets the value coming from the xsl:output indent stylesheet
-     * attribute.
-     * @param indent true if the output document should be indented to visually
-     * indicate its structure.
-     */
-    public void setIndent(boolean indent);
     /**
      * Sets the value coming from the xsl:output media-type stylesheet attribute.
      * @param mediatype the media-type or MIME type associated with the output

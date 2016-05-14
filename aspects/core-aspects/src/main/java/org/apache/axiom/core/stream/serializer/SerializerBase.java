@@ -123,15 +123,6 @@ public abstract class SerializerBase
     protected boolean m_standaloneWasSpecified = false;
 
     /**
-     * Flag to tell if indenting (pretty-printing) is on.
-     */
-    protected boolean m_doIndent = false;
-    /**
-     * Amount to indent.
-     */
-    protected int m_indentAmount = 0;
-
-    /**
      * Tells the XML version, for writing out to the XML decl.
      */
     protected String m_version = null;
@@ -403,14 +394,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * @return true if the output document should be indented to visually
-     * indicate its structure.
-     */
-    public boolean getIndent()
-    {
-        return m_doIndent;
-    }
-    /**
      * Gets the mediatype the media-type or MIME type associated with the output
      * document.
      * @return the mediatype the media-type or MIME type associated with the
@@ -450,36 +433,6 @@ public abstract class SerializerBase
     public void setMediaType(String mediaType)
     {
         setOutputProperty(OutputKeys.MEDIA_TYPE,mediaType);
-    }
-
-    /**
-     * @return the number of spaces to indent for each indentation level.
-     */
-    public int getIndentAmount()
-    {
-        return m_indentAmount;
-    }
-
-    /**
-     * Sets the indentation amount.
-     * @param m_indentAmount The m_indentAmount to set
-     */
-    public void setIndentAmount(int m_indentAmount)
-    {
-        this.m_indentAmount = m_indentAmount;
-    }
-
-    /**
-     * Sets the value coming from the xsl:output indent stylesheet
-     * attribute.
-     * @param doIndent true if the output document should be indented to
-     * visually indicate its structure.
-     * @see XSLOutputAttributes#setIndent(boolean)
-     */
-    public void setIndent(boolean doIndent)
-    {
-        String val = doIndent ? "yes":"no";
-        setOutputProperty(OutputKeys.INDENT,val);
     }
 
     /**
@@ -652,9 +605,7 @@ public abstract class SerializerBase
         this.m_docIsEmpty = true;
     	this.m_doctypePublic = null;
     	this.m_doctypeSystem = null;
-    	this.m_doIndent = false;
         this.m_elemContext = new ElemContext();
-    	this.m_indentAmount = 0;
     	this.m_inEntityRef = false;
     	this.m_inExternalDTD = false;
     	this.m_mediatype = null;

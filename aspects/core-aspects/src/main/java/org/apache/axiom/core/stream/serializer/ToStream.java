@@ -66,37 +66,6 @@ abstract public class ToStream extends SerializerBase
      */
     EncodingInfo m_encodingInfo = new EncodingInfo(null,null, '\u0000');
     
-    /**
-     * Stack to keep track of whether or not we need to
-     * preserve whitespace.
-     * 
-     * Used to push/pop values used for the field m_ispreserve, but
-     * m_ispreserve is only relevant if m_doIndent is true.
-     * If m_doIndent is false this field has no impact.
-     * 
-     */
-    protected BoolStack m_preserves = new BoolStack();
-
-    /**
-     * State flag to tell if preservation of whitespace
-     * is important. 
-     * 
-     * Used only in shouldIndent() but only if m_doIndent is true.
-     * If m_doIndent is false this flag has no impact.
-     * 
-     */
-    protected boolean m_ispreserve = false;
-
-    /**
-     * State flag that tells if the previous node processed
-     * was text, so we can tell if we should preserve whitespace.
-     * 
-     * Used in endDocument() and shouldIndent() but
-     * only if m_doIndent is true. 
-     * If m_doIndent is false this flag has no impact.
-     */
-    protected boolean m_isprevtext = false;
-        
     private static final char[] s_systemLineSep;
     static {
         s_systemLineSep = SecuritySupport.getSystemProperty("line.separator").toCharArray();
@@ -394,15 +363,6 @@ abstract public class ToStream extends SerializerBase
                     }
                 }
                 break;
-            case 'i':
-                if (OutputPropertiesFactory.S_KEY_INDENT_AMOUNT.equals(name)) {
-                    setIndentAmount(Integer.parseInt(val));
-                } else if (OutputKeys.INDENT.equals(name)) {
-                    boolean b = "yes".equals(val) ? true : false;
-                    m_doIndent = b;
-                }
-
-                break;
             case 'l':
                 if (OutputPropertiesFactory.S_KEY_LINE_SEPARATOR.equals(name)) {
                     m_lineSep = val.toCharArray();
@@ -644,52 +604,6 @@ abstract public class ToStream extends SerializerBase
 
     }
 
-
-    /**
-     * Might print a newline character and the indentation amount
-     * of the given depth.
-     * 
-     * @param depth the indentation depth (element nesting depth)
-     *
-     * @throws StreamException if an error occurs during writing.
-     */
-    protected void indent(int depth) throws IOException
-    {
-
-        if (m_startNewLine)
-            outputLineSep();
-        /* For m_indentAmount > 0 this extra test might be slower
-         * but Xalan's default value is 0, so this extra test
-         * will run faster in that situation.
-         */
-        if (m_indentAmount > 0)
-            printSpace(depth * m_indentAmount);
-
-    }
-    
-    /**
-     * Indent at the current element nesting depth.
-     * @throws IOException
-     */
-    protected void indent() throws IOException
-    {
-        indent(m_elemContext.m_currentElemDepth);
-    }
-    /**
-     * Prints <var>n</var> spaces.
-     * @param n         Number of spaces to print.
-     *
-     * @throws StreamException if an error occurs when writing.
-     */
-    private void printSpace(int n) throws IOException
-    {
-        final XmlWriter writer = m_writer;
-        for (int i = 0; i < n; i++)
-        {
-            writer.write(' ');
-        }
-
-    }
 
     /**
      * Report an attribute type declaration.
@@ -1117,10 +1031,6 @@ abstract public class ToStream extends SerializerBase
         try
         {
             final int old_start = start;
-            m_ispreserve = true;
-
-            if (shouldIndent())
-                indent();
 
             boolean writeCDataBrackets =
                 (((length >= 1) && escapingNotNeeded(ch[start])));
@@ -1197,8 +1107,6 @@ abstract public class ToStream extends SerializerBase
             return;
         try
         {
-            m_ispreserve = true;
-
             m_writer.write(ch, start, length);
         }
         catch (IOException e)
@@ -1333,13 +1241,6 @@ abstract public class ToStream extends SerializerBase
                 }
             }
 
-            /* If there is some non-whitespace, mark that we may need
-             * to preserve this. This is only important if we have indentation on.
-             */            
-            if (i < end || !isAllWhitespace) 
-                m_ispreserve = true;
-            
-            
             for (; i < end; i++)
             {
                 char ch = chars[i];
@@ -1437,9 +1338,6 @@ abstract public class ToStream extends SerializerBase
                 int lengthClean = i - startClean;
                 m_writer.write(chars, startClean, lengthClean);
             }
-
-            // For indentation purposes, mark that we've just writen text out
-            m_isprevtext = true;
         }
         catch (IOException e)
         {
@@ -1714,13 +1612,6 @@ abstract public class ToStream extends SerializerBase
                 m_needToOutputDocTypeDecl = false;
             }
         
-            m_ispreserve = false;
-
-            if (shouldIndent() && m_startNewLine)
-            {
-                indent();
-            }
-
             m_startNewLine = true;
 
             final XmlWriter writer = m_writer;
@@ -1733,7 +1624,6 @@ abstract public class ToStream extends SerializerBase
         }
 
         m_elemContext = m_elemContext.push(namespaceURI,localName,name);
-        m_isprevtext = false;
     }
 
     public void startElement(String elementName) throws StreamException
@@ -1948,8 +1838,6 @@ abstract public class ToStream extends SerializerBase
                 if (m_cdataTagOpen)
                     closeCDATA();
 
-                if (shouldIndent())
-                    indent(m_elemContext.m_currentElemDepth - 1);
                 writer.write('<');
                 writer.write('/');
                 writer.write(name);
@@ -1961,12 +1849,6 @@ abstract public class ToStream extends SerializerBase
             throw new StreamException(e);
         }
 
-        if (!m_elemContext.m_startTagOpen && m_doIndent)
-        {
-            m_ispreserve = m_preserves.isEmpty() ? false : m_preserves.pop();
-        }
-
-        m_isprevtext = false;
         m_elemContext = m_elemContext.m_prev;
     }
 
@@ -2004,9 +1886,6 @@ abstract public class ToStream extends SerializerBase
             boolean wasDash = false;
             if (m_cdataTagOpen)
                 closeCDATA();
-            
-            if (shouldIndent())
-                indent();
             
             final XmlWriter writer = m_writer;    
             writer.write(COMMENT_BEGIN);
@@ -2195,12 +2074,6 @@ abstract public class ToStream extends SerializerBase
                 throw new StreamException(e);
             }
 
-            if (m_doIndent)
-            {
-                m_isprevtext = false;
-                m_preserves.push(m_ispreserve);
-            }
-
             m_elemContext.m_startTagOpen = false;
         }
 
@@ -2239,36 +2112,6 @@ abstract public class ToStream extends SerializerBase
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-    }
-
-    /**
-     * Returns the m_indentAmount.
-     * @return int
-     */
-    public int getIndentAmount()
-    {
-        return m_indentAmount;
-    }
-
-    /**
-     * Sets the m_indentAmount.
-     * 
-     * @param m_indentAmount The m_indentAmount to set
-     */
-    public void setIndentAmount(int m_indentAmount)
-    {
-        this.m_indentAmount = m_indentAmount;
-    }
-
-    /**
-     * Tell if, based on space preservation constraints and the doIndent property,
-     * if an indent should occur.
-     *
-     * @return True if an indent should occur.
-     */
-    protected boolean shouldIndent()
-    {
-        return m_doIndent && (!m_ispreserve && !m_isprevtext) && m_elemContext.m_currentElemDepth > 0;
     }
 
     /**
@@ -2332,14 +2175,11 @@ abstract public class ToStream extends SerializerBase
          // this.m_format = null;
          this.m_expandDTDEntities = true; 
          this.m_inDoctype = false;
-         this.m_ispreserve = false;
-         this.m_isprevtext = false;
          this.m_isUTF8 = false; //  ?? used anywhere ??
          this.m_lineSep = s_systemLineSep;
          this.m_lineSepLen = s_systemLineSep.length;
          this.m_lineSepUse = true;
          // this.m_outputStream = null; // Don't reset it may be re-used
-         this.m_preserves.clear();
          this.m_spaceBeforeClose = false;
          this.m_startNewLine = false;
          this.m_writer_set_by_user = false;

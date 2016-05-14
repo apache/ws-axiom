@@ -53,12 +53,6 @@ public interface SerializationHandler
     public boolean setEscaping(boolean escape) throws StreamException;
 
     /**
-     * Set the number of spaces to indent for each indentation level.
-     * @param spaces the number of spaces to indent for each indentation level.
-     */
-    public void setIndentAmount(int spaces);
-
-    /**
      * A SerializationHandler accepts SAX-like events, so
      * it can accumulate attributes or namespace nodes after
      * a startElement().

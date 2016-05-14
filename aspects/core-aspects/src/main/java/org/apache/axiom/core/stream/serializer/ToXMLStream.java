@@ -74,11 +74,6 @@ public class ToXMLStream extends ToStream
 
         setOmitXMLDeclaration(xmlListener.getOmitXMLDeclaration());
 
-        m_ispreserve = xmlListener.m_ispreserve;
-        m_preserves = xmlListener.m_preserves;
-        m_isprevtext = xmlListener.m_isprevtext;
-        m_doIndent = xmlListener.m_doIndent;
-        setIndentAmount(xmlListener.getIndentAmount());
         m_startNewLine = xmlListener.m_startNewLine;
         m_needToOutputDocTypeDecl = xmlListener.m_needToOutputDocTypeDecl;
         setDoctypeSystem(xmlListener.getDoctypeSystem());
@@ -137,22 +132,6 @@ public class ToXMLStream extends ToStream
                 writer.write('\"');
                 writer.write(standalone);
                 writer.write("?>");
-                if (m_doIndent) {
-                    if (m_standaloneWasSpecified
-                            || getDoctypePublic() != null
-                            || getDoctypeSystem() != null) {
-                        // We almost never put a newline after the XML
-                        // header because this XML could be used as
-                        // an extenal general parsed entity
-                        // and we don't know the context into which it
-                        // will be used in the future.  Only when
-                        // standalone, or a doctype system or public is
-                        // specified are we free to insert a new line
-                        // after the header.  Is it even worth bothering
-                        // in these rare cases?                           
-                        writer.write(m_lineSep, 0, m_lineSepLen);
-                    }
-                }
             } 
             catch(IOException e)
             {
@@ -173,58 +152,12 @@ public class ToXMLStream extends ToStream
     public void endDocument() throws StreamException
     {
         flushPending();
-        if (m_doIndent && !m_isprevtext)
-        {
-            try
-            {
-            outputLineSep();
-            }
-            catch(IOException e)
-            {
-                throw new StreamException(e);
-            }
-        }
 
         try {
             m_writer.flushBuffer();
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
-    }
-
-    /**
-     * Starts a whitespace preserving section. All characters printed
-     * within a preserving section are printed without indentation and
-     * without consolidating multiple spaces. This is equivalent to
-     * the <tt>xml:space=&quot;preserve&quot;</tt> attribute. Only XML
-     * and HTML serializers need to support this method.
-     * <p>
-     * The contents of the whitespace preserving section will be delivered
-     * through the regular <tt>characters</tt> event.
-     *
-     * @throws StreamException
-     */
-    public void startPreserving() throws StreamException
-    {
-
-        // Not sure this is really what we want.  -sb
-        m_preserves.push(true);
-
-        m_ispreserve = true;
-    }
-
-    /**
-     * Ends a whitespace preserving section.
-     *
-     * @see #startPreserving
-     *
-     * @throws StreamException
-     */
-    public void endPreserving() throws StreamException
-    {
-
-        // Not sure this is really what we want.  -sb
-        m_ispreserve = m_preserves.isEmpty() ? false : m_preserves.pop();
     }
 
     /**
@@ -258,9 +191,6 @@ public class ToXMLStream extends ToStream
         {
             try
             {
-                if (shouldIndent())
-                    indent();
-
                 final XmlWriter writer = m_writer;
                 writer.write("<?");
                 writer.write(target);
@@ -324,9 +254,6 @@ public class ToXMLStream extends ToStream
     {
         try
         {
-            if (shouldIndent())
-                indent();
-
             final XmlWriter writer = m_writer;
             writer.write('&');
             writer.write(name);
