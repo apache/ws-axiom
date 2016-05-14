@@ -23,7 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.EmptyStackException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
@@ -49,10 +48,6 @@ abstract public class ToStream extends SerializerBase
 
     private static final String COMMENT_BEGIN = "<!--";
     private static final String COMMENT_END = "-->";
-
-    /** Stack to keep track of disabling output escaping. */
-    protected BoolStack m_disableOutputEscapingStates = new BoolStack();
-
 
     /**
      * The encoding information associated with this serializer.
@@ -892,33 +887,6 @@ abstract public class ToStream extends SerializerBase
     }
 
     /**
-     * Ends an un-escaping section.
-     *
-     * @see #startNonEscaping
-     *
-     * @throws StreamException
-     */
-    public void endNonEscaping() throws StreamException
-    {
-        m_disableOutputEscapingStates.pop();
-    }
-
-    /**
-     * Starts an un-escaping section. All characters printed within an un-
-     * escaping section are printed as is, without escaping special characters
-     * into entity references. Only XML and HTML serializers need to support
-     * this method.
-     * <p> The contents of the un-escaping section will be delivered through the
-     * regular <tt>characters</tt> event.
-     *
-     * @throws StreamException
-     */
-    public void startNonEscaping() throws StreamException
-    {
-        m_disableOutputEscapingStates.push(true);
-    }
-
-    /**
      * Receive notification of cdata.
      *
      * <p>The Parser will call this method to report each chunk of
@@ -967,12 +935,7 @@ abstract public class ToStream extends SerializerBase
             }
 
             // writer.write(ch, start, length);
-            if (isEscapingDisabled())
-            {
-                charactersRaw(ch, start, length);
-            }
-            else
-                writeNormalizedChars(ch, start, length, true, m_lineSepUse);
+            writeNormalizedChars(ch, start, length, true, m_lineSepUse);
 
             /* used to always write out CDATA closing delimiter here,
              * but now we delay, so that we can merge CDATA sections on output.    
@@ -998,40 +961,6 @@ abstract public class ToStream extends SerializerBase
                 ioe);
             //"IO error", ioe);
         }
-    }
-
-    /**
-     * Tell if the character escaping should be disabled for the current state.
-     *
-     * @return true if the character escaping should be disabled.
-     */
-    private boolean isEscapingDisabled()
-    {
-        return m_disableOutputEscapingStates.peekOrFalse();
-    }
-
-    /**
-     * If available, when the disable-output-escaping attribute is used,
-     * output raw text without escaping.
-     *
-     * @param ch The characters from the XML document.
-     * @param start The start position in the array.
-     * @param length The number of characters to read from the array.
-     *
-     * @throws StreamException
-     */
-    protected void charactersRaw(char ch[], int start, int length)
-        throws StreamException
-    {
-        try
-        {
-            m_writer.write(ch, start, length);
-        }
-        catch (IOException e)
-        {
-            throw new StreamException(e);
-        }
-
     }
 
     /**
@@ -1086,11 +1015,6 @@ abstract public class ToStream extends SerializerBase
         if (m_cdataTagOpen)
             closeCDATA();
         
-        if (m_disableOutputEscapingStates.peekOrFalse())
-        {
-            charactersRaw(chars, start, length);
-            return;
-        }
 
         try
         {
@@ -2022,7 +1946,6 @@ abstract public class ToStream extends SerializerBase
           * 
           */
          // this.m_charInfo = null; // don't set to null 
-         this.m_disableOutputEscapingStates.clear();
          // this.m_encodingInfo = null; // don't set to null
          
          // Leave m_format alone for now - Brian M.
@@ -2047,185 +1970,6 @@ abstract public class ToStream extends SerializerBase
          setOutputProperty(OutputKeys.ENCODING,encoding);
      }
      
-    /**
-     * Simple stack for boolean values.
-     * 
-     * This class is a copy of the one in org.apache.xml.utils. 
-     * It exists to cut the serializers dependancy on that package.
-     * A minor changes from that package are:
-     * doesn't implement Clonable
-     *  
-     * @xsl.usage internal
-     */
-    static final class BoolStack
-    {
-
-      /** Array of boolean values          */
-      private boolean m_values[];
-
-      /** Array size allocated           */
-      private int m_allocatedSize;
-
-      /** Index into the array of booleans          */
-      private int m_index;
-
-      /**
-       * Default constructor.  Note that the default
-       * block size is very small, for small lists.
-       */
-      public BoolStack()
-      {
-        this(32);
-      }
-
-      /**
-       * Construct a IntVector, using the given block size.
-       *
-       * @param size array size to allocate
-       */
-      public BoolStack(int size)
-      {
-
-        m_allocatedSize = size;
-        m_values = new boolean[size];
-        m_index = -1;
-      }
-
-      /**
-       * Get the length of the list.
-       *
-       * @return Current length of the list
-       */
-      public final int size()
-      {
-        return m_index + 1;
-      }
-
-      /**
-       * Clears the stack.
-       *
-       */
-      public final void clear()
-      {
-        m_index = -1;
-      }
-
-      /**
-       * Pushes an item onto the top of this stack.
-       *
-       *
-       * @param val the boolean to be pushed onto this stack.
-       * @return  the <code>item</code> argument.
-       */
-      public final boolean push(boolean val)
-      {
-
-        if (m_index == m_allocatedSize - 1)
-          grow();
-
-        return (m_values[++m_index] = val);
-      }
-
-      /**
-       * Removes the object at the top of this stack and returns that
-       * object as the value of this function.
-       *
-       * @return     The object at the top of this stack.
-       * @throws  EmptyStackException  if this stack is empty.
-       */
-      public final boolean pop()
-      {
-        return m_values[m_index--];
-      }
-
-      /**
-       * Removes the object at the top of this stack and returns the
-       * next object at the top as the value of this function.
-       *
-       *
-       * @return Next object to the top or false if none there
-       */
-      public final boolean popAndTop()
-      {
-
-        m_index--;
-
-        return (m_index >= 0) ? m_values[m_index] : false;
-      }
-
-      /**
-       * Set the item at the top of this stack  
-       *
-       *
-       * @param b Object to set at the top of this stack
-       */
-      public final void setTop(boolean b)
-      {
-        m_values[m_index] = b;
-      }
-
-      /**
-       * Looks at the object at the top of this stack without removing it
-       * from the stack.
-       *
-       * @return     the object at the top of this stack.
-       * @throws  EmptyStackException  if this stack is empty.
-       */
-      public final boolean peek()
-      {
-        return m_values[m_index];
-      }
-
-      /**
-       * Looks at the object at the top of this stack without removing it
-       * from the stack.  If the stack is empty, it returns false.
-       *
-       * @return     the object at the top of this stack.
-       */
-      public final boolean peekOrFalse()
-      {
-        return (m_index > -1) ? m_values[m_index] : false;
-      }
-
-      /**
-       * Looks at the object at the top of this stack without removing it
-       * from the stack.  If the stack is empty, it returns true.
-       *
-       * @return     the object at the top of this stack.
-       */
-      public final boolean peekOrTrue()
-      {
-        return (m_index > -1) ? m_values[m_index] : true;
-      }
-
-      /**
-       * Tests if this stack is empty.
-       *
-       * @return  <code>true</code> if this stack is empty;
-       *          <code>false</code> otherwise.
-       */
-      public boolean isEmpty()
-      {
-        return (m_index == -1);
-      }
-
-      /**
-       * Grows the size of the stack
-       *
-       */
-      private void grow()
-      {
-
-        m_allocatedSize *= 2;
-
-        boolean newVector[] = new boolean[m_allocatedSize];
-
-        System.arraycopy(m_values, 0, newVector, 0, m_index + 1);
-
-        m_values = newVector;
-      }
-    }
-    
     // Implement DTDHandler
     /**
      * If this method is called, the serializer is used as a

@@ -22,8 +22,6 @@ package org.apache.axiom.core.stream.serializer;
 
 import java.io.IOException;
 
-import javax.xml.transform.Result;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
@@ -174,67 +172,56 @@ public class ToXMLStream extends ToStream
     {
         flushPending();   
 
-        if (target.equals(Result.PI_DISABLE_OUTPUT_ESCAPING))
+        try
         {
-            startNonEscaping();
-        }
-        else if (target.equals(Result.PI_ENABLE_OUTPUT_ESCAPING))
-        {
-            endNonEscaping();
-        }
-        else
-        {
-            try
+            final XmlWriter writer = m_writer;
+            writer.write("<?");
+            writer.write(target);
+
+            if (data.length() > 0
+                && !Character.isSpaceChar(data.charAt(0)))
+                writer.write(' ');
+
+            int indexOfQLT = data.indexOf("?>");
+
+            if (indexOfQLT >= 0)
             {
-                final XmlWriter writer = m_writer;
-                writer.write("<?");
-                writer.write(target);
 
-                if (data.length() > 0
-                    && !Character.isSpaceChar(data.charAt(0)))
-                    writer.write(' ');
-
-                int indexOfQLT = data.indexOf("?>");
-
-                if (indexOfQLT >= 0)
+                // See XSLT spec on error recovery of "?>" in PIs.
+                if (indexOfQLT > 0)
                 {
-
-                    // See XSLT spec on error recovery of "?>" in PIs.
-                    if (indexOfQLT > 0)
-                    {
-                        writer.write(data.substring(0, indexOfQLT));
-                    }
-
-                    writer.write("? >"); // add space between.
-
-                    if ((indexOfQLT + 2) < data.length())
-                    {
-                        writer.write(data.substring(indexOfQLT + 2));
-                    }
-                }
-                else
-                {
-                    writer.write(data);
+                    writer.write(data.substring(0, indexOfQLT));
                 }
 
-                writer.write('?');
-                writer.write('>');
-                
-                /*
-                 * Don't write out any indentation whitespace now,
-                 * because there may be non-whitespace text after this.
-                 * 
-                 * Simply mark that at this point if we do decide
-                 * to indent that we should 
-                 * add a newline on the end of the current line before
-                 * the indentation at the start of the next line.
-                 */ 
-                m_startNewLine = true;
+                writer.write("? >"); // add space between.
+
+                if ((indexOfQLT + 2) < data.length())
+                {
+                    writer.write(data.substring(indexOfQLT + 2));
+                }
             }
-            catch(IOException e)
+            else
             {
-                throw new StreamException(e);
+                writer.write(data);
             }
+
+            writer.write('?');
+            writer.write('>');
+            
+            /*
+             * Don't write out any indentation whitespace now,
+             * because there may be non-whitespace text after this.
+             * 
+             * Simply mark that at this point if we do decide
+             * to indent that we should 
+             * add a newline on the end of the current line before
+             * the indentation at the start of the next line.
+             */ 
+            m_startNewLine = true;
+        }
+        catch(IOException e)
+        {
+            throw new StreamException(e);
         }
     }
 
