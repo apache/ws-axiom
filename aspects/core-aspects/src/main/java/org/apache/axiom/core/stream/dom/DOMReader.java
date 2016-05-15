@@ -124,7 +124,7 @@ final class DOMReader implements XmlReader {
                             if (dom3) {
                                 handler.startDocument(document.getInputEncoding(), document.getXmlVersion(), document.getXmlEncoding(), document.getXmlStandalone());
                             } else {
-                                handler.startDocument(null, "1.0", null, true);
+                                handler.startDocument(null, "1.0", null, null);
                             }
                         } else {
                             handler.startFragment();

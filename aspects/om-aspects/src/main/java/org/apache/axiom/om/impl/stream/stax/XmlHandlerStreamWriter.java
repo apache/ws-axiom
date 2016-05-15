@@ -64,7 +64,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
 
     protected void doWriteStartDocument() throws XMLStreamException {
         try {
-            handler.startDocument(null, "1.0", null, true);
+            handler.startDocument(null, "1.0", null, null);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -72,7 +72,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
 
     protected void doWriteStartDocument(String encoding, String version) throws XMLStreamException {
         try {
-            handler.startDocument(null, version, encoding, true);
+            handler.startDocument(null, version, encoding, null);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
@@ -80,7 +80,7 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
 
     protected void doWriteStartDocument(String version) throws XMLStreamException {
         try {
-            handler.startDocument(null, version, null, true);
+            handler.startDocument(null, version, null, null);
         } catch (StreamException ex) {
             throw toXMLStreamException(ex);
         }
