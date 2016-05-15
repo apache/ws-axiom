@@ -38,14 +38,11 @@ public class SerializerXmlHandler implements XmlHandler {
     private int bufferPos;
     
     public SerializerXmlHandler(Writer writer) {
-        this.serializer = new ToStream();
-        serializer.setWriter(writer);
+        this.serializer = new ToStream(writer);
     }
 
     public SerializerXmlHandler(OutputStream out, String encoding) {
-        this.serializer = new ToStream();
-        serializer.setEncoding(encoding);
-        serializer.setOutputStream(out);
+        this.serializer = new ToStream(out, encoding);
     }
 
     private static String getQName(String prefix, String localName) {

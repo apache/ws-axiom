@@ -31,8 +31,6 @@ import java.util.Set;
 import javax.xml.transform.OutputKeys;
 
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.serializer.utils.MsgKey;
-import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
@@ -49,18 +47,8 @@ final class ToStream extends SerializerBase
     private static final String COMMENT_BEGIN = "<!--";
     private static final String COMMENT_END = "-->";
 
-    /**
-     * The encoding information associated with this serializer.
-     * Although initially there is no encoding,
-     * there is a dummy EncodingInfo object that will say
-     * that every character is in the encoding. This is useful
-     * for a serializer that is in temporary output state and has
-     * no associated encoding. A serializer in final output state
-     * will have an encoding, and will worry about whether 
-     * single chars or surrogate pairs of high/low chars form
-     * characters in the output encoding. 
-     */
-    EncodingInfo m_encodingInfo = new EncodingInfo(null,null, '\u0000');
+    private final XmlWriter m_writer;
+    private final OutputStream outputStream;
     
     private static final char[] s_systemLineSep;
     static {
@@ -103,19 +91,17 @@ final class ToStream extends SerializerBase
      */
     protected boolean m_inDoctype = false;
 
-    /**
-       * Flag to quickly tell if the encoding is UTF8.
-       */
-    boolean m_isUTF8 = false;
-
     protected Context context = Context.MIXED_CONTENT;
     private int matchedIllegalCharacters;
 
-    /**
-     * Default constructor
-     */
-    public ToStream()
-    {
+    public ToStream(Writer out) {
+        m_writer = new WriterXmlWriter(out);
+        outputStream = null;
+    }
+
+    public ToStream(OutputStream out, String encoding) {
+        m_writer = XmlWriter.create(out, encoding);
+        outputStream = out;
     }
 
     protected void switchContext(Context context) throws StreamException {
@@ -128,7 +114,6 @@ final class ToStream extends SerializerBase
         matchedIllegalCharacters = 0;
     }
 
-    OutputStream m_outputStream;
     /**
      * Get the output stream where the events will be serialized to.
      *
@@ -137,7 +122,7 @@ final class ToStream extends SerializerBase
      */
     public OutputStream getOutputStream()
     {
-        return m_outputStream;
+        return outputStream;
     }
 
     // Implement DeclHandler
@@ -249,78 +234,6 @@ final class ToStream extends SerializerBase
                         m_spaceBeforeClose = true;
                 }
                 break;
-            case 'e':
-                String newEncoding = val;
-                if (OutputKeys.ENCODING.equals(name)) {
-                    String possible_encoding = Encodings.getMimeEncoding(val);
-                    if (possible_encoding != null) {
-                        // if the encoding is being set, try to get the
-                        // preferred
-                        // mime-name and set it too.
-                        super.setProp("mime-name", possible_encoding,
-                                defaultVal);
-                    }
-                    final String oldExplicitEncoding = getOutputPropertyNonDefault(OutputKeys.ENCODING);
-                    final String oldDefaultEncoding  = getOutputPropertyDefault(OutputKeys.ENCODING);
-                    if ( (defaultVal && ( oldDefaultEncoding == null || !oldDefaultEncoding.equalsIgnoreCase(newEncoding)))
-                            || ( !defaultVal && (oldExplicitEncoding == null || !oldExplicitEncoding.equalsIgnoreCase(newEncoding) ))) {
-                       // We are trying to change the default or the non-default setting of the encoding to a different value
-                       // from what it was
-                       
-                       EncodingInfo encodingInfo = Encodings.getEncodingInfo(newEncoding);
-                       if (newEncoding != null && encodingInfo.name == null) {
-                        // We tried to get an EncodingInfo for Object for the given
-                        // encoding, but it came back with an internall null name
-                        // so the encoding is not supported by the JDK, issue a message.
-                        final String msg = Utils.messages.createMessage(
-                                MsgKey.ER_ENCODING_NOT_SUPPORTED,new Object[]{ newEncoding });
-                        
-                        final String msg2 = 
-                            "Warning: encoding \"" + newEncoding + "\" not supported, using "
-                                   + Encodings.DEFAULT_MIME_ENCODING;
-                        System.out.println(msg);
-                        System.out.println(msg2);
-
-                            // We said we are using UTF-8, so use it
-                            newEncoding = Encodings.DEFAULT_MIME_ENCODING;
-                            val = Encodings.DEFAULT_MIME_ENCODING; // to store the modified value into the properties a little later
-                            encodingInfo = Encodings.getEncodingInfo(newEncoding);
-
-                        } 
-                       // The encoding was good, or was forced to UTF-8 above
-                       
-                       
-                       // If there is already a non-default set encoding and we 
-                       // are trying to set the default encoding, skip the this block
-                       // as the non-default value is already the one to use.
-                       if (defaultVal == false || oldExplicitEncoding == null) {
-                           m_encodingInfo = encodingInfo;
-                           if (newEncoding != null)
-                               m_isUTF8 = newEncoding.equals(Encodings.DEFAULT_MIME_ENCODING);
-                           
-                           // if there was a previously set OutputStream
-                           OutputStream os = getOutputStream();
-                           if (os != null) {
-                               XmlWriter w = getWriter();
-                               
-                               // If the writer was previously set, but
-                               // set by the user, or if the new encoding is the same
-                               // as the old encoding, skip this block
-                               String oldEncoding = getOutputProperty(OutputKeys.ENCODING);
-                               if ((w == null || !m_writer_set_by_user) 
-                                       && !newEncoding.equalsIgnoreCase(oldEncoding)) {
-                                   // Make the change of encoding in our internal
-                                   // table, then call setOutputStreamInternal
-                                   // which will stomp on the old Writer (if any)
-                                   // with a new Writer with the new encoding.
-                                   super.setProp(name, val, defaultVal);
-                                   setOutputStreamInternal(os,false);
-                               }
-                           }
-                       }
-                    }
-                }
-                break;
             case 'l':
                 if (OutputPropertiesFactory.S_KEY_LINE_SEPARATOR.equals(name)) {
                     m_lineSep = val.toCharArray();
@@ -421,25 +334,6 @@ final class ToStream extends SerializerBase
     }
 
     /**
-     * Specifies a writer to which the document should be serialized.
-     * This method should not be called while the serializer is in
-     * the process of serializing a document.
-     *
-     * @param writer The output writer stream
-     */
-    public void setWriter(Writer writer)
-    {        
-        setWriterInternal(new WriterXmlWriter(writer, false), true);
-    }
-    
-    protected boolean m_writer_set_by_user;
-    protected void setWriterInternal(XmlWriter writer, boolean setByUser) {
-
-        m_writer_set_by_user = setByUser;
-        m_writer = writer;
-    }
-    
-    /**
      * Set if the operating systems end-of-line line separator should
      * be used when serializing.  If set false NL character 
      * (decimal 10) is left alone, otherwise the new-line will be replaced on
@@ -456,29 +350,6 @@ final class ToStream extends SerializerBase
         boolean oldValue = m_lineSepUse;
         m_lineSepUse = use_sytem_line_break;
         return oldValue;
-    }
-
-    /**
-     * Specifies an output stream to which the document should be
-     * serialized. This method should not be called while the
-     * serializer is in the process of serializing a document.
-     * <p>
-     * The encoding specified in the output properties is used, or
-     * if no encoding was specified, the default for the selected
-     * output method.
-     *
-     * @param output The output stream
-     */
-    public void setOutputStream(OutputStream output)
-    {
-        setOutputStreamInternal(output, true);
-    }
-    
-    private void setOutputStreamInternal(OutputStream output, boolean setByUser)
-    {
-        m_outputStream = output;
-        String encoding = getOutputProperty(OutputKeys.ENCODING);        
-        setWriterInternal(XmlWriter.create(output, encoding), false);
     }
 
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
@@ -1397,15 +1268,6 @@ final class ToStream extends SerializerBase
         }
     }
 
-    /**
-      * Sets the character encoding coming from the xsl:output encoding stylesheet attribute.
-      * @param encoding the character encoding
-      */
-     public void setEncoding(String encoding)
-     {
-         setOutputProperty(OutputKeys.ENCODING,encoding);
-     }
-     
     // Implement DTDHandler
     /**
      * If this method is called, the serializer is used as a

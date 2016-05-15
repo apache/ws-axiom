@@ -89,42 +89,12 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 public interface Serializer {
 
     /**
-     * Specifies an output stream to which the document should be
-     * serialized. This method should not be called while the
-     * serializer is in the process of serializing a document.
-     * <p>
-     * The encoding specified in the output {@link Properties} is used, or
-     * if no encoding was specified, the default for the selected
-     * output method.
-     * <p>
-     * Only one of setWriter() or setOutputStream() should be called.
-     *
-     * @param output The output stream
-     */
-    public void setOutputStream(OutputStream output);
-
-    /**
      * Get the output stream where the events will be serialized to.
      *
      * @return reference to the result stream, or null if only a writer was
      * set.
      */
     public OutputStream getOutputStream();
-
-    /**
-     * Specifies a writer to which the document should be serialized.
-     * This method should not be called while the serializer is in
-     * the process of serializing a document.
-     * <p>
-     * The encoding specified for the output {@link Properties} must be
-     * identical to the output format used with the writer.
-     * 
-     * <p>
-     * Only one of setWriter() or setOutputStream() should be called.
-     *
-     * @param writer The output writer stream
-     */
-    public void setWriter(Writer writer);
 
     /**
      * Get the character stream where the events will be serialized to.

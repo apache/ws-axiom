@@ -26,7 +26,6 @@ import java.util.Set;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.SourceLocator;
 
-import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 import org.xml.sax.Locator;
 
 /**
@@ -101,14 +100,6 @@ public abstract class SerializerBase
 
     protected SourceLocator m_sourceLocator;
     
-
-    /**
-     * The writer to send output to. This field is only used in the ToStream
-     * serializers, but exists here just so that the fireStartDoc() and
-     * other fire... methods can flush this writer when tracing.
-     */
-    protected XmlWriter m_writer = null;
-    
     /**
      * A reference to "stack frame" corresponding to
      * the current element. Such a frame is pushed at a startElement()
@@ -176,24 +167,6 @@ public abstract class SerializerBase
         return;
 
         // I don't do anything with this yet.
-    }
-
-    /**
-     * Returns the character encoding to be used in the output document.
-     * @return the character encoding to be used in the output document.
-     */
-    public String getEncoding()
-    {
-        return getOutputProperty(OutputKeys.ENCODING);
-    }
-
-   /**
-     * Sets the character encoding coming from the xsl:output encoding stylesheet attribute.
-     * @param m_encoding the character encoding
-     */
-    public void setEncoding(String encoding)
-    {
-        setOutputProperty(OutputKeys.ENCODING,encoding);
     }
 
     /**
