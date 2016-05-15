@@ -26,7 +26,6 @@ import java.util.Set;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.SourceLocator;
 
-import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 import org.xml.sax.Locator;
 
@@ -94,26 +93,6 @@ public abstract class SerializerBase
      * until the first element is encountered.
      */
     boolean m_needToOutputDocTypeDecl = true;
-
-    /**
-     * Tells if we should write the XML declaration.
-     */
-    protected boolean m_shouldNotWriteXMLHeader = false;
-
-    /**
-     * The standalone value for the doctype.
-     */
-    private String m_standalone;
-
-    /**
-     * True if standalone was specified.
-     */
-    protected boolean m_standaloneWasSpecified = false;
-
-    /**
-     * Tells the XML version, for writing out to the XML decl.
-     */
-    protected String m_version = null;
 
     /**
      * The mediatype.  Not used right now.
@@ -200,16 +179,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Initialize global variables
-     */
-    protected void initCDATA()
-    {
-        // CDATA stack
-        //        _cdataStack = new Stack();
-        //        _cdataStack.push(new Integer(-1)); // push dummy value
-    }
-
-    /**
      * Returns the character encoding to be used in the output document.
      * @return the character encoding to be used in the output document.
      */
@@ -225,27 +194,6 @@ public abstract class SerializerBase
     public void setEncoding(String encoding)
     {
         setOutputProperty(OutputKeys.ENCODING,encoding);
-    }
-
-    /**
-     * Sets the value coming from the xsl:output omit-xml-declaration stylesheet attribute
-     * @param b true if the XML declaration is to be omitted from the output
-     * document.
-     */
-    public void setOmitXMLDeclaration(boolean b)
-    {
-        String val = b ? "yes":"no";
-        setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,val);
-    }
-
-
-    /**
-     * @return true if the XML declaration is to be omitted from the output
-     * document.
-     */
-    public boolean getOmitXMLDeclaration()
-    {
-        return m_shouldNotWriteXMLHeader;
     }
 
     /**
@@ -304,42 +252,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Sets the value coming from the xsl:output standalone stylesheet attribute.
-     * @param standalone a value of "yes" indicates that the
-     * <code>standalone</code> delaration is to be included in the output
-     * document. This method remembers if the value was explicitly set using
-     * this method, verses if the value is the default value.
-     */
-    public void setStandalone(String standalone)
-    {
-        setOutputProperty(OutputKeys.STANDALONE, standalone);
-    }
-    /**
-     * Sets the XSL standalone attribute, but does not remember if this is a
-     * default or explicite setting.
-     * @param standalone "yes" | "no"
-     */    
-    protected void setStandaloneInternal(String standalone)
-    {
-        if ("yes".equals(standalone))
-            m_standalone = "yes";
-        else
-            m_standalone = "no";
-        
-    }
-
-    /**
-     * Gets the XSL standalone attribute
-     * @return a value of "yes" if the <code>standalone</code> delaration is to
-     * be included in the output document.
-     *  @see XSLOutputAttributes#getStandalone()
-     */
-    public String getStandalone()
-    {
-        return m_standalone;
-    }
-
-    /**
      * Gets the mediatype the media-type or MIME type associated with the output
      * document.
      * @return the mediatype the media-type or MIME type associated with the
@@ -348,25 +260,6 @@ public abstract class SerializerBase
     public String getMediaType()
     {
         return m_mediatype;
-    }
-
-    /**
-     * Gets the version of the output format.
-     * @return the version of the output format.
-     */
-    public String getVersion()
-    {
-        return m_version;
-    }
-
-    /**
-     * Sets the value coming from the xsl:output version attribute.
-     * @param version the version of the output format.
-     * @see SerializationHandler#setVersion(String)
-     */
-    public void setVersion(String version)
-    {
-        setOutputProperty(OutputKeys.VERSION, version);
     }
 
     /**
@@ -379,36 +272,6 @@ public abstract class SerializerBase
     public void setMediaType(String mediaType)
     {
         setOutputProperty(OutputKeys.MEDIA_TYPE,mediaType);
-    }
-
-    /**
-     * This method is used when a prefix/uri namespace mapping
-     * is indicated after the element was started with a 
-     * startElement() and before and endElement().
-     * startPrefixMapping(prefix,uri) would be used before the
-     * startElement() call.
-     * @param uri the URI of the namespace
-     * @param prefix the prefix associated with the given URI.
-     * 
-     * @see ExtendedContentHandler#namespaceAfterStartElement(String, String)
-     */
-    public void namespaceAfterStartElement(String uri, String prefix)
-        throws StreamException
-    {
-        // default behavior is to do nothing
-    }
-
-    /**
-     * Tell if two strings are equal, without worry if the first string is null.
-     *
-     * @param p String reference, which may be null.
-     * @param t String reference, which may be null.
-     *
-     * @return true if strings are equal.
-     */
-    private static final boolean subPartMatch(String p, String t)
-    {
-        return (p == t) || ((null != p) && (p.equals(t)));
     }
 
     /**
@@ -440,56 +303,6 @@ public abstract class SerializerBase
     }
 
     
-    /**
-     * Returns true if the serializer is used for temporary output rather than
-     * final output.
-     * 
-     * This concept is made clear in the XSLT 2.0 draft.
-     */
-    final boolean inTemporaryOutputState() 
-    {
-        /* This is a hack. We should really be letting the serializer know
-         * that it is in temporary output state with an explicit call, but
-         * from a pragmatic point of view (for now anyways) having no output
-         * encoding at all, not even the default UTF-8 indicates that the serializer
-         * is being used for temporary RTF.
-         */ 
-        return (getEncoding() == null);
-        
-    }
-    
-    /**
-     * @see org.xml.sax.DTDHandler#notationDecl(java.lang.String, java.lang.String, java.lang.String)
-     */
-    public void notationDecl(String arg0, String arg1, String arg2)
-        throws StreamException {
-        // This method just provides a definition to satisfy the interface
-        // A particular sub-class of SerializerBase provides the implementation (if desired)        
-    }
-
-    /**
-     * @see org.xml.sax.DTDHandler#unparsedEntityDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
-    public void unparsedEntityDecl(
-        String arg0,
-        String arg1,
-        String arg2,
-        String arg3)
-        throws StreamException {
-        // This method just provides a definition to satisfy the interface
-        // A particular sub-class of SerializerBase provides the implementation (if desired)        
-    }
-
-    /**
-     * If set to false the serializer does not expand DTD entities,
-     * but leaves them as is, the default value is true.
-     */
-    public void setDTDEntityExpansion(boolean expand) {
-        // This method just provides a definition to satisfy the interface
-        // A particular sub-class of SerializerBase provides the implementation (if desired)        
-    }
- 
-
     boolean m_docIsEmpty = true;
     /**
      * Return true if nothing has been sent to this result tree yet.

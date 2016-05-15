@@ -33,15 +33,7 @@ package org.apache.axiom.core.stream.serializer;
 public interface SerializationHandler
     extends
         ExtendedContentHandler,
-        XSLOutputAttributes,
         Serializer
 {
-    /**
-     * Default behavior is to expand DTD entities,
-     * that is the initall default value is true.
-     * @param expand true if DTD entities are to be expanded,
-     * false if they are to be left as DTD entity references. 
-     */
-    public void setDTDEntityExpansion(boolean expand);
     
 }

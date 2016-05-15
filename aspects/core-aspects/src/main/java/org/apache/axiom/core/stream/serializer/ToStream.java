@@ -333,29 +333,6 @@ abstract public class ToStream extends SerializerBase
                     m_mediatype = val;
                 }
                 break;
-            case 'o':
-                if (OutputKeys.OMIT_XML_DECLARATION.equals(name)) {
-                    boolean b = "yes".equals(val) ? true : false;
-                    this.m_shouldNotWriteXMLHeader = b;
-                }
-                break;
-            case 's':
-                // if standalone was explicitly specified
-                if (OutputKeys.STANDALONE.equals(name)) {
-                    if (defaultVal) {
-                        setStandaloneInternal(val);
-                    } else {
-                        m_standaloneWasSpecified = true;
-                        setStandaloneInternal(val);
-                    }
-                }
-
-                break;
-            case 'v':
-                if (OutputKeys.VERSION.equals(name)) {
-                    m_version = val;
-                }
-                break;
             default:
                 break;
 

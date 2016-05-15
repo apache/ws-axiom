@@ -50,8 +50,6 @@ public class ToXMLStream extends ToStream
     public ToXMLStream()
     {
         m_charInfo = m_xmlcharInfo;
-
-        initCDATA();
     }
 
     /**

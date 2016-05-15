@@ -90,26 +90,6 @@ public interface ExtendedContentHandler
      * @throws StreamException
      */
     public void startElement(String qName) throws StreamException;
-    /**
-     * This method is used to notify that a prefix mapping is to start, but
-     * after an element is started. The SAX method call
-     * <pre>
-     * startPrefixMapping(prefix,uri)
-     * </pre>
-     * is used just before an element starts and applies to the element to come,
-     * not to the current element.  This method applies to the current element.
-     * For example one could make the calls in this order:
-     * <pre>
-     * startElement("prfx8:elem9")
-     * namespaceAfterStartElement("http://namespace8","prfx8")
-     * </pre>
-     * 
-     * @param uri the namespace URI being declared
-     * @param prefix the prefix that maps to the given namespace
-     * @throws StreamException
-     */
-    public void namespaceAfterStartElement(String uri, String prefix)
-        throws StreamException;
 
     /**
      * Notify of an entity reference.
