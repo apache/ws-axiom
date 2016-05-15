@@ -20,11 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -32,13 +27,6 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-
-import javax.xml.transform.TransformerException;
-
-import org.apache.axiom.core.stream.serializer.utils.MsgKey;
-import org.apache.axiom.core.stream.serializer.utils.SystemIDResolver;
-import org.apache.axiom.core.stream.serializer.utils.Utils;
-import org.apache.axiom.core.stream.serializer.utils.WrappedRuntimeException;
 
 /**
  * This class provides services that tell if a character should have
@@ -163,149 +151,26 @@ final class CharInfo
     	return;
     }
     
-    private CharInfo(String entitiesResource, boolean internal)
+    private CharInfo(String entitiesResource)
     {
     	// call the default constructor to create the fields
     	this();
     	m_charToString = new HashMap();
 
-        ResourceBundle entities = null;
         boolean noExtraEntities = true;
 
-        // Make various attempts to interpret the parameter as a properties
-        // file or resource file, as follows:
-        //
-        //   1) attempt to load .properties file using ResourceBundle
-        //   2) try using the class loader to find the specified file a resource
-        //      file
-        //   3) try treating the resource a URI
+        // Load entity property files by using PropertyResourceBundle,
+        // cause of security issure for applets
+        ResourceBundle entities = PropertyResourceBundle.getBundle(entitiesResource);
 
-        if (internal) { 
-            try {
-                // Load entity property files by using PropertyResourceBundle,
-                // cause of security issure for applets
-                entities = PropertyResourceBundle.getBundle(entitiesResource);
-            } catch (Exception e) {}
-        }
-
-        if (entities != null) {
-            Enumeration keys = entities.getKeys();
-            while (keys.hasMoreElements()){
-                String name = (String) keys.nextElement();
-                String value = entities.getString(name);
-                int code = Integer.parseInt(value);
-                boolean extra = defineEntity(name, (char) code);
-                if (extra)
-                    noExtraEntities = false;
-            }
-        } else {
-            InputStream is = null;
-
-            // Load user specified resource file by using URL loading, it
-            // requires a valid URI as parameter
-            try {
-                if (internal) {
-                    is = CharInfo.class.getResourceAsStream(entitiesResource);
-                } else {
-                    ClassLoader cl = ObjectFactory.findClassLoader();
-                    if (cl == null) {
-                        is = ClassLoader.getSystemResourceAsStream(entitiesResource);
-                    } else {
-                        is = cl.getResourceAsStream(entitiesResource);
-                    }
-
-                    if (is == null) {
-                        try {
-                            URL url = new URL(entitiesResource);
-                            is = url.openStream();
-                        } catch (Exception e) {}
-                    }
-                }
-
-                if (is == null) {
-                    throw new RuntimeException(
-                        Utils.messages.createMessage(
-                            MsgKey.ER_RESOURCE_COULD_NOT_FIND,
-                            new Object[] {entitiesResource, entitiesResource}));
-                }
-
-                // Fix Bugzilla#4000: force reading in UTF-8
-                //  This creates the de facto standard that Xalan's resource 
-                //  files must be encoded in UTF-8. This should work in all
-                // JVMs.
-                //
-                // %REVIEW% KNOWN ISSUE: IT FAILS IN MICROSOFT VJ++, which
-                // didn't implement the UTF-8 encoding. Theoretically, we should
-                // simply let it fail in that case, since the JVM is obviously
-                // broken if it doesn't support such a basic standard.  But
-                // since there are still some users attempting to use VJ++ for
-                // development, we have dropped in a fallback which makes a
-                // second attempt using the platform's default encoding. In VJ++
-                // this is apparently ASCII, which is subset of UTF-8... and
-                // since the strings we'll be reading here are also primarily
-                // limited to the 7-bit ASCII range (at least, in English
-                // versions of Xalan), this should work well enough to keep us
-                // on the air until we're ready to officially decommit from
-                // VJ++.
-
-                BufferedReader reader;
-                try {
-                    reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    reader = new BufferedReader(new InputStreamReader(is));
-                }
-
-                String line = reader.readLine();
-
-                while (line != null) {
-                    if (line.length() == 0 || line.charAt(0) == '#') {
-                        line = reader.readLine();
-
-                        continue;
-                    }
-
-                    int index = line.indexOf(' ');
-
-                    if (index > 1) {
-                        String name = line.substring(0, index);
-
-                        ++index;
-
-                        if (index < line.length()) {
-                            String value = line.substring(index);
-                            index = value.indexOf(' ');
-
-                            if (index > 0) {
-                                value = value.substring(0, index);
-                            }
-
-                            int code = Integer.parseInt(value);
-
-                            boolean extra = defineEntity(name, (char) code);
-                            if (extra)
-                                noExtraEntities = false;
-                        }
-                    }
-
-                    line = reader.readLine();
-                }
-
-                is.close();
-            } catch (Exception e) {
-                throw new RuntimeException(
-                    Utils.messages.createMessage(
-                        MsgKey.ER_RESOURCE_COULD_NOT_LOAD,
-                        new Object[] { entitiesResource,
-                                       e.toString(),
-                                       entitiesResource,
-                                       e.toString()}));
-            } finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (Exception except) {}
-                }
-            }
+        Enumeration keys = entities.getKeys();
+        while (keys.hasMoreElements()){
+            String name = (String) keys.nextElement();
+            String value = entities.getString(name);
+            int code = Integer.parseInt(value);
+            boolean extra = defineEntity(name, (char) code);
+            if (extra)
+                noExtraEntities = false;
         }
 
         onlyQuotAmpLtGt = noExtraEntities;
@@ -438,13 +303,11 @@ final class CharInfo
 
      
     private static CharInfo getCharInfoBasedOnPrivilege(
-        final String entitiesFileName,
-        final boolean internal){
+        final String entitiesFileName){
             return (CharInfo) AccessController.doPrivileged(
                 new PrivilegedAction() {
                         public Object run() {
-                            return new CharInfo(entitiesFileName, 
-                              internal);}
+                            return new CharInfo(entitiesFileName);}
             });            
     }
      
@@ -473,38 +336,11 @@ final class CharInfo
         	return mutableCopyOf(charInfo);
         }
 
-        // try to load it internally - cache
-        try {
-            charInfo = getCharInfoBasedOnPrivilege(entitiesFileName, 
-                                        true);
-            // Put the common copy of charInfo in the cache, but return
-            // a copy of it.
-            m_getCharInfoCache.put(entitiesFileName, charInfo);
-            return mutableCopyOf(charInfo);
-        } catch (Exception e) {}
-
-        // try to load it externally - do not cache
-        try {
-            return getCharInfoBasedOnPrivilege(entitiesFileName, 
-                                false);
-        } catch (Exception e) {}
-
-        String absoluteEntitiesFileName;
-
-        if (entitiesFileName.indexOf(':') < 0) {
-            absoluteEntitiesFileName =
-                SystemIDResolver.getAbsoluteURIFromRelative(entitiesFileName);
-        } else {
-            try {
-                absoluteEntitiesFileName =
-                    SystemIDResolver.getAbsoluteURI(entitiesFileName, null);
-            } catch (TransformerException te) {
-                throw new WrappedRuntimeException(te);
-            }
-        }
-
-        return getCharInfoBasedOnPrivilege(entitiesFileName, 
-                                false);
+        charInfo = getCharInfoBasedOnPrivilege(entitiesFileName);
+        // Put the common copy of charInfo in the cache, but return
+        // a copy of it.
+        m_getCharInfoCache.put(entitiesFileName, charInfo);
+        return mutableCopyOf(charInfo);
     }
 
     /**
