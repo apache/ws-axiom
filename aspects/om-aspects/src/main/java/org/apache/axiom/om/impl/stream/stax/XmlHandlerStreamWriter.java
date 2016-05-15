@@ -35,10 +35,12 @@ import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements DataHandlerWriter {
     private final XmlHandler handler;
+    private final SerializerXmlHandler serializer;
     private boolean inStartElement;
 
-    public XmlHandlerStreamWriter(XmlHandler handler) {
+    public XmlHandlerStreamWriter(XmlHandler handler, SerializerXmlHandler serializer) {
         this.handler = handler;
+        this.serializer = serializer;
     }
     
     private static String normalize(String s) {
@@ -95,9 +97,9 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     }
 
     protected void doWriteDTD(String dtd) throws XMLStreamException {
-        if (handler instanceof SerializerXmlHandler) {
+        if (serializer != null) {
             try {
-                ((SerializerXmlHandler)handler).writeRaw(dtd, UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
+                serializer.writeRaw(dtd, UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
             } catch (StreamException ex) {
                 throw toXMLStreamException(ex);
             }
@@ -234,9 +236,9 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     }
 
     public void flush() throws XMLStreamException {
-        if (handler instanceof SerializerXmlHandler) {
+        if (serializer != null) {
             try {
-                ((SerializerXmlHandler)handler).flushBuffer();
+                serializer.flushBuffer();
             } catch (StreamException ex) {
                 throw toXMLStreamException(ex);
             }

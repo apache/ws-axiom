@@ -47,7 +47,7 @@ final class PushOMDataSourceReader implements XmlReader {
     @Override
     public boolean proceed() throws StreamException {
         try {
-            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler);
+            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler, null);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
             if (parent instanceof OMElement) {

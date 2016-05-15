@@ -83,8 +83,8 @@ final class XOPDecodingFilterHandler extends XmlHandlerWrapper {
     @Override
     public void startElement(String namespaceURI, String localName, String prefix)
             throws StreamException {
-        if (localName.equals("Include")
-                && namespaceURI.equals("http://www.w3.org/2004/08/xop/include")) {
+        if (localName.equals(XOPConstants.INCLUDE)
+                && namespaceURI.equals(XOPConstants.NAMESPACE_URI)) {
             if (state == State.AFTER_START_ELEMENT) {
                 state = State.IN_XOP_INCLUDE;
             } else {
@@ -115,7 +115,7 @@ final class XOPDecodingFilterHandler extends XmlHandlerWrapper {
     public void processAttribute(String namespaceURI, String localName, String prefix, String value,
             String type, boolean specified) throws StreamException {
         if (state == State.IN_XOP_INCLUDE) {
-            if (namespaceURI.isEmpty() && localName.equals("href")) {
+            if (namespaceURI.isEmpty() && localName.equals(XOPConstants.HREF)) {
                 if (!value.startsWith("cid:")) {
                     throw new StreamException("Expected href attribute containing a URL in the cid scheme");
                 }

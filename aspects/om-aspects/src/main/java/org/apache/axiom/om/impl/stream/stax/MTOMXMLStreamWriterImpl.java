@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
@@ -39,13 +40,13 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMMultipartWriter;
+import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
-import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -79,6 +80,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private OMOutputFormat format;
     private final OptimizationPolicy optimizationPolicy;
     private final boolean preserveAttachments;
+    private final XOPEncodingFilterHandler encoder;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -98,6 +100,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         preserveAttachments = true;
         multipartWriter = null;
         rootPartOutputStream = null;
+        encoder = null;
     }
 
     public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter) {
@@ -156,18 +159,24 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             rootPartOutputStream = outStream;
         }
         
-        xmlWriter = new XmlHandlerStreamWriter(new SerializerXmlHandler(rootPartOutputStream, encoding));
-
+        SerializerXmlHandler serializer = new SerializerXmlHandler(rootPartOutputStream, encoding);
+        XmlHandler handler;
+        
         if (format.isOptimized()) {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
                 public String generateContentID(String existingContentID) {
                     return existingContentID != null ? existingContentID : getNextContentId();
                 }
             };
-            xmlWriter = new XOPEncodingStreamWriter(xmlWriter,
-                    contentIDGenerator, optimizationPolicy);
+            encoder = new XOPEncodingFilterHandler(serializer, contentIDGenerator, optimizationPolicy);
+            handler = encoder;
+        } else {
+            encoder = null;
+            handler = serializer;
         }
         
+        xmlWriter = new XmlHandlerStreamWriter(handler, serializer);
+
         xmlStreamWriterFilter = format.getXmlStreamWriterFilter();
         if (xmlStreamWriterFilter != null) {
             if (log.isDebugEnabled()) {
@@ -241,7 +250,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             try {
                 rootPartOutputStream.close();
                 // First write the attachments added properly through the DataHandlerWriter extension
-                XOPEncodingStreamWriter encoder = (XOPEncodingStreamWriter)xmlWriter;
                 for (String contentID : encoder.getContentIDs()) {
                     DataHandler dataHandler = encoder.getDataHandler(contentID);
                     if (preserveAttachments || !(dataHandler instanceof DataHandlerExt)) {
