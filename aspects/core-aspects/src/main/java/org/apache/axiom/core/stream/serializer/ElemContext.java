@@ -100,12 +100,6 @@ final class ElemContext
     final ElemContext m_prev;
 
     /**
-     * Set to true when a start tag is started, or open, but not all the
-     * attributes or namespace information is yet collected.
-     */
-    boolean m_startTagOpen = false;
-
-    /**
      * Constructor to create the root of the element contexts. 
      *
      */
@@ -164,13 +158,6 @@ final class ElemContext
             frame = new ElemContext(this);
             this.m_next = frame;
         }
-        /*
-         * We shouldn't need to set this true because we should just
-         * be pushing a dummy stack frame that will be instantly popped.
-         * Yet we need to be ready in case this element does have
-         * unexpected children.
-         */
-        frame.m_startTagOpen = true;
         return frame;
     }
     
@@ -203,7 +190,6 @@ final class ElemContext
         frame.m_elementName = qName;
         frame.m_elementLocalName = localName;
         frame.m_elementURI = uri;
-        frame.m_startTagOpen = true;
 
         // is_Raw is already set in the HTML startElement() method
         // frame.m_isRaw = false; 

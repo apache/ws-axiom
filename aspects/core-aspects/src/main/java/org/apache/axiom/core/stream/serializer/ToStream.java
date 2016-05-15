@@ -93,6 +93,7 @@ final class ToStream extends SerializerBase
 
     protected Context context = Context.MIXED_CONTENT;
     private int matchedIllegalCharacters;
+    private boolean startTagOpen;
 
     public ToStream(Writer out) {
         m_writer = new WriterXmlWriter(out);
@@ -840,6 +841,7 @@ final class ToStream extends SerializerBase
         }
 
         m_elemContext = m_elemContext.push(namespaceURI,localName,name);
+        startTagOpen = true;
     }
 
     public void startElement(String elementName) throws StreamException
@@ -1023,8 +1025,7 @@ final class ToStream extends SerializerBase
         try
         {
             final XmlWriter writer = m_writer;
-            if (m_elemContext.m_startTagOpen)
-            {
+            if (startTagOpen) {
                 if (m_spaceBeforeClose)
                     writer.write(" />");
                 else
@@ -1051,6 +1052,7 @@ final class ToStream extends SerializerBase
         }
 
         m_elemContext = m_elemContext.m_prev;
+        startTagOpen = false;
     }
 
     /**
@@ -1186,8 +1188,7 @@ final class ToStream extends SerializerBase
     protected void closeStartTag() throws StreamException
     {
 
-        if (m_elemContext.m_startTagOpen)
-        {
+        if (startTagOpen) {
 
             try
             {
@@ -1199,7 +1200,7 @@ final class ToStream extends SerializerBase
                 throw new StreamException(e);
             }
 
-            m_elemContext.m_startTagOpen = false;
+            startTagOpen = false;
         }
 
     }
