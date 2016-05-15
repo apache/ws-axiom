@@ -85,7 +85,12 @@ public aspect AxiomDocumentSupport {
     }
 
     public final String AxiomDocument.isStandalone() {
-        return coreIsStandalone() ? "yes" : "no";
+        Boolean standalone = coreGetStandalone();
+        if (standalone == null) {
+            return null;
+        } else {
+            return standalone ? "yes" : "no";
+        }
     }
 
     public final void AxiomDocument.setStandalone(String standalone) {

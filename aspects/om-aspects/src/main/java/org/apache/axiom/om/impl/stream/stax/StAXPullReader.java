@@ -192,7 +192,8 @@ public final class StAXPullReader implements XmlReader {
         
         switch (token) {
             case XMLStreamConstants.START_DOCUMENT:
-                handler.startDocument(parser.getEncoding(), parser.getVersion(), parser.getCharacterEncodingScheme(), parser.isStandalone());
+                handler.startDocument(parser.getEncoding(), parser.getVersion(), parser.getCharacterEncodingScheme(),
+                        parser.standaloneSet() ? parser.isStandalone() : null);
                 break;
             case XMLStreamConstants.START_ELEMENT: {
                 processElement();

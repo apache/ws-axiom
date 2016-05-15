@@ -145,7 +145,7 @@ final class BuildableContext extends Context implements InputContext {
     
     @Override
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            boolean standalone) {
+            Boolean standalone) {
         CoreDocument document = builderHandler.nodeFactory.createNode(builderHandler.model.getDocumentType());
         document.coreSetInputEncoding(inputEncoding);
         document.coreSetXmlVersion(xmlVersion);

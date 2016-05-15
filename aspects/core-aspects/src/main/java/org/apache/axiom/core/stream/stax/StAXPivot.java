@@ -176,7 +176,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     private String encoding;
     private String version;
     private String characterEncodingScheme;
-    private boolean standalone;
+    private Boolean standalone;
     private String rootName;
     private String publicId;
     private String systemId;
@@ -242,7 +242,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
     
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) throws StreamException {
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) throws StreamException {
         checkState();
         eventType = START_DOCUMENT;
         encoding = inputEncoding;
@@ -540,7 +540,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public boolean isStandalone() {
         if (eventType == START_DOCUMENT) {
-            return standalone;
+            return standalone != null && standalone;
         } else {
             throw new IllegalStateException();
         }
@@ -906,8 +906,11 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public boolean standaloneSet() {
-        // TODO Auto-generated method stub
-        return false;
+        if (eventType == START_DOCUMENT) {
+            return standalone != null;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     @Override

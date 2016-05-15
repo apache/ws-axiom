@@ -26,7 +26,7 @@ public final class DocumentElementExtractingFilterHandler extends XmlHandlerWrap
     }
 
     @Override
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) throws StreamException {
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) throws StreamException {
     }
 
     @Override

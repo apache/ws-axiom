@@ -168,7 +168,8 @@ public aspect DOMDocumentSupport {
     }
 
     public final boolean DOMDocument.getXmlStandalone() {
-        return coreIsStandalone();
+        Boolean standalone = coreGetStandalone();
+        return standalone != null && standalone;
     }
 
     public final void DOMDocument.setXmlStandalone(boolean standalone) {

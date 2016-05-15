@@ -134,7 +134,8 @@ final class BuilderHandler implements XmlHandler {
         }
     }
     
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
+    @Override
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         context.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
     

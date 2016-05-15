@@ -29,75 +29,92 @@ public class XmlHandlerWrapper implements XmlHandler {
         return parent;
     }
 
+    @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            boolean standalone) throws StreamException {
+            Boolean standalone) throws StreamException {
         parent.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
 
+    @Override
     public void startFragment() throws StreamException {
         parent.startFragment();
     }
 
+    @Override
     public void completed() throws StreamException {
         parent.completed();
     }
 
+    @Override
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
         parent.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
     }
 
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix)
             throws StreamException {
         parent.startElement(namespaceURI, localName, prefix);
     }
 
+    @Override
     public void endElement() throws StreamException {
         parent.endElement();
     }
 
+    @Override
     public void processAttribute(String namespaceURI, String localName, String prefix, String value,
             String type, boolean specified) throws StreamException {
         parent.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
 
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI)
             throws StreamException {
         parent.processNamespaceDeclaration(prefix, namespaceURI);
     }
 
+    @Override
     public void attributesCompleted() throws StreamException {
         parent.attributesCompleted();
     }
 
+    @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         parent.processCharacterData(data, ignorable);
     }
 
+    @Override
     public void startProcessingInstruction(String target) throws StreamException {
         parent.startProcessingInstruction(target);
     }
 
+    @Override
     public void endProcessingInstruction() throws StreamException {
         parent.endProcessingInstruction();
     }
 
+    @Override
     public void startComment() throws StreamException {
         parent.startComment();
     }
 
+    @Override
     public void endComment() throws StreamException {
         parent.endComment();
     }
 
+    @Override
     public void startCDATASection() throws StreamException {
         parent.startCDATASection();
     }
 
+    @Override
     public void endCDATASection() throws StreamException {
         parent.endCDATASection();
     }
 
+    @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         parent.processEntityReference(name, replacementText);
     }

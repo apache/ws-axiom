@@ -32,7 +32,7 @@ final class UnwrappingContext extends Context {
 
     @Override
     void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            boolean standalone) {
+            Boolean standalone) {
     }
 
     @Override

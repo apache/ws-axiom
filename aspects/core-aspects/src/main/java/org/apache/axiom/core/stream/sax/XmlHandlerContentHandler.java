@@ -100,7 +100,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
 
     public void startDocument() throws SAXException {
         try {
-            handler.startDocument(null, "1.0", null, true);
+            handler.startDocument(null, "1.0", null, null);
         } catch (StreamException ex) {
             throw toSAXException(ex);
         }

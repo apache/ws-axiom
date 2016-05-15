@@ -19,7 +19,7 @@
 package org.apache.axiom.core.stream;
 
 public interface XmlHandler {
-    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) throws StreamException;
+    void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) throws StreamException;
     
     /**
      * Notify the handler of the beginning of a fragment.

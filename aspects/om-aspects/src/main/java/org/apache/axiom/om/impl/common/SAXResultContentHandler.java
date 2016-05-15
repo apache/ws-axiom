@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 
-public final  class SAXResultContentHandler implements XmlHandler {
+public final class SAXResultContentHandler implements XmlHandler {
     private final OMContainer root;
     private final OMFactory factory;
     private OMContainer target;
@@ -50,7 +50,8 @@ public final  class SAXResultContentHandler implements XmlHandler {
         return content;
     }
 
-    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone) {
+    @Override
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone) {
         target = root;
     }
     

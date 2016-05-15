@@ -65,7 +65,7 @@ public class ContentHandlerXmlHandler implements XmlHandler {
     
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            boolean standalone) throws StreamException {
+            Boolean standalone) throws StreamException {
         try {
             contentHandler.startDocument();
         } catch (SAXException ex) {

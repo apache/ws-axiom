@@ -25,7 +25,7 @@ public final class NullXmlHandler implements XmlHandler {
 
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
-            boolean standalone) throws StreamException {
+            Boolean standalone) throws StreamException {
     }
 
     @Override

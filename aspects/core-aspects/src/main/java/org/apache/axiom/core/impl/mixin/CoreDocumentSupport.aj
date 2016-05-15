@@ -33,7 +33,7 @@ public aspect CoreDocumentSupport {
     private String CoreDocument.inputEncoding;
     private String CoreDocument.xmlVersion = "1.0";
     private String CoreDocument.xmlEncoding;
-    private boolean CoreDocument.standalone;
+    private Boolean CoreDocument.standalone;
     
     public final NodeType CoreDocument.coreGetNodeType() {
         return NodeType.DOCUMENT;
@@ -84,11 +84,11 @@ public aspect CoreDocumentSupport {
         this.xmlEncoding = xmlEncoding;
     }
     
-    public final boolean CoreDocument.coreIsStandalone() {
+    public final Boolean CoreDocument.coreGetStandalone() {
         return standalone;
     }
     
-    public final void CoreDocument.coreSetStandalone(boolean standalone) {
+    public final void CoreDocument.coreSetStandalone(Boolean standalone) {
         this.standalone = standalone;
     }
     
@@ -96,12 +96,12 @@ public aspect CoreDocumentSupport {
         CoreDocument o = (CoreDocument)other;
         coreSetXmlVersion(o.coreGetXmlVersion());
         coreSetXmlEncoding(o.coreGetXmlEncoding());
-        coreSetStandalone(o.coreIsStandalone());
+        coreSetStandalone(o.coreGetStandalone());
         coreSetInputEncoding(o.coreGetInputEncoding());
     }
 
     public final void CoreDocument.serializeStartEvent(XmlHandler handler) throws CoreModelException, StreamException {
-        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreIsStandalone());
+        handler.startDocument(coreGetInputEncoding(), coreGetXmlVersion(), coreGetXmlEncoding(), coreGetStandalone());
     }
     
     public final void CoreDocument.serializeEndEvent(XmlHandler handler) throws StreamException {

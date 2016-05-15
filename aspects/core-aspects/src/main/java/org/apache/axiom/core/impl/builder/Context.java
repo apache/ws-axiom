@@ -41,7 +41,7 @@ abstract class Context {
         return nestedContext;
     }
     
-    abstract void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, boolean standalone);
+    abstract void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding, Boolean standalone);
     
     abstract void startFragment();
     
