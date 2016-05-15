@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
+import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMConstants;
@@ -94,7 +95,15 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
     }
 
     protected void doWriteDTD(String dtd) throws XMLStreamException {
-        throw new UnsupportedOperationException();
+        if (handler instanceof SerializerXmlHandler) {
+            try {
+                ((SerializerXmlHandler)handler).writeRaw(dtd, UnmappableCharacterHandler.CONVERT_TO_CHARACTER_REFERENCE);
+            } catch (StreamException ex) {
+                throw toXMLStreamException(ex);
+            }
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) throws XMLStreamException {

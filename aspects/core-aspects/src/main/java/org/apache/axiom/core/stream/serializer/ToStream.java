@@ -33,6 +33,7 @@ import javax.xml.transform.OutputKeys;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.utils.MsgKey;
 import org.apache.axiom.core.stream.serializer.utils.Utils;
+import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
@@ -1245,8 +1246,6 @@ abstract public class ToStream extends SerializerBase
             {
                 writer.write('>');
             }
-
-            writer.write(m_lineSep, 0, m_lineSepLen);
         }
         catch (IOException e)
         {
@@ -1495,5 +1494,15 @@ abstract public class ToStream extends SerializerBase
     public void setNewLine (char[] eolChars) {
         m_lineSep = eolChars;
         m_lineSepLen = eolChars.length;
+    }
+
+    public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler) throws StreamException {
+        try {
+            m_writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
+            m_writer.write(s);
+            m_writer.setUnmappableCharacterHandler(context.getUnmappableCharacterHandler());
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
     }
 }

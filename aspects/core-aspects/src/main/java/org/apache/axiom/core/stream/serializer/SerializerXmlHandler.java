@@ -26,6 +26,7 @@ import java.util.Stack;
 import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 
 public class SerializerXmlHandler implements XmlHandler {
     private final ToXMLStream serializer;
@@ -193,5 +194,9 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public void flushBuffer() throws StreamException {
         serializer.flushBuffer();
+    }
+
+    public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler) throws StreamException {
+        serializer.writeRaw(s, unmappableCharacterHandler);
     }
 }
