@@ -59,12 +59,11 @@ public class SerializerXmlHandler implements XmlHandler {
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             boolean standalone) throws StreamException {
-        serializer.startDocument();
+        serializer.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
     }
     
     @Override
     public void startFragment() throws StreamException {
-        serializer.startDocument();
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {

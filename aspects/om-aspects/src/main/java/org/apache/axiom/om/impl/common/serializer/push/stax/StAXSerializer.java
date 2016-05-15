@@ -78,8 +78,7 @@ public class StAXSerializer implements XmlHandler {
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         StringWriter sw = new StringWriter();
         SerializerXmlHandler serializer = new SerializerXmlHandler(sw);
-        // TODO
-//        serializer.startFragment();
+        serializer.startFragment();
         serializer.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
         serializer.completed();
         try {

@@ -33,9 +33,11 @@ public class SerializerTest {
     public void testEmptyElement() throws Exception {
         StringWriter sw = new StringWriter();
         SerializerXmlHandler handler = new SerializerXmlHandler(sw);
+        handler.startFragment();
         handler.startElement("", "test", "");
         handler.attributesCompleted();
         handler.endElement();
+        handler.completed();
         assertThat(sw.toString()).matches("<test ?/>");
     }
 
@@ -48,6 +50,7 @@ public class SerializerTest {
     public void testUnmappableCharacterInCharacterData() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializerXmlHandler handler = new SerializerXmlHandler(baos, "iso-8859-15");
+        handler.startFragment();
         handler.startElement("", "test", "");
         handler.attributesCompleted();
         handler.processCharacterData("a\u03A3\u20AC", false);  // 20AC = Euro sign
@@ -60,6 +63,7 @@ public class SerializerTest {
     public void testUnmappableCharacterInAttributeValue() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializerXmlHandler handler = new SerializerXmlHandler(baos, "ascii");
+        handler.startFragment();
         handler.startElement("", "test", "");
         handler.processAttribute("", "attr", "", "néant", "CDATA", true);
         handler.attributesCompleted();
@@ -77,6 +81,7 @@ public class SerializerTest {
     public void testUnmappableSurrogatePairInAttributeValue() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializerXmlHandler handler = new SerializerXmlHandler(baos, "ascii");
+        handler.startFragment();
         handler.startElement("", "x", "");
         handler.processAttribute("", "y", "", "\uD84C\uDFB4 - \uD841\uDE28", "CDATA", true);
         handler.attributesCompleted();

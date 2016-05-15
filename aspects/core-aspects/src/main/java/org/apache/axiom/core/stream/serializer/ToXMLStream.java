@@ -23,8 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 
 import org.apache.axiom.core.stream.StreamException;
-import org.apache.axiom.core.stream.serializer.utils.MsgKey;
-import org.apache.axiom.core.stream.serializer.utils.Utils;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
 
 /**
@@ -54,57 +52,6 @@ public class ToXMLStream extends ToStream
         m_charInfo = m_xmlcharInfo;
 
         initCDATA();
-    }
-
-    /**
-     * Receive notification of the beginning of a document.
-     *
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     *
-     * @throws StreamException
-     */
-    public void startDocumentInternal() throws StreamException
-    {
-        super.startDocumentInternal();
-
-        m_needToOutputDocTypeDecl = true;
-        /* The call to getXMLVersion() might emit an error message
-         * and we should emit this message regardless of if we are 
-         * writing out an XML header or not.
-         */ 
-        final String version = getXMLVersion();
-        if (getOmitXMLDeclaration() == false)
-        {
-            String encoding = Encodings.getMimeEncoding(getEncoding());
-            String standalone;
-
-            if (m_standaloneWasSpecified)
-            {
-                standalone = " standalone=\"" + getStandalone() + "\"";
-            }
-            else
-            {
-                standalone = "";
-            }
-
-            try
-            {
-                final XmlWriter writer = m_writer;
-                writer.write("<?xml version=\"");
-                writer.write(version);
-                writer.write("\" encoding=\"");
-                writer.write(encoding);
-                writer.write('\"');
-                writer.write(standalone);
-                writer.write("?>");
-            } 
-            catch(IOException e)
-            {
-                throw new StreamException(e);
-            }
-
-        }
     }
 
     /**
@@ -148,35 +95,5 @@ public class ToXMLStream extends ToStream
     public void endElement(String elemName) throws StreamException
     {
         endElement(null, null, elemName);
-    }
-
-    /**
-     * This method checks for the XML version of output document.
-     * If XML version of output document is not specified, then output 
-     * document is of version XML 1.0.
-     * If XML version of output doucment is specified, but it is not either 
-     * XML 1.0 or XML 1.1, a warning message is generated, the XML Version of
-     * output document is set to XML 1.0 and processing continues.
-     * @return string (XML version)
-     */
-    private String getXMLVersion()
-    {
-        String xmlVersion = getVersion();
-        if(xmlVersion == null || xmlVersion.equals(XMLVERSION10))
-        {
-            xmlVersion = XMLVERSION10;
-        }
-        else if(xmlVersion.equals(XMLVERSION11))
-        {
-            xmlVersion = XMLVERSION11;
-        }
-        else
-        {
-            String msg = Utils.messages.createMessage(
-                               MsgKey.ER_XML_VERSION_NOT_SUPPORTED,new Object[]{ xmlVersion });
-            System.out.println(msg);
-            xmlVersion = XMLVERSION10;								
-        }
-        return xmlVersion;
     }
 }

@@ -504,6 +504,31 @@ abstract public class ToStream extends SerializerBase
         setWriterInternal(XmlWriter.create(output, encoding), false);
     }
 
+    public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
+            Boolean standalone) throws StreamException {
+        switchContext(Context.TAG);
+        try {
+            final XmlWriter writer = m_writer;
+            writer.write("<?xml version=\"");
+            writer.write(xmlVersion == null ? "1.0" : xmlVersion);
+            writer.write('"');
+            if (xmlEncoding != null) {
+                writer.write(" encoding=\"");
+                writer.write(xmlEncoding);
+                writer.write('"');
+            }
+            if (standalone != null) {
+                writer.write(" standalone=\"");
+                writer.write(standalone ? "yes" : "no");
+                writer.write('"');
+            }
+            writer.write("?>");
+        } catch (IOException ex) {
+            throw new StreamException(ex);
+        }
+        switchContext(Context.MIXED_CONTENT);
+    }
+
     /**
      * Report an attribute type declaration.
      *

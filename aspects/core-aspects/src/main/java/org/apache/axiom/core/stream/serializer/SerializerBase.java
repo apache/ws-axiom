@@ -428,61 +428,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Report the characters event
-     * @param chars  content of characters
-     * @param start  starting index of characters to output
-     * @param length  number of characters to output
-     */
-//    protected void fireCharEvent(char[] chars, int start, int length)
-//        throws StreamException
-//    {
-//        if (m_tracer != null)
-//            m_tracer.fireGenerateEvent(SerializerTrace.EVENTTYPE_CHARACTERS, chars, start,length);     	        	    	
-//    }
-//        
-
-    /**
-     * Receive notification of the beginning of a document.
-     * This method is never a self generated call, 
-     * but only called externally.
-     *
-     * <p>The SAX parser will invoke this method only once, before any
-     * other methods in this interface or in DTDHandler (except for
-     * setDocumentLocator).</p>
-     *
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     *
-     * @throws StreamException
-     */
-    public void startDocument() throws StreamException
-    {
-
-        // if we do get called with startDocument(), handle it right away       
-        startDocumentInternal();
-        return;
-    }   
-    
-    /**
-     * This method handles what needs to be done at a startDocument() call,
-     * whether from an external caller, or internally called in the 
-     * serializer.  For historical reasons the serializer is flexible to
-     * startDocument() not always being called.
-     * Even if no external call is
-     * made into startDocument() this method will always be called as a self
-     * generated internal startDocument, it handles what needs to be done at a
-     * startDocument() call.
-     * 
-     * This method exists just to make sure that startDocument() is only ever
-     * called from an external caller, which in principle is just a matter of
-     * style.
-     * 
-     * @throws StreamException
-     */
-    protected void startDocumentInternal() throws StreamException
-    {
-    } 
-    /**
      * This method is used to set the source locator, which might be used to
      * generated an error message.
      * @param locator the source locator
