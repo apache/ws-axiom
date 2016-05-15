@@ -72,7 +72,7 @@ abstract class AbstractXmlWriter extends XmlWriter {
     @Override
     public final void write(char[] chars, int start, int length) throws IOException {
         for (int i=0; i<length; i++) {
-            write(chars[i]);
+            write(chars[start+i]);
         }
     }
 
