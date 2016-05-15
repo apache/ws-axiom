@@ -43,7 +43,7 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * 
  * @xsl.usage internal
  */
-abstract public class ToStream extends SerializerBase
+final class ToStream extends SerializerBase
 {
 
     private static final String COMMENT_BEGIN = "<!--";
@@ -91,7 +91,7 @@ abstract public class ToStream extends SerializerBase
      * Map that tells which characters should have special treatment, and it
      *  provides character to entity name lookup.
      */
-    protected CharInfo m_charInfo;
+    protected CharInfo m_charInfo = CharInfo.getCharInfo(CharInfo.XML_ENTITIES_RESOURCE);
 
     /**
      * Add space before '/>' for XHTML.
@@ -1506,5 +1506,20 @@ abstract public class ToStream extends SerializerBase
         } catch (IOException ex) {
             throw new StreamException(ex);
         }
+    }
+
+    public void processEntityReference(String name) throws StreamException {
+        try {
+            final XmlWriter writer = m_writer;
+            writer.write('&');
+            writer.write(name);
+            writer.write(';');
+        } catch(IOException ex) {
+            throw new StreamException(ex);
+        }
+    }
+
+    public void completed() throws StreamException {
+        flushBuffer();
     }
 }

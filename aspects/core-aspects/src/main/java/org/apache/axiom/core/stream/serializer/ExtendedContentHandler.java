@@ -92,13 +92,6 @@ public interface ExtendedContentHandler
     public void startElement(String qName) throws StreamException;
 
     /**
-     * Notify of an entity reference.
-     * @param entityName the name of the entity
-     * @throws StreamException
-     */
-    public void entityReference(String entityName) throws StreamException;
-
-    /**
      * This method is used to set the source locator, which might be used to
      * generated an error message.
      * @param locator the source locator

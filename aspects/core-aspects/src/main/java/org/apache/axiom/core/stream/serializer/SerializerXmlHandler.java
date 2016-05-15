@@ -29,7 +29,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 
 public class SerializerXmlHandler implements XmlHandler {
-    private final ToXMLStream serializer;
+    private final ToStream serializer;
     private Stack<String> elementNameStack = new Stack<String>();
     private String elementURI;
     private String elementLocalName;
@@ -38,12 +38,12 @@ public class SerializerXmlHandler implements XmlHandler {
     private int bufferPos;
     
     public SerializerXmlHandler(Writer writer) {
-        this.serializer = new ToXMLStream();
+        this.serializer = new ToStream();
         serializer.setWriter(writer);
     }
 
     public SerializerXmlHandler(OutputStream out, String encoding) {
-        this.serializer = new ToXMLStream();
+        this.serializer = new ToStream();
         serializer.setEncoding(encoding);
         serializer.setOutputStream(out);
     }
@@ -184,11 +184,11 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public void processEntityReference(String name, String replacementText) throws StreamException {
         serializer.closeStartTag();
-        serializer.entityReference(name);
+        serializer.processEntityReference(name);
     }
 
     public void completed() throws StreamException {
-        serializer.endDocument();
+        serializer.completed();
     }
 
     public void flushBuffer() throws StreamException {

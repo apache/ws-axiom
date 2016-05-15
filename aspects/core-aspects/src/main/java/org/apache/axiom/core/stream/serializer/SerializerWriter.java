@@ -28,9 +28,9 @@ import org.apache.axiom.core.stream.StreamException;
  * to a {@link ToXMLStream}.
  */
 final class SerializerWriter extends Writer {
-    private final ToXMLStream serializer;
+    private final ToStream serializer;
 
-    public SerializerWriter(ToXMLStream serializer) {
+    public SerializerWriter(ToStream serializer) {
         this.serializer = serializer;
     }
 
