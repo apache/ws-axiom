@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMException;
@@ -39,7 +40,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMMultipartWriter;
 import org.apache.axiom.om.util.CommonUtils;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -156,8 +156,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             rootPartOutputStream = outStream;
         }
         
-        xmlWriter = StAXUtils.createXMLStreamWriter(format.getStAXWriterConfiguration(),
-                rootPartOutputStream, encoding);
+        xmlWriter = new XmlHandlerStreamWriter(new SerializerXmlHandler(rootPartOutputStream, encoding));
 
         if (format.isOptimized()) {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
