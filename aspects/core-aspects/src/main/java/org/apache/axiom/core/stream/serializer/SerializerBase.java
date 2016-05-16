@@ -78,22 +78,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * The System ID for the doc type.
-     */
-    protected String m_doctypeSystem;
-
-    /**
-     * The public ID for the doc type.
-     */
-    protected String m_doctypePublic;
-
-    /**
-     * Flag to tell that we need to add the doctype decl, which we can't do
-     * until the first element is encountered.
-     */
-    boolean m_needToOutputDocTypeDecl = true;
-
-    /**
      * The mediatype.  Not used right now.
      */
     protected String m_mediatype;
@@ -167,61 +151,6 @@ public abstract class SerializerBase
         return;
 
         // I don't do anything with this yet.
-    }
-
-    /**
-     * Returns the previously set value of the value to be used as the public
-     * identifier in the document type declaration (DTD).
-     * 
-     *@return the public identifier to be used in the DOCTYPE declaration in the
-     * output document.
-     */    
-    public String getDoctypePublic()
-    {
-        return m_doctypePublic;
-    }
-
-    /** Set the value coming from the xsl:output doctype-public stylesheet attribute.
-      * @param doctypePublic the public identifier to be used in the DOCTYPE
-      * declaration in the output document.
-      */
-    public void setDoctypePublic(String doctypePublic)
-    {
-        setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctypePublic);
-    }
-
-
-    /**
-     * Returns the previously set value of the value to be used
-     * as the system identifier in the document type declaration (DTD).
-	 * @return the system identifier to be used in the DOCTYPE declaration in
-	 * the output document.
-     *
-     */    
-    public String getDoctypeSystem()
-    {
-        return m_doctypeSystem;
-    }
-
-    /** Set the value coming from the xsl:output doctype-system stylesheet attribute.
-      * @param doctypeSystem the system identifier to be used in the DOCTYPE
-      * declaration in the output document.
-      */
-    public void setDoctypeSystem(String doctypeSystem)
-    {
-        setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctypeSystem);
-    }
-
-    /** Set the value coming from the xsl:output doctype-public and doctype-system stylesheet properties
-     * @param doctypeSystem the system identifier to be used in the DOCTYPE
-     * declaration in the output document.
-     * @param doctypePublic the public identifier to be used in the DOCTYPE
-     * declaration in the output document.
-     */
-    public void setDoctype(String doctypeSystem, String doctypePublic)
-    {
-        setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctypeSystem);
-        setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctypePublic);
     }
 
     /**

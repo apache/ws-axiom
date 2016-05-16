@@ -226,15 +226,6 @@ final class ToStream extends SerializerBase
 
             char first = getFirstCharLocName(name);
             switch (first) {
-            case 'd':
-                if (OutputKeys.DOCTYPE_SYSTEM.equals(name)) {
-                    this.m_doctypeSystem = val;
-                } else if (OutputKeys.DOCTYPE_PUBLIC.equals(name)) {
-                    this.m_doctypePublic = val;
-                    if (val.startsWith("-//W3C//DTD XHTML"))
-                        m_spaceBeforeClose = true;
-                }
-                break;
             case 'l':
                 if (OutputPropertiesFactory.S_KEY_LINE_SEPARATOR.equals(name)) {
                     m_lineSep = val.toCharArray();
@@ -823,13 +814,6 @@ final class ToStream extends SerializerBase
     {
         try
         {
-            if (m_needToOutputDocTypeDecl) {
-                if(null != getDoctypeSystem()) {
-                    outputDocTypeDecl(name, true);
-                }
-                m_needToOutputDocTypeDecl = false;
-            }
-        
             final XmlWriter writer = m_writer;
             switchContext(Context.TAG);
             writer.write('<');
@@ -849,48 +833,29 @@ final class ToStream extends SerializerBase
         startElement(null, null, elementName);
     }
 
-    /**
-     * Output the doc type declaration.
-     *
-     * @param name non-null reference to document type name.
-     * NEEDSDOC @param closeDecl
-     *
-     * @throws java.io.IOException
-     */
-    void outputDocTypeDecl(String name, boolean closeDecl) throws StreamException
+    public void startDTD(String name, String publicId, String systemId) throws StreamException
     {
+        m_inDoctype = true;
         try
         {
             final XmlWriter writer = m_writer;
             writer.write("<!DOCTYPE ");
             writer.write(name);
 
-            String doctypePublic = getDoctypePublic();
-            if (null != doctypePublic)
-            {
+            if (publicId != null) {
                 writer.write(" PUBLIC \"");
-                writer.write(doctypePublic);
+                writer.write(publicId);
                 writer.write('\"');
             }
 
-            String doctypeSystem = getDoctypeSystem();
-            if (null != doctypeSystem)
-            {
-                if (null == doctypePublic)
+            if (systemId != null) {
+                if (publicId == null) {
                     writer.write(" SYSTEM \"");
-                else
+                } else {
                     writer.write(" \"");
-
-                writer.write(doctypeSystem);
-
-                if (closeDecl)
-                {
-                    writer.write("\">");
-                    writer.write(m_lineSep, 0, m_lineSepLen);
-                    closeDecl = false; // done closing
                 }
-                else
-                    writer.write('\"');
+                writer.write(systemId);
+                writer.write('\"');
             }
         }
         catch (IOException e)
@@ -1109,11 +1074,6 @@ final class ToStream extends SerializerBase
     {
         try
         {
-            if (m_needToOutputDocTypeDecl)
-            {
-                outputDocTypeDecl(m_elemContext.m_elementName, false);
-                m_needToOutputDocTypeDecl = false;
-            }
             final XmlWriter writer = m_writer;
             if (!m_inDoctype)
                 writer.write("]>");
@@ -1226,32 +1186,6 @@ final class ToStream extends SerializerBase
         switchContext(Context.MIXED_CONTENT);
     }
 
-    /**
-     * Report the start of DTD declarations, if any.
-     *
-     * Any declarations are assumed to be in the internal subset unless
-     * otherwise indicated.
-     * 
-     * @param name The document type name.
-     * @param publicId The declared public identifier for the
-     *        external DTD subset, or null if none was declared.
-     * @param systemId The declared system identifier for the
-     *        external DTD subset, or null if none was declared.
-     * @throws StreamException The application may raise an
-     *            exception.
-     * @see #endDTD
-     * @see #startEntity
-     */
-    public void startDTD(String name, String publicId, String systemId)
-        throws StreamException
-    {
-        setDoctypeSystem(systemId);
-        setDoctypePublic(publicId);
-
-        m_elemContext.m_elementName = name;
-        m_inDoctype = true;
-    }
-
     public void writeInternalSubset(String internalSubset) throws StreamException {
         try {
             DTDprolog();
@@ -1339,11 +1273,6 @@ final class ToStream extends SerializerBase
      */
     private void DTDprolog() throws StreamException, IOException {
         final XmlWriter writer = m_writer;
-        if (m_needToOutputDocTypeDecl)
-        {
-            outputDocTypeDecl(m_elemContext.m_elementName, false);
-            m_needToOutputDocTypeDecl = false;
-        }
         if (m_inDoctype)
         {
             writer.write(" [");
