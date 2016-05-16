@@ -28,8 +28,6 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.xml.transform.OutputKeys;
-
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
@@ -232,11 +230,6 @@ final class ToStream extends SerializerBase
                     m_lineSepLen = m_lineSep.length;
                 }
 
-                break;
-            case 'm':
-                if (OutputKeys.MEDIA_TYPE.equals(name)) {
-                    m_mediatype = val;
-                }
                 break;
             default:
                 break;

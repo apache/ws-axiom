@@ -23,11 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.util.HashMap;
 import java.util.Set;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.SourceLocator;
-
-import org.xml.sax.Locator;
-
 /**
  * This class acts as a base class for the XML "serializers"
  * and the stream serializers.
@@ -78,13 +73,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * The mediatype.  Not used right now.
-     */
-    protected String m_mediatype;
-
-    protected SourceLocator m_sourceLocator;
-    
-    /**
      * A reference to "stack frame" corresponding to
      * the current element. Such a frame is pushed at a startElement()
      * and popped at an endElement(). This frame contains information about
@@ -121,62 +109,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * Receive an object for locating the origin of SAX document events.
-     *
-     * @param locator An object that can return the location of any SAX document
-     * event.
-     * 
-     * Receive an object for locating the origin of SAX document events.
-     *
-     * <p>SAX parsers are strongly encouraged (though not absolutely
-     * required) to supply a locator: if it does so, it must supply
-     * the locator to the application by invoking this method before
-     * invoking any of the other methods in the DocumentHandler
-     * interface.</p>
-     *
-     * <p>The locator allows the application to determine the end
-     * position of any document-related event, even if the parser is
-     * not reporting an error.  Typically, the application will
-     * use this information for reporting its own errors (such as
-     * character content that does not match an application's
-     * business rules).  The information returned by the locator
-     * is probably not sufficient for use with a search engine.</p>
-     *
-     * <p>Note that the locator will return correct information only
-     * during the invocation of the events in this interface.  The
-     * application should not attempt to use it at any other time.</p>
-     */
-    public void setDocumentLocator(Locator locator)
-    {
-        return;
-
-        // I don't do anything with this yet.
-    }
-
-    /**
-     * Gets the mediatype the media-type or MIME type associated with the output
-     * document.
-     * @return the mediatype the media-type or MIME type associated with the
-     * output document.
-     */
-    public String getMediaType()
-    {
-        return m_mediatype;
-    }
-
-    /**
-     * Sets the value coming from the xsl:output media-type stylesheet attribute.
-     * @param mediaType the non-null media-type or MIME type associated with the
-     * output document.
-     * @see javax.xml.transform.OutputKeys#MEDIA_TYPE
-     * @see SerializationHandler#setMediaType(String)
-     */
-    public void setMediaType(String mediaType)
-    {
-        setOutputProperty(OutputKeys.MEDIA_TYPE,mediaType);
-    }
-
-    /**
      * Returns the local name of a qualified name. 
      * If the name has no prefix,
      * then it works as the identity (SAX2). 
@@ -192,19 +124,6 @@ public abstract class SerializerBase
         //return (col > 0) ? qname.substring(0,col) : "";
     }
 
-    /**
-     * This method is used to set the source locator, which might be used to
-     * generated an error message.
-     * @param locator the source locator
-     *
-     * @see ExtendedContentHandler#setSourceLocator(javax.xml.transform.SourceLocator)
-     */
-    public void setSourceLocator(SourceLocator locator)
-    {
-        m_sourceLocator = locator;    
-    }
-
-    
     boolean m_docIsEmpty = true;
     /**
      * Return true if nothing has been sent to this result tree yet.

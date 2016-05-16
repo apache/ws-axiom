@@ -20,8 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import javax.xml.transform.SourceLocator;
-
 import org.apache.axiom.core.stream.StreamException;
 
 /**
@@ -90,13 +88,6 @@ public interface ExtendedContentHandler
      * @throws StreamException
      */
     public void startElement(String qName) throws StreamException;
-
-    /**
-     * This method is used to set the source locator, which might be used to
-     * generated an error message.
-     * @param locator the source locator
-     */
-    public void setSourceLocator(SourceLocator locator);
 
     // Bit constants for addUniqueAttribute().
     
