@@ -34,48 +34,6 @@ import java.security.PrivilegedAction;
  */
 final class SecuritySupport {
 
-    static ClassLoader getContextClassLoader() {
-        return (ClassLoader)
-                AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                ClassLoader cl = null;
-                try {
-                    cl = Thread.currentThread().getContextClassLoader();
-                } catch (SecurityException ex) { }
-                return cl;
-            }
-        });
-    }
-
-    static ClassLoader getSystemClassLoader() {
-        return (ClassLoader)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    ClassLoader cl = null;
-                    try {
-                        cl = ClassLoader.getSystemClassLoader();
-                    } catch (SecurityException ex) {}
-                    return cl;
-                }
-            });
-    }
-
-    static ClassLoader getParentClassLoader(final ClassLoader cl) {
-        return (ClassLoader)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    ClassLoader parent = null;
-                    try {
-                        parent = cl.getParent();
-                    } catch (SecurityException ex) {}
-
-                    // eliminate loops in case of the boot
-                    // ClassLoader returning itself as a parent
-                    return (parent == cl) ? null : parent;
-                }
-            });
-    }
-
     static String getSystemProperty(final String propName) {
         return (String)
             AccessController.doPrivileged(new PrivilegedAction() {
@@ -85,22 +43,5 @@ final class SecuritySupport {
             });
     }
 
-    static InputStream getResourceAsStream(final ClassLoader cl,
-                                           final String name)
-    {
-        return (InputStream)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    InputStream ris;
-                    if (cl == null) {
-                        ris = ClassLoader.getSystemResourceAsStream(name);
-                    } else {
-                        ris = cl.getResourceAsStream(name);
-                    }
-                    return ris;
-                }
-            });
-    }
-    
     private SecuritySupport () {}
 }
