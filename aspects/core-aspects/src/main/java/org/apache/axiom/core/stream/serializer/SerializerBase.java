@@ -31,7 +31,7 @@ import java.util.Set;
  * @xsl.usage internal
  */
 public abstract class SerializerBase
-    implements SerializationHandler, SerializerConstants
+    implements SerializerConstants
 {
     SerializerBase() {
         return;
