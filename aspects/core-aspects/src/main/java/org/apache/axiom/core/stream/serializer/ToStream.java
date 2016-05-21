@@ -39,7 +39,7 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * 
  * @xsl.usage internal
  */
-final class ToStream extends SerializerBase
+public final class ToStream extends SerializerBase
 {
 
     private static final String COMMENT_BEGIN = "<!--";

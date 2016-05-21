@@ -20,6 +20,7 @@ package org.apache.axiom.core.stream.sax;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.serializer.ToStream;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -28,6 +29,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +55,9 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
     /**
      * Stores the internal subset if there is a DTD.
      */
-    private StringBuilder internalSubset;
+    private StringWriter internalSubset;
+
+    private ToStream internalSubsetSerializer;
 
     /**
      * Stores the replacement values for entities.
@@ -118,48 +122,38 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         dtdName = name;
         dtdPublicId = publicId;
         dtdSystemId = systemId;
-        internalSubset = new StringBuilder();
+        internalSubset = new StringWriter();
+        internalSubsetSerializer = new ToStream(internalSubset);
     }
 
     public void elementDecl(String name, String model) throws SAXException {
         if (!inExternalSubset) {
-            internalSubset.append("<!ELEMENT ");
-            internalSubset.append(name);
-            internalSubset.append(' ');
-            internalSubset.append(model);
-            internalSubset.append(">\n");
+            try {
+                internalSubsetSerializer.elementDecl(name, model);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
 
     public void attributeDecl(String eName, String aName, String type, String mode, String value)
             throws SAXException {
         if (!inExternalSubset) {
-            internalSubset.append("<!ATTLIST ");
-            internalSubset.append(eName);
-            internalSubset.append(' ');
-            internalSubset.append(aName);
-            internalSubset.append(' ');
-            internalSubset.append(type);
-            if (value != null) {
-                internalSubset.append(' ');
-                internalSubset.append(value);
+            try {
+                internalSubsetSerializer.attributeDecl(eName, aName, type, mode, value);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
             }
-            internalSubset.append(">\n");
         }
     }
 
     public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
         if (!inExternalSubset) {
-            internalSubset.append("<!ENTITY ");            
-            internalSubset.append(name);
-            if (publicId != null) {
-                internalSubset.append(" PUBLIC \"");
-                internalSubset.append(publicId);
-            } else {
-                internalSubset.append(" SYSTEM \"");
-                internalSubset.append(systemId);
+            try {
+                internalSubsetSerializer.externalEntityDecl(name, publicId, systemId);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
             }
-            internalSubset.append("\">\n");
         }
     }
 
@@ -169,55 +163,45 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         }
         entities.put(name, value);
         if (!inExternalSubset) {
-            internalSubset.append("<!ENTITY ");
-            internalSubset.append(name);
-            internalSubset.append(" \"");
-            internalSubset.append(value);
-            internalSubset.append("\">\n");
+            try {
+                internalSubsetSerializer.internalEntityDecl(name, value);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
+            }
         }
     }
 
     public void notationDecl(String name, String publicId, String systemId) throws SAXException {
         if (!inExternalSubset) {
-            internalSubset.append("<!NOTATION ");            
-            internalSubset.append(name);
-            if (publicId != null) {
-                internalSubset.append(" PUBLIC \"");
-                internalSubset.append(publicId);
-            } else {
-                internalSubset.append(" SYSTEM \"");
-                internalSubset.append(systemId);
+            try {
+                internalSubsetSerializer.notationDecl(name, publicId, systemId);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
             }
-            internalSubset.append("\">\n");
         }
     }
 
     public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
             throws SAXException {
         if (!inExternalSubset) {
-            internalSubset.append("<!ENTITY ");
-            internalSubset.append(name);
-            if (publicId != null) {
-                internalSubset.append(" PUBLIC \"");
-                internalSubset.append(publicId);
-            } else {
-                internalSubset.append(" SYSTEM \"");
-                internalSubset.append(systemId);
+            try {
+                internalSubsetSerializer.unparsedEntityDecl(name, publicId, systemId, notationName);
+            } catch (StreamException ex) {
+                throw toSAXException(ex);
             }
-            internalSubset.append("\" NDATA ");
-            internalSubset.append(notationName);
-            internalSubset.append(">\n");
         }
     }
 
     public void endDTD() throws SAXException {
         try {
+            String internalSubset = this.internalSubset.toString();
             handler.processDocumentTypeDeclaration(dtdName, dtdPublicId, dtdSystemId,
-                    internalSubset.length() == 0 ? null : internalSubset.toString());
+                    internalSubset.length() == 0 ? null : internalSubset);
         } catch (StreamException ex) {
             throw toSAXException(ex);
         }
         internalSubset = null;
+        internalSubsetSerializer = null;
     }
 
     /*
