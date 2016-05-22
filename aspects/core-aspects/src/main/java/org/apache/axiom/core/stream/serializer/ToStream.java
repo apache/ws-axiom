@@ -23,10 +23,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
@@ -178,86 +174,6 @@ public final class ToStream extends SerializerBase
         writer.write(" \"");
         writer.write(value);
         writer.write("\">\n");
-    }
-
-    /**
-     * Specifies an output format for this serializer. It the
-     * serializer has already been associated with an output format,
-     * it will switch to the new format. This method should not be
-     * called while the serializer is in the process of serializing
-     * a document.
-     *
-     * @param format The output format to use
-     */
-    public void setOutputFormat(Properties format)
-    {
-        if (format != null)
-        {
-            // Set the default values first,
-            // and the non-default values after that, 
-            // just in case there is some unexpected
-            // residual values left over from over-ridden default values
-            Enumeration propNames;
-            propNames = format.propertyNames();
-            while (propNames.hasMoreElements())
-            {
-                String key = (String) propNames.nextElement();
-                // Get the value, possibly a default value
-                String value = format.getProperty(key);
-                // Get the non-default value (if any).
-                String explicitValue = (String) format.get(key);
-                if (explicitValue == null && value != null) {
-                    // This is a default value
-                    this.setOutputPropertyDefault(key,value);
-                }
-                if (explicitValue != null) {
-                    // This is an explicit non-default value
-                    this.setOutputProperty(key,explicitValue);
-                }
-            } 
-        }   
-
-        // Access this only from the Hashtable level... we don't want to 
-        // get default properties.
-        String entitiesFileName =
-            (String) format.get(OutputPropertiesFactory.S_KEY_ENTITIES);
-
-        if (null != entitiesFileName)
-        {
-
-            m_charInfo = CharInfo.getCharInfo(entitiesFileName);
-        }
-    }
-
-    /**
-     * Returns the output format for this serializer.
-     *
-     * @return The output format in use
-     */
-    public Properties getOutputFormat() {
-        Properties def = new Properties();
-        {
-            Set s = getOutputPropDefaultKeys();
-            Iterator i = s.iterator();
-            while (i.hasNext()) {
-                String key = (String) i.next();
-                String val = getOutputPropertyDefault(key);
-                def.put(key, val);
-            }
-        }
-        
-        Properties props = new Properties(def);
-        {
-            Set s = getOutputPropKeys();
-            Iterator i = s.iterator();
-            while (i.hasNext()) {
-                String key = (String) i.next();
-                String val = getOutputPropertyNonDefault(key);
-                if (val != null)
-                    props.put(key, val);
-            }
-        }
-        return props;
     }
 
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,

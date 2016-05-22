@@ -20,9 +20,6 @@
  */
 package org.apache.axiom.core.stream.serializer;
 
-import java.util.HashMap;
-import java.util.Set;
-
 /**
  * This class acts as a base class for the XML "serializers"
  * and the stream serializers.
@@ -96,34 +93,6 @@ public abstract class SerializerBase
      */
     protected char[] m_attrBuff = new char[30];    
 
-    /**
-     * Returns the local name of a qualified name. If the name has no prefix,
-     * then it works as the identity (SAX2).
-     * @param qname the qualified name 
-     * @return the name, but excluding any prefix and colon.
-     */
-    protected static String getLocalName(String qname)
-    {
-        final int col = qname.lastIndexOf(':');
-        return (col > 0) ? qname.substring(col + 1) : qname;
-    }
-
-    /**
-     * Returns the local name of a qualified name. 
-     * If the name has no prefix,
-     * then it works as the identity (SAX2). 
-     * 
-     * @param qname a qualified name
-     * @return returns the prefix of the qualified name,
-     * or null if there is no prefix.
-     */
-    protected static final String getPrefixPart(String qname)
-    {
-        final int col = qname.indexOf(':');
-        return (col > 0) ? qname.substring(0, col) : null;
-        //return (col > 0) ? qname.substring(0,col) : "";
-    }
-
     boolean m_docIsEmpty = true;
     /**
      * Return true if nothing has been sent to this result tree yet.
@@ -135,132 +104,6 @@ public abstract class SerializerBase
     public boolean documentIsEmpty() {
         // If we haven't called startDocument() yet, then this document is empty
         return m_docIsEmpty && (m_elemContext.m_currentElemDepth == 0);
-    }    
-    
-    /**
-     * Get the value of an output property,
-     * the explicit value, if any, otherwise the
-     * default value, if any, otherwise null.
-     */
-    public String getOutputProperty(String name) {
-        String val = getOutputPropertyNonDefault(name);
-        // If no explicit value, try to get the default value
-        if (val == null)
-            val = getOutputPropertyDefault(name);
-        return val;
-        
-    }
-    /**
-     * Get the value of an output property, 
-     * not the default value. If there is a default
-     * value, but no non-default value this method
-     * will return null.
-     * <p>
-     * 
-     */
-    public String getOutputPropertyNonDefault(String name )
-    {
-        return getProp(name,false);
-    }
-
-    /**
-     * Get the default value of an xsl:output property,
-     * which would be null only if no default value exists
-     * for the property.
-     */
-    public String getOutputPropertyDefault(String name) {
-        return getProp(name, true);
-    } 
-    
-    /**
-     * Set the value for the output property, typically from
-     * an xsl:output element, but this does not change what
-     * the default value is.
-     */
-    public void   setOutputProperty(String name, String val) {
-        setProp(name,val,false);
-        
-    }
-    
-    /**
-     * Set the default value for an output property, but this does
-     * not impact any explicitly set value.
-     */
-    public void   setOutputPropertyDefault(String name, String val) {
-        setProp(name,val,true);
-        
-    }
-    
-    /**
-     * A mapping of keys to explicitly set values, for example if 
-     * and <xsl:output/> has an "encoding" attribute, this
-     * map will have what that attribute maps to.
-     */
-    private HashMap m_OutputProps;
-    /**
-     * A mapping of keys to default values, for example if
-     * the default value of the encoding is "UTF-8" then this
-     * map will have that "encoding" maps to "UTF-8".
-     */
-    private HashMap m_OutputPropsDefault;
-    
-    Set getOutputPropDefaultKeys() {
-        return m_OutputPropsDefault.keySet();
-    }
-    Set getOutputPropKeys() {
-        return m_OutputProps.keySet();
-    }
-    
-    private String getProp(String name, boolean defaultVal) {
-        if (m_OutputProps == null) {
-            m_OutputProps = new HashMap();
-            m_OutputPropsDefault = new HashMap();
-        }
-        
-        String val;
-        if (defaultVal)
-            val = (String) m_OutputPropsDefault.get(name);
-        else
-            val = (String) m_OutputProps.get(name);
-        
-        return val;
-        
-    }
-    /**
-     * 
-     * @param name The name of the property, e.g. "{http://myprop}indent-tabs" or "indent".
-     * @param val The value of the property, e.g. "4"
-     * @param defaultVal true if this is a default value being set for the property as 
-     * opposed to a user define on, set say explicitly in the stylesheet or via JAXP
-     */
-    void setProp(String name, String val, boolean defaultVal) {
-        if (m_OutputProps == null) {
-            m_OutputProps = new HashMap();
-            m_OutputPropsDefault = new HashMap();
-        }
-        
-        if (defaultVal)
-            m_OutputPropsDefault.put(name,val);
-        else {
-            m_OutputProps.put(name,val);
-        }
-        
-
-    }
-
-    /**
-     * Get the first char of the local name
-     * @param name Either a local name, or a local name
-     * preceeded by a uri enclosed in curly braces.
-     */
-    static char getFirstCharLocName(String name) {
-        final char first;
-        int i = name.indexOf('}');
-        if (i < 0)
-            first = name.charAt(0);
-        else
-            first = name.charAt(i+1);
-        return first;
     }
 }
     
