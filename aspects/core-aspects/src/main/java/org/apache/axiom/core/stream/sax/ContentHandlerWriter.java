@@ -39,9 +39,7 @@ final class ContentHandlerWriter extends Writer {
         try {
             contentHandler.characters(cbuf, off, len);
         } catch (SAXException ex) {
-            IOException ioException = new IOException();
-            ioException.initCause(ex);
-            throw ioException;
+            throw new IOException(ex);
         }
     }
 

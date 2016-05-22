@@ -35,7 +35,7 @@ public class XMLStreamIOException extends IOException {
      * @param cause the {@link XMLStreamException} to wrap
      */
     public XMLStreamIOException(XMLStreamException cause) {
-        initCause(cause);
+        super(cause);
     }
     
     /**

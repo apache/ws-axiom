@@ -54,8 +54,8 @@ public class StreamCopyException extends IOException {
      *            the wrapped exception
      */
     public StreamCopyException(int operation, IOException cause) {
+        super(cause);
         this.operation = operation;
-        initCause(cause);
     }
 
     /**

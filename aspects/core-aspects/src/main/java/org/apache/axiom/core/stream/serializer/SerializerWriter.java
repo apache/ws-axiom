@@ -38,9 +38,7 @@ final class SerializerWriter extends Writer {
         try {
             serializer.characters(cbuf, off, len);
         } catch (StreamException ex) {
-            IOException ioException = new IOException();
-            ioException.initCause(ex);
-            throw ioException;
+            throw new IOException(ex);
         }
     }
 
