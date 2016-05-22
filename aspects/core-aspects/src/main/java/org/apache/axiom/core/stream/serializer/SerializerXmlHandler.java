@@ -29,8 +29,6 @@ import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler
 
 public class SerializerXmlHandler implements XmlHandler {
     private final ToStream serializer;
-    private char[] buffer = new char[4096];
-    private int bufferPos;
     
     public SerializerXmlHandler(Writer writer) {
         this.serializer = new ToStream(writer);
@@ -82,28 +80,9 @@ public class SerializerXmlHandler implements XmlHandler {
         serializer.endElement();
     }
 
-    private void writeToBuffer(String data) {
-        int dataLen = data.length();
-        if (buffer.length-bufferPos < dataLen) {
-            int newLength = buffer.length;
-            do {
-                newLength *= 2;
-            } while (newLength-bufferPos < dataLen);
-            char[] newBuffer = new char[newLength];
-            System.arraycopy(buffer, 0, newBuffer, 0, bufferPos);
-            buffer = newBuffer;
-        }
-        data.getChars(0, dataLen, buffer, bufferPos);
-        bufferPos += dataLen;
-    }
-
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         serializer.closeStartTag();
-        if (ignorable) {
-            writeToBuffer(data.toString());
-            serializer.ignorableWhitespace(buffer, 0, bufferPos);
-            bufferPos = 0;
-        } else if (data instanceof CharacterData) {
+        if (data instanceof CharacterData) {
             try {
                 ((CharacterData)data).writeTo(new SerializerWriter(serializer));
             } catch (IOException ex) {
@@ -115,9 +94,7 @@ public class SerializerXmlHandler implements XmlHandler {
                 }
             }
         } else {
-            writeToBuffer(data.toString());
-            serializer.characters(buffer, 0, bufferPos);
-            bufferPos = 0;
+            serializer.characters(data.toString());
         }
     }
     

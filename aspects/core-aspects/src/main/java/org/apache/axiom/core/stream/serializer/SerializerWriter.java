@@ -42,6 +42,15 @@ final class SerializerWriter extends Writer {
         }
     }
 
+    @Override
+    public void write(String str, int off, int len) throws IOException {
+        try {
+            serializer.characters(str, off, len);
+        } catch (StreamException ex) {
+            throw new IOException(ex);
+        }
+    }
+
     public void close() throws IOException {
     }
 

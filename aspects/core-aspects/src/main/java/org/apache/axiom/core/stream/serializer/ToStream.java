@@ -577,21 +577,16 @@ public final class ToStream extends SerializerBase
         return (ch == 0x85 || ch == 0x2028);
     }
 
-    /**
-     * Receive notification of character data.
-     *
-     * @param s The string of characters to process.
-     *
-     * @throws StreamException
-     */
-    public void characters(String s) throws StreamException
-    {
-        final int length = s.length();
+    public void characters(String s) throws StreamException {
+        characters(s, 0, s.length());
+    }
+
+    public void characters(String s, int start, int length) throws StreamException {
         if (length > m_charsBuff.length)
         {
             m_charsBuff = new char[length * 2 + 1];
         }
-        s.getChars(0, length, m_charsBuff, 0);
+        s.getChars(start, length, m_charsBuff, 0);
         characters(m_charsBuff, 0, length);
     }
 
@@ -862,29 +857,6 @@ public final class ToStream extends SerializerBase
      */
     public void endPrefixMapping(String prefix) throws StreamException
     { // do nothing
-    }
-
-    /**
-     * Receive notification of ignorable whitespace in element content.
-     * 
-     * Not sure how to get this invoked quite yet.
-     * 
-     * @param ch The characters from the XML document.
-     * @param start The start position in the array.
-     * @param length The number of characters to read from the array.
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @see #characters
-     * 
-     * @throws StreamException
-     */
-    public void ignorableWhitespace(char ch[], int start, int length)
-        throws StreamException
-    {
-
-        if (0 == length)
-            return;
-        characters(ch, start, length);
     }
 
     /**
