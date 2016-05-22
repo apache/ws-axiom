@@ -91,20 +91,7 @@ public abstract class SerializerBase
      * Reusing this buffer means not creating a new character array
      * everytime and it runs faster.
      */
-    protected char[] m_attrBuff = new char[30];    
-
-    boolean m_docIsEmpty = true;
-    /**
-     * Return true if nothing has been sent to this result tree yet.
-     * <p>
-     * This is not a public API.
-     * 
-     * @xsl.usage internal
-     */
-    public boolean documentIsEmpty() {
-        // If we haven't called startDocument() yet, then this document is empty
-        return m_docIsEmpty && (m_elemContext.m_currentElemDepth == 0);
-    }
+    protected char[] m_attrBuff = new char[30];
 }
     
 

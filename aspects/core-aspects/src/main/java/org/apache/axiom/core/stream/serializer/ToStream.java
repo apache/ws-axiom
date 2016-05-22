@@ -345,8 +345,6 @@ public final class ToStream extends SerializerBase
         // is created if string is empty.	
         if (length == 0)
             return;
-            
-        m_docIsEmpty = false;
         
         String illegalCharacterSequence = context.getIllegalCharacterSequence();
         if (illegalCharacterSequence != null) {
@@ -637,11 +635,6 @@ public final class ToStream extends SerializerBase
         startTagOpen = true;
     }
 
-    public void startElement(String elementName) throws StreamException
-    {
-        startElement(null, null, elementName);
-    }
-
     public void startDTD(String name, String publicId, String systemId) throws StreamException
     {
         m_inDoctype = true;
@@ -827,17 +820,6 @@ public final class ToStream extends SerializerBase
 
         m_elemContext = m_elemContext.m_prev;
         startTagOpen = false;
-    }
-
-    /**
-     * Receive notification of the end of an element.
-     * @param name The element type name
-     * @throws StreamException Any SAX exception, possibly
-     *     wrapping another exception.
-     */
-    public void endElement(String name) throws StreamException
-    {
-        endElement(null, null, name);
     }
 
     public void startComment() throws StreamException {
