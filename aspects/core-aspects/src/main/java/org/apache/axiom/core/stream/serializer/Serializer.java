@@ -24,7 +24,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.core.stream.serializer.writer.WriterXmlWriter;
 import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
@@ -35,8 +37,7 @@ import org.apache.axiom.core.stream.serializer.writer.XmlWriter;
  * 
  * @xsl.usage internal
  */
-public final class ToStream extends SerializerBase
-{
+public final class Serializer extends SerializerBase implements XmlHandler {
 
     private static final String COMMENT_BEGIN = "<!--";
     private static final String COMMENT_END = "-->";
@@ -66,12 +67,12 @@ public final class ToStream extends SerializerBase
     private int depth;
     private boolean startTagOpen;
 
-    public ToStream(Writer out) {
+    public Serializer(Writer out) {
         m_writer = new WriterXmlWriter(out);
         outputStream = null;
     }
 
-    public ToStream(OutputStream out, String encoding) {
+    public Serializer(OutputStream out, String encoding) {
         m_writer = XmlWriter.create(out, encoding);
         outputStream = out;
     }
@@ -178,6 +179,7 @@ public final class ToStream extends SerializerBase
         writer.write("\">\n");
     }
 
+    @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             Boolean standalone) throws StreamException {
         switchContext(Context.TAG);
@@ -201,6 +203,10 @@ public final class ToStream extends SerializerBase
             throw new StreamException(ex);
         }
         switchContext(Context.MIXED_CONTENT);
+    }
+
+    @Override
+    public void startFragment() throws StreamException {
     }
 
     /**
@@ -590,7 +596,28 @@ public final class ToStream extends SerializerBase
         characters(m_charsBuff, 0, length);
     }
 
+    @Override
+    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+        closeStartTag();
+        if (data instanceof CharacterData) {
+            try {
+                ((CharacterData)data).writeTo(new SerializerWriter(this));
+            } catch (IOException ex) {
+                Throwable cause = ex.getCause();
+                if (cause instanceof StreamException) {
+                    throw (StreamException)cause;
+                } else {
+                    throw new StreamException(ex);
+                }
+            }
+        } else {
+            characters(data.toString());
+        }
+    }
+
+    @Override
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
+        closeStartTag();
         try
         {
             final XmlWriter writer = m_writer;
@@ -615,6 +642,15 @@ public final class ToStream extends SerializerBase
         elementNameStack[2*depth+1] = localName;
         depth++;
         startTagOpen = true;
+    }
+
+    @Override
+    public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
+        startDTD(rootName, publicId, systemId);
+        if (internalSubset != null) {
+            writeInternalSubset(internalSubset);
+        }
+        endDTD();
     }
 
     public void startDTD(String name, String publicId, String systemId) throws StreamException
@@ -752,6 +788,25 @@ public final class ToStream extends SerializerBase
         switchContext(Context.TAG);
     }
 
+    @Override
+    public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
+        if (prefix.isEmpty()) {
+            writeAttribute("", "xmlns", namespaceURI);
+        } else {
+            writeAttribute("xmlns", prefix, namespaceURI);
+        }
+    }
+
+    @Override
+    public void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException {
+        writeAttribute(prefix, localName, value);
+    }
+
+    @Override
+    public void attributesCompleted() throws StreamException {
+    }
+
+    @Override
     public void endElement() throws StreamException {
         depth--;
         try
@@ -790,7 +845,9 @@ public final class ToStream extends SerializerBase
         startTagOpen = false;
     }
 
+    @Override
     public void startComment() throws StreamException {
+        closeStartTag();
         try {
             m_writer.write(COMMENT_BEGIN);
         } catch (IOException ex) {
@@ -799,6 +856,7 @@ public final class ToStream extends SerializerBase
         switchContext(Context.COMMENT);
     }
 
+    @Override
     public void endComment() throws StreamException {
         try {
             m_writer.write(COMMENT_END);
@@ -808,13 +866,8 @@ public final class ToStream extends SerializerBase
         switchContext(Context.MIXED_CONTENT);
     }
 
-    /**
-     * Report the end of a CDATA section.
-     * @throws StreamException The application may raise an exception.
-     *
-     *  @see  #startCDATA
-     */
-    public void endCDATA() throws StreamException
+    @Override
+    public void endCDATASection() throws StreamException
     {
         try {
             m_writer.write(CDATA_DELIMITER_CLOSE);
@@ -859,14 +912,9 @@ public final class ToStream extends SerializerBase
     { // do nothing
     }
 
-    /**
-     * Report the start of a CDATA section.
-     * 
-     * @throws StreamException The application may raise an exception.
-     * @see #endCDATA
-     */
-    public void startCDATA() throws StreamException
-    {
+    @Override
+    public void startCDATASection() throws StreamException {
+        closeStartTag();
         try {
             m_writer.write(CDATA_DELIMITER_OPEN);
         } catch (IOException ex) {
@@ -881,8 +929,7 @@ public final class ToStream extends SerializerBase
      *
      * @throws StreamException
      */
-    protected void closeStartTag() throws StreamException
-    {
+    private void closeStartTag() throws StreamException {
 
         if (startTagOpen) {
 
@@ -901,7 +948,9 @@ public final class ToStream extends SerializerBase
 
     }
 
+    @Override
     public void startProcessingInstruction(String target) throws StreamException {
+        closeStartTag();
         switchContext(Context.TAG);
         try {
             m_writer.write("<?");
@@ -913,6 +962,7 @@ public final class ToStream extends SerializerBase
         switchContext(Context.PROCESSING_INSTRUCTION);
     }
 
+    @Override
     public void endProcessingInstruction() throws StreamException {
         try {
             m_writer.write("?>");
@@ -1024,7 +1074,9 @@ public final class ToStream extends SerializerBase
         }
     }
 
-    public void processEntityReference(String name) throws StreamException {
+    @Override
+    public void processEntityReference(String name, String replacementText) throws StreamException {
+        closeStartTag();
         try {
             final XmlWriter writer = m_writer;
             writer.write('&');
@@ -1035,6 +1087,7 @@ public final class ToStream extends SerializerBase
         }
     }
 
+    @Override
     public void completed() throws StreamException {
         flushBuffer();
     }

@@ -20,7 +20,7 @@ package org.apache.axiom.core.stream.sax;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.serializer.ToStream;
+import org.apache.axiom.core.stream.serializer.Serializer;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -57,7 +57,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
      */
     private StringWriter internalSubset;
 
-    private ToStream internalSubsetSerializer;
+    private Serializer internalSubsetSerializer;
 
     /**
      * Stores the replacement values for entities.
@@ -123,7 +123,7 @@ public final class XmlHandlerContentHandler implements ContentHandler, LexicalHa
         dtdPublicId = publicId;
         dtdSystemId = systemId;
         internalSubset = new StringWriter();
-        internalSubsetSerializer = new ToStream(internalSubset);
+        internalSubsetSerializer = new Serializer(internalSubset);
     }
 
     public void elementDecl(String name, String model) throws SAXException {

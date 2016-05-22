@@ -43,7 +43,7 @@ import org.apache.axiom.core.stream.NamespaceURIInterningFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
-import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
+import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.StAXPivot;
 import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.om.OMElement;
@@ -281,7 +281,7 @@ public aspect AxiomContainerSupport {
     }
 
     private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
-        XmlHandler handler = new XmlDeclarationRewriterHandler(new SerializerXmlHandler(writer), format);
+        XmlHandler handler = new XmlDeclarationRewriterHandler(new Serializer(writer), format);
         CoreElement contextElement = getContextElement();
         if (contextElement != null) {
             handler = new XsiTypeFilterHandler(handler, contextElement);

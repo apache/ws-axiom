@@ -32,7 +32,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
+import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMException;
@@ -159,7 +159,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             rootPartOutputStream = outStream;
         }
         
-        SerializerXmlHandler serializer = new SerializerXmlHandler(rootPartOutputStream, encoding);
+        Serializer serializer = new Serializer(rootPartOutputStream, encoding);
         XmlHandler handler;
         
         if (format.isOptimized()) {

@@ -52,7 +52,7 @@ public class SerializerConformanceTest extends MatrixTestCase {
         factory.setExpandEntityReferences(false);
         Document document = factory.newDocumentBuilder().parse(sample.getUrl().toString());
         StringWriter sw = new StringWriter();
-        XmlReader reader = new DOMInput(document, false).createReader(new SerializerXmlHandler(sw));
+        XmlReader reader = new DOMInput(document, false).createReader(new Serializer(sw));
         while (!reader.proceed()) {
             // Just loop
         }

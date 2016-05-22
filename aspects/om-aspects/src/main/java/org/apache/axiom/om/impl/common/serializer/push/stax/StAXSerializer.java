@@ -23,7 +23,7 @@ import java.io.StringWriter;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
+import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
@@ -77,7 +77,7 @@ public class StAXSerializer implements XmlHandler {
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {
         StringWriter sw = new StringWriter();
-        SerializerXmlHandler serializer = new SerializerXmlHandler(sw);
+        Serializer serializer = new Serializer(sw);
         serializer.startFragment();
         serializer.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
         serializer.completed();

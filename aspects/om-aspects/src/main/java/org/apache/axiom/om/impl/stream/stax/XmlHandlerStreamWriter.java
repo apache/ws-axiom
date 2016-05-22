@@ -25,7 +25,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.serializer.SerializerXmlHandler;
+import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
@@ -35,10 +35,10 @@ import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements DataHandlerWriter {
     private final XmlHandler handler;
-    private final SerializerXmlHandler serializer;
+    private final Serializer serializer;
     private boolean inStartElement;
 
-    public XmlHandlerStreamWriter(XmlHandler handler, SerializerXmlHandler serializer) {
+    public XmlHandlerStreamWriter(XmlHandler handler, Serializer serializer) {
         this.handler = handler;
         this.serializer = serializer;
     }
