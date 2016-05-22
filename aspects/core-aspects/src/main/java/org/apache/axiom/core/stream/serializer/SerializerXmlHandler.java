@@ -21,7 +21,6 @@ package org.apache.axiom.core.stream.serializer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Stack;
 
 import org.apache.axiom.core.CharacterData;
 import org.apache.axiom.core.stream.StreamException;
@@ -30,10 +29,6 @@ import org.apache.axiom.core.stream.serializer.writer.UnmappableCharacterHandler
 
 public class SerializerXmlHandler implements XmlHandler {
     private final ToStream serializer;
-    private Stack<String> elementNameStack = new Stack<String>();
-    private String elementURI;
-    private String elementLocalName;
-    private String elementQName;
     private char[] buffer = new char[4096];
     private int bufferPos;
     
@@ -45,14 +40,6 @@ public class SerializerXmlHandler implements XmlHandler {
         this.serializer = new ToStream(out, encoding);
     }
 
-    private static String getQName(String prefix, String localName) {
-        if (prefix.length() == 0) {
-            return localName;
-        } else {
-            return prefix + ":" + localName;
-        }
-    }
-    
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             Boolean standalone) throws StreamException {
@@ -73,10 +60,7 @@ public class SerializerXmlHandler implements XmlHandler {
 
     public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         serializer.closeStartTag();
-        elementURI = namespaceURI;
-        elementLocalName = localName;
-        elementQName = getQName(prefix, localName);
-        serializer.startElement(elementURI, elementLocalName, elementQName);
+        serializer.startElement(namespaceURI, localName, prefix);
     }
 
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
@@ -92,19 +76,10 @@ public class SerializerXmlHandler implements XmlHandler {
     }
 
     public void attributesCompleted() throws StreamException {
-        elementNameStack.push(elementURI);
-        elementNameStack.push(elementLocalName);
-        elementNameStack.push(elementQName);
-        elementURI = null;
-        elementLocalName = null;
-        elementQName = null;
     }
 
     public void endElement() throws StreamException {
-        String elementQName = elementNameStack.pop();
-        String elementLocalName = elementNameStack.pop();
-        String elementURI = elementNameStack.pop();
-        serializer.endElement(elementURI, elementLocalName, elementQName);
+        serializer.endElement();
     }
 
     private void writeToBuffer(String data) {

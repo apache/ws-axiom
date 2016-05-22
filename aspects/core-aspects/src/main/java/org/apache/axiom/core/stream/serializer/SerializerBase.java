@@ -70,14 +70,6 @@ public abstract class SerializerBase
     }
 
     /**
-     * A reference to "stack frame" corresponding to
-     * the current element. Such a frame is pushed at a startElement()
-     * and popped at an endElement(). This frame contains information about
-     * the element, such as its namespace URI. 
-     */
-    protected ElemContext m_elemContext = new ElemContext();
-    
-    /**
      * A utility buffer for converting Strings passed to
      * character() methods to character arrays.
      * Reusing this buffer means not creating a new character array

@@ -62,6 +62,8 @@ public final class ToStream extends SerializerBase
 
     protected Context context = Context.MIXED_CONTENT;
     private int matchedIllegalCharacters;
+    private String[] elementNameStack = new String[8];
+    private int depth;
     private boolean startTagOpen;
 
     public ToStream(Writer out) {
@@ -593,45 +595,30 @@ public final class ToStream extends SerializerBase
         characters(m_charsBuff, 0, length);
     }
 
-    /**
-     * Receive notification of the beginning of an element, although this is a
-     * SAX method additional namespace or attribute information can occur before
-     * or after this call, that is associated with this element.
-     *
-     *
-     * @param namespaceURI The Namespace URI, or the empty string if the
-     *        element has no Namespace URI or if Namespace
-     *        processing is not being performed.
-     * @param localName The local name (without prefix), or the
-     *        empty string if Namespace processing is not being
-     *        performed.
-     * @param name The element type name.
-     * @param atts The attributes attached to the element, if any.
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @see org.xml.sax.AttributeList
-     *
-     * @throws StreamException
-     */
-    public void startElement(
-        String namespaceURI,
-        String localName,
-        String name)
-        throws StreamException
-    {
+    public void startElement(String namespaceURI, String localName, String prefix) throws StreamException {
         try
         {
             final XmlWriter writer = m_writer;
             switchContext(Context.TAG);
             writer.write('<');
-            writer.write(name);
+            if (!prefix.isEmpty()) {
+                writer.write(prefix);
+                writer.write(':');
+            }
+            writer.write(localName);
         }
         catch (IOException e)
         {
             throw new StreamException(e);
         }
-
-        m_elemContext = m_elemContext.push(namespaceURI,localName,name);
+        if (2*(depth+1) > elementNameStack.length) {
+            String[] newElementNameStack = new String[elementNameStack.length*2];
+            System.arraycopy(elementNameStack, 0, newElementNameStack, 0, elementNameStack.length);
+            elementNameStack = newElementNameStack;
+        }
+        elementNameStack[2*depth] = prefix;
+        elementNameStack[2*depth+1] = localName;
+        depth++;
         startTagOpen = true;
     }
 
@@ -770,25 +757,8 @@ public final class ToStream extends SerializerBase
         switchContext(Context.TAG);
     }
 
-    /**
-     * Receive notification of the end of an element.
-     *
-     *
-     * @param namespaceURI The Namespace URI, or the empty string if the
-     *        element has no Namespace URI or if Namespace
-     *        processing is not being performed.
-     * @param localName The local name (without prefix), or the
-     *        empty string if Namespace processing is not being
-     *        performed.
-     * @param name The element type name
-     * @throws StreamException Any SAX exception, possibly
-     *            wrapping another exception.
-     *
-     * @throws StreamException
-     */
-    public void endElement(String namespaceURI, String localName, String name)
-        throws StreamException
-    {
+    public void endElement() throws StreamException {
+        depth--;
         try
         {
             final XmlWriter writer = m_writer;
@@ -808,7 +778,12 @@ public final class ToStream extends SerializerBase
                 switchContext(Context.TAG);
                 writer.write('<');
                 writer.write('/');
-                writer.write(name);
+                String prefix = elementNameStack[2*depth];
+                if (!prefix.isEmpty()) {
+                    writer.write(prefix);
+                    writer.write(':');
+                }
+                writer.write(elementNameStack[2*depth+1]);
                 writer.write('>');
                 switchContext(Context.MIXED_CONTENT);
             }
@@ -817,8 +792,6 @@ public final class ToStream extends SerializerBase
         {
             throw new StreamException(e);
         }
-
-        m_elemContext = m_elemContext.m_prev;
         startTagOpen = false;
     }
 
