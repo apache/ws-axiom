@@ -48,31 +48,6 @@ public final class ToStream extends SerializerBase
     private final XmlWriter m_writer;
     private final OutputStream outputStream;
     
-    private static final char[] s_systemLineSep;
-    static {
-        s_systemLineSep = SecuritySupport.getSystemProperty("line.separator").toCharArray();
-    }
-    
-    /**
-     * The system line separator for writing out line breaks.
-     * The default value is from the system property,
-     * but this value can be set through the xsl:output
-     * extension attribute xalan:line-separator.
-     */
-    protected char[] m_lineSep = s_systemLineSep;
-        
-        
-    /**
-     * True if the the system line separator is to be used.
-     */    
-    protected boolean m_lineSepUse = true;    
-
-    /**
-     * The length of the line seperator, since the write is done
-     * one character at a time.
-     */
-    protected int m_lineSepLen = m_lineSep.length;
-
     /**
      * Map that tells which characters should have special treatment, and it
      *  provides character to entity name lookup.
@@ -150,8 +125,7 @@ public final class ToStream extends SerializerBase
             writer.write(name);
             writer.write(' ');
             writer.write(model);
-            writer.write('>');
-            writer.write(m_lineSep, 0, m_lineSepLen);
+            writer.write(">\n");
         }
         catch (IOException e)
         {
@@ -203,41 +177,9 @@ public final class ToStream extends SerializerBase
         writer.write(name);
         writer.write(" \"");
         writer.write(value);
-        writer.write("\">");
-        writer.write(m_lineSep, 0, m_lineSepLen);
+        writer.write("\">\n");
     }
 
-    /**
-     * Output a system-dependent line break.
-     *
-     * @throws StreamException
-     */
-    protected final void outputLineSep() throws IOException
-    {
-
-        m_writer.write(m_lineSep, 0, m_lineSepLen);
-    }
-
-    void setProp(String name, String val, boolean defaultVal) {
-        if (val != null) {
-
-
-            char first = getFirstCharLocName(name);
-            switch (first) {
-            case 'l':
-                if (OutputPropertiesFactory.S_KEY_LINE_SEPARATOR.equals(name)) {
-                    m_lineSep = val.toCharArray();
-                    m_lineSepLen = m_lineSep.length;
-                }
-
-                break;
-            default:
-                break;
-
-            } 
-            super.setProp(name, val, defaultVal);
-        }
-    }
     /**
      * Specifies an output format for this serializer. It the
      * serializer has already been associated with an output format,
@@ -318,25 +260,6 @@ public final class ToStream extends SerializerBase
         return props;
     }
 
-    /**
-     * Set if the operating systems end-of-line line separator should
-     * be used when serializing.  If set false NL character 
-     * (decimal 10) is left alone, otherwise the new-line will be replaced on
-     * output with the systems line separator. For example on UNIX this is
-     * NL, while on Windows it is two characters, CR NL, where CR is the
-     * carriage-return (decimal 13).
-     *  
-     * @param use_sytem_line_break True if an input NL is replaced with the 
-     * operating systems end-of-line separator.
-     * @return The previously set value of the serializer.
-     */
-    public boolean setLineSepUse(boolean use_sytem_line_break)
-    {
-        boolean oldValue = m_lineSepUse;
-        m_lineSepUse = use_sytem_line_break;
-        return oldValue;
-    }
-
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             Boolean standalone) throws StreamException {
         switchContext(Context.TAG);
@@ -409,8 +332,7 @@ public final class ToStream extends SerializerBase
 
             //writer.write(" ");
             //writer.write(value);
-            writer.write('>');
-            writer.write(m_lineSep, 0, m_lineSepLen);
+            writer.write(">\n");
         }
         catch (IOException e)
         {
@@ -463,8 +385,7 @@ public final class ToStream extends SerializerBase
                 m_writer.write(" SYSTEM \"");
                 m_writer.write(systemId);
             }
-            m_writer.write("\" >");
-            m_writer.write(m_lineSep, 0, m_lineSepLen);
+            m_writer.write("\" >\n");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -590,12 +511,8 @@ public final class ToStream extends SerializerBase
                     switch (ch1) {
                     // TODO: Any other whitespace to consider?
                     case CharInfo.S_SPACE:
-                        // Just accumulate the clean whitespace
-                        i++;
-                        break;
                     case CharInfo.S_LINEFEED:
-                        lastDirtyCharProcessed = processLineFeed(chars, i,
-                                lastDirtyCharProcessed, writer);
+                        // Just accumulate the clean whitespace
                         i++;
                         break;
                     case CharInfo.S_CARRIAGERETURN:
@@ -651,10 +568,8 @@ public final class ToStream extends SerializerBase
                         switch (ch) {
 
                         case CharInfo.S_HORIZONAL_TAB:
-                            // Leave whitespace TAB as a real character
-                            break;
                         case CharInfo.S_LINEFEED:
-                            lastDirtyCharProcessed = processLineFeed(chars, i, lastDirtyCharProcessed, writer);
+                            // Leave whitespace as a real character
                             break;
                         case CharInfo.S_CARRIAGERETURN:
                         	writeOutCleanChars(chars, i, lastDirtyCharProcessed);
@@ -707,22 +622,7 @@ public final class ToStream extends SerializerBase
         }
     }
 
-	private int processLineFeed(final char[] chars, int i, int lastProcessed, final XmlWriter writer) throws IOException {
-		if (!m_lineSepUse 
-		|| (m_lineSepLen ==1 && m_lineSep[0] == CharInfo.S_LINEFEED)){
-		    // We are leaving the new-line alone, and it is just
-		    // being added to the 'clean' characters,
-			// so the last dirty character processed remains unchanged
-		}
-		else {
-		    writeOutCleanChars(chars, i, lastProcessed);
-		    writer.write(m_lineSep, 0, m_lineSepLen);
-		    lastProcessed = i;
-		}
-		return lastProcessed;
-	}
-
-    private void writeOutCleanChars(final char[] chars, int i, int lastProcessed) throws IOException {
+	private void writeOutCleanChars(final char[] chars, int i, int lastProcessed) throws IOException {
         int startClean;
         startClean = lastProcessed + 1;
         if (startClean < i)
@@ -1219,8 +1119,7 @@ public final class ToStream extends SerializerBase
                 m_writer.write(" SYSTEM \"");
                 m_writer.write(sysID);
             }
-            m_writer.write("\" >");
-            m_writer.write(m_lineSep, 0, m_lineSepLen);
+            m_writer.write("\" >\n");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -1251,8 +1150,7 @@ public final class ToStream extends SerializerBase
             }
             m_writer.write("\" NDATA ");
             m_writer.write(notationName);
-            m_writer.write(" >");
-            m_writer.write(m_lineSep, 0, m_lineSepLen);
+            m_writer.write(" >\n");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -1268,21 +1166,11 @@ public final class ToStream extends SerializerBase
         final XmlWriter writer = m_writer;
         if (m_inDoctype)
         {
-            writer.write(" [");
-            writer.write(m_lineSep, 0, m_lineSepLen);
+            writer.write(" [\n");
             m_inDoctype = false;
         }
     }
     
-    /**
-     * Sets the end of line characters to be used during serialization
-     * @param eolChars A character array corresponding to the characters to be used.
-     */    
-    public void setNewLine (char[] eolChars) {
-        m_lineSep = eolChars;
-        m_lineSepLen = eolChars.length;
-    }
-
     public void writeRaw(String s, UnmappableCharacterHandler unmappableCharacterHandler) throws StreamException {
         try {
             m_writer.setUnmappableCharacterHandler(unmappableCharacterHandler);
