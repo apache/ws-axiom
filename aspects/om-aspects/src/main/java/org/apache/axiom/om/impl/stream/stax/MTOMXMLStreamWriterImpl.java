@@ -365,24 +365,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         return xmlWriter.getProperty(string);
     }
 
-    /**
-     * Check if MTOM is enabled.
-     * <p>
-     * Note that serialization code should use
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
-     * to submit any binary content and let this writer decide whether the content should be written
-     * as base64 encoded character data or using <tt>xop:Include</tt>. This makes optimization
-     * entirely transparent for the caller and there should be no need to check if the writer is
-     * producing MTOM. However, in some cases this is not possible, such as when integrating with
-     * 3rd party libraries. The serialization code should then use
-     * {@link #prepareDataHandler(DataHandler)} so that it can write <tt>xop:Include</tt> elements
-     * directly to the stream. In that case, the code may use the {@link #isOptimized()} method
-     * check if MTOM is enabled at all.
-     * 
-     * @return <code>true</code> if MTOM is enabled, <code>false</code> otherwise
-     */
     public boolean isOptimized() {
         return format.isOptimized();
     }
@@ -391,33 +373,12 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         return format.getContentType();
     }
 
-    /**
-     * @deprecated
-     * Serialization code should use
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
-     * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>. If this is not
-     * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
-     */
     public void writeOptimized(OMText node) {
         log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
         otherParts.add(new Part(node.getContentID(), node.getDataHandler()));
         log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
     }
 
-    /**
-     * @deprecated
-     * Serialization code should use
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
-     * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>. If this is not
-     * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
-     * All the aforementioned methods take into account the settings defined in
-     * {@link OMOutputFormat} to determine whether the binary data should be optimized or not.
-     * Therefore, there is not need for this method anymore.
-     */
     public boolean isOptimizedThreshold(OMText node){
         // The optimize argument is set to true for compatibility. Indeed, older versions
         // left it to the caller to check OMText#isOptimized().
@@ -428,29 +389,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
     }
     
-    /**
-     * Prepare a {@link DataHandler} for serialization without using the {@link DataHandlerWriter}
-     * API. The method first determines whether the binary data represented by the
-     * {@link DataHandler} should be optimized or inlined. If the data should not be optimized, then
-     * the method returns <code>null</code> and the caller is expected to use
-     * {@link #writeCharacters(String)} or {@link #writeCharacters(char[], int, int)} to write the
-     * base64 encoded data to the stream. If the data should be optimized, then the method returns a
-     * content ID and the caller is expected to generate an <tt>xop:Include</tt> element referring
-     * to that content ID.
-     * <p>
-     * This method should only be used to integrate Axiom with third party libraries that support
-     * XOP. In all other cases,
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
-     * should be used to write base64Binary values and the application code should never generate
-     * <tt>xop:Include</tt> elements itself.
-     * 
-     * @param dataHandler
-     *            the {@link DataHandler} that the caller intends to write to the stream
-     * @return the content ID that the caller must use in the <tt>xop:Include</tt> element or
-     *         <code>null</code> if the base64 encoded data should not be optimized
-     */
     public String prepareDataHandler(DataHandler dataHandler) {
         boolean doOptimize;
         try {
@@ -487,12 +425,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         return format.getNextContentId();
     }
 
-    /**
-     * Returns the character set encoding scheme. If the value of the charSetEncoding is not set
-     * then the default will be returned.
-     *
-     * @return Returns encoding.
-     */
     public String getCharSetEncoding() {
         return format.getCharSetEncoding();
     }
@@ -525,15 +457,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         format.setDoOptimize(b);
     }
 
-    /**
-     * Get the output format used by this writer.
-     * <p>
-     * The caller should use the returned instance in a read-only way, i.e.
-     * he should not modify the settings of the output format. Any attempt
-     * to do so will lead to unpredictable results.
-     * 
-     * @return the output format used by this writer
-     */
     public OMOutputFormat getOutputFormat() {
         return format;
     }
@@ -542,24 +465,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         this.format = format;
     }
     
-    /**
-     * Get the underlying {@link OutputStream} for this writer, if available. This method allows a
-     * node (perhaps an {@link org.apache.axiom.om.OMSourcedElement}) to write its content directly
-     * to the byte stream.
-     * <p>
-     * <b>WARNING:</b> This method should be used with extreme care. The caller must be prepared to
-     * handle the following issues:
-     * <ul>
-     * <li>The caller must use the right charset encoding when writing to the stream.
-     * <li>The caller should avoid writing byte order marks to the stream.
-     * <li>The caller must be aware of the fact that a default namespace might have been set in the
-     * context where the byte stream is requested. If the XML data written to the stream contains
-     * unqualified elements, then the caller must make sure that the default namespace is redeclared
-     * as appropriate.
-     * </ul>
-     * 
-     * @return the underlying byte stream, or <code>null</code> if the stream is not accessible
-     */
     public OutputStream getOutputStream() throws XMLStreamException {  
         
         if (xmlStreamWriterFilter != null) {
