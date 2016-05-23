@@ -39,12 +39,14 @@ public final class XOPEncodingFilterHandler extends XmlHandlerWrapper {
     private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
+    private final CompletionListener completionListener;
 
     public XOPEncodingFilterHandler(XmlHandler parent, ContentIDGenerator contentIDGenerator,
-            OptimizationPolicy optimizationPolicy) {
+            OptimizationPolicy optimizationPolicy, CompletionListener completionListener) {
         super(parent);
         this.contentIDGenerator = contentIDGenerator;
         this.optimizationPolicy = optimizationPolicy;
+        this.completionListener = completionListener;
     }
 
     /**
@@ -100,5 +102,11 @@ public final class XOPEncodingFilterHandler extends XmlHandlerWrapper {
             }
         }
         super.processCharacterData(data, ignorable);
+    }
+
+    @Override
+    public void completed() throws StreamException {
+        super.completed();
+        completionListener.completed(this);
     }
 }
