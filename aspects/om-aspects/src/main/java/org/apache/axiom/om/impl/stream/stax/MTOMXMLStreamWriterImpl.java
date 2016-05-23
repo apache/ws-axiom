@@ -76,7 +76,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private XMLStreamWriter xmlWriter;
     private List<Part> otherParts = new LinkedList<Part>();
-    private final OutputStream rootPartOutputStream;
     private OMOutputFormat format;
     private final OptimizationPolicy optimizationPolicy;
     private final XmlHandler handler;
@@ -96,7 +95,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
         this.format = format;
         optimizationPolicy = new OptimizationPolicyImpl(format);
-        rootPartOutputStream = null;
         handler = null;
     }
 
@@ -144,6 +142,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         optimizationPolicy = new OptimizationPolicyImpl(format);
         
         final OMMultipartWriter multipartWriter;
+        final OutputStream rootPartOutputStream;
         if (format.isOptimized()) {
             multipartWriter = new OMMultipartWriter(outStream, format);
             try {
@@ -571,22 +570,30 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             return null;
         }
         
+        OutputStream outputStream;
+        XmlHandler handler = this.handler;
+        // Remove the XOPEncodingFilterHandler wrapper if necessary
+        if (handler instanceof XOPEncodingFilterHandler) {
+            handler = ((XOPEncodingFilterHandler)handler).getParent();
+        }
+        if (handler instanceof Serializer) {
+            try {
+                outputStream = ((Serializer)handler).getOutputStream();
+            } catch (StreamException ex) {
+                throw new XMLStreamException(ex);
+            }
+        } else {
+            outputStream = null;
+        }
+        
         if (log.isDebugEnabled()) {
-            if (rootPartOutputStream == null) {
+            if (outputStream == null) {
                 log.debug("Direct access to the output stream is not available.");
             } else {
-                log.debug("Returning access to the output stream: " + rootPartOutputStream);
+                log.debug("Returning access to the output stream: " + outputStream);
             }
         }
-       
-        if (rootPartOutputStream != null) {
-            // Flush the state of the writer..Many times the 
-            // write defers the writing of tag characters (>)
-            // until the next write.  Flush out this character
-            this.writeCharacters(""); 
-            this.flush();
-        }
-        return rootPartOutputStream;
+        return outputStream;
     }
     
     public void setFilter(XMLStreamWriterFilter filter) {

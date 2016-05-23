@@ -88,14 +88,21 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     }
 
     /**
-     * Get the output stream where the events will be serialized to.
+     * Get the output stream events are serialized to. This method will close any open start tag and
+     * flush all pending data before returning the output stream.
      *
-     * @return reference to the result stream, or null of only a writer was
-     * set.
+     * @return the output stream, or {@code null} if this serializer is not writing to an output
+     *         stream (but to a {@link Writer} e.g.)
+     * @throws StreamException
      */
-    public OutputStream getOutputStream()
-    {
-        return outputStream;
+    public OutputStream getOutputStream() throws StreamException {
+        if (outputStream != null) {
+            closeStartTag();
+            flushBuffer();
+            return outputStream;
+        } else {
+            return null;
+        }
     }
 
     // Implement DeclHandler
