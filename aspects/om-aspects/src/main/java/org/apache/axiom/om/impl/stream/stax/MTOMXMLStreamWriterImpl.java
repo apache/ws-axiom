@@ -125,6 +125,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         XmlHandler handler;
         if (format.isOptimized()) {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
+                @Override
                 public String generateContentID(String existingContentID) {
                     return existingContentID != null ? existingContentID : getNextContentId();
                 }
@@ -185,46 +186,55 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
     }
 
+    @Override
     public void writeStartElement(String string) throws XMLStreamException {
         xmlWriter.writeStartElement(string);
         depth++;
     }
 
+    @Override
     public void writeStartElement(String string, String string1) throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1);
         depth++;
     }
 
+    @Override
     public void writeStartElement(String string, String string1, String string2)
             throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1, string2);
         depth++;
     }
 
+    @Override
     public void writeEmptyElement(String string, String string1) throws XMLStreamException {
         xmlWriter.writeEmptyElement(string, string1);
     }
 
+    @Override
     public void writeEmptyElement(String string, String string1, String string2)
             throws XMLStreamException {
         xmlWriter.writeEmptyElement(string, string1, string2);
     }
 
+    @Override
     public void writeEmptyElement(String string) throws XMLStreamException {
         xmlWriter.writeEmptyElement(string);
     }
 
+    @Override
     public void writeEndElement() throws XMLStreamException {
         xmlWriter.writeEndElement();
         depth--;
     }
 
+    @Override
     public void writeEndDocument() throws XMLStreamException {
         log.debug("writeEndDocument");
         xmlWriter.writeEndDocument();
         isEndDocument = true; 
     }
 
+    @Override
     public void close() throws XMLStreamException {
         log.debug("close");
         // Only call flush because data may have been written to the underlying output stream
@@ -236,6 +246,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     /**
      * Flush is overridden to trigger the attachment serialization
      */
+    @Override
     public void flush() throws XMLStreamException {
         log.debug("Calling MTOMXMLStreamWriter.flush");
         xmlWriter.flush();
@@ -257,105 +268,130 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
     
 
+    @Override
     public void writeAttribute(String string, String string1) throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1);
     }
 
+    @Override
     public void writeAttribute(String string, String string1, String string2, String string3)
             throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1, string2, string3);
     }
 
+    @Override
     public void writeAttribute(String string, String string1, String string2)
             throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1, string2);
     }
 
+    @Override
     public void writeNamespace(String string, String string1) throws XMLStreamException {
         xmlWriter.writeNamespace(string, string1);
     }
 
+    @Override
     public void writeDefaultNamespace(String string) throws XMLStreamException {
         xmlWriter.writeDefaultNamespace(string);
     }
 
+    @Override
     public void writeComment(String string) throws XMLStreamException {
         xmlWriter.writeComment(string);
     }
 
+    @Override
     public void writeProcessingInstruction(String string) throws XMLStreamException {
         xmlWriter.writeProcessingInstruction(string);
     }
 
+    @Override
     public void writeProcessingInstruction(String string, String string1)
             throws XMLStreamException {
         xmlWriter.writeProcessingInstruction(string, string1);
     }
 
+    @Override
     public void writeCData(String string) throws XMLStreamException {
         xmlWriter.writeCData(string);
     }
 
+    @Override
     public void writeDTD(String string) throws XMLStreamException {
         xmlWriter.writeDTD(string);
     }
 
+    @Override
     public void writeEntityRef(String string) throws XMLStreamException {
         xmlWriter.writeEntityRef(string);
     }
 
+    @Override
     public void writeStartDocument() throws XMLStreamException {
         xmlWriter.writeStartDocument();
     }
 
+    @Override
     public void writeStartDocument(String string) throws XMLStreamException {
         xmlWriter.writeStartDocument(string);
     }
 
+    @Override
     public void writeStartDocument(String string, String string1) throws XMLStreamException {
         xmlWriter.writeStartDocument(string, string1);
     }
 
+    @Override
     public void writeCharacters(String string) throws XMLStreamException {
         xmlWriter.writeCharacters(string);
     }
 
+    @Override
     public void writeCharacters(char[] chars, int i, int i1) throws XMLStreamException {
         xmlWriter.writeCharacters(chars, i, i1);
     }
 
+    @Override
     public String getPrefix(String string) throws XMLStreamException {
         return xmlWriter.getPrefix(string);
     }
 
+    @Override
     public void setPrefix(String string, String string1) throws XMLStreamException {
         xmlWriter.setPrefix(string, string1);
     }
 
+    @Override
     public void setDefaultNamespace(String string) throws XMLStreamException {
         xmlWriter.setDefaultNamespace(string);
     }
 
+    @Override
     public void setNamespaceContext(NamespaceContext namespaceContext) throws XMLStreamException {
         xmlWriter.setNamespaceContext(namespaceContext);
     }
 
+    @Override
     public NamespaceContext getNamespaceContext() {
         return xmlWriter.getNamespaceContext();
     }
 
+    @Override
     public Object getProperty(String string) throws IllegalArgumentException {
         return xmlWriter.getProperty(string);
     }
 
+    @Override
     public boolean isOptimized() {
         return format.isOptimized();
     }
 
+    @Override
     public String getContentType() {
         return format.getContentType();
     }
 
+    @Override
     public String prepareDataHandler(DataHandler dataHandler) {
         XmlHandler handler = getHandler();
         if (handler instanceof XOPEncodingFilterHandler) {
@@ -365,66 +401,82 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
     }
     
+    @Override
     public void setXmlStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
     }
 
+    @Override
     public XMLStreamWriter getXmlStreamWriter() {
         return xmlWriter;
     }
 
+    @Override
     public String getMimeBoundary() {
         return format.getMimeBoundary();
     }
 
+    @Override
     public String getRootContentId() {
         return format.getRootContentId();
     }
 
+    @Override
     public String getNextContentId() {
         return format.getNextContentId();
     }
 
+    @Override
     public String getCharSetEncoding() {
         return format.getCharSetEncoding();
     }
 
+    @Override
     public void setCharSetEncoding(String charSetEncoding) {
         format.setCharSetEncoding(charSetEncoding);
     }
 
+    @Override
     public String getXmlVersion() {
         return format.getXmlVersion();
     }
 
+    @Override
     public void setXmlVersion(String xmlVersion) {
         format.setXmlVersion(xmlVersion);
     }
 
+    @Override
     public void setSoap11(boolean b) {
         format.setSOAP11(b);
     }
 
+    @Override
     public boolean isIgnoreXMLDeclaration() {
         return format.isIgnoreXMLDeclaration();
     }
 
+    @Override
     public void setIgnoreXMLDeclaration(boolean ignoreXMLDeclaration) {
         format.setIgnoreXMLDeclaration(ignoreXMLDeclaration);
     }
 
+    @Override
     public void setDoOptimize(boolean b) {
         format.setDoOptimize(b);
     }
 
+    @Override
     public OMOutputFormat getOutputFormat() {
         return format;
     }
 
+    @Override
     public void setOutputFormat(OMOutputFormat format) {
         this.format = format;
     }
     
+    @Override
     public OutputStream getOutputStream() throws XMLStreamException {  
         
         if (xmlStreamWriterFilter != null) {
@@ -461,6 +513,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         return outputStream;
     }
     
+    @Override
     public void setFilter(XMLStreamWriterFilter filter) {
         if (filter != null) {
             if (log.isDebugEnabled()) {
@@ -472,6 +525,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
     }
     
+    @Override
     public XMLStreamWriterFilter removeFilter() {
         XMLStreamWriterFilter filter = null;
         if (xmlStreamWriterFilter != null) {
