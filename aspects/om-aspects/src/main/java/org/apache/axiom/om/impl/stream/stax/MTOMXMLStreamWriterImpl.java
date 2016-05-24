@@ -392,7 +392,13 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         if (handler instanceof XOPEncodingFilterHandler) {
             return ((XOPEncodingFilterHandler)handler).prepareDataHandler(dataHandler);
         } else {
-            return null;
+            // TODO: hack for compatibility with Axis2
+            // If we don't serialize to a MIME package, we should return null here because the
+            // DataHandler will never be serialized and the only meaningful thing to do is to
+            // base64 encode it. However, there is code in Axis2 that expects an XOP encoded
+            // message without bothering about the MIME parts referenced by the xop:Include
+            // elements...
+            return format.getNextContentId();
         }
     }
     
