@@ -21,8 +21,6 @@ package org.apache.axiom.om.impl.stream.stax;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
@@ -34,7 +32,6 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMMultipartWriter;
@@ -44,37 +41,13 @@ import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
-    /**
-     * Stores a part that has been added without using the {@link DataHandlerWriter} API.
-     */
-    private static class Part {
-        private final String contentID;
-        private final DataHandler dataHandler;
-        
-        public Part(String contentID, DataHandler dataHandler) {
-            this.contentID = contentID;
-            this.dataHandler = dataHandler;
-        }
-
-        public String getContentID() {
-            return contentID;
-        }
-
-        public DataHandler getDataHandler() {
-            return dataHandler;
-        }
-    }
-    
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private XMLStreamWriter xmlWriter;
-    private List<Part> otherParts = new LinkedList<Part>();
     private OMOutputFormat format;
-    private final OptimizationPolicy optimizationPolicy;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -90,7 +63,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
-        optimizationPolicy = new OptimizationPolicyImpl(format);
     }
 
     public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter) {
@@ -134,8 +106,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
         }
 
-        optimizationPolicy = new OptimizationPolicyImpl(format);
-        
         final OMMultipartWriter multipartWriter;
         final OutputStream rootPartOutputStream;
         if (format.isOptimized()) {
@@ -159,12 +129,11 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
                     return existingContentID != null ? existingContentID : getNextContentId();
                 }
             };
-            handler = new XOPEncodingFilterHandler(serializer, contentIDGenerator, optimizationPolicy, new CompletionListener() {
+            handler = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format), new CompletionListener() {
                 @Override
                 public void completed(XOPEncodingFilterHandler encoder) throws StreamException {
                     try {
                         rootPartOutputStream.close();
-                        // First write the attachments added properly through the DataHandlerWriter extension
                         for (String contentID : encoder.getContentIDs()) {
                             DataHandler dataHandler = encoder.getDataHandler(contentID);
                             if (preserveAttachments || !(dataHandler instanceof DataHandlerExt)) {
@@ -174,10 +143,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
                                 IOUtils.copy(((DataHandlerExt)dataHandler).readOnce(), out, -1);
                                 out.close();
                             }
-                        }
-                        // Now write parts that have been added by prepareDataHandler
-                        for (Part part : otherParts) {
-                            multipartWriter.writePart(part.getDataHandler(), part.getContentID());
                         }
                         multipartWriter.complete();
                     } catch (IOException ex) {
@@ -392,16 +357,9 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     public String prepareDataHandler(DataHandler dataHandler) {
-        boolean doOptimize;
-        try {
-            doOptimize = optimizationPolicy.isOptimized(dataHandler, true);
-        } catch (IOException ex) {
-            doOptimize = true;
-        }
-        if (doOptimize) {
-            String contentID = getNextContentId();
-            otherParts.add(new Part(contentID, dataHandler));
-            return contentID;
+        XmlHandler handler = getHandler();
+        if (handler instanceof XOPEncodingFilterHandler) {
+            return ((XOPEncodingFilterHandler)handler).prepareDataHandler(dataHandler);
         } else {
             return null;
         }

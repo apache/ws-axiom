@@ -49,6 +49,22 @@ public final class XOPEncodingFilterHandler extends XmlHandlerWrapper {
         this.completionListener = completionListener;
     }
 
+    public String prepareDataHandler(DataHandler dataHandler) {
+        boolean doOptimize;
+        try {
+            doOptimize = optimizationPolicy.isOptimized(dataHandler, true);
+        } catch (IOException ex) {
+            doOptimize = true;
+        }
+        if (doOptimize) {
+            String contentID = contentIDGenerator.generateContentID(null);
+            dataHandlerObjects.put(contentID, dataHandler);
+            return contentID;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Get the set of content IDs referenced in <tt>xop:Include</tt> element information items
      * produced by this wrapper.
