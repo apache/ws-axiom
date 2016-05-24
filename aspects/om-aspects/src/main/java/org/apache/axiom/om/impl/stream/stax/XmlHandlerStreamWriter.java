@@ -43,6 +43,10 @@ public class XmlHandlerStreamWriter extends AbstractXMLStreamWriter implements D
         this.serializer = serializer;
     }
     
+    public XmlHandler getHandler() {
+        return handler;
+    }
+
     private static String normalize(String s) {
         return s == null ? "" : s;
     }

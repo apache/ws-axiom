@@ -34,7 +34,6 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
@@ -45,7 +44,6 @@ import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.io.IOUtils;
-import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.commons.logging.Log;
@@ -78,7 +76,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private List<Part> otherParts = new LinkedList<Part>();
     private OMOutputFormat format;
     private final OptimizationPolicy optimizationPolicy;
-    private final XmlHandler handler;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -95,7 +92,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
         this.format = format;
         optimizationPolicy = new OptimizationPolicyImpl(format);
-        handler = null;
     }
 
     public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter) {
@@ -157,6 +153,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         
         Serializer serializer = new Serializer(rootPartOutputStream, encoding);
         
+        XmlHandler handler;
         if (format.isOptimized()) {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
                 public String generateContentID(String existingContentID) {
@@ -202,6 +199,25 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             }
             xmlStreamWriterFilter.setDelegate(xmlWriter);
             xmlWriter = xmlStreamWriterFilter;
+        }
+    }
+
+    /**
+     * Get the {@link XmlHandler} events are serialized to.
+     * 
+     * @return the {@link XmlHandler} or {@code null} if the {@link XMLStreamWriter} is not
+     *         connected to a {@link XmlHandler} (e.g. because the {@link XMLStreamWriter} is user
+     *         supplied)
+     */
+    private XmlHandler getHandler() {
+        XMLStreamWriter writer = xmlWriter;
+        while (writer instanceof XMLStreamWriterFilter) {
+            writer = ((XMLStreamWriterFilter)writer).getDelegate();
+        }
+        if (writer instanceof XmlHandlerStreamWriter) {
+            return ((XmlHandlerStreamWriter)writer).getHandler();
+        } else {
+            return null;
         }
     }
 
@@ -265,10 +281,13 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         if (format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
             log.debug("The XML writing is completed.  Now the attachments are written");
             isComplete = true;
-            try {
-                handler.completed();
-            } catch (StreamException ex) {
-                throw new XMLStreamException(ex);
+            XmlHandler handler = getHandler();
+            if (handler != null) {
+                try {
+                    handler.completed();
+                } catch (StreamException ex) {
+                    throw new XMLStreamException(ex);
+                }
             }
         }
     }
@@ -476,7 +495,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
         
         OutputStream outputStream;
-        XmlHandler handler = this.handler;
+        XmlHandler handler = getHandler();
         // Remove the XOPEncodingFilterHandler wrapper if necessary
         if (handler instanceof XOPEncodingFilterHandler) {
             handler = ((XOPEncodingFilterHandler)handler).getParent();
