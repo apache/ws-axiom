@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
@@ -62,31 +61,6 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
 
     public abstract String getContentType();
 
-    /**
-     * @deprecated
-     * Serialization code should use
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
-     * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>. If this is not
-     * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
-     */
-    public abstract void writeOptimized(OMText node);
-
-    /**
-     * @deprecated
-     * Serialization code should use
-     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
-     * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>. If this is not
-     * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
-     * All the aforementioned methods take into account the settings defined in
-     * {@link OMOutputFormat} to determine whether the binary data should be optimized or not.
-     * Therefore, there is not need for this method anymore.
-     */
-    public abstract boolean isOptimizedThreshold(OMText node);
-    
     /**
      * Prepare a {@link DataHandler} for serialization without using the {@link DataHandlerWriter}
      * API. The method first determines whether the binary data represented by the

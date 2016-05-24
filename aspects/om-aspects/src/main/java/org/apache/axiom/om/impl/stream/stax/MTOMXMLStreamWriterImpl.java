@@ -36,7 +36,6 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMMultipartWriter;
 import org.apache.axiom.om.impl.stream.xop.CompletionListener;
@@ -392,22 +391,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         return format.getContentType();
     }
 
-    public void writeOptimized(OMText node) {
-        log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
-        otherParts.add(new Part(node.getContentID(), node.getDataHandler()));
-        log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
-    }
-
-    public boolean isOptimizedThreshold(OMText node){
-        // The optimize argument is set to true for compatibility. Indeed, older versions
-        // left it to the caller to check OMText#isOptimized().
-        try {
-            return optimizationPolicy.isOptimized(node.getDataHandler(), true);
-        } catch (IOException ex) {
-            return true;
-        }
-    }
-    
     public String prepareDataHandler(DataHandler dataHandler) {
         boolean doOptimize;
         try {
