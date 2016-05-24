@@ -59,8 +59,6 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public abstract boolean isOptimized();
 
-    public abstract String getContentType();
-
     /**
      * Prepare a {@link DataHandler} for serialization without using the {@link DataHandlerWriter}
      * API. The method first determines whether the binary data represented by the
@@ -85,16 +83,6 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      *         <code>null</code> if the base64 encoded data should not be optimized
      */
     public abstract String prepareDataHandler(DataHandler dataHandler);
-    
-    public abstract void setXmlStreamWriter(XMLStreamWriter xmlWriter);
-
-    public abstract XMLStreamWriter getXmlStreamWriter();
-
-    public abstract String getMimeBoundary();
-
-    public abstract String getRootContentId();
-
-    public abstract String getNextContentId();
 
     /**
      * Returns the character set encoding scheme. If the value of the charSetEncoding is not set
@@ -103,20 +91,6 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * @return Returns encoding.
      */
     public abstract String getCharSetEncoding();
-
-    public abstract void setCharSetEncoding(String charSetEncoding);
-
-    public abstract String getXmlVersion();
-
-    public abstract void setXmlVersion(String xmlVersion);
-
-    public abstract void setSoap11(boolean b);
-
-    public abstract boolean isIgnoreXMLDeclaration();
-
-    public abstract void setIgnoreXMLDeclaration(boolean ignoreXMLDeclaration);
-
-    public abstract void setDoOptimize(boolean b);
 
     /**
      * Get the output format used by this writer.

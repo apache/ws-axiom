@@ -88,7 +88,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
      * @throws FactoryConfigurationError
      * @see OMOutputFormat#DEFAULT_CHAR_SET_ENCODING
      */
-    public MTOMXMLStreamWriterImpl(OutputStream outStream, OMOutputFormat format, final boolean preserveAttachments)
+    public MTOMXMLStreamWriterImpl(OutputStream outStream, final OMOutputFormat format, final boolean preserveAttachments)
             throws XMLStreamException, FactoryConfigurationError {
         if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");
@@ -127,7 +127,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
                 @Override
                 public String generateContentID(String existingContentID) {
-                    return existingContentID != null ? existingContentID : getNextContentId();
+                    return existingContentID != null ? existingContentID : format.getNextContentId();
                 }
             };
             handler = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format), new CompletionListener() {
@@ -387,11 +387,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
 
     @Override
-    public String getContentType() {
-        return format.getContentType();
-    }
-
-    @Override
     public String prepareDataHandler(DataHandler dataHandler) {
         XmlHandler handler = getHandler();
         if (handler instanceof XOPEncodingFilterHandler) {
@@ -402,68 +397,8 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     }
     
     @Override
-    public void setXmlStreamWriter(XMLStreamWriter xmlWriter) {
-        this.xmlWriter = xmlWriter;
-    }
-
-    @Override
-    public XMLStreamWriter getXmlStreamWriter() {
-        return xmlWriter;
-    }
-
-    @Override
-    public String getMimeBoundary() {
-        return format.getMimeBoundary();
-    }
-
-    @Override
-    public String getRootContentId() {
-        return format.getRootContentId();
-    }
-
-    @Override
-    public String getNextContentId() {
-        return format.getNextContentId();
-    }
-
-    @Override
     public String getCharSetEncoding() {
         return format.getCharSetEncoding();
-    }
-
-    @Override
-    public void setCharSetEncoding(String charSetEncoding) {
-        format.setCharSetEncoding(charSetEncoding);
-    }
-
-    @Override
-    public String getXmlVersion() {
-        return format.getXmlVersion();
-    }
-
-    @Override
-    public void setXmlVersion(String xmlVersion) {
-        format.setXmlVersion(xmlVersion);
-    }
-
-    @Override
-    public void setSoap11(boolean b) {
-        format.setSOAP11(b);
-    }
-
-    @Override
-    public boolean isIgnoreXMLDeclaration() {
-        return format.isIgnoreXMLDeclaration();
-    }
-
-    @Override
-    public void setIgnoreXMLDeclaration(boolean ignoreXMLDeclaration) {
-        format.setIgnoreXMLDeclaration(ignoreXMLDeclaration);
-    }
-
-    @Override
-    public void setDoOptimize(boolean b) {
-        format.setDoOptimize(b);
     }
 
     @Override
