@@ -42,6 +42,10 @@ public class XMLStreamWriterWrapper implements XMLStreamWriter {
         this.parent = parent;
     }
 
+    protected XMLStreamWriter getParent() {
+        return parent;
+    }
+
     public void close() throws XMLStreamException {
         parent.close();
     }

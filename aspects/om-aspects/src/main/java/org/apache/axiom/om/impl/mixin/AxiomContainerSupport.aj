@@ -268,7 +268,7 @@ public aspect AxiomContainerSupport {
                 throw AxiomExceptionTranslator.toXMLStreamException(ex);
             }
         } finally {
-            writer.close();
+            writer.flush();
         }
     }
     

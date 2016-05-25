@@ -37,7 +37,9 @@ import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMMultipartWriter;
+import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceStreamWriter;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
+import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
@@ -48,6 +50,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private final XMLStreamWriter xmlWriter;
     private final OMOutputFormat format;
+    private final boolean callComplete;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -60,6 +63,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
+        callComplete = false;
     }
 
     public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter) {
@@ -153,6 +157,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
         
         xmlWriter = new XmlHandlerStreamWriter(handler, serializer);
+        callComplete = true;
     }
 
     /**
@@ -163,6 +168,10 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
      *         supplied)
      */
     private XmlHandler getHandler() {
+        XMLStreamWriter xmlWriter = this.xmlWriter;
+        if (xmlWriter instanceof PushOMDataSourceStreamWriter) {
+            xmlWriter = ((PushOMDataSourceStreamWriter)xmlWriter).getParent();
+        }
         if (xmlWriter instanceof XmlHandlerStreamWriter) {
             return ((XmlHandlerStreamWriter)xmlWriter).getHandler();
         } else {
@@ -220,11 +229,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
 
     @Override
     public void close() throws XMLStreamException {
-        log.debug("close");
-        // Only call flush because data may have been written to the underlying output stream
-        // without ever calling writeStartElement. In this case, close would trigger an
-        // exception.
-        flush();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -237,7 +242,7 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         // flush() triggers the optimized attachment writing.
         // If the optimized attachments are specified, and the xml
         // document is completed, then write out the attachments.
-        if (format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
+        if (callComplete && format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
             log.debug("The XML writing is completed.  Now the attachments are written");
             isComplete = true;
             XmlHandler handler = getHandler();
@@ -373,8 +378,8 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     @Override
     public String prepareDataHandler(DataHandler dataHandler) {
         XmlHandler handler = getHandler();
-        if (handler instanceof XOPEncodingFilterHandler) {
-            return ((XOPEncodingFilterHandler)handler).prepareDataHandler(dataHandler);
+        if (handler instanceof XOPHandler) {
+            return ((XOPHandler)handler).prepareDataHandler(dataHandler);
         } else {
             // TODO: hack for compatibility with Axis2
             // If we don't serialize to a MIME package, we should return null here because the

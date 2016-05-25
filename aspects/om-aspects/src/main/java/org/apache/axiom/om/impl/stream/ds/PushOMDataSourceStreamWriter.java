@@ -28,9 +28,14 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
  * {@link XMLStreamWriter} wrapper that throws exceptions for invocations of methods that
  * {@link OMDataSource#serialize(XMLStreamWriter)} is not allowed to call.
  */
-final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
+public final class PushOMDataSourceStreamWriter extends XMLStreamWriterWrapper {
     PushOMDataSourceStreamWriter(XMLStreamWriter parent) {
         super(parent);
+    }
+
+    @Override
+    public XMLStreamWriter getParent() {
+        return super.getParent();
     }
 
     public void writeStartDocument() {

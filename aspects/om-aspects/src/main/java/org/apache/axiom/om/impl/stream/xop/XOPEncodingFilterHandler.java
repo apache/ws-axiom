@@ -37,7 +37,7 @@ import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
-public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler {
+public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler {
     private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
@@ -49,6 +49,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
         this.optimizationPolicy = optimizationPolicy;
     }
 
+    @Override
     public String prepareDataHandler(DataHandler dataHandler) {
         boolean doOptimize;
         try {

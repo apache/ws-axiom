@@ -30,7 +30,9 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.stax.MTOMXMLStreamWriterImpl;
 import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 
 final class PushOMDataSourceReader implements XmlReader {
@@ -47,7 +49,7 @@ final class PushOMDataSourceReader implements XmlReader {
     @Override
     public boolean proceed() throws StreamException {
         try {
-            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler, null);
+            XMLStreamWriter writer = new XmlHandlerStreamWriter(new PushOMDataSourceXOPHandler(handler), null);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
             if (parent instanceof OMElement) {
@@ -56,11 +58,18 @@ final class PushOMDataSourceReader implements XmlReader {
                     writer.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
             }
+            OMOutputFormat format = new OMOutputFormat();
+            format.setDoOptimize(true);
             handler.startFragment();
-            dataSource.serialize(new PushOMDataSourceStreamWriter(writer));
+            dataSource.serialize(new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format));
             handler.completed();
         } catch (XMLStreamException ex) {
-            throw new StreamException(ex);
+            Throwable cause = ex.getCause();
+            if (cause instanceof StreamException) {
+                throw (StreamException)cause;
+            } else {
+                throw new StreamException(ex);
+            }
         }
         return true;
     }

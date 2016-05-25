@@ -16,41 +16,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.ds.jaxb;
+package org.apache.axiom.om.impl.stream.ds;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.activation.DataHandler;
 
-import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.xop.AbstractXOPDecodingFilterHandler;
+import org.apache.axiom.om.impl.intf.TextContent;
+import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.util.UIDGenerator;
 
-final class DataHandlerWriterAttachmentMarshaller extends AttachmentMarshallerBase implements MimePartProvider {
+final class PushOMDataSourceXOPHandler extends AbstractXOPDecodingFilterHandler implements XOPHandler {
     private final Map<String,DataHandler> dataHandlers = new HashMap<String,DataHandler>();
 
+    PushOMDataSourceXOPHandler(XmlHandler parent) {
+        super(parent);
+    }
+
     @Override
-    public String addMtomAttachment(DataHandler data, String elementNamespace,
-            String elementLocalName) {
+    public String prepareDataHandler(DataHandler dataHandler) {
         String contentID = UIDGenerator.generateContentId();
-        dataHandlers.put(contentID, data);
-        return "cid:" + contentID;
+        dataHandlers.put(contentID, dataHandler);
+        return contentID;
     }
 
-    public boolean isLoaded(String contentID) {
-        // DataHandlers are always loaded, in the sense that getDataHandler will always
-        // return a DataHandler immediately (or throw an exception in the unlikely case that
-        // a wrong content ID is provided)
-        return true;
-    }
-
-    public DataHandler getDataHandler(String contentID) throws IOException {
+    @Override
+    protected Object buildCharacterData(String contentID) throws StreamException {
         DataHandler dataHandler = dataHandlers.get(contentID);
         if (dataHandler == null) {
-            throw new IOException("No DataHandler found for content ID " + contentID);
-        } else {
-            return dataHandler;
+            throw new StreamException("No DataHandler found for content ID " + contentID);
         }
+        return new TextContent(contentID, dataHandler, true);
     }
 }

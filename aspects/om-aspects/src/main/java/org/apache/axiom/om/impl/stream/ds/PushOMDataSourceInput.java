@@ -18,11 +18,14 @@
  */
 package org.apache.axiom.om.impl.stream.ds;
 
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 
@@ -42,9 +45,16 @@ public final class PushOMDataSourceInput implements XmlInput {
             unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
         }
         if (unwrappedHandler instanceof StAXSerializer) {
-            return new DirectPushOMDataSourceReader(((StAXSerializer)unwrappedHandler).getWriter(), dataSource);
-        } else {
-            return new PushOMDataSourceReader(handler, root, dataSource);
+            XMLStreamWriter writer = ((StAXSerializer)unwrappedHandler).getWriter();
+            // This condition is to cover the case where the following conditions are met:
+            //  - The OMDataSource uses MTOMXMLStreamWriter to add optimized binary data.
+            //  - The tree is serialized to an XMLStreamWriter that implements the
+            //    DataHandlerWriter extension.
+            // TODO: need a test case for that scenario
+            if (writer instanceof MTOMXMLStreamWriter) {
+                return new DirectPushOMDataSourceReader(writer, dataSource);
+            }
         }
+        return new PushOMDataSourceReader(handler, root, dataSource);
     }
 }

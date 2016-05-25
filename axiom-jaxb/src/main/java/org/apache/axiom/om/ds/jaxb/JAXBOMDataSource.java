@@ -27,7 +27,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
@@ -36,7 +35,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.util.stax.xop.XOPDecodingStreamWriter;
 
 /**
  * {@link OMDataSource} backed by a JAXB object. This class can be used both for plain JAXB objects
@@ -85,18 +83,6 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
                 MTOMXMLStreamWriter mtomWriter = (MTOMXMLStreamWriter)writer;
                 if (mtomWriter.isOptimized()) {
                     marshaller.setAttachmentMarshaller(new MTOMXMLStreamWriterAttachmentMarshaller(mtomWriter));
-                }
-            } else {
-                DataHandlerWriter dataHandlerWriter; 
-                try {
-                    dataHandlerWriter = (DataHandlerWriter)writer.getProperty(DataHandlerWriter.PROPERTY);
-                } catch (IllegalArgumentException ex) {
-                    dataHandlerWriter = null;
-                }
-                if (dataHandlerWriter != null) {
-                    DataHandlerWriterAttachmentMarshaller am = new DataHandlerWriterAttachmentMarshaller();
-                    writer = new XOPDecodingStreamWriter(writer, am);
-                    marshaller.setAttachmentMarshaller(am);
                 }
             }
             marshaller.marshal(object, writer);
