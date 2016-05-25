@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
 /**
@@ -124,8 +123,4 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      * @return the underlying byte stream, or <code>null</code> if the stream is not accessible
      */
     public abstract OutputStream getOutputStream() throws XMLStreamException;
-    
-    public abstract void setFilter(XMLStreamWriterFilter filter);
-    
-    public abstract XMLStreamWriterFilter removeFilter();
 }

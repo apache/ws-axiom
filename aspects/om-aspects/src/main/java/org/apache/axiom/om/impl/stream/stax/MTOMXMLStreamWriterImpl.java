@@ -38,7 +38,6 @@ import org.apache.axiom.om.impl.OMMultipartWriter;
 import org.apache.axiom.om.impl.stream.xop.CompletionListener;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.util.CommonUtils;
-import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.commons.logging.Log;
@@ -53,9 +52,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private boolean isEndDocument = false; // has endElement been called
     private boolean isComplete = false;    // have the attachments been written
     private int depth = 0;                 // current element depth
-    
-    // Set the filter object if provided
-    private XMLStreamWriterFilter xmlStreamWriterFilter  = null;
 
     public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format) {
         this.xmlWriter = xmlWriter;
@@ -156,15 +152,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         }
         
         xmlWriter = new XmlHandlerStreamWriter(handler, serializer);
-
-        xmlStreamWriterFilter = format.getXmlStreamWriterFilter();
-        if (xmlStreamWriterFilter != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Installing XMLStreamWriterFilter " + xmlStreamWriterFilter);
-            }
-            xmlStreamWriterFilter.setDelegate(xmlWriter);
-            xmlWriter = xmlStreamWriterFilter;
-        }
     }
 
     /**
@@ -175,12 +162,8 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
      *         supplied)
      */
     private XmlHandler getHandler() {
-        XMLStreamWriter writer = xmlWriter;
-        while (writer instanceof XMLStreamWriterFilter) {
-            writer = ((XMLStreamWriterFilter)writer).getDelegate();
-        }
-        if (writer instanceof XmlHandlerStreamWriter) {
-            return ((XmlHandlerStreamWriter)writer).getHandler();
+        if (xmlWriter instanceof XmlHandlerStreamWriter) {
+            return ((XmlHandlerStreamWriter)xmlWriter).getHandler();
         } else {
             return null;
         }
@@ -419,15 +402,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     
     @Override
     public OutputStream getOutputStream() throws XMLStreamException {  
-        
-        if (xmlStreamWriterFilter != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("getOutputStream returning null due to presence of XMLStreamWriterFilter " + 
-                        xmlStreamWriterFilter);
-            }
-            return null;
-        }
-        
         OutputStream outputStream;
         XmlHandler handler = getHandler();
         // Remove the XOPEncodingFilterHandler wrapper if necessary
@@ -452,34 +426,5 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             }
         }
         return outputStream;
-    }
-    
-    @Override
-    public void setFilter(XMLStreamWriterFilter filter) {
-        if (filter != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("setting filter " + filter.getClass());
-            }
-            xmlStreamWriterFilter = filter;
-            filter.setDelegate(xmlWriter);
-            xmlWriter = filter;
-        }
-    }
-    
-    @Override
-    public XMLStreamWriterFilter removeFilter() {
-        XMLStreamWriterFilter filter = null;
-        if (xmlStreamWriterFilter != null) {
-            filter = xmlStreamWriterFilter;
-            if (log.isDebugEnabled()) {
-                log.debug("removing filter " + filter.getClass());
-            }
-            xmlWriter = xmlStreamWriterFilter.getDelegate();
-            filter.setDelegate(null);
-            xmlStreamWriterFilter = (xmlWriter instanceof XMLStreamWriterFilter) ? 
-                        (XMLStreamWriterFilter) xmlWriter : 
-                                null;
-        }
-        return filter;
     }
 }

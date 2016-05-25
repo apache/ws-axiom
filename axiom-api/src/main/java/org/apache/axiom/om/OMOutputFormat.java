@@ -26,13 +26,11 @@ import org.apache.axiom.mime.MultipartWriterFactory;
 import org.apache.axiom.mime.impl.axiom.AxiomMultipartWriterFactory;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.StAXWriterConfiguration;
-import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 
 /**
  * Formats options for OM Output.
@@ -71,8 +69,6 @@ public class OMOutputFormat {
     private boolean autoCloseWriter;
 
     public static final String ACTION_PROPERTY = "action";
-    
-    private XMLStreamWriterFilter xmlStreamWriterFilter = null;
     
     private StAXWriterConfiguration writerConfiguration;
     
@@ -132,7 +128,6 @@ public class OMOutputFormat {
         }
         ignoreXMLDeclaration = format.ignoreXMLDeclaration;
         autoCloseWriter = format.autoCloseWriter;
-        xmlStreamWriterFilter = format.xmlStreamWriterFilter;
         writerConfiguration = format.writerConfiguration;
         multipartWriterFactory = format.multipartWriterFactory;
         if (format.map != null) {
@@ -459,20 +454,6 @@ public class OMOutputFormat {
     
     public int getOptimizedThreshold() {
         return optimizedThreshold;
-    }
-    
-    /**
-     * @return the xmlStreamWriterFilter
-     */
-    public XMLStreamWriterFilter getXmlStreamWriterFilter() {
-        return xmlStreamWriterFilter;
-    }
-
-    /**
-     * @param xmlStreamWriterFilter the xmlStreamWriterFilter to set
-     */
-    public void setXmlStreamWriterFilter(XMLStreamWriterFilter xmlStreamWriterFilter) {
-        this.xmlStreamWriterFilter = xmlStreamWriterFilter;
     }
 
     /**
