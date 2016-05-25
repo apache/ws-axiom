@@ -32,10 +32,11 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
+import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
+import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMMultipartWriter;
-import org.apache.axiom.om.impl.stream.xop.CompletionListener;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.util.io.IOUtils;
@@ -128,11 +129,11 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             };
             handler = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format), new CompletionListener() {
                 @Override
-                public void completed(XOPEncodingFilterHandler encoder) throws StreamException {
+                public void completed(AbstractXOPEncodingFilterHandler encoder) throws StreamException {
                     try {
                         rootPartOutputStream.close();
-                        for (String contentID : encoder.getContentIDs()) {
-                            DataHandler dataHandler = encoder.getDataHandler(contentID);
+                        for (String contentID : ((XOPEncodingFilterHandler)encoder).getContentIDs()) {
+                            DataHandler dataHandler = ((XOPEncodingFilterHandler)encoder).getDataHandler(contentID);
                             if (preserveAttachments || !(dataHandler instanceof DataHandlerExt)) {
                                 multipartWriter.writePart(dataHandler, contentID);
                             } else {

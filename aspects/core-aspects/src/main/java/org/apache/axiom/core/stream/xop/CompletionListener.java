@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.xop;
+package org.apache.axiom.core.stream.xop;
 
 import org.apache.axiom.core.stream.StreamException;
 
 public interface CompletionListener {
-    void completed(XOPEncodingFilterHandler handler) throws StreamException;
+    void completed(AbstractXOPEncodingFilterHandler handler) throws StreamException;
 }

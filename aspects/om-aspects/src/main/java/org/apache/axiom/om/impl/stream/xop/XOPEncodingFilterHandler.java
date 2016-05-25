@@ -29,24 +29,24 @@ import javax.activation.DataHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
+import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
+import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
-public final class XOPEncodingFilterHandler extends XmlHandlerWrapper {
+public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler {
     private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
-    private final CompletionListener completionListener;
 
     public XOPEncodingFilterHandler(XmlHandler parent, ContentIDGenerator contentIDGenerator,
             OptimizationPolicy optimizationPolicy, CompletionListener completionListener) {
-        super(parent);
+        super(parent, completionListener);
         this.contentIDGenerator = contentIDGenerator;
         this.optimizationPolicy = optimizationPolicy;
-        this.completionListener = completionListener;
     }
 
     public String prepareDataHandler(DataHandler dataHandler) {
@@ -90,7 +90,7 @@ public final class XOPEncodingFilterHandler extends XmlHandlerWrapper {
     }
 
     @Override
-    public void processCharacterData(Object data, boolean ignorable) throws StreamException {
+    protected String processCharacterData(Object data) throws StreamException {
         if (data instanceof TextContent) {
             TextContent textContent = (TextContent)data;
             if (textContent.isBinary()) {
@@ -108,21 +108,10 @@ public final class XOPEncodingFilterHandler extends XmlHandlerWrapper {
                 if (optimize) {
                     String contentID = contentIDGenerator.generateContentID(textContent.getContentID());
                     dataHandlerObjects.put(contentID, dataHandlerObject);
-                    super.startElement(XOPConstants.NAMESPACE_URI, XOPConstants.INCLUDE, XOPConstants.DEFAULT_PREFIX);
-                    super.processNamespaceDeclaration(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
-                    super.processAttribute("", XOPConstants.HREF, "", XOPUtils.getURLForContentID(contentID), "CDATA", true);
-                    super.attributesCompleted();
-                    super.endElement();
-                    return;
+                    return contentID;
                 }
             }
         }
-        super.processCharacterData(data, ignorable);
-    }
-
-    @Override
-    public void completed() throws StreamException {
-        super.completed();
-        completionListener.completed(this);
+        return null;
     }
 }

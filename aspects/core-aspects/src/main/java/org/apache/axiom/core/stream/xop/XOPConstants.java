@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.xop;
+package org.apache.axiom.core.stream.xop;
 
 /**
  * Interface defining constants used by {@link XOPDecodingFilterHandler} and
