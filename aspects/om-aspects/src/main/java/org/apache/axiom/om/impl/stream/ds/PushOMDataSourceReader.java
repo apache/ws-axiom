@@ -61,7 +61,7 @@ final class PushOMDataSourceReader implements XmlReader {
             OMOutputFormat format = new OMOutputFormat();
             format.setDoOptimize(true);
             handler.startFragment();
-            dataSource.serialize(new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format));
+            dataSource.serialize(new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format, false));
             handler.completed();
         } catch (XMLStreamException ex) {
             Throwable cause = ex.getCause();

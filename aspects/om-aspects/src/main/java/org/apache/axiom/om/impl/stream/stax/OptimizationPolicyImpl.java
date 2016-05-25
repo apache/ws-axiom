@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>
  * For internal use only.
  */
-class OptimizationPolicyImpl implements OptimizationPolicy {
+public final class OptimizationPolicyImpl implements OptimizationPolicy {
     private static final Log log = LogFactory.getLog(OptimizationPolicyImpl.class);
     
     private final OMOutputFormat format;

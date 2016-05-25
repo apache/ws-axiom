@@ -19,30 +19,22 @@
 
 package org.apache.axiom.om.impl.stream.stax;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
-import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
-import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMMultipartWriter;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceStreamWriter;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.om.util.CommonUtils;
-import org.apache.axiom.util.io.IOUtils;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -57,109 +49,19 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private boolean isComplete = false;    // have the attachments been written
     private int depth = 0;                 // current element depth
 
-    public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format) {
+    public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format, boolean callComplete) {
         this.xmlWriter = xmlWriter;
-        if (log.isTraceEnabled()) {
-            log.trace("Call Stack =" + CommonUtils.callStackToString());
-        }
-        this.format = format;
-        callComplete = false;
-    }
-
-    public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter) {
-        this(xmlWriter, new OMOutputFormat());
-    }
-    
-    public MTOMXMLStreamWriterImpl(OutputStream outStream, OMOutputFormat format)
-            throws XMLStreamException, FactoryConfigurationError {
-        this(outStream, format, true);
-    }
-    
-    /**
-     * Creates a new MTOMXMLStreamWriter with specified encoding.
-     * 
-     * @param outStream
-     * @param format
-     * @param preserveAttachments
-     *            specifies whether attachments must be preserved or can be consumed (i.e. streamed)
-     *            during serialization; if set to <code>false</code> then
-     *            {@link DataHandlerExt#readOnce()} or an equivalent method may be used to get the
-     *            data for an attachment
-     * @throws XMLStreamException
-     * @throws FactoryConfigurationError
-     * @see OMOutputFormat#DEFAULT_CHAR_SET_ENCODING
-     */
-    public MTOMXMLStreamWriterImpl(OutputStream outStream, final OMOutputFormat format, final boolean preserveAttachments)
-            throws XMLStreamException, FactoryConfigurationError {
         if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");
-            log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
-            log.debug("preserveAttachments = " + preserveAttachments);
         }
         if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
-
-        String encoding = format.getCharSetEncoding();
-        if (encoding == null) { //Default encoding is UTF-8
-            format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
-        }
-
-        final OMMultipartWriter multipartWriter;
-        final OutputStream rootPartOutputStream;
-        if (format.isOptimized()) {
-            multipartWriter = new OMMultipartWriter(outStream, format);
-            try {
-                rootPartOutputStream = multipartWriter.writeRootPart();
-            } catch (IOException ex) {
-                throw new XMLStreamException(ex);
-            }
-        } else {
-            multipartWriter = null;
-            rootPartOutputStream = outStream;
-        }
-        
-        Serializer serializer = new Serializer(rootPartOutputStream, encoding);
-        
-        XmlHandler handler;
-        if (format.isOptimized()) {
-            ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
-                @Override
-                public String generateContentID(String existingContentID) {
-                    return existingContentID != null ? existingContentID : format.getNextContentId();
-                }
-            };
-            handler = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format), new CompletionListener() {
-                @Override
-                public void completed(AbstractXOPEncodingFilterHandler encoder) throws StreamException {
-                    try {
-                        rootPartOutputStream.close();
-                        for (String contentID : ((XOPEncodingFilterHandler)encoder).getContentIDs()) {
-                            DataHandler dataHandler = ((XOPEncodingFilterHandler)encoder).getDataHandler(contentID);
-                            if (preserveAttachments || !(dataHandler instanceof DataHandlerExt)) {
-                                multipartWriter.writePart(dataHandler, contentID);
-                            } else {
-                                OutputStream out = multipartWriter.writePart(dataHandler.getContentType(), contentID);
-                                IOUtils.copy(((DataHandlerExt)dataHandler).readOnce(), out, -1);
-                                out.close();
-                            }
-                        }
-                        multipartWriter.complete();
-                    } catch (IOException ex) {
-                        throw new StreamException(ex);
-                    }
-                }
-            });
-        } else {
-            handler = serializer;
-        }
-        
-        xmlWriter = new XmlHandlerStreamWriter(handler, serializer);
-        callComplete = true;
+        this.callComplete = callComplete;
     }
-
+    
     /**
      * Get the {@link XmlHandler} events are serialized to.
      * 
