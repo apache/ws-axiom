@@ -45,8 +45,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
-    private XMLStreamWriter xmlWriter;
-    private OMOutputFormat format;
+    private final XMLStreamWriter xmlWriter;
+    private final OMOutputFormat format;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -395,11 +395,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
         return format;
     }
 
-    @Override
-    public void setOutputFormat(OMOutputFormat format) {
-        this.format = format;
-    }
-    
     @Override
     public OutputStream getOutputStream() throws XMLStreamException {  
         OutputStream outputStream;

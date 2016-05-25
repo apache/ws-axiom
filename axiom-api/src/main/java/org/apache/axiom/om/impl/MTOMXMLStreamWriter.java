@@ -102,8 +102,6 @@ public abstract class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public abstract OMOutputFormat getOutputFormat();
 
-    public abstract void setOutputFormat(OMOutputFormat format);
-    
     /**
      * Get the underlying {@link OutputStream} for this writer, if available. This method allows a
      * node (perhaps an {@link org.apache.axiom.om.OMSourcedElement}) to write its content directly
