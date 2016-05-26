@@ -26,8 +26,8 @@ import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
 
 public final class PushOMDataSourceInput implements XmlInput {
     private final AxiomSourcedElement root;
@@ -44,8 +44,8 @@ public final class PushOMDataSourceInput implements XmlInput {
         while (unwrappedHandler instanceof XmlHandlerWrapper) {
             unwrappedHandler = ((XmlHandlerWrapper)unwrappedHandler).getParent();
         }
-        if (unwrappedHandler instanceof StAXSerializer) {
-            XMLStreamWriter writer = ((StAXSerializer)unwrappedHandler).getWriter();
+        if (unwrappedHandler instanceof XMLStreamWriterHandler) {
+            XMLStreamWriter writer = ((XMLStreamWriterHandler)unwrappedHandler).getWriter();
             // This condition is to cover the case where the following conditions are met:
             //  - The OMDataSource uses MTOMXMLStreamWriter to add optimized binary data.
             //  - The tree is serialized to an XMLStreamWriter that implements the

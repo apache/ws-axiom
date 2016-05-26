@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.stax;
+package org.apache.axiom.om.impl.stream.stax.pull;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -25,7 +25,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.core.CharacterData;
-import org.apache.axiom.core.stream.stax.InternalXMLStreamReader;
+import org.apache.axiom.core.stream.stax.pull.InternalXMLStreamReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 
 final class CharacterDataReaderImpl implements CharacterDataReader {

@@ -47,8 +47,8 @@ import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
-import org.apache.axiom.core.stream.stax.StAXPivot;
-import org.apache.axiom.core.stream.stax.XMLStreamWriterNamespaceContextProvider;
+import org.apache.axiom.core.stream.stax.pull.StAXPivot;
+import org.apache.axiom.core.stream.stax.push.XMLStreamWriterNamespaceContextProvider;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
 import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.om.OMElement;
@@ -63,17 +63,17 @@ import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
 import org.apache.axiom.om.impl.common.SAXResultContentHandler;
 import org.apache.axiom.om.impl.common.builder.OMXMLParserWrapperImpl;
-import org.apache.axiom.om.impl.common.serializer.push.NamespaceContextPreservationFilterHandler;
-import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
-import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
-import org.apache.axiom.om.impl.common.serializer.push.sax.XMLReaderImpl;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
-import org.apache.axiom.om.impl.stream.stax.AxiomXMLStreamReaderExtensionFactory;
-import org.apache.axiom.om.impl.stream.stax.OptimizationPolicyImpl;
+import org.apache.axiom.om.impl.stream.NamespaceContextPreservationFilterHandler;
+import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;
+import org.apache.axiom.om.impl.stream.XsiTypeFilterHandler;
+import org.apache.axiom.om.impl.stream.sax.XMLReaderImpl;
+import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderExtensionFactory;
+import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
+import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
@@ -249,7 +249,7 @@ public aspect AxiomContainerSupport {
     public abstract CoreElement AxiomContainer.getContextElement();
     
     public final void AxiomContainer.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        serialize(new StAXSerializer(writer), new XMLStreamWriterNamespaceContextProvider(writer), new OMOutputFormat(), cache);
+        serialize(new XMLStreamWriterHandler(writer), new XMLStreamWriterNamespaceContextProvider(writer), new OMOutputFormat(), cache);
     }
 
     private void AxiomContainer.serialize(Writer writer, boolean cache) throws XMLStreamException {

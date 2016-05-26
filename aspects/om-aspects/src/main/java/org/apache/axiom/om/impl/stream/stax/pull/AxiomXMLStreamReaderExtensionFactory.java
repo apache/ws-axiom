@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.stream.stax;
+package org.apache.axiom.om.impl.stream.stax.pull;
 
-import org.apache.axiom.core.stream.stax.InternalXMLStreamReader;
-import org.apache.axiom.core.stream.stax.XMLStreamReaderExtensionFactory;
+import org.apache.axiom.core.stream.stax.pull.InternalXMLStreamReader;
+import org.apache.axiom.core.stream.stax.pull.XMLStreamReaderExtensionFactory;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;

@@ -47,7 +47,7 @@ import org.apache.axiom.fom.AbderaNode;
 import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.fom.impl.FOMNodeFactory;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
+import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.dialect.StAXDialect;

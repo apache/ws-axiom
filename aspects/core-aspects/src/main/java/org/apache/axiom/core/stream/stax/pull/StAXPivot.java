@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.core.stream.stax;
+package org.apache.axiom.core.stream.stax.pull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.core.stream.stax.StAXExceptionUtil;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 
 public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common.serializer.push.stax;
+package org.apache.axiom.om.impl.stream.stax.push;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -33,14 +33,14 @@ import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class StAXSerializer implements XmlHandler {
+public class XMLStreamWriterHandler implements XmlHandler {
     private final XMLStreamWriter writer;
     private DataHandlerWriter dataHandlerWriter;
     private final CharacterDataAccumulator buffer = new CharacterDataAccumulator();
     private boolean buffering;
     private String piTarget;
     
-    public StAXSerializer(XMLStreamWriter writer) {
+    public XMLStreamWriterHandler(XMLStreamWriter writer) {
         this.writer = writer;
     }
 

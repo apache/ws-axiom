@@ -44,7 +44,7 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.common.util.OMDataSourceUtil;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceInput;
-import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
+import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

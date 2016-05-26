@@ -39,7 +39,7 @@ import org.apache.axiom.core.stream.sax.SAXInput;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.Detachable;
-import org.apache.axiom.om.impl.stream.stax.StAXPullInput;
+import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
 import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;

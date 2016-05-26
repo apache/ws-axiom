@@ -23,8 +23,8 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
-import org.apache.axiom.om.impl.common.serializer.push.stax.StAXSerializer;
 import org.apache.axiom.om.impl.intf.AxiomDocType;
+import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
 
 public aspect AxiomDocTypeSupport {
     public final int AxiomDocType.getType() {
@@ -37,7 +37,7 @@ public aspect AxiomDocTypeSupport {
 
     public final void AxiomDocType.serialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         try {
-            internalSerialize(new StAXSerializer(writer), cache);
+            internalSerialize(new XMLStreamWriterHandler(writer), cache);
         } catch (StreamException ex) {
             throw AxiomExceptionTranslator.toXMLStreamException(ex);
         }
