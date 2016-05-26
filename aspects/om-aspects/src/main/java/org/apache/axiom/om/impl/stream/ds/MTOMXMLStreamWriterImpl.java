@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.stream.stax;
+package org.apache.axiom.om.impl.stream.ds;
 
 import java.io.OutputStream;
 
@@ -36,19 +36,19 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
-import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceStreamWriter;
+import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
+final class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private final XMLStreamWriter xmlWriter;
     private final OMOutputFormat format;
 
-    public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format) {
+    MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format) {
         this.xmlWriter = xmlWriter;
         if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");

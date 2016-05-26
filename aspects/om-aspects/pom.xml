@@ -82,7 +82,6 @@
                         <configuration>
                             <ignore>
                                 <!-- TODO -->
-                                org.apache.axiom.om.impl.stream.stax.MTOMXMLStreamWriterImpl -> org.apache.axiom.om.impl.stream.ds.PushOMDataSourceStreamWriter,
                                 org.apache.axiom.om.impl.intf.AxiomContainer$AxiomContainerSupport$2 -> org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler
                             </ignore>
                         </configuration>

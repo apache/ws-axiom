@@ -34,7 +34,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
-import org.apache.axiom.om.impl.stream.stax.MTOMXMLStreamWriterImpl;
 import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
 
 final class PushOMDataSourceReader implements XmlReader {
