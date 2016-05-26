@@ -308,7 +308,10 @@ public class FOMElement extends FOMChildNode implements AbderaElement, AxiomElem
         Document doc = getDocument();
         String charset = doc != null ? doc.getCharset() : "UTF-8";
         Writer writer = this.getFactory().getAbdera().getWriter();
-        writeTo(writer, new OutputStreamWriter(out, charset));
+        // TODO: we shouldn't use an OutputStreamWriter here
+        OutputStreamWriter osw = new OutputStreamWriter(out, charset);
+        writeTo(writer, osw);
+        osw.flush();
     }
 
     public void writeTo(java.io.Writer writer) throws IOException {

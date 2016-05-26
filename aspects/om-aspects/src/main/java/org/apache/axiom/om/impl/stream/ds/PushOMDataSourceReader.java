@@ -25,12 +25,14 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
 import org.apache.axiom.om.impl.stream.stax.MTOMXMLStreamWriterImpl;
 import org.apache.axiom.om.impl.stream.stax.XmlHandlerStreamWriter;
@@ -48,8 +50,25 @@ final class PushOMDataSourceReader implements XmlReader {
     
     @Override
     public boolean proceed() throws StreamException {
+        // TODO: we might want to unwrap the NamespaceRepairingFilter (and some other filters) here
+        XmlHandler handler = this.handler;
+        OMOutputFormat format = null;
+        XmlHandler current = handler;
+        while (current instanceof XmlHandlerWrapper) {
+            if (current instanceof XmlDeclarationRewriterHandler) {
+                format = ((XmlDeclarationRewriterHandler)current).getFormat();
+                break;
+            }
+            current = ((XmlHandlerWrapper)current).getParent();
+        }
+        if (format == null) {
+            // This is for the OMSourcedElement expansion case
+            format = new OMOutputFormat();
+            format.setDoOptimize(true);
+            handler = new PushOMDataSourceXOPHandler(handler);
+        }
         try {
-            XMLStreamWriter writer = new XmlHandlerStreamWriter(new PushOMDataSourceXOPHandler(handler), null);
+            XMLStreamWriter writer = new XmlHandlerStreamWriter(handler, null);
             // Seed the namespace context with the namespace context from the parent
             OMContainer parent = root.getParent();
             if (parent instanceof OMElement) {
@@ -58,8 +77,6 @@ final class PushOMDataSourceReader implements XmlReader {
                     writer.setPrefix(ns.getPrefix(), ns.getNamespaceURI());
                 }
             }
-            OMOutputFormat format = new OMOutputFormat();
-            format.setDoOptimize(true);
             handler.startFragment();
             dataSource.serialize(new MTOMXMLStreamWriterImpl(new PushOMDataSourceStreamWriter(writer), format, false));
             handler.completed();

@@ -251,6 +251,22 @@ public aspect AxiomContainerSupport {
                 true);
     }
     
+    private void AxiomContainer.serialize(XmlHandler handler, OMOutputFormat format, boolean cache) throws XMLStreamException {
+        handler = new XmlDeclarationRewriterHandler(handler, format);
+        CoreElement contextElement = getContextElement();
+        if (contextElement != null) {
+            handler = new XsiTypeFilterHandler(handler, contextElement);
+        }
+        handler = new NamespaceRepairingFilterHandler(handler, null, true);
+        try {
+            internalSerialize(handler, cache);
+        } catch (CoreModelException ex) {
+            throw AxiomExceptionTranslator.translate(ex);
+        } catch (StreamException ex) {
+            throw AxiomExceptionTranslator.toXMLStreamException(ex);
+        }
+    }
+
     public abstract CoreElement AxiomContainer.getContextElement();
     
     public final void AxiomContainer.serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
@@ -341,28 +357,11 @@ public aspect AxiomContainerSupport {
             handler = serializer;
         }
         
-        serialize(new MTOMXMLStreamWriterImpl(new XmlHandlerStreamWriter(handler, serializer), format, true), cache);
+        serialize(handler, format, cache);
     }
 
     private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
-        XmlHandler handler = new XmlDeclarationRewriterHandler(new Serializer(writer), format);
-        CoreElement contextElement = getContextElement();
-        if (contextElement != null) {
-            handler = new XsiTypeFilterHandler(handler, contextElement);
-        }
-        try {
-            internalSerialize(new NamespaceRepairingFilterHandler(handler, null, true), cache);
-        } catch (CoreModelException ex) {
-            throw AxiomExceptionTranslator.translate(ex);
-        } catch (StreamException ex) {
-            throw AxiomExceptionTranslator.toXMLStreamException(ex);
-        }
-        try {
-            // TODO: the Abdera code depends on this
-            writer.flush();
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        serialize(new Serializer(writer), format, cache);
     }
 
     public final void AxiomContainer.serialize(OutputStream output) throws XMLStreamException {

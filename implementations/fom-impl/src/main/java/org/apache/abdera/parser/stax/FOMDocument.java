@@ -115,7 +115,10 @@ public class FOMDocument<T extends Element> extends FOMSerializable implements A
         if (charset == null)
             charset = "UTF-8";
         Writer writer = getFactory().getAbdera().getWriter();
-        writeTo(writer, new OutputStreamWriter(out, charset));
+        // TODO: don't use OutputStreamWriter here
+        OutputStreamWriter osw = new OutputStreamWriter(out, charset);
+        writeTo(writer, osw);
+        osw.flush();
     }
 
     public void writeTo(java.io.Writer writer) throws IOException {

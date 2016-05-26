@@ -63,7 +63,10 @@ public class FOMWriter extends AbstractWriter implements org.apache.abdera.write
             if (doc != null)
                 doc.setCharset(charset);
         }
-        base.writeTo(new OutputStreamWriter(out, charset));
+        // TODO: we shouldn't use OutputStreamWriter here
+        OutputStreamWriter osw = new OutputStreamWriter(out, charset);
+        base.writeTo(osw);
+        osw.flush();
         finishCompressedOutputStream(out, options);
         if (options.getAutoClose())
             out.close();

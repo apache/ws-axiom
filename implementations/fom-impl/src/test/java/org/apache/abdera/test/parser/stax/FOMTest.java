@@ -802,6 +802,7 @@ public class FOMTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OutputStreamWriter w = new OutputStreamWriter(out, "utf-16");
         edoc.writeTo(w);
+        w.flush();
 
         in = new ByteArrayInputStream(out.toByteArray());
 

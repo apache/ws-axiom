@@ -26,11 +26,16 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.core.stream.DocumentElementExtractingFilterHandler;
+import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
+import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.common.serializer.push.XmlDeclarationRewriterHandler;
+import org.apache.axiom.om.impl.common.serializer.push.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.stream.ds.PushOMDataSourceStreamWriter;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.om.impl.stream.xop.XOPHandler;
@@ -280,17 +285,19 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     @Override
     public String prepareDataHandler(DataHandler dataHandler) {
         XmlHandler handler = getHandler();
-        if (handler instanceof XOPHandler) {
-            return ((XOPHandler)handler).prepareDataHandler(dataHandler);
-        } else {
-            // TODO: hack for compatibility with Axis2
-            // If we don't serialize to a MIME package, we should return null here because the
-            // DataHandler will never be serialized and the only meaningful thing to do is to
-            // base64 encode it. However, there is code in Axis2 that expects an XOP encoded
-            // message without bothering about the MIME parts referenced by the xop:Include
-            // elements...
-            return format.getNextContentId();
+        while (handler instanceof XmlHandlerWrapper) {
+            if (handler instanceof XOPHandler) {
+                return ((XOPHandler)handler).prepareDataHandler(dataHandler);
+            }
+            handler = ((XmlHandlerWrapper)handler).getParent();
         }
+        // TODO: hack for compatibility with Axis2
+        // If we don't serialize to a MIME package, we should return null here because the
+        // DataHandler will never be serialized and the only meaningful thing to do is to
+        // base64 encode it. However, there is code in Axis2 that expects an XOP encoded
+        // message without bothering about the MIME parts referenced by the xop:Include
+        // elements...
+        return format.getNextContentId();
     }
     
     @Override
@@ -307,9 +314,13 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     public OutputStream getOutputStream() throws XMLStreamException {  
         OutputStream outputStream;
         XmlHandler handler = getHandler();
-        // Remove the XOPEncodingFilterHandler wrapper if necessary
-        if (handler instanceof XOPEncodingFilterHandler) {
-            handler = ((XOPEncodingFilterHandler)handler).getParent();
+        // Remove wrappers that can be safely removed
+        while (handler instanceof DocumentElementExtractingFilterHandler
+                || handler instanceof NamespaceRepairingFilterHandler
+                || handler instanceof XsiTypeFilterHandler
+                || handler instanceof XmlDeclarationRewriterHandler
+                || handler instanceof XOPEncodingFilterHandler) {
+            handler = ((XmlHandlerWrapper)handler).getParent();
         }
         if (handler instanceof Serializer) {
             try {

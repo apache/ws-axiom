@@ -71,8 +71,6 @@ public class StAXSerializer implements XmlHandler {
     
     @Override
     public void startFragment() throws StreamException {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId, String internalSubset) throws StreamException {

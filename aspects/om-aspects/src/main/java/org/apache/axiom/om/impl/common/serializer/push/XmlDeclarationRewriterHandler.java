@@ -31,24 +31,20 @@ public final class XmlDeclarationRewriterHandler extends XmlHandlerWrapper {
         this.format = format;
     }
 
+    public OMOutputFormat getFormat() {
+        return format;
+    }
+
     @Override
     public void startDocument(String inputEncoding, String xmlVersion, String xmlEncoding,
             Boolean standalone) throws StreamException {
-        if (!format.isIgnoreXMLDeclaration()) {
+        if (format.isIgnoreXMLDeclaration()) {
+            super.startFragment();
+        } else {
             if (format.getCharSetEncoding() != null) {
                 xmlEncoding = format.getCharSetEncoding();
             }
             super.startDocument(inputEncoding, xmlVersion, xmlEncoding, standalone);
         }
-    }
-
-    @Override
-    public void startFragment() throws StreamException {
-        // Ignore this event
-    }
-
-    @Override
-    public void completed() throws StreamException {
-        // Ignore this event
     }
 }
