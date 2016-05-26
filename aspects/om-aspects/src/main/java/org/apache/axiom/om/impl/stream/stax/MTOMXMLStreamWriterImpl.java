@@ -47,14 +47,8 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriterImpl.class);
     private final XMLStreamWriter xmlWriter;
     private final OMOutputFormat format;
-    private final boolean callComplete;
-    
-    // State variables
-    private boolean isEndDocument = false; // has endElement been called
-    private boolean isComplete = false;    // have the attachments been written
-    private int depth = 0;                 // current element depth
 
-    public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format, boolean callComplete) {
+    public MTOMXMLStreamWriterImpl(XMLStreamWriter xmlWriter, OMOutputFormat format) {
         this.xmlWriter = xmlWriter;
         if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");
@@ -64,7 +58,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
-        this.callComplete = callComplete;
     }
     
     /**
@@ -89,20 +82,17 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     @Override
     public void writeStartElement(String string) throws XMLStreamException {
         xmlWriter.writeStartElement(string);
-        depth++;
     }
 
     @Override
     public void writeStartElement(String string, String string1) throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1);
-        depth++;
     }
 
     @Override
     public void writeStartElement(String string, String string1, String string2)
             throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1, string2);
-        depth++;
     }
 
     @Override
@@ -124,14 +114,12 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     @Override
     public void writeEndElement() throws XMLStreamException {
         xmlWriter.writeEndElement();
-        depth--;
     }
 
     @Override
     public void writeEndDocument() throws XMLStreamException {
         log.debug("writeEndDocument");
         xmlWriter.writeEndDocument();
-        isEndDocument = true; 
     }
 
     @Override
@@ -146,21 +134,6 @@ public class MTOMXMLStreamWriterImpl extends MTOMXMLStreamWriter {
     public void flush() throws XMLStreamException {
         log.debug("Calling MTOMXMLStreamWriter.flush");
         xmlWriter.flush();
-        // flush() triggers the optimized attachment writing.
-        // If the optimized attachments are specified, and the xml
-        // document is completed, then write out the attachments.
-        if (callComplete && format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
-            log.debug("The XML writing is completed.  Now the attachments are written");
-            isComplete = true;
-            XmlHandler handler = getHandler();
-            if (handler != null) {
-                try {
-                    handler.completed();
-                } catch (StreamException ex) {
-                    throw new XMLStreamException(ex);
-                }
-            }
-        }
     }
     
 

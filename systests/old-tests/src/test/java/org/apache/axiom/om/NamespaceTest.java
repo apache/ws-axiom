@@ -226,6 +226,7 @@ public class NamespaceTest extends TestCase {
         StringWriter stringWriter = new StringWriter();
         XMLStreamWriter xmlWriter = StAXUtils.createXMLStreamWriter(stringWriter);
         element.serialize(xmlWriter);
+        xmlWriter.flush();
         String output = stringWriter.toString();
 
         content = output;
