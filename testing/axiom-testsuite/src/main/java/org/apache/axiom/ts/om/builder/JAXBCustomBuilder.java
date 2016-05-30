@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
@@ -42,9 +43,11 @@ public class JAXBCustomBuilder implements CustomBuilder {
         this.jaxbContext = jaxbContext;
     }
 
-    public OMDataSource create(XMLStreamReader reader)
-            throws OMException {
+    @Override
+    public OMDataSource create(OMElement element) throws OMException {
         try {
+            XMLStreamReader reader = element.getXMLStreamReaderWithoutCaching();
+            reader.next();
             final String namespaceURI = reader.getNamespaceURI();
             final String localName = reader.getLocalName();
             XOPEncodedStream xopStream = XOPUtils.getXOPEncodedStream(reader);
@@ -55,6 +58,7 @@ public class JAXBCustomBuilder implements CustomBuilder {
             // For the purpose of the test we just store the JAXB object and return
             // a dummy OMDataSource.
             jaxbObject = unmarshaller.unmarshal(encodedReader);
+            reader.close();
             attachmentsAccessed = attachmentUnmarshaller.isAccessed();
             return new AbstractPushOMDataSource() {
                 @Override
@@ -68,6 +72,8 @@ public class JAXBCustomBuilder implements CustomBuilder {
                 }
             };
         } catch (JAXBException ex) {
+            throw new OMException(ex);
+        } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }
     }

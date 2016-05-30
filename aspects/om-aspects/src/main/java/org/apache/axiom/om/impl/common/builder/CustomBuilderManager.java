@@ -20,14 +20,10 @@ package org.apache.axiom.om.impl.common.builder;
 
 import java.util.ArrayList;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreNode;
 import org.apache.axiom.core.impl.builder.BuilderListener;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
@@ -93,21 +89,7 @@ final class CustomBuilderManager implements BuilderListener {
                                 if (log.isDebugEnabled()) {
                                     log.debug("Invoking custom builder " + customBuilder);
                                 }
-                                XMLStreamReader reader = element.getXMLStreamReader(false);
-                                // Advance the reader to the START_ELEMENT event of the root element
-                                try {
-                                    reader.next();
-                                } catch (XMLStreamException ex) {
-                                    // We should never get here
-                                    throw new OMException(ex);
-                                }
-                                OMDataSource dataSource = customBuilder.create(reader);
-                                try {
-                                    reader.close();
-                                } catch (XMLStreamException ex) {
-                                    // We should never get here
-                                    throw new OMException(ex);
-                                }
+                                OMDataSource dataSource = customBuilder.create(element);
                                 Class<? extends AxiomSourcedElement> type;
                                 if (element instanceof AxiomSOAP11HeaderBlock) {
                                     type = AxiomSOAP11HeaderBlock.class;

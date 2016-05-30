@@ -24,10 +24,10 @@ import java.io.StringReader;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
@@ -67,7 +67,13 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
             // The expectation is that even after looking at the payload element name, registering
             // a custom builder still transforms the element.
             ((CustomBuilderSupport)builder).registerCustomBuilder(CustomBuilder.Selector.PAYLOAD, new CustomBuilder() {
-                public OMDataSource create(XMLStreamReader reader) throws OMException {
+                @Override
+                public OMDataSource create(OMElement element) throws OMException {
+                    try {
+                        element.getXMLStreamReaderWithoutCaching().close();
+                    } catch (XMLStreamException ex) {
+                        throw new OMException(ex);
+                    }
                     return new AbstractPushOMDataSource() {
                         @Override
                         public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {

@@ -20,14 +20,11 @@
 package org.apache.axiom.om.ds.custombuilder;
 
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import java.io.ByteArrayOutputStream;
 
@@ -46,22 +43,10 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
         this.encoding = (encoding == null) ? "utf-8" :encoding;
     }
 
-    public OMDataSource create(XMLStreamReader reader) throws OMException {
+    public OMDataSource create(OMElement element) throws OMException {
         try {
-            // Get the prefix of the start tag
-            String prefix = reader.getPrefix();
-            if (prefix == null) {
-                prefix = "";
-            }
-            
-            // Stream the events to a writer starting with the current event
-            StreamingOMSerializer ser = new StreamingOMSerializer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(baos, encoding);
-            ser.serialize(reader, writer, false);
-            writer.flush();
-            
-            // Capture the written byte array as a ByteArrayDataSource
+            element.serializeAndConsume(baos);
             byte[] bytes = baos.toByteArray();
             return new ByteArrayDataSource(bytes, encoding);
         } catch (XMLStreamException e) {

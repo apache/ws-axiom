@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPBody;
 
-import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * A Custom Builder is registered on the {@link OMXMLParserWrapper} for a particular set of elements.
@@ -73,32 +73,25 @@ public interface CustomBuilder {
          *            the local name of the element; never {@code null}
          * @return {@code true} if the element should be built as an {@link OMSourcedElement} using
          *         the custom builder registered with this selector, in which case
-         *         {@link CustomBuilder#create(XMLStreamReader)} will be called to create the
+         *         {@link CustomBuilder#create(OMElement)} will be called to create the
          *         corresponding {@link OMDataSource}; {@code false} otherwise
          */
         boolean accepts(OMContainer parent, int depth, String namespaceURI, String localName);
     }
     
     /**
-     * Create an {@link OMDataSource} for this whole subtree.
+     * Create an {@link OMDataSource} from the given {@link OMElement}. The builder will use the
+     * returned {@link OMDataSource} to create an {@link OMSourcedElement} replacing the original
+     * {@link OMElement}.
      * 
-     * @param reader
-     *            The stream reader to read the StAX events from. The data read
-     *            from this reader always represents plain XML, even if the
-     *            original document was XOP encoded. The reader optionally
-     *            implements the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
-     *            extension to give the custom builder access to optimized
-     *            binary data. This is appropriate for custom builders that
-     *            support {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
-     *            or in cases where there is no other option than to transfer
-     *            binary data as base64 encoded character data.
-     *            <p>
-     *            However, if the custom builder interacts with a third party
-     *            library that supports XOP, it may want to use that encoding
-     *            to optimize the transfer of binary data. To do so, the
-     *            custom builder MUST use {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}
-     *            to get an XOP encoded stream.
-     * @return OMDataSource
+     * @param element
+     *            The element to convert into an {@link OMDataSource}. The implementation is
+     *            expected to consume the element using methods such as
+     *            {@link OMContainer#getXMLStreamReader(boolean)},
+     *            {@link OMContainer#getSAXSource(boolean)} or
+     *            {@link OMContainer#serialize(XMLStreamWriter, boolean)} with
+     *            {@code preserve=true}.
+     * @return an {@link OMDataSource} with content that is equivalent to the original element
      */
-    public OMDataSource create(XMLStreamReader reader) throws OMException;
+    public OMDataSource create(OMElement element) throws OMException;
 }

@@ -22,13 +22,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 
 /**
@@ -51,12 +50,13 @@ public final class BlobOMDataSourceCustomBuilder implements CustomBuilder {
         this.encoding = encoding;
     }
 
-    public OMDataSource create(XMLStreamReader reader) throws OMException {
+    @Override
+    public OMDataSource create(OMElement element) throws OMException {
         try {
             WritableBlob blob = blobFactory.createBlob();
             OutputStream out = blob.getOutputStream();
             try {
-                OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocument().serializeAndConsume(out);
+                element.serializeAndConsume(out);
             } finally {
                 out.close();
             }
