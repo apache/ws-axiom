@@ -19,6 +19,15 @@
 package org.apache.axiom.core.stream;
 
 public interface XmlReader {
+    /**
+     * Output one or more events to the {@link XmlHandler} connected to this {@link XmlReader}.
+     * 
+     * @return {@code true} if the last event sent to the {@link XmlHandler} was
+     *         {@link XmlHandler#completed()} and there are no more events to produce; {@code false}
+     *         if {@link #proceed()} should be called again to produce more events
+     * @throws StreamException
+     */
     boolean proceed() throws StreamException;
+
     void dispose();
 }
