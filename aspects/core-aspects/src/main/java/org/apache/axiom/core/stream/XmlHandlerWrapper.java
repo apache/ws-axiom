@@ -41,11 +41,6 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
-    public void completed() throws StreamException {
-        parent.completed();
-    }
-
-    @Override
     public void processDocumentTypeDeclaration(String rootName, String publicId, String systemId,
             String internalSubset) throws StreamException {
         parent.processDocumentTypeDeclaration(rootName, publicId, systemId, internalSubset);
@@ -117,5 +112,10 @@ public class XmlHandlerWrapper implements XmlHandler {
     @Override
     public void processEntityReference(String name, String replacementText) throws StreamException {
         parent.processEntityReference(name, replacementText);
+    }
+
+    @Override
+    public void completed() throws StreamException {
+        parent.completed();
     }
 }
