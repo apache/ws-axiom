@@ -43,6 +43,11 @@ public class OSGiITCase {
     public static Option[] configuration() {
         return options(
                 url("link:classpath:org.apache.geronimo.specs.geronimo-activation_1.1_spec.link"),
+                // TODO: this should no longer be necessary once we remove the dependency on the Axiom API
+                url("link:classpath:org.apache.servicemix.specs.jaxb-api-2.2.link"),
+                url("link:classpath:org.apache.servicemix.specs.stax-api-1.2.link"),
+                url("link:classpath:stax2-api.link"),
+                url("link:classpath:woodstox-core-asl.link"),
                 url("link:classpath:org.apache.commons.codec.link"),
                 url("link:classpath:org.apache.abdera.core.link"),
                 url("link:classpath:org.apache.abdera.i18n.link"),

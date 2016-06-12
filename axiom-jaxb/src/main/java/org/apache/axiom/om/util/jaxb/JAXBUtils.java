@@ -20,10 +20,10 @@ package org.apache.axiom.om.util.jaxb;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.util.jaxb.UnmarshallerAdapter;
+import org.apache.axiom.om.UnmarshallerConfigurator;
 
 /**
  * Contains utility methods that integrate JAXB with Axiom.
@@ -44,12 +44,10 @@ public final class JAXBUtils {
      * @return the JAXB object
      * @throws JAXBException
      *             if an error occurs while unmarshalling
+     * @deprecated Use {@link OMContainer#unmarshal(JAXBContext, UnmarshallerConfigurator, boolean)}
+     *             instead.
      */
     public static Object unmarshal(JAXBContext context, OMElement element, boolean cache) throws JAXBException {
-        UnmarshallerAdapter adapter = org.apache.axiom.util.jaxb.JAXBUtils.getUnmarshallerAdapter(
-                element.getXMLStreamReader(cache));
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        unmarshaller.setAttachmentUnmarshaller(adapter.getAttachmentUnmarshaller());
-        return unmarshaller.unmarshal(adapter.getReader());
+        return element.unmarshal(context, null, cache);
     }
 }

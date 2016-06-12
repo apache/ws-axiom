@@ -221,7 +221,6 @@
                         <Import-Package>
                             org.jaxen.*;resolution:=optional,
                             org.codehaus.stax2;resolution:=optional,
-                            javax.xml.bind.*;resolution:=optional,
                             *
                         </Import-Package>
                         <Bundle-Activator>org.apache.axiom.locator.Activator</Bundle-Activator>

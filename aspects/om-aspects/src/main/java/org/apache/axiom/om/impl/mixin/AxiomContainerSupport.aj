@@ -24,6 +24,10 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import javax.activation.DataHandler;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -58,6 +62,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.UnmarshallerConfigurator;
 import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.om.impl.OMMultipartWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
@@ -68,6 +73,7 @@ import org.apache.axiom.om.impl.intf.AxiomChildNode;
 import org.apache.axiom.om.impl.intf.AxiomContainer;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.OMFactoryEx;
+import org.apache.axiom.om.impl.jaxb.AttachmentUnmarshallerImpl;
 import org.apache.axiom.om.impl.stream.NamespaceContextPreservationFilterHandler;
 import org.apache.axiom.om.impl.stream.XmlDeclarationRewriterHandler;
 import org.apache.axiom.om.impl.stream.XsiTypeFilterHandler;
@@ -372,5 +378,25 @@ public aspect AxiomContainerSupport {
         if (builder != null) {
             builder.close();
         }
+    }
+
+    public final Object AxiomContainer.unmarshal(JAXBContext context, UnmarshallerConfigurator configurator, boolean preserve) throws JAXBException {
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        if (configurator != null) {
+            configurator.configure(unmarshaller);
+        }
+        XOPEncoded<XMLStreamReader> xopEncodedStream = getXOPEncodedStreamReader(preserve);
+        unmarshaller.setAttachmentUnmarshaller(new AttachmentUnmarshallerImpl(xopEncodedStream.getMimePartProvider()));
+        return unmarshaller.unmarshal(xopEncodedStream.getRootPart());
+    }
+
+    public final <T> JAXBElement<T> AxiomContainer.unmarshal(JAXBContext context, UnmarshallerConfigurator configurator, Class<T> declaredType, boolean preserve) throws JAXBException {
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        if (configurator != null) {
+            configurator.configure(unmarshaller);
+        }
+        XOPEncoded<XMLStreamReader> xopEncodedStream = getXOPEncodedStreamReader(preserve);
+        unmarshaller.setAttachmentUnmarshaller(new AttachmentUnmarshallerImpl(xopEncodedStream.getMimePartProvider()));
+        return unmarshaller.unmarshal(xopEncodedStream.getRootPart(), declaredType);
     }
 }
