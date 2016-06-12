@@ -29,6 +29,8 @@ import org.apache.axiom.util.stax.xop.XOPUtils;
 /**
  * Contains low level utility methods that integrate JAXB with some of the Axiom specific StAX
  * extensions.
+ * 
+ * @deprecated
  */
 public final class JAXBUtils {
     private JAXBUtils() {}

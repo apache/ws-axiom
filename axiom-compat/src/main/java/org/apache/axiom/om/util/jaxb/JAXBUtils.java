@@ -27,6 +27,8 @@ import org.apache.axiom.om.UnmarshallerConfigurator;
 
 /**
  * Contains utility methods that integrate JAXB with Axiom.
+ * 
+ * @deprecated
  */
 public final class JAXBUtils {
     private JAXBUtils() {}

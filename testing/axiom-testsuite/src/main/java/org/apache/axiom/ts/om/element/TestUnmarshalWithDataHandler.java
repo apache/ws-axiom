@@ -16,30 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.util.jaxb;
-
-import static org.junit.Assert.assertEquals;
+package org.apache.axiom.ts.om.element;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.ds.jaxb.JAXBOMDataSource;
-import org.apache.axiom.om.ds.jaxb.beans.DocumentBean;
-import org.junit.Test;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.jaxb.beans.DocumentBean;
 
-public class JAXBUtilsTest {
-    @Test
-    public void testUnmarshalWithDataHandler() throws Exception {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
+public class TestUnmarshalWithDataHandler extends AxiomTestCase {
+    public TestUnmarshalWithDataHandler(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    @Override
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
         DocumentBean orgBean = new DocumentBean();
         orgBean.setId("AB23498");
         orgBean.setContent(new DataHandler("test content", "text/plain"));
         OMElement element = factory.createOMElement(new JAXBOMDataSource(context, orgBean));
-        DocumentBean bean = (DocumentBean)JAXBUtils.unmarshal(context, element, true);
+        DocumentBean bean = (DocumentBean)element.unmarshal(context, null, true);
         assertEquals(orgBean.getId(), bean.getId());
         assertEquals(orgBean.getContent(), bean.getContent());
     }

@@ -16,7 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@javax.xml.bind.annotation.XmlSchema(
-        namespace = "http://ws.apache.org/axiom/test/jaxb",
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package org.apache.axiom.om.ds.jaxb.beans;
+package org.apache.axiom.ts.jaxb.beans;
+
+import javax.activation.DataHandler;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name="document")
+@XmlType(propOrder={ "id", "content" })
+public class DocumentBean {
+    private String id;
+    private DataHandler content;
+    
+    public String getId() {
+        return id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    public DataHandler getContent() {
+        return content;
+    }
+    
+    public void setContent(DataHandler content) {
+        this.content = content;
+    }
+}

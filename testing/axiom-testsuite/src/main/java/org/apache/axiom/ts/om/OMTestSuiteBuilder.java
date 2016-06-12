@@ -429,6 +429,7 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithExistingChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestUnmarshalWithDataHandler(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.sr.TestCloseAndContinueBuilding(metaFactory, true));
@@ -619,6 +620,12 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.jaxb.TestDataHandlerExpansion(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.jaxb.TestDataHandlerSerializationWithMTOM(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.jaxb.TestDataHandlerSerializationWithoutMTOM(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.jaxb.TestExceptionDuringSerialization(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.jaxb.TestGetNameFromJAXBElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.sourcedelement.jaxb.TestGetNameFromPlainObject(metaFactory));
         addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestGetName(metaFactory));
         for (int events = 0; events < 7; events++) {
             addTest(new org.apache.axiom.ts.om.sourcedelement.sr.TestCloseWithoutCaching(metaFactory, events));

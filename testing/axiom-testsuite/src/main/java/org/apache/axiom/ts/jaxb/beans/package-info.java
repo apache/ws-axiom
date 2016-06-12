@@ -16,38 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.ds.jaxb.beans;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
-@XmlRootElement(name="test")
-@XmlType(propOrder={ "a", "b" })
-public class MyBean {
-    private int a;
-    private int b;
-    
-    public MyBean() {
-    }
-    
-    public MyBean(int a, int b) {
-        this.a = a;
-        this.b = b;
-    }
-
-    public int getA() {
-        return a;
-    }
-    
-    public void setA(int a) {
-        this.a = a;
-    }
-    
-    public int getB() {
-        return b;
-    }
-    
-    public void setB(int b) {
-        this.b = b;
-    }
-}
+@javax.xml.bind.annotation.XmlSchema(
+        namespace = "http://ws.apache.org/axiom/test/jaxb",
+        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package org.apache.axiom.ts.jaxb.beans;

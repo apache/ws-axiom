@@ -29,6 +29,8 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
  * {@link XMLStreamReader} that exposes the {@link DataHandlerReader} extension.
  * 
  * @see JAXBUtils#getUnmarshallerAdapter(XMLStreamReader)
+ * 
+ * @deprecated
  */
 public class UnmarshallerAdapter {
     private final XMLStreamReader reader;
