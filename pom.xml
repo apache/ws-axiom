@@ -1106,6 +1106,8 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>${skipDeploy}</skip>
+                    <!-- Work around flakiness in the ASF infrastructure -->
+                    <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
                 </configuration>
             </plugin>
             <plugin>
