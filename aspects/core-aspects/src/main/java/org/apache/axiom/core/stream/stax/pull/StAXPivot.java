@@ -441,6 +441,11 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
+
+    @Override
     public Object getProperty(String name) throws IllegalArgumentException {
         if (extensions != null) {
             Object extension = extensions.get(name);

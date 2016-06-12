@@ -95,4 +95,9 @@ public final class NullXmlHandler implements XmlHandler {
     @Override
     public void completed() throws StreamException {
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
 }

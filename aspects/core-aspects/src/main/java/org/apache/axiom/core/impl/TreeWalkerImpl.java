@@ -100,6 +100,9 @@ public final class TreeWalkerImpl implements XmlReader {
     
     @Override
     public boolean proceed() throws StreamException {
+        if (incremental && !handler.drain()) {
+            return false;
+        }
         try {
             // Determine the next node (i.e. the node for which the next event is generated) and
             // update the state

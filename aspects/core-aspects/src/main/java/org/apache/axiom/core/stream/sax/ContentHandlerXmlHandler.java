@@ -285,4 +285,9 @@ public class ContentHandlerXmlHandler implements XmlHandler {
             throw new StreamException(ex);
         }
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
 }

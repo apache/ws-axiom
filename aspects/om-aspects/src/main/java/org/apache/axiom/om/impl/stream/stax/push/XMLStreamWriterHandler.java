@@ -215,4 +215,9 @@ public class XMLStreamWriterHandler implements XmlHandler {
     public void completed() throws StreamException {
         // TODO: the original StAX serialization code newer called writeEndDocument; this is probably a mistake
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
 }

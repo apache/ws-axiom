@@ -1098,4 +1098,9 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     public void completed() throws StreamException {
         flushBuffer();
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
 }

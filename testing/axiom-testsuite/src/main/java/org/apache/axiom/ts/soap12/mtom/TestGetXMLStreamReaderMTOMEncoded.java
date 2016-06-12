@@ -28,9 +28,9 @@ import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
-import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
@@ -52,8 +52,8 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
         
         // Use tree as input to XMLStreamReader
         // Issue XOP:Include events for optimized MTOM text nodes
-        XOPEncodedStream xopEncodedStream = XOPUtils.getXOPEncodedStream(root.getXMLStreamReader(cache));
-        XMLStreamReader xmlStreamReader = xopEncodedStream.getReader();
+        XOPEncoded<XMLStreamReader> xopEncodedStream = root.getXOPEncodedStreamReader(cache);
+        XMLStreamReader xmlStreamReader = xopEncodedStream.getRootPart();
         
         DataHandler dh = null;
         while(xmlStreamReader.hasNext() && dh == null) {

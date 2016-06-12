@@ -159,4 +159,9 @@ public final class SAXResultContentHandler implements XmlHandler {
             throw new UnsupportedOperationException();
         }
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
 }

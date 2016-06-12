@@ -141,4 +141,14 @@ public interface XmlHandler {
      *             if an error occurs when processing the event
      */
     void completed() throws StreamException;
+    
+    /**
+     * Drain the pipeline by pushing pending events to the next handler in the chain.
+     * 
+     * @return {@code true} if the pipeline was already drained and no new events were pushed,
+     *         {@code false} if at least one event was pushed and this method should be called again
+     *         to continue draining the pipeline
+     * @throws StreamException
+     */
+    boolean drain() throws StreamException;
 }

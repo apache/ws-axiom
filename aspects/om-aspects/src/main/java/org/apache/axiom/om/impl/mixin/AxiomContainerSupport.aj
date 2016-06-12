@@ -58,6 +58,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.om.impl.OMMultipartWriter;
 import org.apache.axiom.om.impl.common.AxiomExceptionTranslator;
 import org.apache.axiom.om.impl.common.AxiomSemantics;
@@ -77,6 +78,7 @@ import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.util.io.IOUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
+import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.xml.sax.InputSource;
 
 public aspect AxiomContainerSupport {
@@ -139,6 +141,17 @@ public aspect AxiomContainerSupport {
             throw new OMException(ex);
         }
         return pivot;
+    }
+    
+    public final XOPEncoded<XMLStreamReader> AxiomContainer.getXOPEncodedStreamReader(boolean cache) {
+        StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
+        XOPEncodingFilterHandler encoder = new XOPEncodingFilterHandler(pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL, null);
+        try {
+            pivot.setReader(coreGetReader(encoder, cache, true));
+        } catch (StreamException ex) {
+            throw new OMException(ex);
+        }
+        return new XOPEncoded<XMLStreamReader>(pivot, encoder);
     }
     
     public final AxiomChildNode AxiomContainer.prepareNewChild(OMNode omNode) {

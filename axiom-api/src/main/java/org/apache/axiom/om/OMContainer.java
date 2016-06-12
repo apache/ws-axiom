@@ -404,4 +404,13 @@ public interface OMContainer extends OMSerializable {
      * @see OMXMLBuilderFactory#createOMBuilder(OMFactory, SAXSource, boolean)
      */
     SAXResult getSAXResult();
+    
+    /**
+     * Get an XOP encoded pull parser representation of this information item.
+     * 
+     * @param cache
+     *            indicates if caching should be enabled
+     * @return an XOP encoded representation of this information item
+     */
+    XOPEncoded<XMLStreamReader> getXOPEncodedStreamReader(boolean cache);
 }

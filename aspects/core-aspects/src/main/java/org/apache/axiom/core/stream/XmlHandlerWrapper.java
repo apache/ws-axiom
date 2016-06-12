@@ -118,4 +118,9 @@ public class XmlHandlerWrapper implements XmlHandler {
     public void completed() throws StreamException {
         parent.completed();
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return parent.drain();
+    }
 }

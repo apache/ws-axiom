@@ -24,6 +24,7 @@ import org.apache.axiom.core.stream.XmlHandlerWrapper;
 
 public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper {
     private final CompletionListener completionListener;
+    private boolean inXOPInclude;
 
     public AbstractXOPEncodingFilterHandler(XmlHandler parent, CompletionListener completionListener) {
         super(parent);
@@ -66,6 +67,29 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
         return "cid:" + contentID.replaceAll("%", "%25");
     }
 
+    private boolean flushIfNecessary() throws StreamException {
+        if (inXOPInclude) {
+            super.endElement();
+            inXOPInclude = false;
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void startElement(String namespaceURI, String localName, String prefix)
+            throws StreamException {
+        flushIfNecessary();
+        super.startElement(namespaceURI, localName, prefix);
+    }
+
+    @Override
+    public void endElement() throws StreamException {
+        flushIfNecessary();
+        super.endElement();
+    }
+
     @Override
     public void processCharacterData(Object data, boolean ignorable) throws StreamException {
         if (!ignorable) {
@@ -75,7 +99,7 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
                 super.processNamespaceDeclaration(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
                 super.processAttribute("", XOPConstants.HREF, "", getURLForContentID(contentID), "CDATA", true);
                 super.attributesCompleted();
-                super.endElement();
+                inXOPInclude = true;
                 return;
             }
         }
@@ -85,6 +109,17 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
     @Override
     public void completed() throws StreamException {
         super.completed();
-        completionListener.completed(this);
+        if (completionListener != null) {
+            completionListener.completed(this);
+        }
+    }
+
+    @Override
+    public boolean drain() throws StreamException {
+        if (super.drain()) {
+            return flushIfNecessary();
+        } else {
+            return false;
+        }
     }
 }

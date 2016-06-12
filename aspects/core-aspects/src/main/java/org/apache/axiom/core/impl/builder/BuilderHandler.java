@@ -217,4 +217,9 @@ final class BuilderHandler implements XmlHandler {
         context = null;
         done = true;
     }
+
+    @Override
+    public boolean drain() throws StreamException {
+        return true;
+    }
 }

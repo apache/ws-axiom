@@ -32,12 +32,13 @@ import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
 import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.impl.intf.TextContent;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
-public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler {
+public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler, MimePartProvider {
     private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
@@ -78,6 +79,7 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
         return Collections.unmodifiableSet(dataHandlerObjects.keySet());
     }
 
+    @Override
     public DataHandler getDataHandler(String contentID) throws IOException {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {
@@ -87,6 +89,19 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
             return (DataHandler)dataHandlerObject;
         } else {
             return ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+        }
+    }
+
+    @Override
+    public boolean isLoaded(String contentID) {
+        Object dataHandlerObject = dataHandlerObjects.get(contentID);
+        if (dataHandlerObject == null) {
+            throw new IllegalArgumentException("No DataHandler object found for content ID '" +
+                    contentID + "'");
+        } else if (dataHandlerObject instanceof DataHandler) {
+            return true;
+        } else {
+            return ((DataHandlerProvider)dataHandlerObject).isLoaded();
         }
     }
 

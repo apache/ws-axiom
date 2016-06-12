@@ -29,10 +29,9 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.ds.custombuilder.CustomBuilder;
-import org.apache.axiom.util.stax.xop.XOPEncodedStream;
-import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public class JAXBCustomBuilder implements CustomBuilder {
     private final JAXBContext jaxbContext;
@@ -46,18 +45,17 @@ public class JAXBCustomBuilder implements CustomBuilder {
     @Override
     public OMDataSource create(OMElement element) throws OMException {
         try {
-            XMLStreamReader reader = element.getXMLStreamReaderWithoutCaching();
+            XOPEncoded<XMLStreamReader> xopStream = element.getXOPEncodedStreamReader(false);
+            XMLStreamReader reader = xopStream.getRootPart();
             reader.next();
             final String namespaceURI = reader.getNamespaceURI();
             final String localName = reader.getLocalName();
-            XOPEncodedStream xopStream = XOPUtils.getXOPEncodedStream(reader);
-            XMLStreamReader encodedReader = xopStream.getReader();
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             AttachmentUnmarshallerImpl attachmentUnmarshaller = new AttachmentUnmarshallerImpl(xopStream.getMimePartProvider());
             unmarshaller.setAttachmentUnmarshaller(attachmentUnmarshaller);
             // For the purpose of the test we just store the JAXB object and return
             // a dummy OMDataSource.
-            jaxbObject = unmarshaller.unmarshal(encodedReader);
+            jaxbObject = unmarshaller.unmarshal(reader);
             reader.close();
             attachmentsAccessed = attachmentUnmarshaller.isAccessed();
             return new AbstractPushOMDataSource() {
