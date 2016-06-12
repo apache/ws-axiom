@@ -22,11 +22,24 @@ import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentMarshaller;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 
-abstract class AttachmentMarshallerBase extends AttachmentMarshaller {
+final class AttachmentMarshallerImpl extends AttachmentMarshaller {
+    private final MTOMXMLStreamWriter out;
+    
+    public AttachmentMarshallerImpl(MTOMXMLStreamWriter out) {
+        this.out = out;
+    }
+
     @Override
     public boolean isXOPPackage() {
         return true;
+    }
+
+    @Override
+    public String addMtomAttachment(DataHandler data, String elementNamespace,
+            String elementLocalName) {
+        return "cid:" + out.prepareDataHandler(data);
     }
 
     @Override
