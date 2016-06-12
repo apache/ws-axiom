@@ -17,7 +17,7 @@
  * under the License.                                           *
  ****************************************************************/
 
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.InputStream;

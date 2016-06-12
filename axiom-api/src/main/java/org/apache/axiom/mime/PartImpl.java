@@ -17,15 +17,13 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import org.apache.axiom.blob.Blob;
 import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
-import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

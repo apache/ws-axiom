@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,10 +31,6 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.mime.ContentType;
-import org.apache.axiom.mime.DataHandlerFactory;
-import org.apache.axiom.mime.Header;
-import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,10 +42,9 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
 import org.apache.james.mime4j.stream.RecursionMode;
 
 /**
- * {@link AttachmentsDelegate} implementation that represents a MIME multipart message read from a
- * stream.
+ * Represents a MIME multipart message read from a stream.
  */
-class MIMEMessage implements Iterable<Part> {
+public final class MIMEMessage implements Iterable<Part> {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
     /** <code>ContentType</code> of the MIME message */
@@ -73,7 +68,7 @@ class MIMEMessage implements Iterable<Part> {
     private final WritableBlobFactory<?> attachmentBlobFactory;
     private final DataHandlerFactory dataHandlerFactory;
     
-    MIMEMessage(InputStream inStream, String contentTypeString,
+    public MIMEMessage(InputStream inStream, String contentTypeString,
             WritableBlobFactory<?> attachmentBlobFactory,
             DataHandlerFactory dataHandlerFactory) throws OMException {
         this.attachmentBlobFactory = attachmentBlobFactory;
@@ -125,7 +120,7 @@ class MIMEMessage implements Iterable<Part> {
         return dataHandlerFactory;
     }
 
-    ContentType getContentType() {
+    public ContentType getContentType() {
         return contentType;
     }
 
@@ -146,7 +141,7 @@ class MIMEMessage implements Iterable<Part> {
         return firstPart;
     }
 
-    Part getRootPart() {
+    public Part getRootPart() {
         do {
             if (rootPart != null) {
                 return rootPart;

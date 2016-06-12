@@ -16,12 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import org.apache.axiom.mime.Part;
 
 final class PartIterator implements Iterator<Part> {
     private final MIMEMessage message;
