@@ -73,6 +73,11 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
     }
 
+    @Override
+    public OMXMLParserWrapper createOMBuilder(Source rootPart, MimePartProvider mimePartProvider) {
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, mimePartProvider));
+    }
+
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
@@ -93,5 +98,10 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
                     "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
         }
         return builder;
+    }
+
+    @Override
+    public SOAPModelBuilder createSOAPModelBuilder(Source rootPart, MimePartProvider mimePartProvider) {
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, mimePartProvider));
     }
 }

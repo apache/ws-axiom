@@ -21,18 +21,16 @@ package org.apache.axiom.ts.om.xop;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stax.StAXSource;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.testutils.activation.TestDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
-import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
-import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
 
 public class XOPRoundtripTest extends AxiomTestCase {
     public XOPRoundtripTest(OMMetaFactory metaFactory) {
@@ -44,11 +42,11 @@ public class XOPRoundtripTest extends AxiomTestCase {
         DataHandler dh = new DataHandler(new TestDataSource('x', Runtime.getRuntime().maxMemory()));
         OMElement element1 = factory.createOMElement(new QName("test"));
         element1.addChild(factory.createOMText(dh, true));
-        XMLStreamReader originalReader = element1.getXMLStreamReader();
-        XOPEncodingStreamReader encodedReader = new XOPEncodingStreamReader(originalReader,
-                ContentIDGenerator.DEFAULT, OptimizationPolicy.DEFAULT);
-        XMLStreamReader decodedReader = new XOPDecodingStreamReader(encodedReader, encodedReader);
-        OMElement element2 = OMXMLBuilderFactory.createStAXOMBuilder(factory, decodedReader).getDocumentElement();
+        XOPEncoded<XMLStreamReader> xopEncodedStream = element1.getXOPEncodedStreamReader(true);
+        OMElement element2 = OMXMLBuilderFactory.createOMBuilder(
+                factory,
+                new StAXSource(xopEncodedStream.getRootPart()),
+                xopEncodedStream.getMimePartProvider()).getDocumentElement();
         OMText child = (OMText)element2.getFirstOMChild();
         assertNotNull(child);
         assertTrue(child.isBinary());

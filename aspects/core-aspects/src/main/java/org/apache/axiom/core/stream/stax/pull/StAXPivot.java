@@ -854,8 +854,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
 
     @Override
     public Location getLocation() {
-        // TODO Auto-generated method stub
-        return null;
+        return DummyLocation.INSTANCE;
     }
 
     @Override

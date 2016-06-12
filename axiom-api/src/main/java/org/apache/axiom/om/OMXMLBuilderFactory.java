@@ -31,6 +31,7 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.impl.builder.AttachmentsMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -470,6 +471,11 @@ public class OMXMLBuilderFactory {
                 new AttachmentsMimePartProvider(attachments));
     }
     
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
+            Source rootPart, MimePartProvider mimePartProvider) {
+        return omFactory.getMetaFactory().createOMBuilder(rootPart, mimePartProvider);
+    }
+    
     /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader and that
      * uses a particular Axiom implementation. The method will select the appropriate
@@ -658,5 +664,10 @@ public class OMXMLBuilderFactory {
         InputSource rootPart = new InputSource(attachments.getRootPartInputStream(false));
         rootPart.setEncoding(contentType.getParameter("charset"));
         return rootPart;
+    }
+    
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
+            Source rootPart, MimePartProvider mimePartProvider) {
+        return metaFactory.createSOAPModelBuilder(rootPart, mimePartProvider);
     }
 }

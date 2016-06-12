@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.core.stream.FilteredXmlInput;
@@ -153,6 +154,8 @@ final class BuilderSpec {
             is.setPublicId(streamSource.getPublicId());
             is.setSystemId(streamSource.getSystemId());
             return from(configuration, is);
+        } else if (source instanceof StAXSource) {
+            return from(((StAXSource)source).getXMLStreamReader());
         } else {
             try {
                 return new BuilderSpec(
@@ -182,6 +185,15 @@ final class BuilderSpec {
                         spec.getInput(),
                         new XOPDecodingFilter(mimePartProvider)),
                 mimePartProvider instanceof Detachable ? (Detachable) mimePartProvider : null);
+    }
+
+    static BuilderSpec from(StAXParserConfiguration configuration, Source source, MimePartProvider mimePartProvider) {
+        BuilderSpec spec = from(configuration, source);
+        return new BuilderSpec(
+                new FilteredXmlInput(
+                        spec.getInput(),
+                        new XOPDecodingFilter(mimePartProvider)),
+                spec.getDetachable());
     }
 
     XmlInput getInput() {

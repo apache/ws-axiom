@@ -153,6 +153,8 @@ public interface OMMetaFactory {
     OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
             InputSource rootPart, MimePartProvider mimePartProvider);
     
+    OMXMLParserWrapper createOMBuilder(Source rootPart, MimePartProvider mimePartProvider);
+    
     /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader. The
      * implementation will select the appropriate {@link SOAPFactory} based on the namespace URI of
@@ -207,4 +209,6 @@ public interface OMMetaFactory {
      */
     SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider);
+    
+    SOAPModelBuilder createSOAPModelBuilder(Source rootPart, MimePartProvider mimePartProvider);
 }

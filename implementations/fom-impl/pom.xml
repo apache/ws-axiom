@@ -172,6 +172,11 @@
                                     <artifactId>org.apache.servicemix.specs.stax-api-1.2</artifactId>
                                     <version>2.7.0</version>
                                 </artifact>
+                                <artifact>
+                                    <groupId>org.apache.servicemix.specs</groupId>
+                                    <artifactId>org.apache.servicemix.specs.jaxp-api-1.4</artifactId>
+                                    <version>2.7.0</version>
+                                </artifact>
                             </artifacts>
                         </configuration>
                     </execution>
