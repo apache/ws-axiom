@@ -28,15 +28,11 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
-import org.apache.axiom.core.stream.XmlHandlerWrapper;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
 import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.impl.intf.TextContent;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
-import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHandler implements XOPHandler, MimePartProvider {
     private final Map<String,Object> dataHandlerObjects = new LinkedHashMap<String,Object>();

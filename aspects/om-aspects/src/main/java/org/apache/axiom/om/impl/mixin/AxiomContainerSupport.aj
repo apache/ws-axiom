@@ -80,11 +80,11 @@ import org.apache.axiom.om.impl.stream.XsiTypeFilterHandler;
 import org.apache.axiom.om.impl.stream.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderExtensionFactory;
 import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
+import org.apache.axiom.om.impl.stream.xop.ContentIDGenerator;
+import org.apache.axiom.om.impl.stream.xop.OptimizationPolicy;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
 import org.apache.axiom.util.io.IOUtils;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.xml.sax.InputSource;
 
 public aspect AxiomContainerSupport {

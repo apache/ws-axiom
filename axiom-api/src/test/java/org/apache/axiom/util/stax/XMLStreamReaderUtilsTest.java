@@ -33,7 +33,6 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
-import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 import org.apache.commons.io.IOUtils;
 
 public class XMLStreamReaderUtilsTest extends TestCase {
@@ -64,10 +63,7 @@ public class XMLStreamReaderUtilsTest extends TestCase {
     private void testGetDataHandlerFromElementWithZeroLength(boolean useDHR) throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<test/>"));
         if (useDHR) {
-            // To have an XMLStreamReader that uses the DataHandlerReader extension, we wrap
-            // the parser using an XOPDecodingStreamReader (even if the document doesn't contain
-            // any xop:Include).
-            reader = new XOPDecodingStreamReader(reader, null);
+            reader = new XMLStreamReaderWithDataHandlerReader(reader);
         }
         try {
             reader.next();
@@ -112,7 +108,7 @@ public class XMLStreamReaderUtilsTest extends TestCase {
     private void testGetDataHandlerFromElementWithUnexpectedContent(boolean useDHR) throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<test>\n<child/>\n</test>"));
         if (useDHR) {
-            reader = new XOPDecodingStreamReader(reader, null);
+            reader = new XMLStreamReaderWithDataHandlerReader(reader);
         }
         try {
             reader.next();
@@ -170,7 +166,7 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING,
                 new StringReader(buffer.toString()));
         if (useDHR) {
-            reader = new XOPDecodingStreamReader(reader, null);
+            reader = new XMLStreamReaderWithDataHandlerReader(reader);
         }
         try {
             reader.next();

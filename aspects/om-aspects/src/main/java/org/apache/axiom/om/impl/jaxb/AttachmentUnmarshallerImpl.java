@@ -19,18 +19,41 @@
 package org.apache.axiom.om.impl.jaxb;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentUnmarshaller;
 
 import org.apache.axiom.mime.MimePartProvider;
-import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     private final MimePartProvider mimePartProvider;
     
     public AttachmentUnmarshallerImpl(MimePartProvider mimePartProvider) {
         this.mimePartProvider = mimePartProvider;
+    }
+    /**
+     * Extract the content ID from a URL following the cid scheme defined by RFC2392.
+     * 
+     * @param url the URL
+     * @return the corresponding content ID
+     * @throws IllegalArgumentException if the URL doesn't use the cid scheme
+     */
+    private static String getContentIDFromURL(String url) {
+        if (url.startsWith("cid:")) {
+            try {
+                // URIs should always be decoded using UTF-8 (see AXIOM-129). On the
+                // other hand, since non ASCII characters are not allowed in content IDs,
+                // we can simply decode using ASCII (which is a subset of UTF-8)
+                return URLDecoder.decode(url.substring(4), "ascii");
+            } catch (UnsupportedEncodingException ex) {
+                // We should never get here
+                throw new Error(ex);
+            }
+        } else {
+            throw new IllegalArgumentException("The URL doesn't use the cid scheme");
+        }
     }
 
     @Override
@@ -42,7 +65,7 @@ public final class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     @Override
     public DataHandler getAttachmentAsDataHandler(String cid) {
         try {
-            return mimePartProvider.getDataHandler(XOPUtils.getContentIDFromURL(cid));
+            return mimePartProvider.getDataHandler(getContentIDFromURL(cid));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

@@ -26,7 +26,6 @@ import java.net.URLDecoder;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**

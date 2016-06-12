@@ -26,7 +26,6 @@ import javax.activation.DataHandler;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.util.activation.DataHandlerUtils;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

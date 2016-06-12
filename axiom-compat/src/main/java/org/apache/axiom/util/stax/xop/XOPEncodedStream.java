@@ -21,8 +21,6 @@ package org.apache.axiom.util.stax.xop;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.mime.MimePartProvider;
-
 /**
  * Represents an XOP encoded stream. Since an XOP message is a MIME package with
  * a root part in XML and a set of additional (binary) parts referenced from

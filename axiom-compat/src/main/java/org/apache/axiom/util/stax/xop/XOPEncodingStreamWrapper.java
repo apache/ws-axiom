@@ -28,7 +28,6 @@ import java.util.Set;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.mime.MimePartProvider;
 
 /**
  * Base class for {@link XOPEncodingStreamReader} and {@link XOPEncodingStreamWriter}.
