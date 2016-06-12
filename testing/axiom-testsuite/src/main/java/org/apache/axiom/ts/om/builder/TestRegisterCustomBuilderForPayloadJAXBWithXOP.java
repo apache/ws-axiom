@@ -47,6 +47,6 @@ public class TestRegisterCustomBuilderForPayloadJAXBWithXOP extends RegisterCust
         createTestDocument(dh).serialize(out, format);
         out.close();
         Attachments attachments = new Attachments(blob.getInputStream(), format.getContentType());
-        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments), false, true);
+        test(dh, OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), StAXParserConfiguration.DEFAULT, attachments), false);
     }
 }

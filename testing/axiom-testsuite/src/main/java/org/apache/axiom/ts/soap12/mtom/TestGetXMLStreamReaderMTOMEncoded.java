@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap12.mtom;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import java.io.InputStream;
 
 import javax.activation.DataHandler;
@@ -31,7 +33,6 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.XOPEncoded;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.soap.MTOMSample;
-import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
     private final static QName XOP_INCLUDE = 
@@ -62,9 +63,10 @@ public class TestGetXMLStreamReaderMTOMEncoded extends AxiomTestCase {
                 QName qName =xmlStreamReader.getName();
                 if (XOP_INCLUDE.equals(qName)) {
                     String hrefValue = xmlStreamReader.getAttributeValue("", "href");
+                    assertThat(hrefValue).startsWith("cid:");
                     if (hrefValue != null) {
                         dh = xopEncodedStream.getMimePartProvider().getDataHandler(
-                                XOPUtils.getContentIDFromURL(hrefValue));
+                                hrefValue.substring(4));
                     }
                 }
             }

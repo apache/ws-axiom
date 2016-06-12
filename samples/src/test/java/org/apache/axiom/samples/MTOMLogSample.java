@@ -23,7 +23,6 @@ import java.io.StringWriter;
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 
@@ -32,28 +31,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.OptimizationPolicy;
-import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MTOMLogSample extends TestCase {
     private static final Log log = LogFactory.getLog(MTOMLogSample.class);
     
-    // START SNIPPET: variant1
-    private void logMessage1(SOAPEnvelope env) throws XMLStreamException {
-        StringWriter sw = new StringWriter();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(sw);
-        XMLStreamWriter encoder = new XOPEncodingStreamWriter(writer,
-                ContentIDGenerator.DEFAULT, OptimizationPolicy.DEFAULT);
-        env.serialize(encoder);
-        log.info("Message: " + sw.toString());
-    }
-    // END SNIPPET: variant1
-    
     // START SNIPPET: variant2
-    private void logMessage2(SOAPEnvelope env) throws XMLStreamException {
+    private void logMessage(SOAPEnvelope env) throws XMLStreamException {
         StringWriter sw = new StringWriter();
         env.serialize(new LogWriter(StAXUtils.createXMLStreamWriter(sw)));
         log.info("Message: " + sw.toString());
@@ -65,7 +50,6 @@ public class MTOMLogSample extends TestCase {
         SOAPEnvelope env = factory.getDefaultEnvelope();
         OMElement element = factory.createOMElement(new QName("urn:testService", "invokeMtom", "ns"), env.getBody());
         element.addChild(factory.createOMText(new DataHandler("test", "text/xml"), true));
-        logMessage1(env);
-        logMessage2(env);
+        logMessage(env);
     }
 }
