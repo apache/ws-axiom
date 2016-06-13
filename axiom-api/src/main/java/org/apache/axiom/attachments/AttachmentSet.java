@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.om.OMException;
 
 /**
@@ -81,5 +82,11 @@ class AttachmentSet extends AttachmentsDelegate {
     
     long getContentLength() throws IOException {
         return -1;
+    }
+
+    @Override
+    MIMEMessage getMIMEMessage() {
+        throw new IllegalStateException(
+                "The attachments map was created programatically. MIMEMessage is not available.");
     }
 }

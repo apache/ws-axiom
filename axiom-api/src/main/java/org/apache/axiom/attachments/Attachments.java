@@ -28,6 +28,7 @@ import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
@@ -400,5 +401,9 @@ public class Attachments {
      */
     public InputStream getIncomingAttachmentsAsSingleStream() throws IllegalStateException {
         throw new UnsupportedOperationException();
+    }
+
+    public MIMEMessage getMIMEMessage() {
+        return delegate.getMIMEMessage();
     }
 }

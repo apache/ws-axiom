@@ -21,7 +21,7 @@ package org.apache.axiom.soap.impl.common.builder;
 
 import org.apache.axiom.core.impl.builder.BuilderImpl;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.Detachable;
 import org.apache.axiom.om.impl.common.builder.OMXMLParserWrapperImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPMessage;

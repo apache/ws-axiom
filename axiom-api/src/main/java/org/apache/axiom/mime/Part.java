@@ -49,6 +49,13 @@ public interface Part {
     String getHeader(String name);
 
     /**
+     * Get the content type of this part.
+     * 
+     * @return the parsed value of the {@code Content-Type} header
+     */
+    ContentType getContentType();
+
+    /**
      * Get the content ID of this part, i.e. the value of the {@code Content-ID} header with the
      * enclosing brackets removed.
      * 
@@ -73,6 +80,7 @@ public interface Part {
      * @throws IOException
      *             if the content couldn't be read
      */
+    // TODO: should we really use IOException here?
     InputStream getInputStream(boolean preserve) throws IOException;
 
     /**

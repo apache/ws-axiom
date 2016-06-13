@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.builder;
+package org.apache.axiom.om.impl.common.builder;
 
 import org.apache.axiom.om.OMException;
 

@@ -277,11 +277,12 @@
                                         </value>
                                     </visibilityRules>
                                 </layer>
-                                <!-- layer>
+                                <layer>
+                                    <!-- The attachments API is considered a legacy API and shouldn't be used anywhere. -->
                                     <packages>
                                         <value>org.apache.axiom.attachments</value>
                                     </packages>
-                                </layer -->
+                                </layer>
                                 <layer>
                                     <packages>
                                         <value>org.apache.axiom.util</value>
@@ -294,17 +295,13 @@
                                 </layer>
                             </layers>
                             <ignore>
-                                <!-- o.a.a.attachments shouldn't depend on o.a.a.om -->
-                                org.apache.axiom.attachments.Attachments -> org.apache.axiom.om.OMException,
-                                org.apache.axiom.attachments.AttachmentsDelegate -> org.apache.axiom.om.OMException,
-                                org.apache.axiom.attachments.AttachmentSet -> org.apache.axiom.om.OMException,
-                                org.apache.axiom.attachments.IncomingAttachmentStreams -> org.apache.axiom.om.OMException,
-                                org.apache.axiom.attachments.MIMEMessageAdapter -> org.apache.axiom.om.OMException,
                                 <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
                                 org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                 <!-- TODO -->
                                 org.apache.axiom.mime.MIMEMessage -> org.apache.axiom.om.OMException,
                                 org.apache.axiom.mime.PartImpl -> org.apache.axiom.om.OMException,
+                                org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.attachments.ConfigurableDataHandler,
+                                org.apache.axiom.om.ds.jaxb.AttachmentMarshallerImpl -> org.apache.axiom.attachments.ByteArrayDataSource,
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
@@ -322,8 +319,6 @@
                                 org.apache.axiom.om.ds.AbstractPushOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.BlobOMDataSource -> org.apache.axiom.om.util.StAXUtils,
                                 org.apache.axiom.om.ds.StringOMDataSource -> org.apache.axiom.om.util.StAXUtils,
-                                <!-- TODO: Detachable should go to om-aspects -->
-                                org.apache.axiom.om.impl.builder.Detachable -> org.apache.axiom.om.OMException,
                                 <!-- TODO -->
                                 org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.om.util.CommonUtils,
                                 <!-- Incorrect layering -->

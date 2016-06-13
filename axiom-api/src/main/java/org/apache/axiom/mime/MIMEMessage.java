@@ -44,7 +44,11 @@ import org.apache.james.mime4j.stream.RecursionMode;
 /**
  * Represents a MIME multipart message read from a stream.
  */
-public final class MIMEMessage implements Iterable<Part> {
+public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
+    public interface PartCreationListener {
+        void partCreated(Part part);
+    }
+
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
     /** <code>ContentType</code> of the MIME message */
@@ -67,12 +71,15 @@ public final class MIMEMessage implements Iterable<Part> {
 
     private final WritableBlobFactory<?> attachmentBlobFactory;
     private final DataHandlerFactory dataHandlerFactory;
+    private final PartCreationListener partCreationListener;
     
     public MIMEMessage(InputStream inStream, String contentTypeString,
             WritableBlobFactory<?> attachmentBlobFactory,
-            DataHandlerFactory dataHandlerFactory) throws OMException {
+            DataHandlerFactory dataHandlerFactory,
+            PartCreationListener partCreationListener) throws OMException {
         this.attachmentBlobFactory = attachmentBlobFactory;
         this.dataHandlerFactory = dataHandlerFactory;
+        this.partCreationListener = partCreationListener;
         try {
             contentType = new ContentType(contentTypeString);
         } catch (ParseException e) {
@@ -124,14 +131,20 @@ public final class MIMEMessage implements Iterable<Part> {
         return contentType;
     }
 
-    DataHandler getDataHandler(String contentID) {
+    @Override
+    public boolean isLoaded(String contentID) {
+        // TODO: throw IllegalStateException if we know that the part doesn't exist
+        return partMap.containsKey(contentID);
+    }
+
+    public DataHandler getDataHandler(String contentID) {
         do {
             PartImpl part = partMap.get(contentID);
             if (part != null) {
                 return part.getDataHandler();
             }
         } while (getNextPart() != null);
-        return null;
+        throw new IllegalArgumentException("No MIME part found for content ID '" + contentID + "'");
     }
 
     PartImpl getFirstPart() {
@@ -210,6 +223,9 @@ public final class MIMEMessage implements Iterable<Part> {
             if (isRootPart) {
                 rootPart = currentPart;
             }
+            if (partCreationListener != null) {
+                partCreationListener.partCreated(currentPart);
+            }
         }
         return currentPart;
     }
@@ -224,5 +240,11 @@ public final class MIMEMessage implements Iterable<Part> {
     @Override
     public Iterator<Part> iterator() {
         return new PartIterator(this);
+    }
+
+    public void detach() {
+        while (getNextPart() != null) {
+            // Just loop
+        }
     }
 }

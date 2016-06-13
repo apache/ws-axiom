@@ -18,9 +18,9 @@
  */
 package org.apache.axiom.om;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.text.ParseException;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -30,8 +30,9 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.mime.ContentType;
+import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -437,9 +438,28 @@ public class OMXMLBuilderFactory {
      * @throws OMException
      *             if an error occurs while processing the content type information from the
      *             {@link Attachments} object
+     * 
+     * @deprecated Use {@link #createOMBuilder(StAXParserConfiguration, MIMEMessage)} instead.
      */
     public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Attachments attachments) {
-        return createOMBuilder(OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, attachments);
+        return createOMBuilder(configuration, attachments.getMIMEMessage());
+    }
+    
+    /**
+     * Create an XOP aware model builder from the provided {@link MIMEMessage} object and with a
+     * given parser configuration.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param message
+     *            the MIME message
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link MIMEMessage} object
+     */
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MIMEMessage message) {
+        return createOMBuilder(OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, message);
     }
     
     /**
@@ -456,18 +476,34 @@ public class OMXMLBuilderFactory {
      * @throws OMException
      *             if an error occurs while processing the content type information from the
      *             {@link Attachments} object
+     * 
+     * @deprecated Use {{@link #createOMBuilder(OMFactory, StAXParserConfiguration, MIMEMessage)}
+     *             instead.
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
             StAXParserConfiguration configuration, Attachments attachments) {
-        ContentType contentType;
-        try {
-            contentType = new ContentType(attachments.getRootPartContentType());
-        } catch (ParseException ex) {
-            throw new OMException(ex);
-        }
-        InputSource rootPart = getRootPartInputSource(attachments, contentType);
-        return omFactory.getMetaFactory().createOMBuilder(configuration, rootPart,
-                new AttachmentsMimePartProvider(attachments));
+        return createOMBuilder(omFactory, configuration, attachments.getMIMEMessage());
+    }
+
+    /**
+     * Create an XOP aware model builder from the provided {@link MIMEMessage} object using a
+     * specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param message
+     *            the MIME message
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link MIMEMessage} object
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
+            StAXParserConfiguration configuration, MIMEMessage message) {
+        return omFactory.getMetaFactory().createOMBuilder(configuration,
+                getRootPartInputSource(message), message);
     }
     
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
@@ -617,9 +653,28 @@ public class OMXMLBuilderFactory {
      * @throws OMException
      *             if an error occurs while processing the content type information from the
      *             {@link Attachments} object
+     * 
+     * @deprecated Use {@link #createSOAPModelBuilder(MIMEMessage)} instead
      */
     public static SOAPModelBuilder createSOAPModelBuilder(Attachments attachments) {
-        return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), attachments);
+        return createSOAPModelBuilder(attachments.getMIMEMessage());
+    }
+    
+    /**
+     * Create an MTOM aware model builder from the provided {@link MIMEMessage} object. The method
+     * will determine the SOAP version based on the content type information from the
+     * {@link MIMEMessage} object. It will configure the underlying parser as specified by
+     * {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param message
+     *            the MIME message
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link MIMEMessage} object
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(MIMEMessage message) {
+        return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), message);
     }
     
     /**
@@ -636,16 +691,32 @@ public class OMXMLBuilderFactory {
      * @throws OMException
      *             if an error occurs while processing the content type information from the
      *             {@link Attachments} object
+     * 
+     * @deprecated Use {@link #createSOAPModelBuilder(OMMetaFactory, MIMEMessage)} instead.
      */
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
             Attachments attachments) {
-        ContentType contentType;
-        try {
-            contentType = new ContentType(attachments.getRootPartContentType());
-        } catch (ParseException ex) {
-            throw new OMException(ex);
-        }
-        String type = contentType.getParameter("type");
+        return createSOAPModelBuilder(metaFactory, attachments.getMIMEMessage());
+    }
+
+    /**
+     * Create an MTOM aware model builder from the provided {@link MIMEMessage} object using a
+     * particular Axiom implementation. The method will determine the SOAP version based on the
+     * content type information from the {@link MIMEMessage} object. It will configure the
+     * underlying parser as specified by {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param message
+     *            the MIME message
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link MIMEMessage} object
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
+            MIMEMessage message) {
+        String type = message.getRootPart().getContentType().getParameter("type");
         SOAPFactory soapFactory;
         if ("text/xml".equalsIgnoreCase(type)) {
             soapFactory = metaFactory.getSOAP11Factory();
@@ -654,15 +725,20 @@ public class OMXMLBuilderFactory {
         } else {
             throw new OMException("Unable to determine SOAP version");
         }
-        InputSource rootPart = getRootPartInputSource(attachments, contentType);
         return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
-                rootPart, new AttachmentsMimePartProvider(attachments));
+                getRootPartInputSource(message), message);
     }
     
-    private static InputSource getRootPartInputSource(Attachments attachments, ContentType contentType) {
-        InputSource rootPart = new InputSource(attachments.getRootPartInputStream(false));
-        rootPart.setEncoding(contentType.getParameter("charset"));
-        return rootPart;
+    private static InputSource getRootPartInputSource(MIMEMessage message) {
+        Part rootPart = message.getRootPart();
+        InputSource is;
+        try {
+            is = new InputSource(rootPart.getInputStream(false));
+        } catch (IOException ex) {
+            throw new OMException(ex);
+        }
+        is.setEncoding(rootPart.getContentType().getParameter("charset"));
+        return is;
     }
     
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,

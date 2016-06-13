@@ -37,9 +37,10 @@ import org.apache.axiom.core.stream.NamespaceRepairingFilter;
 import org.apache.axiom.core.stream.XmlInput;
 import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
+import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.Detachable;
 import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
 import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -178,13 +179,24 @@ final class BuilderSpec {
     }
 
     static BuilderSpec from(StAXParserConfiguration configuration,
-            InputSource rootPart, MimePartProvider mimePartProvider) {
+            InputSource rootPart, final MimePartProvider mimePartProvider) {
         BuilderSpec spec = create(configuration, rootPart, false);
+        Detachable detachable;
+        if (mimePartProvider instanceof MIMEMessage) {
+            detachable = new Detachable() {
+                @Override
+                public void detach() {
+                    ((MIMEMessage)mimePartProvider).detach();
+                }
+            };
+        } else {
+            detachable = null;
+        }
         return new BuilderSpec(
                 new FilteredXmlInput(
                         spec.getInput(),
                         new XOPDecodingFilter(mimePartProvider)),
-                mimePartProvider instanceof Detachable ? (Detachable) mimePartProvider : null);
+                detachable);
     }
 
     static BuilderSpec from(StAXParserConfiguration configuration, Source source, MimePartProvider mimePartProvider) {

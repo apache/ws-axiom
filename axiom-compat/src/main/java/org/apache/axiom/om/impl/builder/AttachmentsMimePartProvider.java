@@ -31,7 +31,7 @@ import org.apache.axiom.util.stax.xop.MimePartProvider;
  * <p>
  * For internal use only.
  */
-public class AttachmentsMimePartProvider implements MimePartProvider, Detachable {
+public class AttachmentsMimePartProvider implements MimePartProvider {
     private final Attachments attachments;
 
     public AttachmentsMimePartProvider(Attachments attachments) {
@@ -50,9 +50,5 @@ public class AttachmentsMimePartProvider implements MimePartProvider, Detachable
         } else {
             return dh;
         }
-    }
-
-    public void detach() {
-        attachments.getAllContentIDs();
     }
 }

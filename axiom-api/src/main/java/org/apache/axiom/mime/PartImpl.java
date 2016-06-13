@@ -35,6 +35,7 @@ import javax.activation.DataHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,7 +72,8 @@ final class PartImpl implements Part {
     private final WritableBlobFactory<?> blobFactory;
     
     private final String contentID;
-    private List<Header> headers;
+    private final List<Header> headers;
+    private ContentType contentType;
     
     private int state = STATE_UNREAD;
     
@@ -123,8 +125,15 @@ final class PartImpl implements Part {
         return contentID;
     }
 
-    public String getContentType() {
-        return getHeader("content-type");
+    public ContentType getContentType() {
+        if (contentType == null) {
+            try {
+                contentType = new ContentType(getHeader("content-type"));
+            } catch (ParseException ex) {
+                throw new OMException(ex);
+            }
+        }
+        return contentType;
     }
     
     public DataHandler getDataHandler() {

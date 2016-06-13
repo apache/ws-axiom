@@ -25,7 +25,7 @@ import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.Detachable;
 
 final class DetachableInputStream extends InputStream implements Detachable {
     private InputStream target;

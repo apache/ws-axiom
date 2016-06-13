@@ -29,7 +29,7 @@ import java.nio.charset.Charset;
 import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.builder.Detachable;
+import org.apache.axiom.om.impl.common.builder.Detachable;
 
 final class DetachableReader extends Reader implements Detachable {
     private static final Charset UTF8 = Charset.forName("UTF-8");
