@@ -49,6 +49,65 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
         void partCreated(Part part);
     }
 
+    public final static class Builder {
+        private InputStream inputStream;
+        private ContentType contentType;
+        private WritableBlobFactory<?> attachmentBlobFactory;
+        private DataHandlerFactory dataHandlerFactory;
+        private PartCreationListener partCreationListener;
+        
+        Builder() {}
+
+        public Builder setInputStream(InputStream inputStream) {
+            this.inputStream = inputStream;
+            return this;
+        }
+
+        public Builder setContentType(ContentType contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        public Builder setContentType(String contentType) {
+            try {
+                this.contentType = new ContentType(contentType);
+            } catch (ParseException ex) {
+                throw new OMException(ex);
+            }
+            return this;
+        }
+
+        public Builder setAttachmentBlobFactory(WritableBlobFactory<?> attachmentBlobFactory) {
+            this.attachmentBlobFactory = attachmentBlobFactory;
+            return this;
+        }
+
+        public Builder setDataHandlerFactory(DataHandlerFactory dataHandlerFactory) {
+            this.dataHandlerFactory = dataHandlerFactory;
+            return this;
+        }
+
+        public Builder setPartCreationListener(PartCreationListener partCreationListener) {
+            this.partCreationListener = partCreationListener;
+            return this;
+        }
+
+        public MIMEMessage build() {
+            if (inputStream == null) {
+                throw new IllegalArgumentException("inputStream is mandatory");
+            }
+            if (contentType == null) {
+                throw new IllegalArgumentException("contentType is mandatory");
+            }
+            return new MIMEMessage(
+                    inputStream,
+                    contentType,
+                    attachmentBlobFactory == null ? MemoryBlob.FACTORY : attachmentBlobFactory,
+                    dataHandlerFactory == null ? DataHandlerFactory.DEFAULT : dataHandlerFactory,
+                    partCreationListener);
+        }
+    }
+
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
     
     /** <code>ContentType</code> of the MIME message */
@@ -73,20 +132,14 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
     private final DataHandlerFactory dataHandlerFactory;
     private final PartCreationListener partCreationListener;
     
-    public MIMEMessage(InputStream inStream, String contentTypeString,
+    MIMEMessage(InputStream inStream, ContentType contentType,
             WritableBlobFactory<?> attachmentBlobFactory,
             DataHandlerFactory dataHandlerFactory,
             PartCreationListener partCreationListener) throws OMException {
         this.attachmentBlobFactory = attachmentBlobFactory;
         this.dataHandlerFactory = dataHandlerFactory;
         this.partCreationListener = partCreationListener;
-        try {
-            contentType = new ContentType(contentTypeString);
-        } catch (ParseException e) {
-            throw new OMException(
-                    "Invalid Content Type Field in the Mime Message"
-                    , e);
-        }
+        this.contentType = contentType;
 
         String start = contentType.getParameter("start");
         rootPartContentID = start == null ? null : normalizeContentID(start);
@@ -95,7 +148,7 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
         config.setStrictParsing(true);
         parser = new MimeTokenStream(config);
         parser.setRecursionMode(RecursionMode.M_NO_RECURSE);
-        parser.parseHeadless(inStream, contentTypeString);
+        parser.parseHeadless(inStream, contentType.toString());
         
         // Move the parser to the beginning of the first part
         while (parser.getState() != EntityState.T_START_BODYPART) {
@@ -107,6 +160,10 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
                 throw new OMException(ex);
             }
         }
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     private static String normalizeContentID(String contentID) {

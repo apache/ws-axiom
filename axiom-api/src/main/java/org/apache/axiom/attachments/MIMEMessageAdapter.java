@@ -70,12 +70,18 @@ final class MIMEMessageAdapter extends AttachmentsDelegate implements PartCreati
             filterIS = null;
         }
 
-        this.message = new MIMEMessage(inStream, contentTypeString, attachmentBlobFactory, new DataHandlerFactory() {
-            @Override
-            public DataHandler createDataHandler(Part part) {
-                return new LegacyPartDataHandler(part);
-            }
-        }, this);
+        this.message = MIMEMessage.newBuilder()
+                .setInputStream(inStream)
+                .setContentType(contentTypeString)
+                .setAttachmentBlobFactory(attachmentBlobFactory)
+                .setDataHandlerFactory(new DataHandlerFactory() {
+                        @Override
+                        public DataHandler createDataHandler(Part part) {
+                            return new LegacyPartDataHandler(part);
+                        }
+                    })
+                .setPartCreationListener(this)
+                .build();
 
         rootPart = message.getRootPart();
         String rootPartContentID = rootPart.getContentID();
