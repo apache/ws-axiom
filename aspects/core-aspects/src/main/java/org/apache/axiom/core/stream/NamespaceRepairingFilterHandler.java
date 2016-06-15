@@ -105,8 +105,7 @@ public final class NamespaceRepairingFilterHandler extends XmlHandlerWrapper {
                     if (namespaceStack[i*2+1].equals(namespaceURI)) {
                         return;
                     } else {
-                        // TODO: this causes a failure in the FOM tests
-//                        throw new OMException("The same prefix cannot be bound to two different namespaces");
+                        throw new ConflictingNamespaceDeclarationException("The same prefix cannot be bound to two different namespaces");
                     }
                 }
             }
