@@ -183,11 +183,8 @@ public class FOMParser extends AbstractParser implements Parser {
         throws ParseException {
         try {
             final FOMFactory factory = getFomFactory(options);
-            // TODO: we probably don't need namespace repairing here
             BuilderImpl builder = new BuilderImpl(
-                    new FilteredXmlInput(
-                            new StAXPullInput(new FOMStAXFilter(reader, options), false, null),
-                            NamespaceRepairingFilter.DEFAULT),
+                    new StAXPullInput(new FOMStAXFilter(reader, options), false, null),
                     FOMNodeFactory.INSTANCE, factory, null);
             builder.addListener(new BuilderListener() {
                 @Override
