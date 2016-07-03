@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
@@ -38,7 +39,7 @@ public class TestCloseWithXMLStreamReader extends AxiomTestCase {
         InputStream in = XMLSample.SIMPLE.getInputStream();
         try {
             XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);
-            OMXMLParserWrapper builder = metaFactory.createStAXOMBuilder(reader);
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader);
             WeakReference<XMLStreamReader> readerWeakRef = new WeakReference<XMLStreamReader>(reader);
             reader = null;
             builder.getDocument().build();

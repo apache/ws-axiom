@@ -23,14 +23,13 @@ import java.io.InputStream;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.xml.sax.InputSource;
 
 public abstract class SOAPTestCase extends AxiomTestCase {
     protected static final String MESSAGE = "message.xml";
@@ -53,7 +52,7 @@ public abstract class SOAPTestCase extends AxiomTestCase {
 
     protected SOAPModelBuilder getBuilderForTestMessage(String name) {
         InputStream in = AbstractTestCase.getTestResource("soap/" + spec.getName() + "/" + name);
-        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+        return OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, in, null);
     }
     
     protected SOAPEnvelope getTestMessage(String name) {

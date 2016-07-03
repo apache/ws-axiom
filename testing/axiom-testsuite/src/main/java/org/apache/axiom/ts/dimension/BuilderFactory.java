@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testing.multiton.Instances;
 import org.apache.axiom.testing.multiton.Multiton;
@@ -54,7 +55,7 @@ public abstract class BuilderFactory extends Multiton implements Dimension {
         }
 
         public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
-            return metaFactory.createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION,
+            return ((OMMetaFactorySPI)metaFactory).createOMBuilder(AxiomTestCase.TEST_PARSER_CONFIGURATION,
                     inputSource);
         }
     };

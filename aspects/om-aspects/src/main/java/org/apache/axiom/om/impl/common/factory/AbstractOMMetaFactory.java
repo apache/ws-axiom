@@ -28,6 +28,7 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -41,7 +42,7 @@ import org.xml.sax.InputSource;
  * Base class for {@link OMMetaFactory} implementations that make use of the standard builders
  * ({@link org.apache.axiom.core.impl.builder.BuilderImpl} and its subclasses).
  */
-public abstract class AbstractOMMetaFactory implements OMMetaFactory {
+public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     private final NodeFactory nodeFactory;
     
     public AbstractOMMetaFactory(NodeFactory nodeFactory) {

@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
@@ -51,7 +52,7 @@ public class TestSerializeWithXSITypeAttribute extends SampleBasedSOAPTestCase {
         // to for the namespace used in the value of the xsi:type attribute.
         XML xml = serializationStrategy.serialize(envelope.getBody());
         // No deserialize the result and test that the attribute value can be resolved.
-        OMElement element = metaFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, xml.getInputSource()).getDocumentElement().getFirstElement().getFirstElement();
+        OMElement element = ((OMMetaFactorySPI)metaFactory).createOMBuilder(StAXParserConfiguration.DEFAULT, xml.getInputSource()).getDocumentElement().getFirstElement().getFirstElement();
         assertThat(element.resolveQName(element.getAttributeValue(new QName("http://www.w3.org/2001/XMLSchema-instance", "type"))))
                 .isEqualTo(new QName("http://ws.apache.org/axis2/user", "myData"));
     }

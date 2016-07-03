@@ -26,6 +26,7 @@ import javax.activation.DataHandler;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.activation.RandomDataSource;
@@ -45,7 +46,7 @@ public class TestCloneBinary extends AxiomTestCase {
         DataHandler dh = new DataHandler(new RandomDataSource(600613L, 4096));
         InputStream rootPart = new ByteArrayInputStream("<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>".getBytes("utf-8"));
         DummyMimePartProvider mimePartProvider = new DummyMimePartProvider("123456@example.org", dh);
-        OMElement root = metaFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, new InputSource(rootPart), mimePartProvider).getDocumentElement();
+        OMElement root = ((OMMetaFactorySPI)metaFactory).createOMBuilder(StAXParserConfiguration.DEFAULT, new InputSource(rootPart), mimePartProvider).getDocumentElement();
         OMText text = (OMText)root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();
         options.setFetchDataHandlers(fetch);

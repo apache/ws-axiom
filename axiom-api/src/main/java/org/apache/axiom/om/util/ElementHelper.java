@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.BlobOMDataSource;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
@@ -190,8 +191,8 @@ public class ElementHelper {
         if (omElement.getOMFactory().getMetaFactory() == omFactory.getMetaFactory()) {
             return omElement;
         } else {
-            OMElement documentElement = omFactory.getMetaFactory().createStAXOMBuilder(
-                    omElement.getXMLStreamReader()).getDocumentElement();
+            OMElement documentElement = OMXMLBuilderFactory.createStAXOMBuilder(
+                    omFactory, omElement.getXMLStreamReader()).getDocumentElement();
             documentElement.build();
             return documentElement;
         }

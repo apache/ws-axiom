@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.dom.factory;
 import org.apache.axiom.dom.DOMDocument;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.w3c.dom.DOMImplementation;
@@ -96,7 +97,7 @@ final class DOOMDocumentBuilder extends DocumentBuilder {
     }
 
     public Document parse(InputSource inputSource) throws SAXException, IOException {
-        OMDocument document = factory.getMetaFactory().createOMBuilder(parserConfiguration,
+        OMDocument document = ((OMMetaFactorySPI)factory.getMetaFactory()).createOMBuilder(parserConfiguration,
                 inputSource).getDocument();
         document.close(true);
         return (Document)document;

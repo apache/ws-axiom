@@ -81,7 +81,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createStAXOMBuilder(parser);
+        return ((OMMetaFactorySPI)metaFactory).createStAXOMBuilder(parser);
     }
     
     /**
@@ -98,7 +98,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        return omFactory.getMetaFactory().createStAXOMBuilder(parser);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createStAXOMBuilder(parser);
     }
     
     /**
@@ -159,7 +159,7 @@ public class OMXMLBuilderFactory {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
-        return metaFactory.createOMBuilder(configuration, is);
+        return ((OMMetaFactorySPI)metaFactory).createOMBuilder(configuration, is);
     }
     
     /**
@@ -229,7 +229,7 @@ public class OMXMLBuilderFactory {
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in, String encoding) {
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
-        return omFactory.getMetaFactory().createOMBuilder(configuration, is);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(configuration, is);
     }
     
     /**
@@ -257,7 +257,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Reader in) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(configuration, new InputSource(in));
+        return ((OMMetaFactorySPI)metaFactory).createOMBuilder(configuration, new InputSource(in));
     }
     
     /**
@@ -288,7 +288,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
-        return omFactory.getMetaFactory().createOMBuilder(configuration, new InputSource(in));
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(configuration, new InputSource(in));
     }
     
     /**
@@ -304,7 +304,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(Source source) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(source);
+        return ((OMMetaFactorySPI)metaFactory).createOMBuilder(source);
     }
     
     /**
@@ -326,7 +326,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(node, expandEntityReferences);
+        return ((OMMetaFactorySPI)metaFactory).createOMBuilder(node, expandEntityReferences);
     }
     
     /**
@@ -353,7 +353,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(source, expandEntityReferences);
+        return ((OMMetaFactorySPI)metaFactory).createOMBuilder(source, expandEntityReferences);
     }
     
     /**
@@ -371,7 +371,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
-        return omFactory.getMetaFactory().createOMBuilder(source);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(source);
     }
     
     /**
@@ -395,7 +395,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node, boolean expandEntityReferences) {
-        return omFactory.getMetaFactory().createOMBuilder(node, expandEntityReferences);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(node, expandEntityReferences);
     }
     
     /**
@@ -423,7 +423,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source, boolean expandEntityReferences) {
-        return omFactory.getMetaFactory().createOMBuilder(source, expandEntityReferences);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(source, expandEntityReferences);
     }
     
     /**
@@ -502,13 +502,13 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
             StAXParserConfiguration configuration, MIMEMessage message) {
-        return omFactory.getMetaFactory().createOMBuilder(configuration,
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(configuration,
                 getRootPartInputSource(message), message);
     }
     
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
             Source rootPart, MimePartProvider mimePartProvider) {
-        return omFactory.getMetaFactory().createOMBuilder(rootPart, mimePartProvider);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(rootPart, mimePartProvider);
     }
     
     /**
@@ -526,7 +526,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createStAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
-        return metaFactory.createStAXSOAPModelBuilder(parser);
+        return ((OMMetaFactorySPI)metaFactory).createStAXSOAPModelBuilder(parser);
     }
     
     /**
@@ -542,7 +542,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
-        return OMAbstractFactory.getMetaFactory().createStAXSOAPModelBuilder(parser);
+        return ((OMMetaFactorySPI)OMAbstractFactory.getMetaFactory()).createStAXSOAPModelBuilder(parser);
     }
     
     /**
@@ -580,7 +580,7 @@ public class OMXMLBuilderFactory {
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, InputStream in, String encoding) {
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
-        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
     }
     
     /**
@@ -610,7 +610,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, Reader in) {
-        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
     }
     
     /**
@@ -638,7 +638,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, Source source) {
-        return metaFactory.createSOAPModelBuilder(source);
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(source);
     }
     
     /**
@@ -725,7 +725,7 @@ public class OMXMLBuilderFactory {
         } else {
             throw new OMException("Unable to determine SOAP version");
         }
-        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
                 getRootPartInputSource(message), message);
     }
     
@@ -743,6 +743,6 @@ public class OMXMLBuilderFactory {
     
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
             Source rootPart, MimePartProvider mimePartProvider) {
-        return metaFactory.createSOAPModelBuilder(rootPart, mimePartProvider);
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(rootPart, mimePartProvider);
     }
 }

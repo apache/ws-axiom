@@ -19,6 +19,7 @@
 package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -41,7 +42,7 @@ public final class SOAPSampleAdapter {
     }
     
     public SOAPModelBuilder getBuilder(OMMetaFactory metaFactory) {
-        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(sample.getInputStream()));
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(sample.getInputStream()));
     }
     
     public SOAPMessage getSOAPMessage(OMMetaFactory metaFactory) {

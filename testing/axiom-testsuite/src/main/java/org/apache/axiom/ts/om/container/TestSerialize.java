@@ -28,6 +28,7 @@ import java.net.URL;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.ts.dimension.serialization.SerializationStrategy;
@@ -50,7 +51,7 @@ public class TestSerialize extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = metaFactory.createOMBuilder(TEST_PARSER_CONFIGURATION,
+        OMXMLParserWrapper builder = ((OMMetaFactorySPI)metaFactory).createOMBuilder(TEST_PARSER_CONFIGURATION,
                 new InputSource(file.getUrl().toString()));
         try {
             OMContainer container = containerExtractor.getContainer(builder);

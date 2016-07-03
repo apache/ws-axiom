@@ -306,14 +306,15 @@
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPModelBuilder,
+                                org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.soap.SOAPModelBuilder,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPModelBuilder,
                                 <!-- This should eventually be deprecated/removed -->
                                 org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPHeaderBlock,
                                 <!-- The public API shouldn't depend on classes in o.a.a.om.util -->
-                                org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
+                                org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.om.util.StAXParserConfiguration,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.om.util.StAXParserConfiguration,
                                 org.apache.axiom.om.OMOutputFormat -> org.apache.axiom.om.util.StAXWriterConfiguration,
                                 <!-- StAXUtils is in the wrong package (should be o.a.a.util.stax) -->
