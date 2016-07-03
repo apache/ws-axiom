@@ -49,26 +49,32 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
         this.nodeFactory = nodeFactory;
     }
     
+    @Override
     public OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
 
+    @Override
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputSource is) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, is));
     }
     
+    @Override
     public OMXMLParserWrapper createOMBuilder(Source source) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, source));
     }
 
+    @Override
     public OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(node, expandEntityReferences));
     }
 
+    @Override
     public OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(source, expandEntityReferences));
     }
 
+    @Override
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
             InputSource rootPart, MimePartProvider mimePartProvider) {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
@@ -79,18 +85,22 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
         return OM.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.DEFAULT, rootPart, mimePartProvider));
     }
 
+    @Override
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(parser));
     }
 
+    @Override
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, is));
     }
 
+    @Override
     public SOAPModelBuilder createSOAPModelBuilder(Source source) {
         return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, source));
     }
 
+    @Override
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
             SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
         SOAPModelBuilder builder = SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
