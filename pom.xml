@@ -261,7 +261,7 @@
         <jacoco.version>0.7.5.201505241946</jacoco.version>
         <spring.version>4.2.1.RELEASE</spring.version>
         <springws.version>2.2.4.RELEASE</springws.version>
-        <exam.version>4.7.0</exam.version>
+        <exam.version>4.9.1</exam.version>
         
         <skipDeploy>false</skipDeploy>
         <hermeticTests>true</hermeticTests>
