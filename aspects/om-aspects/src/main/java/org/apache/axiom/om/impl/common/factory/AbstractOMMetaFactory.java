@@ -88,8 +88,8 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
-        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, is));
+    public SOAPModelBuilder createSOAPModelBuilder(InputSource is) {
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, is));
     }
 
     @Override
@@ -98,9 +98,8 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     }
 
     @Override
-    public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
-            InputSource rootPart, MimePartProvider mimePartProvider) {
-        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
+    public SOAPModelBuilder createSOAPModelBuilder(InputSource rootPart, MimePartProvider mimePartProvider) {
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, rootPart, mimePartProvider));
     }
 
     @Override

@@ -582,7 +582,7 @@ public class OMXMLBuilderFactory {
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, InputStream in, String encoding) {
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
-        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(is);
     }
     
     /**
@@ -612,7 +612,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, Reader in) {
-        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(new InputSource(in));
     }
     
     /**
@@ -727,7 +727,7 @@ public class OMXMLBuilderFactory {
         } else {
             throw new OMException("Unable to determine SOAP version");
         }
-        SOAPModelBuilder builder = ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP,
+        SOAPModelBuilder builder = ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(
                 getRootPartInputSource(message), message);
         if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
             throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
