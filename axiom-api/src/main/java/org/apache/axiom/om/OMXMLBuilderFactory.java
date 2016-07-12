@@ -34,8 +34,10 @@ import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
@@ -725,8 +727,13 @@ public class OMXMLBuilderFactory {
         } else {
             throw new OMException("Unable to determine SOAP version");
         }
-        return ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
+        SOAPModelBuilder builder = ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(StAXParserConfiguration.SOAP,
                 getRootPartInputSource(message), message);
+        if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
+            throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
+                    "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
+        }
+        return builder;
     }
     
     private static InputSource getRootPartInputSource(MIMEMessage message) {

@@ -306,10 +306,11 @@
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
                                 org.apache.axiom.om.OMAbstractFactory -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactory -> org.apache.axiom.soap.SOAPFactory,
-                                org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.OMMetaFactorySPI -> org.apache.axiom.soap.SOAPModelBuilder,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPFactory,
+                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPMessage,
                                 org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPModelBuilder,
+                                org.apache.axiom.om.OMXMLBuilderFactory -> org.apache.axiom.soap.SOAPProcessingException,
                                 <!-- This should eventually be deprecated/removed -->
                                 org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPFactory,
                                 org.apache.axiom.om.util.ElementHelper -> org.apache.axiom.soap.SOAPHeaderBlock,

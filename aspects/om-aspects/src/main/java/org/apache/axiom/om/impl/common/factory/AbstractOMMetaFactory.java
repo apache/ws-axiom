@@ -31,10 +31,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -102,13 +99,8 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
 
     @Override
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
-            SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
-        SOAPModelBuilder builder = SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
-        if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
-            throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
-                    "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
-        }
-        return builder;
+            InputSource rootPart, MimePartProvider mimePartProvider) {
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(configuration, rootPart, mimePartProvider));
     }
 
     @Override

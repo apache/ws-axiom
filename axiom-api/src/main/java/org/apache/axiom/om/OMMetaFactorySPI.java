@@ -169,10 +169,6 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      * @param configuration
      *            the parser configuration to use; for security reasons, this should in general be
      *            {@link StAXParserConfiguration#SOAP}
-     * @param soapFactory
-     *            the {@link SOAPFactory} to use, or <code>null</code> if the implementation should
-     *            select the appropriate {@link SOAPFactory} based on the namespace URI of the SOAP
-     *            envelope.
      * @param rootPart
      *            the source of the root part of the MTOM message
      * @param mimePartProvider
@@ -180,7 +176,7 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      * @return the builder
      */
     SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
-            SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider);
+            InputSource rootPart, MimePartProvider mimePartProvider);
     
     SOAPModelBuilder createSOAPModelBuilder(Source rootPart, MimePartProvider mimePartProvider);
 }
