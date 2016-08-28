@@ -348,16 +348,20 @@ final class Navigator extends PullSerializerState
                     if (parent instanceof CoreElement) {
                         element = (CoreElement)parent;
                         attr = element.coreGetFirstAttribute();
-                        decl: while (attr != null) {
+                        while (attr != null) {
                             if (attr instanceof CoreNamespaceDeclaration) {
                                 CoreNamespaceDeclaration ns = (CoreNamespaceDeclaration)attr;
                                 String prefix = ns.coreGetDeclaredPrefix();
+                                boolean masked = false;
                                 for (int i=0; i<namespaceCount; i++) {
                                     if (namespaces[i].coreGetDeclaredPrefix().equals(prefix)) {
-                                        continue decl;
+                                        masked = true;
+                                        break;
                                     }
                                 }
-                                addNamespace(ns);
+                                if (!masked) {
+                                    addNamespace(ns);
+                                }
                             }
                             attr = attr.coreGetNextAttribute();
                         }
