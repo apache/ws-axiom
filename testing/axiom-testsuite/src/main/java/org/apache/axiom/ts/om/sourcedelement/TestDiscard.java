@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
 
 import org.apache.axiom.om.OMElement;
@@ -49,8 +49,8 @@ public class TestDiscard extends AxiomTestCase {
         OMElement child2 = factory.createOMElement("child2", null, parent);
         expansionStrategy.apply(omse);
         omse.discard();
-        ASSERT.that(child1.getNextOMSibling()).isSameAs(child2);
-        ASSERT.that(ds.hasUnclosedReaders()).isFalse();
-        ASSERT.that(ds.getReaderRequestCount()).isEqualTo(expansionStrategy == DONT_EXPAND ? 0 : 1);
+        assertThat(child1.getNextOMSibling()).isSameAs(child2);
+        assertThat(ds.hasUnclosedReaders()).isFalse();
+        assertThat(ds.getReaderRequestCount()).isEqualTo(expansionStrategy == DONT_EXPAND ? 0 : 1);
     }
 }

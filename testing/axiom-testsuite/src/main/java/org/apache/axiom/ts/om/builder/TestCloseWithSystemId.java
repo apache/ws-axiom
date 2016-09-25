@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.builder;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.activation.URLDataSource;
 import javax.xml.transform.stream.StreamSource;
@@ -50,7 +50,7 @@ public class TestCloseWithSystemId extends AxiomTestCase {
             builder.close();
             // Since the caller doesn't have control over the stream, the builder is responsible
             // for closing it.
-            ASSERT.that(ds.getOpenStreamCount()).isEqualTo(0);
+            assertThat(ds.getOpenStreamCount()).isEqualTo(0);
         } finally {
             registration.unregister();
         }

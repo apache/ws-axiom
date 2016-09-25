@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.builder;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -52,8 +52,8 @@ public class TestDetachWithStream extends AxiomTestCase {
         }
         long countBeforeDetach = stream.getCount();
         builder.detach();
-        ASSERT.that(stream.getCount()).isGreaterThan(countBeforeDetach);
-        ASSERT.that(stream.isClosed()).isFalse();
+        assertThat(stream.getCount()).isGreaterThan(countBeforeDetach);
+        assertThat(stream.isClosed()).isFalse();
         stream.close();
         builder.getDocument().build();
     }

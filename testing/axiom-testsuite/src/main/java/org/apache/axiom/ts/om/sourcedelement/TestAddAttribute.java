@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Iterator;
 
@@ -53,13 +53,13 @@ public class TestAddAttribute extends AxiomTestCase {
         // Add an attribute before expansion
         OMAttribute attr = strategy.addAttribute(element, "attr", null, "newvalue");
         // Force expansion; this should not overwrite the attribute we just added
-        ASSERT.that(element.getFirstOMChild()).isNotNull();
+        assertThat(element.getFirstOMChild()).isNotNull();
         OMAttribute attr2 = element.getAttribute(new QName("attr"));
-        ASSERT.that(attr2).isSameAs(attr);
-        ASSERT.that(attr2.getAttributeValue()).isEqualTo("newvalue");
+        assertThat(attr2).isSameAs(attr);
+        assertThat(attr2.getAttributeValue()).isEqualTo("newvalue");
         Iterator<OMAttribute> it = element.getAllAttributes();
-        ASSERT.that(it.hasNext()).isTrue();
-        ASSERT.that(it.next()).isSameAs(attr);
-        ASSERT.that(it.hasNext()).isFalse();
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(attr);
+        assertThat(it.hasNext()).isFalse();
     }
 }

@@ -18,7 +18,8 @@
  */
 package org.apache.axiom.ts.om.container;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import java.io.StringReader;
 
@@ -51,8 +52,8 @@ public class TestAddChildWithIncompleteSibling extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMContainer container = containerFactory.create(factory);
         container.addChild(OMXMLBuilderFactory.createOMBuilder(factory, new StringReader("<a>test</a>")).getDocumentElement(true));
-        ASSERT.that(container.isComplete()).isFalse();
+        assertThat(container.isComplete()).isFalse();
         container.addChild(factory.createOMText("test"));
-        ASSERT.that(container).hasNumberOfChildren(2);
+        assertThat(container).hasNumberOfChildren(2);
     }
 }

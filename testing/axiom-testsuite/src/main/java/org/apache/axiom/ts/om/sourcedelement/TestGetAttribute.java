@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.namespace.QName;
 
@@ -45,7 +45,7 @@ public class TestGetAttribute extends AxiomTestCase {
         OMSourcedElement element = factory.createOMElement(
                 new PullOMDataSource("<root attr='value'/>"), "root", null);
         OMAttribute attr = element.getAttribute(new QName("attr"));
-        ASSERT.that(attr).isNotNull();
-        ASSERT.that(attr.getLocalName()).isEqualTo("attr");
+        assertThat(attr).isNotNull();
+        assertThat(attr.getLocalName()).isEqualTo("attr");
     }
 }
