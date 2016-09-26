@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.builder;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import javax.xml.transform.sax.SAXSource;
 
@@ -38,8 +38,8 @@ public class TestDetachWithSAXSource extends AxiomTestCase {
         DummyXMLReader xmlReader = new DummyXMLReader();
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new SAXSource(xmlReader, new InputSource()), false);
-        ASSERT.that(xmlReader.isParsed()).isFalse();
+        assertThat(xmlReader.isParsed()).isFalse();
         builder.detach();
-        ASSERT.that(xmlReader.isParsed()).isTrue();
+        assertThat(xmlReader.isParsed()).isTrue();
     }
 }

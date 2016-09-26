@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.builder;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import javax.xml.transform.dom.DOMSource;
 
@@ -54,6 +54,6 @@ public class TestDetachWithDOM extends AxiomTestCase {
         OMElement omRoot = builder.getDocumentElement();
         builder.detach();
         root.appendChild(document.createElementNS("", "b"));
-        ASSERT.that(omRoot).hasNumberOfChildren(1);
+        assertThat(omRoot).hasNumberOfChildren(1);
     }
 }

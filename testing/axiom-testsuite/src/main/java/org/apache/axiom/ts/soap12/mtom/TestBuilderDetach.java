@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.soap12.mtom;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Iterator;
 
@@ -50,8 +50,8 @@ public class TestBuilderDetach extends AxiomTestCase {
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         long countBeforeDetach = in.getCount();
         builder.detach();
-        ASSERT.that(in.getCount()).isGreaterThan(countBeforeDetach);
-        ASSERT.that(in.isClosed()).isFalse();
+        assertThat(in.getCount()).isGreaterThan(countBeforeDetach);
+        assertThat(in.isClosed()).isFalse();
         int binaryCount = 0;
         for (Iterator it = envelope.getDescendants(false); it.hasNext(); ) {
             OMNode node = (OMNode)it.next();
@@ -65,7 +65,7 @@ public class TestBuilderDetach extends AxiomTestCase {
                 }
             }
         }
-        ASSERT.that(binaryCount).isGreaterThan(0);
+        assertThat(binaryCount).isGreaterThan(0);
         in.close();
     }
 }

@@ -18,7 +18,8 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.DONT_EXPAND;
 import static org.apache.axiom.ts.dimension.ExpansionStrategy.PARTIAL;
@@ -54,9 +55,9 @@ public class TestDetach extends AxiomTestCase {
         parent.getFirstOMChild().insertSiblingBefore(omse);
         expansionStrategy.apply(omse);
         omse.detach();
-        ASSERT.that(ds.hasUnclosedReaders()).isEqualTo(expansionStrategy == PARTIAL);
-        ASSERT.that(ds.getReaderRequestCount()).isEqualTo(expansionStrategy == DONT_EXPAND ? 0 : 1);
-        ASSERT.about(xml()).that(xml(OMElement.class, parent)).hasSameContentAs(xml1);
-        ASSERT.about(xml()).that(xml(OMElement.class, omse)).hasSameContentAs(xml2);
+        assertThat(ds.hasUnclosedReaders()).isEqualTo(expansionStrategy == PARTIAL);
+        assertThat(ds.getReaderRequestCount()).isEqualTo(expansionStrategy == DONT_EXPAND ? 0 : 1);
+        assertAbout(xml()).that(xml(OMElement.class, parent)).hasSameContentAs(xml1);
+        assertAbout(xml()).that(xml(OMElement.class, omse)).hasSameContentAs(xml2);
     }
 }

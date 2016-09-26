@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.omdom.attr;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Iterator;
 
@@ -50,9 +50,9 @@ public class TestSetValueOnNamespaceDeclaration extends AxiomTestCase {
         element.setAttributeNodeNS(attr);
         attr.setValue("urn:test");
         Iterator it = ((OMElement)element).getAllDeclaredNamespaces();
-        ASSERT.that(it.hasNext()).isTrue();
+        assertThat(it.hasNext()).isTrue();
         OMNamespace ns = (OMNamespace)it.next();
-        ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:test");
-        ASSERT.that(it.hasNext()).isFalse();
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:test");
+        assertThat(it.hasNext()).isFalse();
     }
 }

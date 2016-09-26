@@ -18,7 +18,8 @@
  */
 package org.apache.axiom.ts.soap.headerblock;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
+import static org.apache.axiom.truth.AxiomTruth.assertThat;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
@@ -40,7 +41,7 @@ public class TestSetRoleWithoutExistingNamespaceDecl extends SOAPTestCase {
         SOAPHeaderBlock headerBlock = soapFactory.createSOAPHeaderBlock("block", soapFactory.createOMNamespace("urn:test", "p"));
         headerBlock.setRole("urn:testrole");
         OMAttribute roleAttr = headerBlock.getAttribute(HeaderBlockAttribute.ROLE.getQName(spec));
-        ASSERT.that(roleAttr).isNotNull();
-        ASSERT.that(headerBlock).hasNamespaceDeclaration(roleAttr.getNamespace());
+        assertThat(roleAttr).isNotNull();
+        assertThat(headerBlock).hasNamespaceDeclaration(roleAttr.getNamespace());
     }
 }

@@ -18,7 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertAbout;
+import static com.google.common.truth.Truth.assertThat;
 import static org.apache.axiom.truth.xml.XMLTruth.xml;
 
 import java.io.StringReader;
@@ -45,8 +46,8 @@ public class TestDetachWithDifferentBuilder extends AxiomTestCase {
         // Detaching the child should not build it because its parent is built by a different
         // builder.
         child.detach();
-        ASSERT.that(child.isComplete()).isFalse();
-        ASSERT.about(xml()).that(xml(OMElement.class, parent)).hasSameContentAs(xml1);
-        ASSERT.about(xml()).that(xml(OMElement.class, child)).hasSameContentAs(xml2);
+        assertThat(child.isComplete()).isFalse();
+        assertAbout(xml()).that(xml(OMElement.class, parent)).hasSameContentAs(xml1);
+        assertAbout(xml()).that(xml(OMElement.class, child)).hasSameContentAs(xml2);
     }
 }

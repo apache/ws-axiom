@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Iterator;
 
@@ -49,14 +49,14 @@ public class TestDeclareNamespace extends AxiomTestCase {
         // Declare a namespace before expansion
         element.declareNamespace("urn:ns2", "p");
         // Force expansion; this should not overwrite the namespace declaration we just added
-        ASSERT.that(element.getFirstOMChild()).isNotNull();
+        assertThat(element.getFirstOMChild()).isNotNull();
         OMNamespace ns = element.findNamespaceURI("p");
-        ASSERT.that(ns).isNotNull();
-        ASSERT.that(ns.getPrefix()).isEqualTo("p");
-        ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:ns2");
+        assertThat(ns).isNotNull();
+        assertThat(ns.getPrefix()).isEqualTo("p");
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns2");
         Iterator it = element.getAllDeclaredNamespaces();
-        ASSERT.that(it.hasNext()).isTrue();
-        ASSERT.that(it.next()).isSameAs(ns);
-        ASSERT.that(it.hasNext()).isFalse();
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isSameAs(ns);
+        assertThat(it.hasNext()).isFalse();
     }
 }

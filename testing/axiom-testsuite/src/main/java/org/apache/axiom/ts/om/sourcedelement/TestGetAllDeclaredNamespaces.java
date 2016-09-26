@@ -18,7 +18,7 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import static org.apache.axiom.truth.AxiomTestVerb.ASSERT;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Iterator;
 
@@ -45,10 +45,10 @@ public class TestGetAllDeclaredNamespaces extends AxiomTestCase {
         OMSourcedElement element = factory.createOMElement(
                 new PullOMDataSource("<root xmlns:p='urn:ns1'/>"), "root", null);
         Iterator attributes = element.getAllDeclaredNamespaces();
-        ASSERT.that(attributes.hasNext()).isTrue();
+        assertThat(attributes.hasNext()).isTrue();
         OMNamespace ns = (OMNamespace)attributes.next();
-        ASSERT.that(ns.getPrefix()).isEqualTo("p");
-        ASSERT.that(ns.getNamespaceURI()).isEqualTo("urn:ns1");
-        ASSERT.that(attributes.hasNext()).isFalse();
+        assertThat(ns.getPrefix()).isEqualTo("p");
+        assertThat(ns.getNamespaceURI()).isEqualTo("urn:ns1");
+        assertThat(attributes.hasNext()).isFalse();
     }
 }

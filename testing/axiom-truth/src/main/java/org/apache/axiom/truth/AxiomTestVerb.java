@@ -29,6 +29,9 @@ import com.google.common.truth.IterableSubject;
 import com.google.common.truth.TestVerb;
 import com.google.common.truth.Truth;
 
+/**
+ * @deprecated Use {@link AxiomTruth} instead.
+ */
 public final class AxiomTestVerb extends TestVerb {
     public static final AxiomTestVerb ASSERT = new AxiomTestVerb(Truth.THROW_ASSERTION_ERROR);
     
