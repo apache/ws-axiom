@@ -36,7 +36,7 @@ public final class AxiomTestVerb extends TestVerb {
         super(failureStrategy);
     }
 
-    public <T,C extends Iterable<T>> IterableSubject<? extends IterableSubject<?,T,C>,T,C> that(final Iterator<T> target) {
+    public <T,C extends Iterable<T>> IterableSubject that(final Iterator<T> target) {
         return that(new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
