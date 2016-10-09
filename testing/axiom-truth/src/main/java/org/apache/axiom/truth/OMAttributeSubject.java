@@ -30,13 +30,13 @@ public final class OMAttributeSubject extends Subject<OMAttributeSubject,OMAttri
     }
 
     public void hasValue(String expected) {
-        if (!Objects.equal(getSubject().getAttributeValue(), expected)) {
+        if (!Objects.equal(actual().getAttributeValue(), expected)) {
             fail("has value", expected);
         }
     }
 
     public void hasPrefix(String expected) {
-        if (!Objects.equal(getSubject().getPrefix(), expected)) {
+        if (!Objects.equal(actual().getPrefix(), expected)) {
             fail("has prefix", expected);
         }
     }

@@ -30,7 +30,7 @@ public abstract class AbstractOMContainerSubject<S extends AbstractOMContainerSu
     }
 
     public final void hasNumberOfChildren(int expected) {
-        OMNode child = getSubject().getFirstOMChild();
+        OMNode child = actual().getFirstOMChild();
         int actual = 0;
         while (child != null) {
             actual++;

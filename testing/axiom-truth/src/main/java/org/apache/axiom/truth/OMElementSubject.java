@@ -31,13 +31,13 @@ public final class OMElementSubject extends AbstractOMContainerSubject<OMElement
     }
 
     public void hasNoNamespaceDeclarations() {
-        if (getSubject().getAllDeclaredNamespaces().hasNext()) {
+        if (actual().getAllDeclaredNamespaces().hasNext()) {
             fail("has no namespace declarations");
         }
     }
     
     public void hasNamespaceDeclaration(OMNamespace ns) {
-        for (Iterator<OMNamespace> it = getSubject().getAllDeclaredNamespaces(); it.hasNext(); ) {
+        for (Iterator<OMNamespace> it = actual().getAllDeclaredNamespaces(); it.hasNext(); ) {
             if (it.next().equals(ns)) {
                 return;
             }
