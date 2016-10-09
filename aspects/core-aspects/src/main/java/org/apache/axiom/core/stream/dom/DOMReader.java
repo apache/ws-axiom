@@ -129,7 +129,7 @@ final class DOMReader implements XmlReader {
                         } else {
                             handler.startFragment();
                         }
-                        break;
+                        break loop;
                     case Node.DOCUMENT_TYPE_NODE:
                         DocumentType docType = (DocumentType)currentNode;
                         handler.processDocumentTypeDeclaration(docType.getName(), docType.getPublicId(), docType.getSystemId(), docType.getInternalSubset());
