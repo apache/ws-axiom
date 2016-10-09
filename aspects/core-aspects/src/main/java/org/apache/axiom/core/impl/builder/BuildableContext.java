@@ -31,6 +31,7 @@ import org.apache.axiom.core.CoreModelException;
 import org.apache.axiom.core.CoreModelStreamException;
 import org.apache.axiom.core.CoreNSAwareAttribute;
 import org.apache.axiom.core.CoreNSAwareElement;
+import org.apache.axiom.core.CoreNSUnawareAttribute;
 import org.apache.axiom.core.CoreNamespaceDeclaration;
 import org.apache.axiom.core.CoreParentNode;
 import org.apache.axiom.core.CoreProcessingInstruction;
@@ -208,6 +209,24 @@ final class BuildableContext extends Context implements InputContext {
         } else {
             CoreNSAwareAttribute attr = builderHandler.nodeFactory.createNode(CoreNSAwareAttribute.class);
             attr.initName(namespaceURI, localName, prefix, builderHandler.namespaceHelper);
+            try {
+                attr.coreSetCharacterData(value, null);
+            } catch (CoreModelException ex) {
+                throw new CoreModelStreamException(ex);
+            }
+            attr.coreSetType(type);
+            attr.coreSetSpecified(specified);
+            ((CoreElement)target).coreAppendAttribute(attr);
+        }
+    }
+    
+    @Override
+    void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+        if (passThroughHandler != null) {
+            passThroughHandler.processAttribute(name, value, type, specified);
+        } else {
+            CoreNSUnawareAttribute attr = builderHandler.nodeFactory.createNode(CoreNSUnawareAttribute.class);
+            attr.coreSetName(name);
             try {
                 attr.coreSetCharacterData(value, null);
             } catch (CoreModelException ex) {

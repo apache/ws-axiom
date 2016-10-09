@@ -149,8 +149,7 @@ final class DOMReader implements XmlReader {
                             Attr attr = (Attr)attributes.item(i);
                             String attrLocalName = attr.getLocalName();
                             if (attrLocalName == null) {
-                                // TODO
-                                throw new UnsupportedOperationException();
+                                handler.processAttribute(attr.getName(), attr.getValue(), "CDATA", attr.getSpecified());
                             } else {
                                 String namespaceURI = attr.getNamespaceURI();
                                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {

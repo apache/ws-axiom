@@ -114,6 +114,15 @@ public class XMLStreamWriterHandler implements XmlHandler {
         }
     }
 
+    @Override
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+        try {
+            writer.writeAttribute(name, value);
+        } catch (XMLStreamException ex) {
+            throw new StreamException(ex);
+        }
+    }
+
     public void attributesCompleted() throws StreamException {
         // Nothing to do here
     }

@@ -124,6 +124,13 @@ public class ContentHandlerXmlHandler implements XmlHandler {
         attributes.addAttribute(namespaceURI, localName, getQName(prefix, localName), type, value);
     }
 
+    @Override
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
     public void attributesCompleted() throws StreamException {
         try {
             contentHandler.startElement(elementURI, elementLocalName, elementQName, attributes);

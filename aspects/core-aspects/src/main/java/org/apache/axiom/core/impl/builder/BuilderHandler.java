@@ -163,6 +163,11 @@ final class BuilderHandler implements XmlHandler {
         context.processAttribute(namespaceURI, localName, prefix, value, type, specified);
     }
     
+    @Override
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+        context.processAttribute(name, value, type, specified);
+    }
+    
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         context.processNamespaceDeclaration(prefix, namespaceURI);
     }

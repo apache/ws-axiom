@@ -64,6 +64,12 @@ public class XmlHandlerWrapper implements XmlHandler {
     }
 
     @Override
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
+        parent.processAttribute(name, value, type, specified);
+    }
+
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI)
             throws StreamException {
         parent.processNamespaceDeclaration(prefix, namespaceURI);

@@ -72,6 +72,13 @@ final class UnwrappingContext extends Context {
     }
 
     @Override
+    void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
     void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         // TODO Auto-generated method stub
         

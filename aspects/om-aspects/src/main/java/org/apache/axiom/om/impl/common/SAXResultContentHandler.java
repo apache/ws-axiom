@@ -98,6 +98,13 @@ public final class SAXResultContentHandler implements XmlHandler {
     }
 
     @Override
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) {
         if (prefix.isEmpty()) {
             ((OMElement)target).declareDefaultNamespace(namespaceURI);

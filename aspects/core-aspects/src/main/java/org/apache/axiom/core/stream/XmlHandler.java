@@ -51,10 +51,10 @@ public interface XmlHandler {
     void endElement() throws StreamException;
     
     /**
-     * Add the given attribute to the element.
+     * Add the given namespace aware attribute to the element.
      * 
      * @param namespaceURI
-     *            the namespace URI or the attribute; never <code>null</code>
+     *            the namespace URI of the attribute; never <code>null</code>
      * @param localName
      *            the local name of the attribute; never <code>null</code>
      * @param prefix
@@ -66,6 +66,19 @@ public interface XmlHandler {
      * @throws StreamException
      */
     void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException;
+    
+    /**
+     * Add the given namespece unaware attribute to the element.
+     * 
+     * @param name
+     *            the name of the attribute; never <code>null</code>
+     * @param value
+     *            the value of the attribute; never <code>null</code>
+     * @param type
+     *            the attribute type (e.g. <tt>CDATA</tt>); never <code>null</code>
+     * @throws StreamException
+     */
+    void processAttribute(String name, String value, String type, boolean specified) throws StreamException;
     
     /**
      * Add the given namespace declaration to the element.

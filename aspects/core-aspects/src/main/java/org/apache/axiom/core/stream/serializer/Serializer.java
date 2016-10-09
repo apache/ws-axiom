@@ -810,6 +810,11 @@ public final class Serializer extends SerializerBase implements XmlHandler {
     }
 
     @Override
+    public void processAttribute(String name, String value, String type, boolean specified) throws StreamException {
+        writeAttribute("", name, value);
+    }
+
+    @Override
     public void attributesCompleted() throws StreamException {
     }
 

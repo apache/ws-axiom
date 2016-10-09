@@ -319,6 +319,13 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException {
         putNamespaceDeclaration(scopeStack[depth+1]++, prefix, namespaceURI);
     }

@@ -52,6 +52,11 @@ public final class NullXmlHandler implements XmlHandler {
     }
 
     @Override
+    public void processAttribute(String name, String value, String type, boolean specified)
+            throws StreamException {
+    }
+
+    @Override
     public void processNamespaceDeclaration(String prefix, String namespaceURI)
             throws StreamException {
     }

@@ -54,6 +54,8 @@ abstract class Context {
     
     abstract void processAttribute(String namespaceURI, String localName, String prefix, String value, String type, boolean specified) throws StreamException;
     
+    abstract void processAttribute(String name, String value, String type, boolean specified) throws StreamException;
+    
     abstract void processNamespaceDeclaration(String prefix, String namespaceURI) throws StreamException;
     
     abstract void attributesCompleted() throws StreamException;
