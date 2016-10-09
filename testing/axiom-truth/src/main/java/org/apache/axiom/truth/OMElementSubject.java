@@ -45,4 +45,15 @@ public final class OMElementSubject extends AbstractOMContainerSubject<OMElement
         fail("has namespace declaration for namespace URI \"" + ns.getNamespaceURI()
                 + "\" and prefix \"" + ns.getPrefix() + "\"");
     }
+
+    public void hasNamespaceDeclaration(String prefix, String namespaceURI) {
+        for (Iterator<OMNamespace> it = actual().getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = it.next();
+            if (ns.getPrefix().equals(prefix) && ns.getNamespaceURI().equals(namespaceURI)) {
+                return;
+            }
+        }
+        fail("has namespace declaration for namespace URI \"" + namespaceURI
+                + "\" and prefix \"" + prefix + "\"");
+    }
 }

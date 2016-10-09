@@ -171,7 +171,13 @@ final class BuilderSpec {
     }
 
     static BuilderSpec from(Node node, boolean expandEntityReferences) {
-        return new BuilderSpec(new FilteredXmlInput(new DOMInput(node, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
+        return new BuilderSpec(
+                new FilteredXmlInput(
+                        new FilteredXmlInput(
+                                new DOMInput(node, expandEntityReferences),
+                                NSUnawareNodeFilter.INSTANCE),
+                        NamespaceRepairingFilter.DEFAULT),
+                null);
     }
 
     static BuilderSpec from(SAXSource source, boolean expandEntityReferences) {

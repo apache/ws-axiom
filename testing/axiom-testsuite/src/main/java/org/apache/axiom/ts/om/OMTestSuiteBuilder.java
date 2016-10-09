@@ -118,6 +118,10 @@ public class OMTestSuiteBuilder extends MatrixTestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration(metaFactory, ""));
+        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMWithNSUnawareNamespaceDeclaration(metaFactory, "p"));
+        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMWithNSUnawarePrefixedAttribute(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMWithNSUnawareUnprefixedAttribute(metaFactory));
         for (XOPSample sample : getInstances(XOPSample.class)) {
             addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderXOP(metaFactory, sample, false));
             addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderXOP(metaFactory, sample, true));
