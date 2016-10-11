@@ -21,7 +21,6 @@ import org.apache.abdera.model.Element;
 import org.apache.axiom.fom.AbderaFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.traverse.OMFilterIterator;
 
 import javax.xml.namespace.QName;
 
