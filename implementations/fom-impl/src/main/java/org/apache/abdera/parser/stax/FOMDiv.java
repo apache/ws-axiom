@@ -25,12 +25,13 @@ import static org.apache.abdera.util.Constants.XHTML_NS;
 import java.io.StringWriter;
 import java.util.Iterator;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Div;
 import org.apache.axiom.core.CoreModelException;
+import org.apache.axiom.core.stream.NamespaceRepairingFilterHandler;
+import org.apache.axiom.core.stream.StreamException;
+import org.apache.axiom.core.stream.XmlReader;
+import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.fom.AbderaDiv;
 import org.apache.axiom.fom.FOMSemantics;
 import org.apache.axiom.om.OMElement;
@@ -104,19 +105,18 @@ public class FOMDiv extends FOMExtensibleElement implements AbderaDiv {
     }
 
     protected String getInternalValue() {
+        StringWriter sw = new StringWriter();
         try {
-            StringWriter out = new StringWriter();
-            XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(out);
-            writer.writeStartElement(""); 
-            for (Iterator<?> nodes = this.getChildren(); nodes.hasNext();) {
-                OMNode node = (OMNode)nodes.next();
-                node.serialize(writer);
+            XmlReader reader = coreGetReader(
+                    new ElementUnwrapperFilterHandler(new NamespaceRepairingFilterHandler(new Serializer(sw), null, true)),
+                    true, false);
+            while (!reader.proceed()) {
+                // Just loop
             }
-            writer.flush(); 
-            return out.getBuffer().toString().substring(2);
-        } catch (Exception e) {
+        } catch (StreamException ex) {
+            throw new FOMException(ex);
         }
-        return "";
+        return sw.toString();
     }
 
 }
