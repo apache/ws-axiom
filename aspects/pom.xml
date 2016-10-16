@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>1.2.20</version>
+        <version>1.2.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>aspects</artifactId>
