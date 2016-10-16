@@ -28,6 +28,7 @@ import org.apache.axiom.om.impl.common.builder.OMNamespaceCache;
 import org.apache.axiom.om.impl.intf.AxiomElement;
 import org.apache.axiom.om.impl.intf.AxiomNamedInformationItem;
 import org.apache.axiom.om.impl.intf.AxiomSourcedElement;
+import org.apache.axiom.util.xml.QNameCache;
 
 public aspect AxiomNamedInformationItemSupport {
     /**
@@ -47,7 +48,6 @@ public aspect AxiomNamedInformationItemSupport {
     private OMNamespace AxiomNamedInformationItem.namespace;
     
     private String AxiomNamedInformationItem.localName;
-    private QName AxiomNamedInformationItem.qName;
     
     public final void AxiomNamedInformationItem.initName(String namespaceURI, String localName, String prefix, Object namespaceHelper) {
         this.localName = localName;
@@ -61,7 +61,6 @@ public aspect AxiomNamedInformationItemSupport {
      */
     public final void AxiomNamedInformationItem.internalSetNamespace(OMNamespace namespace) {
         this.namespace = namespace;
-        qName = null;
     }
 
     public final String AxiomNamedInformationItem.internalGetLocalName() {
@@ -85,7 +84,6 @@ public aspect AxiomNamedInformationItemSupport {
     public final void AxiomNamedInformationItem.setLocalName(String localName) {
         beforeSetLocalName();
         this.localName = localName;
-        qName = null;
     }
 
     public QName AxiomNamedInformationItem.getQName() {
@@ -93,16 +91,10 @@ public aspect AxiomNamedInformationItemSupport {
     }
     
     public final QName AxiomNamedInformationItem.defaultGetQName() {
-        if (qName != null) {
-            return qName;
-        }
-
-        if (namespace != null) {
-            qName = new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
-        } else {
-            qName = new QName(localName);
-        }
-        return qName;
+        return QNameCache.getQName(
+                namespace == null ? "" : namespace.getNamespaceURI(),
+                localName,
+                namespace == null ? "" : namespace.getPrefix());
     }
     
     public final boolean AxiomNamedInformationItem.hasName(QName name) {
@@ -128,8 +120,6 @@ public aspect AxiomNamedInformationItemSupport {
     public final void AxiomNamedInformationItem.coreSetName(String namespaceURI, String localName, String prefix) {
         this.localName = localName;
         namespace = namespaceURI.length() == 0 && prefix.length() == 0 ? null : new OMNamespaceImpl(namespaceURI, prefix);
-        // TODO: need unit test to assert this
-        qName = null;
     }
 
     public final void AxiomNamedInformationItem.initName(CoreNamedNode other) {
@@ -137,11 +127,9 @@ public aspect AxiomNamedInformationItemSupport {
         if (o instanceof AxiomSourcedElement && ((AxiomElement)this).isExpanded()) {
             localName = o.coreGetLocalName();
             namespace = o.getNamespace();
-            qName = o.getQName();
         } else {
             localName = o.localName;
             namespace = o.namespace;
-            qName = o.qName;
         }
     }
     

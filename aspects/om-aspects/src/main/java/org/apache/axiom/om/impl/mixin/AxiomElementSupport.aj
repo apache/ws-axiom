@@ -67,6 +67,7 @@ import org.apache.axiom.om.impl.intf.Sequence;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamIOException;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.axiom.util.xml.QNameCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -138,11 +139,11 @@ public aspect AxiomElementSupport {
         int idx = qname.indexOf(':');
         if (idx == -1) {
             OMNamespace ns = getDefaultNamespace();
-            return ns == null ? new QName(qname) : new QName(ns.getNamespaceURI(), qname, "");
+            return QNameCache.getQName(ns == null ? "" : ns.getNamespaceURI(), qname);
         } else {
             String prefix = qname.substring(0, idx);
             OMNamespace ns = findNamespace(null, prefix);
-            return ns == null ? null : new QName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
+            return ns == null ? null : QNameCache.getQName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
         }
     }
 

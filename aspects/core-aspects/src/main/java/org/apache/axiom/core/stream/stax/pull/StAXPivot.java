@@ -36,6 +36,7 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.stax.StAXExceptionUtil;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
+import org.apache.axiom.util.xml.QNameCache;
 
 public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     private class NamespaceContextImpl implements NamespaceContext {
@@ -657,8 +658,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     @Override
     public QName getAttributeName(int index) {
         if (eventType == START_ELEMENT) {
-            // TODO: optimize this
-            return new QName(attributeStack[5*index], attributeStack[5*index+1], attributeStack[5*index+2]);
+            return QNameCache.getQName(attributeStack[5*index], attributeStack[5*index+1], attributeStack[5*index+2]);
         } else {
             throw new IllegalStateException();
         }
@@ -869,8 +869,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
         switch (eventType) {
             case START_ELEMENT:
             case END_ELEMENT:
-                // TODO: optimize this
-                return new QName(elementStack[3*depth], elementStack[3*depth+1], elementStack[3*depth+2]);
+                return QNameCache.getQName(elementStack[3*depth], elementStack[3*depth+1], elementStack[3*depth+2]);
             default:
                 throw new IllegalStateException();
         }
