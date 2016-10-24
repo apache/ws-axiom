@@ -29,6 +29,8 @@ import javax.xml.stream.XMLStreamReader;
  * This class implements methods that can be easily expressed in terms of other
  * (abstract) methods or for which it makes sense to provide a default
  * implementation.
+ * 
+ * @deprecated This class is no longer maintained.
  */
 public abstract class AbstractXMLStreamReader implements XMLStreamReader {
     public Location getLocation() {
