@@ -29,7 +29,6 @@ import javax.activation.DataHandler;
 import org.apache.axiom.core.stream.StreamException;
 import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
-import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.impl.intf.TextContent;
@@ -40,8 +39,8 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     private final OptimizationPolicy optimizationPolicy;
 
     public XOPEncodingFilterHandler(XmlHandler parent, ContentIDGenerator contentIDGenerator,
-            OptimizationPolicy optimizationPolicy, CompletionListener completionListener) {
-        super(parent, completionListener);
+            OptimizationPolicy optimizationPolicy) {
+        super(parent);
         this.contentIDGenerator = contentIDGenerator;
         this.optimizationPolicy = optimizationPolicy;
     }

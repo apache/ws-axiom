@@ -23,12 +23,10 @@ import org.apache.axiom.core.stream.XmlHandler;
 import org.apache.axiom.core.stream.XmlHandlerWrapper;
 
 public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper {
-    private final CompletionListener completionListener;
     private boolean inXOPInclude;
 
-    public AbstractXOPEncodingFilterHandler(XmlHandler parent, CompletionListener completionListener) {
+    public AbstractXOPEncodingFilterHandler(XmlHandler parent) {
         super(parent);
-        this.completionListener = completionListener;
     }
 
     protected abstract String processCharacterData(Object data) throws StreamException;
@@ -109,9 +107,6 @@ public abstract class AbstractXOPEncodingFilterHandler extends XmlHandlerWrapper
     @Override
     public void completed() throws StreamException {
         super.completed();
-        if (completionListener != null) {
-            completionListener.completed(this);
-        }
     }
 
     @Override

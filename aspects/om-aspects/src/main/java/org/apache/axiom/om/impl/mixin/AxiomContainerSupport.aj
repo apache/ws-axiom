@@ -53,8 +53,6 @@ import org.apache.axiom.core.stream.sax.XmlHandlerContentHandler;
 import org.apache.axiom.core.stream.serializer.Serializer;
 import org.apache.axiom.core.stream.stax.pull.StAXPivot;
 import org.apache.axiom.core.stream.stax.push.XMLStreamWriterNamespaceContextProvider;
-import org.apache.axiom.core.stream.xop.AbstractXOPEncodingFilterHandler;
-import org.apache.axiom.core.stream.xop.CompletionListener;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -151,7 +149,7 @@ public aspect AxiomContainerSupport {
     
     public final XOPEncoded<XMLStreamReader> AxiomContainer.getXOPEncodedStreamReader(boolean cache) {
         StAXPivot pivot = new StAXPivot(AxiomXMLStreamReaderExtensionFactory.INSTANCE);
-        XOPEncodingFilterHandler encoder = new XOPEncodingFilterHandler(pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL, null);
+        XOPEncodingFilterHandler encoder = new XOPEncodingFilterHandler(pivot, ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL);
         try {
             pivot.setReader(coreGetReader(encoder, cache, true));
         } catch (StreamException ex) {
@@ -281,8 +279,8 @@ public aspect AxiomContainerSupport {
             format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
         }
 
-        final OMMultipartWriter multipartWriter;
-        final OutputStream rootPartOutputStream;
+        OMMultipartWriter multipartWriter;
+        OutputStream rootPartOutputStream;
         if (format.isOptimized()) {
             multipartWriter = new OMMultipartWriter(out, format);
             try {
@@ -298,6 +296,7 @@ public aspect AxiomContainerSupport {
         Serializer serializer = new Serializer(rootPartOutputStream, encoding);
         
         XmlHandler handler;
+        XOPEncodingFilterHandler encoder;
         if (format.isOptimized()) {
             ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
                 @Override
@@ -305,32 +304,32 @@ public aspect AxiomContainerSupport {
                     return existingContentID != null ? existingContentID : format.getNextContentId();
                 }
             };
-            handler = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format), new CompletionListener() {
-                @Override
-                public void completed(AbstractXOPEncodingFilterHandler encoder) throws StreamException {
-                    try {
-                        rootPartOutputStream.close();
-                        for (String contentID : ((XOPEncodingFilterHandler)encoder).getContentIDs()) {
-                            DataHandler dataHandler = ((XOPEncodingFilterHandler)encoder).getDataHandler(contentID);
-                            if (cache || !(dataHandler instanceof DataHandlerExt)) {
-                                multipartWriter.writePart(dataHandler, contentID);
-                            } else {
-                                OutputStream out = multipartWriter.writePart(dataHandler.getContentType(), contentID);
-                                IOUtils.copy(((DataHandlerExt)dataHandler).readOnce(), out, -1);
-                                out.close();
-                            }
-                        }
-                        multipartWriter.complete();
-                    } catch (IOException ex) {
-                        throw new StreamException(ex);
-                    }
-                }
-            });
+            handler = encoder = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format));
         } else {
             handler = serializer;
+            encoder = null;
         }
         
         serialize(handler, null, format, cache);
+
+        if (encoder != null) {
+            try {
+                rootPartOutputStream.close();
+                for (String contentID : encoder.getContentIDs()) {
+                    DataHandler dataHandler = encoder.getDataHandler(contentID);
+                    if (cache || !(dataHandler instanceof DataHandlerExt)) {
+                        multipartWriter.writePart(dataHandler, contentID);
+                    } else {
+                        OutputStream part = multipartWriter.writePart(dataHandler.getContentType(), contentID);
+                        IOUtils.copy(((DataHandlerExt)dataHandler).readOnce(), part, -1);
+                        part.close();
+                    }
+                }
+                multipartWriter.complete();
+            } catch (IOException ex) {
+                throw new XMLStreamException(ex);
+            }
+        };
     }
 
     private void AxiomContainer.serialize(Writer writer, OMOutputFormat format, boolean cache) throws XMLStreamException {
