@@ -22,6 +22,8 @@ import javax.xml.stream.XMLStreamConstants;
 
 /**
  * Contains utility methods related to StAX events.
+ * 
+ * @deprecated This class is no longer maintained.
  */
 public final class XMLEventUtils {
     private XMLEventUtils() {}

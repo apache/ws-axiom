@@ -23,7 +23,7 @@ import java.io.InputStream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.util.stax.XMLEventUtils;
+import org.apache.axiom.util.xml.stream.XMLEventUtils;
 
 /**
  * Base class for test cases that test the behavior of a {@link XMLStreamReader} method for specific

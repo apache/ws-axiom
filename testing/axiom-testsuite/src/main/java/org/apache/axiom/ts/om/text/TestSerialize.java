@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.apache.axiom.util.stax.XMLEventUtils;
+import org.apache.axiom.util.xml.stream.XMLEventUtils;
 
 public class TestSerialize extends AxiomTestCase {
     private final int type;

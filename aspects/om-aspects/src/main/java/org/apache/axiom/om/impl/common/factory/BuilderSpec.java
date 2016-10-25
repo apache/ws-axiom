@@ -45,8 +45,8 @@ import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
 import org.apache.axiom.om.impl.stream.xop.XOPDecodingFilter;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
+import org.apache.axiom.util.xml.stream.XMLEventUtils;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
