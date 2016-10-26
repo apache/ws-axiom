@@ -79,6 +79,7 @@ import org.apache.axiom.om.impl.stream.sax.XMLReaderImpl;
 import org.apache.axiom.om.impl.stream.stax.pull.AxiomXMLStreamReaderExtensionFactory;
 import org.apache.axiom.om.impl.stream.stax.push.XMLStreamWriterHandler;
 import org.apache.axiom.om.impl.stream.xop.ContentIDGenerator;
+import org.apache.axiom.om.impl.stream.xop.ContentIDGeneratorImpl;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicy;
 import org.apache.axiom.om.impl.stream.xop.OptimizationPolicyImpl;
 import org.apache.axiom.om.impl.stream.xop.XOPEncodingFilterHandler;
@@ -298,13 +299,10 @@ public aspect AxiomContainerSupport {
         XmlHandler handler;
         XOPEncodingFilterHandler encoder;
         if (format.isOptimized()) {
-            ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
-                @Override
-                public String generateContentID(String existingContentID) {
-                    return existingContentID != null ? existingContentID : format.getNextContentId();
-                }
-            };
-            handler = encoder = new XOPEncodingFilterHandler(serializer, contentIDGenerator, new OptimizationPolicyImpl(format));
+            handler = encoder = new XOPEncodingFilterHandler(
+                    serializer, 
+                    new ContentIDGeneratorImpl(format),
+                    new OptimizationPolicyImpl(format));
         } else {
             handler = serializer;
             encoder = null;

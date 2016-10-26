@@ -67,27 +67,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>enforcer-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <ignore>
-                                <!-- TODO -->
-                                org.apache.axiom.om.impl.intf.AxiomContainer$AxiomContainerSupport$1 -> org.apache.axiom.om.impl.stream.xop.ContentIDGenerator,
-                            </ignore>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
