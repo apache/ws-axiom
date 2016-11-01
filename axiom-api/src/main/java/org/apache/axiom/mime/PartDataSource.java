@@ -29,10 +29,10 @@ import org.apache.axiom.ext.activation.SizeAwareDataSource;
  * there is no {@link DataSource} implementation specific to the buffering strategy being used, i.e.
  * if {@link PartContent#getDataSource(String)} returns <code>null</code>.
  */
-class PartDataSource implements SizeAwareDataSource {
+final class PartDataSource implements SizeAwareDataSource {
     private final Part part;
 
-    public PartDataSource(Part part) {
+    PartDataSource(Part part) {
         this.part = part;
     }
 
