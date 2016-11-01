@@ -67,7 +67,7 @@ public class PartDataHandler extends DataHandler {
 
     /**
      * Create the {@link DataSource} to be returned by {@link #getDataSource()}. This method may be
-     * overridden by subclasses to support custom {@link DataSource} implementation.
+     * overridden by subclasses to support custom {@link DataSource} implementations.
      * 
      * @param part
      *            the {@link Part} backing this data handler
