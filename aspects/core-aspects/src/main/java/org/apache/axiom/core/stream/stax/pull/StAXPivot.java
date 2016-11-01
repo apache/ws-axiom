@@ -37,6 +37,7 @@ import org.apache.axiom.core.stream.XmlReader;
 import org.apache.axiom.core.stream.stax.StAXExceptionUtil;
 import org.apache.axiom.core.stream.util.CharacterDataAccumulator;
 import org.apache.axiom.util.xml.QNameCache;
+import org.apache.axiom.util.xml.stream.XMLEventUtils;
 
 public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     private class NamespaceContextImpl implements NamespaceContext {
@@ -187,6 +188,7 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     // Entity reference name or processing instruction target
     private String name;
     
+    // TODO: The constructor should take an XmlInput object as input
     public StAXPivot(XMLStreamReaderExtensionFactory extensionFactory) {
         this.extensionFactory = extensionFactory;
     }
@@ -519,9 +521,37 @@ public final class StAXPivot implements InternalXMLStreamReader, XmlHandler {
     }
 
     @Override
-    public void require(int type, String namespaceURI, String localName) throws XMLStreamException {
-        // TODO Auto-generated method stub
+    public void require(int expectedType, String expectedNamespaceURI, String expectedLocalName) throws XMLStreamException {
+        if (expectedType != eventType) {
+            throw new XMLStreamException("Required type " + XMLEventUtils.getEventTypeString(expectedType)
+                    + ", actual type " + XMLEventUtils.getEventTypeString(eventType));
+        }
+
+        if (expectedLocalName != null) {
+            if (eventType != START_ELEMENT && eventType != END_ELEMENT
+                && eventType != ENTITY_REFERENCE) {
+                throw new XMLStreamException("Required a non-null local name, but current token " +
+                        "not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE (was " +
+                        XMLEventUtils.getEventTypeString(eventType) + ")");
+            }
+            String localName = getLocalName();
+            if (!localName.equals(expectedLocalName)) {
+                throw new XMLStreamException("Required local name '" + expectedLocalName +
+                        "'; current local name '" + localName + "'.");
+            }
+        }
         
+        if (expectedNamespaceURI != null) {
+            if (eventType != START_ELEMENT && eventType != END_ELEMENT) {
+                throw new XMLStreamException("Required non-null namespace URI, but current token " +
+                        "not a START_ELEMENT or END_ELEMENT (was " +
+                        XMLEventUtils.getEventTypeString(eventType) + ")");
+            }
+            String namespaceURI = elementStack[3*depth];
+            if (!expectedNamespaceURI.equals(namespaceURI)) {
+                throw new XMLStreamException("Required namespace '" + expectedNamespaceURI + "'; have '" + namespaceURI +"'.");
+            }
+        }
     }
 
     @Override
