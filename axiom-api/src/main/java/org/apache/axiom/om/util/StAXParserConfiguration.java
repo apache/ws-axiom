@@ -43,17 +43,23 @@ import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
  */
 public interface StAXParserConfiguration {
     /**
-     * The default configuration.
+     * Configuration that sets up the parser to preserve CDATA sections. This configuration will
+     * also put the parser in non coalescing mode.
      */
-    StAXParserConfiguration DEFAULT = new StAXParserConfiguration() {
+    StAXParserConfiguration PRESERVE_CDATA_SECTIONS = new StAXParserConfiguration() {
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            return factory;
+            return dialect.enableCDataReporting(factory);
         }
-
+        
         public String toString() {
-            return "DEFAULT";
+            return "PRESERVE_CDATA_SECTIONS";
         }
     };
+    
+    /**
+     * The default configuration. Same as {@link #PRESERVE_CDATA_SECTIONS}.
+     */
+    StAXParserConfiguration DEFAULT = PRESERVE_CDATA_SECTIONS;
     
     /**
      * Configuration that forces the parser to process the XML document as
@@ -67,6 +73,7 @@ public interface StAXParserConfiguration {
      */
     StAXParserConfiguration STANDALONE = new StAXParserConfiguration() {
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+            factory = DEFAULT.configure(factory, dialect);
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
             // Some StAX parser such as Woodstox still try to load the external DTD subset,
             // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
@@ -87,6 +94,20 @@ public interface StAXParserConfiguration {
     };
 
     /**
+     * Configuration that sets up the parser in coalescing mode.
+     */
+    StAXParserConfiguration COALESCING = new StAXParserConfiguration() {
+        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+            factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+            return factory;
+        }
+
+        public String toString() {
+            return "NON_COALESCING";
+        }
+    };
+    
+    /**
      * Configuration that sets up the parser in non coalescing mode.
      */
     StAXParserConfiguration NON_COALESCING = new StAXParserConfiguration() {
@@ -97,20 +118,6 @@ public interface StAXParserConfiguration {
 
         public String toString() {
             return "NON_COALESCING";
-        }
-    };
-    
-    /**
-     * Configuration that sets up the parser to preserve CDATA sections. This configuration will
-     * also put the parser in non coalescing mode.
-     */
-    StAXParserConfiguration PRESERVE_CDATA_SECTIONS = new StAXParserConfiguration() {
-        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            return dialect.enableCDataReporting(factory);
-        }
-        
-        public String toString() {
-            return "PRESERVE_CDATA_SECTIONS";
         }
     };
     
@@ -127,7 +134,7 @@ public interface StAXParserConfiguration {
      */
     StAXParserConfiguration SOAP = new StAXParserConfiguration() {
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
-            return dialect.disallowDoctypeDecl(factory);
+            return dialect.disallowDoctypeDecl(DEFAULT.configure(factory, dialect));
         }
 
         public String toString() {
