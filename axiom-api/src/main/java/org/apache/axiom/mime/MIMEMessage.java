@@ -31,7 +31,6 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
-import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -72,7 +71,7 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
             try {
                 this.contentType = new ContentType(contentType);
             } catch (ParseException ex) {
-                throw new OMException(ex);
+                throw new MIMEException(ex);
             }
             return this;
         }
@@ -135,7 +134,7 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
     MIMEMessage(InputStream inStream, ContentType contentType,
             WritableBlobFactory<?> attachmentBlobFactory,
             DataHandlerFactory dataHandlerFactory,
-            PartCreationListener partCreationListener) throws OMException {
+            PartCreationListener partCreationListener) {
         this.attachmentBlobFactory = attachmentBlobFactory;
         this.dataHandlerFactory = dataHandlerFactory;
         this.partCreationListener = partCreationListener;
@@ -155,9 +154,9 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
             try {
                 parser.next();
             } catch (IOException ex) {
-                throw new OMException(ex);
+                throw new MIMEException(ex);
             } catch (MimeException ex) {
-                throw new OMException(ex);
+                throw new MIMEException(ex);
             }
         }
     }
@@ -217,11 +216,11 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
                 return rootPart;
             }
         } while (getNextPart() != null);
-        throw new OMException(
+        throw new MIMEException(
                 "Mandatory root MIME part is missing");
     }
 
-    PartImpl getNextPart() throws OMException {
+    PartImpl getNextPart() {
         if (currentPart != null) {
             currentPart.fetch();
         }
@@ -265,14 +264,14 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
                 }
                 currentPart = part;
             } catch (IOException ex) {
-                throw new OMException(ex);
+                throw new MIMEException(ex);
             } catch (MimeException ex) {
-                throw new OMException(ex);
+                throw new MIMEException(ex);
             }
 
             if (partContentID != null) {
                 if (partMap.containsKey(partContentID)) {
-                    throw new OMException(
+                    throw new MIMEException(
                             "Two MIME parts with the same Content-ID not allowed.");
                 }
                 partMap.put(partContentID, currentPart);

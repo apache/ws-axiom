@@ -49,6 +49,7 @@ import org.apache.axiom.blob.Blobs;
 import org.apache.axiom.blob.MemoryBlob;
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.mime.ContentTypeBuilder;
+import org.apache.axiom.mime.MIMEException;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
@@ -231,8 +232,8 @@ public class AttachmentsTest extends AbstractTestCase {
         try {
             Attachments attachments = new Attachments(MTOMSample.SAMPLE1.getInputStream(), contentType);
             attachments.getRootPartContentType();
-            fail("Expected OMException");
-        } catch (OMException ex) {
+            fail("Expected MIMEException");
+        } catch (MIMEException ex) {
             // OK, expected
         } catch (Throwable ex) {
             fail("Unexpected exception: " + ex.getClass().getName());
@@ -748,7 +749,7 @@ public class AttachmentsTest extends AbstractTestCase {
             try {
                 attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
                 fail("Expected exception");
-            } catch (OMException ex) {
+            } catch (MIMEException ex) {
                 // Expected
             }
         } finally {
@@ -765,7 +766,7 @@ public class AttachmentsTest extends AbstractTestCase {
             try {
                 dh.getInputStream();
                 fail("Expected exception");
-            } catch (OMException ex) {
+            } catch (MIMEException ex) {
                 // Expected
             }
         } finally {

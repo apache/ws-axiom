@@ -24,7 +24,6 @@ import org.apache.axiom.blob.OverflowableBlob;
 import org.apache.axiom.blob.WritableBlob;
 import org.apache.axiom.blob.WritableBlobFactory;
 import org.apache.axiom.ext.io.StreamCopyException;
-import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -130,7 +129,7 @@ final class PartImpl implements Part {
             try {
                 contentType = new ContentType(getHeader("content-type"));
             } catch (ParseException ex) {
-                throw new OMException(ex);
+                throw new MIMEException(ex);
             }
         }
         return contentType;
@@ -207,9 +206,9 @@ final class PartImpl implements Part {
                     content.readFrom(getDecodedInputStream());
                 } catch (StreamCopyException ex) {
                     if (ex.getOperation() == StreamCopyException.READ) {
-                        throw new OMException("Failed to fetch the MIME part content", ex.getCause());
+                        throw new MIMEException("Failed to fetch the MIME part content", ex.getCause());
                     } else {
-                        throw new OMException("Failed to write the MIME part content to temporary storage", ex.getCause());
+                        throw new MIMEException("Failed to write the MIME part content to temporary storage", ex.getCause());
                     }
                 }
                 moveToNextPart();
@@ -220,7 +219,7 @@ final class PartImpl implements Part {
                 try {
                     partInputStream.detach();
                 } catch (IOException ex) {
-                    throw new OMException(ex);
+                    throw new MIMEException(ex);
                 }
                 partInputStream = null;
                 moveToNextPart();
@@ -240,9 +239,9 @@ final class PartImpl implements Part {
                 throw new IllegalStateException("Internal error: unexpected parser state " + state);
             }
         } catch (IOException ex) {
-            throw new OMException(ex);
+            throw new MIMEException(ex);
         } catch (MimeException ex) {
-            throw new OMException(ex);
+            throw new MIMEException(ex);
         }
         parser = null;
     }
@@ -277,9 +276,9 @@ final class PartImpl implements Part {
                     content.release();
             }
         } catch (MimeException ex) {
-            throw new OMException(ex);
+            throw new MIMEException(ex);
         } catch (IOException ex) {
-            throw new OMException(ex);
+            throw new MIMEException(ex);
         }
     }
     

@@ -303,9 +303,6 @@
                                 <!-- Bad API design: a public API shouldn't depend on classes in an impl package in its interface -->
                                 org.apache.axiom.attachments.lifecycle.LifecycleManager -> org.apache.axiom.attachments.lifecycle.impl.FileAccessor,
                                 <!-- TODO -->
-                                org.apache.axiom.mime.MIMEMessage -> org.apache.axiom.om.OMException,
-                                org.apache.axiom.mime.MIMEMessage$Builder -> org.apache.axiom.om.OMException,
-                                org.apache.axiom.mime.PartImpl -> org.apache.axiom.om.OMException,
                                 org.apache.axiom.om.impl.OMMultipartWriter -> org.apache.axiom.attachments.ConfigurableDataHandler,
                                 org.apache.axiom.om.ds.jaxb.AttachmentMarshallerImpl -> org.apache.axiom.attachments.ByteArrayDataSource,
                                 <!-- o.a.a.soap should be a layer on top of o.a.a.om -->
