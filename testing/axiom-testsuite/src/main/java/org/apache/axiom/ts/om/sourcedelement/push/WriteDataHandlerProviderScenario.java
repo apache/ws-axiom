@@ -44,11 +44,6 @@ public class WriteDataHandlerProviderScenario implements PushOMDataSourceScenari
     private final DataHandler dh = new DataHandler(new RandomDataSource(1024));
     private final DataHandlerProvider dhp = new DataHandlerProvider() {
         @Override
-        public boolean isLoaded() {
-            return true;
-        }
-        
-        @Override
         public DataHandler getDataHandler() throws IOException {
             return dh;
         }

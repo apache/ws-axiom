@@ -29,21 +29,6 @@ import javax.activation.DataHandler;
  */
 public interface MimePartProvider {
     /**
-     * Check whether the MIME part identified by a given content ID has already been loaded. A
-     * return value of <code>true</code> means that a call to {@link #getDataHandler(String)} (for
-     * the same content ID) will not block or will retrieve the {@link DataHandler} without
-     * overhead.
-     * 
-     * @return <code>true</code> if the MIME part has already been loaded; <code>false</code>
-     *         otherwise
-     * @throws IllegalArgumentException
-     *             Thrown if the MIME part specified by the content ID doesn't exist. Note that the
-     *             implementation may be unable to determine this without loading all the MIME
-     *             parts. In this case, it should return <code>false</code>.
-     */
-    boolean isLoaded(String contentID);
-    
-    /**
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
      * @param contentID

@@ -88,19 +88,6 @@ public final class XOPEncodingFilterHandler extends AbstractXOPEncodingFilterHan
     }
 
     @Override
-    public boolean isLoaded(String contentID) {
-        Object dataHandlerObject = dataHandlerObjects.get(contentID);
-        if (dataHandlerObject == null) {
-            throw new IllegalArgumentException("No DataHandler object found for content ID '" +
-                    contentID + "'");
-        } else if (dataHandlerObject instanceof DataHandler) {
-            return true;
-        } else {
-            return ((DataHandlerProvider)dataHandlerObject).isLoaded();
-        }
-    }
-
-    @Override
     protected String processCharacterData(Object data) throws StreamException {
         if (data instanceof TextContent) {
             TextContent textContent = (TextContent)data;

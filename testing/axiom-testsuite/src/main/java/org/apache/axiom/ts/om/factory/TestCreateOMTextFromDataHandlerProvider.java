@@ -34,11 +34,6 @@ public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
         private DataHandler dh;
         
         @Override
-        public boolean isLoaded() {
-            return false;
-        }
-
-        @Override
         public DataHandler getDataHandler() {
             if (dh == null) {
                 dh = new DataHandler("Data", "text/plain");

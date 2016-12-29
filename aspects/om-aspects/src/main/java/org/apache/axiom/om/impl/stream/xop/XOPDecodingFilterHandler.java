@@ -39,11 +39,6 @@ final class XOPDecodingFilterHandler extends AbstractXOPDecodingFilterHandler {
         }
 
         @Override
-        public boolean isLoaded() {
-            return mimePartProvider.isLoaded(contentID);
-        }
-
-        @Override
         public DataHandler getDataHandler() throws IOException {
             return mimePartProvider.getDataHandler(contentID);
         }

@@ -188,12 +188,6 @@ public final class MIMEMessage implements Iterable<Part>, MimePartProvider {
     }
 
     @Override
-    public boolean isLoaded(String contentID) {
-        // TODO: throw IllegalStateException if we know that the part doesn't exist
-        return partMap.containsKey(contentID);
-    }
-
-    @Override
     public DataHandler getDataHandler(String contentID) {
         do {
             PartImpl part = partMap.get(contentID);

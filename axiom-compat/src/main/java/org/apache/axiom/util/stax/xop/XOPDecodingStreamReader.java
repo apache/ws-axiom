@@ -74,11 +74,6 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
 
         @Override
-        public boolean isLoaded() {
-            return mimePartProvider.isLoaded(contentID);
-        }
-
-        @Override
         public DataHandler getDataHandler() throws IOException {
             return mimePartProvider.getDataHandler(contentID);
         }
