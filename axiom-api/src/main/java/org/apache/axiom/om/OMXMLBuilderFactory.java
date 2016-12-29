@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -32,7 +31,6 @@ import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
-import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -504,8 +502,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
             StAXParserConfiguration configuration, MIMEMessage message) {
-        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(configuration,
-                getRootPartInputSource(message), message);
+        return ((OMMetaFactorySPI)omFactory.getMetaFactory()).createOMBuilder(configuration, message);
     }
     
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
@@ -727,25 +724,12 @@ public class OMXMLBuilderFactory {
         } else {
             throw new OMException("Unable to determine SOAP version");
         }
-        SOAPModelBuilder builder = ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(
-                getRootPartInputSource(message), message);
+        SOAPModelBuilder builder = ((OMMetaFactorySPI)metaFactory).createSOAPModelBuilder(message);
         if (builder.getSOAPMessage().getOMFactory() != soapFactory) {
             throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
                     "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
         }
         return builder;
-    }
-    
-    private static InputSource getRootPartInputSource(MIMEMessage message) {
-        Part rootPart = message.getRootPart();
-        InputSource is;
-        try {
-            is = new InputSource(rootPart.getInputStream(false));
-        } catch (IOException ex) {
-            throw new OMException(ex);
-        }
-        is.setEncoding(rootPart.getContentType().getParameter("charset"));
-        return is;
     }
     
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,

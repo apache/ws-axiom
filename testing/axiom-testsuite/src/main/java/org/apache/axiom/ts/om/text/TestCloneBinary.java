@@ -18,20 +18,18 @@
  */
 package org.apache.axiom.ts.om.text;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.StringReader;
 
 import javax.activation.DataHandler;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
-import org.xml.sax.InputSource;
 
 public class TestCloneBinary extends AxiomTestCase {
     private boolean fetch;
@@ -44,9 +42,10 @@ public class TestCloneBinary extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         DataHandler dh = new DataHandler(new RandomDataSource(600613L, 4096));
-        InputStream rootPart = new ByteArrayInputStream("<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>".getBytes("utf-8"));
+        StringReader rootPart = new StringReader("<root><xop:Include xmlns:xop='http://www.w3.org/2004/08/xop/include' href='cid:123456@example.org'/></root>");
         DummyMimePartProvider mimePartProvider = new DummyMimePartProvider("123456@example.org", dh);
-        OMElement root = ((OMMetaFactorySPI)metaFactory).createOMBuilder(StAXParserConfiguration.DEFAULT, new InputSource(rootPart), mimePartProvider).getDocumentElement();
+        OMElement root = OMXMLBuilderFactory.createOMBuilder(
+                metaFactory.getOMFactory(), new StreamSource(rootPart), mimePartProvider).getDocumentElement();
         OMText text = (OMText)root.getFirstOMChild();
         OMCloneOptions options = new OMCloneOptions();
         options.setFetchDataHandlers(fetch);

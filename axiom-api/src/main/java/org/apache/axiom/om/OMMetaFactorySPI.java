@@ -23,6 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -116,14 +117,11 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
      * 
      * @param configuration
      *            the parser configuration to use
-     * @param rootPart
-     *            the source of the root part of the XOP message
-     * @param mimePartProvider
-     *            the provider from which MIME parts referenced in the root part will be retrieved
+     * @param message
+     *            the MIME message
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
-            InputSource rootPart, MimePartProvider mimePartProvider);
+    OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MIMEMessage message);
     
     OMXMLParserWrapper createOMBuilder(Source rootPart, MimePartProvider mimePartProvider);
     
@@ -163,13 +161,11 @@ public interface OMMetaFactorySPI extends OMMetaFactory {
     /**
      * Create an MTOM aware object model builder.
      * 
-     * @param rootPart
-     *            the source of the root part of the MTOM message
-     * @param mimePartProvider
-     *            the provider from which MIME parts referenced in the root part will be retrieved
+     * @param message
+     *            the MIME message
      * @return the builder
      */
-    SOAPModelBuilder createSOAPModelBuilder(InputSource rootPart, MimePartProvider mimePartProvider);
+    SOAPModelBuilder createSOAPModelBuilder(MIMEMessage message);
     
     SOAPModelBuilder createSOAPModelBuilder(Source rootPart, MimePartProvider mimePartProvider);
 }
