@@ -21,8 +21,6 @@ package org.apache.axiom.om.impl.common.factory;
 import static org.apache.axiom.om.impl.common.factory.BuilderFactory.OM;
 import static org.apache.axiom.om.impl.common.factory.BuilderFactory.SOAP;
 
-import java.io.IOException;
-
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
@@ -30,8 +28,6 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.core.NodeFactory;
 import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
-import org.apache.axiom.mime.Part;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactorySPI;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -49,18 +45,6 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
     
     public AbstractOMMetaFactory(NodeFactory nodeFactory) {
         this.nodeFactory = nodeFactory;
-    }
-    
-    private static InputSource getRootPartInputSource(MIMEMessage message) {
-        Part rootPart = message.getRootPart();
-        InputSource is;
-        try {
-            is = new InputSource(rootPart.getInputStream(false));
-        } catch (IOException ex) {
-            throw new OMException(ex);
-        }
-        is.setEncoding(rootPart.getContentType().getParameter("charset"));
-        return is;
     }
     
     @Override
@@ -90,7 +74,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
 
     @Override
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, MIMEMessage message) {
-        return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, getRootPartInputSource(message), message));
+        return OM.createBuilder(nodeFactory, BuilderSpec.from(configuration, message));
     }
 
     @Override
@@ -115,7 +99,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactorySPI {
 
     @Override
     public SOAPModelBuilder createSOAPModelBuilder(MIMEMessage message) {
-        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, getRootPartInputSource(message), message));
+        return SOAP.createBuilder(nodeFactory, BuilderSpec.from(StAXParserConfiguration.SOAP, message));
     }
 
     @Override

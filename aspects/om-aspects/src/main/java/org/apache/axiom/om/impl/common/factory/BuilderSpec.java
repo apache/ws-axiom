@@ -39,6 +39,7 @@ import org.apache.axiom.core.stream.dom.DOMInput;
 import org.apache.axiom.core.stream.sax.SAXInput;
 import org.apache.axiom.mime.MIMEMessage;
 import org.apache.axiom.mime.MimePartProvider;
+import org.apache.axiom.mime.Part;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.common.builder.Detachable;
 import org.apache.axiom.om.impl.stream.stax.pull.StAXPullInput;
@@ -184,25 +185,26 @@ final class BuilderSpec {
         return new BuilderSpec(new FilteredXmlInput(new SAXInput(source, expandEntityReferences), NamespaceRepairingFilter.DEFAULT), null);
     }
 
-    static BuilderSpec from(StAXParserConfiguration configuration,
-            InputSource rootPart, final MimePartProvider mimePartProvider) {
-        BuilderSpec spec = create(configuration, rootPart, false);
-        Detachable detachable;
-        if (mimePartProvider instanceof MIMEMessage) {
-            detachable = new Detachable() {
-                @Override
-                public void detach() {
-                    ((MIMEMessage)mimePartProvider).detach();
-                }
-            };
-        } else {
-            detachable = null;
+    static BuilderSpec from(StAXParserConfiguration configuration, final MIMEMessage message) {
+        Part rootPart = message.getRootPart();
+        InputSource is;
+        try {
+            is = new InputSource(rootPart.getInputStream(false));
+        } catch (IOException ex) {
+            throw new OMException(ex);
         }
+        is.setEncoding(rootPart.getContentType().getParameter("charset"));
+        BuilderSpec spec = create(configuration, is, false);
         return new BuilderSpec(
                 new FilteredXmlInput(
                         spec.getInput(),
-                        new XOPDecodingFilter(mimePartProvider)),
-                detachable);
+                        new XOPDecodingFilter(message)),
+                new Detachable() {
+                    @Override
+                    public void detach() {
+                        message.detach();
+                    }
+                });
     }
 
     static BuilderSpec from(StAXParserConfiguration configuration, Source source, MimePartProvider mimePartProvider) {
